@@ -723,7 +723,7 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
         let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
         if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
             SPECIAL_LW[entry_id(module_accessor)] = true;
-            SPECIAL_LW_TIMER[entry_id(module_accessor)] = 900;
+            SPECIAL_LW_TIMER[entry_id(module_accessor)] = 810;
             println!("SPECIAL_LW set to true, timer set to 900!");
         }
         else if SPECIAL_LW_TIMER[entry_id(module_accessor)] >= 0 {

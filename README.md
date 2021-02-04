@@ -1,11 +1,11 @@
 # The Bor Patch
 
-A mod for Super Smash Bros. Ultimate that brings character balance and mechanics changes to various characters. [You can find a full changelog here.] (https://docs.google.com/document/d/1-1xWPIfCt0kfxvREXpTbLL_J5DpK6GPFxKNIGyXiqzQ/edit?usp=sharing)
+A mod for Super Smash Bros. Ultimate that brings character balance and mechanics changes to various characters. [You can find a full changelog here.](https://docs.google.com/document/d/1-1xWPIfCt0kfxvREXpTbLL_J5DpK6GPFxKNIGyXiqzQ/edit?usp=sharing)
 
 ## Dependencies
 
-* [ARCropolis] (https://github.com/Raytwo/ARCropolis) - Make sure to grab the latest version!
-* [NRO Hook] (https://github.com/ultimate-research/nro-hook-plugin)
+* [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab the latest version!
+* [NRO Hook](https://github.com/ultimate-research/nro-hook-plugin)
 
 ### How to Install
 

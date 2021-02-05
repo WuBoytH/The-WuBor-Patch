@@ -546,6 +546,58 @@ pub fn lucina_fsmash(fighter: &mut L2CFighterCommon) {
 #[acmd_func(
     battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
     battle_object_kind = FIGHTER_KIND_LUCINA,
+    animation = "special_n_end",
+    animcmd = "game_specialnend")]
+pub fn lucina_nspecialend(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        frame(Frame=1)
+        FT_MOTION_RATE(FSM=0.125)
+        frame(Frame=9)
+        FT_MOTION_RATE(FSM=2.0)
+        frame(Frame=13)
+        if(is_excute){
+            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=9.0, Angle=361, KBG=60, FKB=0, BKB=40, Size=3.3, X=0.0, Y=7.7, Z=9.1, X2=0.0, Y2=7.7, Z2=7.0, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=1, Part=0, Bone=hash40("sword1"), Damage=9.0, Angle=361, KBG=60, FKB=0, BKB=40, Size=4.0, X=2.0, Y=1.0, Z=1.5, X2=14.0, Y2=1.0, Z2=1.5, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=2, Part=0, Bone=hash40("sword1"), Damage=9.0, Angle=361, KBG=60, FKB=0, BKB=40, Size=3.5, X=2.0, Y=1.0, Z=7.5, X2=9.5, Y2=1.0, Z2=7.5, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
+        }
+        frame(Frame=16)
+        if(is_excute){
+            AttackModule::clear_all()
+        }
+        frame(Frame=17)
+        FT_MOTION_RATE(FSM=1)
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_LUCINA,
+    animation = "special_n_end_max",
+    animcmd = "game_specialnendmax")]
+pub fn lucina_nspecialendmax(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        frame(Frame=1)
+        FT_MOTION_RATE(FSM=0.125)
+        frame(Frame=9)
+        FT_MOTION_RATE(FSM=2.0)
+        frame(Frame=13)
+        if(is_excute){
+            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=17.0, Angle=60, KBG=100, FKB=0, BKB=0, Size=3.3, X=0.0, Y=7.7, Z=9.1, X2=0.0, Y2=7.7, Z2=7.0, Hitlag=2.3, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_THRU, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=hash40("no"), Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_paralyze"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_ELEC, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=1, Part=0, Bone=hash40("sword1"), Damage=17.0, Angle=60, KBG=100, FKB=0, BKB=0, Size=4.0, X=2.0, Y=1.0, Z=1.5, X2=14.0, Y2=1.0, Z2=1.5, Hitlag=2.3, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_THRU, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=hash40("no"), Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_paralyze"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_ELEC, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=2, Part=0, Bone=hash40("sword1"), Damage=17.0, Angle=60, KBG=100, FKB=0, BKB=0, Size=3.5, X=2.0, Y=1.0, Z=7.5, X2=9.5, Y2=1.0, Z2=7.5, Hitlag=2.3, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_THRU, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=hash40("no"), Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_paralyze"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_ELEC, Type=ATTACK_REGION_SWORD)
+        }
+        frame(Frame=16)
+        if(is_excute){
+            AttackModule::clear_all()
+        }
+        frame(Frame=17)
+        FT_MOTION_RATE(FSM=1)
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_LUCINA,
     animation = "special_s1",
     animcmd = "game_specials1")]
 pub fn lucina_sspecial1(fighter: &mut L2CFighterCommon) {
@@ -774,6 +826,8 @@ pub fn install() {
         lucina_bair,
         lucina_uair,
         lucina_dair,
+        lucina_nspecialend,
+        lucina_nspecialendmax,
         lucina_sspecial1,
         lucina_sspecial1air,
         lucina_sspecial2air,

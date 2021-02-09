@@ -1,25 +1,25 @@
-use smash::app::lua_bind::*;
-use smash::app::utility::get_kind;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::lua2cpp::{L2CFighterCommon, L2CFighterBase};
+//use smash::app::lua_bind::*;
+//use smash::app::utility::get_kind;
+//use smash::lib::lua_const::*;
+//use smash::app::lua_bind::*;
+use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 use acmd;
+use crate::FIGHTER_CUTIN_MANAGER_ADDR;
+use skyline::nn::ro::LookupSymbol;
+//use smash::app::{self, lua_bind::*, *};
+
+pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vector3f {x:-3.0,y:3.0,z:0.0};
+pub const TIME_SLOW_EFFECT_HASH: u64 = smash::hash40("sys_sp_flash");
 
 // Use this for general per-frame fighter-level hooks
-pub fn once_per_fighter_frame(fighter : &mut L2CFighterCommon) {
+pub fn once_per_fighter_frame(_fighter : &mut L2CFighterCommon) {
     unsafe {
-        let lua_state = fighter.lua_state_agent;
-        let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        let status_kind = smash::app::lua_bind::StatusModule::status_kind(module_accessor);
-        if fighter_kind == *FIGHTER_KIND_GAOGAEN {
-            if (Frame>=20) {
-                if *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_ROTATION && (AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT){
-                    if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-                        StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                      }
-                }
-            }
-        }
+        LookupSymbol(
+            &mut FIGHTER_CUTIN_MANAGER_ADDR,
+            "_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E\u{0}"
+                .as_bytes()
+                .as_ptr(),
+        );
     }
 }
 

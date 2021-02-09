@@ -3,6 +3,11 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::lua2cpp::L2CFighterCommon;
 use acmd::{acmd, acmd_func};
+use crate::FIGHTER_CUTIN_MANAGER_ADDR;
+//use skyline::nn::ro::LookupSymbol;
+use smash::phx::Vector3f;
+//use smash::app::BattleObjectModuleAccessor;
+use smash::app::{self,/* lua_bind::*,*/ *};
 
 #[acmd_func(
     battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
@@ -336,6 +341,199 @@ pub fn gaogaen_nspecialair(fighter: &mut L2CFighterCommon) {
 #[acmd_func(
     battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
     battle_object_kind = FIGHTER_KIND_GAOGAEN,
+    animation = "special_s_shoulder",
+    animcmd = "game_specialsshoulder")]
+pub fn gaogaen_sspecialshoulder(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        if(is_excute){
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99)
+            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=0.0, Angle=105, KBG=280, FKB=0, BKB=70, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_B, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
+            AttackModule::set_force_reaction(0, true, true)
+        }
+        frame(Frame=1)
+        FT_MOTION_RATE(FSM=0.75)
+        frame(Frame=10)
+        FT_MOTION_RATE(FSM=1)
+        if(is_excute){
+            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=9.0, Angle=105, KBG=34, FKB=0, BKB=96, Size=6.0, X=0.0, Y=6.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=0.4, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_B, SetWeight=false, ShieldDamage=1, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=true, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_PUNCH, Type=ATTACK_REGION_BODY)
+        }
+        frame(Frame=17)
+        if(is_excute){
+            CHECK_FINISH_CAMERA_IF_NOT_HP_MODE(0, 0)
+            rust {
+                let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
+                lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+                lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+            }
+        }
+        frame(Frame=18)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT)
+        }
+        frame(Frame=20)
+        if(is_excute){
+            AttackModule::clear_all()
+            REVERSE_LR()
+        }
+        frame(Frame=42)
+            if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY)
+        }
+        frame(Frame=45)
+            if(is_excute){
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0)
+        }
+        frame(Frame=52)
+            if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL)
+        }
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_GAOGAEN,
+    animation = "special_air_s_shoulder",
+    animcmd = "game_specialairsshoulder")]
+pub fn gaogaen_sspecialshoulderair(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        if(is_excute){
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99)
+            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=0.0, Angle=105, KBG=280, FKB=0, BKB=70, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_B, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
+            AttackModule::set_force_reaction(0, true, true)
+        }
+        frame(Frame=1)
+        FT_MOTION_RATE(FSM=0.75)
+        frame(Frame=10)
+        FT_MOTION_RATE(FSM=1)
+        if(is_excute){
+            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=9.0, Angle=105, KBG=34, FKB=0, BKB=96, Size=6.0, X=0.0, Y=6.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=0.4, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_B, SetWeight=false, ShieldDamage=1, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=true, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_PUNCH, Type=ATTACK_REGION_BODY)
+        }
+        frame(Frame=17)
+        if(is_excute){
+            CHECK_FINISH_CAMERA_IF_NOT_HP_MODE(0, 0)
+            rust {
+                let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
+                lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+                lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+            }
+        }
+        frame(Frame=18)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT)
+        }
+        frame(Frame=20)
+        if(is_excute){
+            AttackModule::clear_all()
+            REVERSE_LR()
+        }
+        frame(Frame=42)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY)
+        }
+        frame(Frame=45)
+        if(is_excute){
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0)
+        }
+        frame(Frame=52)
+            if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL)
+        }
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_GAOGAEN,
+    animation = "special_s_lariat",
+    animcmd = "game_specialslariat")]
+pub fn gaogaen_sspeciallariat(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        if(is_excute){
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99)
+            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=0.0, Angle=145, KBG=454, FKB=0, BKB=20, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_B, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
+            AttackModule::set_force_reaction(0, true, true)
+            WorkModule::set_float(9.0, FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLOAT_LARIAT_HIT_FRAME)
+        }
+        frame(Frame=9)
+        if(is_excute){
+            ATTACK(ID=0, Part=0, Bone=hash40("arml"), Damage=16.0, Angle=145, KBG=40, FKB=0, BKB=88, Size=7.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.4, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_B, SetWeight=false, ShieldDamage=2, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=true, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_HEAVY, Type=ATTACK_REGION_PUNCH)
+            CHECK_FINISH_CAMERA(0, 0)
+            rust {
+                let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
+                lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+                lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+            }
+        }
+        frame(Frame=14)
+            if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT)
+        }
+        frame(Frame=20)
+        if(is_excute){
+            AttackModule::clear_all()
+            REVERSE_LR()
+        }
+        frame(Frame=50)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY)
+        }
+        frame(Frame=58)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL)
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0)
+        }
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_GAOGAEN,
+    animation = "special_air_s_lariat",
+    animcmd = "game_specialairslariat")]
+pub fn gaogaen_sspeciallariatair(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        if(is_excute){
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99)
+            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=0.0, Angle=145, KBG=454, FKB=0, BKB=20, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_B, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
+            AttackModule::set_force_reaction(0, true, true)
+            WorkModule::set_float(9.0, FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLOAT_LARIAT_HIT_FRAME)
+        }
+        frame(Frame=9)
+        if(is_excute){
+            ATTACK(ID=0, Part=0, Bone=hash40("arml"), Damage=16.0, Angle=145, KBG=40, FKB=0, BKB=88, Size=7.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.4, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_B, SetWeight=false, ShieldDamage=2, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=true, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_HEAVY, Type=ATTACK_REGION_PUNCH)
+            CHECK_FINISH_CAMERA(0, 0)
+            rust {
+                let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
+                lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+                lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+            }
+        }
+        frame(Frame=14)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT)
+        }
+        frame(Frame=20)
+        if(is_excute){
+            AttackModule::clear_all()
+            REVERSE_LR()
+        }
+        frame(Frame=50)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY)
+        }
+        frame(Frame=58)
+        if(is_excute){
+            WorkModule::on_flag(Flag=FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL)
+            sv_module_access::damage(MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0)
+        }
+            
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_GAOGAEN,
     animation = "attack_air_n",
     animcmd = "game_attackairn")]
 pub fn gaogaen_nair(fighter: &mut L2CFighterCommon) {
@@ -542,6 +740,10 @@ pub fn install() {
     acmd::add_hooks!(
         gaogaen_nspecial,
         gaogaen_nspecialair,
+        gaogaen_sspecialshoulder,
+        gaogaen_sspecialshoulderair,
+        gaogaen_sspeciallariat,
+        gaogaen_sspeciallariatair,
         gaogaen_nair,
         gaogaen_fsmash,
         gaogaen_usmash,

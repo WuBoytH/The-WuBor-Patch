@@ -48,7 +48,7 @@ pub fn reset_vars(fighter: &mut L2CFighterCommon) {
     unsafe {
         let lua_state = fighter.lua_state_agent;
         let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
-        if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_DEAD {
+        if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_DEAD || StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_ENTRY {
             SPECIAL_AIR_S[entry_id(module_accessor)] = false;
             SPECIAL_LW[entry_id(module_accessor)] = false;
             SPECIAL_LW_TIMER[entry_id(module_accessor)] = -1;

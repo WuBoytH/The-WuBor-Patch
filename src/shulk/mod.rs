@@ -3,6 +3,7 @@ use smash::lua2cpp::L2CFighterCommon;
 use smash::app::lua_bind::*;
 use acmd::{acmd,acmd_func};
 use smash::hash40;
+use smash::phx::Vector3f;
 use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::EffectModule;
 use crate::custom::{TIME_SLOW_EFFECT_VECTOR, TIME_SLOW_EFFECT_HASH};
@@ -98,12 +99,16 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
                 });
                 EffectModule::req_on_joint(module_accessor, smash::phx::Hash40::new_raw(TIME_SLOW_EFFECT_HASH), smash::phx::Hash40::new("head"), &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, 1.0, &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, false, 0, 0, 0);
             }
-            if SPECIAL_LW_TIMER[entry_id(module_accessor)] >= 0 {
+            if SPECIAL_LW_TIMER[entry_id(module_accessor)] > 0 {
                 SPECIAL_LW_TIMER[entry_id(module_accessor)] = SPECIAL_LW_TIMER[entry_id(module_accessor)] - 1;
                 println!("Timer decreased to {}", SPECIAL_LW_TIMER[entry_id(module_accessor)]);
             }
             else if SPECIAL_LW_TIMER[entry_id(module_accessor)] == 0 {
                 SPECIAL_LW_TIMER[entry_id(module_accessor)] = -1;
+                let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                let countereff: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                EffectModule::set_rgb(module_accessor, countereff, 0.0, 5.0, 5.0);
                 println!("SPECIAL_LW set to false!");
             }
             else{

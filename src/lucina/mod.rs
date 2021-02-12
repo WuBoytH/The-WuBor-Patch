@@ -4,6 +4,7 @@ use smash::app::lua_bind::*;
 use acmd::{acmd,acmd_func};
 use smash::hash40;
 use smash::app::BattleObjectModuleAccessor;
+use smash::phx::Vector3f;
 
 pub unsafe fn entry_id(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -1390,12 +1391,16 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
             SPECIAL_LW_TIMER[entry_id(module_accessor)] = 810;
             println!("SPECIAL_LW set to true, timer set to 900!");
         }
-        else if SPECIAL_LW_TIMER[entry_id(module_accessor)] >= 0 {
+        else if SPECIAL_LW_TIMER[entry_id(module_accessor)] > 0 {
             SPECIAL_LW_TIMER[entry_id(module_accessor)] = SPECIAL_LW_TIMER[entry_id(module_accessor)] - 1;
             println!("Timer decreased to {}", SPECIAL_LW_TIMER[entry_id(module_accessor)]);
         }
         else if SPECIAL_LW_TIMER[entry_id(module_accessor)] == 0 {
             SPECIAL_LW_TIMER[entry_id(module_accessor)] = -1;
+            let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+            let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+            let onemoreeff: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+            EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
             println!("SPECIAL_LW set to false!");
         }
         else{

@@ -18,6 +18,11 @@ mod lucario;
 mod bayonetta;
 //mod dolly;
 mod shulk;
+mod pikachu;
+mod robot;
+mod snake;
+mod palutena;
+mod master;
 
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
@@ -36,4 +41,9 @@ pub fn main() {
     bayonetta::install();
     //dolly::install();
     shulk::install();
+    pikachu::install();
+    robot::install();
+    snake::install();
+    palutena::install();
+    master::install();
 }

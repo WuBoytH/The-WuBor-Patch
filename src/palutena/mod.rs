@@ -133,8 +133,6 @@ pub fn palutena_bair(fighter: &mut L2CFighterCommon) {
             HIT_NODE(hash40("kneer"), HIT_STATUS_NORMAL)
             HIT_NODE(hash40("kneel"), HIT_STATUS_NORMAL)
             HIT_NODE(hash40("virtualshield"), HIT_STATUS_OFF)
-        }
-        if(is_excute){
             AttackModule::clear_all()
         }
         frame(Frame=35)

@@ -1,7 +1,7 @@
 use smash::hash40;
 use smash::app::lua_bind::*;
 use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CFighterCommon;
+use smash::lua2cpp::{L2CFighterCommon,L2CFighterBase};
 use acmd::{acmd, acmd_func};
 use smash::phx::Vector3f;
 
@@ -271,6 +271,17 @@ pub fn snake_dair(fighter: &mut L2CFighterCommon) {
     });
 }
 
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_WEAPON, 
+    battle_object_kind = WEAPON_KIND_SNAKE_CYPHER, 
+    animation = "detach",
+    animcmd = "game_detach")]
+pub fn snake_cypher(fighter: &mut L2CFighterBase) {
+    acmd!({
+        
+    });
+}
+
 pub fn install() {
     acmd::add_hooks!(
         snake_ftilt2,
@@ -278,6 +289,7 @@ pub fn install() {
         snake_dtilt,
         snake_nair,
         snake_bair,
-        snake_dair
+        snake_dair,
+        snake_cypher
     );
 }

@@ -23,6 +23,10 @@ mod robot;
 mod snake;
 mod palutena;
 mod master;
+mod ryu;
+mod toonlink;
+mod zelda;
+mod buddy;
 
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
@@ -46,4 +50,8 @@ pub fn main() {
     snake::install();
     palutena::install();
     master::install();
+    ryu::install();
+    toonlink::install();
+    zelda::install();
+    buddy::install();
 }

@@ -6,6 +6,8 @@ use smash::hash40;
 use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::EffectModule;
 
+//FIX ONE MORE LANDING BUG
+
 static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 static mut _ONE_MORE_COUNTER: [i32; 8] = [0; 8];
 
@@ -166,6 +168,7 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
             if _ONE_MORE_COUNTER[entry_id] > 0 {
                 if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
                     if SPECIAL_LW[entry_id] == false {
+                        _ONE_MORE_COUNTER[entry_id] = 0;
                         acmd!({
                             StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
                         });

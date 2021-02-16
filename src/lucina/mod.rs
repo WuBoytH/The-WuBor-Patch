@@ -131,7 +131,7 @@ pub fn meter_control(fighter: &mut L2CFighterCommon) {
                 }
             }
             if shadow_id(module_accessor) == true {
-                DamageModule::set_damage_mul(module_accessor, 0.95);
+                DamageModule::set_damage_mul(module_accessor, 0.92);
                 AttackModule::set_power_up(module_accessor, 0.8);
                 if SHADOW_FRENZY[entry_id] == true {
                     SP_GAUGE[entry_id] -= 1.0/12.0;
@@ -142,6 +142,7 @@ pub fn meter_control(fighter: &mut L2CFighterCommon) {
                 if DamageModule::damage(module_accessor, 0) > 100.0 {
                     DamageModule::set_damage_mul(module_accessor, 0.8);
                     SP_GAUGE_MAX[entry_id] = 150.0;
+                    SP_GAUGE[entry_id] += 50.0;
                 }
                 else {
                     SP_GAUGE_MAX[entry_id] = 100.0;
@@ -225,6 +226,13 @@ pub fn meter_effects(fighter: &mut L2CFighterCommon) {
                     	let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                         EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 0.0, 0.0);
                         EffectModule::set_rgb(module_accessor, onemoreeff2, 5.0, 0.0, 0.0);
+                        _TIME_COUNTER[entry_id] = 0;
+                    }
+                    else if SP_GAUGE[entry_id] >= 125.0 && SP_GAUGE[entry_id] < 150.0 {
+                        let onemoreeff: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
+                    	let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
+                        EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
+                        EffectModule::set_rgb(module_accessor, onemoreeff2, 2.0, 0.0, 5.0);
                         _TIME_COUNTER[entry_id] = 0;
                     }
                     else{

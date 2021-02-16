@@ -163,25 +163,26 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
         let fighter_kind = smash::app::utility::get_kind(module_accessor);
         let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if fighter_kind == *FIGHTER_KIND_LUCINA {
+            SPECIAL_LW[entry_id] = true;
             if AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 _ONE_MORE_COUNTER[entry_id] = 10;
             }
             if _ONE_MORE_COUNTER[entry_id] > 0 {
                 if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                    if SPECIAL_LW[entry_id] == false {
+                    if (SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false) || (SP_GAUGE[entry_id] > 12.5 && SHADOW_FRENZY[entry_id] == true) {
                         _ONE_MORE_COUNTER[entry_id] = 0;
+                        if SHADOW_FRENZY[entry_id] {
+                            SP_GAUGE[entry_id] -= 12.5;
+                        }
+                        else {
+                            SP_GAUGE[entry_id] -= 25.0;
+                        }
                         acmd!({
                             StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
                         });
                     }
                 }
                 _ONE_MORE_COUNTER[entry_id] -= 1;
-            }
-            if SP_GAUGE[entry_id] < 25.0 {
-                SPECIAL_LW[entry_id] = true;
-            }
-            else{
-                SPECIAL_LW[entry_id] = false;
             }
         }
     }
@@ -413,7 +414,7 @@ pub fn lucina_dtilt(fighter: &mut L2CFighterCommon) {
     animcmd = "game_attackdash")]
 pub fn lucina_dashattack(fighter: &mut L2CFighterCommon) {
     acmd!({
-        frame(Frame=4)
+        frame(Frame=5)
         if(is_excute){
             rust{
                 let lua_state = fighter.lua_state_agent;
@@ -437,7 +438,7 @@ pub fn lucina_dashattack(fighter: &mut L2CFighterCommon) {
                 }
             }
         }
-        if (MotionModule::frame(module_accessor) > 4.0 && MotionModule::frame(module_accessor) < 6.0) {
+        if (MotionModule::frame(module_accessor) > 5.0 && MotionModule::frame(module_accessor) < 6.0) {
             rust{
                 if IS_EX[entry_id(module_accessor)] == true {
                     let speed_vector = smash::phx::Vector3f { x: 0.7, y: 0.0, z: 0.0 };
@@ -1449,12 +1450,7 @@ pub fn lucina_sspecial2hiair(fighter: &mut L2CFighterCommon) {
     animcmd = "game_speciallw")]
 pub fn lucina_dspecial(fighter: &mut L2CFighterCommon) {
     acmd!({
-        frame(Frame=1)
-        if(is_excute){
-            rust{
-                SP_GAUGE[entry_id(module_accessor)] -= 25.0;
-            }
-        }
+        
     });
 }
 
@@ -1465,12 +1461,7 @@ pub fn lucina_dspecial(fighter: &mut L2CFighterCommon) {
     animcmd = "game_specialairlw")]
 pub fn lucina_dspecialair(fighter: &mut L2CFighterCommon) {
     acmd!({
-        frame(Frame=1)
-        if(is_excute){
-            rust{
-                SP_GAUGE[entry_id(module_accessor)] -= 25.0;
-            }
-        }
+        
     });
 }
 

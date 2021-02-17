@@ -31,6 +31,7 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
 static mut SPECIAL_AIR_S : [bool; 8] = [false; 8];
 static mut SPECIAL_LW : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
+static mut AWAKENING : [bool; 8] = [false; 8];
 static mut IS_EX : [bool; 8] = [false; 8];
 static mut SP_GAUGE : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
@@ -93,6 +94,7 @@ pub fn meter_control(fighter: &mut L2CFighterCommon) {
                 SHADOW_FRENZY[entry_id] = false;
                 SP_GAUGE_MAX[entry_id] = 100.0;
                 _TIME_COUNTER[entry_id] = 0;
+                AWAKENING[entry_id] = false;
                 if shadow_id(module_accessor) == false {
                     SP_GAUGE[entry_id] = 0.0;
                     AttackModule::set_power_up(module_accessor, 1.0);
@@ -108,6 +110,7 @@ pub fn meter_control(fighter: &mut L2CFighterCommon) {
                 DAMAGE_TAKEN[entry_id] = 0.0;
                 DAMAGE_TAKEN_PREV[entry_id] = 0.0;
                 _TIME_COUNTER[entry_id] = 0;
+                AWAKENING[entry_id] = false;
             }
             DAMAGE_TAKEN[entry_id] = DamageModule::damage(module_accessor, 0);
             if DAMAGE_TAKEN[entry_id] != DAMAGE_TAKEN_PREV[entry_id] && DAMAGE_TAKEN[entry_id] > DAMAGE_TAKEN_PREV[entry_id] && SHADOW_FRENZY[entry_id] == false {
@@ -142,7 +145,10 @@ pub fn meter_control(fighter: &mut L2CFighterCommon) {
                 if DamageModule::damage(module_accessor, 0) > 100.0 {
                     DamageModule::set_damage_mul(module_accessor, 0.8);
                     SP_GAUGE_MAX[entry_id] = 150.0;
-                    SP_GAUGE[entry_id] += 50.0;
+                    if AWAKENING[entry_id] == false{
+                        SP_GAUGE[entry_id] += 50.0;
+                        AWAKENING[entry_id] = true;
+                    }
                 }
                 else {
                     SP_GAUGE_MAX[entry_id] = 100.0;
@@ -151,6 +157,9 @@ pub fn meter_control(fighter: &mut L2CFighterCommon) {
             if SP_GAUGE[entry_id] < 0.0{
                 SP_GAUGE[entry_id] = 0.0;
                 SHADOW_FRENZY[entry_id] = false;
+            }
+            if SP_GAUGE[entry_id] > SP_GAUGE_MAX[entry_id] {
+                SP_GAUGE[entry_id] = SP_GAUGE_MAX[entry_id];
             }
         }
     }
@@ -164,25 +173,82 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
         let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if fighter_kind == *FIGHTER_KIND_LUCINA {
             SPECIAL_LW[entry_id] = true;
-            if AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-                _ONE_MORE_COUNTER[entry_id] = 10;
+            if (AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_SHIELD)) && MotionModule::motion_kind(module_accessor) != smash::hash40("catch_attack") {
+                _ONE_MORE_COUNTER[entry_id] = 4;
             }
             if _ONE_MORE_COUNTER[entry_id] > 0 {
                 if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                    if (SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false) || (SP_GAUGE[entry_id] > 12.5 && SHADOW_FRENZY[entry_id] == true) {
+                    if SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false {
                         _ONE_MORE_COUNTER[entry_id] = 0;
-                        if SHADOW_FRENZY[entry_id] {
-                            SP_GAUGE[entry_id] -= 12.5;
-                        }
-                        else {
-                            SP_GAUGE[entry_id] -= 25.0;
-                        }
+                        SP_GAUGE[entry_id] -= 25.0;
+                        acmd!({
+                            StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
+                        });
+                    }
+                    else if SP_GAUGE[entry_id] > 12.5 && SHADOW_FRENZY[entry_id] == true {
+                        _ONE_MORE_COUNTER[entry_id] = 0;
+                        SP_GAUGE[entry_id] -= 12.5;
                         acmd!({
                             StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
                         });
                     }
                 }
+                else if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[entry_id] == 100.0 && SHADOW_FRENZY[entry_id] == false && shadow_id(module_accessor) {
+                    _ONE_MORE_COUNTER[entry_id] = 0;
+                    SHADOW_FRENZY[entry_id] = true;
+                    acmd!({
+                        StatusModule::change_status_request_from_script(*FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true)
+                    });
+                }
                 _ONE_MORE_COUNTER[entry_id] -= 1;
+            }
+            else if MotionModule::motion_kind(module_accessor) == smash::hash40("throw_f")
+            || MotionModule::motion_kind(module_accessor) == smash::hash40("throw_b")
+            || MotionModule::motion_kind(module_accessor) == smash::hash40("throw_hi")
+            || MotionModule::motion_kind(module_accessor) == smash::hash40("throw_lw"){
+                let throwframe : f32;
+                if MotionModule::motion_kind(module_accessor) == smash::hash40("throw_f") {
+                    _ONE_MORE_COUNTER[entry_id] = 4;
+                    throwframe = 18.0;
+                }
+                else if MotionModule::motion_kind(module_accessor) == smash::hash40("throw_b") {
+                    _ONE_MORE_COUNTER[entry_id] = 4;
+                    throwframe = 19.0;
+                }
+                else if MotionModule::motion_kind(module_accessor) == smash::hash40("throw_hi") {
+                    _ONE_MORE_COUNTER[entry_id] = 4;
+                    throwframe = 13.0;
+                }
+                else {
+                    _ONE_MORE_COUNTER[entry_id] = 4;
+                    throwframe = 20.0;
+                }
+                if _ONE_MORE_COUNTER[entry_id] > 0 {
+                    if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) && MotionModule::frame(module_accessor) > throwframe {
+                        if SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false {
+                            _ONE_MORE_COUNTER[entry_id] = 0;
+                            SP_GAUGE[entry_id] -= 25.0;
+                            acmd!({
+                                StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
+                            });
+                        }
+                        else if SP_GAUGE[entry_id] > 12.5 && SHADOW_FRENZY[entry_id] == true {
+                            _ONE_MORE_COUNTER[entry_id] = 0;
+                            SP_GAUGE[entry_id] -= 12.5;
+                            acmd!({
+                                StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
+                            });
+                        }
+                    }
+                    else if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[entry_id] == 100.0 && SHADOW_FRENZY[entry_id] == false && shadow_id(module_accessor) {
+                        _ONE_MORE_COUNTER[entry_id] = 0;
+                        SHADOW_FRENZY[entry_id] = true;
+                        acmd!({
+                            StatusModule::change_status_request_from_script(*FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true)
+                        });
+                    }
+                    _ONE_MORE_COUNTER[entry_id] -= 1;
+                }
             }
         }
     }
@@ -340,26 +406,6 @@ pub fn lucina_jab2(fighter: &mut L2CFighterCommon) {
             ATTACK(ID=2, Part=0, Bone=hash40("kneer"), Damage=6.0, Angle=44, KBG=100, FKB=0, BKB=50, Size=3.8, X=-5.0, Y=0.0, Z=1.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_KICK)
         }
         wait(Frames=3)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "attack_s3_s",
-    animcmd = "game_attacks3")]
-pub fn lucina_ftilt(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=8)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("sword1"), Damage=11.0, Angle=361, KBG=74, FKB=0, BKB=42, Size=3.5, X=1.0, Y=0.0, Z=2.5, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=1, Part=0, Bone=hash40("armr"), Damage=11.0, Angle=361, KBG=74, FKB=0, BKB=42, Size=3.0, X=0.0, Y=1.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=2, Part=0, Bone=hash40("sword1"), Damage=11.0, Angle=361, KBG=74, FKB=0, BKB=42, Size=3.5, X=1.0, Y=0.0, Z=7.7, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-        }
-        wait(Frames=4)
         if(is_excute){
             AttackModule::clear_all()
         }
@@ -606,17 +652,9 @@ pub fn lucina_dair(fighter: &mut L2CFighterCommon) {
         }
         frame(Frame=9)
         if(is_excute){
-            ATTACK(ID=1, Part=0, Bone=hash40("armr"), Damage=9.0, Angle=80, KBG=75, FKB=0, BKB=30, Size=3.0, X=0.0, Y=1.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=2, Part=0, Bone=hash40("sword1"), Damage=9.0, Angle=80, KBG=75, FKB=0, BKB=30, Size=3.5, X=1.0, Y=0.0, Z=2.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=3, Part=0, Bone=hash40("sword1"), Damage=9.0, Angle=80, KBG=75, FKB=0, BKB=30, Size=3.5, X=1.0, Y=0.0, Z=6.7, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-        }
-        frame(Frame=11)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=9, Angle=80, KBG=80, FKB=0, BKB=20, Size=5.0, X=0.0, Y=-3.3, Z=-3.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-        }
-        frame(Frame=12)
-        if(is_excute){
-            AttackModule::clear(ID=0, false)
+            ATTACK(ID=0, Part=0, Bone=hash40("armr"), Damage=9.0, Angle=80, KBG=75, FKB=0, BKB=30, Size=3.0, X=0.0, Y=1.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=1, Part=0, Bone=hash40("sword1"), Damage=9.0, Angle=80, KBG=75, FKB=0, BKB=30, Size=3.5, X=1.0, Y=0.0, Z=2.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=2, Part=0, Bone=hash40("sword1"), Damage=9.0, Angle=80, KBG=75, FKB=0, BKB=30, Size=3.5, X=1.0, Y=0.0, Z=6.7, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
         }
         frame(Frame=14)
         if(is_excute){
@@ -647,210 +685,6 @@ pub fn lucina_fsmash(fighter: &mut L2CFighterCommon) {
         wait(Frames=2)
         if(is_excute){
             AttackModule::clear_all()
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "attack_hi4",
-    animcmd = "game_attackhi4")]
-pub fn lucina_usmash(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=5)
-        if(is_excute){
-            WorkModule::on_flag(Flag=FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD)
-        }
-        frame(Frame=13)
-        if(is_excute){
-            ATTACK(ID=1, Part=0, Bone=hash40("sword1"), Damage=14.25, Angle=89, KBG=90, FKB=0, BKB=42, Size=5.8, X=0.0, Y=0.0, Z=2.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_sting"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=2, Part=0, Bone=hash40("sword1"), Damage=14.25, Angle=89, KBG=90, FKB=0, BKB=42, Size=4.6, X=0.0, Y=0.0, Z=7.3, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_sting"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=3, Part=0, Bone=hash40("sword1"), Damage=14.25, Angle=89, KBG=90, FKB=0, BKB=42, Size=5.8, X=0.0, Y=0.0, Z=-3.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_sting"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=3.0, Angle=125, KBG=100, FKB=155, BKB=0, Size=5.5, X=0.0, Y=5.0, Z=9.0, X2=0.0, Y2=5.0, Z2=-9.0, Hitlag=0.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=2, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=false, Ground_or_Air=COLLISION_SITUATION_MASK_G, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_PUNCH, Type=ATTACK_REGION_SWORD)
-        }
-        wait(Frames=2)
-        if(is_excute){
-            AttackModule::clear(ID=0, false)
-        }
-        wait(Frames=3)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "attack_lw4",
-    animcmd = "game_attacklw4")]
-pub fn lucina_dsmash(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=4)
-        if(is_excute){
-            WorkModule::on_flag(Flag=FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD)
-        }
-        frame(Frame=6)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("sword1"), Damage=9.5, Angle=361, KBG=88, FKB=0, BKB=55, Size=3.5, X=1.0, Y=0.0, Z=2.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=1, Part=0, Bone=hash40("armr"), Damage=9.5, Angle=361, KBG=88, FKB=0, BKB=55, Size=3.0, X=0.0, Y=1.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=2, Part=0, Bone=hash40("shoulderr"), Damage=9.5, Angle=361, KBG=88, FKB=0, BKB=55, Size=2.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=3, Part=0, Bone=hash40("sword1"), Damage=9.5, Angle=361, KBG=88, FKB=0, BKB=55, Size=3.5, X=1.0, Y=0.0, Z=7.3, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            AttackModule::set_attack_height_all(smash::app::AttackHeight(*ATTACK_HEIGHT_LOW), false)
-        }
-        wait(Frames=2)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=21)
-        FT_MOTION_RATE(FSM=1.5)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("sword1"), Damage=14.0, Angle=361, KBG=88, FKB=0, BKB=45, Size=3.5, X=1.0, Y=0.0, Z=2.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=1, Part=0, Bone=hash40("armr"), Damage=14.0, Angle=361, KBG=88, FKB=0, BKB=45, Size=3.0, X=0.0, Y=1.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=2, Part=0, Bone=hash40("shoulderr"), Damage=14.0, Angle=361, KBG=88, FKB=0, BKB=45, Size=2.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            ATTACK(ID=3, Part=0, Bone=hash40("sword1"), Damage=14.0, Angle=361, KBG=88, FKB=0, BKB=45, Size=3.5, X=0.5, Y=0.0, Z=7.3, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_CUTUP, Type=ATTACK_REGION_SWORD)
-            AttackModule::set_attack_height_all(smash::app::AttackHeight(*ATTACK_HEIGHT_LOW), false)
-        }
-        wait(Frames=2)
-        FT_MOTION_RATE(FSM=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "throw_f",
-    animcmd = "game_throwf")]
-pub fn lucina_fthrow(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=4.0, Angle=50, KBG=50, FKB=0, BKB=100, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, ID=0, Damage=3.0, Angle=361, KBG=100, FKB=0, BKB=40, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-        }
-        frame(Frame=14)
-        if(is_excute){
-            FT_CATCH_STOP(4, 1)
-            CHECK_FINISH_CAMERA(15, 2)
-        }
-        frame(Frame=15)
-        if(is_excute){
-            ATK_HIT_ABS(FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, hash40("throw"), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO))
-        }
-        if (MotionModule::frame(module_accessor) > 18.0) {
-            if (ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {
-                rust{
-                    if SPECIAL_LW[entry_id(module_accessor)] == false {
-                        acmd!({
-                            StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
-                        });
-                    }
-                }
-            }
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "throw_b",
-    animcmd = "game_throwb")]
-pub fn lucina_bthrow(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=4.0, Angle=140, KBG=60, FKB=0, BKB=80, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, ID=0, Damage=3.0, Angle=361, KBG=100, FKB=0, BKB=40, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-        }
-        frame(Frame=15)
-        if(is_excute){
-            FT_CATCH_STOP(4, 1)
-            CHECK_FINISH_CAMERA(-6, 3)
-        }
-        frame(Frame=16)
-        if(is_excute){
-            ATK_HIT_ABS(FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, hash40("throw"), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO))
-        }
-        if (MotionModule::frame(module_accessor) > 19.0) {
-            if (ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {
-                rust{
-                    if SPECIAL_LW[entry_id(module_accessor)] == false {
-                        acmd!({
-                            StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
-                        });
-                    }
-                }
-            }
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "throw_hi",
-    animcmd = "game_throwhi")]
-pub fn lucina_uthrow(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=5.0, Angle=93, KBG=102, FKB=0, BKB=70, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, ID=0, Damage=3.0, Angle=361, KBG=100, FKB=0, BKB=40, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-        }
-        frame(Frame=12)
-        if(is_excute){
-            CHECK_FINISH_CAMERA(1, 21)
-        }
-        frame(Frame=13)
-        if(is_excute){
-            ATK_HIT_ABS(FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, hash40("throw"), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO))
-        }            
-        if (MotionModule::frame(module_accessor) > 13.0) {
-            if (ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {
-                rust{
-                    if SPECIAL_LW[entry_id(module_accessor)] == false {
-                        acmd!({
-                            StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
-                        });
-                    }
-                }
-            }
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_LUCINA,
-    animation = "throw_lw",
-    animcmd = "game_throwlw")]
-pub fn lucina_dthrow(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, ID=0, Damage=4.0, Angle=100, KBG=57, FKB=0, BKB=95, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-            ATTACK_ABS(Kind=FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, ID=0, Damage=3.0, Angle=361, KBG=100, FKB=0, BKB=40, Hitlag=0.0, Unk=1.0, FacingRestrict=ATTACK_LR_CHECK_F, Unk=0.0, Unk=true, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_NONE, Type=ATTACK_REGION_THROW)
-        }
-        frame(Frame=15)
-        if(is_excute){
-            FT_CATCH_STOP(5, 1)
-            CHECK_FINISH_CAMERA(1, 0)
-        }
-        frame(Frame=16)
-        if(is_excute){
-            ATK_HIT_ABS(FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, hash40("throw"), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO))
-        }          
-        if (MotionModule::frame(module_accessor) > 20.0) {
-            if (ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {
-                rust{
-                    if SPECIAL_LW[entry_id(module_accessor)] == false {
-                        acmd!({
-                            StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_SPECIAL_LW, true)
-                        });
-                    }
-                }
-            }
         }
     });
 }
@@ -1465,21 +1299,86 @@ pub fn lucina_dspecialair(fighter: &mut L2CFighterCommon) {
     });
 }
 
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_LUCINA,
+    animation = "special_lw_hit",
+    animcmd = "game_speciallwhit")]
+pub fn lucina_dspecialhit(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        SLOW_OPPONENT(20, 8)
+        frame(Frame=5)
+        if(is_excute){
+            //camera(MA_MSC_CMD_CAMERA_CAM_RECT, 0, 10, 0, 0)
+            ATTACK(ID=0, Part=0, Bone=hash40("sword1"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=1.0, Y=0.0, Z=1.5, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=1, Part=0, Bone=hash40("armr"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=2, Part=0, Bone=hash40("colonells"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=3, Part=0, Bone=hash40("sword1"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=1.0, Y=0.0, Z=7.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            AttackModule::set_force_reaction(0, true, false)
+            AttackModule::set_force_reaction(1, true, false)
+            AttackModule::set_force_reaction(2, true, false)
+            AttackModule::set_force_reaction(3, true, false)
+        }
+        if(WorkModule::is_flag(module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT)){
+            if(is_excute){
+                AttackModule::set_optional_hit_effect(0, smash::phx::Hash40::new("se_lucina_criticalhit"))
+                AttackModule::set_optional_hit_effect(1, smash::phx::Hash40::new("se_lucina_criticalhit"))
+                AttackModule::set_optional_hit_effect(2, smash::phx::Hash40::new("se_lucina_criticalhit"))
+                AttackModule::set_optional_hit_effect(3, smash::phx::Hash40::new("se_lucina_criticalhit"))
+            }
+        }
+        frame(Frame=8)
+        if(is_excute){
+            CAM_ZOOM_OUT()
+            AttackModule::clear_all()
+        }
+    });
+}
+
+#[acmd_func(
+    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
+    battle_object_kind = FIGHTER_KIND_LUCINA,
+    animation = "special_air_lw_hit",
+    animcmd = "game_specialairlwhit")]
+pub fn lucina_dspecialhitair(fighter: &mut L2CFighterCommon) {
+    acmd!({
+        SLOW_OPPONENT(20, 8)
+        frame(Frame=5)
+        if(is_excute){
+            //camera(MA_MSC_CMD_CAMERA_CAM_RECT, 0, 10, 0, 0)
+            ATTACK(ID=0, Part=0, Bone=hash40("sword1"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=1.0, Y=0.0, Z=1.5, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=1, Part=0, Bone=hash40("armr"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=2, Part=0, Bone=hash40("colonells"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            ATTACK(ID=3, Part=0, Bone=hash40("sword1"), Damage=3.4, Angle=90, KBG=0, FKB=60, BKB=40, Size=5.0, X=1.0, Y=0.0, Z=7.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_cutup"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_SWORD)
+            AttackModule::set_force_reaction(0, true, false)
+            AttackModule::set_force_reaction(1, true, false)
+            AttackModule::set_force_reaction(2, true, false)
+            AttackModule::set_force_reaction(3, true, false)
+        }
+        if(WorkModule::is_flag(module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT)){
+            if(is_excute){
+                AttackModule::set_optional_hit_effect(0, smash::phx::Hash40::new("se_lucina_criticalhit"))
+                AttackModule::set_optional_hit_effect(1, smash::phx::Hash40::new("se_lucina_criticalhit"))
+                AttackModule::set_optional_hit_effect(2, smash::phx::Hash40::new("se_lucina_criticalhit"))
+                AttackModule::set_optional_hit_effect(3, smash::phx::Hash40::new("se_lucina_criticalhit"))
+            }
+        }
+        frame(Frame=8)
+        if(is_excute){
+            CAM_ZOOM_OUT()
+            AttackModule::clear_all()
+        }
+    });
+}
+
 pub fn install() {
     acmd::add_hooks!(
         lucina_jab1,
         lucina_jab2,
-        lucina_ftilt,
         lucina_utilt,
         lucina_dtilt,
         lucina_dashattack,
         lucina_fsmash,
-        lucina_usmash,
-        lucina_dsmash,
-        lucina_fthrow,
-        lucina_bthrow,
-        lucina_uthrow,
-        lucina_dthrow,
         lucina_nair,
         lucina_fair,
         lucina_bair,
@@ -1504,7 +1403,9 @@ pub fn install() {
         lucina_sspecial2hi,
         lucina_sspecial2hiair,
         lucina_dspecial,
-        lucina_dspecialair
+        lucina_dspecialair,
+        lucina_dspecialhit,
+        lucina_dspecialhitair
     );
     acmd::add_custom_hooks!(
         meter_control,

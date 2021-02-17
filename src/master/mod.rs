@@ -286,14 +286,6 @@ pub fn master_dspecial(fighter: &mut L2CFighterCommon) {
         frame(Frame=12)
         if(is_excute){
             WorkModule::on_flag(Flag=FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_TURN_CHECK)
-        }
-        if (MotionModule::frame(module_accessor) > 11.0 && MotionModule::frame(module_accessor) < 34.0) {
-            if (ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_JUMP)) {
-                StatusModule::change_status_request_from_script(*FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-            }
-        }
-        frame(Frame=34)
-        if(is_excute){
             WorkModule::on_flag(Flag=FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_START_SUPER_ARMOR)
         }
         frame(Frame=42)

@@ -177,7 +177,7 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
                 _ONE_MORE_COUNTER[entry_id] = 4;
             }
             if _ONE_MORE_COUNTER[entry_id] > 0 {
-                if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) && ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_CATCH) == false {
                     if SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false {
                         _ONE_MORE_COUNTER[entry_id] = 0;
                         SP_GAUGE[entry_id] -= 25.0;
@@ -224,7 +224,7 @@ pub fn special_lw_check(fighter: &mut L2CFighterCommon) {
                     throwframe = 20.0;
                 }
                 if _ONE_MORE_COUNTER[entry_id] > 0 {
-                    if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) && MotionModule::frame(module_accessor) > throwframe {
+                    if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD)  && ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_CATCH) == false && MotionModule::frame(module_accessor) > throwframe {
                         if SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false {
                             _ONE_MORE_COUNTER[entry_id] = 0;
                             SP_GAUGE[entry_id] -= 25.0;

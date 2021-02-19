@@ -27,6 +27,7 @@ mod ryu;
 mod toonlink;
 mod zelda;
 mod buddy;
+mod ridley;
 
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
@@ -54,4 +55,5 @@ pub fn main() {
     toonlink::install();
     zelda::install();
     buddy::install();
+    ridley::install();
 }

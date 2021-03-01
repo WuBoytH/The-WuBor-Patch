@@ -1,6 +1,6 @@
 [package]
 name = "the_bor_patch"
-version = "0.6.4"
+version = "0.7.0"
 authors = ["WuBoy and Bor"]
 edition = "2018"
 
@@ -12,8 +12,8 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
-skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash.git" }
-acmd = { git = "https://github.com/ultimate-research/skyline-acmd.git" }
+skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git" }
+smash_script = { path = "../smash-script" }
 
 [profile.dev]
 panic = "abort"

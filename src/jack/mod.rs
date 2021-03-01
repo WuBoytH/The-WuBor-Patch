@@ -1,101 +1,50 @@
-use smash::hash40;
+use smash::phx::Hash40;
+use smash::lua2cpp::L2CAgentBase;
+use smash::app::sv_animcmd;
 use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CFighterCommon;
-use acmd::{acmd, acmd_func};
+use smash::app::lua_bind::*;
+use smash_script::*;
+use smash_script::macros;
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_JACK,
-    animation = "special_lw",
-    animcmd = "game_speciallw")]
-pub fn jack_dspecial(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=1)
-        FT_MOTION_RATE(FSM=2)
-        frame(Frame=3)
-        FT_MOTION_RATE(FSM=1)
-        frame(Frame=4)
-        if(is_excute){
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_ON, COLLISION_KIND_SHIELD, 0, FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW)
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_ON, COLLISION_KIND_REFLECTOR, FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, FIGHTER_REFLECTOR_GROUP_EXTEND)
-        }
-        frame(Frame=32)
-        if(is_excute){
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_OFF, COLLISION_KIND_SHIELD, 0, FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW)
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_OFF, COLLISION_KIND_REFLECTOR, FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, FIGHTER_REFLECTOR_GROUP_EXTEND)
-        }
-    });
+#[script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
+unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    sv_animcmd::frame(lua_state, 3.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    sv_animcmd::frame(lua_state, 4.0);
+    if macros::is_excute(fighter) {
+        smash_script::shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 0, *FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW);
+        smash_script::shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+    }
+    sv_animcmd::frame(lua_state, 32.0);
+    if macros::is_excute(fighter) {
+        smash_script::shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_SHIELD, 0, *FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW);
+        smash_script::shield!(fighter, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+    }
 }
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_JACK,
-    animation = "special_air_lw",
-    animcmd = "game_specialairlw")]
-pub fn jack_dspecialair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=1)
-        FT_MOTION_RATE(FSM=2)
-        frame(Frame=3)
-        FT_MOTION_RATE(FSM=1)
-        frame(Frame=4)
-        if(is_excute){
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_ON, COLLISION_KIND_SHIELD, 0, FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW)
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_ON, COLLISION_KIND_REFLECTOR, FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, FIGHTER_REFLECTOR_GROUP_EXTEND)
-        }
-        frame(Frame=32)
-        if(is_excute){
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_OFF, COLLISION_KIND_SHIELD, 0, FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW)
-            sv_module_access::shield(MA_MSC_CMD_SHIELD_OFF, COLLISION_KIND_REFLECTOR, FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, FIGHTER_REFLECTOR_GROUP_EXTEND)
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_JACK,
-    animation = "special_lw_counter",
-    animcmd = "game_speciallwcounter")]
-pub fn jack_dspecialcounter(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=5)
-        if(is_excute){
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=12.0, Angle=361, KBG=51, FKB=0, BKB=80, Size=11.0, X=0.0, Y=10.5, Z=-5.0, X2=0.0, Y2=10.5, Z2=10.0, Hitlag=0.75, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_FIRE, Type=ATTACK_REGION_ENERGY)
-            AttackModule::set_force_reaction(0, true, false)
-            AttackModule::set_force_reaction(1, true, false)
-        }
-        frame(Frame=8)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-    });
-}
-
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_JACK,
-    animation = "special_air_lw_counter",
-    animcmd = "game_specialairlwcounter")]
-pub fn jack_dspecialcounterair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=5)
-        if(is_excute){
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=12.0, Angle=361, KBG=51, FKB=0, BKB=80, Size=11.0, X=0.0, Y=10.5, Z=-5.0, X2=0.0, Y2=10.5, Z2=10.0, Hitlag=0.75, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_OFF, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_FIRE, Type=ATTACK_REGION_ENERGY)
-            AttackModule::set_force_reaction(0, true, false)
-            AttackModule::set_force_reaction(1, true, false)
-        }
-        frame(Frame=8)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-    });
+#[script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME )]
+unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 4.0);
+    if macros::is_excute(fighter) {
+        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 361, 51, 0, 80, 11.0, 0.0, 15.0, 4.0, Some(0.0), Some(15.0), Some(19.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        AttackModule::set_force_reaction(boma, 0, true, false);
+        AttackModule::set_force_reaction(boma, 1, true, false);
+    }
+    sv_animcmd::frame(lua_state, 32.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
 }
 
 pub fn install() {
-    acmd::add_hooks!(
+    smash_script::replace_scripts!(
         jack_dspecial,
-        jack_dspecialair,
-        jack_dspecialcounter,
-        jack_dspecialcounterair
+        jack_dspecialcounter
     );
 }

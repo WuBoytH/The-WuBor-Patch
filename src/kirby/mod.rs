@@ -1,112 +1,107 @@
-use smash::hash40;
-use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CFighterCommon;
-use acmd::{acmd, acmd_func};
 use smash::phx::Hash40;
+use smash::lua2cpp::L2CAgentBase;
+use smash::app::sv_animcmd;
+use smash::lib::lua_const::*;
+use smash::app::lua_bind::*;
+use smash_script::*;
+use smash_script::macros;
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_KIRBY,
-    animation = "attack_air_hi",
-    animcmd = "game_attackairhi")]
-pub fn kirby_uair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=1)
-        FT_MOTION_RATE(FSM=0.375)
-        frame(Frame=9)
-        FT_MOTION_RATE(FSM=1)
-        frame(Frame=10)
-        if(is_excute){
-            WorkModule::on_flag(Flag=FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING)
-            ATTACK(ID=0, Part=0, Bone=hash40("footr"), Damage=10.0, Angle=70, KBG=115, FKB=0, BKB=20, Size=4.0, X=0.0, Y=-5.6, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_KICK)
-            ATTACK(ID=1, Part=0, Bone=hash40("footr"), Damage=10.0, Angle=70, KBG=115, FKB=0, BKB=20, Size=4.5, X=0.0, Y=0.0, Z=0.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=1.0, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_KICK, Type=ATTACK_REGION_KICK)
+#[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
+unsafe fn kirby_frame(fighter: &mut L2CAgentBase) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+
+    // Incin Darkest Lariat Jump Cancel
+
+    if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+    && StatusModule::status_kind(boma) == *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N
+    && MotionModule::frame(boma) > 19.0
+    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+    }
+
+    // Cancel Frames
+
+    if MotionModule::motion_kind(boma) == smash::hash40("special_lw2")
+    || MotionModule::motion_kind(boma) == smash::hash40("special_air_lw2") {
+        if MotionModule::frame(boma) == 25.0 {
+            CancelModule::enable_cancel(boma);
         }
-        wait(Frames=6)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        wait(Frames=6)
-        if(is_excute){
-            WorkModule::off_flag(Flag=FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING)
-        }
-    });
+    }
 }
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_KIRBY,
-    animation = "special_s_start",
-    animcmd = "game_specialsstart")]
-pub fn kirby_sspecialstart(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ArticleModule::generate_article(FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0)
-        }
-        frame(Frames=3)
-        FT_MOTION_RATE(FSM=0.5)
-        frame(Frames=15)
-        FT_MOTION_RATE(FSM=1)
-    });
+#[script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME )]
+unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.375);
+    sv_animcmd::frame(lua_state, 9.0);
+    macros::FT_MOTION_RATE(fighter, 1);
+    sv_animcmd::frame(lua_state, 10.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("footr"), 10.0, 70, 115, 0, 20, 4.0, 0.0, -5.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("footr"), 10.0, 70, 115, 0, 20, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::wait(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::wait(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
 }
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_KIRBY,
-    animation = "special_air_s_start",
-    animcmd = "game_specialairsstart")]
-pub fn kirby_sspecialstartair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ArticleModule::generate_article(FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0)
-        }
-        frame(Frames=1)
-        FT_MOTION_RATE(FSM=0.667)
-        frame(Frames=25)
-        FT_MOTION_RATE(FSM=1)
-    });
-}
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_KIRBY,
-    animation = "special_hi",
-    animcmd = "game_specialhi")]
-pub fn kirby_uspecial(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ArticleModule::generate_article(FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0)
-            ArticleModule::change_motion(FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40{hash: hash40("special_hi")}, false, 0.0)
-        }
-        frame(Frames=5)
-        FT_MOTION_RATE(FSM=0.5)
-        frame(Frames=19)
-        FT_MOTION_RATE(FSM=1)
-    });
+#[script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME )]
+unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
+    }
+    sv_animcmd::frame(lua_state, 3.0);
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    sv_animcmd::frame(lua_state, 15.0);
+    macros::FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_KIRBY,
-    animation = "special_air_hi",
-    animcmd = "game_specialairhi")]
-pub fn kirby_uspecialair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        if(is_excute){
-            ArticleModule::generate_article(FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0)
-            ArticleModule::change_motion(FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40{hash: hash40("special_hi")}, false, 0.0)
-        }
-        frame(Frames=5)
-        FT_MOTION_RATE(FSM=0.5)
-        frame(Frames=19)
-        FT_MOTION_RATE(FSM=1)
-    });
+#[script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME )]
+unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
+    }
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.667);
+    sv_animcmd::frame(lua_state, 25.0);
+    macros::FT_MOTION_RATE(fighter, 1);
+}
+
+#[script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
+unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40::new("special_hi"), false, 0.0);
+    }
+    sv_animcmd::frame(lua_state, 5.0);
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    sv_animcmd::frame(lua_state, 19.0);
+    macros::FT_MOTION_RATE(fighter, 1);
 }
 
 pub fn install() {
-    acmd::add_hooks!(
+    smash_script::replace_fighter_frames!(
+        kirby_frame
+    );
+    smash_script::replace_scripts!(
         kirby_uair,
         kirby_sspecialstart,
         kirby_sspecialstartair,
-        kirby_uspecial,
-        kirby_uspecialair
+        kirby_uspecial
     );
 }

@@ -36,6 +36,7 @@ mod zelda;
 mod buddy;
 mod ridley;
 // mod edge;
+mod koopajr;
 
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
@@ -68,4 +69,5 @@ pub fn main() {
     buddy::install();
     ridley::install();
     // edge::install();
+    koopajr::install();
 }

@@ -10,7 +10,8 @@ use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::EffectModule;
 
 static mut SPECIAL_LW : [bool; 8] = [false; 8];
-static mut TATSU_CANCEL : [bool; 8] = [false; 8];
+static mut CANCEL : [bool; 8] = [false; 8];
+static mut EX_FLASH : [bool; 8] = [false; 8];
 static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
 
 pub unsafe fn entry_id(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
@@ -45,7 +46,8 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || smash::app::sv_information::is_ready_go() == false {
             SPECIAL_LW[entry_id(boma)] = false;
-            TATSU_CANCEL[entry_id(boma)] = false;
+            CANCEL[entry_id(boma)] = false;
+            EX_FLASH[entry_id(boma)] = false;
             SPECIAL_LW_TIMER[entry_id(boma)] = -1;
         }
 
@@ -53,35 +55,33 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
         if SPECIAL_LW[entry_id(boma)] == false {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) && ControlModule::get_stick_y(boma) < -0.5 {
                 if MotionModule::motion_kind(boma) == smash::hash40("special_n")
-                && MotionModule::frame(boma) > 7.0 {
+                && MotionModule::frame(boma) > 13.0 && CANCEL[entry_id(boma)] == false {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                    SPECIAL_LW_TIMER[entry_id(boma)] = 600;
-                    SPECIAL_LW[entry_id(boma)] = true;
+                    CANCEL[entry_id(boma)] = true;
                 }
                 if MotionModule::motion_kind(boma) == smash::hash40("special_s_start") || MotionModule::motion_kind(boma) == smash::hash40("special_s") {
-                    if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+                    if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+                    && CANCEL[entry_id(boma)] == false {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                        TATSU_CANCEL[entry_id(boma)] = true;
-                    }
-                    else{
-                        TATSU_CANCEL[entry_id(boma)] = false;
+                        CANCEL[entry_id(boma)] = true;
                     }
                 }
                 if MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_hi_command") {
                     if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-                    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+                    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+                    && CANCEL[entry_id(boma)] == false {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                        SPECIAL_LW_TIMER[entry_id(boma)] = 600;
-                        SPECIAL_LW[entry_id(boma)] = true;
+                        CANCEL[entry_id(boma)] = true;
                     }
                 }
             }
         }
         
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW && TATSU_CANCEL[entry_id(boma)] == true {
-            SPECIAL_LW_TIMER[entry_id(boma)] = 600;
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW && CANCEL[entry_id(boma)] == true {
+            EX_FLASH[entry_id(boma)] = true;
+            SPECIAL_LW_TIMER[entry_id(boma)] = 1200;
             SPECIAL_LW[entry_id(boma)] = true;
-            TATSU_CANCEL[entry_id(boma)] = false;
+            CANCEL[entry_id(boma)] = false;
         }
 
         if SPECIAL_LW_TIMER[entry_id(boma)] > 0 {
@@ -94,6 +94,25 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
             let focuseff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
             EffectModule::set_rgb(boma, focuseff, 0.0, 0.0, 0.0);
             SPECIAL_LW[entry_id(boma)] = false;
+        }
+
+        // EX Flash I Hope
+
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW
+        && EX_FLASH[entry_id(boma)] == true {
+            if MotionModule::frame(boma) <= 8.0 {
+                macros::FLASH(fighter, 1, 1, 0.0, 1.0);
+            }
+            else {
+                macros::COL_NORMAL(fighter);
+            }
+        }
+
+        if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+        && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_N
+        && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_HI
+        && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_S {
+            EX_FLASH[entry_id(boma)] = false;
         }
     }
 }

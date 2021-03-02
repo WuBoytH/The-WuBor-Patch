@@ -30,8 +30,8 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
     }
 }
 
-static mut SPECIAL_AIR_S : [bool; 8] = [false; 8];
-static mut SPECIAL_LW : [bool; 8] = [false; 8];
+pub static mut LUCINA_SPECIAL_AIR_S : [bool; 8] = [false; 8];
+pub static mut LUCINA_SPECIAL_LW : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
 static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
@@ -53,36 +53,37 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
     }
 }
 
-#[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
-pub unsafe fn lucina_is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-    let fighter_kind = smash::app::utility::get_kind(module_accessor);
-    let ret = original!()(module_accessor,term);
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if fighter_kind == *FIGHTER_KIND_LUCINA {
-        if SPECIAL_AIR_S[entry_id] {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
-                return false;
-            }
-            else {
-                return ret;
-            }
-        }
-        if SPECIAL_LW[entry_id] {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return false;
-            }
-            else {
-                return ret;
-            }
-        }
-        else {
-            return ret;
-        }
-    }
-    else {
-        return ret;
-    }
-}
+// This is left here for the standalone release of Yu Narukami
+// #[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
+// pub unsafe fn lucina_is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
+//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     let ret = original!()(module_accessor,term);
+//     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+//     if fighter_kind == *FIGHTER_KIND_LUCINA {
+//         if LUCINA_SPECIAL_AIR_S[entry_id] {
+//             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
+//                 return false;
+//             }
+//             else {
+//                 return ret;
+//             }
+//         }
+//         if LUCINA_SPECIAL_LW[entry_id] {
+//             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+//                 return false;
+//             }
+//             else {
+//                 return ret;
+//             }
+//         }
+//         else {
+//             return ret;
+//         }
+//     }
+//     else {
+//         return ret;
+//     }
+// }
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
 unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
@@ -94,10 +95,10 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
 
         //Meter Control
         
-        SPECIAL_LW[entry_id] = true;
+        LUCINA_SPECIAL_LW[entry_id] = true;
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
-            SPECIAL_AIR_S[entry_id] = false;
-            SPECIAL_LW[entry_id] = false;
+            LUCINA_SPECIAL_AIR_S[entry_id] = false;
+            LUCINA_SPECIAL_LW[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
             if shadow_id(boma) {
                 SHADOW_FRENZY[entry_id] = false;
@@ -112,8 +113,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         }
         if smash::app::sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(boma, 1.0);
-            SPECIAL_AIR_S[entry_id] = false;
-            SPECIAL_LW[entry_id] = false;
+            LUCINA_SPECIAL_AIR_S[entry_id] = false;
+            LUCINA_SPECIAL_LW[entry_id] = false;
             SHADOW_FRENZY[entry_id] = false;
             SP_GAUGE_MAX[entry_id] = 100.0;
             DAMAGE_TAKEN[entry_id] = 0.0;
@@ -376,10 +377,10 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         // Special S Air Check
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_LANDING {
-            SPECIAL_AIR_S[entry_id] = true;
+            LUCINA_SPECIAL_AIR_S[entry_id] = true;
         }
         else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-            SPECIAL_AIR_S[entry_id] = false;
+            LUCINA_SPECIAL_AIR_S[entry_id] = false;
         }
 
         // Shadow Frenzy Check
@@ -1165,5 +1166,5 @@ pub fn install() {
         lucina_dspecialhit,
         lucina_uspecial
     );
-    skyline::install_hook!(lucina_is_enable_transition_term_replace);
+    // skyline::install_hook!(lucina_is_enable_transition_term_replace);
 }

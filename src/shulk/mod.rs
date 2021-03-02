@@ -6,40 +6,40 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 use smash::phx::Vector3f;
-use smash::app::BattleObjectModuleAccessor;
+// use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::EffectModule;
 use crate::custom::{TIME_SLOW_EFFECT_VECTOR, /*TIME_SLOW_EFFECT_HASH*/};
 
-pub unsafe fn entry_id(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    return entry_id;
-}
+// pub unsafe fn entry_id(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
+//     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+//     return entry_id;
+// }
 
-static mut SPECIAL_LW : [bool; 8] = [false; 8];
+pub static mut SHULK_SPECIAL_LW : [bool; 8] = [false; 8];
 static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
 static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 
-#[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
-pub unsafe fn shulk_is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-    let fighter_kind = smash::app::utility::get_kind(module_accessor);
-    let ret = original!()(module_accessor,term);
-    if fighter_kind == *FIGHTER_KIND_SHULK {
-        if SPECIAL_LW[entry_id(module_accessor)] {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return false;
-            }
-            else {
-                return ret;
-            }
-        }
-        else {
-            return ret;
-        }
-    }
-    else {
-        return ret;
-    }
-}
+// #[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
+// pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
+//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     let ret = original!()(module_accessor,term);
+//     if fighter_kind == *FIGHTER_KIND_SHULK {
+//         if SHULK_SPECIAL_LW[entry_id(module_accessor)] {
+//             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+//                 return false;
+//             }
+//             else {
+//                 return ret;
+//             }
+//         }
+//         else {
+//             return ret;
+//         }
+//     }
+//     else {
+//         return ret;
+//     }
+// }
 
 #[fighter_frame( agent = FIGHTER_KIND_SHULK )]
 unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
@@ -51,7 +51,7 @@ unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
         // Reset Vars
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || smash::app::sv_information::is_ready_go() == false {
-            SPECIAL_LW[entry_id] = false;
+            SHULK_SPECIAL_LW[entry_id] = false;
             SPECIAL_LW_TIMER[entry_id] = -1;
         }
 
@@ -60,7 +60,7 @@ unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
         if StopModule::is_damage(boma) {
             DAMAGE_TAKEN[entry_id] = WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
             if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if SPECIAL_LW[entry_id] == false {
+                if SHULK_SPECIAL_LW[entry_id] == false {
                     let launch_speed = KineticModule::get_sum_speed_x(boma,*KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
                     let facing_dirn = PostureModule::lr(boma);
                     if launch_speed > 0.0 && facing_dirn > 0.0 {
@@ -75,7 +75,7 @@ unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
                     WorkModule::set_float(boma, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
                     WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
                     WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
-                    SPECIAL_LW[entry_id] = true;
+                    SHULK_SPECIAL_LW[entry_id] = true;
                     SPECIAL_LW_TIMER[entry_id] = 3600;
                 }
             }
@@ -98,7 +98,7 @@ unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
             EffectModule::set_rgb(boma, countereff, 0.0, 5.0, 5.0);
         }
         else{
-            SPECIAL_LW[entry_id] = false;
+            SHULK_SPECIAL_LW[entry_id] = false;
         }
     }
 }
@@ -262,7 +262,7 @@ unsafe fn shulk_counterattack(fighter: &mut L2CAgentBase) {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     sv_animcmd::frame(lua_state, 8.0);
     let dmg: f32;
-    if SPECIAL_LW[entry_id] == false {
+    if SHULK_SPECIAL_LW[entry_id] == false {
         dmg = 10.0;
     }
     else {
@@ -296,7 +296,7 @@ unsafe fn shulk_counterforward(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.8);
     sv_animcmd::frame(lua_state, 20.0);
     let dmg: f32;
-    if SPECIAL_LW[entry_id] == false {
+    if SHULK_SPECIAL_LW[entry_id] == false {
         dmg = 13.0;
     }
     else {
@@ -326,5 +326,5 @@ pub fn install() {
         shulk_counterattack,
         shulk_counterforward
     );
-    skyline::install_hook!(shulk_is_enable_transition_term_replace);
+    // skyline::install_hook!(shulk_is_enable_transition_term_replace);
 }

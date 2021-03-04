@@ -46,6 +46,8 @@ mod buddy;
 mod ridley;
 // mod edge;
 mod koopajr;
+mod mariod;
+mod gamewatch;
 
 #[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -179,6 +181,8 @@ pub fn main() {
     ridley::install();
     // edge::install();
     koopajr::install();
+    mariod::install();
+    gamewatch::install();
     skyline::install_hook!(is_enable_transition_term_replace);
     skyline::install_hook!(get_param_float_replace);
     // skyline::install_hook!(get_param_int_replace);

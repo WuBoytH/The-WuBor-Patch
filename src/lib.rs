@@ -5,10 +5,23 @@
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::app::*;
+use skyline::hooks::{getRegionAddress, Region};
 
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
-// static mut INT_OFFSET : usize = 0x4ded80;
-static mut FLOAT_OFFSET : usize = 0x4dedc0;
+// static mut INT_OFFSET : usize = 0x4E19D0;
+// static mut INT64_OFFSET : usize = 0x4E19F0;
+static mut FLOAT_OFFSET : usize = 0x4E19D0;
+static FLOAT_SEARCH_CODE: &[u8] = &[
+    0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x19, 0x40, 0xf9,
+];
+
+// static INT_SEARCH_CODE: &[u8] = &[
+//     0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x11, 0x40, 0xf9,
+// ];
+
+// static INT64_SEARCH_CODE: &[u8] = &[
+//     0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x15, 0x40, 0xf9,
+// ];
 
 macro_rules! c_str {
     ($l:tt) => {
@@ -18,7 +31,7 @@ macro_rules! c_str {
 
 mod custom;
 mod daisy;
-// mod samusd;
+mod samusd;
 mod lucina;
 use crate::lucina::{LUCINA_SPECIAL_AIR_S, LUCINA_SPECIAL_LW};
 mod littlemac;
@@ -130,7 +143,7 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
 //             if param_hash == smash::hash40("life") {
 //                 println!("In the Life Param!");
 //                 if IS_SPIRIT_BOMB[entry_id] {
-//                     return 500;
+//                     return 300;
 //                 }
 //                 else {
 //                     return ret;
@@ -149,14 +162,30 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
 //     }
 // }
 
+fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
+    haystack.windows(needle.len()).position(|window| window == needle)
+}
+
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
     unsafe{
         skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
+        let text_ptr = getRegionAddress(Region::Text) as *const u8;
+        let text_size = (getRegionAddress(Region::Rodata) as usize) - (text_ptr as usize);
+        let text = std::slice::from_raw_parts(text_ptr, text_size);
+        if let Some(offset) = find_subsequence(text, FLOAT_SEARCH_CODE) {
+            FLOAT_OFFSET = offset;
+        }
+        // if let Some(offset) = find_subsequence(text, INT_SEARCH_CODE) {
+        //     INT_OFFSET = offset;
+        // }
+        // if let Some(offset) = find_subsequence(text, INT64_SEARCH_CODE) {
+        //     INT64_OFFSET = offset;
+        // }
     }
     custom::install();
     daisy::install();
-    // samusd::install();
+    samusd::install();
     lucina::install();
     littlemac::install();
     gaogaen::install();

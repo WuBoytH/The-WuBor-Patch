@@ -84,7 +84,7 @@ unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
         // Special Lw Check
 
         if StatusModule::status_kind(boma) == *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT {
-            // macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
+            macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
             EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("head"), &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, 1.0, &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, false, 0, 0, 0);
         }
         if SPECIAL_LW_TIMER[entry_id] > 0 {

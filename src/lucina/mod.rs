@@ -36,6 +36,7 @@ static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
 static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
 static mut IS_EX : [bool; 8] = [false; 8];
+// static mut EX_NERF : [bool; 8] = [false; 8];
 static mut SP_GAUGE : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
@@ -99,6 +100,7 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
             LUCINA_SPECIAL_LW[entry_id] = false;
+            // EX_NERF[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
             if shadow_id(boma) {
                 SHADOW_FRENZY[entry_id] = false;
@@ -113,6 +115,7 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         }
         if smash::app::sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(boma, 1.0);
+            // EX_NERF[entry_id] = false;
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
             LUCINA_SPECIAL_LW[entry_id] = false;
             SHADOW_FRENZY[entry_id] = false;
@@ -135,18 +138,27 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             }
         }
         DAMAGE_TAKEN_PREV[entry_id] = DAMAGE_TAKEN[entry_id];
-        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[entry_id] == false && IS_EX[entry_id] == false {
-            METER_GAIN[entry_id] = AttackModule::get_power(boma, 0, false, 1.0, false);
-            if shadow_id(boma) == false {
-                METER_GAIN[entry_id] *= 0.75;
+        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[entry_id] == false {
+            if IS_EX[entry_id] == false {
+                METER_GAIN[entry_id] = AttackModule::get_power(boma, 0, false, 1.0, false);
+                if shadow_id(boma) == false {
+                    METER_GAIN[entry_id] *= 0.75;
+                }
+                if SP_GAUGE[entry_id] + METER_GAIN[entry_id] < SP_GAUGE_MAX[entry_id] {
+                    SP_GAUGE[entry_id] += METER_GAIN[entry_id];
+                }
+                else {
+                    SP_GAUGE[entry_id] = SP_GAUGE_MAX[entry_id];
+                }
             }
-            if SP_GAUGE[entry_id] + METER_GAIN[entry_id] < SP_GAUGE_MAX[entry_id] {
-                SP_GAUGE[entry_id] += METER_GAIN[entry_id];
+            if MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
+            || MotionModule::motion_kind(boma) != smash::hash40("special_s1")
+            || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
+            || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
+            || StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
+                IS_EX[entry_id] = false;
             }
-            else {
-                SP_GAUGE[entry_id] = SP_GAUGE_MAX[entry_id];
-            }
-            // println!("Gained Meter: {}", SP_GAUGE[entry_id]);
+            println!("Gained Meter: {}", SP_GAUGE[entry_id]);
         }
         if shadow_id(boma) == true {
             DamageModule::set_damage_mul(boma, 0.92);
@@ -188,7 +200,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 && WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI) == false
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DEAD
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_REBIRTH
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_BURY {
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_BURY
+                && smash::app::sv_information::is_ready_go() == true {
                     SP_GAUGE[entry_id] += 50.0;
                     AWAKENING[entry_id] = true;
                     macros::FT_START_CUTIN(fighter);
@@ -473,15 +486,17 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             }
         }
 
-        // Reset EX
+        // Reset EX Nerf
 
-        if IS_EX[entry_id] == true
-        && (MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
-        || MotionModule::motion_kind(boma) != smash::hash40("special_s1")
-        || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
-        || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")) {
-            IS_EX[entry_id] = false;
-        }
+        // if EX_NERF[entry_id] == true
+        // && (MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
+        // || MotionModule::motion_kind(boma) != smash::hash40("special_s1")
+        // || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
+        // || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
+        // || MotionModule::motion_kind(boma) != smash::hash40("special_hi")
+        // || MotionModule::motion_kind(boma) != smash::hash40("special_air_hi")) {
+        //     EX_NERF[entry_id] = false;
+        // }
     }
 }
 
@@ -593,18 +608,22 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
             }
             else{
                 IS_EX[entry_id(boma)] = false;
+                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else{
             IS_EX[entry_id(boma)] = false;
+            // EX_NERF[entry_id(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 7.0);
@@ -896,20 +915,24 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
                 macros::FT_MOTION_RATE(fighter, 0.333);
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
                 macros::FT_MOTION_RATE(fighter, 0.333);
             }
             else {
                 IS_EX[entry_id(boma)] = false;
+                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else {
             IS_EX[entry_id(boma)] = false;
+            // EX_NERF[entry_id(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 5.0);
@@ -957,7 +980,11 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 1.362, 2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     sv_animcmd::frame(lua_state, 13.0);
     if macros::is_excute(fighter) {
@@ -991,18 +1018,22 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
             SP_GAUGE[entry_id(boma)] -= 25.0;
             special_effect(boma);
             IS_EX[entry_id(boma)] = true;
+            // EX_NERF[entry_id(boma)] = true;
         }
         else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
             SP_GAUGE[entry_id(boma)] -= 6.5;
             special_effect(boma);
              IS_EX[entry_id(boma)] = true;
+            //  EX_NERF[entry_id(boma)] = true;
         }
         else {
             IS_EX[entry_id(boma)] = false;
+            // EX_NERF[entry_id(boma)] = false;
         }
     }
     else {
         IS_EX[entry_id(boma)] = false;
+        // EX_NERF[entry_id(boma)] = false;
     }
     sv_animcmd::frame(lua_state, 14.0);
     if macros::is_excute(fighter) {
@@ -1043,7 +1074,12 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 1.5, -2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
@@ -1052,18 +1088,22 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
             }
             else {
                 IS_EX[entry_id(boma)] = false;
+                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else {
             IS_EX[entry_id(boma)] = false;
+            // EX_NERF[entry_id(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 8.0);
@@ -1145,29 +1185,87 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    sv_animcmd::frame(lua_state, 5.0);
-    macros::FT_MOTION_RATE(fighter, 3.5);
+    sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 79, 90, 0, 70, 4.0, 0.0, 8.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        smash_script::macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 79, 90, 0, 70, 4.0, 0.0, 8.0, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
-        WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+            if SP_GAUGE[entry_id(boma)] >= 25.0 && SHADOW_FRENZY[entry_id(boma)] == false {
+                SP_GAUGE[entry_id(boma)] -= 25.0;
+                special_effect(boma);
+                IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
+            }
+            else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
+                SP_GAUGE[entry_id(boma)] -= 6.5;
+                special_effect(boma);
+                IS_EX[entry_id(boma)] = true;
+                // EX_NERF[entry_id(boma)] = true;
+            }
+            else {
+                IS_EX[entry_id(boma)] = false;
+                // EX_NERF[entry_id(boma)] = false;
+            }
+        }
+        else {
+            IS_EX[entry_id(boma)] = false;
+            // EX_NERF[entry_id(boma)] = false;
+        }
     }
-    sv_animcmd::frame(lua_state, 6.0);
-    if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, 4.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, -1.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    if IS_EX[entry_id(boma)] {
+        sv_animcmd::frame(lua_state, 5.0);
+        macros::FT_MOTION_RATE(fighter, 6.0);
+        if macros::is_excute(fighter) {
+            smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 87, 100, 160, 0, 5.1, 0.0, 11.0, 10.0, Some(0.0), Some(7.0), Some(10.0), 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
+            WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
+            WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
+        }
+        sv_animcmd::wait(lua_state, 1.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
+        sv_animcmd::wait(lua_state, 1.0);
+        if macros::is_excute(fighter) {
+            smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.1, 367, 100, 85, 0, 6.0, 0.0, 17.0, 10.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 1.1, 367, 100, 85, 0, 5.3, 0.0, 12.0, 10.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
+        }
+        sv_animcmd::frame(lua_state, 8.0);
+        if macros::is_excute(fighter) {
+            smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 75, 0, 75, 6.5, 0.0, 17.0, 10.0, Some(0.0), Some(12.0), Some(10.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            AttackModule::clear(boma, 1, false);
+            smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        }
+        sv_animcmd::frame(lua_state, 11.0);
+        macros::FT_MOTION_RATE(fighter, 1.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
     }
-    sv_animcmd::frame(lua_state, 7.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear(boma, 2, false);
-        AttackModule::clear(boma, 3, false);
-        smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
-    sv_animcmd::frame(lua_state, 12.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+    else{
+        sv_animcmd::frame(lua_state, 5.0);
+        macros::FT_MOTION_RATE(fighter, 3.5);
+        if macros::is_excute(fighter) {
+            smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 79, 90, 0, 70, 4.0, 0.0, 8.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            smash_script::macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 7.0, 79, 90, 0, 70, 4.0, 0.0, 8.0, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
+            WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_TRANS_MOVE);
+        }
+        sv_animcmd::frame(lua_state, 6.0);
+        if macros::is_excute(fighter) {
+            smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, 4.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, -1.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        }
+        sv_animcmd::frame(lua_state, 7.0);
+        macros::FT_MOTION_RATE(fighter, 1.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear(boma, 2, false);
+            AttackModule::clear(boma, 3, false);
+            smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        }
+        sv_animcmd::frame(lua_state, 12.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(boma);
+        }
     }
 }
 

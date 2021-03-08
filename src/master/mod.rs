@@ -148,96 +148,6 @@ unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[script( agent = "master", script = "game_specialhi", category = ACMD_GAME )]
-unsafe fn master_uspecial(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 1.0);
-    macros::FT_MOTION_RATE(fighter, 0.3);
-    if macros::is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 6.0);
-        ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
-        ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("special_hi"), false, 0.0);
-    }
-    sv_animcmd::frame(lua_state, 8.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_HI_FLAG_TURN_CHECK);
-    }
-    sv_animcmd::frame(lua_state, 11.0);
-    macros::FT_MOTION_RATE(fighter, 1);
-    sv_animcmd::frame(lua_state, 16.0);
-    if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 368, 100, 30, 0, 6.5, 0.0, 8.5, 8.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 7, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        let vector = smash::phx::Vector2f{x: 18.0, y: 44.0};
-        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &vector, 7, false);
-        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-        AttackModule::set_no_dead_all(boma, true, false);
-    }
-    sv_animcmd::frame(lua_state, 17.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::change_status(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, *WEAPON_MASTER_SWORD_STATUS_KIND_EXTEND, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 0.01, 368, 100, 30, 0, 5.5, 2.0, -1.0, -1.0, Some(2.0), Some(-1.0), Some(-1.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 3, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 4.5, 2.0, -1.0, -1.0, Some(2.0), Some(-1.0), Some(-1.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        let vector = smash::phx::Vector2f{x: 16.0, y: 40.0};
-        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &vector, 4, false);
-        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-        AttackModule::set_no_dead_all(boma, true, false);
-    }
-    sv_animcmd::frame(lua_state, 19.0);
-    if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 0.01, 368, 100, 30, 0, 5.5, 0.0, 2.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 2, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 2.0, 0.0, 2.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        let vector = smash::phx::Vector2f{x: 16.0, y: 41.0};
-        AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &vector, 2, false);
-        AttackModule::set_no_dead_all(boma, true, false);
-        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-    }
-    sv_animcmd::frame(lua_state, 20.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_HI_FLAG_ENABLE_CATCH);
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 5.5, 0.0, 2.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_BODY, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 2.0, 0.0, 2.0, 0.75, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_no_dead_all(boma, true, false);
-        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-    }
-    sv_animcmd::frame(lua_state, 21.0);
-    if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 5.5, 0.0, 5.5, 2.0, Some(0.0), Some(-6.0), Some(-2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_STAGE_GIMMICK, *COLLISION_PART_MASK_BODY, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("throw"), 3.0, 75, 100, 0, 40, 2.0, 0.0, 8.0, 3.0, Some(0.0), Some(-4.0), Some(-1.5), 1.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_no_dead_all(boma, true, false);
-        AttackModule::set_no_finish_camera_ex(boma, 0, true, false);
-    }
-    sv_animcmd::frame(lua_state, 25.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    sv_animcmd::frame(lua_state, 27.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::change_status(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, *WEAPON_MASTER_SWORD_STATUS_KIND_BACK, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-    }
-}
-
-#[script( agent = "master_sword", script = "game_specialhi", category = ACMD_GAME )]
-unsafe fn master_uspecialsword(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    macros::FT_MOTION_RATE(fighter, 0.3);
-    if macros::is_excute(fighter) {
-        WorkModule::set_float(boma, 8.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
-        WorkModule::set_float(boma, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
-    }
-    sv_animcmd::frame(lua_state, 3.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
-    }
-    sv_animcmd::frame(lua_state, 10.0);
-    macros::FT_MOTION_RATE(fighter, 0.3);
-    sv_animcmd::frame(lua_state, 11.0);
-    if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
-    }
-}
-
 #[script( agent = "master", script = "game_speciallw", category = ACMD_GAME )]
 unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -300,8 +210,6 @@ pub fn install() {
         master_dtiltsword,
         master_fair,
         master_sspecialstart,
-        master_uspecial,
-        master_uspecialsword,
         master_dspecial
     );
 }

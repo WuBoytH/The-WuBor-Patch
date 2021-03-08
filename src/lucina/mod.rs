@@ -36,7 +36,6 @@ static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
 static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
 static mut IS_EX : [bool; 8] = [false; 8];
-// static mut EX_NERF : [bool; 8] = [false; 8];
 static mut SP_GAUGE : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
@@ -100,7 +99,6 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
             LUCINA_SPECIAL_LW[entry_id] = false;
-            // EX_NERF[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
             if shadow_id(boma) {
                 SHADOW_FRENZY[entry_id] = false;
@@ -115,7 +113,6 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         }
         if smash::app::sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(boma, 1.0);
-            // EX_NERF[entry_id] = false;
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
             LUCINA_SPECIAL_LW[entry_id] = false;
             SHADOW_FRENZY[entry_id] = false;
@@ -442,14 +439,6 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
 
         // Move Effects
 
-        // if MotionModule::motion_kind(boma) == smash::hash40("attack_dash") {
-        //     if MotionModule::frame(boma) > 7.0 && MotionModule::frame(boma) < 18.0 && IS_EX[entry_id] {
-        //         let speed_vector = smash::phx::Vector3f { x: 1.0, y: 0.0, z: 0.0 };
-        //         KineticModule::add_speed(boma, &speed_vector);
-        //     }
-        // } 
-        // This is buggin' and I can't find out why =(
-
         if MotionModule::motion_kind(boma) == smash::hash40("special_s1") {
             if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 18.0 {
                 macros::SET_SPEED_EX(fighter, 2.8, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -485,18 +474,6 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 }
             }
         }
-
-        // Reset EX Nerf
-
-        // if EX_NERF[entry_id] == true
-        // && (MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
-        // || MotionModule::motion_kind(boma) != smash::hash40("special_s1")
-        // || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
-        // || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
-        // || MotionModule::motion_kind(boma) != smash::hash40("special_hi")
-        // || MotionModule::motion_kind(boma) != smash::hash40("special_air_hi")) {
-        //     EX_NERF[entry_id] = false;
-        // }
     }
 }
 
@@ -608,22 +585,18 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
             }
             else{
                 IS_EX[entry_id(boma)] = false;
-                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else{
             IS_EX[entry_id(boma)] = false;
-            // EX_NERF[entry_id(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 7.0);
@@ -915,24 +888,20 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
                 macros::FT_MOTION_RATE(fighter, 0.333);
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
                 macros::FT_MOTION_RATE(fighter, 0.333);
             }
             else {
                 IS_EX[entry_id(boma)] = false;
-                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else {
             IS_EX[entry_id(boma)] = false;
-            // EX_NERF[entry_id(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 5.0);
@@ -1018,22 +987,18 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
             SP_GAUGE[entry_id(boma)] -= 25.0;
             special_effect(boma);
             IS_EX[entry_id(boma)] = true;
-            // EX_NERF[entry_id(boma)] = true;
         }
         else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
             SP_GAUGE[entry_id(boma)] -= 6.5;
             special_effect(boma);
              IS_EX[entry_id(boma)] = true;
-            //  EX_NERF[entry_id(boma)] = true;
         }
         else {
             IS_EX[entry_id(boma)] = false;
-            // EX_NERF[entry_id(boma)] = false;
         }
     }
     else {
         IS_EX[entry_id(boma)] = false;
-        // EX_NERF[entry_id(boma)] = false;
     }
     sv_animcmd::frame(lua_state, 14.0);
     if macros::is_excute(fighter) {
@@ -1088,22 +1053,18 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
             }
             else {
                 IS_EX[entry_id(boma)] = false;
-                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else {
             IS_EX[entry_id(boma)] = false;
-            // EX_NERF[entry_id(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 8.0);
@@ -1192,22 +1153,18 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
                 SP_GAUGE[entry_id(boma)] -= 25.0;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
             }
             else if SP_GAUGE[entry_id(boma)] >= 6.5 && SHADOW_FRENZY[entry_id(boma)] == true {
                 SP_GAUGE[entry_id(boma)] -= 6.5;
                 special_effect(boma);
                 IS_EX[entry_id(boma)] = true;
-                // EX_NERF[entry_id(boma)] = true;
             }
             else {
                 IS_EX[entry_id(boma)] = false;
-                // EX_NERF[entry_id(boma)] = false;
             }
         }
         else {
             IS_EX[entry_id(boma)] = false;
-            // EX_NERF[entry_id(boma)] = false;
         }
     }
     if IS_EX[entry_id(boma)] {

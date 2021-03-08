@@ -41,7 +41,6 @@ static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
-static mut CURR_STATUS: [u64 ; 8] = [smash::hash40("wait") ; 8];
 
 pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
@@ -101,7 +100,10 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             LUCINA_SPECIAL_LW[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
             if shadow_id(boma) {
-                SHADOW_FRENZY[entry_id] = false;
+                if SHADOW_FRENZY[entry_id] {
+                    SP_GAUGE[entry_id] = SP_GAUGE[entry_id] / 2.0;
+                    SHADOW_FRENZY[entry_id] = false;
+                }
             }
             else {
                 SP_GAUGE_MAX[entry_id] = 100.0;
@@ -120,7 +122,6 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             DAMAGE_TAKEN[entry_id] = 0.0;
             DAMAGE_TAKEN_PREV[entry_id] = 0.0;
             _TIME_COUNTER[entry_id] = 0;
-            CURR_STATUS[entry_id] = smash::hash40("wait");
             SP_GAUGE[entry_id] = 0.0;
             AWAKENING[entry_id] = false;
         }
@@ -136,6 +137,14 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         }
         DAMAGE_TAKEN_PREV[entry_id] = DAMAGE_TAKEN[entry_id];
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[entry_id] == false {
+            if MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
+            && MotionModule::motion_kind(boma) != smash::hash40("special_s1")
+            && MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
+            && MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
+            && MotionModule::motion_kind(boma) != smash::hash40("special_hi")
+            && MotionModule::motion_kind(boma) != smash::hash40("special_air_hi") {
+                IS_EX[entry_id] = false;
+            }
             if IS_EX[entry_id] == false {
                 METER_GAIN[entry_id] = AttackModule::get_power(boma, 0, false, 1.0, false);
                 if shadow_id(boma) == false {
@@ -148,14 +157,6 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                     SP_GAUGE[entry_id] = SP_GAUGE_MAX[entry_id];
                 }
             }
-            if MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
-            || MotionModule::motion_kind(boma) != smash::hash40("special_s1")
-            || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
-            || MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
-            || StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                IS_EX[entry_id] = false;
-            }
-            println!("Gained Meter: {}", SP_GAUGE[entry_id]);
         }
         if shadow_id(boma) == true {
             DamageModule::set_damage_mul(boma, 0.92);
@@ -219,16 +220,15 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
 
         // Special Lw Check
 
-        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-        && MotionModule::motion_kind(boma) != smash::hash40("catch_attack") {
-            if CURR_STATUS[entry_id] != MotionModule::motion_kind(boma) {
-                CAN_ONE_MORE[entry_id] = true;
-                _ONE_MORE_COUNTER[entry_id] = 45;
-                CURR_STATUS[entry_id] = MotionModule::motion_kind(boma);
-            }
+        if StatusModule::prev_status_kind(boma, 0) != StatusModule::status_kind(boma) {
+            _ONE_MORE_COUNTER[entry_id] = 0;
         }
-        else {
-            CURR_STATUS[entry_id] = smash::hash40("wait");
+
+        if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+        && MotionModule::motion_kind(boma) != smash::hash40("catch_attack")
+        && !((MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_air_hi")) && IS_EX[entry_id]) {
+            CAN_ONE_MORE[entry_id] = true;
+            _ONE_MORE_COUNTER[entry_id] = 45;
         }
         if _ONE_MORE_COUNTER[entry_id] >= 0 && CAN_ONE_MORE[entry_id] == true {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) == false {
@@ -320,99 +320,40 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             }
         }
 
-        // Turn off One More! when you get hit
-
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_AIR
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROWN
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_WAIT
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FALL
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SLEEP
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_B
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_F
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SWALLOWED
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_REFLET
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_RIDLEY
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK_AIR
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_MISS_FOOT
-        || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI) == true
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY {
-            _ONE_MORE_COUNTER[entry_id] = 0;
-        }
-
         // Meter Effects
 
-        if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
+        if (SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false)
+        || SHADOW_FRENZY[entry_id] == true {
             if _TIME_COUNTER[entry_id] < 12 {
                 _TIME_COUNTER[entry_id] += 1;
             }
             else {
-                if SP_GAUGE[entry_id] >= 25.0 && SP_GAUGE[entry_id] < 50.0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rgb(boma, onemoreeff, 0.0, 5.0, 5.0);
-                    EffectModule::set_rgb(boma, onemoreeff2, 0.0, 5.0, 5.0);
-                    _TIME_COUNTER[entry_id] = 0;
-                }
-                else if SP_GAUGE[entry_id] >= 50.0 && SP_GAUGE[entry_id] < 75.0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 5.0);
-                    EffectModule::set_rgb(boma, onemoreeff2, 0.0, 0.0, 5.0);
-                    _TIME_COUNTER[entry_id] = 0;
-                }
-                else if SP_GAUGE[entry_id] >= 75.0 && SP_GAUGE[entry_id] < 100.0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 0.0);
-                    EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 0.0);
-                    _TIME_COUNTER[entry_id] = 0;
-                }
-                else if SP_GAUGE[entry_id] >= 100.0 && SP_GAUGE[entry_id] < 125.0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 0.0, 0.0);
-                    EffectModule::set_rgb(boma, onemoreeff2, 5.0, 0.0, 0.0);
-                    _TIME_COUNTER[entry_id] = 0;
-                }
-                else if SP_GAUGE[entry_id] >= 125.0 && SP_GAUGE[entry_id] < 150.0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
-                    EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);
-                    _TIME_COUNTER[entry_id] = 0;
-                }
-                else{
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 5.0);
-                    EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 5.0);
-                    _TIME_COUNTER[entry_id] = 0;
-                }
-            }
-        }
-        if SHADOW_FRENZY[entry_id] == true {
-            if _TIME_COUNTER[entry_id] < 12 {
-                _TIME_COUNTER[entry_id] += 1;
-            }
-            else{
                 let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                 let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
-                EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);
+                if SHADOW_FRENZY[entry_id] || (SP_GAUGE[entry_id] >= 125.0 && SP_GAUGE[entry_id] < 150.0) {
+                    EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
+                    EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);
+                }
+                else if SP_GAUGE[entry_id] >= 50.0 && SP_GAUGE[entry_id] < 75.0 {
+                    EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 5.0);
+                    EffectModule::set_rgb(boma, onemoreeff2, 0.0, 0.0, 5.0);
+                }
+                else if SP_GAUGE[entry_id] >= 75.0 && SP_GAUGE[entry_id] < 100.0 {
+                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 0.0);
+                    EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 0.0);
+                }
+                else if SP_GAUGE[entry_id] >= 100.0 && SP_GAUGE[entry_id] < 125.0 {
+                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 0.0, 0.0);
+                    EffectModule::set_rgb(boma, onemoreeff2, 5.0, 0.0, 0.0);
+                }
+                else if SP_GAUGE[entry_id] >= 25.0 && SP_GAUGE[entry_id] < 50.0 {
+                    EffectModule::set_rgb(boma, onemoreeff, 0.0, 5.0, 5.0);
+                    EffectModule::set_rgb(boma, onemoreeff2, 0.0, 5.0, 5.0);
+                }
+                else{
+                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 5.0);
+                    EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 5.0);
+                }
                 _TIME_COUNTER[entry_id] = 0;
             }
         }
@@ -429,7 +370,7 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         // Shadow Frenzy Check
 
         if MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l") || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r") {
-            if SP_GAUGE[entry_id] == 100.0 && shadow_id(boma) {
+            if SP_GAUGE[entry_id] == 100.0 && shadow_id(boma) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 SHADOW_FRENZY[entry_id] = true;
             }
         }
@@ -457,20 +398,11 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         || MotionModule::motion_kind(boma) == smash::hash40("attack_12")
         || MotionModule::motion_kind(boma) == smash::hash40("attack_air_n")
         || MotionModule::motion_kind(boma) == smash::hash40("attack_air_hi")
-        || MotionModule::motion_kind(boma) == smash::hash40("attack_air_lw") {
+        || MotionModule::motion_kind(boma) == smash::hash40("attack_air_lw")
+        || (MotionModule::motion_kind(boma) == smash::hash40("attack_dash") && IS_EX[entry_id]) {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 {
                     CancelModule::enable_cancel(boma);
-                    _ONE_MORE_COUNTER[entry_id] = -1;
-                }
-            }
-        }
-
-        if MotionModule::motion_kind(boma) == smash::hash40("attack_dash") && IS_EX[entry_id] {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 {
-                    CancelModule::enable_cancel(boma);
-                    _ONE_MORE_COUNTER[entry_id] = -1;
                 }
             }
         }

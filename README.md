@@ -12,12 +12,6 @@ A mod for Super Smash Bros. Ultimate that brings character balance and mechanics
 
 0. Download and install the dependencies first!
 1. Download a release of The Bor Patch.
-2. Move libthe_bor_patch.nro to
-```bash
-SD:\atmosphere\contents\01006A800016E000\romfs\skyline\plugins
-```
-3. Move the "The Bor Patch" folder to your workspace. If you don't know what that is, the default location is
-```bash
-SD:\ultimate\mods
-```
+2. Move the contents of the 7z file to the root of your SD card.
+3. If you changed the location of your mods workspace, move "The Bor Patch" folder in Ultimate/mods/ to your workspace. If you don't know what that is, then you should be good to go!
 4. Boot up the game and enjoy!

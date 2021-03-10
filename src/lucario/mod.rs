@@ -9,47 +9,6 @@ use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use smash::phx::Vector3f;
 use smash::app::{self,/* lua_bind::*,*/ *};
 
-static mut _AURA_SPHERE_TIMER: [i32; 8] = [0; 8];
-pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
-
-#[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
-unsafe fn lucario_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if entry_id < 8 {
-        if MotionModule::motion_kind(boma) == smash::hash40("special_n_shoot")
-        || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_shoot") {
-            if MotionModule::frame(boma) == 4.0 {
-                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    IS_SPIRIT_BOMB[entry_id] = true;
-                }
-                else {
-                    IS_SPIRIT_BOMB[entry_id] = false;
-                }
-            }
-        }
-    }
-}
-
-#[weapon_frame( agent = WEAPON_KIND_LUCARIO_AURABALL )]
-unsafe fn lucario_auraball_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if entry_id < 8 {
-        let spirit_bomb = IS_SPIRIT_BOMB[entry_id];
-        if MotionModule::motion_kind(boma) == smash::hash40("shoot") {
-            if spirit_bomb == true {
-                if MotionModule::frame(boma) == 0.0 {
-                    WorkModule::set_int(boma, 300, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-                }
-                // if (MotionModule::frame(module_accessor) > 0.0) {
-                //     SET_SPEED_EX(1000, 0, KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
-                // }
-            }
-        }
-    }
-}
-
 #[script( agent = "lucario", script = "game_attack13", category = ACMD_GAME )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -100,9 +59,9 @@ unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 6.0, 96, 110, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 6.0, 96, 110, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-        smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("footr"), 6.0, 96, 110, 0, 45, 3.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 6.0, 96, 120, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 6.0, 96, 120, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
+        smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("footr"), 6.0, 96, 120, 0, 45, 3.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
     }
     sv_animcmd::frame(lua_state, 14.0);
     if macros::is_excute(fighter) {
@@ -293,6 +252,4 @@ pub fn install() {
         lucario_sspecial,
         lucario_qigong
     );
-    smash_script::replace_fighter_frames!(lucario_frame);
-    smash_script::replace_weapon_frames!(lucario_auraball_frame);
 }

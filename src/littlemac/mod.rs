@@ -6,26 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 
-#[fighter_frame( agent = FIGHTER_KIND_LITTLEMAC )]
-unsafe fn littlemac_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-
-    // Cancel Frames
-
-    if MotionModule::motion_kind(boma) == smash::hash40("special_n_dash")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_n_dash_turn")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_n_max_dash")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_n_max_dash_turn")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_dash")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_dash_turn")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_max_dash")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_max_dash_turn") {
-        if MotionModule::frame(boma) == 24.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-}
-
 #[script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -155,9 +135,6 @@ unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
-        littlemac_frame
-    );
     smash_script::replace_scripts!(
         littlemac_nair,
         littlemac_fair,

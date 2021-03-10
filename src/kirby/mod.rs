@@ -19,15 +19,6 @@ unsafe fn kirby_frame(fighter: &mut L2CAgentBase) {
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }
-
-    // Cancel Frames
-
-    if MotionModule::motion_kind(boma) == smash::hash40("special_lw2")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_air_lw2") {
-        if MotionModule::frame(boma) == 25.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
 }
 
 #[script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME )]

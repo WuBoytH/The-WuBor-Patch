@@ -6,19 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 
-#[fighter_frame( agent = FIGHTER_KIND_DONKEY )]
-unsafe fn donkey_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-
-    // Cancel Frames
-
-    if MotionModule::motion_kind(boma) == smash::hash40("attack_air_n") {
-        if MotionModule::frame(boma) >= 34.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-}
-
 #[script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn donkey_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -156,9 +143,6 @@ unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
-        donkey_frame
-    );
     smash_script::replace_scripts!(
         donkey_ftilt,
         donkey_ftilthi,

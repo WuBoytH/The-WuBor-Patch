@@ -6,25 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 
-#[fighter_frame( agent = FIGHTER_KIND_ZELDA )]
-unsafe fn zelda_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-
-    // Cancel Frames
-
-    if MotionModule::motion_kind(boma) == smash::hash40("attack_lw4") {
-        if MotionModule::frame(boma) == 31.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-
-    if MotionModule::motion_kind(boma) == smash::hash40("attack_air_n") {
-        if MotionModule::frame(boma) == 41.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-}
-
 #[script( agent = "zelda", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -251,9 +232,6 @@ unsafe fn zelda_sspecialend(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
-        zelda_frame
-    );
     smash_script::replace_scripts!(
         zelda_dtilt,
         zelda_dashattack,

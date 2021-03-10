@@ -25,8 +25,6 @@ unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
-    sv_animcmd::frame(lua_state, 28.0);
-    CancelModule::enable_cancel(boma);
 }
 
 #[script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME )]
@@ -217,8 +215,6 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
             ArticleModule::generate_article(boma, *FIGHTER_LUCARIO_GENERATE_ARTICLE_QIGONG, false, 0);
         }
     }
-    sv_animcmd::frame(lua_state, 56.0);
-    CancelModule::enable_cancel(boma);
 }
 
 #[script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME )]

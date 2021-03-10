@@ -19,15 +19,6 @@ unsafe fn dedede_frame(fighter: &mut L2CAgentBase) {
         let dedespeedy = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         macros::SET_SPEED_EX(fighter, 1.88, dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-
-    // Cancel Frame
-
-    if MotionModule::motion_kind(boma) == smash::hash40("attack_s3_s")
-    || MotionModule::motion_kind(boma) == smash::hash40("attack_s3") {
-        if MotionModule::frame(boma) == 42.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
 }
 
 #[script( agent = "dedede", script = "game_attack11", category = ACMD_GAME )]

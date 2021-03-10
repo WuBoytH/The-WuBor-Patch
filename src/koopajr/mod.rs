@@ -6,26 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 
-#[fighter_frame( agent = FIGHTER_KIND_KOOPAJR )]
-unsafe fn koopajr_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-
-    // Cancel Frames
-
-    if MotionModule::motion_kind(boma) == smash::hash40("special_n_shoot")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_shoot") {
-        if MotionModule::frame(boma) >= 32.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-
-    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        if MotionModule::frame(boma) >= 58.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-}
-
 #[script( agent = "koopajr", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn koopajr_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -109,9 +89,6 @@ unsafe fn koopajr_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
-        koopajr_frame
-    );
     smash_script::replace_scripts!(
         koopajr_dashattack,
         koopajr_nair,

@@ -24,14 +24,6 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if entry_id(boma) < 8 {
 
-        // Cancel Frames
-
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N {
-            if MotionModule::frame(boma) >= 51.0 {
-                CancelModule::enable_cancel(boma);
-            }
-        }
-
         // Jump Cancel Heavy Up-Tilt
 
         if MotionModule::motion_kind(boma) == smash::hash40("attack_hi3_s") {

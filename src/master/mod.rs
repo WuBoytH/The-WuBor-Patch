@@ -6,21 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 
-#[fighter_frame( agent = FIGHTER_KIND_MASTER )]
-unsafe fn master_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-
-    // Cancel Frames
-
-    if MotionModule::motion_kind(boma) == smash::hash40("attack_s4_s")
-    || MotionModule::motion_kind(boma) == smash::hash40("attack_s4_hi")
-    || MotionModule::motion_kind(boma) == smash::hash40("attack_s4_lw") {
-        if MotionModule::frame(boma) == 58.0 {
-            CancelModule::enable_cancel(boma);
-        }
-    }
-}
-
 #[script( agent = "master", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -201,9 +186,6 @@ unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
-        master_frame
-    );
     smash_script::replace_scripts!(
         master_ftilt,
         master_dtilt,

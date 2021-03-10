@@ -155,7 +155,7 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 47.0);
     if macros::is_excute(fighter) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
     }
 }
 

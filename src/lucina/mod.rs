@@ -1109,7 +1109,9 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    UPPER_BODY_INVULN[entry_id] = true;
+    if macros::is_excute(fighter) {
+        UPPER_BODY_INVULN[entry_id] = true;
+    }
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);

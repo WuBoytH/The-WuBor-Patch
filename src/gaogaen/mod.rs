@@ -10,9 +10,12 @@ use smash_script::*;
 use smash_script::macros;
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
-unsafe fn gaogaen_spinjumpcancel(fighter: &mut L2CAgentBase) {
+unsafe fn gaogaen_frame(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+
+    // Darkest Lariat Jump Cancel
+
     if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
     && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
     && MotionModule::frame(boma) > 19.0
@@ -645,7 +648,7 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smash_script::replace_fighter_frames!(
-        gaogaen_spinjumpcancel
+        gaogaen_frame
     );
     smash_script::replace_scripts!(
         gaogaen_nspecial,

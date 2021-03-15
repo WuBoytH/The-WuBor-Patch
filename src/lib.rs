@@ -33,7 +33,7 @@ mod custom;
 mod daisy;
 mod samusd;
 mod lucina;
-use crate::lucina::{LUCINA_SPECIAL_AIR_S, LUCINA_SPECIAL_LW};
+use crate::lucina::LUCINA_SPECIAL_AIR_S;
 mod littlemac;
 mod gaogaen;
 mod dedede;
@@ -61,6 +61,8 @@ mod gamewatch;
 mod donkey;
 mod richter;
 use crate::richter::RICHTER_SPECIAL_HI;
+mod eflame;
+mod elight;
 
 #[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -76,13 +78,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
                 return ret;
             }
         }
-        if LUCINA_SPECIAL_LW[entry_id] {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return false;
-            }
-            else {
-                return ret;
-            }
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+            return false;
         }
         else {
             return ret;
@@ -131,6 +128,43 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
 //             if param_hash == smash::hash40("life") {
 //                 if IS_SPIRIT_BOMB[entry_id] {
 //                     return 300;
+//                 }
+//                 else {
+//                     return ret;
+//                 }
+//             }
+//             else {
+//                 return ret;
+//             }
+//         }
+//         else {
+//             return ret;
+//         }
+//     }
+//     else {
+//         return ret;
+//     }
+// }
+
+// #[skyline::hook(offset = FLOAT_OFFSET)]
+// pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u64) -> f32 {
+//     let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+//     let ret = original!()(boma, param_type, param_hash);
+//     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     if fighter_kind == *FIGHTER_KIND_LUCINA {
+//         if param_type == smash::hash40("param_special_hi") {
+//             if param_hash == smash::hash40("dir_cont_value") {
+//                 if IS_EX[entry_id] {
+//                     return 0.0;
+//                 }
+//                 else {
+//                     return ret;
+//                 }
+//             }
+//             if param_hash == smash::hash40("dir_mul_value") {
+//                 if IS_EX[entry_id] {
+//                     return 1.0;
 //                 }
 //                 else {
 //                     return ret;
@@ -199,6 +233,8 @@ pub fn main() {
     gamewatch::install();
     donkey::install();
     richter::install();
+    eflame::install();
+    elight::install();
     skyline::install_hook!(is_enable_transition_term_replace);
     // skyline::install_hook!(get_param_float_replace);
     // skyline::install_hook!(get_param_int_replace);

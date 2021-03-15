@@ -8,14 +8,15 @@ use smash_script::*;
 use smash_script::macros;
 use smash::phx::Hash40;
 use smash::app::sv_animcmd;
+use smash::phx::Vector3f;
 
 static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 static mut _ONE_MORE_COUNTER: [i32; 8] = [0; 8];
 
 pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    let pos = smash::phx::Vector3f{x: 0.0, y: 13.0, z: 0.0};
-    let rot = smash::phx::Vector3f{x: 0.0, y: 90.0, z: 0.0};
+    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
     let onemoreeff: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
     if SHADOW_FRENZY[entry_id] == false {
         EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
@@ -26,18 +27,19 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
 }
 
 pub static mut LUCINA_SPECIAL_AIR_S : [bool; 8] = [false; 8];
-pub static mut LUCINA_SPECIAL_LW : [bool; 8] = [false; 8];
 pub static mut FULL_BODY_INVULN : [bool; 8] = [false; 8];
 pub static mut UPPER_BODY_INVULN : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
 static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
+static mut TRAINING_TOOLS : [bool; 8] = [false; 8];
 static mut IS_EX : [bool; 8] = [false; 8];
 static mut SP_GAUGE : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
+static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 
 pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
@@ -64,13 +66,8 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
 //                 return ret;
 //             }
 //         }
-//         if LUCINA_SPECIAL_LW[entry_id] {
-//             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-//                 return false;
-//             }
-//             else {
-//                 return ret;
-//             }
+//         if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+//             return false;
 //         }
 //         else {
 //             return ret;
@@ -85,16 +82,13 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
 unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    let gfxcoords  = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 
     if entry_id < 8 {
 
         //Meter Control
         
-        LUCINA_SPECIAL_LW[entry_id] = true;
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
-            LUCINA_SPECIAL_LW[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
             if shadow_id(boma) {
                 if SHADOW_FRENZY[entry_id] {
@@ -113,16 +107,18 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         if smash::app::sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(boma, 1.0);
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
-            LUCINA_SPECIAL_LW[entry_id] = false;
             SHADOW_FRENZY[entry_id] = false;
-            SP_GAUGE_MAX[entry_id] = 100.0;
-            DAMAGE_TAKEN[entry_id] = 0.0;
-            DAMAGE_TAKEN_PREV[entry_id] = 0.0;
             _TIME_COUNTER[entry_id] = 0;
-            SP_GAUGE[entry_id] = 0.0;
-            AWAKENING[entry_id] = false;
             FULL_BODY_INVULN[entry_id] = false;
             UPPER_BODY_INVULN[entry_id] = false;
+            if !(smash::app::smashball::is_training_mode() && TRAINING_TOOLS[entry_id]) {
+                SP_GAUGE[entry_id] = 0.0;
+                AWAKENING[entry_id] = false;
+                TRAINING_TOOLS[entry_id] = false;
+                SP_GAUGE_MAX[entry_id] = 100.0;
+                DAMAGE_TAKEN[entry_id] = 0.0;
+                DAMAGE_TAKEN_PREV[entry_id] = 0.0;
+            }
         }
         DAMAGE_TAKEN[entry_id] = DamageModule::damage(boma, 0);
         if DAMAGE_TAKEN[entry_id] != DAMAGE_TAKEN_PREV[entry_id] && DAMAGE_TAKEN[entry_id] > DAMAGE_TAKEN_PREV[entry_id] && SHADOW_FRENZY[entry_id] == false {
@@ -160,7 +156,7 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         if shadow_id(boma) == true {
             DamageModule::set_damage_mul(boma, 0.92);
             AttackModule::set_power_up(boma, 0.8);
-            if SHADOW_FRENZY[entry_id] == true {
+            if SHADOW_FRENZY[entry_id] == true && TRAINING_TOOLS[entry_id] == false {
                 SP_GAUGE[entry_id] -= 1.0/16.0;
             }
         }
@@ -244,7 +240,9 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                         _ONE_MORE_COUNTER[entry_id] = -1;
                         CAN_ONE_MORE[entry_id] = false;
-                        SP_GAUGE[entry_id] -= 12.5;
+                        if TRAINING_TOOLS[entry_id] == false {
+                            SP_GAUGE[entry_id] -= 12.5;
+                        }
                     }
                 }
             }
@@ -300,7 +298,9 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                             _ONE_MORE_COUNTER[entry_id] = -1;
                             CAN_ONE_MORE[entry_id] = false;
-                            SP_GAUGE[entry_id] -= 12.5;
+                            if TRAINING_TOOLS[entry_id] == false {
+                                SP_GAUGE[entry_id] -= 12.5;
+                            }
                         }
                     }
                 }
@@ -327,8 +327,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 _TIME_COUNTER[entry_id] += 1;
             }
             else {
-                let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &gfxcoords, &gfxcoords, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
+                let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
+                let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                 if SHADOW_FRENZY[entry_id] || (SP_GAUGE[entry_id] >= 125.0 && SP_GAUGE[entry_id] < 150.0) {
                     EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);
@@ -440,6 +440,43 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 }
             }
         }
+
+        // Training Mode Tools
+
+        if smash::app::smashball::is_training_mode(){
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+                if SP_GAUGE[entry_id] > 25.0 {
+                    SP_GAUGE[entry_id] -= 25.0
+                }
+                else {
+                    SP_GAUGE[entry_id] = 0.0;
+                }
+            }
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+                if SP_GAUGE[entry_id] < SP_GAUGE_MAX[entry_id] - 25.0 {
+                    SP_GAUGE[entry_id] += 25.0
+                }
+                else {
+                    SP_GAUGE[entry_id] = SP_GAUGE_MAX[entry_id];
+                }
+            }
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+                if TRAINING_TOOLS[entry_id] {
+                    TRAINING_TOOLS[entry_id] = false;
+                    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                    EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 5.0);
+                }
+                else {
+                    TRAINING_TOOLS[entry_id] = true;
+                    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                    let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                    EffectModule::set_rgb(boma, onemoreeff, 5.0, 0.0, 0.0);
+                }
+            }
+        }
     }
 }
 
@@ -505,21 +542,6 @@ unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-// #[script( agent = "lucina", script = "effect_attackhi3", category = ACMD_EFFECT )]
-// unsafe fn lucina_utilteffect(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-//     sv_animcmd::frame(lua_state, 3.0);
-//     if macros::is_excute(fighter) {
-//         macros::AFTER_IMAGE4_ON_arg29(fighter, 0x111623be1du64, 0x118f2aefa7u64, 12, 0x613f917e1u64, 0.0, 2.5, 0.0, 0x613f917e1u64, 0.0, 21.0, 0.0, true, LUA_VOID, 0x613f917e1u64, 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.29999995, 0.100000001);
-//         macros::FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-//     }
-//     sv_animcmd::frame(lua_state, 12.0);
-//     if macros::is_excute(fighter) {
-//         AFTER_IMAGE_OFF(1);
-//     }
-// }
-
 #[script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -550,7 +572,9 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
                 IS_EX[entry_id] = true;
             }
             else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                SP_GAUGE[entry_id] -= 6.5;
+                if TRAINING_TOOLS[entry_id] == false {
+                    SP_GAUGE[entry_id] -= 6.5;
+                }
                 special_effect(boma);
                 IS_EX[entry_id] = true;
             }
@@ -758,6 +782,12 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         sv_animcmd::frame(lua_state, 8.0);
+        if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
+            PostureModule::reverse_lr(boma);
+        }
+        else if PostureModule::lr(boma) == -1.0 && ControlModule::get_stick_x(boma) > 0.75 {
+            PostureModule::reverse_lr(boma);
+        }
         if macros::is_excute(fighter) {
             smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0, 361, 60, 0, 40, 3.0, 0.0, 5.0, 8.0, Some(0.0), Some(5.0), Some(20.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             smash_script::macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 9.0, 361, 60, 0, 40, 3.0, 0.0, 5.0, 25.0, Some(0.0), Some(5.0), Some(27.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -780,6 +810,12 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
         sv_animcmd::frame(lua_state, 9.0);
         macros::FT_MOTION_RATE(fighter, 2.0);
         sv_animcmd::frame(lua_state, 13.0);
+        if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
+            PostureModule::reverse_lr(boma);
+        }
+        else if PostureModule::lr(boma) == -1.0 && ControlModule::get_stick_x(boma) > 0.75 {
+            PostureModule::reverse_lr(boma);
+        }
         if macros::is_excute(fighter) {
             smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 60, 0, 40, 3.3, 0.0, 7.7, 9.1, Some(0.0), Some(7.7), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 9.0, 361, 60, 0, 40, 4.0, 2.0, 1.0, 1.5, Some(14.0), Some(1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -801,6 +837,12 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         sv_animcmd::frame(lua_state, 8.0);
         if macros::is_excute(fighter) {
+            if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
+                PostureModule::reverse_lr(boma);
+            }
+            else if PostureModule::lr(boma) == -1.0 && ControlModule::get_stick_x(boma) > 0.75 {
+                PostureModule::reverse_lr(boma);
+            }
             smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 3.0, 0.0, 5.0, 8.0, Some(0.0), Some(5.0), Some(20.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             smash_script::macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 3.0, 0.0, 5.0, 25.0, Some(0.0), Some(5.0), Some(27.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 0.9, 0.0, 5.0, 17.0, Some(0.0), Some(5.0), Some(22.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
@@ -823,6 +865,12 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
         macros::FT_MOTION_RATE(fighter, 2.0);
         sv_animcmd::frame(lua_state, 13.0);
         if macros::is_excute(fighter) {
+            if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
+                PostureModule::reverse_lr(boma);
+            }
+            else if PostureModule::lr(boma) == -1.0 && ControlModule::get_stick_x(boma) > 0.75 {
+                PostureModule::reverse_lr(boma);
+            }
             smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 17.0, 60, 100, 0, 0, 3.3, 0.0, 7.7, 9.1, Some(0.0), Some(7.7), Some(7.0), 2.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 17.0, 60, 100, 0, 0, 4.0, 2.0, 1.0, 1.5, Some(14.0), Some(1.0), Some(1.5), 2.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             smash_script::macros::ATTACK(fighter, 2, 0, Hash40::new("sword1"), 17.0, 60, 100, 0, 0, 3.5, 2.0, 1.0, 7.5, Some(9.5), Some(1.0), Some(7.5), 2.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_paralyze"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
@@ -855,7 +903,9 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
                 macros::FT_MOTION_RATE(fighter, 0.333);
             }
             else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                SP_GAUGE[entry_id] -= 6.5;
+                if TRAINING_TOOLS[entry_id] == false {
+                    SP_GAUGE[entry_id] -= 6.5;
+                }
                 special_effect(boma);
                 IS_EX[entry_id] = true;
                 macros::FT_MOTION_RATE(fighter, 0.333);
@@ -954,7 +1004,9 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
             IS_EX[entry_id] = true;
         }
         else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-            SP_GAUGE[entry_id] -= 6.5;
+            if TRAINING_TOOLS[entry_id] == false {
+                SP_GAUGE[entry_id] -= 6.5;
+            }
             special_effect(boma);
              IS_EX[entry_id] = true;
         }
@@ -1021,7 +1073,9 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
                 IS_EX[entry_id] = true;
             }
             else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                SP_GAUGE[entry_id] -= 6.5;
+                if TRAINING_TOOLS[entry_id] == false {
+                    SP_GAUGE[entry_id] -= 6.5;
+                }
                 special_effect(boma);
                 IS_EX[entry_id] = true;
             }
@@ -1124,7 +1178,9 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
                 IS_EX[entry_id] = true;
             }
             else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                SP_GAUGE[entry_id] -= 6.5;
+                if TRAINING_TOOLS[entry_id] == false {
+                    SP_GAUGE[entry_id] -= 6.5;
+                }
                 special_effect(boma);
                 IS_EX[entry_id] = true;
             }
@@ -1221,7 +1277,9 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
                 IS_EX[entry_id] = true;
             }
             else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                SP_GAUGE[entry_id] -= 6.5;
+                if TRAINING_TOOLS[entry_id] == false {
+                    SP_GAUGE[entry_id] -= 6.5;
+                }
                 special_effect(boma);
                 IS_EX[entry_id] = true;
             }
@@ -1311,7 +1369,6 @@ pub fn install() {
         lucina_jab1,
         lucina_jab2,
         lucina_utilt,
-        // lucina_utilteffect,
         lucina_dtilt,
         lucina_dashattack,
         lucina_nair,

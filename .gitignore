@@ -2,4 +2,3 @@
 **/*.py
 **/*.pyc
 Cargo.lock
-*.code-workspace

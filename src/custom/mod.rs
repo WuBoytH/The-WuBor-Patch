@@ -1,26 +1,41 @@
-//use smash::app::lua_bind::*;
 //use smash::app::utility::get_kind;
-//use smash::lib::lua_const::*;
-//use smash::app::lua_bind::*;
+use smash::lib::lua_const::*;
+use smash::app::lua_bind::*;
 // use smash::lua2cpp::L2CAgentBase;
 use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 // use smash_script::macros;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
+use crate::IS_FUNNY;
 use skyline::nn::ro::LookupSymbol;
-//use smash::app::{self, lua_bind::*, *};
+use smash::app::{self, /***/};
 
 pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vector3f {x:-3.0,y:3.0,z:0.0};
 //pub const TIME_SLOW_EFFECT_HASH: u64 = smash::hash40("sys_sp_flash");
 
 // Use this for general per-frame fighter-level hooks
 unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
+    let lua_state = _fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+
     LookupSymbol(
         &mut FIGHTER_CUTIN_MANAGER_ADDR,
         "_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E\u{0}"
             .as_bytes()
             .as_ptr(),
     );
+    if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP)
+    && IS_FUNNY[entry_id] == false {
+        IS_FUNNY[entry_id] = true;
+    }
+    else if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP)
+    && IS_FUNNY[entry_id] {
+        IS_FUNNY[entry_id] = false;
+    }
+    if ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_BADGE)) {
+        println!("Badge!");
+    }
 }
 
 // Use this for general per-frame weapon-level hooks

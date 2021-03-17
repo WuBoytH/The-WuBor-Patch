@@ -6,8 +6,36 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
+use crate::IS_FUNNY;
 use smash::phx::Vector3f;
 use smash::app::{self,/* lua_bind::*,*/ *};
+
+static mut _AURA_SPHERE_TIMER: [i32; 8] = [0; 8];
+pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
+
+#[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
+unsafe fn lucario_frame(fighter: &mut L2CAgentBase) {
+    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    if entry_id < 8 {
+        if IS_FUNNY[entry_id] {
+            if MotionModule::motion_kind(boma) == smash::hash40("special_n_shoot")
+            || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_shoot") {
+                if MotionModule::frame(boma) == 4.0 {
+                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                        IS_SPIRIT_BOMB[entry_id] = true;
+                    }
+                    else {
+                        IS_SPIRIT_BOMB[entry_id] = false;
+                    }
+                }
+            }
+        }
+        else if IS_SPIRIT_BOMB[entry_id] {
+            IS_SPIRIT_BOMB[entry_id] = false;
+        }
+    }
+}
 
 #[script( agent = "lucario", script = "game_attack13", category = ACMD_GAME )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
@@ -237,6 +265,7 @@ unsafe fn lucario_qigong(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
+    smash_script::replace_fighter_frames!(lucario_frame);
     smash_script::replace_scripts!(
         lucario_jab3,
         lucario_dashattack,

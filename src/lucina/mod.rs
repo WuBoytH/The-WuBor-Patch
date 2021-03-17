@@ -9,6 +9,7 @@ use smash_script::macros;
 use smash::phx::Hash40;
 use smash::app::sv_animcmd;
 use smash::phx::Vector3f;
+use crate::IS_FUNNY;
 
 static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 static mut _ONE_MORE_COUNTER: [i32; 8] = [0; 8];
@@ -37,6 +38,8 @@ static mut IS_EX : [bool; 8] = [false; 8];
 static mut SP_GAUGE : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
+static mut EX_COST : [f32; 8] = [25.0; 8];
+static mut ONE_MORE_COST : [f32; 8] = [25.0; 8];
 static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
@@ -90,6 +93,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
+            EX_COST[entry_id] = 25.0;
+            ONE_MORE_COST[entry_id] = 25.0;
             if shadow_id(boma) {
                 if SHADOW_FRENZY[entry_id] {
                     SP_GAUGE[entry_id] = SP_GAUGE[entry_id] / 2.0;
@@ -111,6 +116,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             _TIME_COUNTER[entry_id] = 0;
             FULL_BODY_INVULN[entry_id] = false;
             UPPER_BODY_INVULN[entry_id] = false;
+            EX_COST[entry_id] = 25.0;
+            ONE_MORE_COST[entry_id] = 25.0;
             if !(smash::app::smashball::is_training_mode() && TRAINING_TOOLS[entry_id]) {
                 SP_GAUGE[entry_id] = 0.0;
                 AWAKENING[entry_id] = false;
@@ -145,6 +152,9 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 if shadow_id(boma) == false {
                     METER_GAIN[entry_id] *= 0.75;
                 }
+                if IS_FUNNY[entry_id] {
+                    METER_GAIN[entry_id] *= 3.0;
+                }
                 if SP_GAUGE[entry_id] + METER_GAIN[entry_id] < SP_GAUGE_MAX[entry_id] {
                     SP_GAUGE[entry_id] += METER_GAIN[entry_id];
                 }
@@ -156,15 +166,28 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         if shadow_id(boma) == true {
             DamageModule::set_damage_mul(boma, 0.92);
             AttackModule::set_power_up(boma, 0.8);
-            if SHADOW_FRENZY[entry_id] == true && TRAINING_TOOLS[entry_id] == false {
-                SP_GAUGE[entry_id] -= 1.0/16.0;
+            if SHADOW_FRENZY[entry_id] == true {
+                EX_COST[entry_id] = 6.25;
+                ONE_MORE_COST[entry_id] = 12.5;
+                if !TRAINING_TOOLS[entry_id] {
+                    if IS_FUNNY[entry_id] {
+                        SP_GAUGE[entry_id] -= 1.0/64.0;
+                    }
+                    else {
+                        SP_GAUGE[entry_id] -= 1.0/16.0;
+                    }
+                }
+            }
+            else {
+                EX_COST[entry_id] = 25.0;
+                ONE_MORE_COST[entry_id] = 25.0;
             }
         }
         else {
             AttackModule::set_power_up(boma, 1.0);
             if DamageModule::damage(boma, 0) > 100.0 {
                 if AWAKENING[entry_id] == false
-                && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+                && ((StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_AIR
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_THROWN
@@ -193,7 +216,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 && WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI) == false
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DEAD
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_REBIRTH
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_BURY
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_BURY)
+                || IS_FUNNY[entry_id])
                 && smash::app::sv_information::is_ready_go() == true {
                     SP_GAUGE[entry_id] += 50.0;
                     AWAKENING[entry_id] = true;
@@ -226,23 +250,13 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             _ONE_MORE_COUNTER[entry_id] = 45;
         }
         if _ONE_MORE_COUNTER[entry_id] >= 0 && CAN_ONE_MORE[entry_id] == true {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) == false {
-                if SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
+                if SP_GAUGE[entry_id] >= ONE_MORE_COST[entry_id] {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                         _ONE_MORE_COUNTER[entry_id] = -1;
                         CAN_ONE_MORE[entry_id] = false;
-                        SP_GAUGE[entry_id] -= 25.0;
-                    }
-                }
-                else if SP_GAUGE[entry_id] > 12.5 && SHADOW_FRENZY[entry_id] == true {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                        _ONE_MORE_COUNTER[entry_id] = -1;
-                        CAN_ONE_MORE[entry_id] = false;
-                        if TRAINING_TOOLS[entry_id] == false {
-                            SP_GAUGE[entry_id] -= 12.5;
-                        }
+                        SP_GAUGE[entry_id] -= ONE_MORE_COST[entry_id];
                     }
                 }
             }
@@ -285,22 +299,12 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             }
             if _ONE_MORE_COUNTER[entry_id] > 0 && CAN_ONE_MORE[entry_id] == true {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) == false {
-                    if SP_GAUGE[entry_id] > 25.0 && SHADOW_FRENZY[entry_id] == false {
+                    if SP_GAUGE[entry_id] >= ONE_MORE_COST[entry_id] {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                             _ONE_MORE_COUNTER[entry_id] = -1;
                             CAN_ONE_MORE[entry_id] = false;
-                            SP_GAUGE[entry_id] -= 25.0;
-                        }
-                    }
-                    else if SP_GAUGE[entry_id] > 12.5 && SHADOW_FRENZY[entry_id] == true {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                            _ONE_MORE_COUNTER[entry_id] = -1;
-                            CAN_ONE_MORE[entry_id] = false;
-                            if TRAINING_TOOLS[entry_id] == false {
-                                SP_GAUGE[entry_id] -= 12.5;
-                            }
+                            SP_GAUGE[entry_id] -= ONE_MORE_COST[entry_id];
                         }
                     }
                 }
@@ -383,6 +387,9 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
             if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 18.0 {
                 macros::SET_SPEED_EX(fighter, 2.8, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
+            if MotionModule::frame(boma) >= 18.0 {
+                macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            }
         }
 
         if MotionModule::motion_kind(boma) == smash::hash40("special_s2_lw") || MotionModule::motion_kind(boma) == smash::hash40("special_s2_hi") {
@@ -435,7 +442,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
         || MotionModule::motion_kind(boma) == smash::hash40("attack_air_lw")
         || (MotionModule::motion_kind(boma) == smash::hash40("attack_dash") && IS_EX[entry_id]) {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP) && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 {
+                if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP)
+                && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 || IS_FUNNY[entry_id]) {
                     CancelModule::enable_cancel(boma);
                 }
             }
@@ -565,22 +573,11 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-            if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
-                SP_GAUGE[entry_id] -= 25.0;
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                if TRAINING_TOOLS[entry_id] == false {
-                    SP_GAUGE[entry_id] -= 6.5;
-                }
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else{
-                IS_EX[entry_id] = false;
-            }
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
+        && SP_GAUGE[entry_id] >= EX_COST[entry_id] {
+            SP_GAUGE[entry_id] -= EX_COST[entry_id];
+            special_effect(boma);
+            IS_EX[entry_id] = true;
         }
         else{
             IS_EX[entry_id] = false;
@@ -894,29 +891,15 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 4.0);
     sv_animcmd::frame(lua_state, 2.0);
-    if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
-                SP_GAUGE[entry_id] -= 25.0;
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-                macros::FT_MOTION_RATE(fighter, 0.333);
-            }
-            else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                if TRAINING_TOOLS[entry_id] == false {
-                    SP_GAUGE[entry_id] -= 6.5;
-                }
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-                macros::FT_MOTION_RATE(fighter, 0.333);
-            }
-            else {
-                IS_EX[entry_id] = false;
-            }
-        }
-        else {
-            IS_EX[entry_id] = false;
-        }
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    && SP_GAUGE[entry_id] >= EX_COST[entry_id] {
+        SP_GAUGE[entry_id] -= EX_COST[entry_id];
+        special_effect(boma);
+        IS_EX[entry_id] = true;
+        macros::FT_MOTION_RATE(fighter, 0.333);
+    }
+    else {
+        IS_EX[entry_id] = false;
     }
     sv_animcmd::frame(lua_state, 5.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -997,22 +980,11 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 12.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 13.0);
-    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-        if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
-            SP_GAUGE[entry_id] -= 25.0;
-            special_effect(boma);
-            IS_EX[entry_id] = true;
-        }
-        else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-            if TRAINING_TOOLS[entry_id] == false {
-                SP_GAUGE[entry_id] -= 6.5;
-            }
-            special_effect(boma);
-             IS_EX[entry_id] = true;
-        }
-        else {
-            IS_EX[entry_id] = false;
-        }
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    && SP_GAUGE[entry_id] >= EX_COST[entry_id] {
+        SP_GAUGE[entry_id] -= EX_COST[entry_id];
+        special_effect(boma);
+        IS_EX[entry_id] = true;
     }
     else {
         IS_EX[entry_id] = false;
@@ -1065,27 +1037,14 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
     sv_animcmd::frame(lua_state, 4.0);
-    if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
-                SP_GAUGE[entry_id] -= 25.0;
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                if TRAINING_TOOLS[entry_id] == false {
-                    SP_GAUGE[entry_id] -= 6.5;
-                }
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else {
-                IS_EX[entry_id] = false;
-            }
-        }
-        else {
-            IS_EX[entry_id] = false;
-        }
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    && SP_GAUGE[entry_id] >= EX_COST[entry_id] {
+        SP_GAUGE[entry_id] -= EX_COST[entry_id];
+        special_effect(boma);
+        IS_EX[entry_id] = true;
+    }
+    else {
+        IS_EX[entry_id] = false;
     }
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
@@ -1170,33 +1129,18 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
-                SP_GAUGE[entry_id] -= 25.0;
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                if TRAINING_TOOLS[entry_id] == false {
-                    SP_GAUGE[entry_id] -= 6.5;
-                }
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else {
-                IS_EX[entry_id] = false;
-            }
-        }
-        else {
-            IS_EX[entry_id] = false;
-        }
-        if IS_EX[entry_id] {
-            UPPER_BODY_INVULN[entry_id] = false;
-            FULL_BODY_INVULN[entry_id] = true;
-        }
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    && SP_GAUGE[entry_id] >= EX_COST[entry_id] {
+        SP_GAUGE[entry_id] -= EX_COST[entry_id];
+        special_effect(boma);
+        IS_EX[entry_id] = true;
+    }
+    else {
+        IS_EX[entry_id] = false;
     }
     if IS_EX[entry_id] {
+        UPPER_BODY_INVULN[entry_id] = false;
+        FULL_BODY_INVULN[entry_id] = true;
         sv_animcmd::frame(lua_state, 5.0);
         macros::FT_MOTION_RATE(fighter, 6.0);
         if macros::is_excute(fighter) {
@@ -1269,35 +1213,18 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-            if SP_GAUGE[entry_id] >= 25.0 && SHADOW_FRENZY[entry_id] == false {
-                SP_GAUGE[entry_id] -= 25.0;
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else if SP_GAUGE[entry_id] >= 6.5 && SHADOW_FRENZY[entry_id] == true {
-                if TRAINING_TOOLS[entry_id] == false {
-                    SP_GAUGE[entry_id] -= 6.5;
-                }
-                special_effect(boma);
-                IS_EX[entry_id] = true;
-            }
-            else {
-                IS_EX[entry_id] = false;
-            }
-        }
-        else {
-            IS_EX[entry_id] = false;
-        }
-        if IS_EX[entry_id] {
-            FULL_BODY_INVULN[entry_id] = true;
-        }
-        else {
-            UPPER_BODY_INVULN[entry_id] = true;
-        }
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    && SP_GAUGE[entry_id] >= EX_COST[entry_id] {
+        SP_GAUGE[entry_id] -= EX_COST[entry_id];
+        special_effect(boma);
+        IS_EX[entry_id] = true;
+    }
+    else {
+        IS_EX[entry_id] = false;
     }
     if IS_EX[entry_id] {
+        UPPER_BODY_INVULN[entry_id] = false;
+        FULL_BODY_INVULN[entry_id] = true;
         sv_animcmd::frame(lua_state, 5.0);
         macros::FT_MOTION_RATE(fighter, 6.0);
         if macros::is_excute(fighter) {

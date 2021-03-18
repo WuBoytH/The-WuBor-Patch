@@ -6,7 +6,7 @@ use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 // use smash_script::macros;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use crate::IS_FUNNY;
+use crate::{IS_FUNNY, IS_FGC};
 use skyline::nn::ro::LookupSymbol;
 use smash::app::{self, /***/};
 
@@ -29,12 +29,33 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
     && IS_FUNNY[entry_id] == false {
         IS_FUNNY[entry_id] = true;
     }
-    else if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP)
+    if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
+    }
+    if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
     && IS_FUNNY[entry_id] {
         IS_FUNNY[entry_id] = false;
     }
-    if ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_BADGE)) {
-        println!("Badge!");
+    if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
+    && IS_FGC[entry_id] == false {
+        IS_FGC[entry_id] = true;
+        println!("FGC is on!");
+    }
+    if IS_FGC[entry_id] {
+        if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR) {
+            WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR);
+            println!("Disabled Badge Reflector!");
+        }
+    }
+    if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_BADGE))
+    && IS_FGC[entry_id] {
+        IS_FGC[entry_id] = false;
+        println!("FGC is off!");
+    }
+    if IS_FUNNY[entry_id] {
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
+            StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
+        }
     }
 }
 

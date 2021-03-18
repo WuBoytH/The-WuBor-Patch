@@ -9,6 +9,7 @@ use skyline::hooks::{getRegionAddress, Region};
 
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
+pub static mut IS_FGC : [bool; 8] = [false; 8];
 static mut INT_OFFSET : usize = 0x4E19D0;
 // static mut INT64_OFFSET : usize = 0x4E19F0;
 static mut FLOAT_OFFSET : usize = 0x4E19D0;
@@ -152,8 +153,10 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     // Fighter-Specific Param Edits
 
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
+        let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == smash::hash40("life") {
-            if IS_SPIRIT_BOMB[entry_id] {
+            if IS_SPIRIT_BOMB[o_entry_id] {
                 return 6000;
             }
             else {
@@ -165,8 +168,10 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
         }
     }
     if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT { // Phazon Orb Life
+        let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == smash::hash40("life") {
-            if IS_FUNNY[entry_id] {
+            if IS_FUNNY[o_entry_id] {
                 return 6000;
             }
             else {
@@ -234,8 +239,10 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     // Fighter-Specific Param Edits
     
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
+        let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == smash::hash40("max_speed") {
-            if IS_SPIRIT_BOMB[entry_id] {
+            if IS_SPIRIT_BOMB[o_entry_id] {
                 return 0.4;
             }
             else {
@@ -259,6 +266,49 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             }
             if param_hash == smash::hash40("lw2_speed_max_y") {
                 return 1.2;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_SHULK {
+        if IS_FUNNY[entry_id] {
+            if param_hash == smash::hash40("active_time_jump") {
+                return 100.0;
+            }
+            if param_hash == smash::hash40("active_time_speed") {
+                return 100.0;
+            }
+            if param_hash == smash::hash40("active_time_shield") {
+                return 100.0;
+            }
+            if param_hash == smash::hash40("active_time_buster") {
+                return 100.0;
+            }
+            if param_hash == smash::hash40("active_time_smash") {
+                return 100.0;
+            }
+            if param_hash == smash::hash40("unavailable_time_jump") {
+                return 0.1;
+            }
+            if param_hash == smash::hash40("unavailable_time_speed") {
+                return 0.1;
+            }
+            if param_hash == smash::hash40("unavailable_time_shield") {
+                return 0.1;
+            }
+            if param_hash == smash::hash40("unavailable_time_buster") {
+                return 0.1;
+            }
+            if param_hash == smash::hash40("unavailable_time_smash") {
+                return 0.1;
+            }
+            if param_hash == smash::hash40("shield_endure_mul") {
+                return 100.0;
             }
             else {
                 return ret;

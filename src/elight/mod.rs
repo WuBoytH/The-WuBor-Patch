@@ -45,10 +45,6 @@ unsafe fn elight_frame(fighter: &mut L2CAgentBase) {
                     PostureModule::reverse_lr(boma);
                 }
             }
-            if StatusModule::prev_status_kind(boma,0) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END
-            && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
-                StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL,true);
-            }
         }
         // if IS_FUNNY[entry_id] == false {
         //     if MYTHRA[entry_id] {

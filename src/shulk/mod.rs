@@ -9,6 +9,7 @@ use smash::phx::Vector3f;
 // use smash::app::BattleObjectModuleAccessor;
 use smash::app::lua_bind::EffectModule;
 use crate::custom::{TIME_SLOW_EFFECT_VECTOR, /*TIME_SLOW_EFFECT_HASH*/};
+use crate::IS_FUNNY;
 
 // pub unsafe fn entry_id(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
 //     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -76,7 +77,12 @@ unsafe fn shulk_frame(fighter: &mut L2CAgentBase) {
                     WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
                     WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
                     SHULK_SPECIAL_LW[entry_id] = true;
-                    SPECIAL_LW_TIMER[entry_id] = 3600;
+                    if IS_FUNNY[entry_id] {
+                        SPECIAL_LW_TIMER[entry_id] = 600;
+                    }
+                    else {
+                        SPECIAL_LW_TIMER[entry_id] = 3600;
+                    }
                 }
             }
         }

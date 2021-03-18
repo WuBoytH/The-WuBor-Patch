@@ -5,6 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smash_script::macros;
+use crate::IS_FUNNY;
 
 static mut CALLBACK : [bool; 8] = [false; 8];
 
@@ -24,6 +25,12 @@ unsafe fn eflame_frame(fighter: &mut L2CAgentBase) {
             if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
                 CALLBACK[entry_id] = true;
                 StatusModule::change_status_request_from_script(boma,*FIGHTER_EFLAME_STATUS_KIND_SPECIAL_S_CATCH,true);
+            }
+        }
+
+        if IS_FUNNY[entry_id] {
+            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
         }
     }

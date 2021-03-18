@@ -7,6 +7,7 @@ use smash_script::*;
 // use smash_script::macros;
 use smash::phx::Vector3f;
 use smash::app::lua_bind::EffectModule;
+use crate::IS_FUNNY;
 
 static mut SPECIAL_LW : [bool; 8] = [false; 8];
 static mut CANCEL : [bool; 8] = [false; 8];
@@ -53,6 +54,11 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
                         CANCEL[entry_id] = true;
                     }
                 }
+                if MotionModule::motion_kind(boma) == smash::hash40("special_s_end") {
+                    if CANCEL[entry_id] {
+                        CANCEL[entry_id] = false;
+                    }
+                }
                 if MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_hi_command") {
                     if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
                     && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
@@ -66,8 +72,10 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
         
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW && CANCEL[entry_id] == true {
             EX_FLASH[entry_id] = true;
-            SPECIAL_LW_TIMER[entry_id] = 1200;
-            SPECIAL_LW[entry_id] = true;
+            if !IS_FUNNY[entry_id] {
+                SPECIAL_LW_TIMER[entry_id] = 1200;
+                SPECIAL_LW[entry_id] = true;
+            }
             CANCEL[entry_id] = false;
         }
 

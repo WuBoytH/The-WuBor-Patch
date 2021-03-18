@@ -8,18 +8,21 @@ use smash::app::sv_animcmd;
 //use smash::app::{self};
 use smash_script::*;
 use smash_script::macros;
+use crate::IS_FUNNY;
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
 unsafe fn gaogaen_frame(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-
+    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    
     // Darkest Lariat Jump Cancel
 
     if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
     && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
     && MotionModule::frame(boma) > 19.0
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+    || IS_FUNNY[entry_id])
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }

@@ -58,6 +58,7 @@ mod toonlink;
 mod zelda;
 mod buddy;
 mod ridley;
+use crate::ridley::FUNNY_RIDLEY;
 mod koopajr;
 mod gamewatch;
 mod donkey;
@@ -66,29 +67,32 @@ use crate::richter::RICHTER_SPECIAL_HI;
 mod eflame;
 mod elight;
 
-#[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
+#[skyline::hook(replace = smash::app::lua_bind::WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
     let ret = original!()(module_accessor,term);
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    
+    // Fighter-Specific Param Edits
+    
     if fighter_kind == *FIGHTER_KIND_LUCINA {
         if LUCINA_SPECIAL_AIR_S[entry_id] && IS_FUNNY[entry_id] == false {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap if used once unless in Funny
                 return false;
             }
             else {
                 return ret;
             }
         }
-        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW { // No One More! Spam
             return false;
         }
         else {
             return ret;
         }
     }
-    else if fighter_kind == *FIGHTER_KIND_SHULK {
-        if SHULK_SPECIAL_LW[entry_id] && IS_FUNNY[entry_id] == false {
+    if fighter_kind == *FIGHTER_KIND_SHULK {
+        if SHULK_SPECIAL_LW[entry_id] && IS_FUNNY[entry_id] == false { // Disable Vision if used Burst and not in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return false;
             }
@@ -100,8 +104,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    else if fighter_kind == *FIGHTER_KIND_RICHTER {
-        if RICHTER_SPECIAL_HI[entry_id] && IS_FUNNY[entry_id] == false {
+    if fighter_kind == *FIGHTER_KIND_RICHTER {
+        if RICHTER_SPECIAL_HI[entry_id] && IS_FUNNY[entry_id] == false { // Disable Multiple Up-Bs unless in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                 return false;
             }
@@ -124,7 +128,30 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     let ret = original!()(boma, param_type, param_hash);
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
-    if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
+
+    // Global Param Edits
+    
+    if param_hash == smash::hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
+        if IS_FUNNY[entry_id] {
+            return 5;
+        }
+        else {
+            return ret;
+        }
+    }
+
+    if param_hash == smash::hash40("invalid_capture_frame") { // The Chain Grab Param
+        if IS_FUNNY[entry_id] {
+            return 1;
+        }
+        else {
+            return ret;
+        }
+    }
+    
+    // Fighter-Specific Param Edits
+
+    if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
         if param_hash == smash::hash40("life") {
             if IS_SPIRIT_BOMB[entry_id] {
                 return 6000;
@@ -137,7 +164,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    else if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT {
+    if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT { // Phazon Orb Life
         if param_hash == smash::hash40("life") {
             if IS_FUNNY[entry_id] {
                 return 6000;
@@ -150,18 +177,39 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    else if fighter_kind == *FIGHTER_KIND_RIDLEY {
+    if fighter_kind == *FIGHTER_KIND_RIDLEY { // Funny Ridley
+        if FUNNY_RIDLEY[entry_id] {
+            if param_hash == smash::hash40("max_charge_frame") {// Funny Plasma Breath
+                return 300;
+            }
+            if param_hash == smash::hash40("max_fire_num") {
+                return 40;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_DAISY {
         if IS_FUNNY[entry_id] {
-            if param_type == smash::hash40("param_special_n") {
-                if param_hash == smash::hash40("max_charge_frame") {
-                    return 300;
-                }
-                else if param_hash == smash::hash40("max_fire_num") {
-                    return 40;
-                }
-                else {
-                    return ret;
-                }
+            if param_hash == smash::hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
+                return 300;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_CLOUD { // Limit Shenanigans
+        if IS_FUNNY[entry_id] {
+            if param_hash == smash::hash40("limit_break_clear_frame") {
+                return 6000;
             }
             else {
                 return ret;
@@ -182,10 +230,35 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     let ret = original!()(boma, param_type, param_hash);
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
-    if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
+    
+    // Fighter-Specific Param Edits
+    
+    if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
         if param_hash == smash::hash40("max_speed") {
             if IS_SPIRIT_BOMB[entry_id] {
                 return 0.4;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_CLOUD { // Limit Shenanigans
+        if IS_FUNNY[entry_id] {
+            if param_hash == smash::hash40("lw2_spd_x_mul") {
+                return 0.6;
+            }
+            if param_hash == smash::hash40("lw2_spd_y_mul") {
+                return 0.6;
+            }
+            if param_hash == smash::hash40("lw2_accel_y") {
+                return 0.06;
+            }
+            if param_hash == smash::hash40("lw2_speed_max_y") {
+                return 1.2;
             }
             else {
                 return ret;

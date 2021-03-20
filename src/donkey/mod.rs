@@ -28,8 +28,6 @@ unsafe fn donkey_ftilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    sv_animcmd::frame(lua_state, 31.0);
-    CancelModule::enable_cancel(boma);
 }
 
 #[script( agent = "donkey", script = "game_attacks3hi", category = ACMD_GAME )]
@@ -55,8 +53,6 @@ unsafe fn donkey_ftilthi(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    sv_animcmd::frame(lua_state, 31.0);
-    CancelModule::enable_cancel(boma);
 }
 
 #[script( agent = "donkey", script = "game_attacks3lw", category = ACMD_GAME )]
@@ -82,8 +78,6 @@ unsafe fn donkey_ftiltlw(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    sv_animcmd::frame(lua_state, 31.0);
-    CancelModule::enable_cancel(boma);
 }
 
 #[script( agent = "donkey", script = "game_attackhi3", category = ACMD_GAME )]
@@ -102,8 +96,6 @@ unsafe fn donkey_utilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
         HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    sv_animcmd::frame(lua_state, 35.0);
-    CancelModule::enable_cancel(boma);
 }
 
 #[script( agent = "donkey", script = "game_attacklw3", category = ACMD_GAME )]

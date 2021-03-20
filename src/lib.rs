@@ -67,6 +67,9 @@ mod richter;
 use crate::richter::RICHTER_SPECIAL_HI;
 mod eflame;
 mod elight;
+mod falco;
+// mod brave;
+mod purin;
 
 #[skyline::hook(replace = smash::app::lua_bind::WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -375,6 +378,9 @@ pub fn main() {
     richter::install();
     eflame::install();
     elight::install();
+    falco::install();
+    // brave::install();
+    purin::install();
     skyline::install_hook!(is_enable_transition_term_replace);
     skyline::install_hook!(get_param_float_replace);
     skyline::install_hook!(get_param_int_replace);

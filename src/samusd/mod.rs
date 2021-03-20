@@ -412,8 +412,7 @@ unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 11.0);
     if macros::is_excute(fighter) {
-        println!("Is {}", entry_id);
-        println!("funny? {}", IS_FUNNY[entry_id]);
+        macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_l01"));
         if IS_FUNNY[entry_id] { 
             smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
@@ -451,6 +450,7 @@ unsafe fn samusd_dspecialair(fighter: &mut L2CAgentBase) {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     sv_animcmd::frame(lua_state, 11.0);
     if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_l01"));
         if IS_FUNNY[entry_id] { 
             smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }

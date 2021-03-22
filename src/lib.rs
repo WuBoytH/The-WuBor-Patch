@@ -2,6 +2,8 @@
 #![feature(proc_macro_hygiene)]
 #![feature(asm)]
 
+use smash::lib::L2CValue;
+use smash::lib::L2CAgent;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::app::*;
@@ -70,6 +72,35 @@ mod elight;
 mod falco;
 // mod brave;
 mod purin;
+
+#[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
+unsafe fn attack_replace(lua_state: u64) {
+    let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    if IS_FUNNY[entry_id] {
+        let fighter_kind = smash::app::utility::get_kind(module_accessor);
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
+        l2c_agent.clear_lua_stack();
+        for i in 0..36 {
+            let mut x = hitbox_params[i];
+            if i == 15 {
+                if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
+                    l2c_agent.push_lua_stack(&mut L2CValue::new_num(5.0));
+                }
+            }
+            if i == 16 {
+                if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
+                    l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.2));
+                }
+            }
+            else {
+                l2c_agent.push_lua_stack(&mut x);
+            }
+        }
+    }
+    original!()(lua_state);
+}
 
 #[skyline::hook(replace = smash::app::lua_bind::WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -381,6 +412,7 @@ pub fn main() {
     falco::install();
     // brave::install();
     purin::install();
+    skyline::install_hook!(attack_replace);
     skyline::install_hook!(is_enable_transition_term_replace);
     skyline::install_hook!(get_param_float_replace);
     skyline::install_hook!(get_param_int_replace);

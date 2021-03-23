@@ -6,14 +6,22 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 // use smash_script::macros;
 use smash::phx::Vector3f;
+use smash::phx::Vector2f;
 use smash::app::lua_bind::EffectModule;
 use crate::IS_FUNNY;
 
 static mut SPECIAL_LW : [bool; 8] = [false; 8];
 static mut CANCEL : [bool; 8] = [false; 8];
 static mut EX_FLASH : [bool; 8] = [false; 8];
+pub static mut SECRET_SENSATION : [bool; 8] = [false; 8];
+static mut CAMERA : [bool; 8] = [false; 8];
+pub static mut OPPONENT_POS : [Vector2f; 8] = [Vector2f{ x: 0.0, y: 0.0}; 8];
+pub static mut OPPONENT_GA : [i32; 8] = [0; 8];
+static mut RYU_POS : [Vector2f; 8] = [Vector2f{ x: 0.0, y: 0.0}; 8];
 static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
 static mut FLASH_TIMER : [i16; 8] = [-1; 8];
+static mut SEC_SEN_TIMER : [f32; 8] = [-0.4; 8];
+static mut OPPONENT_DIRECTION : [f32; 8] = [12.0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
@@ -21,12 +29,21 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if entry_id < 8 {
 
+        if (MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r")
+        || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l"))
+        && MotionModule::frame(boma) <= 30.0 {
+            DamageModule::set_damage_mul(boma, 0.000001);
+        }
+        else {
+            DamageModule::set_damage_mul(boma, 1.0);
+        }
+
         // Jump Cancel Heavy Up-Tilt
 
         if MotionModule::motion_kind(boma) == smash::hash40("attack_hi3_s") {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
                 }
             }
         }
@@ -99,6 +116,53 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
             else {
                 macros::FLASH(fighter, 1, 1, 0.0, 1.0);
                 FLASH_TIMER[entry_id] -= 1;
+            }
+        }
+
+        // Secret Sensation???
+
+        if SECRET_SENSATION[entry_id] {
+            if CAMERA[entry_id] == false {
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, true);
+                macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.1, 0.0, 0.0);
+                macros::SLOW_OPPONENT(fighter, 100.0, 32.0);
+                SlowModule::set_whole(boma, 4, 0);
+                JostleModule::set_status(boma, true);
+                // Also use MotionModule::change_motion
+                MotionModule::change_motion_inherit_frame_keep_rate(boma,Hash40::new("turn"),0.0,0.0,0.0);
+                RYU_POS[entry_id] = PostureModule::pos_2d(boma);
+                if RYU_POS[entry_id].x < OPPONENT_POS[entry_id].x {
+                    OPPONENT_DIRECTION[entry_id] = 12.0;
+                }
+                else {
+                    OPPONENT_DIRECTION[entry_id] = -12.0;
+                }
+                CAMERA[entry_id] = true;
+            }
+            if SEC_SEN_TIMER[entry_id] >= 0.0 {
+                if StatusModule::situation_kind(boma) != OPPONENT_GA[entry_id] {
+                    StatusModule::set_situation_kind(boma, smash::app::SituationKind(OPPONENT_GA[entry_id]), true);
+                }
+                PostureModule::set_pos_2d(boma, &Vector2f{
+                    x: (((OPPONENT_POS[entry_id].x + OPPONENT_DIRECTION[entry_id]) * SEC_SEN_TIMER[entry_id]) + RYU_POS[entry_id].x * (1.0 - SEC_SEN_TIMER[entry_id])),
+                    y: (((OPPONENT_POS[entry_id].y + 12.0) * SEC_SEN_TIMER[entry_id]) + RYU_POS[entry_id].y * (1.0 - SEC_SEN_TIMER[entry_id]))
+                });
+            }
+            SEC_SEN_TIMER[entry_id] += 0.1;
+            if SEC_SEN_TIMER[entry_id] > 1.0 {
+                if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+                    PostureModule::reverse_lr(boma);
+                }
+                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+                macros::SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+                macros::CAM_ZOOM_OUT(fighter);
+                SlowModule::clear_whole(boma);
+                JostleModule::set_status(boma, false);
+                SEC_SEN_TIMER[entry_id] = -0.4;
+                SECRET_SENSATION[entry_id] = false;
+                CAMERA[entry_id] = false;
             }
         }
     }

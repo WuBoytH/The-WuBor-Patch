@@ -29,13 +29,15 @@ unsafe fn ryu_frame(fighter: &mut L2CAgentBase) {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if entry_id < 8 {
 
-        if (MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r")
-        || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l"))
-        && MotionModule::frame(boma) <= 30.0 {
-            DamageModule::set_damage_mul(boma, 0.000001);
-        }
-        else {
-            DamageModule::set_damage_mul(boma, 1.0);
+        if IS_FUNNY[entry_id] {
+            if (MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r")
+            || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l"))
+            && MotionModule::frame(boma) <= 30.0 {
+                DamageModule::set_damage_mul(boma, 0.000001);
+            }
+            else {
+                DamageModule::set_damage_mul(boma, 1.0);
+            }
         }
 
         // Jump Cancel Heavy Up-Tilt

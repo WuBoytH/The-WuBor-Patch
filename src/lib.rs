@@ -90,20 +90,22 @@ move_type_again: bool) -> u64 {
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
     // let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if defender_fighter_kind == *FIGHTER_KIND_RYU {
-        if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
-        || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
-        && MotionModule::frame(defender_boma) <= 30.0 {
-            if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                OPPONENT_POS[d_entry_id] = PostureModule::pos_2d(attacker_boma);
-                OPPONENT_GA[d_entry_id] = StatusModule::situation_kind(attacker_boma);
-                SECRET_SENSATION[d_entry_id] = true;
-            }
-            else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-                OPPONENT_POS[d_entry_id] = PostureModule::pos_2d(oboma);
-                OPPONENT_GA[d_entry_id] = StatusModule::situation_kind(oboma);
-                SECRET_SENSATION[d_entry_id] = true;
+    if IS_FUNNY[d_entry_id] {
+        if defender_fighter_kind == *FIGHTER_KIND_RYU {
+            if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
+            || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
+            && MotionModule::frame(defender_boma) <= 30.0 {
+                if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                    OPPONENT_POS[d_entry_id] = PostureModule::pos_2d(attacker_boma);
+                    OPPONENT_GA[d_entry_id] = StatusModule::situation_kind(attacker_boma);
+                    SECRET_SENSATION[d_entry_id] = true;
+                }
+                else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
+                    let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+                    OPPONENT_POS[d_entry_id] = PostureModule::pos_2d(oboma);
+                    OPPONENT_GA[d_entry_id] = StatusModule::situation_kind(oboma);
+                    SECRET_SENSATION[d_entry_id] = true;
+                }
             }
         }
     }

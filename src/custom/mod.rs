@@ -32,7 +32,8 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
     if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
     }
-    if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
+    // if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
+    if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD || smash::app::sv_information::is_ready_go() == false)
     && IS_FUNNY[entry_id] {
         IS_FUNNY[entry_id] = false;
     }

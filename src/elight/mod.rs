@@ -16,7 +16,9 @@ unsafe fn elight_frame(fighter: &mut L2CAgentBase) {
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if entry_id < 8 {
         if IS_FUNNY[entry_id] {
-            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
             if MotionModule::motion_kind(boma) == smash::hash40("special_s")

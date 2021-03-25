@@ -29,7 +29,9 @@ unsafe fn eflame_frame(fighter: &mut L2CAgentBase) {
         }
 
         if IS_FUNNY[entry_id] {
-            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
         }

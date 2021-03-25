@@ -18,7 +18,7 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40{hash: hash40("sys_counter_flash")}, Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
     if SHADOW_FRENZY[entry_id] == false {
         EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
     }
@@ -331,8 +331,8 @@ unsafe fn lucina_frame(fighter: &mut L2CAgentBase) {
                 _TIME_COUNTER[entry_id] += 1;
             }
             else {
-                let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                let onemoreeff2: u32 = EffectModule::req_follow(boma, smash::phx::Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
+                let onemoreeff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
+                let onemoreeff2: u32 = EffectModule::req_follow(boma, Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                 if SHADOW_FRENZY[entry_id] || (SP_GAUGE[entry_id] >= 125.0 && SP_GAUGE[entry_id] < 150.0) {
                     EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);

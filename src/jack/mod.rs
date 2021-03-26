@@ -4,7 +4,6 @@ use smash::app::sv_animcmd;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
-use smash_script::macros;
 
 #[script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
 unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
@@ -32,7 +31,7 @@ unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 361, 51, 0, 80, 11.0, 0.0, 15.0, 4.0, Some(0.0), Some(15.0), Some(19.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 361, 51, 0, 80, 11.0, 0.0, 15.0, 4.0, Some(0.0), Some(15.0), Some(19.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
         AttackModule::set_force_reaction(boma, 0, true, false);
         AttackModule::set_force_reaction(boma, 1, true, false);
     }

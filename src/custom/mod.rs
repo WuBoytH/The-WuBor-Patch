@@ -4,7 +4,6 @@ use smash::app::lua_bind::*;
 // use smash::lua2cpp::L2CAgentBase;
 use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
-// use smash_script::macros;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::{IS_FUNNY, IS_FGC};
 use skyline::nn::ro::LookupSymbol;

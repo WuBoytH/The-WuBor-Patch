@@ -1,15 +1,14 @@
 use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
+use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::sv_animcmd;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
-use smash_script::macros;
 
 pub static mut RICHTER_SPECIAL_HI : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RICHTER )]
-unsafe fn richter_frame(fighter: &mut L2CAgentBase) {
+unsafe fn richter_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
@@ -121,7 +120,7 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 6.0);
     if macros::is_excute(fighter) {
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 95, 100, 155, 0, 8.5, 0.0, 9.5, 10.5, None, None, None, 1.4, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 95, 100, 155, 0, 8.5, 0.0, 9.5, 10.5, None, None, None, 1.4, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     sv_animcmd::frame(lua_state, 7.0);
@@ -132,7 +131,7 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-        smash_script::macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.5, 367, 100, 80, 0, 6.0, 0.0, 26.0, 9.5, Some(0.0), Some(6.0), Some(7.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.5, 367, 100, 80, 0, 6.0, 0.0, 26.0, 9.5, Some(0.0), Some(6.0), Some(7.5), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
         AttackModule::set_no_damage_fly_smoke_all(boma, true, false);
     }
     sv_animcmd::frame(lua_state, 20.0);
@@ -143,7 +142,7 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear(boma, 0, false);
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-        smash_script::macros::ATTACK(fighter, 1, 1, Hash40::new("top"), 6.0, 61, 86, 0, 85, 6.0, 0.0, 26.0, 9.5, Some(0.0), Some(6.0), Some(7.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(fighter, 1, 1, Hash40::new("top"), 6.0, 61, 86, 0, 85, 6.0, 0.0, 26.0, 9.5, Some(0.0), Some(6.0), Some(7.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
     }
     sv_animcmd::frame(lua_state, 22.0);
     if macros::is_excute(fighter) {

@@ -59,7 +59,7 @@ mod snake;
 mod palutena;
 mod master;
 mod ryu;
-use crate::ryu::{SECRET_SENSATION, OPPONENT_X, OPPONENT_Y, CAMERA};
+use crate::ryu::{SECRET_SENSATION, OPPONENT_X, OPPONENT_Y, OPPONENT_BOMA};
 mod toonlink;
 mod zelda;
 mod buddy;
@@ -92,32 +92,50 @@ move_type_again: bool) -> u64 {
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     // if IS_FUNNY[d_entry_id] {
         if defender_fighter_kind == *FIGHTER_KIND_RYU {
+            println!("Is Ryu!");
             if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
             || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
             && MotionModule::frame(defender_boma) <= 30.0 {
+                println!("Is 6Hing!");
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-                || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
+                || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY
+                || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ITEM {
+                    println!("Getting Fighter Pos!");
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
-                    SECRET_SENSATION[d_entry_id] = true;
+                    if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                        println!("Setting jostle for Fighter!");
+                        JostleModule::set_status(&mut *attacker_boma, false);
+                    }
+                    OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
                 }
                 else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
+                    println!("Is weapon! Getting Weapon Owner Boma!");
                     let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+                    println!("Checking for if Fighter!");
                     if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                        println!("Isn't fighter! Setting Ryu Pos...");
                         OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                         OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
                     }
                     else {
+                        println!("Is fighter! Getting Pos...");
                         OPPONENT_X[d_entry_id] = PostureModule::pos_x(oboma);
                         OPPONENT_Y[d_entry_id] = PostureModule::pos_y(oboma);
+                        OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut smash::app::BattleObjectModuleAccessor) as u64;
+                        if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                            println!("Setting jostle for Fighter!");
+                            JostleModule::set_status(&mut *attacker_boma, false);
+                        }
                     }
-                    SECRET_SENSATION[d_entry_id] = true;
                 }
                 else {
+                    println!("Isn't Fighter or Weapon! Getting Pos...");
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
-                    SECRET_SENSATION[d_entry_id] = true;
                 }
+                println!("Secret Sensation is true! We're done!");
+                SECRET_SENSATION[d_entry_id] = true;
             }
         }
     // }
@@ -129,22 +147,20 @@ move_type_again: bool) -> u64 {
 //     let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
 //     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 //     let mut l2c_agent = L2CAgent::new(lua_state);
-//     if IS_FUNNY[entry_id] {
-//         let fighter_kind = smash::app::utility::get_kind(module_accessor);
-//         if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
-//             let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
-//             l2c_agent.clear_lua_stack();
-//             for i in 0..36 {
-//                 let mut x = hitbox_params[i];
-//                 if i == 15 {
-//                     l2c_agent.push_lua_stack(&mut L2CValue::new_num(5.0));
-//                 }
-//                 if i == 16 {
-//                     l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.2));
-//                 }
-//                 else {
-//                     l2c_agent.push_lua_stack(&mut x);
-//                 }
+//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
+//         let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
+//         l2c_agent.clear_lua_stack();
+//         for i in 0..36 {
+//             let mut x = hitbox_params[i];
+//             if i == 15 {
+                
+//             }
+//             if i == 16 {
+//                 l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.2));
+//             }
+//             else {
+//                 l2c_agent.push_lua_stack(&mut x);
 //             }
 //         }
 //     }
@@ -202,7 +218,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
         }
     }
     if fighter_kind == *FIGHTER_KIND_RYU && entry_id < 8 {
-        if CAMERA[entry_id] {
+        if SECRET_SENSATION[entry_id] {
             return false;
         }
         else {

@@ -13,22 +13,7 @@ use crate::IS_FUNNY;
 static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 static mut _ONE_MORE_COUNTER: [i32; 8] = [0; 8];
 
-pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40{hash: hash40("sys_counter_flash")}, Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-    if SHADOW_FRENZY[entry_id] == false {
-        EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
-    }
-    else if SHADOW_FRENZY[entry_id] == true {
-        EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
-    }
-}
-
 pub static mut LUCINA_SPECIAL_AIR_S : [bool; 8] = [false; 8];
-pub static mut FULL_BODY_INVULN : [bool; 8] = [false; 8];
-pub static mut UPPER_BODY_INVULN : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
 static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
@@ -42,6 +27,63 @@ static mut ONE_MORE_COST : [f32; 8] = [25.0; 8];
 static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+
+pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
+    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40{hash: hash40("sys_counter_flash")}, Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+    if SHADOW_FRENZY[entry_id] == false {
+        EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
+    }
+    else if SHADOW_FRENZY[entry_id] == true {
+        EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
+    }
+}
+
+pub unsafe fn upper_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool) {
+    if is_invuln {
+        HitModule::set_status_joint(boma, Hash40::new("waist"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("hip"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("head"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderl"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("armr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("arml"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        // macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_INVINCIBLE);
+        // macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_INVINCIBLE);
+        // macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
+        // macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_INVINCIBLE);
+        // macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
+        // macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_INVINCIBLE);
+        // macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_INVINCIBLE);
+    }
+    else {
+        HitModule::set_status_joint(boma, Hash40::new("waist"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("hip"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("head"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderl"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("armr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("arml"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        // macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+    }
+}
+
+pub unsafe fn full_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool) {
+    if is_invuln {
+        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+    }
+    else {
+        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+}
 
 pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
@@ -113,8 +155,6 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             LUCINA_SPECIAL_AIR_S[entry_id] = false;
             SHADOW_FRENZY[entry_id] = false;
             _TIME_COUNTER[entry_id] = 0;
-            FULL_BODY_INVULN[entry_id] = false;
-            UPPER_BODY_INVULN[entry_id] = false;
             EX_COST[entry_id] = 25.0;
             ONE_MORE_COST[entry_id] = 25.0;
             if !(smash::app::smashball::is_training_mode() && TRAINING_TOOLS[entry_id]) {
@@ -394,41 +434,6 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
         if MotionModule::motion_kind(boma) == smash::hash40("special_s2_lw") || MotionModule::motion_kind(boma) == smash::hash40("special_s2_hi") {
             if MotionModule::frame(boma) > 0.0 {
                 AttackModule::clear_all(boma);
-            }
-        }
-
-        if UPPER_BODY_INVULN[entry_id] {
-            macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_INVINCIBLE);
-            macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_INVINCIBLE);
-            macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
-            macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_INVINCIBLE);
-            macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
-            macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_INVINCIBLE);
-            macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_INVINCIBLE);
-        }
-        else {
-            macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
-            macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_NORMAL);
-            macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
-            macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
-            macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-            macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-            macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
-        }
-
-        if FULL_BODY_INVULN[entry_id] {
-            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-        }
-        else {
-            macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
-        }
-
-        if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            if UPPER_BODY_INVULN[entry_id] {
-                UPPER_BODY_INVULN[entry_id] = false;
-            }
-            if FULL_BODY_INVULN[entry_id] {
-                FULL_BODY_INVULN[entry_id] = false;
             }
         }
 
@@ -1122,7 +1127,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if macros::is_excute(fighter) {
-        UPPER_BODY_INVULN[entry_id] = true;
+        upper_invuln(boma, true);
     }
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -1138,8 +1143,8 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         IS_EX[entry_id] = false;
     }
     if IS_EX[entry_id] {
-        UPPER_BODY_INVULN[entry_id] = false;
-        FULL_BODY_INVULN[entry_id] = true;
+        upper_invuln(boma, false);
+        full_invuln(boma, true);
         sv_animcmd::frame(lua_state, 5.0);
         macros::FT_MOTION_RATE(fighter, 6.0);
         if macros::is_excute(fighter) {
@@ -1166,7 +1171,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 9.0);
         if macros::is_excute(fighter) {
-            FULL_BODY_INVULN[entry_id] = false;
+            full_invuln(boma, false);
         }
         macros::FT_MOTION_RATE(fighter, 1.0);
         sv_animcmd::frame(lua_state, 11.0);
@@ -1185,7 +1190,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 6.0);
         if macros::is_excute(fighter) {
-            UPPER_BODY_INVULN[entry_id] = false;
+            upper_invuln(boma, false);
             macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, 4.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, -1.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
@@ -1222,8 +1227,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         IS_EX[entry_id] = false;
     }
     if IS_EX[entry_id] {
-        UPPER_BODY_INVULN[entry_id] = false;
-        FULL_BODY_INVULN[entry_id] = true;
+        full_invuln(boma, true);
         sv_animcmd::frame(lua_state, 5.0);
         macros::FT_MOTION_RATE(fighter, 6.0);
         if macros::is_excute(fighter) {
@@ -1250,7 +1254,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 9.0);
         if macros::is_excute(fighter) {
-            FULL_BODY_INVULN[entry_id] = false;
+            full_invuln(boma, false);
         }
         macros::FT_MOTION_RATE(fighter, 1.0);
         sv_animcmd::frame(lua_state, 11.0);
@@ -1259,6 +1263,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         }
     }
     else{
+        upper_invuln(boma, true);
         sv_animcmd::frame(lua_state, 5.0);
         macros::FT_MOTION_RATE(fighter, 3.5);
         if macros::is_excute(fighter) {
@@ -1269,7 +1274,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 6.0);
         if macros::is_excute(fighter) {
-            UPPER_BODY_INVULN[entry_id] = false;
+            upper_invuln(boma, false);
             macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, 4.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 7.0, 79, 90, 0, 20, 5.0, 0.0, 0.0, -1.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }

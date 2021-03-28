@@ -72,7 +72,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if ControlModule::get_command_flag_cat(boma,0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
+        if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && CANCEL[entry_id] {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
         }
@@ -160,7 +160,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
             if SECRET_SENSATION[entry_id] {
                 JostleModule::set_status(boma, false);
-                macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+                HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
                 DamageModule::set_damage_lock(boma, true);
                 DamageModule::set_no_reaction_no_effect(boma, true);
                 HitModule::set_hit_stop_mul(boma, 0.0, smash::app::HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
@@ -173,8 +173,8 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     RYU_X[entry_id] = PostureModule::pos_x(boma);
                     RYU_Y[entry_id] = PostureModule::pos_y(boma);
                     if RYU_X[entry_id] == OPPONENT_X[entry_id] {
-                        OPPONENT_DIRECTION[entry_id] = -12.0 * PostureModule::lr(boma);
-                        SEC_SEN_DIREC[entry_id] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B;
+                        OPPONENT_DIRECTION[entry_id] = 12.0 * PostureModule::lr(boma);
+                        SEC_SEN_DIREC[entry_id] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F;
                     }
                     else if RYU_X[entry_id] < OPPONENT_X[entry_id] {
                         OPPONENT_DIRECTION[entry_id] = 12.0;
@@ -262,7 +262,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     EX_FLASH[entry_id] = false;
                     macros::COL_NORMAL(fighter);
                     SEC_SEN_STATE[entry_id] = false;
-                    macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+                    HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
                 }
             }
             else if SECRET_SENSATION[entry_id] == false
@@ -273,7 +273,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 EX_FLASH[entry_id] = false;
                 macros::COL_NORMAL(fighter);
                 SEC_SEN_STATE[entry_id] = false;
-                macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
+                HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
             }
         // }
     }

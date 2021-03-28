@@ -97,8 +97,7 @@ move_type_again: bool) -> u64 {
         && MotionModule::frame(defender_boma) <= 30.0
         && MotionModule::frame(defender_boma) >= 4.0 {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-            || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY
-            || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ITEM {
+            || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -125,6 +124,7 @@ move_type_again: bool) -> u64 {
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
             }
+            HitModule::set_whole(defender_boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
             println!("Finished Secret Sensation setting!");
             SECRET_SENSATION[d_entry_id] = true;
         }

@@ -1,15 +1,15 @@
-use smash::phx::Hash40;
+// use smash::phx::Hash40;
 use smash::lua2cpp::L2CFighterCommon;
 // use smash::app::sv_animcmd;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
-use smash::phx::Vector3f;
-use smash::phx::Vector2f;
-use smash::app::lua_bind::EffectModule;
+// use smash::phx::Vector3f;
+// use smash::phx::Vector2f;
+// use smash::app::lua_bind::EffectModule;
 use crate::IS_FUNNY;
 
-static mut DRAGON_INSTALL : [bool; 8] = [false; 8];
+pub static mut DRAGON_INSTALL : [bool; 8] = [false; 8];
 static mut DI_FLASH : [bool; 8] = [false; 8];
 static mut FLASH_TIMER : [i32; 8] = [-1; 8];
 
@@ -33,7 +33,9 @@ unsafe fn wiifit_frame(fighter: &mut L2CFighterCommon) {
             || MotionModule::motion_kind(boma) == smash::hash40("specialairlwsuccessr")
             || MotionModule::motion_kind(boma) == smash::hash40("speciallwsuccessl")
             || MotionModule::motion_kind(boma) == smash::hash40("specialairlwsuccessl") {
-
+                if MotionModule::frame(boma) == 1.0 {
+                    DRAGON_INSTALL[entry_id] = true;
+                }
             }
         }
 
@@ -57,6 +59,6 @@ unsafe fn wiifit_frame(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     smash_script::replace_fighter_frames!(
-        ryu_frame
+        wiifit_frame
     );
 }

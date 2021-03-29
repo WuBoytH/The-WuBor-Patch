@@ -5,6 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 static mut CANCEL : [bool; 8] = [false; 8];
 
@@ -17,7 +18,8 @@ unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
         if IS_FUNNY[entry_id] {
             if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL {
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
+            && commonfuncs::is_damage_check(boma) == false {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
             if MotionModule::motion_kind(boma) == smash::hash40("special_s")

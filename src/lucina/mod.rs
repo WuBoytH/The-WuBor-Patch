@@ -9,6 +9,7 @@ use smash::phx::Hash40;
 use smash::app::sv_animcmd;
 use smash::phx::Vector3f;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 static mut _ONE_MORE_COUNTER: [i32; 8] = [0; 8];
@@ -216,36 +217,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             AttackModule::set_power_up(boma, 1.0);
             if DamageModule::damage(boma, 0) > 100.0 {
                 if AWAKENING[entry_id] == false
-                && ((StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_AIR
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_THROWN
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CAPTURE_WAIT
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FLY 
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR 
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U 
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DAMAGE_FALL
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SLEEP
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_ESCAPE_B
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_ESCAPE_F
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SWALLOWED
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_AIR_LASSO
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCHED_REFLET
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCHED_RIDLEY
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_ATTACK_AIR
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_MISS_FOOT
-                && WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI) == false
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_DEAD
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_REBIRTH
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_BURY)
+                && (commonfuncs::is_damage_check(boma)
                 || IS_FUNNY[entry_id])
                 && smash::app::sv_information::is_ready_go() == true {
                     SP_GAUGE[entry_id] += 50.0;

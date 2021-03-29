@@ -35,6 +35,7 @@ macro_rules! c_str {
     };
 }
 
+mod commonfuncs;
 mod custom;
 mod daisy;
 mod samusd;
@@ -75,6 +76,8 @@ mod elight;
 mod falco;
 // mod brave;
 mod purin;
+mod wiifit;
+use crate::wiifit::DRAGON_INSTALL;
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -218,6 +221,15 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
     }
     if fighter_kind == *FIGHTER_KIND_RYU && entry_id < 8 {
         if CAMERA[entry_id] {
+            return false;
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && entry_id < 8 {
+        if DRAGON_INSTALL[entry_id]
+        && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
         else {
@@ -499,6 +511,7 @@ pub fn main() {
     falco::install();
     // brave::install();
     purin::install();
+    wiifit::install();
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);
     skyline::install_hook!(is_enable_transition_term_replace);

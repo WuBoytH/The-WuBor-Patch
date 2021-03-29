@@ -330,6 +330,19 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && entry_id < 8 {
+        if IS_FUNNY[entry_id] { // DRAGON INSTALL
+            if param_hash == 0x202e02971b { // Unstaled Deep Breathing Timer hash
+                return 420;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
     else {
         return ret;
     }

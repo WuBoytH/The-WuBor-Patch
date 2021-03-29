@@ -50,13 +50,8 @@ pub unsafe fn upper_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: boo
         HitModule::set_status_joint(boma, Hash40::new("shoulderl"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         HitModule::set_status_joint(boma, Hash40::new("armr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         HitModule::set_status_joint(boma, Hash40::new("arml"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        // macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_INVINCIBLE);
-        // macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_INVINCIBLE);
-        // macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_INVINCIBLE);
-        // macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_INVINCIBLE);
-        // macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_INVINCIBLE);
-        // macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_INVINCIBLE);
-        // macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_INVINCIBLE);
+        HitModule::set_status_joint(boma, Hash40::new("legr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("legl"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
     }
     else {
         HitModule::set_status_joint(boma, Hash40::new("waist"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
@@ -66,13 +61,8 @@ pub unsafe fn upper_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: boo
         HitModule::set_status_joint(boma, Hash40::new("shoulderl"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
         HitModule::set_status_joint(boma, Hash40::new("armr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
         HitModule::set_status_joint(boma, Hash40::new("arml"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        // macros::HIT_NODE(fighter, Hash40::new("waist"), *HIT_STATUS_NORMAL);
-        // macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_NORMAL);
-        // macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
-        // macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
-        // macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
-        // macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-        // macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+        HitModule::set_status_joint(boma, Hash40::new("legr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("legl"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
 

@@ -24,7 +24,7 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
             .as_bytes()
             .as_ptr(),
     );
-    if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP)
+    if ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
     && IS_FUNNY[entry_id] == false {
         IS_FUNNY[entry_id] = true;
     }

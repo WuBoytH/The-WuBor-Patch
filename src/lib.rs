@@ -92,39 +92,47 @@ move_type_again: bool) -> u64 {
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     // if IS_FUNNY[d_entry_id] {
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
+        println!("Is Ryu!");
         if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
         || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
         && MotionModule::frame(defender_boma) <= 30.0
         && MotionModule::frame(defender_boma) >= 4.0 {
+            println!("Is Secret Sensationing!");
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
+                println!("Getting opponent's boma");
+                OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
+                println!("Getting opponent's Position");
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
+                println!("Seeing if opponent is a Fighter!");
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                    println!("Setting Jostle");
                     JostleModule::set_status(&mut *attacker_boma, false);
                 }
-                OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
             }
             else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
                 let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
                 if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
+                    OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
                 }
                 else {
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(oboma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(oboma);
                     OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut smash::app::BattleObjectModuleAccessor) as u64;
                     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                        JostleModule::set_status(&mut *attacker_boma, false);
+                        println!("Setting Jostle");
+                        JostleModule::set_status(&mut *oboma, false);
                     }
                 }
             }
             else {
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
+                OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
             }
-            HitModule::set_whole(defender_boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
             println!("Finished Secret Sensation setting!");
             SECRET_SENSATION[d_entry_id] = true;
         }
@@ -333,6 +341,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     let ret = original!()(boma, param_type, param_hash);
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+
+    // Universal Param Edits
     
     // Fighter-Specific Param Edits
     

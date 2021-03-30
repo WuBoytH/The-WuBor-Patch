@@ -217,7 +217,8 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             AttackModule::set_power_up(boma, 1.0);
             if DamageModule::damage(boma, 0) > 100.0 {
                 if AWAKENING[entry_id] == false
-                && (commonfuncs::is_damage_check(boma)
+                && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+                && (!commonfuncs::is_damage_check(boma)
                 || IS_FUNNY[entry_id])
                 && smash::app::sv_information::is_ready_go() == true {
                     SP_GAUGE[entry_id] += 50.0;

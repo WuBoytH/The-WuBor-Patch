@@ -17,6 +17,16 @@ static mut INT_OFFSET : usize = 0x4E19D0;
 // static mut INT64_OFFSET : usize = 0x4E19F0;
 static mut FLOAT_OFFSET : usize = 0x4E19D0;
 static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
+static mut MUSIC_OFFSET: usize = 0x3451f30; // default = 8.1.0 offset
+static mut MUSIC_PARAM1: *mut u64 = 0 as *mut u64;
+static mut MUSIC_PARAM2: i64 = 0;
+static mut NUS3AUDIO_HASH: *const u64 = 0 as *const u64;
+
+static MUSIC_SEARCH_CODE: &[u8] = &[
+    0xfc, 0x6f, 0xba, 0xa9, 0xfa, 0x67, 0x01, 0xa9, 0xf8, 0x5f, 0x02, 0xa9, 0xf6, 0x57, 0x03, 0xa9,
+    0xf4, 0x4f, 0x04, 0xa9, 0xfd, 0x7b, 0x05, 0xa9, 0xfd, 0x43, 0x01, 0x91, 0xff, 0xc3, 0x1b, 0xd1,
+    0xe8, 0x63, 0x05, 0x91,
+];
 static FLOAT_SEARCH_CODE: &[u8] = &[
     0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x19, 0x40, 0xf9,
 ];
@@ -77,7 +87,7 @@ mod falco;
 // mod brave;
 mod purin;
 mod wiifit;
-use crate::wiifit::DRAGON_INSTALL;
+use crate::wiifit::{DRAGON_INSTALL, CAN_DRAGON_INSTALL};
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -228,7 +238,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
         }
     }
     if fighter_kind == *FIGHTER_KIND_WIIFIT && entry_id < 8 {
-        if DRAGON_INSTALL[entry_id]
+        if CAN_DRAGON_INSTALL[entry_id] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
@@ -456,6 +466,42 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     }
 }
 
+#[skyline::hook(offset = MUSIC_OFFSET)]
+pub fn music_function_replace(
+    param_1: *mut u64,
+    param_2: i64,
+    mut nus3bank_hash: u64,
+    mut nus3audio_hash: *const u64,
+    nus3audio_index: usize,
+) {
+    println!("Param 1: {:?}", param_1);
+    println!("Param 2: {}", param_2);
+    println!("Nus3bank Hash: {:?}", nus3bank_hash);
+    println!("Nus3bank Hash: {:?}", nus3audio_hash);
+    unsafe {
+        MUSIC_PARAM1 = param_1;
+        MUSIC_PARAM2 = param_2;
+        NUS3AUDIO_HASH = nus3audio_hash;
+    }
+    // if nus3bank_hash != smash::hash40("bgm_crs2_03_shuuten")
+    // && nus3audio_hash != smash::hash40("bgm_crs2_03_shuuten") {
+    //     for x in 0..7 {
+    //         if DRAGON_INSTALL[x] {
+    //             nus3bank_hash = smash::hash40("bgm_crs2_03_shuuten");
+    //             nus3audio_hash = smash::hash40("bgm_crs2_03_shuuten");
+    //             break;
+    //         }
+    //     }
+    // }
+    original!()(
+        param_1,
+        param_2,
+        nus3bank_hash,
+        nus3audio_hash,
+        nus3audio_index,
+    );
+}
+
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
 }
@@ -476,6 +522,9 @@ pub fn main() {
         // if let Some(offset) = find_subsequence(text, INT64_SEARCH_CODE) {
         //     INT64_OFFSET = offset;
         // }
+        if let Some(offset) = find_subsequence(text, MUSIC_SEARCH_CODE) {
+            MUSIC_OFFSET = offset;
+        }
     }
     custom::install();
     daisy::install();
@@ -517,4 +566,5 @@ pub fn main() {
     skyline::install_hook!(is_enable_transition_term_replace);
     skyline::install_hook!(get_param_float_replace);
     skyline::install_hook!(get_param_int_replace);
+    skyline::install_hook!(music_function_replace);
 }

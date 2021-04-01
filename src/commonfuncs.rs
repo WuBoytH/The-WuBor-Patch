@@ -42,7 +42,7 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
 pub unsafe fn get_player_number(module_accessor:  &mut BattleObjectModuleAccessor) -> usize {
     if utility::get_kind(module_accessor) == *WEAPON_KIND_PTRAINER_PTRAINER {
         let player_number = WorkModule::get_int(module_accessor, *WEAPON_PTRAINER_PTRAINER_INSTANCE_WORK_ID_INT_FIGHTER_ENTRY_ID) as usize;
-        return player_number;        
+        return player_number;
     }
     else if utility::get_category(module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         let player_number = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -51,6 +51,6 @@ pub unsafe fn get_player_number(module_accessor:  &mut BattleObjectModuleAccesso
     else {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let player_number = WorkModule::get_int(owner_module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        return player_number;    
+        return player_number;
     }
 }

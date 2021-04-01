@@ -7,6 +7,7 @@ use smash_script::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 static mut BOUNCE : [bool; 8] = [false; 8];
 
@@ -14,15 +15,14 @@ static mut BOUNCE : [bool; 8] = [false; 8];
 unsafe fn samusd_frame(fighter: &mut L2CFighterCommon) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
-    if entry_id < 8 {
+    if commonfuncs::get_player_number(boma) < 8 {
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
-            BOUNCE[entry_id] = false;
+            BOUNCE[commonfuncs::get_player_number(boma)] = false;
         }
         if smash::app::sv_information::is_ready_go() == false {
-            BOUNCE[entry_id] = false;
+            BOUNCE[commonfuncs::get_player_number(boma)] = false;
         }
     
         // Morph Ball Drop Bounce
@@ -30,7 +30,7 @@ unsafe fn samusd_frame(fighter: &mut L2CFighterCommon) {
         || MotionModule::motion_kind(boma) == smash::hash40("special_air_lw") {
             if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-            && BOUNCE[entry_id] == false {
+            && BOUNCE[commonfuncs::get_player_number(boma)] == false {
                 MotionModule::set_frame(boma, 44.0, true);
                 WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
                 WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -38,13 +38,13 @@ unsafe fn samusd_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
                 KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 KineticModule::add_speed(boma, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
-                BOUNCE[entry_id] = true;
+                BOUNCE[commonfuncs::get_player_number(boma)] = true;
             }
         }
         else {
-            if BOUNCE[entry_id] {
+            if BOUNCE[commonfuncs::get_player_number(boma)] {
                 KineticModule::add_speed(boma, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
-                BOUNCE[entry_id] = false;
+                BOUNCE[commonfuncs::get_player_number(boma)] = false;
             }
         }
     }
@@ -425,7 +425,6 @@ unsafe fn samusd_sspecialair(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_JUMP);
@@ -437,7 +436,7 @@ unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 11.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_l01"));
-        if IS_FUNNY[entry_id] { 
+        if IS_FUNNY[commonfuncs::get_player_number(boma)] { 
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
@@ -449,7 +448,7 @@ unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 33.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
-    if BOUNCE[entry_id] == false {
+    if BOUNCE[commonfuncs::get_player_number(boma)] == false {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 45, 30, 0, 70, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
@@ -471,11 +470,10 @@ unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_dspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     sv_animcmd::frame(lua_state, 11.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_l01"));
-        if IS_FUNNY[entry_id] { 
+        if IS_FUNNY[commonfuncs::get_player_number(boma)] { 
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
@@ -487,7 +485,7 @@ unsafe fn samusd_dspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 33.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
-    if BOUNCE[entry_id] == false {
+    if BOUNCE[commonfuncs::get_player_number(boma)] == false {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
             WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);

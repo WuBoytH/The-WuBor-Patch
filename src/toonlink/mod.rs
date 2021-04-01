@@ -8,29 +8,29 @@ use smash_script::*;
 //use smash::app::BattleObjectModuleAccessor;
 //use smash::app::lua_bind::EffectModule;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
 unsafe fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
-    if IS_FUNNY[entry_id] && SPIN_SPEED[entry_id] != 3.0 {
-        SPIN_SPEED[entry_id] = 3.0;
+    if IS_FUNNY[commonfuncs::get_player_number(boma)] && SPIN_SPEED[commonfuncs::get_player_number(boma)] != 3.0 {
+        SPIN_SPEED[commonfuncs::get_player_number(boma)] = 3.0;
     }
-    else if !IS_FUNNY[entry_id] && SPIN_SPEED[entry_id] != 1.56 {
-        SPIN_SPEED[entry_id] = 1.56;
+    else if !IS_FUNNY[commonfuncs::get_player_number(boma)] && SPIN_SPEED[commonfuncs::get_player_number(boma)] != 1.56 {
+        SPIN_SPEED[commonfuncs::get_player_number(boma)] = 1.56;
     }
 
     if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
         if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
             let facing_dirn = PostureModule::lr(boma);
             if facing_dirn > 0.0 {
-                macros::SET_SPEED_EX(fighter, &SPIN_SPEED[entry_id] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                macros::SET_SPEED_EX(fighter, &SPIN_SPEED[commonfuncs::get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
             else{
-                macros::SET_SPEED_EX(fighter, -&SPIN_SPEED[entry_id] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                macros::SET_SPEED_EX(fighter, -&SPIN_SPEED[commonfuncs::get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }
     }

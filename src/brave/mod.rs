@@ -5,12 +5,12 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 #[script( agent = "brave", scripts = ["game_speciallw9", "game_specialairlw9"], category = ACMD_GAME )]
 unsafe fn brave_kamikazee(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     sv_animcmd::frame(lua_state, 12.0);
     macros::FT_MOTION_RATE(fighter, 4.0);
     sv_animcmd::frame(lua_state, 19.0);
@@ -35,7 +35,7 @@ unsafe fn brave_kamikazee(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 22.0);
     if macros::is_excute(fighter) {
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
-        if IS_FUNNY[entry_id] {
+        if IS_FUNNY[commonfuncs::get_player_number(boma)] {
             DamageModule::add_damage(boma, 999.9, 0);
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, true);
         }

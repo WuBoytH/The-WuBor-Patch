@@ -6,6 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 use smash::phx::Vector3f;
 use smash::app::{self,/* lua_bind::*,*/ *};
 
@@ -15,23 +16,23 @@ pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
 unsafe fn lucario_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if entry_id < 8 {
-        if IS_FUNNY[entry_id] {
+    
+    if commonfuncs::get_player_number(boma) < 8 {
+        if IS_FUNNY[commonfuncs::get_player_number(boma)] {
             if MotionModule::motion_kind(boma) == smash::hash40("special_n_shoot")
             || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_shoot") {
                 if MotionModule::frame(boma) == 4.0 {
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                        IS_SPIRIT_BOMB[entry_id] = true;
+                        IS_SPIRIT_BOMB[commonfuncs::get_player_number(boma)] = true;
                     }
                     else {
-                        IS_SPIRIT_BOMB[entry_id] = false;
+                        IS_SPIRIT_BOMB[commonfuncs::get_player_number(boma)] = false;
                     }
                 }
             }
         }
-        else if IS_SPIRIT_BOMB[entry_id] {
-            IS_SPIRIT_BOMB[entry_id] = false;
+        else if IS_SPIRIT_BOMB[commonfuncs::get_player_number(boma)] {
+            IS_SPIRIT_BOMB[commonfuncs::get_player_number(boma)] = false;
         }
     }
 }

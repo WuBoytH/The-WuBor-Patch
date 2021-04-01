@@ -5,19 +5,19 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 static mut HAMMER_SPEED : [f32; 8] = [1.56; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]
 unsafe fn dedede_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
-    if IS_FUNNY[entry_id] && HAMMER_SPEED[entry_id] != 3.6 {
-        HAMMER_SPEED[entry_id] = 3.6;
+    if IS_FUNNY[commonfuncs::get_player_number(boma)] && HAMMER_SPEED[commonfuncs::get_player_number(boma)] != 3.6 {
+        HAMMER_SPEED[commonfuncs::get_player_number(boma)] = 3.6;
     }
-    else if !IS_FUNNY[entry_id] && HAMMER_SPEED[entry_id] != 1.88 {
-        HAMMER_SPEED[entry_id] = 1.88;
+    else if !IS_FUNNY[commonfuncs::get_player_number(boma)] && HAMMER_SPEED[commonfuncs::get_player_number(boma)] != 1.88 {
+        HAMMER_SPEED[commonfuncs::get_player_number(boma)] = 1.88;
     }
 
     // Jet Hammer Movement
@@ -27,7 +27,7 @@ unsafe fn dedede_frame(fighter: &mut L2CFighterCommon) {
     || MotionModule::motion_kind(boma) == smash::hash40("special_lw_fall")
     || MotionModule::motion_kind(boma) == smash::hash40("special_lw_hold_max") {
         let dedespeedy = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        macros::SET_SPEED_EX(fighter, HAMMER_SPEED[entry_id], dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        macros::SET_SPEED_EX(fighter, HAMMER_SPEED[commonfuncs::get_player_number(boma)], dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
 }
 

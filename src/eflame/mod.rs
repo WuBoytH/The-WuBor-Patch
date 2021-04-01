@@ -13,8 +13,7 @@ static mut CALLBACK : [bool; 8] = [false; 8];
 unsafe fn eflame_frame(fighter: &mut L2CFighterCommon) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if entry_id < 8 {
+    if commonfuncs::get_player_number(boma) < 8 {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
         && MotionModule::frame(boma) >= 20.0 {
             if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
@@ -23,12 +22,12 @@ unsafe fn eflame_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
             }
             if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
-                CALLBACK[entry_id] = true;
+                CALLBACK[commonfuncs::get_player_number(boma)] = true;
                 StatusModule::change_status_request_from_script(boma,*FIGHTER_EFLAME_STATUS_KIND_SPECIAL_S_CATCH,true);
             }
         }
 
-        if IS_FUNNY[entry_id] {
+        if IS_FUNNY[commonfuncs::get_player_number(boma)] {
             if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
@@ -43,12 +42,10 @@ unsafe fn eflame_frame(fighter: &mut L2CFighterCommon) {
 unsafe fn eflame_esword_frame(fighter: &mut L2CFighterBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-    let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if CALLBACK[o_entry_id] {
+    if CALLBACK[commonfuncs::get_player_number(boma)] {
         StatusModule::change_status_request_from_script(boma,*WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_BACK,true);
         if StatusModule::status_kind(boma) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_BACK {
-            CALLBACK[o_entry_id] = false;
+            CALLBACK[commonfuncs::get_player_number(boma)] = false;
         }
     }
 }

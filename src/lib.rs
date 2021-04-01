@@ -87,7 +87,7 @@ mod falco;
 // mod brave;
 mod purin;
 mod wiifit;
-use crate::wiifit::{DRAGON_INSTALL, CAN_DRAGON_INSTALL};
+use crate::wiifit::CAN_DRAGON_INSTALL;
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -105,22 +105,16 @@ move_type_again: bool) -> u64 {
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     // if IS_FUNNY[d_entry_id] {
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
-        println!("Is Ryu!");
         if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
         || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
         && MotionModule::frame(defender_boma) <= 30.0
         && MotionModule::frame(defender_boma) >= 4.0 {
-            println!("Is Secret Sensationing!");
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                println!("Getting opponent's boma");
                 OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
-                println!("Getting opponent's Position");
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
-                println!("Seeing if opponent is a Fighter!");
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    println!("Setting Jostle");
                     JostleModule::set_status(&mut *attacker_boma, false);
                 }
             }
@@ -136,7 +130,6 @@ move_type_again: bool) -> u64 {
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(oboma);
                     OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut smash::app::BattleObjectModuleAccessor) as u64;
                     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                        println!("Setting Jostle");
                         JostleModule::set_status(&mut *oboma, false);
                     }
                 }
@@ -146,7 +139,6 @@ move_type_again: bool) -> u64 {
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
                 OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
             }
-            println!("Finished Secret Sensation setting!");
             SECRET_SENSATION[d_entry_id] = true;
         }
     }
@@ -157,7 +149,6 @@ move_type_again: bool) -> u64 {
 // #[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
 // unsafe fn attack_replace(lua_state: u64) {
 //     let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
-//     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 //     let mut l2c_agent = L2CAgent::new(lua_state);
 //     let fighter_kind = smash::app::utility::get_kind(module_accessor);
 //     if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
@@ -183,12 +174,11 @@ move_type_again: bool) -> u64 {
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
     let ret = original!()(module_accessor,term);
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     
     // Fighter-Specific Param Edits
     
-    if fighter_kind == *FIGHTER_KIND_LUCINA && entry_id < 8 {
-        if LUCINA_SPECIAL_AIR_S[entry_id] && IS_FUNNY[entry_id] == false {
+    if fighter_kind == *FIGHTER_KIND_LUCINA && commonfuncs::get_player_number(module_accessor) < 8 {
+        if LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(module_accessor)] && IS_FUNNY[commonfuncs::get_player_number(module_accessor)] == false {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap if used once unless in Funny
                 return false;
             }
@@ -203,8 +193,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_SHULK && entry_id < 8 {
-        if SHULK_SPECIAL_LW[entry_id] && IS_FUNNY[entry_id] == false { // Disable Vision if used Burst and not in Funny
+    if fighter_kind == *FIGHTER_KIND_SHULK && commonfuncs::get_player_number(module_accessor) < 8 {
+        if SHULK_SPECIAL_LW[commonfuncs::get_player_number(module_accessor)] && IS_FUNNY[commonfuncs::get_player_number(module_accessor)] == false { // Disable Vision if used Burst and not in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return false;
             }
@@ -216,8 +206,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RICHTER && entry_id < 8 {
-        if RICHTER_SPECIAL_HI[entry_id] && IS_FUNNY[entry_id] == false { // Disable Multiple Up-Bs unless in Funny
+    if fighter_kind == *FIGHTER_KIND_RICHTER && commonfuncs::get_player_number(module_accessor) < 8 {
+        if RICHTER_SPECIAL_HI[commonfuncs::get_player_number(module_accessor)] && IS_FUNNY[commonfuncs::get_player_number(module_accessor)] == false { // Disable Multiple Up-Bs unless in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                 return false;
             }
@@ -229,16 +219,16 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RYU && entry_id < 8 {
-        if CAMERA[entry_id] {
+    if fighter_kind == *FIGHTER_KIND_RYU && commonfuncs::get_player_number(module_accessor) < 8 {
+        if CAMERA[commonfuncs::get_player_number(module_accessor)] {
             return false;
         }
         else {
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && entry_id < 8 {
-        if CAN_DRAGON_INSTALL[entry_id] == false
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && commonfuncs::get_player_number(module_accessor) < 8 {
+        if CAN_DRAGON_INSTALL[commonfuncs::get_player_number(module_accessor)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
@@ -255,13 +245,12 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
 pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64) -> i32 {
     let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let ret = original!()(boma, param_type, param_hash);
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
 
     // Global Param Edits
     
     if param_hash == smash::hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
-        if IS_FUNNY[entry_id] {
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
             return 5;
         }
         else {
@@ -270,7 +259,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
 
     if param_hash == smash::hash40("invalid_capture_frame") { // The Chain Grab Param
-        if IS_FUNNY[entry_id] {
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
             return 1;
         }
         else {
@@ -310,8 +299,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RIDLEY && entry_id < 8 { // Funny Ridley
-        if FUNNY_RIDLEY[entry_id] {
+    if fighter_kind == *FIGHTER_KIND_RIDLEY && commonfuncs::get_player_number(module_accessor) < 8 { // Funny Ridley
+        if FUNNY_RIDLEY[commonfuncs::get_player_number(module_accessor)] {
             if param_hash == smash::hash40("max_charge_frame") {// Funny Plasma Breath
                 return 300;
             }
@@ -326,8 +315,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_DAISY && entry_id < 8 {
-        if IS_FUNNY[entry_id] {
+    if fighter_kind == *FIGHTER_KIND_DAISY && commonfuncs::get_player_number(module_accessor) < 8 {
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
             if param_hash == smash::hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
                 return 300;
             }
@@ -339,8 +328,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_CLOUD && entry_id < 8 { // Limit Shenanigans
-        if IS_FUNNY[entry_id] {
+    if fighter_kind == *FIGHTER_KIND_CLOUD && commonfuncs::get_player_number(module_accessor) < 8 { // Limit Shenanigans
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
             if param_hash == smash::hash40("limit_break_clear_frame") {
                 return 6000;
             }
@@ -352,8 +341,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && entry_id < 8 {
-        if IS_FUNNY[entry_id] { // DRAGON INSTALL
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && commonfuncs::get_player_number(module_accessor) < 8 {
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] { // DRAGON INSTALL
             if param_hash == 0x202e02971b { // Unstaled Deep Breathing Timer hash
                 return 420;
             }
@@ -374,7 +363,6 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
 pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u64) -> f32 {
     let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let ret = original!()(boma, param_type, param_hash);
-    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let fighter_kind = smash::app::utility::get_kind(module_accessor);
 
     // Universal Param Edits
@@ -396,8 +384,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_CLOUD && entry_id < 8 { // Limit Shenanigans
-        if IS_FUNNY[entry_id] {
+    if fighter_kind == *FIGHTER_KIND_CLOUD && commonfuncs::get_player_number(module_accessor) < 8 { // Limit Shenanigans
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
             if param_hash == smash::hash40("lw2_spd_x_mul") {
                 return 0.6;
             }
@@ -418,8 +406,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_SHULK && entry_id < 8 {
-        if IS_FUNNY[entry_id] {
+    if fighter_kind == *FIGHTER_KIND_SHULK && commonfuncs::get_player_number(module_accessor) < 8 {
+        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
             if param_hash == smash::hash40("active_time_jump") {
                 return 100.0;
             }
@@ -470,8 +458,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
 pub fn music_function_replace(
     param_1: *mut u64,
     param_2: i64,
-    mut nus3bank_hash: u64,
-    mut nus3audio_hash: *const u64,
+    nus3bank_hash: u64,
+    nus3audio_hash: *const u64,
     nus3audio_index: usize,
 ) {
     println!("Param 1: {:?}", param_1);

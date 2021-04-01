@@ -5,20 +5,20 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::IS_FUNNY;
+use crate::commonfuncs;
 
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RIDLEY )]
 unsafe fn ridley_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    if entry_id < 8 {
-        if IS_FUNNY[entry_id] {
-            FUNNY_RIDLEY[entry_id] = true;
+    if commonfuncs::get_player_number(boma) < 8 {
+        if IS_FUNNY[commonfuncs::get_player_number(boma)] {
+            FUNNY_RIDLEY[commonfuncs::get_player_number(boma)] = true;
         }
         else if MotionModule::motion_kind(boma) != smash::hash40("special_n_shoot")
         && MotionModule::motion_kind(boma) != smash::hash40("special_air_n_shoot") {
-            FUNNY_RIDLEY[entry_id] = false;
+            FUNNY_RIDLEY[commonfuncs::get_player_number(boma)] = false;
         }
     }
 }

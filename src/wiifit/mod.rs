@@ -41,6 +41,7 @@ unsafe fn wiifit_frame(fighter: &mut L2CFighterCommon) {
                     CAN_DRAGON_INSTALL[commonfuncs::get_player_number(boma)] = false;
                     DI_FLASH[commonfuncs::get_player_number(boma)] = true;
                     FLASH_TIMER[commonfuncs::get_player_number(boma)] = 0;
+                    *NUS3AUDIO_HASH = 0x2faf78f2ffu64;
                     music_function_replace(MUSIC_PARAM1, MUSIC_PARAM2, 199195422212, NUS3AUDIO_HASH, 0);
                 }
             }

@@ -20,7 +20,7 @@ static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
 static mut MUSIC_OFFSET: usize = 0x3451f30; // default = 8.1.0 offset
 static mut MUSIC_PARAM1: *mut u64 = 0 as *mut u64;
 static mut MUSIC_PARAM2: i64 = 0;
-static mut NUS3AUDIO_HASH: *const u64 = 0 as *const u64;
+static mut NUS3AUDIO_HASH: *mut u64 = 0 as *mut u64;
 
 static MUSIC_SEARCH_CODE: &[u8] = &[
     0xfc, 0x6f, 0xba, 0xa9, 0xfa, 0x67, 0x01, 0xa9, 0xf8, 0x5f, 0x02, 0xa9, 0xf6, 0x57, 0x03, 0xa9,
@@ -459,14 +459,15 @@ pub fn music_function_replace(
     param_1: *mut u64,
     param_2: i64,
     nus3bank_hash: u64,
-    nus3audio_hash: *const u64,
+    nus3audio_hash: *mut u64,
     nus3audio_index: usize,
 ) {
-    println!("Param 1: {:?}", param_1);
-    println!("Param 2: {}", param_2);
-    println!("Nus3bank Hash: {:?}", nus3bank_hash);
-    println!("Nus3bank Hash: {:?}", nus3audio_hash);
     unsafe {
+        println!("Param 1: {:#x}", &*param_1);
+        println!("Param 2: {}", param_2);
+        println!("Nus3bank Hash: {}", nus3bank_hash);
+        println!("Nus3audio Raw: {:?}", nus3audio_hash);
+        println!("Nus3audio Hash: {:#x}", &*nus3audio_hash);
         MUSIC_PARAM1 = param_1;
         MUSIC_PARAM2 = param_2;
         NUS3AUDIO_HASH = nus3audio_hash;

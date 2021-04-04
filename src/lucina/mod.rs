@@ -250,7 +250,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 45;
         }
         if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] >= 0 && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == true {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) && !ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 if SP_GAUGE[commonfuncs::get_player_number(boma)] >= ONE_MORE_COST[commonfuncs::get_player_number(boma)] {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
@@ -298,7 +298,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = true;
             }
             if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] > 0 && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == true {
-                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) == false {
+                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                     if SP_GAUGE[commonfuncs::get_player_number(boma)] >= ONE_MORE_COST[commonfuncs::get_player_number(boma)] {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
                         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {

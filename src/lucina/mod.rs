@@ -566,6 +566,17 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[script( agent = "lucina", script = "sound_attackdash", category = ACMD_SOUND )]
+unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_lucina_rnd_attack"));
+        macros::PLAY_SE(fighter, Hash40::new("se_lucina_swing_ll"));
+    }
+}
+
 #[script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1257,6 +1268,7 @@ pub fn install() {
         lucina_utilt,
         lucina_dtilt,
         lucina_dashattack,
+        lucina_dashattacksound,
         lucina_nair,
         lucina_fair,
         lucina_bair,

@@ -2,8 +2,10 @@
 #![feature(proc_macro_hygiene)]
 #![feature(asm)]
 
-// use smash::lib::L2CValue;
-// use smash::lib::L2CAgent;
+// use smash::phx::*;
+use smash::hash40;
+use smash::lib::L2CValue;
+use smash::lib::L2CAgent;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::app::*;
@@ -21,6 +23,9 @@ static mut MUSIC_OFFSET: usize = 0x3451f30; // default = 8.1.0 offset
 static mut MUSIC_PARAM1: *mut u64 = 0 as *mut u64;
 static mut MUSIC_PARAM2: i64 = 0;
 static mut NUS3AUDIO_HASH: *mut u64 = 0 as *mut u64;
+
+static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
+static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];
 
 static MUSIC_SEARCH_CODE: &[u8] = &[
     0xfc, 0x6f, 0xba, 0xa9, 0xfa, 0x67, 0x01, 0xa9, 0xf8, 0x5f, 0x02, 0xa9, 0xf6, 0x57, 0x03, 0xa9,
@@ -50,7 +55,7 @@ mod custom;
 mod daisy;
 mod samusd;
 mod lucina;
-use crate::lucina::LUCINA_SPECIAL_AIR_S;
+use crate::lucina::{LUCINA_SPECIAL_AIR_S, shadow_id};
 mod littlemac;
 mod gaogaen;
 mod dedede;
@@ -169,6 +174,81 @@ move_type_again: bool) -> u64 {
 //     }
 //     original!()(lua_state);
 // }
+
+#[skyline::hook(replace = smash::app::sv_animcmd::PLAY_SE)]
+unsafe fn play_se_replace(lua_state: u64) {
+    let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = smash::app::utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let se = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_se = se.get_int();
+        for i in 0..36 {
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
+    }
+    original!()(lua_state);
+}
+
+#[skyline::hook(replace = smash::app::sv_animcmd::PLAY_SEQUENCE)]
+pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
+    let mut l2c_agent = L2CAgent::new(lua_state);
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let seq = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_seq = seq.get_int();
+        println!("Hash to compare: {}", new_seq);
+        for i in 0..8 {
+            println!("Comparing hash to: {}", hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])));
+            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
+                println!("Sequence is seq_lucina_rnd_{}", YU_SEQ[i]);
+                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq));
+    }
+    original!()(lua_state)
+}
+
+#[skyline::hook(replace = smash::app::sv_animcmd::PLAY_FLY_VOICE)]
+pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
+    let mut l2c_agent = L2CAgent::new(lua_state);
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let seq = l2c_agent.pop_lua_stack(1); //sound effect
+        let seq2 = l2c_agent.pop_lua_stack(1);
+        l2c_agent.clear_lua_stack();
+        let mut new_seq = seq.get_int();
+        let mut new_seq2 = seq2.get_int();
+        println!("Hash to compare: {}", new_seq);
+        for i in 0..8 {
+            println!("Comparing hash to: {}", hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])));
+            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
+                println!("Sequence is seq_lucina_rnd_{}", YU_SEQ[i]);
+                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            }
+            if seq2.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
+                println!("Sequence is seq_lucina_rnd_{}", YU_SEQ[i]);
+                new_seq2 = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq2));
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq));
+    }
+    original!()(lua_state)
+}
 
 #[skyline::hook(replace = smash::app::lua_bind::WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -552,6 +632,9 @@ pub fn main() {
     wiifit::install();
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);
+    skyline::install_hook!(play_se_replace);
+    skyline::install_hook!(play_fly_voice_replace);
+    skyline::install_hook!(play_sequence_replace);
     skyline::install_hook!(is_enable_transition_term_replace);
     skyline::install_hook!(get_param_float_replace);
     skyline::install_hook!(get_param_int_replace);

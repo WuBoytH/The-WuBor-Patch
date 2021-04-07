@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon, L2CFighterBase};
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -56,6 +56,100 @@ unsafe fn samusd_cshot_frame(fighter: &mut L2CFighterBase) {
     if MotionModule::motion_kind(boma) == smash::hash40("shoot") {
         let slowdownvec : Vector3f = Vector3f{x: 0.9,y: 0.0,z: 0.0};
         KineticModule::mul_speed(boma, &slowdownvec, *WEAPON_KINETIC_TYPE_NONE);
+    }
+}
+
+#[script( agent = "samusd", script = "game_attack11", category = ACMD_GAME )]
+unsafe fn samusd_jab1(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    sv_animcmd::frame(lua_state, 3.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 10, 0, 25, 2.0, 0.0, 10.0, 6.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 10, 0, 25, 2.3, 0.0, 10.0, 8.8, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 361, 10, 0, 25, 2.5, 0.0, 10.0, 12.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_add_reaction_frame(boma, 0, 4.0, false);
+        AttackModule::set_add_reaction_frame(boma, 1, 4.0, false);
+        AttackModule::set_add_reaction_frame(boma, 2, 4.0, false);
+    }
+    sv_animcmd::wait(lua_state, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 8.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    }
+}
+
+#[script( agent = "samusd", script = "game_attack12", category = ACMD_GAME )]
+unsafe fn samusd_jab2(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 5.0);
+    macros::FT_MOTION_RATE(fighter, 1.2);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 0, 75, 0, 50, 6.5, 0.0, 8.0, 14.0, None, None, None, 0.66, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -7.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[script( agent = "samusd", script = "effect_attack12", category = ACMD_EFFECT )]
+unsafe fn samusd_jab2effect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new_raw(0x15368a2a9c), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new_raw(0x0f4b6cda63), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+    }
+    sv_animcmd::frame(lua_state, 35.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x15368a2a9c), false, true);
+    }
+}
+
+#[script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION )]
+unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(boma, smash::hash40("body") as i64, smash::hash40("body_hide_gun") as i64);
+        ArticleModule::remove_exist(boma, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::generate_article(boma, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, false, 0);
+        ArticleModule::change_motion(boma, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, Hash40::new_raw(0x03dbd0dc6a), false, 0.0);
+    }
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+    }
+    sv_animcmd::frame(lua_state, 35.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::remove_exist(boma, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+	    VisibilityModule::set_int64(boma, smash::hash40("body") as i64, smash::hash40("body_normal") as i64);
+    }
+}
+
+#[script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND )]
+unsafe fn samusd_jab2sound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_samusd_smash_s01"));
+    }
+    sv_animcmd::wait(lua_state, 3.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_samusd_smash_s02"));
     }
 }
 
@@ -162,7 +256,7 @@ unsafe fn samusd_utilteffect(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 1, 20, -2, 1.7, -39, 92, 1.65, true);
-        macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.3);
     }
     sv_animcmd::wait(lua_state, 9.0);
     if macros::is_excute(fighter) {
@@ -325,6 +419,28 @@ unsafe fn samusd_uair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 24.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT )]
+unsafe fn samusd_uaireffect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 2.0, true);
+        macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
+    }
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 14, 3, 1.7, 100, 90, 1.2, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.8);
+    }
+    sv_animcmd::wait(lua_state, 9.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10c8b4f661), false, true);
+        macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
+        macros::BURN_COLOR_NORMAL(fighter);
     }
 }
 
@@ -585,6 +701,11 @@ pub fn install() {
         samusd_cshot_frame
     );
     smash_script::replace_scripts!(
+        samusd_jab1,
+        samusd_jab2,
+        samusd_jab2effect,
+        samusd_jab2ex,
+        samusd_jab2sound,
         samusd_dashattack,
         samusd_ftilt,
         samusd_ftilthi,
@@ -596,6 +717,7 @@ pub fn install() {
         samusd_usmash,
         samusd_dsmash,
         samusd_uair,
+        samusd_uaireffect,
         samusd_nair,
         samusd_fair,
         samusd_bair,

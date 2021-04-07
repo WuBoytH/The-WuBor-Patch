@@ -474,6 +474,20 @@ unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[script( agent = "lucina", script = "effect_attack11", category = ACMD_EFFECT )]
+unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 3.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 18, -5, 0, 330, 90, 0.95, true);
+    }
+    sv_animcmd::frame(lua_state, 4.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -1, 10, 10, 0, 0, 0, 1.15, 0, 0, 0, 0, 0, 360, true);
+    }
+}
+
 #[script( agent = "lucina", script = "game_attack12", category = ACMD_GAME )]
 unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -486,6 +500,19 @@ unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+#[script( agent = "lucina", script = "effect_attack12", category = ACMD_EFFECT )]
+unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), -5, 12, 2, 0, 0, 0, 0.95, true);
+    }
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -6, 12, 17, 0, 0, 0, 1.15, 0, 0, 0, 0, 0, 360, true);
     }
 }
 
@@ -1258,13 +1285,53 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT)]
+unsafe fn lucina_runeffect(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    macros::wait_loop_sync_mot(fighter);
+    sv_animcmd::frame(lua_state, 4.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    sv_animcmd::frame(lua_state, 21.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    sv_animcmd::frame(lua_state, 37.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    sv_animcmd::frame(lua_state, 56.0);
+}
+
+#[script( agent = "lucina", script = "sound_run", category = ACMD_SOUND)]
+unsafe fn lucina_runsound(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    macros::wait_loop_sync_mot(fighter);
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_STEP(fighter, Hash40::new("se_lucina_step_right_l"));
+    }
+    sv_animcmd::wait(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_STEP(fighter, Hash40::new("se_lucina_step_right_l"));
+    }
+    sv_animcmd::wait(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_STEP(fighter, Hash40::new("se_lucina_step_right_l"));
+    }
+    sv_animcmd::wait(lua_state, 17.0);
+}
+
 pub fn install() {
     smash_script::replace_fighter_frames!(
         lucina_frame
     );
     smash_script::replace_scripts!(
         lucina_jab1,
+        lucina_jab1eff,
         lucina_jab2,
+        lucina_jab2eff,
         lucina_utilt,
         lucina_dtilt,
         lucina_dashattack,
@@ -1285,7 +1352,9 @@ pub fn install() {
         lucina_dspecial,
         lucina_dspecialhit,
         lucina_uspecial,
-        lucina_uspecialair
+        lucina_uspecialair,
+        lucina_runeffect,
+        lucina_runsound
     );
     // skyline::install_hook!(lucina_is_enable_transition_term_replace);
 }

@@ -249,6 +249,13 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     SEC_SEN_STATE[commonfuncs::get_player_number(boma)] = true;
                     EX_FLASH[commonfuncs::get_player_number(boma)] = true;
                     FLASH_TIMER[commonfuncs::get_player_number(boma)] = -1;
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                    macros::BURN_COLOR(fighter, 0.0, 0.55, 1.0, 0.7);
                 }
                 if MotionModule::frame(boma) <= 30.0
                 && MotionModule::frame(boma) >= 4.0 {
@@ -257,6 +264,8 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     HitModule::set_hit_stop_mul(boma, 0.0, smash::app::HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
                 }
                 else {
+                    macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x15db57d7a6), false, true);
+                    macros::BURN_COLOR_NORMAL(fighter);
                     DamageModule::set_damage_lock(boma, false);
                     DamageModule::set_no_reaction_no_effect(boma, false);
                     HitModule::set_hit_stop_mul(boma, 1.0, smash::app::HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
@@ -273,6 +282,8 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 HitModule::set_hit_stop_mul(boma, 1.0, smash::app::HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
                 EX_FLASH[commonfuncs::get_player_number(boma)] = false;
                 macros::COL_NORMAL(fighter);
+                macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x15db57d7a6), false, true);
+                macros::BURN_COLOR_NORMAL(fighter);
                 SEC_SEN_STATE[commonfuncs::get_player_number(boma)] = false;
                 HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
             }

@@ -307,6 +307,14 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
+    if fighter_kind == *FIGHTER_KIND_KEN {
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+            return false;
+        }
+        else {
+            return ret;
+        }
+    }
     if fighter_kind == *FIGHTER_KIND_WIIFIT && commonfuncs::get_player_number(module_accessor) < 8 {
         if CAN_DRAGON_INSTALL[commonfuncs::get_player_number(module_accessor)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {

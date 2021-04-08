@@ -252,7 +252,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
         if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] >= 0 && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == true {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 if SP_GAUGE[commonfuncs::get_player_number(boma)] >= ONE_MORE_COST[commonfuncs::get_player_number(boma)] {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                         _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
                         CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
@@ -261,6 +261,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
             else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[commonfuncs::get_player_number(boma)] == 100.0 && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false && shadow_id(boma) {
+                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
                 if StatusModule::status_kind(boma) == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
                     _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
@@ -300,7 +301,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] > 0 && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == true {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                     if SP_GAUGE[commonfuncs::get_player_number(boma)] >= ONE_MORE_COST[commonfuncs::get_player_number(boma)] {
-                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                             _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
                             CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
@@ -309,7 +310,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
                 else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[commonfuncs::get_player_number(boma)] == 100.0 && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false && shadow_id(boma) {
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
+                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
                     if StatusModule::status_kind(boma) == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
                         _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
                         CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;

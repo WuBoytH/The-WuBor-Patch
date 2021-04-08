@@ -69,7 +69,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
             }
             else if CANCEL[commonfuncs::get_player_number(boma)]
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                    CANCEL[commonfuncs::get_player_number(boma)] = false;
+                CANCEL[commonfuncs::get_player_number(boma)] = false;
             }
         }
 

@@ -10,9 +10,16 @@ use smash_script::*;
 // use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
-static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
+pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
+/*
+State list:
+0 = Can Quick Step
+2 = Cannot Quick Step
+1 = Used to show you're in the first 22 frames of Quick Step.
+*/
 static mut CANCEL : [bool; 8] = [false; 8];
 static mut EX_FLASH : [bool; 8] = [false; 8];
+static mut COMBO_TIMER : [i32; 8] = [-1; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
@@ -26,6 +33,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             QUICK_STEP_STATE[get_player_number(boma)] = 0;
             CANCEL[get_player_number(boma)] = false;
             EX_FLASH[get_player_number(boma)] = false;
+            COMBO_TIMER[get_player_number(boma)] = -1;
         }
 
         // V Skill 1
@@ -46,18 +54,42 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             CANCEL[get_player_number(boma)] = false;
         }
 
+        if MotionModule::motion_kind(boma) == smash::hash40("special_lw_step_f")
+        && MotionModule::frame(boma) == 2.0 {
+            MotionModule::change_motion(boma, Hash40::new("run"), 0.0, 1.0, true, 0.0, false, false);
+            CancelModule::enable_cancel(boma);
+        }
+
+        if (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_RUN
+        && StatusModule::status_kind(boma) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)
+        && QUICK_STEP_STATE[get_player_number(boma)] > 0 {
+            QUICK_STEP_STATE[get_player_number(boma)] = 2;
+        }
+
         if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-        && CANCEL[get_player_number(boma)] {
+        && CANCEL[get_player_number(boma)]
+        && QUICK_STEP_STATE[get_player_number(boma)] == 0 {
             if MotionModule::motion_kind(boma) == smash::hash40("attack_air_b") {
                 PostureModule::reverse_lr(boma);
             }
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
             if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-                fighter.change_status(FIGHTER_STATUS_KIND_RUN.into(), false.into());
-                QUICK_STEP_STATE[get_player_number(boma)] = 2;
+                QUICK_STEP_STATE[get_player_number(boma)] = 1;
             }
             else {
-                fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
+                QUICK_STEP_STATE[get_player_number(boma)] = 2;
             }
+        }
+
+        if QUICK_STEP_STATE[get_player_number(boma)] == 2 {
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+                COMBO_TIMER[get_player_number(boma)] = 60;
+            }
+            if COMBO_TIMER[get_player_number(boma)] == 0 {
+                QUICK_STEP_STATE[get_player_number(boma)] = 0;
+            }
+            COMBO_TIMER[get_player_number(boma)] -= 1;
         }
 
         // V Shift

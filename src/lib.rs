@@ -95,6 +95,7 @@ mod purin;
 mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
+use crate::ken::QUICK_STEP_STATE;
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -309,9 +310,40 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_KEN {
+    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
         if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
+        }
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT
+        || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON {
+            if QUICK_STEP_STATE[get_player_number(module_accessor)] == 1 {
+                return false;
+            }
+            else {
+                return ret;
+            }
         }
         else {
             return ret;

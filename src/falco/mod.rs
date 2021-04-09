@@ -5,7 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::IS_FUNNY;
-use crate::commonfuncs;
+use crate::commonfuncs::*;
 
 static mut KAA : [bool; 8] = [false; 8];
 
@@ -14,23 +14,23 @@ unsafe fn falco_frame(fighter: &mut L2CFighterCommon) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
 
-    if commonfuncs::get_player_number(boma) < 8 {
-        if IS_FUNNY[commonfuncs::get_player_number(boma)] {
+    if get_player_number(boma) < 8 {
+        if IS_FUNNY[get_player_number(boma)] {
             if MotionModule::motion_kind(boma) == smash::hash40("appeal_lw_l")
             || MotionModule::motion_kind(boma) == smash::hash40("appeal_lw_r") {
-                KAA[commonfuncs::get_player_number(boma)] = true;
+                KAA[get_player_number(boma)] = true;
                 println!("Is Down Taunt!");
             }
             else if MotionModule::motion_kind(boma) != smash::hash40("attack_lw4")
             && MotionModule::motion_kind(boma) != smash::hash40("appeal_lw_l")
             && MotionModule::motion_kind(boma) != smash::hash40("appeal_lw_r")
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SQUAT {
-                KAA[commonfuncs::get_player_number(boma)] = false;
+                KAA[get_player_number(boma)] = false;
                 println!("Can no longer KAA");
             }
         }
-        else if KAA[commonfuncs::get_player_number(boma)] {
-            KAA[commonfuncs::get_player_number(boma)] = false;
+        else if KAA[get_player_number(boma)] {
+            KAA[get_player_number(boma)] = false;
         }
     }
 }
@@ -51,7 +51,7 @@ unsafe fn falco_dsmash(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
     }
     sv_animcmd::frame(lua_state, 8.0);
-    if KAA[commonfuncs::get_player_number(boma)] {
+    if KAA[get_player_number(boma)] {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 25, 78, 0, 20, 4.3, 0.0, 1.7, 9.1, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_death"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 15.0, 25, 78, 0, 20, 4.3, 0.0, 1.7, -12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_death"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

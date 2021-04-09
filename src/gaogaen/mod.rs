@@ -8,7 +8,7 @@ use smash::app::sv_animcmd;
 //use smash::app::{self};
 use smash_script::*;
 use crate::IS_FUNNY;
-use crate::commonfuncs;
+use crate::commonfuncs::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
 unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
@@ -21,7 +21,7 @@ unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
     && MotionModule::frame(boma) > 19.0
     && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    || IS_FUNNY[commonfuncs::get_player_number(boma)])
+    || IS_FUNNY[get_player_number(boma)])
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
     }

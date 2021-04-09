@@ -6,7 +6,7 @@ use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::{IS_FUNNY, IS_FGC};
-use crate::commonfuncs;
+use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::{self, /***/};
 
@@ -25,34 +25,34 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
             .as_ptr(),
     );
     if ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
-    && IS_FUNNY[commonfuncs::get_player_number(boma)] == false {
-        IS_FUNNY[commonfuncs::get_player_number(boma)] = true;
+    && IS_FUNNY[get_player_number(boma)] == false {
+        IS_FUNNY[get_player_number(boma)] = true;
     }
     if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
     }
     // if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
     if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD || smash::app::sv_information::is_ready_go() == false)
-    && IS_FUNNY[commonfuncs::get_player_number(boma)] {
-        IS_FUNNY[commonfuncs::get_player_number(boma)] = false;
+    && IS_FUNNY[get_player_number(boma)] {
+        IS_FUNNY[get_player_number(boma)] = false;
     }
     if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
-    && IS_FGC[commonfuncs::get_player_number(boma)] == false {
-        IS_FGC[commonfuncs::get_player_number(boma)] = true;
+    && IS_FGC[get_player_number(boma)] == false {
+        IS_FGC[get_player_number(boma)] = true;
         println!("FGC is on!");
     }
-    if IS_FGC[commonfuncs::get_player_number(boma)] {
+    if IS_FGC[get_player_number(boma)] {
         if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR) {
             WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR);
             println!("Disabled Badge Reflector!");
         }
     }
     if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_BADGE))
-    && IS_FGC[commonfuncs::get_player_number(boma)] {
-        IS_FGC[commonfuncs::get_player_number(boma)] = false;
+    && IS_FGC[get_player_number(boma)] {
+        IS_FGC[get_player_number(boma)] = false;
         println!("FGC is off!");
     }
-    if IS_FUNNY[commonfuncs::get_player_number(boma)] {
+    if IS_FUNNY[get_player_number(boma)] {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
             StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
         }

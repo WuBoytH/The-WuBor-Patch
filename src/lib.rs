@@ -51,6 +51,7 @@ macro_rules! c_str {
 }
 
 mod commonfuncs;
+use crate::commonfuncs::*;
 mod custom;
 mod daisy;
 mod samusd;
@@ -93,6 +94,7 @@ mod falco;
 mod purin;
 mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
+mod ken;
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -257,8 +259,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
     
     // Fighter-Specific Param Edits
     
-    if fighter_kind == *FIGHTER_KIND_LUCINA && commonfuncs::get_player_number(module_accessor) < 8 {
-        if LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(module_accessor)] && IS_FUNNY[commonfuncs::get_player_number(module_accessor)] == false {
+    if fighter_kind == *FIGHTER_KIND_LUCINA && get_player_number(module_accessor) < 8 {
+        if LUCINA_SPECIAL_AIR_S[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap if used once unless in Funny
                 return false;
             }
@@ -273,8 +275,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_SHULK && commonfuncs::get_player_number(module_accessor) < 8 {
-        if SHULK_SPECIAL_LW[commonfuncs::get_player_number(module_accessor)] && IS_FUNNY[commonfuncs::get_player_number(module_accessor)] == false { // Disable Vision if used Burst and not in Funny
+    if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(module_accessor) < 8 {
+        if SHULK_SPECIAL_LW[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false { // Disable Vision if used Burst and not in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return false;
             }
@@ -286,8 +288,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RICHTER && commonfuncs::get_player_number(module_accessor) < 8 {
-        if RICHTER_SPECIAL_HI[commonfuncs::get_player_number(module_accessor)] && IS_FUNNY[commonfuncs::get_player_number(module_accessor)] == false { // Disable Multiple Up-Bs unless in Funny
+    if fighter_kind == *FIGHTER_KIND_RICHTER && get_player_number(module_accessor) < 8 {
+        if RICHTER_SPECIAL_HI[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false { // Disable Multiple Up-Bs unless in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                 return false;
             }
@@ -299,8 +301,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RYU && commonfuncs::get_player_number(module_accessor) < 8 {
-        if CAMERA[commonfuncs::get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_RYU && get_player_number(module_accessor) < 8 {
+        if CAMERA[get_player_number(module_accessor)] {
             return false;
         }
         else {
@@ -315,8 +317,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && commonfuncs::get_player_number(module_accessor) < 8 {
-        if CAN_DRAGON_INSTALL[commonfuncs::get_player_number(module_accessor)] == false
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(module_accessor) < 8 {
+        if CAN_DRAGON_INSTALL[get_player_number(module_accessor)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
@@ -338,7 +340,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     // Global Param Edits
     
     if param_hash == smash::hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
+        if IS_FUNNY[get_player_number(module_accessor)] {
             return 5;
         }
         else {
@@ -347,7 +349,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
 
     if param_hash == smash::hash40("invalid_capture_frame") { // The Chain Grab Param
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
+        if IS_FUNNY[get_player_number(module_accessor)] {
             return 1;
         }
         else {
@@ -387,8 +389,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RIDLEY && commonfuncs::get_player_number(module_accessor) < 8 { // Funny Ridley
-        if FUNNY_RIDLEY[commonfuncs::get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_RIDLEY && get_player_number(module_accessor) < 8 { // Funny Ridley
+        if FUNNY_RIDLEY[get_player_number(module_accessor)] {
             if param_hash == smash::hash40("max_charge_frame") {// Funny Plasma Breath
                 return 300;
             }
@@ -403,8 +405,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_DAISY && commonfuncs::get_player_number(module_accessor) < 8 {
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_DAISY && get_player_number(module_accessor) < 8 {
+        if IS_FUNNY[get_player_number(module_accessor)] {
             if param_hash == smash::hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
                 return 300;
             }
@@ -416,8 +418,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_CLOUD && commonfuncs::get_player_number(module_accessor) < 8 { // Limit Shenanigans
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(module_accessor) < 8 { // Limit Shenanigans
+        if IS_FUNNY[get_player_number(module_accessor)] {
             if param_hash == smash::hash40("limit_break_clear_frame") {
                 return 6000;
             }
@@ -429,8 +431,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && commonfuncs::get_player_number(module_accessor) < 8 {
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] { // DRAGON INSTALL
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(module_accessor) < 8 {
+        if IS_FUNNY[get_player_number(module_accessor)] { // DRAGON INSTALL
             if param_hash == 0x202e02971b { // Unstaled Deep Breathing Timer hash
                 return 420;
             }
@@ -472,8 +474,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_CLOUD && commonfuncs::get_player_number(module_accessor) < 8 { // Limit Shenanigans
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(module_accessor) < 8 { // Limit Shenanigans
+        if IS_FUNNY[get_player_number(module_accessor)] {
             if param_hash == smash::hash40("lw2_spd_x_mul") {
                 return 0.6;
             }
@@ -494,8 +496,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_SHULK && commonfuncs::get_player_number(module_accessor) < 8 {
-        if IS_FUNNY[commonfuncs::get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(module_accessor) < 8 {
+        if IS_FUNNY[get_player_number(module_accessor)] {
             if param_hash == smash::hash40("active_time_jump") {
                 return 100.0;
             }
@@ -537,6 +539,31 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
+    // if fighter_kind == *FIGHTER_KIND_RYU && get_player_number(module_accessor) < 8 { // FADC but Secret Sensation
+    //     if SECRET_SENSATION[get_player_number(module_accessor)] {
+    //         if param_hash == smash::hash40("contact_fighter_speed_x_mul") {
+    //             return 0.0;
+    //         }
+    //         if param_hash == smash::hash40("contact_fighter_dist_max") {
+    //             return 0.0;
+    //         }
+    //         if param_hash == smash::hash40("push_speed_x") {
+    //             return 0.0;
+    //         }
+    //         if param_hash == smash::hash40("jostle_push_speed") {
+    //             return 0.0;
+    //         }
+    //         if param_hash == smash::hash40("jostle_overlap_rate") {
+    //             return 0.0;
+    //         }
+    //         else {
+    //             return ret;
+    //         }
+    //     }
+    //     else {
+    //         return ret;
+    //     }
+    // }
     else {
         return ret;
     }
@@ -638,6 +665,7 @@ pub fn main() {
     // brave::install();
     purin::install();
     wiifit::install();
+    ken::install();
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);
     skyline::install_hook!(play_se_replace);

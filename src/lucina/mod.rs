@@ -9,7 +9,7 @@ use smash::phx::Hash40;
 use smash::app::sv_animcmd;
 use smash::phx::Vector3f;
 use crate::IS_FUNNY;
-use crate::commonfuncs;
+use crate::commonfuncs::*;
 
 static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 static mut _ONE_MORE_COUNTER: [i32; 8] = [0; 8];
@@ -33,10 +33,10 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
     let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40{hash: hash40("sys_counter_flash")}, Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-    if SHADOW_FRENZY[commonfuncs::get_player_number(module_accessor)] == false {
+    if SHADOW_FRENZY[get_player_number(module_accessor)] == false {
         EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
     }
-    else if SHADOW_FRENZY[commonfuncs::get_player_number(module_accessor)] == true {
+    else if SHADOW_FRENZY[get_player_number(module_accessor)] == true {
         EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
     }
 }
@@ -90,9 +90,9 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
 // pub unsafe fn lucina_is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
 //     let fighter_kind = smash::app::utility::get_kind(module_accessor);
 //     let ret = original!()(module_accessor,term);
-//     let commonfuncs::get_player_number(boma) = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_commonfuncs::get_player_number(boma)) as usize;
+//     let get_player_number(boma) = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_get_player_number(boma)) as usize;
 //     if fighter_kind == *FIGHTER_KIND_LUCINA {
-//         if LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(boma)] {
+//         if LUCINA_SPECIAL_AIR_S[get_player_number(boma)] {
 //             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S {
 //                 return false;
 //             }
@@ -116,241 +116,241 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
 unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-    if commonfuncs::get_player_number(boma) < 8 {
+    if get_player_number(boma) < 8 {
 
         //Meter Control
         
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
-            LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(boma)] = false;
-            _TIME_COUNTER[commonfuncs::get_player_number(boma)] = 0;
-            EX_COST[commonfuncs::get_player_number(boma)] = 25.0;
-            ONE_MORE_COST[commonfuncs::get_player_number(boma)] = 25.0;
+            LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = false;
+            _TIME_COUNTER[get_player_number(boma)] = 0;
+            EX_COST[get_player_number(boma)] = 25.0;
+            ONE_MORE_COST[get_player_number(boma)] = 25.0;
             if shadow_id(boma) {
-                if SHADOW_FRENZY[commonfuncs::get_player_number(boma)] {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] = SP_GAUGE[commonfuncs::get_player_number(boma)] / 2.0;
-                    SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = false;
+                if SHADOW_FRENZY[get_player_number(boma)] {
+                    SP_GAUGE[get_player_number(boma)] = SP_GAUGE[get_player_number(boma)] / 2.0;
+                    SHADOW_FRENZY[get_player_number(boma)] = false;
                 }
             }
             else {
-                SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] = 100.0;
+                SP_GAUGE_MAX[get_player_number(boma)] = 100.0;
                 AttackModule::set_power_up(boma, 1.0);
                 DamageModule::set_damage_mul(boma, 1.0);
-                SP_GAUGE[commonfuncs::get_player_number(boma)] = 0.0;
-                AWAKENING[commonfuncs::get_player_number(boma)] = false;
+                SP_GAUGE[get_player_number(boma)] = 0.0;
+                AWAKENING[get_player_number(boma)] = false;
             }
         }
         if smash::app::sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(boma, 1.0);
-            LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(boma)] = false;
-            SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = false;
-            _TIME_COUNTER[commonfuncs::get_player_number(boma)] = 0;
-            EX_COST[commonfuncs::get_player_number(boma)] = 25.0;
-            ONE_MORE_COST[commonfuncs::get_player_number(boma)] = 25.0;
-            if !(smash::app::smashball::is_training_mode() && TRAINING_TOOLS[commonfuncs::get_player_number(boma)]) {
-                SP_GAUGE[commonfuncs::get_player_number(boma)] = 0.0;
-                AWAKENING[commonfuncs::get_player_number(boma)] = false;
-                TRAINING_TOOLS[commonfuncs::get_player_number(boma)] = false;
-                SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] = 100.0;
-                DAMAGE_TAKEN[commonfuncs::get_player_number(boma)] = 0.0;
-                DAMAGE_TAKEN_PREV[commonfuncs::get_player_number(boma)] = 0.0;
+            LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = false;
+            SHADOW_FRENZY[get_player_number(boma)] = false;
+            _TIME_COUNTER[get_player_number(boma)] = 0;
+            EX_COST[get_player_number(boma)] = 25.0;
+            ONE_MORE_COST[get_player_number(boma)] = 25.0;
+            if !(smash::app::smashball::is_training_mode() && TRAINING_TOOLS[get_player_number(boma)]) {
+                SP_GAUGE[get_player_number(boma)] = 0.0;
+                AWAKENING[get_player_number(boma)] = false;
+                TRAINING_TOOLS[get_player_number(boma)] = false;
+                SP_GAUGE_MAX[get_player_number(boma)] = 100.0;
+                DAMAGE_TAKEN[get_player_number(boma)] = 0.0;
+                DAMAGE_TAKEN_PREV[get_player_number(boma)] = 0.0;
             }
         }
-        DAMAGE_TAKEN[commonfuncs::get_player_number(boma)] = DamageModule::damage(boma, 0);
-        if DAMAGE_TAKEN[commonfuncs::get_player_number(boma)] != DAMAGE_TAKEN_PREV[commonfuncs::get_player_number(boma)] && DAMAGE_TAKEN[commonfuncs::get_player_number(boma)] > DAMAGE_TAKEN_PREV[commonfuncs::get_player_number(boma)] && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false {
-            METER_GAIN[commonfuncs::get_player_number(boma)] = (DAMAGE_TAKEN[commonfuncs::get_player_number(boma)] - DAMAGE_TAKEN_PREV[commonfuncs::get_player_number(boma)]) * (1.0/6.0);
-            if SP_GAUGE[commonfuncs::get_player_number(boma)] + METER_GAIN[commonfuncs::get_player_number(boma)] < SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] {
-                SP_GAUGE[commonfuncs::get_player_number(boma)] += METER_GAIN[commonfuncs::get_player_number(boma)];
+        DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
+        if DAMAGE_TAKEN[get_player_number(boma)] != DAMAGE_TAKEN_PREV[get_player_number(boma)] && DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)] && SHADOW_FRENZY[get_player_number(boma)] == false {
+            METER_GAIN[get_player_number(boma)] = (DAMAGE_TAKEN[get_player_number(boma)] - DAMAGE_TAKEN_PREV[get_player_number(boma)]) * (1.0/6.0);
+            if SP_GAUGE[get_player_number(boma)] + METER_GAIN[get_player_number(boma)] < SP_GAUGE_MAX[get_player_number(boma)] {
+                SP_GAUGE[get_player_number(boma)] += METER_GAIN[get_player_number(boma)];
             }
             else {
-                SP_GAUGE[commonfuncs::get_player_number(boma)] = SP_GAUGE_MAX[commonfuncs::get_player_number(boma)];
+                SP_GAUGE[get_player_number(boma)] = SP_GAUGE_MAX[get_player_number(boma)];
             }
         }
-        DAMAGE_TAKEN_PREV[commonfuncs::get_player_number(boma)] = DAMAGE_TAKEN[commonfuncs::get_player_number(boma)];
-        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false {
+        DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
+        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[get_player_number(boma)] == false {
             if MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
             && MotionModule::motion_kind(boma) != smash::hash40("special_s1")
             && MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
             && MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
             && MotionModule::motion_kind(boma) != smash::hash40("special_hi")
             && MotionModule::motion_kind(boma) != smash::hash40("special_air_hi") {
-                IS_EX[commonfuncs::get_player_number(boma)] = false;
+                IS_EX[get_player_number(boma)] = false;
             }
-            if IS_EX[commonfuncs::get_player_number(boma)] == false {
-                METER_GAIN[commonfuncs::get_player_number(boma)] = AttackModule::get_power(boma, 0, false, 1.0, false);
+            if IS_EX[get_player_number(boma)] == false {
+                METER_GAIN[get_player_number(boma)] = AttackModule::get_power(boma, 0, false, 1.0, false);
                 if shadow_id(boma) == false {
-                    METER_GAIN[commonfuncs::get_player_number(boma)] *= 0.75;
+                    METER_GAIN[get_player_number(boma)] *= 0.75;
                 }
-                if IS_FUNNY[commonfuncs::get_player_number(boma)] {
-                    METER_GAIN[commonfuncs::get_player_number(boma)] *= 3.0;
+                if IS_FUNNY[get_player_number(boma)] {
+                    METER_GAIN[get_player_number(boma)] *= 3.0;
                 }
-                if SP_GAUGE[commonfuncs::get_player_number(boma)] + METER_GAIN[commonfuncs::get_player_number(boma)] < SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] += METER_GAIN[commonfuncs::get_player_number(boma)];
+                if SP_GAUGE[get_player_number(boma)] + METER_GAIN[get_player_number(boma)] < SP_GAUGE_MAX[get_player_number(boma)] {
+                    SP_GAUGE[get_player_number(boma)] += METER_GAIN[get_player_number(boma)];
                 }
                 else {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] = SP_GAUGE_MAX[commonfuncs::get_player_number(boma)];
+                    SP_GAUGE[get_player_number(boma)] = SP_GAUGE_MAX[get_player_number(boma)];
                 }
             }
         }
         if shadow_id(boma) == true {
             DamageModule::set_damage_mul(boma, 0.92);
             AttackModule::set_power_up(boma, 0.8);
-            if SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == true {
-                EX_COST[commonfuncs::get_player_number(boma)] = 6.25;
-                ONE_MORE_COST[commonfuncs::get_player_number(boma)] = 12.5;
-                if !TRAINING_TOOLS[commonfuncs::get_player_number(boma)] {
-                    if IS_FUNNY[commonfuncs::get_player_number(boma)] {
-                        SP_GAUGE[commonfuncs::get_player_number(boma)] -= 1.0/64.0;
+            if SHADOW_FRENZY[get_player_number(boma)] == true {
+                EX_COST[get_player_number(boma)] = 6.25;
+                ONE_MORE_COST[get_player_number(boma)] = 12.5;
+                if !TRAINING_TOOLS[get_player_number(boma)] {
+                    if IS_FUNNY[get_player_number(boma)] {
+                        SP_GAUGE[get_player_number(boma)] -= 1.0/64.0;
                     }
                     else {
-                        SP_GAUGE[commonfuncs::get_player_number(boma)] -= 1.0/16.0;
+                        SP_GAUGE[get_player_number(boma)] -= 1.0/16.0;
                     }
                 }
             }
             else {
-                EX_COST[commonfuncs::get_player_number(boma)] = 25.0;
-                ONE_MORE_COST[commonfuncs::get_player_number(boma)] = 25.0;
+                EX_COST[get_player_number(boma)] = 25.0;
+                ONE_MORE_COST[get_player_number(boma)] = 25.0;
             }
         }
         else {
             AttackModule::set_power_up(boma, 1.0);
             if DamageModule::damage(boma, 0) > 100.0 {
-                if AWAKENING[commonfuncs::get_player_number(boma)] == false
+                if AWAKENING[get_player_number(boma)] == false
                 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-                && (!commonfuncs::is_damage_check(boma)
-                || IS_FUNNY[commonfuncs::get_player_number(boma)])
+                && (!is_damage_check(boma)
+                || IS_FUNNY[get_player_number(boma)])
                 && smash::app::sv_information::is_ready_go() == true {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] += 50.0;
-                    AWAKENING[commonfuncs::get_player_number(boma)] = true;
+                    SP_GAUGE[get_player_number(boma)] += 50.0;
+                    AWAKENING[get_player_number(boma)] = true;
                     macros::FT_START_CUTIN(fighter);
                 }
             }
         }
-        if AWAKENING[commonfuncs::get_player_number(boma)] == true {
+        if AWAKENING[get_player_number(boma)] == true {
             DamageModule::set_damage_mul(boma, 0.8);
-            SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] = 150.0;
+            SP_GAUGE_MAX[get_player_number(boma)] = 150.0;
         }
-        if SP_GAUGE[commonfuncs::get_player_number(boma)] <= 0.0{
-            SP_GAUGE[commonfuncs::get_player_number(boma)] = 0.0;
-            SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = false;
+        if SP_GAUGE[get_player_number(boma)] <= 0.0{
+            SP_GAUGE[get_player_number(boma)] = 0.0;
+            SHADOW_FRENZY[get_player_number(boma)] = false;
         }
-        if SP_GAUGE[commonfuncs::get_player_number(boma)] > SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] {
-            SP_GAUGE[commonfuncs::get_player_number(boma)] = SP_GAUGE_MAX[commonfuncs::get_player_number(boma)];
+        if SP_GAUGE[get_player_number(boma)] > SP_GAUGE_MAX[get_player_number(boma)] {
+            SP_GAUGE[get_player_number(boma)] = SP_GAUGE_MAX[get_player_number(boma)];
         }
 
         // Special Lw Check
 
         if StatusModule::prev_status_kind(boma, 0) != StatusModule::status_kind(boma) {
-            _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 0;
+            _ONE_MORE_COUNTER[get_player_number(boma)] = 0;
         }
 
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
         && MotionModule::motion_kind(boma) != smash::hash40("catch_attack")
-        && !((MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_air_hi")) && IS_EX[commonfuncs::get_player_number(boma)]) {
-            CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = true;
-            _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 45;
+        && !((MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_air_hi")) && IS_EX[get_player_number(boma)]) {
+            CAN_ONE_MORE[get_player_number(boma)] = true;
+            _ONE_MORE_COUNTER[get_player_number(boma)] = 45;
         }
-        if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] >= 0 && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == true {
+        if _ONE_MORE_COUNTER[get_player_number(boma)] >= 0 && CAN_ONE_MORE[get_player_number(boma)] == true {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-                if SP_GAUGE[commonfuncs::get_player_number(boma)] >= ONE_MORE_COST[commonfuncs::get_player_number(boma)] {
+                if SP_GAUGE[get_player_number(boma)] >= ONE_MORE_COST[get_player_number(boma)] {
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                        _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
-                        CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
-                        SP_GAUGE[commonfuncs::get_player_number(boma)] -= ONE_MORE_COST[commonfuncs::get_player_number(boma)];
+                        _ONE_MORE_COUNTER[get_player_number(boma)] = -1;
+                        CAN_ONE_MORE[get_player_number(boma)] = false;
+                        SP_GAUGE[get_player_number(boma)] -= ONE_MORE_COST[get_player_number(boma)];
                     }
                 }
             }
-            else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[commonfuncs::get_player_number(boma)] == 100.0 && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false && shadow_id(boma) {
+            else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[get_player_number(boma)] == 100.0 && SHADOW_FRENZY[get_player_number(boma)] == false && shadow_id(boma) {
                 fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
                 if StatusModule::status_kind(boma) == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
-                    _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
-                    CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
-                    SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = true;
+                    _ONE_MORE_COUNTER[get_player_number(boma)] = -1;
+                    CAN_ONE_MORE[get_player_number(boma)] = false;
+                    SHADOW_FRENZY[get_player_number(boma)] = true;
                 }
             }
-            _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] -= 1;
-            if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] < 0 {
-                CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
+            _ONE_MORE_COUNTER[get_player_number(boma)] -= 1;
+            if _ONE_MORE_COUNTER[get_player_number(boma)] < 0 {
+                CAN_ONE_MORE[get_player_number(boma)] = false;
             }
         }
         else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROW {
             let throwframe : f32;
             if MotionModule::motion_kind(boma) == smash::hash40("throw_f") {
-                _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 4;
+                _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 18.0;
             }
             else if MotionModule::motion_kind(boma) == smash::hash40("throw_b") {
-                _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 4;
+                _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 19.0;
             }
             else if MotionModule::motion_kind(boma) == smash::hash40("throw_hi") {
-                _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 4;
+                _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 13.0;
             }
             else if MotionModule::motion_kind(boma) == smash::hash40("throw_lw") {
-                _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = 4;
+                _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 20.0;
             }
             else{
                 throwframe = 20.0;
             }
-            if MotionModule::frame(boma) > throwframe && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == false {
-                CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = true;
+            if MotionModule::frame(boma) > throwframe && CAN_ONE_MORE[get_player_number(boma)] == false {
+                CAN_ONE_MORE[get_player_number(boma)] = true;
             }
-            if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] > 0 && CAN_ONE_MORE[commonfuncs::get_player_number(boma)] == true {
+            if _ONE_MORE_COUNTER[get_player_number(boma)] > 0 && CAN_ONE_MORE[get_player_number(boma)] == true {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
-                    if SP_GAUGE[commonfuncs::get_player_number(boma)] >= ONE_MORE_COST[commonfuncs::get_player_number(boma)] {
+                    if SP_GAUGE[get_player_number(boma)] >= ONE_MORE_COST[get_player_number(boma)] {
                         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                            _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
-                            CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
-                            SP_GAUGE[commonfuncs::get_player_number(boma)] -= ONE_MORE_COST[commonfuncs::get_player_number(boma)];
+                            _ONE_MORE_COUNTER[get_player_number(boma)] = -1;
+                            CAN_ONE_MORE[get_player_number(boma)] = false;
+                            SP_GAUGE[get_player_number(boma)] -= ONE_MORE_COST[get_player_number(boma)];
                         }
                     }
                 }
-                else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[commonfuncs::get_player_number(boma)] == 100.0 && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false && shadow_id(boma) {
+                else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[get_player_number(boma)] == 100.0 && SHADOW_FRENZY[get_player_number(boma)] == false && shadow_id(boma) {
                     fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
                     if StatusModule::status_kind(boma) == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
-                        _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] = -1;
-                        CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
-                        SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = true;
+                        _ONE_MORE_COUNTER[get_player_number(boma)] = -1;
+                        CAN_ONE_MORE[get_player_number(boma)] = false;
+                        SHADOW_FRENZY[get_player_number(boma)] = true;
                     }
                 }
-                _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] -= 1;
-                if _ONE_MORE_COUNTER[commonfuncs::get_player_number(boma)] < 0 {
-                    CAN_ONE_MORE[commonfuncs::get_player_number(boma)] = false;
+                _ONE_MORE_COUNTER[get_player_number(boma)] -= 1;
+                if _ONE_MORE_COUNTER[get_player_number(boma)] < 0 {
+                    CAN_ONE_MORE[get_player_number(boma)] = false;
                 }
             }
         }
 
         // Meter Effects
 
-        if (SP_GAUGE[commonfuncs::get_player_number(boma)] >= 25.0 && SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == false)
-        || SHADOW_FRENZY[commonfuncs::get_player_number(boma)] == true {
-            if _TIME_COUNTER[commonfuncs::get_player_number(boma)] < 12 {
-                _TIME_COUNTER[commonfuncs::get_player_number(boma)] += 1;
+        if (SP_GAUGE[get_player_number(boma)] >= 25.0 && SHADOW_FRENZY[get_player_number(boma)] == false)
+        || SHADOW_FRENZY[get_player_number(boma)] == true {
+            if _TIME_COUNTER[get_player_number(boma)] < 12 {
+                _TIME_COUNTER[get_player_number(boma)] += 1;
             }
             else {
                 let onemoreeff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                 let onemoreeff2: u32 = EffectModule::req_follow(boma, Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                if SHADOW_FRENZY[commonfuncs::get_player_number(boma)] || (SP_GAUGE[commonfuncs::get_player_number(boma)] >= 125.0 && SP_GAUGE[commonfuncs::get_player_number(boma)] < 150.0) {
+                if SHADOW_FRENZY[get_player_number(boma)] || (SP_GAUGE[get_player_number(boma)] >= 125.0 && SP_GAUGE[get_player_number(boma)] < 150.0) {
                     EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);
                 }
-                else if SP_GAUGE[commonfuncs::get_player_number(boma)] >= 50.0 && SP_GAUGE[commonfuncs::get_player_number(boma)] < 75.0 {
+                else if SP_GAUGE[get_player_number(boma)] >= 50.0 && SP_GAUGE[get_player_number(boma)] < 75.0 {
                     EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 0.0, 0.0, 5.0);
                 }
-                else if SP_GAUGE[commonfuncs::get_player_number(boma)] >= 75.0 && SP_GAUGE[commonfuncs::get_player_number(boma)] < 100.0 {
+                else if SP_GAUGE[get_player_number(boma)] >= 75.0 && SP_GAUGE[get_player_number(boma)] < 100.0 {
                     EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 0.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 0.0);
                 }
-                else if SP_GAUGE[commonfuncs::get_player_number(boma)] >= 100.0 && SP_GAUGE[commonfuncs::get_player_number(boma)] < 125.0 {
+                else if SP_GAUGE[get_player_number(boma)] >= 100.0 && SP_GAUGE[get_player_number(boma)] < 125.0 {
                     EffectModule::set_rgb(boma, onemoreeff, 5.0, 0.0, 0.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 5.0, 0.0, 0.0);
                 }
-                else if SP_GAUGE[commonfuncs::get_player_number(boma)] >= 25.0 && SP_GAUGE[commonfuncs::get_player_number(boma)] < 50.0 {
+                else if SP_GAUGE[get_player_number(boma)] >= 25.0 && SP_GAUGE[get_player_number(boma)] < 50.0 {
                     EffectModule::set_rgb(boma, onemoreeff, 0.0, 5.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 0.0, 5.0, 5.0);
                 }
@@ -358,28 +358,28 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 5.0);
                 }
-                _TIME_COUNTER[commonfuncs::get_player_number(boma)] = 0;
+                _TIME_COUNTER[get_player_number(boma)] = 0;
             }
         }
 
         // Special S Air Check
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_LANDING {
-            LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(boma)] = true;
+            LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = true;
         }
         else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-            LUCINA_SPECIAL_AIR_S[commonfuncs::get_player_number(boma)] = false;
+            LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = false;
         }
 
         // Shadow Frenzy Check
 
         if MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l") || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r") {
-            if SP_GAUGE[commonfuncs::get_player_number(boma)] == 100.0 && shadow_id(boma) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = true;
+            if SP_GAUGE[get_player_number(boma)] == 100.0 && shadow_id(boma) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                SHADOW_FRENZY[get_player_number(boma)] = true;
             }
         }
-        else if SP_GAUGE[commonfuncs::get_player_number(boma)] == 0.0 {
-            SHADOW_FRENZY[commonfuncs::get_player_number(boma)] = false;
+        else if SP_GAUGE[get_player_number(boma)] == 0.0 {
+            SHADOW_FRENZY[get_player_number(boma)] = false;
         }
 
         // Move Effects
@@ -406,10 +406,10 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
         || MotionModule::motion_kind(boma) == smash::hash40("attack_air_n")
         || MotionModule::motion_kind(boma) == smash::hash40("attack_air_hi")
         || MotionModule::motion_kind(boma) == smash::hash40("attack_air_lw")
-        || (MotionModule::motion_kind(boma) == smash::hash40("attack_dash") && IS_EX[commonfuncs::get_player_number(boma)]) {
+        || (MotionModule::motion_kind(boma) == smash::hash40("attack_dash") && IS_EX[get_player_number(boma)]) {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP)
-                && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 || IS_FUNNY[commonfuncs::get_player_number(boma)]) {
+                && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 || IS_FUNNY[get_player_number(boma)]) {
                     CancelModule::enable_cancel(boma);
                 }
             }
@@ -419,31 +419,31 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         if smash::app::smashball::is_training_mode(){
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
-                if SP_GAUGE[commonfuncs::get_player_number(boma)] > 25.0 {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] -= 25.0
+                if SP_GAUGE[get_player_number(boma)] > 25.0 {
+                    SP_GAUGE[get_player_number(boma)] -= 25.0
                 }
                 else {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] = 0.0;
+                    SP_GAUGE[get_player_number(boma)] = 0.0;
                 }
             }
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-                if SP_GAUGE[commonfuncs::get_player_number(boma)] < SP_GAUGE_MAX[commonfuncs::get_player_number(boma)] - 25.0 {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] += 25.0
+                if SP_GAUGE[get_player_number(boma)] < SP_GAUGE_MAX[get_player_number(boma)] - 25.0 {
+                    SP_GAUGE[get_player_number(boma)] += 25.0
                 }
                 else {
-                    SP_GAUGE[commonfuncs::get_player_number(boma)] = SP_GAUGE_MAX[commonfuncs::get_player_number(boma)];
+                    SP_GAUGE[get_player_number(boma)] = SP_GAUGE_MAX[get_player_number(boma)];
                 }
             }
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-                if TRAINING_TOOLS[commonfuncs::get_player_number(boma)] {
-                    TRAINING_TOOLS[commonfuncs::get_player_number(boma)] = false;
+                if TRAINING_TOOLS[get_player_number(boma)] {
+                    TRAINING_TOOLS[get_player_number(boma)] = false;
                     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
                     let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
                     EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 5.0);
                 }
                 else {
-                    TRAINING_TOOLS[commonfuncs::get_player_number(boma)] = true;
+                    TRAINING_TOOLS[get_player_number(boma)] = true;
                     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
                     let onemoreeff: u32 = EffectModule::req_follow(boma, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
@@ -566,13 +566,13 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
-        && SP_GAUGE[commonfuncs::get_player_number(boma)] >= EX_COST[commonfuncs::get_player_number(boma)] {
-            SP_GAUGE[commonfuncs::get_player_number(boma)] -= EX_COST[commonfuncs::get_player_number(boma)];
+        && SP_GAUGE[get_player_number(boma)] >= EX_COST[get_player_number(boma)] {
+            SP_GAUGE[get_player_number(boma)] -= EX_COST[get_player_number(boma)];
             special_effect(boma);
-            IS_EX[commonfuncs::get_player_number(boma)] = true;
+            IS_EX[get_player_number(boma)] = true;
         }
         else{
-            IS_EX[commonfuncs::get_player_number(boma)] = false;
+            IS_EX[get_player_number(boma)] = false;
         }
     }
     sv_animcmd::frame(lua_state, 7.0);
@@ -894,20 +894,20 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 4.0);
     sv_animcmd::frame(lua_state, 2.0);
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-    && SP_GAUGE[commonfuncs::get_player_number(boma)] >= EX_COST[commonfuncs::get_player_number(boma)] {
-        SP_GAUGE[commonfuncs::get_player_number(boma)] -= EX_COST[commonfuncs::get_player_number(boma)];
+    && SP_GAUGE[get_player_number(boma)] >= EX_COST[get_player_number(boma)] {
+        SP_GAUGE[get_player_number(boma)] -= EX_COST[get_player_number(boma)];
         special_effect(boma);
-        IS_EX[commonfuncs::get_player_number(boma)] = true;
+        IS_EX[get_player_number(boma)] = true;
         macros::FT_MOTION_RATE(fighter, 0.333);
     }
     else {
-        IS_EX[commonfuncs::get_player_number(boma)] = false;
+        IS_EX[get_player_number(boma)] = false;
     }
     sv_animcmd::frame(lua_state, 5.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
-        if IS_EX[commonfuncs::get_player_number(boma)] == true {
+        if IS_EX[get_player_number(boma)] == true {
             dmg = 18.0;
             kbg = 45;
         }
@@ -922,7 +922,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 13.0);
     if macros::is_excute(fighter) {
-        if IS_EX[commonfuncs::get_player_number(boma)] == true {
+        if IS_EX[get_player_number(boma)] == true {
             dmg = 13.0;
             kbg = 45;
         }
@@ -982,20 +982,20 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 13.0);
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-    && SP_GAUGE[commonfuncs::get_player_number(boma)] >= EX_COST[commonfuncs::get_player_number(boma)] {
-        SP_GAUGE[commonfuncs::get_player_number(boma)] -= EX_COST[commonfuncs::get_player_number(boma)];
+    && SP_GAUGE[get_player_number(boma)] >= EX_COST[get_player_number(boma)] {
+        SP_GAUGE[get_player_number(boma)] -= EX_COST[get_player_number(boma)];
         special_effect(boma);
-        IS_EX[commonfuncs::get_player_number(boma)] = true;
+        IS_EX[get_player_number(boma)] = true;
     }
     else {
-        IS_EX[commonfuncs::get_player_number(boma)] = false;
+        IS_EX[get_player_number(boma)] = false;
     }
     sv_animcmd::frame(lua_state, 14.0);
     if macros::is_excute(fighter) {
         let dmg : f32;
         let velx : f32;
         let vely : f32;
-        if IS_EX[commonfuncs::get_player_number(boma)] == true {
+        if IS_EX[get_player_number(boma)] == true {
             dmg = 12.0;
             velx = 1.75;
             vely = -3.5;
@@ -1038,20 +1038,20 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 4.0);
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-    && SP_GAUGE[commonfuncs::get_player_number(boma)] >= EX_COST[commonfuncs::get_player_number(boma)] {
-        SP_GAUGE[commonfuncs::get_player_number(boma)] -= EX_COST[commonfuncs::get_player_number(boma)];
+    && SP_GAUGE[get_player_number(boma)] >= EX_COST[get_player_number(boma)] {
+        SP_GAUGE[get_player_number(boma)] -= EX_COST[get_player_number(boma)];
         special_effect(boma);
-        IS_EX[commonfuncs::get_player_number(boma)] = true;
+        IS_EX[get_player_number(boma)] = true;
     }
     else {
-        IS_EX[commonfuncs::get_player_number(boma)] = false;
+        IS_EX[get_player_number(boma)] = false;
     }
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
         let dmg : f32;
         let velx : f32;
         let vely : f32;
-        if IS_EX[commonfuncs::get_player_number(boma)] == true {
+        if IS_EX[get_player_number(boma)] == true {
             dmg = 16.0;
             velx = 2.0;
             vely = -1.5;
@@ -1129,15 +1129,15 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-    && SP_GAUGE[commonfuncs::get_player_number(boma)] >= EX_COST[commonfuncs::get_player_number(boma)] {
-        SP_GAUGE[commonfuncs::get_player_number(boma)] -= EX_COST[commonfuncs::get_player_number(boma)];
+    && SP_GAUGE[get_player_number(boma)] >= EX_COST[get_player_number(boma)] {
+        SP_GAUGE[get_player_number(boma)] -= EX_COST[get_player_number(boma)];
         special_effect(boma);
-        IS_EX[commonfuncs::get_player_number(boma)] = true;
+        IS_EX[get_player_number(boma)] = true;
     }
     else {
-        IS_EX[commonfuncs::get_player_number(boma)] = false;
+        IS_EX[get_player_number(boma)] = false;
     }
-    if IS_EX[commonfuncs::get_player_number(boma)] {
+    if IS_EX[get_player_number(boma)] {
         upper_invuln(boma, false);
         full_invuln(boma, true);
         sv_animcmd::frame(lua_state, 5.0);
@@ -1212,15 +1212,15 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-    && SP_GAUGE[commonfuncs::get_player_number(boma)] >= EX_COST[commonfuncs::get_player_number(boma)] {
-        SP_GAUGE[commonfuncs::get_player_number(boma)] -= EX_COST[commonfuncs::get_player_number(boma)];
+    && SP_GAUGE[get_player_number(boma)] >= EX_COST[get_player_number(boma)] {
+        SP_GAUGE[get_player_number(boma)] -= EX_COST[get_player_number(boma)];
         special_effect(boma);
-        IS_EX[commonfuncs::get_player_number(boma)] = true;
+        IS_EX[get_player_number(boma)] = true;
     }
     else {
-        IS_EX[commonfuncs::get_player_number(boma)] = false;
+        IS_EX[get_player_number(boma)] = false;
     }
-    if IS_EX[commonfuncs::get_player_number(boma)] {
+    if IS_EX[get_player_number(boma)] {
         full_invuln(boma, true);
         sv_animcmd::frame(lua_state, 5.0);
         macros::FT_MOTION_RATE(fighter, 6.0);

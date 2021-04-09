@@ -5,7 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::IS_FUNNY;
-use crate::commonfuncs;
+use crate::commonfuncs::*;
 
 static mut CANCEL : [bool; 8] = [false; 8];
 
@@ -13,30 +13,30 @@ static mut CANCEL : [bool; 8] = [false; 8];
 unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    if commonfuncs::get_player_number(boma) < 8 {
-        if IS_FUNNY[commonfuncs::get_player_number(boma)] {
+    if get_player_number(boma) < 8 {
+        if IS_FUNNY[get_player_number(boma)] {
             if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
             && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
-            && commonfuncs::is_damage_check(boma) == false {
+            && is_damage_check(boma) == false {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
             if MotionModule::motion_kind(boma) == smash::hash40("special_s")
             && MotionModule::frame(boma) >= 11.0 {
                 if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
                     StatusModule::change_status_request_from_script(boma,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
-                    CANCEL[commonfuncs::get_player_number(boma)] = true;
+                    CANCEL[get_player_number(boma)] = true;
                 }
             }
             else if MotionModule::motion_kind(boma) == smash::hash40("special_air_s")
             && MotionModule::frame(boma) >= 11.0 {
                 if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
                     StatusModule::change_status_request_from_script(boma,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
-                    CANCEL[commonfuncs::get_player_number(boma)] = true;
+                    CANCEL[get_player_number(boma)] = true;
                 }
             }
-            if CANCEL[commonfuncs::get_player_number(boma)] == true && StatusModule::status_kind(boma) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
-                CANCEL[commonfuncs::get_player_number(boma)] = false;
+            if CANCEL[get_player_number(boma)] == true && StatusModule::status_kind(boma) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
+                CANCEL[get_player_number(boma)] = false;
                 MotionModule::set_frame(boma,35.0,false);
             }
             if MotionModule::motion_kind(boma) == smash::hash40("special_air_hi_jump") {
@@ -48,8 +48,8 @@ unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
         }
-        // if IS_FUNNY[commonfuncs::get_player_number(boma)] == false {
-        //     if MYTHRA[commonfuncs::get_player_number(boma)] {
+        // if IS_FUNNY[get_player_number(boma)] == false {
+        //     if MYTHRA[get_player_number(boma)] {
         //         let conditions = [*LUA_SCRIPT_STATUS_FUNC_STATUS_PRE, *LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN, *LUA_SCRIPT_STATUS_FUNC_STATUS_END];
         //         for x in conditions.iter() {
         //             let addr: *mut skyline::libc::c_void = fighter.sv_get_status_func(
@@ -62,7 +62,7 @@ unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
         //                 std::mem::transmute(addr)
         //             );
         //         }
-        //         MYTHRA[commonfuncs::get_player_number(boma)] = false;
+        //         MYTHRA[get_player_number(boma)] = false;
         //     }
         // }
     }

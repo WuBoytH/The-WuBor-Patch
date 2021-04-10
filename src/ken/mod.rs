@@ -139,23 +139,43 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if MotionModule::motion_kind(boma) == smash::hash40("special_lw_step_b") {
-            if MotionModule::frame(boma) == 6.875 {
+            if MotionModule::frame(boma) <= 1.0
+            && V_SHIFT[get_player_number(boma)] == false {
+                macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+                macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+            }
+            // if MotionModule::frame(boma) <= 5.625 {
+            //     CaptureModule::set_ignore_catching(boma, true);
+            // }
+            // else {
+            //     CaptureModule::set_ignore_catching(boma, false);
+            // }
+            if MotionModule::frame(boma) == 6.25 {
                 if V_SHIFT[get_player_number(boma)] {
-                    SlowModule::set_whole(boma, 2, 0);
-                    macros::SLOW_OPPONENT(fighter, 50.0, 32.0);
+                    SlowModule::set_whole(boma, 5, 0);
+                    macros::SLOW_OPPONENT(fighter, 10.0, 2.0);
                     macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
                 }
             }
             if MotionModule::frame(boma) == 12.5 {
-                if V_SHIFT[get_player_number(boma)] {
-                    macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
-                    SlowModule::clear_whole(boma);
-                    V_SHIFT[get_player_number(boma)] = false;
-                }
+                SlowModule::clear_whole(boma);
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                     MotionModule::change_motion(boma, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
                 }
+                else if V_SHIFT[get_player_number(boma)] {
+                    macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+                    V_SHIFT[get_player_number(boma)] = false;
+                }
             }
+        }
+        
+        if MotionModule::motion_kind(boma) != smash::hash40("special_lw_step_b")
+        && MotionModule::motion_kind(boma) != smash::hash40("special_lw") {
+            V_SHIFT[get_player_number(boma)] = false;
         }
 
         // EX Flash
@@ -210,13 +230,19 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        DamageModule::set_damage_lock(boma, true);
+        // HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
     sv_animcmd::frame(lua_state, 5.625);
-    if V_SHIFT[get_player_number(boma)] == false {
+    if macros::is_excute(fighter) {
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        DamageModule::set_damage_lock(boma, false);
+    }
+    if V_SHIFT[get_player_number(boma)] {
         if macros::is_excute(fighter) {
-            HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+            HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
         }
     }
 }
@@ -227,6 +253,9 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        if V_SHIFT[get_player_number(boma)] {
+            macros::SLOW_OPPONENT(fighter, 100.0, 18.0);
+        }
     }
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 15.0);
@@ -238,6 +267,11 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
+        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        if V_SHIFT[get_player_number(boma)] {
+            macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+            V_SHIFT[get_player_number(boma)] = false;
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
-// use smash::app::sv_animcmd;
+use smash::app::sv_animcmd;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -19,6 +19,7 @@ State list:
 */
 static mut VT1_CANCEL : [bool; 8] = [false; 8];
 static mut EX_FLASH : [bool; 8] = [false; 8];
+pub static mut V_SHIFT : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
@@ -36,6 +37,9 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         // V Skill 1
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_ATTACK_NEAR
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK_S3
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK_HI3
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK_LW3
@@ -52,6 +56,23 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
                 VT1_CANCEL[get_player_number(boma)] = false;
             }
         }
+        else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_FALL
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_AIR_HI_END
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
+        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B {
+            VT1_CANCEL[get_player_number(boma)] = false;
+        }
         else {
             VT1_CANCEL[get_player_number(boma)] = true;
         }
@@ -63,11 +84,11 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(boma) == smash::hash40("run")
         && QUICK_STEP_STATE[get_player_number(boma)] == 1 {
-            if MotionModule::frame(boma) >= 26.0 && MotionModule::frame(boma) <= 27.0
+            if MotionModule::frame(boma) >= 22.0 && MotionModule::frame(boma) <= 23.0
             && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), 0.0, 1.0, false, 0.0, false, false);
             }
-            if MotionModule::frame(boma) >= 36.0 {
+            if MotionModule::frame(boma) >= 31.0 {
                 CancelModule::enable_cancel(boma);
             }
         }
@@ -117,6 +138,26 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
+        if MotionModule::motion_kind(boma) == smash::hash40("special_lw_step_b") {
+            if MotionModule::frame(boma) == 6.875 {
+                if V_SHIFT[get_player_number(boma)] {
+                    SlowModule::set_whole(boma, 2, 0);
+                    macros::SLOW_OPPONENT(fighter, 50.0, 32.0);
+                    macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+                }
+            }
+            if MotionModule::frame(boma) == 12.5 {
+                if V_SHIFT[get_player_number(boma)] {
+                    macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+                    SlowModule::clear_whole(boma);
+                    V_SHIFT[get_player_number(boma)] = false;
+                }
+                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    MotionModule::change_motion(boma, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
+                }
+            }
+        }
+
         // EX Flash
 
         // if EX_FLASH[get_player_number(boma)] {
@@ -158,7 +199,104 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if QUICK_STEP_STATE[get_player_number(boma)] == 1 {
-        macros::FT_MOTION_RATE(fighter, 0.6);
+        macros::FT_MOTION_RATE(fighter, 0.7);
+    }
+}
+
+// V Shift Related
+
+#[script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME )]
+unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+    }
+    macros::FT_MOTION_RATE(fighter, 1.6);
+    sv_animcmd::frame(lua_state, 5.625);
+    if V_SHIFT[get_player_number(boma)] == false {
+        if macros::is_excute(fighter) {
+            HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        }
+    }
+}
+
+#[script( agent = "ken", script = "game_speciallw", category = ACMD_GAME )]
+unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+    }
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    sv_animcmd::frame(lua_state, 15.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 10.0, 50, 98, 100, 0, 3.2, -1.5, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 10.0, 50, 98, 100, 0, 3.2, -6.2, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 10.0, 50, 98, 100, 0, 3.9, 4.3, -1.7, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::wait(lua_state, 3.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
+
+#[script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND )]
+unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 9.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ken_smash_s01"));
+        macros::PLAY_SE(fighter, Hash40::new("vc_ken_attack09"));
+    }
+    sv_animcmd::frame(lua_state, 38.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ken_step_left_m"));
+    }
+}
+
+#[script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION )]
+unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        smash_script::slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        smash_script::slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+    }
+    sv_animcmd::frame(lua_state, 13.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(boma, Hash40::new("rbkind_nohit1"), 0, false, 0);
+        macros::AREA_WIND_2ND_arg10(fighter, 0, 0.8, 180, 8, 0.8, -10, 7, 20, 14, 80);
+    }
+    sv_animcmd::frame(lua_state, 15.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack1"), 0);
+    }
+    sv_animcmd::frame(lua_state, 28.0);
+    if macros::is_excute(fighter) {
+        AreaModule::erase_wind(boma, 0);
+    }
+}
+
+#[script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT )]
+unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    sv_animcmd::frame(lua_state, 15.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0f998ceac2), Hash40::new_raw(0x0f998ceac2), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
+        macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -197,7 +335,12 @@ pub fn install() {
         ken_frame
     );
     smash_script::replace_scripts!(
-        ken_run
+        ken_run,
+        ken_dspecialstepb,
+        ken_dspecial,
+        ken_dspecialsnd,
+        ken_dspecialxp,
+        ken_dspecialeff,
     //     ken_ftiltwnp
     );
 }

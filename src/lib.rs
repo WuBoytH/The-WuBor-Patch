@@ -95,7 +95,7 @@ mod purin;
 mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
-use crate::ken::QUICK_STEP_STATE;
+use crate::ken::{QUICK_STEP_STATE, V_SHIFT};
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -111,7 +111,6 @@ move_type_again: bool) -> u64 {
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
     // let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    // if IS_FUNNY[d_entry_id] {
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
         if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
         || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
@@ -150,7 +149,12 @@ move_type_again: bool) -> u64 {
             SECRET_SENSATION[d_entry_id] = true;
         }
     }
-    // }
+    if defender_fighter_kind == *FIGHTER_KIND_KEN {
+        if MotionModule::motion_kind(defender_boma) == smash::hash40("special_lw_step_b")
+        && MotionModule::frame(defender_boma) <= 5.625 {
+            V_SHIFT[d_entry_id] = true;
+        }
+    }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 

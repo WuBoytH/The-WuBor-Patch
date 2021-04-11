@@ -6,7 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 // use smash::phx::Vector3f;
 // use smash::phx::Vector2f;
-// use smash::app::lua_bind::EffectModule;
 // use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
@@ -145,12 +144,6 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
             }
-            // if MotionModule::frame(boma) <= 5.625 {
-            //     CaptureModule::set_ignore_catching(boma, true);
-            // }
-            // else {
-            //     CaptureModule::set_ignore_catching(boma, false);
-            // }
             if MotionModule::frame(boma) == 6.25 {
                 if V_SHIFT[get_player_number(boma)] {
                     SlowModule::set_whole(boma, 5, 0);
@@ -257,9 +250,9 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 10.0, 50, 98, 100, 0, 3.2, -1.5, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 10.0, 50, 98, 100, 0, 3.2, -6.2, -1.0, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 10.0, 50, 98, 100, 0, 3.9, 4.3, -1.7, -1.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 6.0, 50, 98, 100, 0, 3.2, -1.5, -1.0, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 6.0, 50, 98, 100, 0, 3.2, -6.2, -1.0, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 6.0, 50, 98, 100, 0, 3.9, 4.3, -1.7, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
     }
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
@@ -321,6 +314,7 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 0.6, true);
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
@@ -328,6 +322,10 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0f998ceac2), Hash40::new_raw(0x0f998ceac2), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
         macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    sv_animcmd::frame(lua_state, 18.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec"), false, true);
     }
 }
 

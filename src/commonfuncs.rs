@@ -19,6 +19,9 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SLEEP
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_B
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_F
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CLIFF_ESCAPE
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD
@@ -31,7 +34,9 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY {
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY_WAIT
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ICE {
         return true;
     }
     else {

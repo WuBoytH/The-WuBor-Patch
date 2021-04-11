@@ -56,25 +56,22 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
                 VT1_CANCEL[get_player_number(boma)] = false;
             }
         }
-        else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_FALL
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_AIR_HI_END
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
-        || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B {
-            VT1_CANCEL[get_player_number(boma)] = false;
+        else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_WAIT
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_WALK
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_B
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_F
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_RV
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_WAIT
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_WALL_JUMP
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_AERIAL
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_AERIAL {
+            VT1_CANCEL[get_player_number(boma)] = true;
         }
         else {
-            VT1_CANCEL[get_player_number(boma)] = true;
+            VT1_CANCEL[get_player_number(boma)] = false;
         }
 
         if MotionModule::motion_kind(boma) == smash::hash40("special_lw_step_f")
@@ -87,6 +84,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             if MotionModule::frame(boma) >= 22.0 && MotionModule::frame(boma) <= 23.0
             && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), 0.0, 1.0, false, 0.0, false, false);
+                QUICK_STEP_STATE[get_player_number(boma)] = 0;
             }
             if MotionModule::frame(boma) >= 31.0 {
                 CancelModule::enable_cancel(boma);
@@ -101,7 +99,6 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         if (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_RUN
         && StatusModule::status_kind(boma) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)
-        && MotionModule::motion_kind(boma) != smash::hash40("attack_s3_s_w")
         && QUICK_STEP_STATE[get_player_number(boma)] == 1 {
             QUICK_STEP_STATE[get_player_number(boma)] = 2;
         }

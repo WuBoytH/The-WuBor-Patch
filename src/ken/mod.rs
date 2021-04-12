@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 // use smash::phx::Vector3f;
 // use smash::phx::Vector2f;
-// use crate::IS_FUNNY;
+// use crate::{IS_FUNNY, COUNTER_HIT_STATE};
 use crate::commonfuncs::*;
 
 pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
@@ -19,10 +19,13 @@ State list:
 static mut VS1_CANCEL : [bool; 8] = [false; 8];
 static mut EX_FLASH : [bool; 8] = [false; 8];
 pub static mut V_SHIFT : [bool; 8] = [false; 8];
-static mut V_TRIGGER : [bool; 8] = [false; 8];
+pub static mut V_TRIGGER : [bool; 8] = [false; 8];
 static mut VT1_CANCEL : [bool; 8] = [false; 8];
+pub static mut V_GAUGE : [i32; 8] = [0; 8];
 static mut DMG_RATIO : [f32; 8] = [0.8; 8];
-
+static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
+static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
+static mut VT_TIMER : [i32; 8] = [1200; 8];
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
     let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
@@ -38,7 +41,42 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             V_SHIFT[get_player_number(boma)] = false;
             V_TRIGGER[get_player_number(boma)] = false;
             VT1_CANCEL[get_player_number(boma)] = false;
+            V_GAUGE[get_player_number(boma)] = 0;
+            VT_TIMER[get_player_number(boma)] = 1200;
         }
+
+        // V Gauge Building (only for blocked moves and getting hit)
+
+        if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD)
+        && MotionModule::motion_kind(boma) != smash::hash40("special_lw")
+        && V_TRIGGER[get_player_number(boma)] == false {
+            if MotionModule::motion_kind(boma) == smash::hash40("attack_s3_s_w")
+            && QUICK_STEP_STATE[get_player_number(boma)] == 1 {
+                V_GAUGE[get_player_number(boma)] += 50;
+                println!("Quick Step Kick Blocked: {}", V_GAUGE[get_player_number(boma)]);
+            }
+            else {
+                V_GAUGE[get_player_number(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) as i32 * 3;
+                if V_GAUGE[get_player_number(boma)] > 900 {
+                    V_GAUGE[get_player_number(boma)] = 900;
+                }
+                println!("Move Blocked: {}", V_GAUGE[get_player_number(boma)]);
+            }
+            if V_GAUGE[get_player_number(boma)] > 900 {
+                V_GAUGE[get_player_number(boma)] = 900;
+            }
+        }
+
+        DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
+        if DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)]
+        && MotionModule::motion_kind(boma) != smash::hash40("special_lw_step_b") {
+            V_GAUGE[get_player_number(boma)] += (DAMAGE_TAKEN[get_player_number(boma)] - DAMAGE_TAKEN_PREV[get_player_number(boma)]) as i32 * 2;
+            if V_GAUGE[get_player_number(boma)] > 900 {
+                V_GAUGE[get_player_number(boma)] = 900;
+            }
+            println!("Got Hit: {}", V_GAUGE[get_player_number(boma)]);
+        }
+        DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
 
         // V Skill 1
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK
@@ -90,7 +128,6 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             if MotionModule::frame(boma) >= 22.0 && MotionModule::frame(boma) <= 23.0
             && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 MotionModule::change_motion(boma, Hash40::new("attack_s3_s_w"), 0.0, 1.0, false, 0.0, false, false);
-                QUICK_STEP_STATE[get_player_number(boma)] = 0;
             }
             if MotionModule::frame(boma) >= 31.0 {
                 CancelModule::enable_cancel(boma);
@@ -99,6 +136,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(boma) == smash::hash40("attack_s3_s_w") {
             if MotionModule::frame(boma) > 26.0 {
+                QUICK_STEP_STATE[get_player_number(boma)] = 0;
                 CancelModule::enable_cancel(boma);
             }
         }
@@ -160,18 +198,34 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)
         && VT1_CANCEL[get_player_number(boma)]
+        && V_GAUGE[get_player_number(boma)] == 900
         && V_TRIGGER[get_player_number(boma)] == false {
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
             V_TRIGGER[get_player_number(boma)] = true;
+            V_GAUGE[get_player_number(boma)] = 0;
+        }
+
+        if V_TRIGGER[get_player_number(boma)] {
+            if VT_TIMER[get_player_number(boma)] == 0 {
+                V_TRIGGER[get_player_number(boma)] = false;
+                VT_TIMER[get_player_number(boma)] = 1200;
+            }
+            VT_TIMER[get_player_number(boma)] -= 1;
         }
 
         // V Shift
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD
-        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+        && (V_GAUGE[get_player_number(boma)] >= 300
+        || V_TRIGGER[get_player_number(boma)]) {
             let stick_x = ControlModule::get_stick_x(boma);
             if (stick_x < -0.5 && PostureModule::lr(boma) == 1.0)
             || (stick_x > 0.5 && PostureModule::lr(boma) == -1.0) {
+                V_GAUGE[get_player_number(boma)] -= 300;
+                if V_GAUGE[get_player_number(boma)] < 0 {
+                    V_GAUGE[get_player_number(boma)] = 0;
+                }
                 fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B.into(), false.into());
             }
         }
@@ -188,6 +242,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
             if MotionModule::frame(boma) == 6.25 {
                 if V_SHIFT[get_player_number(boma)] {
+                    V_GAUGE[get_player_number(boma)] += 150;
                     SlowModule::set_whole(boma, 5, 0);
                     macros::SLOW_OPPONENT(fighter, 10.0, 2.0);
                     macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);

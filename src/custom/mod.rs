@@ -5,7 +5,7 @@ use smash::app::lua_bind::*;
 use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use crate::{IS_FUNNY, IS_FGC};
+use crate::{IS_FUNNY, IS_FGC, COUNTER_HIT_STATE, COUNTER_HIT_HELPER};
 use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::{self, /***/};
@@ -17,6 +17,7 @@ pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vecto
 unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
     let lua_state = _fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let status_kind = StatusModule::status_kind(boma);
 
     LookupSymbol(
         &mut FIGHTER_CUTIN_MANAGER_ADDR,
@@ -56,6 +57,38 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
             StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
         }
+    }
+
+    if status_kind == *FIGHTER_STATUS_KIND_ATTACK
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S3
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW3
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_START
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4_START
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4_START
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
+    || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        if MotionModule::frame(boma) <= 1.0 {
+            COUNTER_HIT_HELPER[get_player_number(boma)] = 0.0;
+            COUNTER_HIT_STATE[get_player_number(boma)] = 1;
+        }
+        if AttackModule::is_attack(boma, 0, false)
+        && COUNTER_HIT_HELPER[get_player_number(boma)] == 0.0 {
+            COUNTER_HIT_HELPER[get_player_number(boma)] = MotionModule::frame(boma);
+        }
+        if !AttackModule::is_attack(boma, 0, false)
+        && COUNTER_HIT_HELPER[get_player_number(boma)] != 0.0 {
+            COUNTER_HIT_STATE[get_player_number(boma)] = 0;
+        }
+    }
+    else {
+        COUNTER_HIT_STATE[get_player_number(boma)] = 0;
     }
 }
 

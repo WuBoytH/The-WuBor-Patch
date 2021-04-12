@@ -15,6 +15,8 @@ use skyline::hooks::{getRegionAddress, Region};
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
 pub static mut IS_FGC : [bool; 8] = [false; 8];
+pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
+pub static mut COUNTER_HIT_HELPER : [f32; 8] = [0.0; 8];
 static mut INT_OFFSET : usize = 0x4E19D0;
 // static mut INT64_OFFSET : usize = 0x4E19F0;
 static mut FLOAT_OFFSET : usize = 0x4E19D0;
@@ -95,7 +97,7 @@ mod purin;
 mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
-use crate::ken::{QUICK_STEP_STATE, V_SHIFT};
+use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER};
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -107,10 +109,32 @@ arg5: i32,
 move_type_again: bool) -> u64 {
     let attacker_boma = sv_battle_object::module_accessor(attacker_object_id);
     let defender_boma = sv_battle_object::module_accessor(defender_object_id);
-    // let attacker_fighter_kind = sv_battle_object::kind(attacker_object_id);
+    let attacker_fighter_kind = sv_battle_object::kind(attacker_object_id);
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
-    // let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    if attacker_fighter_kind == *FIGHTER_KIND_KEN {
+        if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+        && MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
+        && V_TRIGGER[a_entry_id] == false {
+            if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
+            && QUICK_STEP_STATE[a_entry_id] == 1 {
+                V_GAUGE[a_entry_id] += 100;
+                println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
+            }
+            else if COUNTER_HIT_STATE[d_entry_id] == 1 {
+                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
+                println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
+            }
+            else {
+                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 5;
+                println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
+            }
+            if V_GAUGE[a_entry_id] > 900 {
+                V_GAUGE[a_entry_id] = 900;
+            }
+        }
+    }
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
         if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
         || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
@@ -149,7 +173,7 @@ move_type_again: bool) -> u64 {
             SECRET_SENSATION[d_entry_id] = true;
         }
     }
-    if defender_fighter_kind == *FIGHTER_KIND_KEN {
+    else if defender_fighter_kind == *FIGHTER_KIND_KEN {
         if MotionModule::motion_kind(defender_boma) == smash::hash40("special_lw_step_b")
         && MotionModule::frame(defender_boma) <= 5.625 {
             V_SHIFT[d_entry_id] = true;
@@ -213,11 +237,8 @@ pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
         let seq = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();
         let mut new_seq = seq.get_int();
-        println!("Hash to compare: {}", new_seq);
         for i in 0..8 {
-            println!("Comparing hash to: {}", hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])));
             if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                println!("Sequence is seq_lucina_rnd_{}", YU_SEQ[i]);
                 new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
                 break;
             }
@@ -239,15 +260,11 @@ pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
         l2c_agent.clear_lua_stack();
         let mut new_seq = seq.get_int();
         let mut new_seq2 = seq2.get_int();
-        println!("Hash to compare: {}", new_seq);
         for i in 0..8 {
-            println!("Comparing hash to: {}", hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])));
             if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                println!("Sequence is seq_lucina_rnd_{}", YU_SEQ[i]);
                 new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
             }
             if seq2.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                println!("Sequence is seq_lucina_rnd_{}", YU_SEQ[i]);
                 new_seq2 = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
             }
         }

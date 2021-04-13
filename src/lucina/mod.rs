@@ -5,7 +5,6 @@ use smash::hash40;
 use smash::app::*;
 use smash_script::*;
 use smash::phx::Hash40;
-use smash::app::sv_animcmd;
 use smash::phx::Vector3f;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;

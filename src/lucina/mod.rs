@@ -260,19 +260,14 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 if spent_meter(boma, true) {
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
-                    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                        SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-                        CAN_ONE_MORE[get_player_number(boma)] = false;
-                    }
                 }
             }
-            else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[get_player_number(boma)] == 100.0 && SHADOW_FRENZY[get_player_number(boma)] == false && shadow_id(boma) {
+            else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            && SP_GAUGE[get_player_number(boma)] == 100.0
+            && SHADOW_FRENZY[get_player_number(boma)] == false
+            && shadow_id(boma) {
                 fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
-                if StatusModule::status_kind(boma) == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
-                    CAN_ONE_MORE[get_player_number(boma)] = false;
-                    SHADOW_FRENZY[get_player_number(boma)] = true;
-                }
             }
         }
         else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROW {
@@ -299,18 +294,13 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                     if spent_meter(boma, true) {
                         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
-                        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                            SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-                            CAN_ONE_MORE[get_player_number(boma)] = false;
-                        }
                     }
                 }
-                else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) && SP_GAUGE[get_player_number(boma)] == 100.0 && SHADOW_FRENZY[get_player_number(boma)] == false && shadow_id(boma) {
+                else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+                && SP_GAUGE[get_player_number(boma)] == 100.0
+                && SHADOW_FRENZY[get_player_number(boma)] == false
+                && shadow_id(boma) {
                     fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
-                    if StatusModule::status_kind(boma) == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
-                        CAN_ONE_MORE[get_player_number(boma)] = false;
-                        SHADOW_FRENZY[get_player_number(boma)] = true;
-                    }
                 }
             }
         }
@@ -1074,7 +1064,9 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
 
 #[script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME)]
 unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
-
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
 }
 
 #[script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME )]
@@ -1084,6 +1076,7 @@ unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
     if shadow_id(boma) {
         macros::FT_START_CUTIN(fighter);
         macros::SLOW_OPPONENT(fighter, 20.0, 8.0);
+        SHADOW_FRENZY[get_player_number(boma)] = true;
     }
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {

@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::L2CAgentBase;
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -8,7 +8,7 @@ use smash_script::*;
 #[script( agent = "master", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     sv_animcmd::frame(lua_state, 4.0);
@@ -38,7 +38,7 @@ unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "master", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("attack_lw3"), false, 0.0);
@@ -58,14 +58,14 @@ unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 59.0);
     if macros::is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
 #[script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         WorkModule::set_float(boma, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
         WorkModule::set_float(boma, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
@@ -87,7 +87,7 @@ unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
 #[script( agent = "master", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
@@ -118,14 +118,14 @@ unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 53.0);
     if macros::is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
 #[script( agent = "master", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME )]
 unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
@@ -135,7 +135,7 @@ unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
 #[script( agent = "master", script = "game_speciallw", category = ACMD_GAME )]
 unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.0);
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
@@ -155,7 +155,7 @@ unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_attack_height(boma, 0, smash::app::AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+        AttackModule::set_attack_height(boma, 0, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
         WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
     }
     sv_animcmd::frame(lua_state, 64.0);
@@ -180,7 +180,7 @@ unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 118.0);
     if macros::is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 

@@ -2,8 +2,7 @@ use smash::lib::lua_const::*;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::lua_bind::*;
 use smash::hash40;
-use smash::app::BattleObjectModuleAccessor;
-use smash::app::lua_bind::EffectModule;
+use smash::app::*;
 use smash_script::*;
 use smash::phx::Hash40;
 use smash::app::sv_animcmd;
@@ -43,35 +42,35 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
 
 pub unsafe fn upper_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
-        HitModule::set_status_joint(boma, Hash40::new("waist"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        HitModule::set_status_joint(boma, Hash40::new("hip"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        HitModule::set_status_joint(boma, Hash40::new("head"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        HitModule::set_status_joint(boma, Hash40::new("shoulderr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        HitModule::set_status_joint(boma, Hash40::new("shoulderl"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        HitModule::set_status_joint(boma, Hash40::new("armr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        HitModule::set_status_joint(boma, Hash40::new("arml"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        // HitModule::set_status_joint(boma, Hash40::new("legr"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        // HitModule::set_status_joint(boma, Hash40::new("legl"), smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("waist"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("hip"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("head"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderr"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderl"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("armr"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_status_joint(boma, Hash40::new("arml"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        // HitModule::set_status_joint(boma, Hash40::new("legr"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        // HitModule::set_status_joint(boma, Hash40::new("legl"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
     }
     else {
-        HitModule::set_status_joint(boma, Hash40::new("waist"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HitModule::set_status_joint(boma, Hash40::new("hip"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HitModule::set_status_joint(boma, Hash40::new("head"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HitModule::set_status_joint(boma, Hash40::new("shoulderr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HitModule::set_status_joint(boma, Hash40::new("shoulderl"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HitModule::set_status_joint(boma, Hash40::new("armr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        HitModule::set_status_joint(boma, Hash40::new("arml"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        // HitModule::set_status_joint(boma, Hash40::new("legr"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
-        // HitModule::set_status_joint(boma, Hash40::new("legl"), smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("waist"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("hip"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("head"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderr"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("shoulderl"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("armr"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_joint(boma, Hash40::new("arml"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        // HitModule::set_status_joint(boma, Hash40::new("legr"), HitStatus(*HIT_STATUS_NORMAL), 0);
+        // HitModule::set_status_joint(boma, Hash40::new("legl"), HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
 
 pub unsafe fn full_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
-        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+        HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
     }
     else {
-        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
 
@@ -86,9 +85,9 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
 }
 
 // This is left here for the standalone release of Yu Narukami
-// #[skyline::hook(replace=smash::app::lua_bind::WorkModule::is_enable_transition_term)]
+// #[skyline::hook(replace=lua_bind::WorkModule::is_enable_transition_term)]
 // pub unsafe fn lucina_is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     let fighter_kind = utility::get_kind(module_accessor);
 //     let ret = original!()(module_accessor,term);
 //     let get_player_number(boma) = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_get_player_number(boma)) as usize;
 //     if fighter_kind == *FIGHTER_KIND_LUCINA {
@@ -114,7 +113,7 @@ pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> boo
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
 unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
     if get_player_number(boma) < 8 {
 
@@ -139,14 +138,14 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 AWAKENING[get_player_number(boma)] = false;
             }
         }
-        if smash::app::sv_information::is_ready_go() == false {
+        if sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(boma, 1.0);
             LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = false;
             SHADOW_FRENZY[get_player_number(boma)] = false;
             _TIME_COUNTER[get_player_number(boma)] = 0;
             EX_COST[get_player_number(boma)] = 25.0;
             ONE_MORE_COST[get_player_number(boma)] = 25.0;
-            if !(smash::app::smashball::is_training_mode() && TRAINING_TOOLS[get_player_number(boma)]) {
+            if !(smashball::is_training_mode() && TRAINING_TOOLS[get_player_number(boma)]) {
                 SP_GAUGE[get_player_number(boma)] = 0.0;
                 AWAKENING[get_player_number(boma)] = false;
                 TRAINING_TOOLS[get_player_number(boma)] = false;
@@ -167,12 +166,12 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
         }
         DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[get_player_number(boma)] == false {
-            if MotionModule::motion_kind(boma) != smash::hash40("attack_dash")
-            && MotionModule::motion_kind(boma) != smash::hash40("special_s1")
-            && MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_hi")
-            && MotionModule::motion_kind(boma) != smash::hash40("special_air_s2_lw")
-            && MotionModule::motion_kind(boma) != smash::hash40("special_hi")
-            && MotionModule::motion_kind(boma) != smash::hash40("special_air_hi") {
+            if MotionModule::motion_kind(boma) != hash40("attack_dash")
+            && MotionModule::motion_kind(boma) != hash40("special_s1")
+            && MotionModule::motion_kind(boma) != hash40("special_air_s2_hi")
+            && MotionModule::motion_kind(boma) != hash40("special_air_s2_lw")
+            && MotionModule::motion_kind(boma) != hash40("special_hi")
+            && MotionModule::motion_kind(boma) != hash40("special_air_hi") {
                 IS_EX[get_player_number(boma)] = false;
             }
             if IS_EX[get_player_number(boma)] == false {
@@ -218,7 +217,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
                 && (!is_damage_check(boma)
                 || IS_FUNNY[get_player_number(boma)])
-                && smash::app::sv_information::is_ready_go() == true {
+                && sv_information::is_ready_go() == true {
                     SP_GAUGE[get_player_number(boma)] += 50.0;
                     AWAKENING[get_player_number(boma)] = true;
                     macros::FT_START_CUTIN(fighter);
@@ -244,8 +243,8 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-        && MotionModule::motion_kind(boma) != smash::hash40("catch_attack")
-        && !((MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_air_hi")) && IS_EX[get_player_number(boma)]) {
+        && MotionModule::motion_kind(boma) != hash40("catch_attack")
+        && !((MotionModule::motion_kind(boma) == hash40("special_hi") || MotionModule::motion_kind(boma) == hash40("special_air_hi")) && IS_EX[get_player_number(boma)]) {
             CAN_ONE_MORE[get_player_number(boma)] = true;
             _ONE_MORE_COUNTER[get_player_number(boma)] = 45;
         }
@@ -276,19 +275,19 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
         }
         else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROW {
             let throwframe : f32;
-            if MotionModule::motion_kind(boma) == smash::hash40("throw_f") {
+            if MotionModule::motion_kind(boma) == hash40("throw_f") {
                 _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 18.0;
             }
-            else if MotionModule::motion_kind(boma) == smash::hash40("throw_b") {
+            else if MotionModule::motion_kind(boma) == hash40("throw_b") {
                 _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 19.0;
             }
-            else if MotionModule::motion_kind(boma) == smash::hash40("throw_hi") {
+            else if MotionModule::motion_kind(boma) == hash40("throw_hi") {
                 _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 13.0;
             }
-            else if MotionModule::motion_kind(boma) == smash::hash40("throw_lw") {
+            else if MotionModule::motion_kind(boma) == hash40("throw_lw") {
                 _ONE_MORE_COUNTER[get_player_number(boma)] = 4;
                 throwframe = 20.0;
             }
@@ -373,7 +372,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Shadow Frenzy Check
 
-        if MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l") || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r") {
+        if MotionModule::motion_kind(boma) == hash40("appeal_hi_l") || MotionModule::motion_kind(boma) == hash40("appeal_hi_r") {
             if SP_GAUGE[get_player_number(boma)] == 100.0 && shadow_id(boma) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                 SHADOW_FRENZY[get_player_number(boma)] = true;
             }
@@ -384,7 +383,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Move Effects
 
-        if MotionModule::motion_kind(boma) == smash::hash40("special_s1") {
+        if MotionModule::motion_kind(boma) == hash40("special_s1") {
             if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 18.0 {
                 macros::SET_SPEED_EX(fighter, 2.8, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
@@ -393,7 +392,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if MotionModule::motion_kind(boma) == smash::hash40("special_s2_lw") || MotionModule::motion_kind(boma) == smash::hash40("special_s2_hi") {
+        if MotionModule::motion_kind(boma) == hash40("special_s2_lw") || MotionModule::motion_kind(boma) == hash40("special_s2_hi") {
             if MotionModule::frame(boma) > 0.0 {
                 AttackModule::clear_all(boma);
             }
@@ -401,12 +400,12 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Jump Cancels
 
-        if MotionModule::motion_kind(boma) == smash::hash40("attack_hi3")
-        || MotionModule::motion_kind(boma) == smash::hash40("attack_12")
-        || MotionModule::motion_kind(boma) == smash::hash40("attack_air_n")
-        || MotionModule::motion_kind(boma) == smash::hash40("attack_air_hi")
-        || MotionModule::motion_kind(boma) == smash::hash40("attack_air_lw")
-        || (MotionModule::motion_kind(boma) == smash::hash40("attack_dash") && IS_EX[get_player_number(boma)]) {
+        if MotionModule::motion_kind(boma) == hash40("attack_hi3")
+        || MotionModule::motion_kind(boma) == hash40("attack_12")
+        || MotionModule::motion_kind(boma) == hash40("attack_air_n")
+        || MotionModule::motion_kind(boma) == hash40("attack_air_hi")
+        || MotionModule::motion_kind(boma) == hash40("attack_air_lw")
+        || (MotionModule::motion_kind(boma) == hash40("attack_dash") && IS_EX[get_player_number(boma)]) {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP)
                 && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 || IS_FUNNY[get_player_number(boma)]) {
@@ -417,7 +416,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Training Mode Tools
 
-        if smash::app::smashball::is_training_mode(){
+        if smashball::is_training_mode(){
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
                 if SP_GAUGE[get_player_number(boma)] > 25.0 {
                     SP_GAUGE[get_player_number(boma)] -= 25.0
@@ -457,7 +456,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "lucina", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 361, 15, 0, 20, 2.0, 0.0, 9.4, 6.2, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -478,7 +477,7 @@ unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "effect_attack11", category = ACMD_EFFECT )]
 unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 18, -5, 0, 330, 90, 0.95, true);
@@ -492,7 +491,7 @@ unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attack12", category = ACMD_GAME )]
 unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.5, 50, 100, 0, 50, 4.2, 5.0, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -506,7 +505,7 @@ unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "effect_attack12", category = ACMD_EFFECT )]
 unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), -5, 12, 2, 0, 0, 0, 0.95, true);
@@ -520,7 +519,7 @@ unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 6.0, 71, 60, 0, 65, 2.0, 0.0, -1.0, 1.0, Some(1.0), Some(1.0), Some(12.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -546,12 +545,12 @@ unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 75, 40, 0, 57, 2.7, 0.0, 2.7, 16.700001, Some(0.0), Some(4.3), Some(9.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 6.0, 75, 40, 0, 57, 2.7, 0.0, 0.0, 8.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_attack_height_all(boma, smash::app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+        AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
@@ -562,7 +561,7 @@ unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
@@ -579,7 +578,7 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 7.0, 65, 85, 0, 65, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 65, 85, 0, 65, 2.5, 0.0, 2.5, -2.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_attack_height_all(boma, smash::app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+        AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_LOW), false);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
         macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
     }
@@ -597,7 +596,7 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "sound_attackdash", category = ACMD_SOUND )]
 unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_lucina_rnd_attack"));
@@ -608,7 +607,7 @@ unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -634,7 +633,7 @@ unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     macros::FT_MOTION_RATE(fighter, 1.6);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -659,7 +658,7 @@ unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     macros::FT_MOTION_RATE(fighter, 1.5);
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
@@ -687,7 +686,7 @@ unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -712,7 +711,7 @@ unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -736,7 +735,7 @@ unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -754,7 +753,7 @@ unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -779,7 +778,7 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", scripts = [ "game_specialnend", "game_specialnendhi", "game_specialnendlw", "game_specialairnend", "game_specialairnendhi", "game_specialairnendlw" ], category = ACMD_GAME)]
 unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         sv_animcmd::frame(lua_state, 8.0);
         if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
@@ -833,7 +832,7 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", scripts = [ "game_specialnendmax", "game_specialnendmaxhi", "game_specialnendmaxlw", "game_specialairnendmax", "game_specialairnendmaxhi", "game_specialairnendmaxlw" ], category = ACMD_GAME)]
 unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         sv_animcmd::frame(lua_state, 8.0);
         if macros::is_excute(fighter) {
@@ -887,7 +886,7 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_specials1", category = ACMD_GAME )]
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut dmg : f32;
     let mut kbg : i32;
     sv_animcmd::frame(lua_state, 1.0);
@@ -944,7 +943,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -967,7 +966,7 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_specialairs2lw", category = ACMD_GAME )]
 unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -1027,7 +1026,7 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME )]
 unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -1068,7 +1067,7 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 3, 0, Hash40::new("top"), dmg, 361, 66, 0, 45, 2.5, 0.0, 3.0, 25.0, Some(0.0), Some(2.7), Some(27.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), dmg, 361, 66, 0, 45, 0.7, 0.0, 5.6, 17.0, Some(0.0), Some(3.5), Some(22.0), 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), dmg, 361, 66, 0, 45, 0.7, 0.0, 3.0, 23.5, Some(0.0), Some(1.7), Some(28.9), 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::set_attack_height_all(boma, smash::app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+        AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     sv_animcmd::frame(lua_state, 17.0);
     if macros::is_excute(fighter) {
@@ -1089,7 +1088,7 @@ unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME )]
 unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if shadow_id(boma) {
         macros::FT_START_CUTIN(fighter);
         macros::SLOW_OPPONENT(fighter, 20.0, 8.0);
@@ -1120,7 +1119,7 @@ unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME )]
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         upper_invuln(boma, true);
     }
@@ -1206,7 +1205,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME )]
 unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);

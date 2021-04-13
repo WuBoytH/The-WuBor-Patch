@@ -142,7 +142,7 @@ move_type_again: bool) -> u64 {
         && MotionModule::frame(defender_boma) >= 4.0 {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
+                OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -150,16 +150,16 @@ move_type_again: bool) -> u64 {
                 }
             }
             else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+                let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
                 if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
-                    OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
+                    OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
                 }
                 else {
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(oboma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(oboma);
-                    OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut smash::app::BattleObjectModuleAccessor) as u64;
+                    OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut BattleObjectModuleAccessor) as u64;
                     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                         JostleModule::set_status(&mut *oboma, false);
                     }
@@ -168,7 +168,7 @@ move_type_again: bool) -> u64 {
             else {
                 OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                 OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
-                OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut smash::app::BattleObjectModuleAccessor) as u64;
+                OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
             }
             SECRET_SENSATION[d_entry_id] = true;
         }
@@ -182,11 +182,11 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
-// #[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
+// #[skyline::hook(replace = sv_animcmd::ATTACK)]
 // unsafe fn attack_replace(lua_state: u64) {
-//     let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
+//     let module_accessor = sv_system::battle_object_module_accessor(lua_state);
 //     let mut l2c_agent = L2CAgent::new(lua_state);
-//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     let fighter_kind = utility::get_kind(module_accessor);
 //     if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
 //         let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
 //         l2c_agent.clear_lua_stack();
@@ -206,10 +206,10 @@ move_type_again: bool) -> u64 {
 //     original!()(lua_state);
 // }
 
-#[skyline::hook(replace = smash::app::sv_animcmd::PLAY_SE)]
+#[skyline::hook(replace = sv_animcmd::PLAY_SE)]
 unsafe fn play_se_replace(lua_state: u64) {
-    let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = smash::app::utility::get_kind(module_accessor);
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
     if fighter_kind == *FIGHTER_KIND_LUCINA
     && shadow_id(module_accessor) {
         let mut l2c_agent = L2CAgent::new(lua_state);
@@ -227,7 +227,7 @@ unsafe fn play_se_replace(lua_state: u64) {
     original!()(lua_state);
 }
 
-#[skyline::hook(replace = smash::app::sv_animcmd::PLAY_SEQUENCE)]
+#[skyline::hook(replace = sv_animcmd::PLAY_SEQUENCE)]
 pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
     let mut l2c_agent = L2CAgent::new(lua_state);
     let module_accessor = sv_system::battle_object_module_accessor(lua_state);
@@ -248,7 +248,7 @@ pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
     original!()(lua_state)
 }
 
-#[skyline::hook(replace = smash::app::sv_animcmd::PLAY_FLY_VOICE)]
+#[skyline::hook(replace = sv_animcmd::PLAY_FLY_VOICE)]
 pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
     let mut l2c_agent = L2CAgent::new(lua_state);
     let module_accessor = sv_system::battle_object_module_accessor(lua_state);
@@ -274,9 +274,9 @@ pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
     original!()(lua_state)
 }
 
-#[skyline::hook(replace = smash::app::lua_bind::WorkModule::is_enable_transition_term )]
+#[skyline::hook(replace = lua_bind::WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-    let fighter_kind = smash::app::utility::get_kind(module_accessor);
+    let fighter_kind = utility::get_kind(module_accessor);
     let ret = original!()(module_accessor,term);
     
     // Fighter-Specific Param Edits
@@ -372,7 +372,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
 pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64) -> i32 {
     let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let ret = original!()(boma, param_type, param_hash);
-    let fighter_kind = smash::app::utility::get_kind(module_accessor);
+    let fighter_kind = utility::get_kind(module_accessor);
 
     // Global Param Edits
     
@@ -397,7 +397,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     // Fighter-Specific Param Edits
 
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
-        let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == smash::hash40("life") {
             if IS_SPIRIT_BOMB[o_entry_id] {
@@ -412,7 +412,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
         }
     }
     if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT { // Phazon Orb Life
-        let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == smash::hash40("life") {
             if IS_FUNNY[o_entry_id] {
@@ -490,14 +490,14 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
 pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u64) -> f32 {
     let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let ret = original!()(boma, param_type, param_hash);
-    let fighter_kind = smash::app::utility::get_kind(module_accessor);
+    let fighter_kind = utility::get_kind(module_accessor);
 
     // Universal Param Edits
     
     // Fighter-Specific Param Edits
     
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
-        let oboma = smash::app::sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == smash::hash40("max_speed") {
             if IS_SPIRIT_BOMB[o_entry_id] {

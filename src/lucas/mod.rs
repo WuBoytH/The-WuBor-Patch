@@ -1,19 +1,16 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::L2CAgentBase;
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-//use skyline::nn::ro::LookupSymbol;
 use smash::phx::Vector3f;
-//use smash::app::BattleObjectModuleAccessor;
-use smash::app::{self,/* lua_bind::*,*/ *};
 
 #[script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -46,7 +43,7 @@ unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucas", script = "game_throwlw", category = ACMD_GAME )]
 unsafe fn lucas_dthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 74, 40, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -54,7 +51,7 @@ unsafe fn lucas_dthrow(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 40.0);
     if macros::is_excute(fighter) {
         macros::CHECK_FINISH_CAMERA(fighter, 9.0, 0.0);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
+        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
         lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
         lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 3.0, y: -5.0, z: 0.0});
     }

@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::L2CAgentBase;
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -8,7 +8,7 @@ use smash_script::*;
 #[script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -36,7 +36,7 @@ unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
 #[script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -60,7 +60,7 @@ unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
 #[script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -84,7 +84,7 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
 #[script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -112,7 +112,7 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
 #[script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

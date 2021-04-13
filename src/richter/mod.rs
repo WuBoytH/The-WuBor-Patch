@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -9,13 +9,13 @@ pub static mut RICHTER_SPECIAL_HI : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RICHTER )]
 unsafe fn richter_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
         RICHTER_SPECIAL_HI[entry_id] = false;
     }
-    if smash::app::sv_information::is_ready_go() == false {
+    if sv_information::is_ready_go() == false {
         RICHTER_SPECIAL_HI[entry_id] = false;
     }
 
@@ -59,7 +59,7 @@ unsafe fn richter_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME )]
 unsafe fn richter_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     macros::FT_MOTION_RATE(fighter, 1.3);
     if macros::is_excute(fighter){
         ArticleModule::generate_article(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
@@ -67,14 +67,14 @@ unsafe fn richter_nspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 30.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
     }
 }
 
 #[script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME )]
 unsafe fn richter_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.56);
     if macros::is_excute(fighter){
@@ -87,7 +87,7 @@ unsafe fn richter_sspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 16.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_CROSS, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+        ArticleModule::shoot(boma, *FIGHTER_SIMON_GENERATE_ARTICLE_CROSS, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
     sv_animcmd::frame(lua_state, 26.0);
     if macros::is_excute(fighter) {
@@ -98,7 +98,7 @@ unsafe fn richter_sspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
 unsafe fn richter_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     macros::FT_MOTION_RATE(fighter, 1.3);
     if macros::is_excute(fighter){
         WorkModule::on_flag(boma, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
@@ -113,7 +113,7 @@ unsafe fn richter_dspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "richter", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME )]
 unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);

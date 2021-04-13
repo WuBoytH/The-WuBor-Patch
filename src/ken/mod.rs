@@ -1,6 +1,7 @@
 use smash::phx::Hash40;
+use smash::hash40;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -28,29 +29,33 @@ static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 static mut VT_TIMER : [i32; 8] = [1200; 8];
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     
     if get_player_number(boma) < 8 {
 
         // Reset Vars
 
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || smash::app::sv_information::is_ready_go() == false {
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             QUICK_STEP_STATE[get_player_number(boma)] = 0;
             VS1_CANCEL[get_player_number(boma)] = false;
             EX_FLASH[get_player_number(boma)] = false;
             V_SHIFT[get_player_number(boma)] = false;
             V_TRIGGER[get_player_number(boma)] = false;
             VT1_CANCEL[get_player_number(boma)] = false;
-            V_GAUGE[get_player_number(boma)] = 0;
             VT_TIMER[get_player_number(boma)] = 1200;
+            V_GAUGE[get_player_number(boma)] /= 2;
+        }
+
+        if sv_information::is_ready_go() == false {
+            V_GAUGE[get_player_number(boma)] = 0;
         }
 
         // V Gauge Building (only for blocked moves and getting hit)
 
         if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD)
-        && MotionModule::motion_kind(boma) != smash::hash40("special_lw")
+        && MotionModule::motion_kind(boma) != hash40("special_lw")
         && V_TRIGGER[get_player_number(boma)] == false {
-            if MotionModule::motion_kind(boma) == smash::hash40("attack_s3_s_w")
+            if MotionModule::motion_kind(boma) == hash40("attack_s3_s_w")
             && QUICK_STEP_STATE[get_player_number(boma)] == 1 {
                 V_GAUGE[get_player_number(boma)] += 50;
                 println!("Quick Step Kick Blocked: {}", V_GAUGE[get_player_number(boma)]);
@@ -69,7 +74,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
         if DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)]
-        && MotionModule::motion_kind(boma) != smash::hash40("special_lw_step_b") {
+        && MotionModule::motion_kind(boma) != hash40("special_lw_step_b") {
             V_GAUGE[get_player_number(boma)] += (DAMAGE_TAKEN[get_player_number(boma)] - DAMAGE_TAKEN_PREV[get_player_number(boma)]) as i32 * 2;
             if V_GAUGE[get_player_number(boma)] > 900 {
                 V_GAUGE[get_player_number(boma)] = 900;
@@ -117,13 +122,13 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             VS1_CANCEL[get_player_number(boma)] = false;
         }
 
-        if MotionModule::motion_kind(boma) == smash::hash40("special_lw_step_f")
+        if MotionModule::motion_kind(boma) == hash40("special_lw_step_f")
         && QUICK_STEP_STATE[get_player_number(boma)] == 1
         && MotionModule::frame(boma) == 1.0 {
             MotionModule::change_motion(boma, Hash40::new("run"), 0.0, 1.0, true, 0.0, false, false);
         }
 
-        if MotionModule::motion_kind(boma) == smash::hash40("run")
+        if MotionModule::motion_kind(boma) == hash40("run")
         && QUICK_STEP_STATE[get_player_number(boma)] == 1 {
             if MotionModule::frame(boma) >= 22.0 && MotionModule::frame(boma) <= 23.0
             && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -134,7 +139,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if MotionModule::motion_kind(boma) == smash::hash40("attack_s3_s_w") {
+        if MotionModule::motion_kind(boma) == hash40("attack_s3_s_w") {
             if MotionModule::frame(boma) > 26.0 {
                 QUICK_STEP_STATE[get_player_number(boma)] = 0;
                 CancelModule::enable_cancel(boma);
@@ -150,7 +155,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && VS1_CANCEL[get_player_number(boma)]
         && QUICK_STEP_STATE[get_player_number(boma)] == 0 {
-            if MotionModule::motion_kind(boma) == smash::hash40("attack_air_b") {
+            if MotionModule::motion_kind(boma) == hash40("attack_air_b") {
                 PostureModule::reverse_lr(boma);
             }
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
@@ -230,7 +235,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if MotionModule::motion_kind(boma) == smash::hash40("special_lw_step_b") {
+        if MotionModule::motion_kind(boma) == hash40("special_lw_step_b") {
             if MotionModule::frame(boma) <= 1.0
             && V_SHIFT[get_player_number(boma)] == false {
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
@@ -260,8 +265,8 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
         }
         
-        if MotionModule::motion_kind(boma) != smash::hash40("special_lw_step_b")
-        && MotionModule::motion_kind(boma) != smash::hash40("special_lw") {
+        if MotionModule::motion_kind(boma) != hash40("special_lw_step_b")
+        && MotionModule::motion_kind(boma) != hash40("special_lw") {
             V_SHIFT[get_player_number(boma)] = false;
         }
 
@@ -304,7 +309,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "ken", script = "game_run", category = ACMD_GAME )]
 unsafe fn ken_run(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if QUICK_STEP_STATE[get_player_number(boma)] == 1 {
         macros::FT_MOTION_RATE(fighter, 0.7);
     }
@@ -315,11 +320,11 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME )]
 unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
         DamageModule::set_damage_lock(boma, true);
-        // HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        // HitModule::set_whole(boma, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
     sv_animcmd::frame(lua_state, 5.625);
@@ -329,7 +334,7 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     }
     if V_SHIFT[get_player_number(boma)] {
         if macros::is_excute(fighter) {
-            HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+            HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
         }
     }
 }
@@ -337,9 +342,9 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "game_speciallw", category = ACMD_GAME )]
 unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+        HitModule::set_whole(boma, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         if V_SHIFT[get_player_number(boma)] {
             macros::SLOW_OPPONENT(fighter, 100.0, 18.0);
         }
@@ -357,7 +362,7 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
-        HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
         if V_SHIFT[get_player_number(boma)] {
             macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
             V_SHIFT[get_player_number(boma)] = false;
@@ -368,7 +373,7 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND )]
 unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_smash_s01"));
@@ -383,7 +388,7 @@ unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION )]
 unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(boma, false, 0);
@@ -411,7 +416,7 @@ unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT )]
 unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 0.6, true);
@@ -434,7 +439,7 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME )]
 unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
@@ -463,7 +468,7 @@ unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "game_specials", category = ACMD_GAME )]
 unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
@@ -524,7 +529,7 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", script = "game_specialairs", category = ACMD_GAME )]
 unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
@@ -575,7 +580,7 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", scripts = ["game_specialhi", "game_specialhicommand"], category = ACMD_GAME )]
 unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
@@ -620,7 +625,7 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
-        HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     sv_animcmd::frame(lua_state, 20.0);
     if macros::is_excute(fighter) {
@@ -632,7 +637,7 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME )]
 unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
@@ -677,7 +682,7 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
-        HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     sv_animcmd::frame(lua_state, 20.0);
     if macros::is_excute(fighter) {

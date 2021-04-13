@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -12,7 +12,7 @@ static mut CANCEL : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
 unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if get_player_number(boma) < 8 {
         if IS_FUNNY[get_player_number(boma)] {
             if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
@@ -71,7 +71,7 @@ unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "elight", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     sv_animcmd::frame(lua_state, 5.0);
@@ -123,7 +123,7 @@ unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     sv_animcmd::frame(lua_state, 5.0);
@@ -204,7 +204,7 @@ unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     if ArticleModule::is_exist(boma, 17456) {
@@ -250,7 +250,7 @@ unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -316,7 +316,7 @@ unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     sv_animcmd::frame(lua_state, 6.0);
@@ -383,7 +383,7 @@ unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -448,7 +448,7 @@ unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -527,7 +527,7 @@ unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
 #[script( agent = "elight", script = "game_specialn", category = ACMD_GAME )]
 unsafe fn elight_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if ArticleModule::is_exist(boma, 17456) {
         if macros::is_excute(fighter) {
             ArticleModule::add_motion_partial(boma, 17456, 60344, Hash40::new_raw(0x07439e926b), 10.0, 10.0, false, false, 0.0, false, true, false);

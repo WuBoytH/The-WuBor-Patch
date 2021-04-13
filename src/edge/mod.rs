@@ -1,16 +1,15 @@
 // use smash::phx::Hash40;
 use smash::lua2cpp::L2CAgentBase;
-// use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
-// use smash_script::macros;
 
 static mut UP_SPECIAL_CANCEL : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_EDGE )]
 unsafe fn edge_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     // Cancel Frames

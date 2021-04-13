@@ -1,6 +1,6 @@
 // use smash::phx::Hash40;
 use smash::lua2cpp::L2CFighterCommon;
-// use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -18,12 +18,12 @@ static mut FLASH_TIMER : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_WIIFIT )]
 unsafe fn wiifit_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if get_player_number(boma) < 8 {
 
         // Reset Vars
 
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || smash::app::sv_information::is_ready_go() == false {
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             DRAGON_INSTALL[get_player_number(boma)] = false;
             DI_FLASH[get_player_number(boma)] = false;
             CAN_DRAGON_INSTALL[get_player_number(boma)] = true;

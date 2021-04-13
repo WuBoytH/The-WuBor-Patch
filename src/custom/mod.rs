@@ -8,7 +8,7 @@ use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::{IS_FUNNY, IS_FGC, COUNTER_HIT_STATE, COUNTER_HIT_HELPER};
 use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
-use smash::app::{self, /***/};
+use smash::app::*;
 
 pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vector3f {x:-3.0,y:3.0,z:0.0};
 //pub const TIME_SLOW_EFFECT_HASH: u64 = smash::hash40("sys_sp_flash");
@@ -16,7 +16,7 @@ pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vecto
 // Use this for general per-frame fighter-level hooks
 unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
     let lua_state = _fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     let status_kind = StatusModule::status_kind(boma);
 
     LookupSymbol(
@@ -25,7 +25,7 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
             .as_bytes()
             .as_ptr(),
     );
-    if ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
+    if ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_USAGIHAT))
     && IS_FUNNY[get_player_number(boma)] == false {
         IS_FUNNY[get_player_number(boma)] = true;
     }
@@ -33,7 +33,7 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
     }
     // if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
-    if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD || smash::app::sv_information::is_ready_go() == false)
+    if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD || sv_information::is_ready_go() == false)
     && IS_FUNNY[get_player_number(boma)] {
         IS_FUNNY[get_player_number(boma)] = false;
     }
@@ -48,7 +48,7 @@ unsafe fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
             println!("Disabled Badge Reflector!");
         }
     }
-    if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_BADGE))
+    if !ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_BADGE))
     && IS_FGC[get_player_number(boma)] {
         IS_FGC[get_player_number(boma)] = false;
         println!("FGC is off!");

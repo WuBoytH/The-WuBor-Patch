@@ -1,6 +1,7 @@
 use smash::phx::Hash40;
+use smash::hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -8,19 +9,18 @@ use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 use smash::phx::Vector3f;
-use smash::app::{self,/* lua_bind::*,*/ *};
 
 static mut _AURA_SPHERE_TIMER: [i32; 8] = [0; 8];
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
 unsafe fn lucario_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     
     if get_player_number(boma) < 8 {
         if IS_FUNNY[get_player_number(boma)] {
-            if MotionModule::motion_kind(boma) == smash::hash40("special_n_shoot")
-            || MotionModule::motion_kind(boma) == smash::hash40("special_air_n_shoot") {
+            if MotionModule::motion_kind(boma) == hash40("special_n_shoot")
+            || MotionModule::motion_kind(boma) == hash40("special_air_n_shoot") {
                 if MotionModule::frame(boma) == 4.0 {
                     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
                         IS_SPIRIT_BOMB[get_player_number(boma)] = true;
@@ -40,7 +40,7 @@ unsafe fn lucario_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "lucario", script = "game_attack13", category = ACMD_GAME )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 9.0);
@@ -58,7 +58,7 @@ unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 4.0, 5.0);
@@ -82,7 +82,7 @@ unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 6.0, 96, 120, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
@@ -98,11 +98,11 @@ unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 60, 55, 0, 34, 4.0, 0.0, 2.8, 9.0, Some(0.0), Some(3.5), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
-        AttackModule::set_attack_height_all(boma, smash::app::AttackHeight(*ATTACK_HEIGHT_LOW), false);
+        AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     sv_animcmd::frame(lua_state, 13.0);
     if macros::is_excute(fighter) {
@@ -113,7 +113,7 @@ unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME )]
 unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 70, 30, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -122,7 +122,7 @@ unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 27.0);
     if macros::is_excute(fighter) {
         macros::CHECK_FINISH_CAMERA(fighter, 8, 0);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
+        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
         lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
         lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 5.0, y: -3.0, z: 0.0});
     }
@@ -135,7 +135,7 @@ unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -175,7 +175,7 @@ unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 3.0, 3.0, 8.0, 2.0);
     }
@@ -218,7 +218,7 @@ unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario", script = "game_specials", category = ACMD_GAME )]
 unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 2.0, 5.0);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -248,7 +248,7 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME )]
 unsafe fn lucario_qigong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 43, 58, 0, 48, 5.6, 0.0, 0.0, 4.0, Some(0.0), Some(0.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 43, 58, 0, 48, 3.0, 0.0, 0.0, 2.0, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);

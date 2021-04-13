@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -14,7 +14,7 @@ static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
 unsafe fn toonlink_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
     if IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 3.0 {
         SPIN_SPEED[get_player_number(boma)] = 3.0;
@@ -39,7 +39,7 @@ unsafe fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     macros::FT_MOTION_RATE(fighter, 0.7);
     sv_animcmd::frame(lua_state, 8.0);
     macros::FT_MOTION_RATE(fighter, 1.1);

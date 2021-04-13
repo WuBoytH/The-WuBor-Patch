@@ -1,12 +1,12 @@
 use smash::phx::Hash40;
+use smash::hash40;
 use smash::lua2cpp::L2CFighterCommon;
-// use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
-use smash::app::lua_bind::EffectModule;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
@@ -30,13 +30,13 @@ static mut SEC_SEN_DIREC : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     
     if get_player_number(boma) < 8 {
 
         // Jump Cancel Heavy Up-Tilt
 
-        if MotionModule::motion_kind(boma) == smash::hash40("attack_hi3_s") {
+        if MotionModule::motion_kind(boma) == hash40("attack_hi3_s") {
             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                 if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
                     StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
@@ -46,7 +46,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         // Reset Vars
 
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || smash::app::sv_information::is_ready_go() == false {
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             SPECIAL_LW[get_player_number(boma)] = false;
             CANCEL[get_player_number(boma)] = false;
             EX_FLASH[get_player_number(boma)] = false;
@@ -57,11 +57,11 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         // EX Focus Attack Check
         if SPECIAL_LW[get_player_number(boma)] == false {
-            if (MotionModule::motion_kind(boma) == smash::hash40("special_n")
+            if (MotionModule::motion_kind(boma) == hash40("special_n")
             && MotionModule::frame(boma) > 13.0)
-            || (MotionModule::motion_kind(boma) == smash::hash40("special_s_start") || MotionModule::motion_kind(boma) == smash::hash40("special_s")
+            || (MotionModule::motion_kind(boma) == hash40("special_s_start") || MotionModule::motion_kind(boma) == hash40("special_s")
             && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD)))
-            || (MotionModule::motion_kind(boma) == smash::hash40("special_hi") || MotionModule::motion_kind(boma) == smash::hash40("special_hi_command")
+            || (MotionModule::motion_kind(boma) == hash40("special_hi") || MotionModule::motion_kind(boma) == hash40("special_hi_command")
             && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
             && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
             && CANCEL[get_player_number(boma)] == false {
@@ -156,16 +156,16 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 else {
                     MotionModule::change_motion(boma, Hash40::new("appeal_hi_l"), 0.0, 1.0, false, 0.0, false, false);
                 }
-                GroundModule::correct(boma, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             }
 
             if SECRET_SENSATION[get_player_number(boma)] {
                 StopModule::end_stop(boma);
                 JostleModule::set_status(boma, false);
-                HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_XLU), 0);
+                HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
                 DamageModule::set_damage_lock(boma, true);
                 DamageModule::set_no_reaction_no_effect(boma, true);
-                HitModule::set_hit_stop_mul(boma, 0.0, smash::app::HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
+                HitModule::set_hit_stop_mul(boma, 0.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
                 if CAMERA[get_player_number(boma)] == false {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_exec"));
                     macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
@@ -193,11 +193,11 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         SEC_SEN_DIREC[get_player_number(boma)] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F;
                     }
                     if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() <= 12.0
-                    && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut smash::app::BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
+                    && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
                         VERT_EXTRA[get_player_number(boma)] = 0.0;
                     }
                     else {
-                        StatusModule::set_situation_kind(boma, smash::app::SituationKind(*SITUATION_KIND_AIR), true);
+                        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
                         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
                         VERT_EXTRA[get_player_number(boma)] = 12.0;
                         RYU_Y[get_player_number(boma)] += 2.0;
@@ -210,15 +210,15 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 }
                 if SEC_SEN_TIMER[get_player_number(boma)] >= 0.0 {
                     if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() <= 12.0
-                    && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut smash::app::BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
-                        GroundModule::correct(boma, smash::app::GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
+                        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     }
                     if StatusModule::status_kind(boma) != SEC_SEN_DIREC[get_player_number(boma)] {
                         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
                         StatusModule::change_status_request_from_script(boma, SEC_SEN_DIREC[get_player_number(boma)], true);
                     }
                     if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() > 12.0 {
-                        StatusModule::set_situation_kind(boma, smash::app::SituationKind(*SITUATION_KIND_AIR), true);
+                        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
                     }
                     PostureModule::set_pos_2d(boma, &Vector2f{
                         x: (((OPPONENT_X[get_player_number(boma)] + OPPONENT_DIRECTION[get_player_number(boma)]) * SEC_SEN_TIMER[get_player_number(boma)]) + RYU_X[get_player_number(boma)] * (1.0 - SEC_SEN_TIMER[get_player_number(boma)])),
@@ -243,8 +243,8 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     SEC_SEN_TIMER[get_player_number(boma)] = -0.6;
                 }
             }
-            else if MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_r")
-            || MotionModule::motion_kind(boma) == smash::hash40("appeal_hi_l") {
+            else if MotionModule::motion_kind(boma) == hash40("appeal_hi_r")
+            || MotionModule::motion_kind(boma) == hash40("appeal_hi_l") {
                 if MotionModule::frame(boma) == 4.0 {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_aura"));
                     SEC_SEN_STATE[get_player_number(boma)] = true;
@@ -271,20 +271,20 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     EX_FLASH[get_player_number(boma)] = false;
                     macros::COL_NORMAL(fighter);
                     SEC_SEN_STATE[get_player_number(boma)] = false;
-                    HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+                    HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
                 }
             }
             else if SECRET_SENSATION[get_player_number(boma)] == false
             && SEC_SEN_STATE[get_player_number(boma)] {
                 DamageModule::set_damage_lock(boma, false);
                 DamageModule::set_no_reaction_no_effect(boma, false);
-                HitModule::set_hit_stop_mul(boma, 1.0, smash::app::HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
+                HitModule::set_hit_stop_mul(boma, 1.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
                 EX_FLASH[get_player_number(boma)] = false;
                 macros::COL_NORMAL(fighter);
                 macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x15db57d7a6), false, true);
                 macros::BURN_COLOR_NORMAL(fighter);
                 SEC_SEN_STATE[get_player_number(boma)] = false;
-                HitModule::set_whole(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+                HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
             }
         // }
     }

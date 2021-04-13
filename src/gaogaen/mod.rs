@@ -2,10 +2,7 @@ use smash::phx::Hash40;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::sv_animcmd;
-//use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-//use smash::phx::Vector3f;
-//use smash::app::{self};
+use smash::app::*;
 use smash_script::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
@@ -13,7 +10,7 @@ use crate::commonfuncs::*;
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
 unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     
     // Darkest Lariat Jump Cancel
 
@@ -30,7 +27,7 @@ unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
 #[script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME )]
 unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 75, 47, 0, 85, 5.8, 0.0, 11.0, 4.0, Some(0.0), Some(11.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -182,7 +179,7 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
+        HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
             AttackModule::clear_all(boma);
             WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
     }
@@ -198,7 +195,7 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME )]
 unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 75, 47, 0, 85, 4.6, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -340,7 +337,7 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME )]
 unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 105, 280, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -386,7 +383,7 @@ unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME )]
 unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 105, 280, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -432,7 +429,7 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME )]
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 145, 454, 0, 20, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -470,7 +467,7 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -496,7 +493,7 @@ unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -519,7 +516,7 @@ unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -546,7 +543,7 @@ unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         JostleModule::set_status(boma, false);
@@ -579,7 +576,7 @@ unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME )]
 unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -615,7 +612,7 @@ unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
 #[script( agent = "gaogaen", script = "game_specialairhifall_2", category = ACMD_GAME )]
 unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);

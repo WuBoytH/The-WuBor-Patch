@@ -1,13 +1,13 @@
 use smash::phx::Hash40;
 use smash::lua2cpp::L2CAgentBase;
-use smash::app::sv_animcmd;
+use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
 unsafe fn kirby_frame(fighter: &mut L2CAgentBase) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
     // Incin Darkest Lariat Jump Cancel
 
@@ -23,7 +23,7 @@ unsafe fn kirby_frame(fighter: &mut L2CAgentBase) {
 #[script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.375);
     sv_animcmd::frame(lua_state, 9.0);
@@ -47,7 +47,7 @@ unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
 #[script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME )]
 unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
@@ -60,7 +60,7 @@ unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
 #[script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME )]
 unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
@@ -73,7 +73,7 @@ unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
 #[script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
 unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40::new("special_hi"), false, 0.0);

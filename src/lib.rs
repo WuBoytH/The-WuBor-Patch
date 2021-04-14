@@ -127,7 +127,7 @@ move_type_again: bool) -> u64 {
                 // println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
             }
             else {
-                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 5;
+                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
                 // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
             }
             if V_GAUGE[a_entry_id] > 900 {
@@ -481,6 +481,20 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
+    // if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
+    //     if param_hash == smash::hash40("fall_frame") {
+    //         if V_TRIGGER[get_player_number(module_accessor)]
+    //         && SHORYUREPPA[get_player_number(module_accessor)] <= 1 {
+    //             return 18;
+    //         }
+    //         else {
+    //             return ret;
+    //         }
+    //     }
+    //     else {
+    //         return ret;
+    //     }
+    // }
     else {
         return ret;
     }

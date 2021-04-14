@@ -97,7 +97,7 @@ mod purin;
 mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
-use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER};
+use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA};
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -120,15 +120,15 @@ move_type_again: bool) -> u64 {
             if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
             && QUICK_STEP_STATE[a_entry_id] == 1 {
                 V_GAUGE[a_entry_id] += 100;
-                println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
+                // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
             }
             else if COUNTER_HIT_STATE[d_entry_id] == 1 {
                 V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
-                println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
+                // println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
             }
             else {
                 V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 5;
-                println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
+                // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
             }
             if V_GAUGE[a_entry_id] > 900 {
                 V_GAUGE[a_entry_id] = 900;
@@ -576,19 +576,28 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    // if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 { // FADC but Secret Sensation
-    //     if QUICK_STEP_STATE[get_player_number(module_accessor)] == 1 {
-    //         if param_hash == smash::hash40("run_speed_max") {
-    //             return 2.0;
-    //         }
-    //         else {
-    //             return ret;
-    //         }
-    //     }
-    //     else {
-    //         return ret;
-    //     }
-    // }
+    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 { // Shoryureppa
+        if param_hash == smash::hash40("stick_x_speed_mul_max") {
+            if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
+                return 1.0;
+            }
+            else {
+                return ret;
+            }
+        }
+        if param_hash == smash::hash40("speed_y_mul_s") {
+            if V_TRIGGER[get_player_number(module_accessor)]
+            && SHORYUREPPA[get_player_number(module_accessor)] <= 1 {
+                return 0.25;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
     else {
         return ret;
     }
@@ -603,11 +612,11 @@ pub fn music_function_replace(
     nus3audio_index: usize,
 ) {
     unsafe {
-        println!("Param 1: {:#x}", &*param_1);
-        println!("Param 2: {}", param_2);
-        println!("Nus3bank Hash: {}", nus3bank_hash);
-        println!("Nus3audio Raw: {:?}", nus3audio_hash);
-        println!("Nus3audio Hash: {:#x}", &*nus3audio_hash);
+        // println!("Param 1: {:#x}", &*param_1);
+        // println!("Param 2: {}", param_2);
+        // println!("Nus3bank Hash: {}", nus3bank_hash);
+        // println!("Nus3audio Raw: {:?}", nus3audio_hash);
+        // println!("Nus3audio Hash: {:#x}", &*nus3audio_hash);
         MUSIC_PARAM1 = param_1;
         MUSIC_PARAM2 = param_2;
         NUS3AUDIO_HASH = nus3audio_hash;

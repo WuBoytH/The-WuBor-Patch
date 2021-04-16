@@ -7,7 +7,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
-use crate::IS_FUNNY;
+use crate::{IS_FUNNY, _TIME_COUNTER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
 
 static mut SPECIAL_LW : [bool; 8] = [false; 8];
@@ -17,11 +17,9 @@ pub static mut SECRET_SENSATION : [bool; 8] = [false; 8];
 pub static mut CAMERA : [bool; 8] = [false; 8];
 pub static mut OPPONENT_X : [f32; 8] = [0.0; 8];
 pub static mut OPPONENT_Y : [f32; 8] = [0.0; 8];
-pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
 static mut RYU_X : [f32; 8] = [0.0; 8];
 static mut RYU_Y : [f32; 8] = [0.0; 8];
 static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
-static mut FLASH_TIMER : [i16; 8] = [-1; 8];
 static mut SEC_SEN_TIMER : [f32; 8] = [-0.6; 8];
 static mut OPPONENT_DIRECTION : [f32; 8] = [12.0; 8];
 static mut VERT_EXTRA : [f32; 8] = [12.0; 8];
@@ -81,7 +79,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW
         && CANCEL[get_player_number(boma)] {
             EX_FLASH[get_player_number(boma)] = true;
-            FLASH_TIMER[get_player_number(boma)] = -1;
+            _TIME_COUNTER[get_player_number(boma)] = -1;
             if !IS_FUNNY[get_player_number(boma)] {
                 SPECIAL_LW_TIMER[get_player_number(boma)] = 1200;
                 SPECIAL_LW[get_player_number(boma)] = true;
@@ -101,34 +99,34 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
             SPECIAL_LW[get_player_number(boma)] = false;
         }
 
-        // EX Flash I Hope
+        // EX Flash
 
         if EX_FLASH[get_player_number(boma)] {
             if SEC_SEN_STATE[get_player_number(boma)] {
-                if FLASH_TIMER[get_player_number(boma)] < 0 {
-                    FLASH_TIMER[get_player_number(boma)] = 8;
+                if _TIME_COUNTER[get_player_number(boma)] < 0 {
+                    _TIME_COUNTER[get_player_number(boma)] = 8;
                 }
-                if FLASH_TIMER[get_player_number(boma)] <= 4 {
+                if _TIME_COUNTER[get_player_number(boma)] <= 4 {
                     macros::COL_NORMAL(fighter);
-                    FLASH_TIMER[get_player_number(boma)] -= 1;
+                    _TIME_COUNTER[get_player_number(boma)] -= 1;
                 }
-                if FLASH_TIMER[get_player_number(boma)] > 4 {
+                if _TIME_COUNTER[get_player_number(boma)] > 4 {
                     macros::FLASH(fighter, 0, 0.55, 1, 1.75);
-                    FLASH_TIMER[get_player_number(boma)] -= 1;
+                    _TIME_COUNTER[get_player_number(boma)] -= 1;
                 }
             }
             else {
-                if FLASH_TIMER[get_player_number(boma)] < 0 {
-                    FLASH_TIMER[get_player_number(boma)] = 12;
+                if _TIME_COUNTER[get_player_number(boma)] < 0 {
+                    _TIME_COUNTER[get_player_number(boma)] = 12;
                 }
-                else if FLASH_TIMER[get_player_number(boma)] == 0 {
+                else if _TIME_COUNTER[get_player_number(boma)] == 0 {
                     macros::COL_NORMAL(fighter);
                     EX_FLASH[get_player_number(boma)] = false;
-                    FLASH_TIMER[get_player_number(boma)] -= 1;
+                    _TIME_COUNTER[get_player_number(boma)] -= 1;
                 }
                 else {
                     macros::FLASH(fighter, 1, 1, 0.0, 1.5);
-                    FLASH_TIMER[get_player_number(boma)] -= 1;
+                    _TIME_COUNTER[get_player_number(boma)] -= 1;
                 }
             }
         }
@@ -249,7 +247,7 @@ unsafe fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_aura"));
                     SEC_SEN_STATE[get_player_number(boma)] = true;
                     EX_FLASH[get_player_number(boma)] = true;
-                    FLASH_TIMER[get_player_number(boma)] = -1;
+                    _TIME_COUNTER[get_player_number(boma)] = -1;
                     macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15db57d7a6), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);

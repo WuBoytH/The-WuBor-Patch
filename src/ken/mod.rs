@@ -5,9 +5,9 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
-// use smash::phx::Vector3f;
+use smash::phx::Vector3f;
 // use smash::phx::Vector2f;
-// use crate::{IS_FUNNY, COUNTER_HIT_STATE};
+use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER};
 use crate::commonfuncs::*;
 
 pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
@@ -18,7 +18,6 @@ State list:
 1 = Used to show you're in the first 22 frames of Quick Step.
 */
 static mut VS1_CANCEL : [bool; 8] = [false; 8];
-static mut EX_FLASH : [bool; 8] = [false; 8];
 pub static mut V_SHIFT : [bool; 8] = [false; 8];
 pub static mut V_TRIGGER : [bool; 8] = [false; 8];
 static mut VT1_CANCEL : [bool; 8] = [false; 8];
@@ -28,6 +27,8 @@ static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 static mut VT_TIMER : [i32; 8] = [1200; 8];
 pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
+pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
+static mut CURR_LOOPS : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
@@ -40,7 +41,6 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             QUICK_STEP_STATE[get_player_number(boma)] = 0;
             VS1_CANCEL[get_player_number(boma)] = false;
-            EX_FLASH[get_player_number(boma)] = false;
             V_SHIFT[get_player_number(boma)] = false;
             V_TRIGGER[get_player_number(boma)] = false;
             VT1_CANCEL[get_player_number(boma)] = false;
@@ -215,6 +215,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         if V_TRIGGER[get_player_number(boma)] {
             if VT_TIMER[get_player_number(boma)] == 0 {
+                _TIME_COUNTER[get_player_number(boma)] = 16;
                 V_TRIGGER[get_player_number(boma)] = false;
                 VT_TIMER[get_player_number(boma)] = 1200;
             }
@@ -232,6 +233,19 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
         && SHORYUREPPA[get_player_number(boma)] == 1 {
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND.into(), false.into());
+        }
+
+        if V_TRIGGER[get_player_number(boma)] {
+            if _TIME_COUNTER[get_player_number(boma)] < 0 {
+                _TIME_COUNTER[get_player_number(boma)] = 32;
+            }
+            if _TIME_COUNTER[get_player_number(boma)] == 32 {
+                EffectModule::req_follow(boma, Hash40::new("sys_flame"), smash::phx::Hash40::new("footl"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 90.0, y: 0.0, z: 0.0}, 0.2, true, 0, 0, 0, 0, 0, true, true);
+            }
+            if _TIME_COUNTER[get_player_number(boma)] == 16 {
+                EffectModule::req_follow(boma, Hash40::new("sys_flame"), smash::phx::Hash40::new("footr"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 90.0, y: 0.0, z: 0.0}, 0.2, true, 0, 0, 0, 0, 0, true, true);
+            }
+            _TIME_COUNTER[get_player_number(boma)] -= 1;
         }
 
         // V Shift
@@ -306,38 +320,6 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
         }
-
-        // EX Flash
-
-        // if EX_FLASH[get_player_number(boma)] {
-        //     if SEC_SEN_STATE[get_player_number(boma)] {
-        //         if FLASH_TIMER[get_player_number(boma)] < 0 {
-        //             FLASH_TIMER[get_player_number(boma)] = 8;
-        //         }
-        //         if FLASH_TIMER[get_player_number(boma)] <= 4 {
-        //             macros::COL_NORMAL(fighter);
-        //             FLASH_TIMER[get_player_number(boma)] -= 1;
-        //         }
-        //         if FLASH_TIMER[get_player_number(boma)] > 4 {
-        //             macros::FLASH(fighter, 0, 0.55, 1, 1.75);
-        //             FLASH_TIMER[get_player_number(boma)] -= 1;
-        //         }
-        //     }
-        //     else {
-        //         if FLASH_TIMER[get_player_number(boma)] < 0 {
-        //             FLASH_TIMER[get_player_number(boma)] = 12;
-        //         }
-        //         else if FLASH_TIMER[get_player_number(boma)] == 0 {
-        //             macros::COL_NORMAL(fighter);
-        //             EX_FLASH[get_player_number(boma)] = false;
-        //             FLASH_TIMER[get_player_number(boma)] -= 1;
-        //         }
-        //         else {
-        //             macros::FLASH(fighter, 1, 1, 0.0, 1.5);
-        //             FLASH_TIMER[get_player_number(boma)] -= 1;
-        //         }
-        //     }
-        // }
     }
 }
 
@@ -456,7 +438,7 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_hit_elec"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 0.6, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 0.6, true);
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
@@ -467,7 +449,7 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 18.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_hit_elec"), false, true);
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, true);
     }
 }
 
@@ -487,6 +469,7 @@ unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
+        CURR_LOOPS[get_player_number(boma)] = 0;
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 1.0, 3.5, 8.5, 8.5);
     }
     sv_animcmd::frame(lua_state, 8.0);
@@ -507,14 +490,13 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
+    DMG_RATIO[get_player_number(boma)] = 1.0;
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
-        DMG_RATIO[get_player_number(boma)] = 1.0;
-    }
-    else {
-        DMG_RATIO[get_player_number(boma)] = 0.8;
+        DMG_RATIO[get_player_number(boma)] = 1.3;
     }
     if macros::is_excute(fighter) {
+        CURR_LOOPS[get_player_number(boma)] += 1;
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(boma, 5.5, 3.0, 9.0, 3.0);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
@@ -526,15 +508,27 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 45, 160, 0, 26, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0 * DMG_RATIO[get_player_number(boma)], 30, 20, 0, 60, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
     }
     else if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 45, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 31, 25, 0, 59, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        if CURR_LOOPS[get_player_number(boma)] == TATSULOOPS[get_player_number(boma)][1] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0 * DMG_RATIO[get_player_number(boma)], 30, 20, 0, 70, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0 * DMG_RATIO[get_player_number(boma)], 30, 20, 0, 70, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
+        else {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 40, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 31, 25, 0, 40, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
     }
     else {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 45, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 31, 25, 0, 59, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        if CURR_LOOPS[get_player_number(boma)] == TATSULOOPS[get_player_number(boma)][2] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0 * DMG_RATIO[get_player_number(boma)], 30, 30, 0, 70, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0 * DMG_RATIO[get_player_number(boma)], 30, 30, 0, 70, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
+        else {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 40, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0 * DMG_RATIO[get_player_number(boma)], 31, 25, 0, 40, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
     }
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
@@ -575,6 +569,9 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
     else {
         DMG_RATIO[get_player_number(boma)] = 0.8;
     }
+    if macros::is_excute(fighter) {
+        CURR_LOOPS[get_player_number(boma)] += 1;
+    }
     sv_animcmd::wait(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     if macros::is_excute(fighter) {
@@ -583,13 +580,23 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * DMG_RATIO[get_player_number(boma)], 45, 160, 0, 26, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0 * DMG_RATIO[get_player_number(boma)], 30, 30, 0, 60, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
     }
     else if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 45, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        if CURR_LOOPS[get_player_number(boma)] == TATSULOOPS[get_player_number(boma)][1] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0 * DMG_RATIO[get_player_number(boma)], 30, 20, 0, 70, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
+        else {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 45, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
     }
     else {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 45, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        if CURR_LOOPS[get_player_number(boma)] == TATSULOOPS[get_player_number(boma)][2] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0 * DMG_RATIO[get_player_number(boma)], 30, 20, 0, 70, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
+        else {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * DMG_RATIO[get_player_number(boma)], 55, 20, 0, 45, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
     }
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
@@ -763,6 +770,72 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME )]
+unsafe fn ken_hadokenw(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let mut property = "collision_attr_normal";
+    let mut rehit = 0;
+    if V_TRIGGER[get_player_number(boma)] {
+        property = "collision_attr_fire";
+        rehit = 3;
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.5, 0, 10, 0, 45, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 4.5, 60, 10, 0, 65, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
+    }
+    sv_animcmd::wait(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.5, 0, 10, 0, 45, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 4.5, 60, 10, 0, 65, 2.5, 0.0, 1.3, -1.25, Some(0.0), Some(-1.3), Some(-1.25), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
+#[script( agent = "ken_hadoken", script = "game_movem", category = ACMD_GAME )]
+unsafe fn ken_hadokenm(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let mut property = "collision_attr_normal";
+    let mut rehit = 0;
+    if V_TRIGGER[get_player_number(boma)] {
+        property = "collision_attr_fire";
+        rehit = 3;
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 0, 10, 0, 50, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 60, 10, 0, 65, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
+    }
+    sv_animcmd::wait(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 0, 10, 0, 50, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 60, 10, 0, 65, 2.5, 0.0, 1.3, -1.25, Some(0.0), Some(-1.3), Some(-1.25), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
+#[script( agent = "ken_hadoken", script = "game_moves", category = ACMD_GAME )]
+unsafe fn ken_hadokens(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let mut property = "collision_attr_normal";
+    let mut rehit = 0;
+    if V_TRIGGER[get_player_number(boma)] {
+        property = "collision_attr_fire";
+        rehit = 3;
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 0, 10, 0, 55, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 60, 10, 0, 65, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-3.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        AttackModule::set_add_reaction_frame(boma, 0, 5.0, false);
+    }
+    sv_animcmd::wait(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 0, 10, 0, 55, 3.0, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 60, 10, 0, 65, 2.5, 0.0, 1.3, -1.25, Some(0.0), Some(-1.3), Some(-1.25), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, rehit, true, true, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
 pub fn install() {
     smash_script::replace_fighter_frames!(
         ken_frame
@@ -778,6 +851,9 @@ pub fn install() {
         ken_sspecial,
         ken_sspecialair,
         ken_uspecial,
-        ken_uspecialair
+        ken_uspecialair,
+        ken_hadokenw,
+        ken_hadokenm,
+        ken_hadokens
     );
 }

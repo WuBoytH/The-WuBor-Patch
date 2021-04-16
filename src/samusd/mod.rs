@@ -127,6 +127,9 @@ unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(boma, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, false, 0);
         ArticleModule::change_motion(boma, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, Hash40::new_raw(0x03dbd0dc6a), false, 0.0);
     }
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    sv_animcmd::frame(lua_state, 4.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
@@ -231,10 +234,14 @@ unsafe fn samusd_ftiltlw(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    sv_animcmd::frame(lua_state, 5.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 10.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 9.0, 78, 80, 0, 50, 5.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 9.0, 78, 80, 0, 50, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 9.0, 78, 110, 0, 50, 5.0, 5.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 9.0, 78, 110, 0, 50, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
     }
     sv_animcmd::wait(lua_state, 7.0);

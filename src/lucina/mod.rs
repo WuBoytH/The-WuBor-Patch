@@ -6,10 +6,8 @@ use smash::app::*;
 use smash_script::*;
 use smash::phx::Hash40;
 use smash::phx::Vector3f;
-use crate::IS_FUNNY;
+use crate::{IS_FUNNY, _TIME_COUNTER};
 use crate::commonfuncs::*;
-
-static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 
 pub static mut LUCINA_SPECIAL_AIR_S : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
@@ -309,10 +307,7 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         if (SP_GAUGE[get_player_number(boma)] >= 25.0 && SHADOW_FRENZY[get_player_number(boma)] == false)
         || SHADOW_FRENZY[get_player_number(boma)] == true {
-            if _TIME_COUNTER[get_player_number(boma)] < 12 {
-                _TIME_COUNTER[get_player_number(boma)] += 1;
-            }
-            else {
+            if _TIME_COUNTER[get_player_number(boma)] == 0 {
                 let onemoreeff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("haver"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                 let onemoreeff2: u32 = EffectModule::req_follow(boma, Hash40::new("sys_hit_aura"), smash::phx::Hash40::new("havel"), &GFXCOORDS, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
                 if SHADOW_FRENZY[get_player_number(boma)] || (SP_GAUGE[get_player_number(boma)] >= 125.0 && SP_GAUGE[get_player_number(boma)] < 150.0) {
@@ -339,8 +334,9 @@ unsafe fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 5.0);
                     EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 5.0);
                 }
-                _TIME_COUNTER[get_player_number(boma)] = 0;
+                _TIME_COUNTER[get_player_number(boma)] = 12;
             }
+            _TIME_COUNTER[get_player_number(boma)] -= 1;
         }
 
         // Special S Air Check

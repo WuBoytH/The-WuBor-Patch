@@ -12,11 +12,13 @@ use smash::app::*;
 use smash::app::FighterManager;
 use skyline::hooks::{getRegionAddress, Region};
 
+pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
 pub static mut IS_FGC : [bool; 8] = [false; 8];
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
 pub static mut COUNTER_HIT_HELPER : [f32; 8] = [0.0; 8];
+pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
 static mut INT_OFFSET : usize = 0x4E19D0;
 // static mut INT64_OFFSET : usize = 0x4E19F0;
 static mut FLOAT_OFFSET : usize = 0x4E19D0;
@@ -78,7 +80,7 @@ mod snake;
 mod palutena;
 mod master;
 mod ryu;
-use crate::ryu::{SECRET_SENSATION, OPPONENT_X, OPPONENT_Y, OPPONENT_BOMA, CAMERA};
+use crate::ryu::{SECRET_SENSATION, OPPONENT_X, OPPONENT_Y, CAMERA};
 mod toonlink;
 mod zelda;
 mod buddy;
@@ -97,7 +99,7 @@ mod purin;
 mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
-use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA};
+use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA, TATSULOOPS};
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -115,31 +117,38 @@ move_type_again: bool) -> u64 {
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if attacker_fighter_kind == *FIGHTER_KIND_KEN {
         if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-        && MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
-        && V_TRIGGER[a_entry_id] == false {
-            if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
-            && QUICK_STEP_STATE[a_entry_id] == 1 {
-                V_GAUGE[a_entry_id] += 100;
-                // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
+        && d_entry_id < 8 {
+            OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+            if MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
+            && V_TRIGGER[a_entry_id] == false {
+                if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
+                && QUICK_STEP_STATE[a_entry_id] == 1 {
+                    V_GAUGE[a_entry_id] += 100;
+                    // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
+                }
+                else if COUNTER_HIT_STATE[d_entry_id] == 1 {
+                    V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
+                    // println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
+                }
+                else {
+                    V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
+                    // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
+                }
+                if V_GAUGE[a_entry_id] > 900 {
+                    V_GAUGE[a_entry_id] = 900;
+                }
             }
-            else if COUNTER_HIT_STATE[d_entry_id] == 1 {
-                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
-                // println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
-            }
-            else {
-                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
-                // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
-            }
-            if V_GAUGE[a_entry_id] > 900 {
-                V_GAUGE[a_entry_id] = 900;
-            }
+        }
+        else {
+            OPPONENT_BOMA[a_entry_id] = 0;
         }
     }
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
         if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
         || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
         && MotionModule::frame(defender_boma) <= 30.0
-        && MotionModule::frame(defender_boma) >= 4.0 {
+        && MotionModule::frame(defender_boma) >= 4.0
+        && IS_FUNNY[d_entry_id] {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
                 OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
@@ -481,20 +490,26 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    // if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
-    //     if param_hash == smash::hash40("fall_frame") {
-    //         if V_TRIGGER[get_player_number(module_accessor)]
-    //         && SHORYUREPPA[get_player_number(module_accessor)] <= 1 {
-    //             return 18;
-    //         }
-    //         else {
-    //             return ret;
-    //         }
-    //     }
-    //     else {
-    //         return ret;
-    //     }
-    // }
+    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
+        if param_hash == smash::hash40("loop_num_w")
+        || param_hash == smash::hash40("air_loop_num_w") {
+            TATSULOOPS[get_player_number(module_accessor)][0] = 1;
+            return 1;
+        }
+        if param_hash == smash::hash40("loop_num_m")
+        || param_hash == smash::hash40("air_loop_num_m") {
+            TATSULOOPS[get_player_number(module_accessor)][1] = 2;
+            return 2;
+        }
+        if param_hash == smash::hash40("loop_num_s")
+        || param_hash == smash::hash40("air_loop_num_s") {
+            TATSULOOPS[get_player_number(module_accessor)][2] = 3;
+            return 3;
+        }
+        else {
+            return ret;
+        }
+    }
     else {
         return ret;
     }

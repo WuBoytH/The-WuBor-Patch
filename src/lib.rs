@@ -116,27 +116,28 @@ move_type_again: bool) -> u64 {
     let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if attacker_fighter_kind == *FIGHTER_KIND_KEN {
-        if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-        && d_entry_id < 8 {
+        if d_entry_id < 8 {
             OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
-            if MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
-            && V_TRIGGER[a_entry_id] == false {
-                if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
-                && QUICK_STEP_STATE[a_entry_id] == 1 {
-                    V_GAUGE[a_entry_id] += 100;
-                    // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
-                }
-                else if COUNTER_HIT_STATE[d_entry_id] == 1 {
+        }
+        if MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
+        && V_TRIGGER[a_entry_id] == false {
+            if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
+            && QUICK_STEP_STATE[a_entry_id] == 1 {
+                V_GAUGE[a_entry_id] += 100;
+                // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
+            }
+            else if d_entry_id < 8 {
+                if COUNTER_HIT_STATE[d_entry_id] == 1 {
                     V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
                     // println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
                 }
-                else {
-                    V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
-                    // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
-                }
-                if V_GAUGE[a_entry_id] > 900 {
-                    V_GAUGE[a_entry_id] = 900;
-                }
+            }
+            else {
+                V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
+                // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
+            }
+            if V_GAUGE[a_entry_id] > 900 {
+                V_GAUGE[a_entry_id] = 900;
             }
         }
         else {

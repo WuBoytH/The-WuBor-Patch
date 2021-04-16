@@ -238,8 +238,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-        && (V_GAUGE[get_player_number(boma)] >= 300
-        || V_TRIGGER[get_player_number(boma)]) {
+        && V_GAUGE[get_player_number(boma)] >= 300 {
             let stick_x = ControlModule::get_stick_x(boma);
             if (stick_x < -0.5 && PostureModule::lr(boma) == 1.0)
             || (stick_x > 0.5 && PostureModule::lr(boma) == -1.0) {
@@ -255,11 +254,17 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             if MotionModule::frame(boma) <= 1.0
             && V_SHIFT[get_player_number(boma)] == false {
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
             }
             if MotionModule::frame(boma) == 6.25 {
                 if V_SHIFT[get_player_number(boma)] {
@@ -462,11 +467,13 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 0.6, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 1.5, true);
+        
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new_raw(0x0f998ceac2), Hash40::new_raw(0x0f998ceac2), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
         macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);

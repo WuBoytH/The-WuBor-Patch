@@ -254,17 +254,11 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             if MotionModule::frame(boma) <= 1.0
             && V_SHIFT[get_player_number(boma)] == false {
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
                 macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
-                macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
             }
             if MotionModule::frame(boma) == 6.25 {
                 if V_SHIFT[get_player_number(boma)] {

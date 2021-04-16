@@ -338,8 +338,8 @@ unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 8.0);
     if QUICK_STEP_STATE[get_player_number(boma)] == 1 {
         if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.8, 72, 46, 33, 50, 3.8, 0.0, 11.0, 6.5, Some(0.0), Some(11.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 6.8, 72, 46, 33, 50, 3.8, 0.0, 11.0, 14.0, Some(0.0), Some(11.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 72, 46, 33, 50, 3.8, 0.0, 11.0, 6.5, Some(0.0), Some(11.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 72, 46, 33, 50, 3.8, 0.0, 11.0, 14.0, Some(0.0), Some(11.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
         }
     }
     else {
@@ -355,6 +355,35 @@ unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     macros::FT_MOTION_RATE(fighter, 0.8);
+}
+
+// Nerfed damage on Inazuma Kick, but increased combo potential
+
+#[script( agent = "ken", script = "game_attackcommand3", category = ACMD_GAME )]
+unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    sv_animcmd::frame(lua_state, 15.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 1, Hash40::new("kneer"), 10.0, 30, 40, 0, 35, 3.0, 6.3, 0.0, 0.0, Some(2.0), Some(0.0), Some(0.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_PUNCH);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.25);
+        AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+    }
+    sv_animcmd::frame(lua_state, 18.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        WorkModule::off_flag(boma, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
 }
 
 // V Shift Related
@@ -485,12 +514,10 @@ unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
+    DMG_RATIO[get_player_number(boma)] = 0.9;
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
-        DMG_RATIO[get_player_number(boma)] = 1.0;
-    }
-    else {
-        DMG_RATIO[get_player_number(boma)] = 0.8;
+        DMG_RATIO[get_player_number(boma)] = 1.2;
     }
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
@@ -515,10 +542,10 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
-    DMG_RATIO[get_player_number(boma)] = 1.0;
+    DMG_RATIO[get_player_number(boma)] = 0.9;
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
-        DMG_RATIO[get_player_number(boma)] = 1.3;
+        DMG_RATIO[get_player_number(boma)] = 1.2;
     }
     if macros::is_excute(fighter) {
         CURR_LOOPS[get_player_number(boma)] += 1;
@@ -587,12 +614,10 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
+    DMG_RATIO[get_player_number(boma)] = 0.9;
     if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
-        DMG_RATIO[get_player_number(boma)] = 1.0;
-    }
-    else {
-        DMG_RATIO[get_player_number(boma)] = 0.8;
+        DMG_RATIO[get_player_number(boma)] = 1.2;
     }
     if macros::is_excute(fighter) {
         CURR_LOOPS[get_player_number(boma)] += 1;
@@ -652,7 +677,7 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     let mut property = "collision_attr_normal";
     if SHORYUREPPA[get_player_number(boma)] == 1 {
-        DMG_RATIO[get_player_number(boma)] = 0.6
+        DMG_RATIO[get_player_number(boma)] = 0.7
     }
     else if V_TRIGGER[get_player_number(boma)] {
         property = "collision_attr_fire";
@@ -862,6 +887,7 @@ pub fn install() {
     smash_script::replace_scripts!(
         ken_run,
         ken_ftiltwnp,
+        ken_attackcommand3,
         ken_dspecialstepb,
         ken_dspecial,
         ken_dspecialsnd,

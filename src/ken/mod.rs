@@ -7,7 +7,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
-use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER};
+use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
 
 pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
@@ -29,6 +29,7 @@ static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
 pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
 static mut CURR_LOOPS : [i32; 8] = [0; 8];
+static mut DIFF_X : [f32; 8] = [0.0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
@@ -45,6 +46,7 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
             V_TRIGGER[get_player_number(boma)] = false;
             VT1_CANCEL[get_player_number(boma)] = false;
             SHORYUREPPA[get_player_number(boma)] = 0;
+            OPPONENT_BOMA[get_player_number(boma)] = 0;
         }
 
         if sv_information::is_ready_go() == false {
@@ -209,33 +211,66 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         && VT1_CANCEL[get_player_number(boma)]
         && V_GAUGE[get_player_number(boma)] == 900
         && V_TRIGGER[get_player_number(boma)] == false {
-            fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
-            V_GAUGE[get_player_number(boma)] = 0;
             VT_ACTIVATION[get_player_number(boma)] = true;
         }
 
         if VT_ACTIVATION[get_player_number(boma)] {
+            if StatusModule::status_kind(boma) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
+                fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
+                V_GAUGE[get_player_number(boma)] = 0;
+            }
             if StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
             && MotionModule::frame(boma) == 1.0 {
                 WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
                 HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_XLU), 0);
                 SlowModule::set_whole(boma, 6, 0);
                 macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
                 macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+                if OPPONENT_BOMA[get_player_number(boma)] != 0 {
+                    DIFF_X[get_player_number(boma)] = (
+                        PostureModule::pos_x(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) - PostureModule::pos_x(boma)
+                    ).abs();
+                    if DIFF_X[get_player_number(boma)] > 5.0 {
+                        DIFF_X[get_player_number(boma)] -= 5.0;
+                    }
+                    OPPONENT_BOMA[get_player_number(boma)] = 0;
+                }
+                else {
+                    DIFF_X[get_player_number(boma)] = 0.0;
+                }
             }
-            if MotionModule::frame(boma) == 4.0 {
-                SlowModule::clear_whole(boma);
-                PostureModule::add_pos_2d(boma, &Vector2f{
-                    x: 3.0 * PostureModule::lr(boma),
-                    y: 0.0
-                });
+            if DIFF_X[get_player_number(boma)] != 0.0 {
+                if MotionModule::frame(boma) == 4.0 {
+                    SlowModule::clear_whole(boma);
+                    PostureModule::add_pos_2d(boma, &Vector2f{
+                        x: (DIFF_X[get_player_number(boma)] / 5.0) * PostureModule::lr(boma),
+                        y: 0.0
+                    });
+                }
+                if MotionModule::frame(boma) > 4.0
+                && MotionModule::frame(boma) < 9.0 {
+                    PostureModule::add_pos_2d(boma, &Vector2f{
+                        x: (DIFF_X[get_player_number(boma)] / 5.0) * PostureModule::lr(boma),
+                        y: 0.0
+                    });
+                }
             }
-            if MotionModule::frame(boma) > 4.0
-            && MotionModule::frame(boma) < 9.0 {
-                PostureModule::add_pos_2d(boma, &Vector2f{
-                    x: 3.0 * PostureModule::lr(boma),
-                    y: 0.0
-                });
+            else {
+                if MotionModule::frame(boma) == 4.0 {
+                    SlowModule::clear_whole(boma);
+                    PostureModule::add_pos_2d(boma, &Vector2f{
+                        x: 10.0 * PostureModule::lr(boma),
+                        y: 0.0
+                    });
+                }
+                if MotionModule::frame(boma) > 4.0
+                && MotionModule::frame(boma) < 9.0 {
+                    PostureModule::add_pos_2d(boma, &Vector2f{
+                        x: 10.0 * PostureModule::lr(boma),
+                        y: 0.0
+                    });
+                }
             }
             if MotionModule::frame(boma) == 9.0 {
                 MotionModule::set_frame(boma, 19.0, true);

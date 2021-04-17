@@ -120,6 +120,9 @@ move_type_again: bool) -> u64 {
         && utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
         }
+        else {
+            OPPONENT_BOMA[a_entry_id] = 0;
+        }
         if MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
         && V_TRIGGER[a_entry_id] == false {
             if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")

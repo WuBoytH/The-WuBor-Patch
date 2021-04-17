@@ -6,7 +6,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smash::phx::Vector3f;
-// use smash::phx::Vector2f;
+use smash::phx::Vector2f;
 use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER};
 use crate::commonfuncs::*;
 
@@ -20,6 +20,7 @@ State list:
 static mut VS1_CANCEL : [bool; 8] = [false; 8];
 pub static mut V_SHIFT : [bool; 8] = [false; 8];
 pub static mut V_TRIGGER : [bool; 8] = [false; 8];
+static mut VT_ACTIVATION : [bool; 8] = [false; 8];
 static mut VT1_CANCEL : [bool; 8] = [false; 8];
 pub static mut V_GAUGE : [i32; 8] = [0; 8];
 static mut DMG_RATIO : [f32; 8] = [0.8; 8];
@@ -189,23 +190,64 @@ unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_F
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_RV
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SQUAT_WAIT
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_AERIAL
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_AERIAL
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCH {
             VT1_CANCEL[get_player_number(boma)] = true;
         }
         else {
             VT1_CANCEL[get_player_number(boma)] = false;
         }
 
-        if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)
         && VT1_CANCEL[get_player_number(boma)]
         && V_GAUGE[get_player_number(boma)] == 900
         && V_TRIGGER[get_player_number(boma)] == false {
             fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
-            V_TRIGGER[get_player_number(boma)] = true;
             V_GAUGE[get_player_number(boma)] = 0;
+            VT_ACTIVATION[get_player_number(boma)] = true;
+        }
+
+        if VT_ACTIVATION[get_player_number(boma)] {
+            if StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
+            && MotionModule::frame(boma) == 1.0 {
+                WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+                HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_XLU), 0);
+                SlowModule::set_whole(boma, 6, 0);
+                macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
+                macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+            }
+            if MotionModule::frame(boma) == 4.0 {
+                SlowModule::clear_whole(boma);
+                PostureModule::add_pos_2d(boma, &Vector2f{
+                    x: 3.0 * PostureModule::lr(boma),
+                    y: 0.0
+                });
+            }
+            if MotionModule::frame(boma) > 4.0
+            && MotionModule::frame(boma) < 9.0 {
+                PostureModule::add_pos_2d(boma, &Vector2f{
+                    x: 3.0 * PostureModule::lr(boma),
+                    y: 0.0
+                });
+            }
+            if MotionModule::frame(boma) == 9.0 {
+                MotionModule::set_frame(boma, 19.0, true);
+            }
+            if StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
+            && MotionModule::frame(boma) >= 19.0 {
+                HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
+                macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+                V_TRIGGER[get_player_number(boma)] = true;
+                CancelModule::enable_cancel(boma);
+                VT_ACTIVATION[get_player_number(boma)] = false;
+            }
         }
 
         if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_HI

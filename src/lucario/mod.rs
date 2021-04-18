@@ -5,8 +5,7 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use crate::IS_FUNNY;
+use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
 use crate::commonfuncs::*;
 use smash::phx::Vector3f;
 

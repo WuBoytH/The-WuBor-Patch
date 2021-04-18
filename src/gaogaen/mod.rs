@@ -1,11 +1,15 @@
 use smash::phx::Hash40;
+use smash::hash40;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash_script::*;
-use crate::IS_FUNNY;
+use smash::phx::Vector3f;
+use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
 use crate::commonfuncs::*;
+
+pub static mut REVENGE : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
 unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
@@ -21,6 +25,13 @@ unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     || IS_FUNNY[get_player_number(boma)])
     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+    }
+
+    if MotionModule::motion_kind(boma) != hash40("special_lw_start")
+    && MotionModule::motion_kind(boma) != hash40("special_air_lw_start")
+    && MotionModule::motion_kind(boma) != hash40("special_s_lariat")
+    && MotionModule::motion_kind(boma) != hash40("special_air_s_lariat") {
+        REVENGE[get_player_number(boma)] = 0;
     }
 }
 
@@ -350,13 +361,13 @@ unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 105, 34, 0, 96, 6.0, 0.0, 6.0, 0.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 1, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
-    // sv_animcmd::frame(lua_state, 17.0);
-    // if macros::is_excute(fighter) {
-    //     macros::CHECK_FINISH_CAMERA(fighter, 0, 0); //Supposed to be CHECK_FINISH_CAMERA_IS_NOT_HP_MODE
-    //     let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
-    //     FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-    //     FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
-    // }
+    sv_animcmd::frame(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::CHECK_FINISH_CAMERA(fighter, 0, 0); //Supposed to be CHECK_FINISH_CAMERA_IS_NOT_HP_MODE
+        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+    }
     sv_animcmd::frame(lua_state, 18.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
@@ -396,13 +407,13 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 105, 34, 0, 96, 6.0, 0.0, 6.0, 0.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 1, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
-    // sv_animcmd::frame(lua_state, 17.0);
-    // if macros::is_excute(fighter) {
-    //     macros::CHECK_FINISH_CAMERA(fighter, 0, 0); //Supposed to be CHECK_FINISH_CAMERA_IS_NOT_HP_MODE
-    //     let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
-    //     FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-    //     FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
-    // }
+    sv_animcmd::frame(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::CHECK_FINISH_CAMERA(fighter, 0, 0); //Supposed to be CHECK_FINISH_CAMERA_IS_NOT_HP_MODE
+        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+    }
     sv_animcmd::frame(lua_state, 18.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
@@ -426,41 +437,110 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME )]
+unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.25);
+    sv_animcmd::frame(lua_state, 8.0);
+    if macros::is_excute(fighter) {
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        REVENGE[get_player_number(boma)] = 1;
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    macros::FT_MOTION_RATE(fighter, 1.5);
+    sv_animcmd::frame(lua_state, 21.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    sv_animcmd::frame(lua_state, 28.0);
+    if macros::is_excute(fighter) {
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        PostureModule::reverse_lr(boma);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
+    }
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    sv_animcmd::frame(lua_state, 32.0);
+    if macros::is_excute(fighter) {
+        smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    sv_animcmd::frame(lua_state, 46.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
 #[script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME )]
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
-        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 145, 454, 0, 20, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        AttackModule::set_force_reaction(boma, 0, true, true);
-        WorkModule::set_float(boma, 9.0, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLOAT_LARIAT_HIT_FRAME);
+    if REVENGE[get_player_number(boma)] > 0 {
+        let mut dmg = 4.0 + 0.164 * DamageModule::damage(boma, 0);
+        let mut hitlag = 1.0 + 0.5 * DamageModule::damage(boma, 0);
+        if DamageModule::damage(boma, 0) > 196.0 {
+            dmg = 36.0;
+            hitlag = 2.0;
+        }
+        if REVENGE[get_player_number(boma)] == 2 {
+            HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_XLU), 0);
+        }
+        sv_animcmd::frame(lua_state, 9.0);
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), dmg, 45, 40, 0, 40, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            macros::CHECK_FINISH_CAMERA(fighter, 0, 0);
+            let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
+            lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+            lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+        }
+        sv_animcmd::frame(lua_state, 14.0);
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
+        }
+        sv_animcmd::frame(lua_state, 20.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            macros::REVERSE_LR(fighter);
+        }
+        sv_animcmd::frame(lua_state, 50.0);
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+        }
+        sv_animcmd::frame(lua_state, 58.0);
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
+            smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        }
     }
-    sv_animcmd::frame(lua_state, 9.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), 16.0, 145, 40, 0, 88, 7.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-        // CHECK_FINISH_CAMERA(0, 0)
-        // let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut app::FighterCutInManager);
-        // lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-        // lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
-    }
-    sv_animcmd::frame(lua_state, 14.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
-    }
-    sv_animcmd::frame(lua_state, 20.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        macros::REVERSE_LR(fighter);
-    }
-    sv_animcmd::frame(lua_state, 50.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
-    }
-    sv_animcmd::frame(lua_state, 58.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+    else {
+        if macros::is_excute(fighter) {
+            smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
+            macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 145, 454, 0, 20, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+            AttackModule::set_force_reaction(boma, 0, true, true);
+            WorkModule::set_float(boma, 9.0, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLOAT_LARIAT_HIT_FRAME);
+        }
+        sv_animcmd::frame(lua_state, 9.0);
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), 16.0, 145, 40, 0, 88, 7.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            macros::CHECK_FINISH_CAMERA(fighter, 0, 0);
+            let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
+            lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+            lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+        }
+        sv_animcmd::frame(lua_state, 14.0);
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
+        }
+        sv_animcmd::frame(lua_state, 20.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(boma);
+            macros::REVERSE_LR(fighter);
+        }
+        sv_animcmd::frame(lua_state, 50.0);
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+        }
+        sv_animcmd::frame(lua_state, 58.0);
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
+            smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        }
     }
 }
 
@@ -654,6 +734,7 @@ pub fn install() {
         gaogaen_nspecialair,
         gaogaen_sspecialshoulder,
         gaogaen_sspecialshoulderair,
+        gaogaen_dspecial,
         gaogaen_sspeciallariat,
         gaogaen_nair,
         gaogaen_fsmash,

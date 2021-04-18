@@ -4,6 +4,7 @@
 
 // use smash::phx::*;
 use smash::hash40;
+// use smash::phx::Hash40;
 use smash::lib::L2CValue;
 use smash::lib::L2CAgent;
 use smash::lib::lua_const::*;
@@ -63,6 +64,7 @@ mod lucina;
 use crate::lucina::{LUCINA_SPECIAL_AIR_S, shadow_id};
 mod littlemac;
 mod gaogaen;
+use crate::gaogaen::REVENGE;
 mod dedede;
 mod lucas;
 mod jack;
@@ -123,9 +125,9 @@ move_type_again: bool) -> u64 {
         else {
             OPPONENT_BOMA[a_entry_id] = 0;
         }
-        if MotionModule::motion_kind(attacker_boma) != smash::hash40("special_lw")
+        if MotionModule::motion_kind(attacker_boma) != hash40("special_lw")
         && V_TRIGGER[a_entry_id] == false {
-            if MotionModule::motion_kind(attacker_boma) == smash::hash40("attack_s3_s_w")
+            if MotionModule::motion_kind(attacker_boma) == hash40("attack_s3_s_w")
             && QUICK_STEP_STATE[a_entry_id] == 1 {
                 V_GAUGE[a_entry_id] += 100;
                 // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
@@ -149,8 +151,8 @@ move_type_again: bool) -> u64 {
         }
     }
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
-        if (MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_r")
-        || MotionModule::motion_kind(defender_boma) == smash::hash40("appeal_hi_l"))
+        if (MotionModule::motion_kind(defender_boma) == hash40("appeal_hi_r")
+        || MotionModule::motion_kind(defender_boma) == hash40("appeal_hi_l"))
         && MotionModule::frame(defender_boma) <= 30.0
         && MotionModule::frame(defender_boma) >= 4.0
         && IS_FUNNY[d_entry_id] {
@@ -188,9 +190,25 @@ move_type_again: bool) -> u64 {
         }
     }
     else if defender_fighter_kind == *FIGHTER_KIND_KEN {
-        if MotionModule::motion_kind(defender_boma) == smash::hash40("special_lw_step_b")
+        if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
         && MotionModule::frame(defender_boma) <= 5.625 {
             V_SHIFT[d_entry_id] = true;
+        }
+    }
+    else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
+        if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
+        || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
+        && MotionModule::frame(defender_boma) >= 8.0
+        && MotionModule::frame(defender_boma) <= 27.0 {
+            REVENGE[d_entry_id] = 2;
+            // if StatusModule::situation_kind(defender_boma) == *SITUATION_KIND_GROUND {
+            //     MotionModule::change_motion(defender_boma, Hash40::new("special_s_lariat"), 0.0, 1.0, false, 0.0, false, false);
+            // }
+            // else {
+            //     MotionModule::change_motion(defender_boma, Hash40::new("special_air_s_lariat"), 0.0, 1.0, false, 0.0, false, false);
+            // }
+            StatusModule::change_status_request_from_script(defender_boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
+            PostureModule::reverse_lr(defender_boma);
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)

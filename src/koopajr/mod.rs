@@ -4,8 +4,9 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 
-#[script( agent = "koopajr", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "koopajr", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn koopajr_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -36,7 +37,7 @@ unsafe fn koopajr_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "koopajr", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "koopajr", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn koopajr_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -77,7 +78,7 @@ unsafe fn koopajr_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "koopajr", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
+#[acmd_script( agent = "koopajr", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
 unsafe fn koopajr_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -88,7 +89,7 @@ unsafe fn koopajr_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         koopajr_dashattack,
         koopajr_nair,
         koopajr_dspecial

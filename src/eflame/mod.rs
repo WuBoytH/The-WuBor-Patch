@@ -4,53 +4,58 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
 static mut CALLBACK : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]
-unsafe fn eflame_frame(fighter: &mut L2CFighterCommon) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    if get_player_number(boma) < 8 {
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
-        && MotionModule::frame(boma) >= 20.0 {
-            if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-                WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
-                WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
-                WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
+fn eflame_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let lua_state = fighter.lua_state_agent;
+        let boma = sv_system::battle_object_module_accessor(lua_state);
+        if get_player_number(boma) < 8 {
+            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
+            && MotionModule::frame(boma) >= 20.0 {
+                if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+                    WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
+                    WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
+                    WorkModule::enable_transition_term(boma,*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
+                }
+                if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
+                    CALLBACK[get_player_number(boma)] = true;
+                    StatusModule::change_status_request_from_script(boma,*FIGHTER_EFLAME_STATUS_KIND_SPECIAL_S_CATCH,true);
+                }
             }
-            if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
-                CALLBACK[get_player_number(boma)] = true;
-                StatusModule::change_status_request_from_script(boma,*FIGHTER_EFLAME_STATUS_KIND_SPECIAL_S_CATCH,true);
-            }
-        }
 
-        if IS_FUNNY[get_player_number(boma)] {
-            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
-            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
-            && is_damage_check(boma) == false {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+            if IS_FUNNY[get_player_number(boma)] {
+                if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
+                && is_damage_check(boma) == false {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+                }
             }
         }
     }
 }
 
 #[weapon_frame( agent = WEAPON_KIND_EFLAME_ESWORD )]
-unsafe fn eflame_esword_frame(fighter: &mut L2CFighterBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    if CALLBACK[get_player_number(boma)] {
-        StatusModule::change_status_request_from_script(boma,*WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_BACK,true);
-        if StatusModule::status_kind(boma) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_BACK {
-            CALLBACK[get_player_number(boma)] = false;
+fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        let lua_state = weapon.lua_state_agent;
+        let boma = sv_system::battle_object_module_accessor(lua_state);
+        if CALLBACK[get_player_number(boma)] {
+            StatusModule::change_status_request_from_script(boma,*WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_BACK,true);
+            if StatusModule::status_kind(boma) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_BACK {
+                CALLBACK[get_player_number(boma)] = false;
+            }
         }
     }
 }
 
-#[script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn eflame_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -125,9 +130,11 @@ unsafe fn eflame_dair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_agent_frames!(
+        eflame_frame,
+        eflame_esword_frame
+    );
+    smashline::install_acmd_scripts!(
         eflame_dair
     );
-    smash_script::replace_fighter_frames!(eflame_frame);
-    smash_script::replace_weapon_frames!(eflame_esword_frame);
 }

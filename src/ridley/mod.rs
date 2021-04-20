@@ -4,26 +4,29 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RIDLEY )]
-unsafe fn ridley_frame(fighter: &mut L2CFighterCommon) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if get_player_number(boma) < 8 {
-        if IS_FUNNY[get_player_number(boma)] {
-            FUNNY_RIDLEY[get_player_number(boma)] = true;
-        }
-        else if MotionModule::motion_kind(boma) != smash::hash40("special_n_shoot")
-        && MotionModule::motion_kind(boma) != smash::hash40("special_air_n_shoot") {
-            FUNNY_RIDLEY[get_player_number(boma)] = false;
+fn ridley_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+        if get_player_number(boma) < 8 {
+            if IS_FUNNY[get_player_number(boma)] {
+                FUNNY_RIDLEY[get_player_number(boma)] = true;
+            }
+            else if MotionModule::motion_kind(boma) != smash::hash40("special_n_shoot")
+            && MotionModule::motion_kind(boma) != smash::hash40("special_air_n_shoot") {
+                FUNNY_RIDLEY[get_player_number(boma)] = false;
+            }
         }
     }
 }
 
-#[script( agent = "ridley", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "ridley", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn ridley_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -39,7 +42,7 @@ unsafe fn ridley_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn ridley_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -92,7 +95,7 @@ unsafe fn ridley_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME)]
+#[acmd_script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME)]
 unsafe fn ridley_dairland(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -109,8 +112,10 @@ unsafe fn ridley_dairland(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(ridley_frame);
-    smash_script::replace_scripts!(
+    smashline::install_agent_frames!(
+        ridley_frame
+    );
+    smashline::install_acmd_scripts!(
         ridley_dtilt,
         ridley_dair,
         ridley_dairland

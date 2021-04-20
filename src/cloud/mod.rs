@@ -4,8 +4,9 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 
-#[script( agent = "cloud", script = "game_catch", category = ACMD_GAME )]
+#[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME )]
 unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -28,7 +29,7 @@ unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         cloud_grab
     );
 }

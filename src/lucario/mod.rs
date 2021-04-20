@@ -5,6 +5,7 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
 use crate::commonfuncs::*;
 use smash::phx::Vector3f;
@@ -13,30 +14,32 @@ static mut _AURA_SPHERE_TIMER: [i32; 8] = [0; 8];
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
-unsafe fn lucario_frame(fighter: &mut L2CFighterCommon) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    
-    if get_player_number(boma) < 8 {
-        if IS_FUNNY[get_player_number(boma)] {
-            if MotionModule::motion_kind(boma) == hash40("special_n_shoot")
-            || MotionModule::motion_kind(boma) == hash40("special_air_n_shoot") {
-                if MotionModule::frame(boma) == 4.0 {
-                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                        IS_SPIRIT_BOMB[get_player_number(boma)] = true;
-                    }
-                    else {
-                        IS_SPIRIT_BOMB[get_player_number(boma)] = false;
+fn lucario_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+
+        if get_player_number(boma) < 8 {
+            if IS_FUNNY[get_player_number(boma)] {
+                if MotionModule::motion_kind(boma) == hash40("special_n_shoot")
+                || MotionModule::motion_kind(boma) == hash40("special_air_n_shoot") {
+                    if MotionModule::frame(boma) == 4.0 {
+                        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+                            IS_SPIRIT_BOMB[get_player_number(boma)] = true;
+                        }
+                        else {
+                            IS_SPIRIT_BOMB[get_player_number(boma)] = false;
+                        }
                     }
                 }
             }
-        }
-        else if IS_SPIRIT_BOMB[get_player_number(boma)] {
-            IS_SPIRIT_BOMB[get_player_number(boma)] = false;
+            else if IS_SPIRIT_BOMB[get_player_number(boma)] {
+                IS_SPIRIT_BOMB[get_player_number(boma)] = false;
+            }
         }
     }
 }
 
-#[script( agent = "lucario", script = "game_attack13", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -54,7 +57,7 @@ unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -78,7 +81,7 @@ unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -94,7 +97,7 @@ unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -109,7 +112,7 @@ unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME )]
 unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -131,7 +134,7 @@ unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -171,7 +174,7 @@ unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -214,7 +217,7 @@ unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario", script = "game_specials", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME )]
 unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -244,7 +247,7 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME )]
 unsafe fn lucario_qigong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -264,8 +267,10 @@ unsafe fn lucario_qigong(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(lucario_frame);
-    smash_script::replace_scripts!(
+    smashline::install_agent_frames!(
+        lucario_frame
+    );
+    smashline::install_acmd_scripts!(
         lucario_jab3,
         lucario_dashattack,
         lucario_utilt,

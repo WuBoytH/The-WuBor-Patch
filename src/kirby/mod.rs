@@ -1,26 +1,29 @@
 use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
+use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
-unsafe fn kirby_frame(fighter: &mut L2CAgentBase) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+fn kirby_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-    // Incin Darkest Lariat Jump Cancel
+        // Incin Darkest Lariat Jump Cancel
 
-    if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-    && StatusModule::status_kind(boma) == *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N
-    && MotionModule::frame(boma) > 19.0
-    && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+        && StatusModule::status_kind(boma) == *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N
+        && MotionModule::frame(boma) > 19.0
+        && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        }
     }
 }
 
-#[script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -44,7 +47,7 @@ unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME )]
 unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -57,7 +60,7 @@ unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
 }
 
-#[script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME )]
 unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -70,7 +73,7 @@ unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
 }
 
-#[script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
 unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -85,10 +88,10 @@ unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
+    smashline::install_agent_frames!(
         kirby_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         kirby_uair,
         kirby_sspecialstart,
         kirby_sspecialstartair,

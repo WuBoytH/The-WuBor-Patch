@@ -4,34 +4,37 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
 static mut HAMMER_SPEED : [f32; 8] = [1.56; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]
-unsafe fn dedede_frame(fighter: &mut L2CFighterCommon) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+fn dedede_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-    if IS_FUNNY[get_player_number(boma)] && HAMMER_SPEED[get_player_number(boma)] != 3.6 {
-        HAMMER_SPEED[get_player_number(boma)] = 3.6;
-    }
-    else if !IS_FUNNY[get_player_number(boma)] && HAMMER_SPEED[get_player_number(boma)] != 1.88 {
-        HAMMER_SPEED[get_player_number(boma)] = 1.88;
-    }
+        if IS_FUNNY[get_player_number(boma)] && HAMMER_SPEED[get_player_number(boma)] != 3.6 {
+            HAMMER_SPEED[get_player_number(boma)] = 3.6;
+        }
+        else if !IS_FUNNY[get_player_number(boma)] && HAMMER_SPEED[get_player_number(boma)] != 1.88 {
+            HAMMER_SPEED[get_player_number(boma)] = 1.88;
+        }
 
-    // Jet Hammer Movement
-    
-    if MotionModule::motion_kind(boma) == smash::hash40("special_lw_hold")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_lw_jump")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_lw_fall")
-    || MotionModule::motion_kind(boma) == smash::hash40("special_lw_hold_max") {
-        let dedespeedy = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        macros::SET_SPEED_EX(fighter, HAMMER_SPEED[get_player_number(boma)], dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        // Jet Hammer Movement
+        
+        if MotionModule::motion_kind(boma) == smash::hash40("special_lw_hold")
+        || MotionModule::motion_kind(boma) == smash::hash40("special_lw_jump")
+        || MotionModule::motion_kind(boma) == smash::hash40("special_lw_fall")
+        || MotionModule::motion_kind(boma) == smash::hash40("special_lw_hold_max") {
+            let dedespeedy = KineticModule::get_sum_speed_y(boma, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            macros::SET_SPEED_EX(fighter, HAMMER_SPEED[get_player_number(boma)], dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
     }
 }
 
-#[script( agent = "dedede", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn dedede_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -66,7 +69,7 @@ unsafe fn dedede_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "dedede", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn dedede_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -93,7 +96,7 @@ unsafe fn dedede_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "dedede", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn dedede_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -111,7 +114,7 @@ unsafe fn dedede_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn dedede_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -152,7 +155,7 @@ unsafe fn dedede_fsmash(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "dedede", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn dedede_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -175,7 +178,7 @@ unsafe fn dedede_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "dedede", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn dedede_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -199,7 +202,7 @@ unsafe fn dedede_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME )]
 unsafe fn dedede_dspecialmax(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -222,10 +225,10 @@ unsafe fn dedede_dspecialmax(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
+    smashline::install_agent_frames!(
         dedede_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         dedede_jab1,
         dedede_utilt,
         dedede_dtilt,

@@ -4,9 +4,10 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use smash::phx::Vector3f;
 
-#[script( agent = "snake", script = "game_attacks3s2", category = ACMD_GAME )]
+#[acmd_script( agent = "snake", script = "game_attacks3s2", category = ACMD_GAME )]
 unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -31,7 +32,7 @@ unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "snake", script = "game_attackshi3", category = ACMD_GAME )]
+#[acmd_script( agent = "snake", script = "game_attackshi3", category = ACMD_GAME )]
 unsafe fn snake_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -65,7 +66,7 @@ unsafe fn snake_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "snake", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "snake", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn snake_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -95,7 +96,7 @@ unsafe fn snake_dtilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "snake", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "snake", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn snake_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -144,7 +145,7 @@ unsafe fn snake_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "snake", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "snake", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn snake_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -183,7 +184,7 @@ unsafe fn snake_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "snake", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "snake", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn snake_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -242,12 +243,12 @@ unsafe fn snake_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME )]
-unsafe fn snake_cypher(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME )]
+unsafe fn snake_cypher(_fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         snake_ftilt2,
         snake_utilt,
         snake_dtilt,

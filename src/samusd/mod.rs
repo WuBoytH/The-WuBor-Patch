@@ -4,6 +4,7 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use crate::IS_FUNNY;
@@ -12,54 +13,58 @@ use crate::commonfuncs::*;
 static mut BOUNCE : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]
-unsafe fn samusd_frame(fighter: &mut L2CFighterCommon) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+fn samusd_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let lua_state = fighter.lua_state_agent;
+        let boma = sv_system::battle_object_module_accessor(lua_state);
 
-    if get_player_number(boma) < 8 {
+        if get_player_number(boma) < 8 {
 
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
-            BOUNCE[get_player_number(boma)] = false;
-        }
-        if sv_information::is_ready_go() == false {
-            BOUNCE[get_player_number(boma)] = false;
-        }
-    
-        // Morph Ball Drop Bounce
-        if MotionModule::motion_kind(boma) == smash::hash40("special_lw")
-        || MotionModule::motion_kind(boma) == smash::hash40("special_air_lw") {
-            if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-            && BOUNCE[get_player_number(boma)] == false {
-                MotionModule::set_frame(boma, 44.0, true);
-                WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-                WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-                macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-                KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                KineticModule::add_speed(boma, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
-                BOUNCE[get_player_number(boma)] = true;
-            }
-        }
-        else {
-            if BOUNCE[get_player_number(boma)] {
-                KineticModule::add_speed(boma, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
+            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
                 BOUNCE[get_player_number(boma)] = false;
+            }
+            if sv_information::is_ready_go() == false {
+                BOUNCE[get_player_number(boma)] = false;
+            }
+        
+            // Morph Ball Drop Bounce
+            if MotionModule::motion_kind(boma) == smash::hash40("special_lw")
+            || MotionModule::motion_kind(boma) == smash::hash40("special_air_lw") {
+                if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+                || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+                && BOUNCE[get_player_number(boma)] == false {
+                    MotionModule::set_frame(boma, 44.0, true);
+                    WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+                    WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+                    macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                    WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+                    KineticModule::resume_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+                    KineticModule::add_speed(boma, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
+                    BOUNCE[get_player_number(boma)] = true;
+                }
+            }
+            else {
+                if BOUNCE[get_player_number(boma)] {
+                    KineticModule::add_speed(boma, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
+                    BOUNCE[get_player_number(boma)] = false;
+                }
             }
         }
     }
 }
 
 #[weapon_frame( agent = WEAPON_KIND_SAMUSD_CSHOT )]
-unsafe fn samusd_cshot_frame(fighter: &mut L2CFighterBase) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if MotionModule::motion_kind(boma) == smash::hash40("shoot") {
-        let slowdownvec : Vector3f = Vector3f{x: 0.9,y: 0.0,z: 0.0};
-        KineticModule::mul_speed(boma, &slowdownvec, *WEAPON_KINETIC_TYPE_NONE);
+fn samusd_cshot_frame(weapon: &mut L2CFighterBase) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(weapon.lua_state_agent);
+        if MotionModule::motion_kind(boma) == smash::hash40("shoot") {
+            let slowdownvec : Vector3f = Vector3f{x: 0.9,y: 0.0,z: 0.0};
+            KineticModule::mul_speed(boma, &slowdownvec, *WEAPON_KINETIC_TYPE_NONE);
+        }
     }
 }
 
-#[script( agent = "samusd", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn samusd_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -85,7 +90,7 @@ unsafe fn samusd_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attack12", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attack12", category = ACMD_GAME )]
 unsafe fn samusd_jab2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -100,10 +105,9 @@ unsafe fn samusd_jab2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "effect_attack12", category = ACMD_EFFECT )]
+#[acmd_script( agent = "samusd", script = "effect_attack12", category = ACMD_EFFECT )]
 unsafe fn samusd_jab2effect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new_raw(0x15368a2a9c), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
@@ -117,7 +121,7 @@ unsafe fn samusd_jab2effect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION )]
 unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -142,10 +146,9 @@ unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND )]
+#[acmd_script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND )]
 unsafe fn samusd_jab2sound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_smash_s01"));
@@ -156,7 +159,7 @@ unsafe fn samusd_jab2sound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn samusd_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -180,7 +183,7 @@ unsafe fn samusd_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn samusd_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -196,7 +199,7 @@ unsafe fn samusd_ftilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attacks3hi", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attacks3hi", category = ACMD_GAME )]
 unsafe fn samusd_ftilthi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -213,7 +216,7 @@ unsafe fn samusd_ftilthi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attacks3lw", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attacks3lw", category = ACMD_GAME )]
 unsafe fn samusd_ftiltlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -230,7 +233,7 @@ unsafe fn samusd_ftiltlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn samusd_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -250,10 +253,9 @@ unsafe fn samusd_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "effect_attackhi3", category = ACMD_EFFECT )]
+#[acmd_script( agent = "samusd", script = "effect_attackhi3", category = ACMD_EFFECT )]
 unsafe fn samusd_utilteffect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("armr"), 0, 0, 0, 0, 0, 0, 1.9, true);
@@ -273,17 +275,16 @@ unsafe fn samusd_utilteffect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "sound_attackhi3", category = ACMD_SOUND )]
+#[acmd_script( agent = "samusd", script = "sound_attackhi3", category = ACMD_SOUND )]
 unsafe fn samusd_utiltsound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_attackhard_h01"));
     }
 }
 
-#[script( agent = "samusd", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn samusd_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -298,7 +299,7 @@ unsafe fn samusd_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn samusd_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -374,7 +375,7 @@ unsafe fn samusd_usmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attacklw4", category = ACMD_GAME )]
 unsafe fn samusd_dsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -402,7 +403,7 @@ unsafe fn samusd_dsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn samusd_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -429,10 +430,9 @@ unsafe fn samusd_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT )]
+#[acmd_script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT )]
 unsafe fn samusd_uaireffect(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
         macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 2.0, true);
@@ -451,7 +451,7 @@ unsafe fn samusd_uaireffect(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn samusd_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -485,7 +485,7 @@ unsafe fn samusd_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn samusd_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -508,7 +508,7 @@ unsafe fn samusd_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn samusd_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -533,7 +533,7 @@ unsafe fn samusd_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_special", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_special", category = ACMD_GAME )]
 unsafe fn samusd_special(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -546,7 +546,7 @@ unsafe fn samusd_special(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_specialair", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_specialair", category = ACMD_GAME )]
 unsafe fn samusd_specialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -563,7 +563,7 @@ unsafe fn samusd_specialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_specials", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_specials", category = ACMD_GAME )]
 unsafe fn samusd_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -576,7 +576,7 @@ unsafe fn samusd_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_specialairs", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_specialairs", category = ACMD_GAME )]
 unsafe fn samusd_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -593,7 +593,7 @@ unsafe fn samusd_sspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd", script = "game_speciallw", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_speciallw", category = ACMD_GAME )]
 unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -638,7 +638,7 @@ unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[script( agent = "samusd", script = "game_specialairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_specialairlw", category = ACMD_GAME )]
 unsafe fn samusd_dspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -675,10 +675,8 @@ unsafe fn samusd_dspecialair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[script( agent = "samusd_cshot", script = "game_shoot", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd_cshot", script = "game_shoot", category = ACMD_GAME )]
 unsafe fn samusd_cshot_shoot(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, -60, 0, -150, 1.9, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 78, 20, 0, 50, 5.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
@@ -686,7 +684,7 @@ unsafe fn samusd_cshot_shoot(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME )]
 unsafe fn samusd_missile_homing(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -696,18 +694,16 @@ unsafe fn samusd_missile_homing(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME )]
-unsafe fn samusd_supermissile_ready(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME )]
+unsafe fn samusd_supermissile_ready(_fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
-        samusd_frame
-    );
-    smash_script::replace_weapon_frames!(
+    smashline::install_agent_frames!(
+        samusd_frame,
         samusd_cshot_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         samusd_jab1,
         samusd_jab2,
         samusd_jab2effect,

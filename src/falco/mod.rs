@@ -4,38 +4,41 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
 static mut KAA : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_FALCO )]
-unsafe fn falco_frame(fighter: &mut L2CFighterCommon) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
+fn falco_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let lua_state = fighter.lua_state_agent;
+        let boma = sv_system::battle_object_module_accessor(lua_state);
 
-    if get_player_number(boma) < 8 {
-        if IS_FUNNY[get_player_number(boma)] {
-            if MotionModule::motion_kind(boma) == smash::hash40("appeal_lw_l")
-            || MotionModule::motion_kind(boma) == smash::hash40("appeal_lw_r") {
-                KAA[get_player_number(boma)] = true;
-                println!("Is Down Taunt!");
+        if get_player_number(boma) < 8 {
+            if IS_FUNNY[get_player_number(boma)] {
+                if MotionModule::motion_kind(boma) == smash::hash40("appeal_lw_l")
+                || MotionModule::motion_kind(boma) == smash::hash40("appeal_lw_r") {
+                    KAA[get_player_number(boma)] = true;
+                    println!("Is Down Taunt!");
+                }
+                else if MotionModule::motion_kind(boma) != smash::hash40("attack_lw4")
+                && MotionModule::motion_kind(boma) != smash::hash40("appeal_lw_l")
+                && MotionModule::motion_kind(boma) != smash::hash40("appeal_lw_r")
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SQUAT {
+                    KAA[get_player_number(boma)] = false;
+                    println!("Can no longer KAA");
+                }
             }
-            else if MotionModule::motion_kind(boma) != smash::hash40("attack_lw4")
-            && MotionModule::motion_kind(boma) != smash::hash40("appeal_lw_l")
-            && MotionModule::motion_kind(boma) != smash::hash40("appeal_lw_r")
-            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SQUAT {
+            else if KAA[get_player_number(boma)] {
                 KAA[get_player_number(boma)] = false;
-                println!("Can no longer KAA");
             }
-        }
-        else if KAA[get_player_number(boma)] {
-            KAA[get_player_number(boma)] = false;
         }
     }
 }
 
-#[script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME )]
 unsafe fn falco_dsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -80,10 +83,10 @@ unsafe fn falco_dsmash(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
+    smashline::install_agent_frames!(
         falco_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         falco_dsmash
     );
 }

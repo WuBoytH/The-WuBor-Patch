@@ -4,9 +4,10 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::IS_FUNNY;
 
-#[script( agent = "purin", script = "game_shieldbreakfly", category = ACMD_GAME )]
+#[acmd_script( agent = "purin", script = "game_shieldbreakfly", category = ACMD_GAME )]
 unsafe fn purin_shieldbreak(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -19,7 +20,7 @@ unsafe fn purin_shieldbreak(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         purin_shieldbreak
     );
 }

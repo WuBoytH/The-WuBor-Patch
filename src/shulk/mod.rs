@@ -4,6 +4,7 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use smash::phx::Vector3f;
 use crate::custom::{TIME_SLOW_EFFECT_VECTOR, /*TIME_SLOW_EFFECT_HASH*/};
 use crate::IS_FUNNY;
@@ -41,72 +42,74 @@ static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 // }
 
 #[fighter_frame( agent = FIGHTER_KIND_SHULK )]
-unsafe fn shulk_frame(fighter: &mut L2CFighterCommon) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+fn shulk_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-    if get_player_number(boma) < 8 {
-        
-        // Reset Vars
+        if get_player_number(boma) < 8 {
+            
+            // Reset Vars
 
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-            SHULK_SPECIAL_LW[get_player_number(boma)] = false;
-            SPECIAL_LW_TIMER[get_player_number(boma)] = -1;
-        }
+            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
+                SHULK_SPECIAL_LW[get_player_number(boma)] = false;
+                SPECIAL_LW_TIMER[get_player_number(boma)] = -1;
+            }
 
-        // Damage Check
+            // Damage Check
 
-        if StopModule::is_damage(boma) {
-            DAMAGE_TAKEN[get_player_number(boma)] = WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
-            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                if SHULK_SPECIAL_LW[get_player_number(boma)] == false {
-                    let launch_speed = KineticModule::get_sum_speed_x(boma,*KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
-                    let facing_dirn = PostureModule::lr(boma);
-                    if launch_speed > 0.0 && facing_dirn > 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                    else if launch_speed < 0.0 && facing_dirn < 0.0 {
-                        PostureModule::reverse_lr(boma);
-                    }
-                    DamageModule::add_damage(boma, DAMAGE_TAKEN[get_player_number(boma)] * -0.5, 0);
-                    KineticModule::change_kinetic(boma,*FIGHTER_KINETIC_TYPE_RESET);
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
-                    WorkModule::set_float(boma, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
-                    WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
-                    WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
-                    SHULK_SPECIAL_LW[get_player_number(boma)] = true;
-                    if IS_FUNNY[get_player_number(boma)] {
-                        SPECIAL_LW_TIMER[get_player_number(boma)] = 600;
-                    }
-                    else {
-                        SPECIAL_LW_TIMER[get_player_number(boma)] = 3600;
+            if StopModule::is_damage(boma) {
+                DAMAGE_TAKEN[get_player_number(boma)] = WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
+                if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
+                    if SHULK_SPECIAL_LW[get_player_number(boma)] == false {
+                        let launch_speed = KineticModule::get_sum_speed_x(boma,*KINETIC_ENERGY_RESERVE_ATTRIBUTE_DAMAGE);
+                        let facing_dirn = PostureModule::lr(boma);
+                        if launch_speed > 0.0 && facing_dirn > 0.0 {
+                            PostureModule::reverse_lr(boma);
+                        }
+                        else if launch_speed < 0.0 && facing_dirn < 0.0 {
+                            PostureModule::reverse_lr(boma);
+                        }
+                        DamageModule::add_damage(boma, DAMAGE_TAKEN[get_player_number(boma)] * -0.5, 0);
+                        KineticModule::change_kinetic(boma,*FIGHTER_KINETIC_TYPE_RESET);
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
+                        WorkModule::set_float(boma, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
+                        WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
+                        WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
+                        SHULK_SPECIAL_LW[get_player_number(boma)] = true;
+                        if IS_FUNNY[get_player_number(boma)] {
+                            SPECIAL_LW_TIMER[get_player_number(boma)] = 600;
+                        }
+                        else {
+                            SPECIAL_LW_TIMER[get_player_number(boma)] = 3600;
+                        }
                     }
                 }
             }
-        }
 
-        // Special Lw Check
+            // Special Lw Check
 
-        if StatusModule::status_kind(boma) == *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT {
-            macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
-            EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("head"), &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, 1.0, &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, false, 0, 0, 0);
-        }
-        if SPECIAL_LW_TIMER[get_player_number(boma)] > 0 {
-            SPECIAL_LW_TIMER[get_player_number(boma)] = SPECIAL_LW_TIMER[get_player_number(boma)] - 1;
-        }
-        else if SPECIAL_LW_TIMER[get_player_number(boma)] == 0 {
-            SPECIAL_LW_TIMER[get_player_number(boma)] = -1;
-            let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-            let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-            let countereff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-            EffectModule::set_rgb(boma, countereff, 0.0, 5.0, 5.0);
-        }
-        else{
-            SHULK_SPECIAL_LW[get_player_number(boma)] = false;
+            if StatusModule::status_kind(boma) == *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT {
+                macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
+                EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("head"), &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, 1.0, &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, false, 0, 0, 0);
+            }
+            if SPECIAL_LW_TIMER[get_player_number(boma)] > 0 {
+                SPECIAL_LW_TIMER[get_player_number(boma)] = SPECIAL_LW_TIMER[get_player_number(boma)] - 1;
+            }
+            else if SPECIAL_LW_TIMER[get_player_number(boma)] == 0 {
+                SPECIAL_LW_TIMER[get_player_number(boma)] = -1;
+                let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                let countereff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                EffectModule::set_rgb(boma, countereff, 0.0, 5.0, 5.0);
+            }
+            else{
+                SHULK_SPECIAL_LW[get_player_number(boma)] = false;
+            }
         }
     }
 }
 
-#[script( agent = "shulk", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn shulk_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -134,7 +137,7 @@ unsafe fn shulk_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "shulk", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_attacklw4", category = ACMD_GAME )]
 unsafe fn shulk_dsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -216,7 +219,7 @@ unsafe fn shulk_dsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME )]
 unsafe fn shulk_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -234,7 +237,7 @@ unsafe fn shulk_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME )]
 unsafe fn shulk_sspecialfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -258,7 +261,7 @@ unsafe fn shulk_sspecialfall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME )]
 unsafe fn shulk_counterattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -290,7 +293,7 @@ unsafe fn shulk_counterattack(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.8);
 }
 
-#[script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME )]
 unsafe fn shulk_counterforward(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -316,10 +319,10 @@ unsafe fn shulk_counterforward(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
+    smashline::install_agent_frames!(
         shulk_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         shulk_jab1,
         shulk_dsmash,
         shulk_sspecial,

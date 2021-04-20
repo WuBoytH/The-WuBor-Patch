@@ -4,71 +4,74 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
 static mut CANCEL : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
-unsafe fn elight_frame(fighter: &mut L2CFighterCommon) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    if get_player_number(boma) < 8 {
-        if IS_FUNNY[get_player_number(boma)] {
-            if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
-            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
-            && is_damage_check(boma) == false {
-                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-            }
-            if MotionModule::motion_kind(boma) == smash::hash40("special_s")
-            && MotionModule::frame(boma) >= 11.0 {
-                if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
-                    StatusModule::change_status_request_from_script(boma,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
-                    CANCEL[get_player_number(boma)] = true;
+fn elight_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let lua_state = fighter.lua_state_agent;
+        let boma = sv_system::battle_object_module_accessor(lua_state);
+        if get_player_number(boma) < 8 {
+            if IS_FUNNY[get_player_number(boma)] {
+                if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
+                && is_damage_check(boma) == false {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+                }
+                if MotionModule::motion_kind(boma) == smash::hash40("special_s")
+                && MotionModule::frame(boma) >= 11.0 {
+                    if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
+                        StatusModule::change_status_request_from_script(boma,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
+                        CANCEL[get_player_number(boma)] = true;
+                    }
+                }
+                else if MotionModule::motion_kind(boma) == smash::hash40("special_air_s")
+                && MotionModule::frame(boma) >= 11.0 {
+                    if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
+                        StatusModule::change_status_request_from_script(boma,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
+                        CANCEL[get_player_number(boma)] = true;
+                    }
+                }
+                if CANCEL[get_player_number(boma)] == true && StatusModule::status_kind(boma) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
+                    CANCEL[get_player_number(boma)] = false;
+                    MotionModule::set_frame(boma,35.0,false);
+                }
+                if MotionModule::motion_kind(boma) == smash::hash40("special_air_hi_jump") {
+                    if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
+                        PostureModule::reverse_lr(boma);
+                    }
+                    else if PostureModule::lr(boma) == -1.0 && ControlModule::get_stick_x(boma) > 0.75 {
+                        PostureModule::reverse_lr(boma);
+                    }
                 }
             }
-            else if MotionModule::motion_kind(boma) == smash::hash40("special_air_s")
-            && MotionModule::frame(boma) >= 11.0 {
-                if ControlModule::check_button_trigger(boma,*CONTROL_PAD_BUTTON_SPECIAL) == true {
-                    StatusModule::change_status_request_from_script(boma,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
-                    CANCEL[get_player_number(boma)] = true;
-                }
-            }
-            if CANCEL[get_player_number(boma)] == true && StatusModule::status_kind(boma) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
-                CANCEL[get_player_number(boma)] = false;
-                MotionModule::set_frame(boma,35.0,false);
-            }
-            if MotionModule::motion_kind(boma) == smash::hash40("special_air_hi_jump") {
-                if PostureModule::lr(boma) == 1.0 && ControlModule::get_stick_x(boma) < -0.75 {
-                    PostureModule::reverse_lr(boma);
-                }
-                else if PostureModule::lr(boma) == -1.0 && ControlModule::get_stick_x(boma) > 0.75 {
-                    PostureModule::reverse_lr(boma);
-                }
-            }
+            // if IS_FUNNY[get_player_number(boma)] == false {
+            //     if MYTHRA[get_player_number(boma)] {
+            //         let conditions = [*LUA_SCRIPT_STATUS_FUNC_STATUS_PRE, *LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN, *LUA_SCRIPT_STATUS_FUNC_STATUS_END];
+            //         for x in conditions.iter() {
+            //             let addr: *mut skyline::libc::c_void = fighter.sv_get_status_func(
+            //                 &L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64) as *const L2CValue as u64,
+            //                 &L2CValue::new_int(*x as u64) as *const L2CValue as u64
+            //             ).get_ptr();
+            //             fighter.sv_set_status_func(
+            //                 L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64),
+            //                 L2CValue::new_int(*x as u64),
+            //                 std::mem::transmute(addr)
+            //             );
+            //         }
+            //         MYTHRA[get_player_number(boma)] = false;
+            //     }
+            // }
         }
-        // if IS_FUNNY[get_player_number(boma)] == false {
-        //     if MYTHRA[get_player_number(boma)] {
-        //         let conditions = [*LUA_SCRIPT_STATUS_FUNC_STATUS_PRE, *LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN, *LUA_SCRIPT_STATUS_FUNC_STATUS_END];
-        //         for x in conditions.iter() {
-        //             let addr: *mut skyline::libc::c_void = fighter.sv_get_status_func(
-        //                 &L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64) as *const L2CValue as u64,
-        //                 &L2CValue::new_int(*x as u64) as *const L2CValue as u64
-        //             ).get_ptr();
-        //             fighter.sv_set_status_func(
-        //                 L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64),
-        //                 L2CValue::new_int(*x as u64),
-        //                 std::mem::transmute(addr)
-        //             );
-        //         }
-        //         MYTHRA[get_player_number(boma)] = false;
-        //     }
-        // }
     }
 }
 
-#[script( agent = "elight", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -120,7 +123,7 @@ unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -201,7 +204,7 @@ unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -247,7 +250,7 @@ unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "elight", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -313,7 +316,7 @@ unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "elight", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -380,7 +383,7 @@ unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -445,7 +448,7 @@ unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -524,7 +527,7 @@ unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "elight", script = "game_specialn", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME )]
 unsafe fn elight_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -695,8 +698,10 @@ unsafe fn elight_nspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(elight_frame);
-    smash_script::replace_scripts!(
+    smashline::install_agent_frames!(
+        elight_frame
+    );
+    smashline::install_acmd_scripts!(
         elight_ftilt,
         elight_utilt,
         elight_dtilt,

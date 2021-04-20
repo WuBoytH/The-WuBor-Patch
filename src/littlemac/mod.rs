@@ -4,8 +4,9 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 
-#[script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -33,7 +34,7 @@ unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -57,7 +58,7 @@ unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -81,7 +82,7 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -109,7 +110,7 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -134,7 +135,7 @@ unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         littlemac_nair,
         littlemac_fair,
         littlemac_uair,

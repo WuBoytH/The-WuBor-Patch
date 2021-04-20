@@ -57,6 +57,7 @@ macro_rules! c_str {
 
 mod commonfuncs;
 use crate::commonfuncs::*;
+// mod vars;
 mod custom;
 mod daisy;
 mod samusd;

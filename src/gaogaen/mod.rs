@@ -5,6 +5,7 @@ use smash::app::lua_bind::*;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash_script::*;
+use smashline::*;
 use smash::phx::Vector3f;
 use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
 use crate::commonfuncs::*;
@@ -12,30 +13,32 @@ use crate::commonfuncs::*;
 pub static mut REVENGE : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
-unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    
-    // Darkest Lariat Jump Cancel
+fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let lua_state = fighter.lua_state_agent;
+        let boma = sv_system::battle_object_module_accessor(lua_state);
+        
+        // Darkest Lariat Jump Cancel
 
-    if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-    && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
-    && MotionModule::frame(boma) > 19.0
-    && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-    || IS_FUNNY[get_player_number(boma)])
-    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-    }
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
+        && MotionModule::frame(boma) > 19.0
+        && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+        || IS_FUNNY[get_player_number(boma)])
+        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        }
 
-    if MotionModule::motion_kind(boma) != hash40("special_lw_start")
-    && MotionModule::motion_kind(boma) != hash40("special_air_lw_start")
-    && MotionModule::motion_kind(boma) != hash40("special_s_lariat")
-    && MotionModule::motion_kind(boma) != hash40("special_air_s_lariat") {
-        REVENGE[get_player_number(boma)] = 0;
+        if MotionModule::motion_kind(boma) != hash40("special_lw_start")
+        && MotionModule::motion_kind(boma) != hash40("special_air_lw_start")
+        && MotionModule::motion_kind(boma) != hash40("special_s_lariat")
+        && MotionModule::motion_kind(boma) != hash40("special_air_s_lariat") {
+            REVENGE[get_player_number(boma)] = 0;
+        }
     }
 }
 
-#[script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME )]
 unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -203,7 +206,7 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME )]
 unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -345,7 +348,7 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME )]
 unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -391,7 +394,7 @@ unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME )]
 unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -437,7 +440,7 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME )]
 unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -467,7 +470,7 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME )]
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -544,7 +547,7 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -570,7 +573,7 @@ unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -593,7 +596,7 @@ unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -620,7 +623,7 @@ unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -653,7 +656,7 @@ unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME )]
 unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -689,7 +692,7 @@ unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "gaogaen", script = "game_specialairhifall_2", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairhifall_2", category = ACMD_GAME )]
 unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -726,10 +729,10 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
+    smashline::install_agent_frames!(
         gaogaen_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         gaogaen_nspecial,
         gaogaen_nspecialair,
         gaogaen_sspecialshoulder,

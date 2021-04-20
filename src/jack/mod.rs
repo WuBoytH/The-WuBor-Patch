@@ -4,11 +4,11 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 
-#[script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
 unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);
@@ -25,7 +25,7 @@ unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME )]
 unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -42,7 +42,7 @@ unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         jack_dspecial,
         jack_dspecialcounter
     );

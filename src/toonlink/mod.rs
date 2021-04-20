@@ -4,6 +4,7 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 //use smash::phx::Vector3f;
 //use smash::app::BattleObjectModuleAccessor;
 //use smash::app::lua_bind::EffectModule;
@@ -13,30 +14,32 @@ use crate::commonfuncs::*;
 static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
-unsafe fn toonlink_frame(fighter: &mut L2CFighterCommon) {
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+fn toonlink_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-    if IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 3.0 {
-        SPIN_SPEED[get_player_number(boma)] = 3.0;
-    }
-    else if !IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 1.56 {
-        SPIN_SPEED[get_player_number(boma)] = 1.56;
-    }
+        if IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 3.0 {
+            SPIN_SPEED[get_player_number(boma)] = 3.0;
+        }
+        else if !IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 1.56 {
+            SPIN_SPEED[get_player_number(boma)] = 1.56;
+        }
 
-    if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
-        if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
-            let facing_dirn = PostureModule::lr(boma);
-            if facing_dirn > 0.0 {
-                macros::SET_SPEED_EX(fighter, &SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            }
-            else{
-                macros::SET_SPEED_EX(fighter, -&SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
+            if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
+                let facing_dirn = PostureModule::lr(boma);
+                if facing_dirn > 0.0 {
+                    macros::SET_SPEED_EX(fighter, &SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                }
+                else{
+                    macros::SET_SPEED_EX(fighter, -&SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                }
             }
         }
     }
 }
 
-#[script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -58,10 +61,10 @@ unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_fighter_frames!(
+    smashline::install_agent_frames!(
         toonlink_frame
     );
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         toonlink_dashattack
     );
 }

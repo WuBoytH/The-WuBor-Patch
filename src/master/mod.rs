@@ -4,8 +4,9 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 
-#[script( agent = "master", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -35,7 +36,7 @@ unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "master", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -62,7 +63,7 @@ unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -84,7 +85,7 @@ unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "master", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -122,7 +123,7 @@ unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "master", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME )]
+#[acmd_script( agent = "master", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME )]
 unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -132,7 +133,7 @@ unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[script( agent = "master", script = "game_speciallw", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME )]
 unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -185,7 +186,7 @@ unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         master_ftilt,
         master_dtilt,
         master_dtiltsword,

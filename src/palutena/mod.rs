@@ -4,10 +4,11 @@ use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
+use smashline::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use smash::phx::Vector3f;
 
-#[script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn palutena_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -29,7 +30,7 @@ unsafe fn palutena_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "palutena", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn palutena_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -76,7 +77,7 @@ unsafe fn palutena_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "palutena", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn palutena_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -134,7 +135,7 @@ unsafe fn palutena_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[script( agent = "palutena", script = "game_throwb", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_throwb", category = ACMD_GAME )]
 unsafe fn palutena_bthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -158,7 +159,7 @@ unsafe fn palutena_bthrow(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smash_script::replace_scripts!(
+    smashline::install_acmd_scripts!(
         palutena_dtilt,
         palutena_nair,
         palutena_bair,

@@ -135,7 +135,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
             // Secret Sensation???
 
-            // if IS_FUNNY[get_player_number(boma)] {
+            if IS_FUNNY[get_player_number(boma)] {
 
                 if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
                 && (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK
@@ -286,7 +286,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     SEC_SEN_STATE[get_player_number(boma)] = false;
                     HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
                 }
-            // }
+            }
         }
     }
 }

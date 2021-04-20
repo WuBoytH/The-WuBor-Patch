@@ -233,8 +233,11 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                         DIFF_X[get_player_number(boma)] = (
                             PostureModule::pos_x(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) - PostureModule::pos_x(boma)
                         ).abs();
-                        if DIFF_X[get_player_number(boma)] > 5.0 {
+                        if DIFF_X[get_player_number(boma)] > 50.0 {
                             DIFF_X[get_player_number(boma)] -= 5.0;
+                        }
+                        else {
+                            DIFF_X[get_player_number(boma)] = 0.0;
                         }
                         OPPONENT_BOMA[get_player_number(boma)] = 0;
                     }

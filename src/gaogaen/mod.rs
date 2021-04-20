@@ -494,11 +494,8 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 14.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
-        }
-        sv_animcmd::frame(lua_state, 20.0);
-        if macros::is_excute(fighter) {
             AttackModule::clear_all(boma);
+            HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
             macros::REVERSE_LR(fighter);
         }
         sv_animcmd::frame(lua_state, 50.0);
@@ -508,7 +505,6 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
         sv_animcmd::frame(lua_state, 58.0);
         if macros::is_excute(fighter) {
             WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
-            smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         }
     }
     else {

@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "buddy", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "buddy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -39,7 +39,7 @@ unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "buddy", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

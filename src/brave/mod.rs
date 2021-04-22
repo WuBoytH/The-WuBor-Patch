@@ -8,7 +8,7 @@ use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs;
 
-#[acmd_script( agent = "brave", scripts = ["game_speciallw9", "game_specialairlw9"], category = ACMD_GAME )]
+#[acmd_script( agent = "brave", scripts = ["game_speciallw9", "game_specialairlw9"], category = ACMD_GAME, low_priority )]
 unsafe fn brave_kamikazee(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

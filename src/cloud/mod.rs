@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME )]
+#[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME, low_priority )]
 unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

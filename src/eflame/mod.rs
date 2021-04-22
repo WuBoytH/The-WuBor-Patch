@@ -55,7 +55,7 @@ fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn eflame_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

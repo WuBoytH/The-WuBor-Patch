@@ -109,7 +109,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn shulk_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -137,7 +137,7 @@ unsafe fn shulk_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn shulk_dsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -219,7 +219,7 @@ unsafe fn shulk_dsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
 unsafe fn shulk_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -237,7 +237,7 @@ unsafe fn shulk_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME, low_priority )]
 unsafe fn shulk_sspecialfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -261,7 +261,7 @@ unsafe fn shulk_sspecialfall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME, low_priority )]
 unsafe fn shulk_counterattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -293,7 +293,7 @@ unsafe fn shulk_counterattack(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.8);
 }
 
-#[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME )]
+#[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME, low_priority )]
 unsafe fn shulk_counterforward(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

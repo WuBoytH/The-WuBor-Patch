@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     sv_animcmd::frame(lua_state, 1.0);
@@ -25,7 +25,7 @@ unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME, low_priority )]
 unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

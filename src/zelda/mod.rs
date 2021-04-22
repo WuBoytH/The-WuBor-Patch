@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "zelda", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -23,7 +23,7 @@ unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -41,7 +41,7 @@ unsafe fn zelda_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -71,7 +71,7 @@ unsafe fn zelda_dsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -111,7 +111,7 @@ unsafe fn zelda_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -144,7 +144,7 @@ unsafe fn zelda_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -175,7 +175,7 @@ unsafe fn zelda_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -203,7 +203,7 @@ unsafe fn zelda_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
 unsafe fn zelda_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -217,7 +217,7 @@ unsafe fn zelda_sspecialstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME )]
+#[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
 unsafe fn zelda_sspecialend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

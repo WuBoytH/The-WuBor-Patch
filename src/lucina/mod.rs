@@ -434,7 +434,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -455,7 +455,7 @@ unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attack11", category = ACMD_EFFECT )]
+#[acmd_script( agent = "lucina", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     sv_animcmd::frame(lua_state, 3.0);
@@ -468,7 +468,7 @@ unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attack12", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -482,7 +482,8 @@ unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
-#[acmd_script( agent = "lucina", script = "effect_attack12", category = ACMD_EFFECT )]
+
+#[acmd_script( agent = "lucina", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     sv_animcmd::frame(lua_state, 5.0);
@@ -495,7 +496,7 @@ unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -521,7 +522,7 @@ unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -537,7 +538,7 @@ unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -572,7 +573,7 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackdash", category = ACMD_SOUND )]
+#[acmd_script( agent = "lucina", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     sv_animcmd::frame(lua_state, 7.0);
@@ -582,7 +583,7 @@ unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -608,7 +609,7 @@ unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -633,7 +634,7 @@ unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -661,7 +662,7 @@ unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -686,7 +687,7 @@ unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -710,7 +711,7 @@ unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -728,7 +729,7 @@ unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -753,7 +754,7 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", scripts = [ "game_specialnend", "game_specialnendhi", "game_specialnendlw", "game_specialairnend", "game_specialairnendhi", "game_specialairnendlw" ], category = ACMD_GAME)]
+#[acmd_script( agent = "lucina", scripts = [ "game_specialnend", "game_specialnendhi", "game_specialnendlw", "game_specialairnend", "game_specialairnendhi", "game_specialairnendlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -807,7 +808,7 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", scripts = [ "game_specialnendmax", "game_specialnendmaxhi", "game_specialnendmaxlw", "game_specialairnendmax", "game_specialairnendmaxhi", "game_specialairnendmaxlw" ], category = ACMD_GAME)]
+#[acmd_script( agent = "lucina", scripts = [ "game_specialnendmax", "game_specialnendmaxhi", "game_specialnendmaxlw", "game_specialairnendmax", "game_specialairnendmaxhi", "game_specialairnendmaxlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -861,7 +862,7 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -918,7 +919,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -941,7 +942,7 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairs2lw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_specialairs2lw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -1001,7 +1002,7 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -1058,14 +1059,14 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME)]
+#[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
 }
 
-#[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -1097,7 +1098,7 @@ unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -1183,7 +1184,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -1266,7 +1267,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT)]
+// #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
 // unsafe fn lucina_runeffect(fighter: &mut L2CAgentBase) {
 //     let lua_state = fighter.lua_state_agent;
 //     macros::wait_loop_sync_mot(fighter);
@@ -1285,7 +1286,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
 //     sv_animcmd::frame(lua_state, 56.0);
 // }
 
-// #[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND)]
+// #[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND, low_priority )]
 // unsafe fn lucina_runsound(fighter: &mut L2CAgentBase) {
 //     let lua_state = fighter.lua_state_agent;
 //     macros::wait_loop_sync_mot(fighter);

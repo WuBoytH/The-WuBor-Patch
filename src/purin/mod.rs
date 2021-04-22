@@ -7,7 +7,7 @@ use smash_script::*;
 use smashline::*;
 use crate::IS_FUNNY;
 
-#[acmd_script( agent = "purin", script = "game_shieldbreakfly", category = ACMD_GAME )]
+#[acmd_script( agent = "purin", script = "game_shieldbreakfly", category = ACMD_GAME, low_priority )]
 unsafe fn purin_shieldbreak(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

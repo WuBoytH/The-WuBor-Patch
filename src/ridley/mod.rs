@@ -26,7 +26,7 @@ fn ridley_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "ridley", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn ridley_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -42,7 +42,7 @@ unsafe fn ridley_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn ridley_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -95,7 +95,7 @@ unsafe fn ridley_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME)]
+#[acmd_script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe fn ridley_dairland(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

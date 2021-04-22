@@ -39,7 +39,7 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

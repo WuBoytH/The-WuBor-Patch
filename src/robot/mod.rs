@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "robot", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "robot", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn robot_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -24,7 +24,7 @@ unsafe fn robot_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_specialairsend", category = ACMD_GAME )]
+#[acmd_script( agent = "robot", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
 unsafe fn robot_sspecialendair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

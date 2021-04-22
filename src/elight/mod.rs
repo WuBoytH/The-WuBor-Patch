@@ -71,7 +71,7 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -123,7 +123,7 @@ unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -204,7 +204,7 @@ unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -250,7 +250,7 @@ unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -316,7 +316,7 @@ unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -383,7 +383,7 @@ unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -448,7 +448,7 @@ unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -527,7 +527,7 @@ unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn elight_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

@@ -38,7 +38,7 @@ fn falco_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn falco_dsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

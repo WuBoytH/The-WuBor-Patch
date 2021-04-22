@@ -8,7 +8,7 @@ use smashline::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use smash::phx::Vector3f;
 
-#[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -41,7 +41,7 @@ unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_dthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

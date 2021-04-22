@@ -34,7 +34,7 @@ fn dedede_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -69,7 +69,7 @@ unsafe fn dedede_jab1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -96,7 +96,7 @@ unsafe fn dedede_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -114,7 +114,7 @@ unsafe fn dedede_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -155,7 +155,7 @@ unsafe fn dedede_fsmash(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -178,7 +178,7 @@ unsafe fn dedede_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -202,7 +202,7 @@ unsafe fn dedede_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME )]
+#[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_dspecialmax(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

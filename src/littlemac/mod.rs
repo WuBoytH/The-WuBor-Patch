@@ -82,7 +82,7 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -110,7 +110,7 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

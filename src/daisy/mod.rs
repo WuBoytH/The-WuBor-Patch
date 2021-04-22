@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_jab2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -22,7 +22,7 @@ unsafe fn daisy_jab2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -47,7 +47,7 @@ unsafe fn daisy_ftilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -62,7 +62,7 @@ unsafe fn daisy_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -95,7 +95,7 @@ unsafe fn daisy_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_specialshitend", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_specialshitend", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_sideb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

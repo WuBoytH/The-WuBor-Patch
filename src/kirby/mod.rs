@@ -23,7 +23,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -47,7 +47,7 @@ unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -60,7 +60,7 @@ unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -73,7 +73,7 @@ unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
 unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

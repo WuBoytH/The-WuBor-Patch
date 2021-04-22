@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-#[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -30,7 +30,7 @@ unsafe fn donkey_ftilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacks3hi", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_ftilthi(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -55,7 +55,7 @@ unsafe fn donkey_ftilthi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacks3lw", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_ftiltlw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -80,7 +80,7 @@ unsafe fn donkey_ftiltlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -98,7 +98,7 @@ unsafe fn donkey_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -121,7 +121,7 @@ unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
 unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

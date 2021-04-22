@@ -39,7 +39,7 @@ fn lucario_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -57,7 +57,7 @@ unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -81,7 +81,7 @@ unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -97,7 +97,7 @@ unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -112,7 +112,7 @@ unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -134,7 +134,7 @@ unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -174,7 +174,7 @@ unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -217,7 +217,7 @@ unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -247,7 +247,7 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_qigong(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

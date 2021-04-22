@@ -393,7 +393,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
 
 // Motion Rate the Run Animation
 
-#[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
 unsafe fn ken_run(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -404,7 +404,7 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
 
 // Make Quick Step (non-prox light f tilt) have step kick properties
 
-#[acmd_script( agent = "ken", script = "game_attacks3w", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_attacks3w", category = ACMD_GAME, low_priority )]
 unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
@@ -442,7 +442,7 @@ unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
 
 // Nerfed damage on Inazuma Kick, but increased combo potential
 
-#[acmd_script( agent = "ken", script = "game_attackcommand3", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_attackcommand3", category = ACMD_GAME, low_priority )]
 unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
@@ -471,7 +471,7 @@ unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
 
 // V Shift Related
 
-#[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -493,7 +493,7 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_speciallw", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -524,7 +524,7 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND )]
+#[acmd_script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
 unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     sv_animcmd::frame(lua_state, 9.0);
@@ -538,7 +538,7 @@ unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -566,7 +566,7 @@ unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT )]
+#[acmd_script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
 unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
@@ -590,7 +590,7 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
 
 // V Trigger Properties
 
-#[acmd_script( agent = "ken", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME )]
+#[acmd_script( agent = "ken", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -618,7 +618,7 @@ unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specials", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -690,7 +690,7 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialairs", category = ACMD_GAME )]
+#[acmd_script( agent = "ken", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -752,7 +752,7 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_specialhi", "game_specialhicommand"], category = ACMD_GAME )]
+#[acmd_script( agent = "ken", scripts = ["game_specialhi", "game_specialhicommand"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -844,7 +844,7 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME )]
+#[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -901,7 +901,7 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME )]
+#[acmd_script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME, low_priority )]
 unsafe fn ken_hadokenw(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -921,7 +921,7 @@ unsafe fn ken_hadokenw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_hadoken", script = "game_movem", category = ACMD_GAME )]
+#[acmd_script( agent = "ken_hadoken", script = "game_movem", category = ACMD_GAME, low_priority )]
 unsafe fn ken_hadokenm(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -941,7 +941,7 @@ unsafe fn ken_hadokenm(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_hadoken", script = "game_moves", category = ACMD_GAME )]
+#[acmd_script( agent = "ken_hadoken", script = "game_moves", category = ACMD_GAME, low_priority )]
 unsafe fn ken_hadokens(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);

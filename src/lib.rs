@@ -103,6 +103,7 @@ mod wiifit;
 use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
 use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA, TATSULOOPS};
+mod metaknight;
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -753,6 +754,7 @@ pub fn main() {
     purin::install();
     wiifit::install();
     ken::install();
+    metaknight::install();
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);
     skyline::install_hook!(play_se_replace);

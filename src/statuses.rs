@@ -10,6 +10,8 @@ use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 use crate::globals::*;
 
+// Shoutouts to Blujay for helping me understand Ghidra
+
 #[common_status_script(status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
     symbol = "_ZN7lua2cpp16L2CFighterCommon20status_end_EscapeAirEv")]
 pub fn escapeair_end(fighter: &mut L2CFighterCommon) -> L2CValue {

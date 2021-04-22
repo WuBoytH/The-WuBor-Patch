@@ -58,6 +58,8 @@ macro_rules! c_str {
 mod commonfuncs;
 use crate::commonfuncs::*;
 // mod vars;
+mod statuses;
+mod globals;
 mod custom;
 mod daisy;
 mod samusd;
@@ -308,7 +310,7 @@ pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
     original!()(lua_state)
 }
 
-#[skyline::hook(replace = lua_bind::WorkModule::is_enable_transition_term )]
+#[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
     let fighter_kind = utility::get_kind(module_accessor);
     let ret = original!()(module_accessor,term);
@@ -718,6 +720,7 @@ pub fn main() {
             MUSIC_OFFSET = offset;
         }
     }
+    statuses::install();
     custom::install();
     daisy::install();
     samusd::install();

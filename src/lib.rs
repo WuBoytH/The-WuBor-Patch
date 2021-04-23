@@ -700,6 +700,35 @@ fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
 }
 
+#[skyline::hook(replace = GroundModule::correct)]
+pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u64) -> u64{
+
+    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        let status_kind = StatusModule::status_kind(boma);
+        if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_RUN_BRAKE, *FIGHTER_STATUS_KIND_TURN_DASH, *FIGHTER_STATUS_KIND_DASH].contains(&status_kind) {
+            param_2 = *GROUND_CORRECT_KIND_GROUND as u64;
+        }
+    }
+    original!()(boma, param_2)
+}
+
+// #[skyline::hook(replace = StatusModule::init_settings)]
+// pub unsafe fn hook_init_settings(
+//     boma: *mut smash::app::BattleObjectModuleAccessor, 
+//     arg2: smash::app::SituationKind, 
+//     arg3: i32, 
+//     arg4: u32, 
+//     arg5: smash::app::GroundCliffCheckKind, 
+//     arg6: bool, 
+//     arg7: i32, 
+//     arg8: i32, 
+//     arg9: i32, 
+//     arg10: i32
+// ) -> u64 {
+//     let mut deref = *boma;
+//     return original!()(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+// }
+
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
     unsafe{
@@ -767,4 +796,5 @@ pub fn main() {
     skyline::install_hook!(get_param_float_replace);
     skyline::install_hook!(get_param_int_replace);
     skyline::install_hook!(music_function_replace);
+    skyline::install_hook!(correct_hook);
 }

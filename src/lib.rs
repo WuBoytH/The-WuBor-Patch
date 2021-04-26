@@ -12,6 +12,7 @@ use smash::app::lua_bind::*;
 use smash::app::*;
 use smash::app::FighterManager;
 use skyline::hooks::{getRegionAddress, Region};
+use skyline::nn::ro::LookupSymbol;
 
 pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
@@ -28,6 +29,7 @@ static mut MUSIC_OFFSET: usize = 0x3451f30; // default = 8.1.0 offset
 static mut MUSIC_PARAM1: *mut u64 = 0 as *mut u64;
 static mut MUSIC_PARAM2: i64 = 0;
 static mut NUS3AUDIO_HASH: *mut u64 = 0 as *mut u64;
+pub static mut FIGHTER_MANAGER: usize = 0;
 
 static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
 static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];
@@ -106,6 +108,36 @@ use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
 use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA, TATSULOOPS};
 mod metaknight;
+
+// #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
+// pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
+//     let mut flag = original!()(module_accessor, category);
+//     let entry_id = WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+//     LookupSymbol(
+//         &mut FIGHTER_MANAGER,
+//         "_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E\u{0}"
+//         .as_bytes()
+//         .as_ptr(),
+//     );
+//     let fighter_manager = *(FIGHTER_MANAGER as *mut *mut smash::app::FighterManager);
+//     if smash::app::lua_bind::FighterInformation::is_operation_cpu(smash::app::lua_bind::FighterManager::get_fighter_information(fighter_manager, smash::app::FighterEntryID(entry_id as i32))) == false
+//     && flag & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
+//     && ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_CATCH) {
+//         let stickx = ControlModule::get_stick_x(module_accessor);
+//         let sticky = ControlModule::get_stick_y(module_accessor);
+//         if stickx.abs() < 0.5 && sticky >= 0.5 {
+//             flag = *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4;
+//         }
+//         else if stickx.abs() < 0.5 && sticky <= -0.5 {
+//             flag = *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4;
+//         }
+//         else {
+//             flag = *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4;
+//         }
+//     }
+
+//     return flag;
+// }
 
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
@@ -241,74 +273,6 @@ move_type_again: bool) -> u64 {
 //     }
 //     original!()(lua_state);
 // }
-
-#[skyline::hook(replace = sv_animcmd::PLAY_SE)]
-unsafe fn play_se_replace(lua_state: u64) {
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
-    if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
-        let mut l2c_agent = L2CAgent::new(lua_state);
-        let se = l2c_agent.pop_lua_stack(1); //sound effect
-        l2c_agent.clear_lua_stack();
-        let mut new_se = se.get_int();
-        for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
-                break;
-            }
-        }
-        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
-    }
-    original!()(lua_state);
-}
-
-#[skyline::hook(replace = sv_animcmd::PLAY_SEQUENCE)]
-pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
-    let mut l2c_agent = L2CAgent::new(lua_state);
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
-    if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
-        let seq = l2c_agent.pop_lua_stack(1); //sound effect
-        l2c_agent.clear_lua_stack();
-        let mut new_seq = seq.get_int();
-        for i in 0..8 {
-            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
-                break;
-            }
-        }
-        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq));
-    }
-    original!()(lua_state)
-}
-
-#[skyline::hook(replace = sv_animcmd::PLAY_FLY_VOICE)]
-pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
-    let mut l2c_agent = L2CAgent::new(lua_state);
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
-    if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
-        let seq = l2c_agent.pop_lua_stack(1); //sound effect
-        let seq2 = l2c_agent.pop_lua_stack(1);
-        l2c_agent.clear_lua_stack();
-        let mut new_seq = seq.get_int();
-        let mut new_seq2 = seq2.get_int();
-        for i in 0..8 {
-            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
-            }
-            if seq2.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                new_seq2 = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
-            }
-        }
-        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq2));
-        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq));
-    }
-    original!()(lua_state)
-}
 
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -729,6 +693,74 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 //     return original!()(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
 // }
 
+#[skyline::hook(replace = sv_animcmd::PLAY_SE)]
+unsafe fn play_se_replace(lua_state: u64) {
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let se = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_se = se.get_int();
+        for i in 0..36 {
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
+    }
+    original!()(lua_state);
+}
+
+#[skyline::hook(replace = sv_animcmd::PLAY_SEQUENCE)]
+pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
+    let mut l2c_agent = L2CAgent::new(lua_state);
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let seq = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_seq = seq.get_int();
+        for i in 0..8 {
+            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
+                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq));
+    }
+    original!()(lua_state)
+}
+
+#[skyline::hook(replace = sv_animcmd::PLAY_FLY_VOICE)]
+pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
+    let mut l2c_agent = L2CAgent::new(lua_state);
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let seq = l2c_agent.pop_lua_stack(1); //sound effect
+        let seq2 = l2c_agent.pop_lua_stack(1);
+        l2c_agent.clear_lua_stack();
+        let mut new_seq = seq.get_int();
+        let mut new_seq2 = seq2.get_int();
+        for i in 0..8 {
+            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
+                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            }
+            if seq2.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
+                new_seq2 = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq2));
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq));
+    }
+    original!()(lua_state)
+}
+
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
     unsafe{
@@ -787,6 +819,7 @@ pub fn main() {
     wiifit::install();
     ken::install();
     metaknight::install();
+    // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);
     skyline::install_hook!(play_se_replace);

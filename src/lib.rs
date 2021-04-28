@@ -12,7 +12,7 @@ use smash::app::lua_bind::*;
 use smash::app::*;
 use smash::app::FighterManager;
 use skyline::hooks::{getRegionAddress, Region};
-use skyline::nn::ro::LookupSymbol;
+// use skyline::nn::ro::LookupSymbol;
 
 pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
@@ -108,6 +108,7 @@ use crate::wiifit::CAN_DRAGON_INSTALL;
 mod ken;
 use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA, TATSULOOPS};
 mod metaknight;
+mod ganon;
 
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
 // pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
@@ -819,6 +820,7 @@ pub fn main() {
     wiifit::install();
     ken::install();
     metaknight::install();
+    ganon::install();
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);

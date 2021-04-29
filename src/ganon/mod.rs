@@ -1,10 +1,30 @@
 use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
+use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
+use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
+
+#[fighter_frame( agent = FIGHTER_KIND_GANON )]
+fn ganon_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+        
+        if StatusModule::status_kind(boma) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_FALL {
+            fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
+        }
+    }
+}
+
+#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ganon_sspecialairendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    MotionModule::change_motion(module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
+    KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+    L2CValue::I32(0)
+}
 
 #[acmd_script( agent = "ganon", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_jab(fighter: &mut L2CAgentBase) {
@@ -131,6 +151,12 @@ unsafe fn ganon_nair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
+    smashline::install_agent_frames!(
+        ganon_frame
+    );
+    smashline::install_status_script!(
+        ganon_sspecialairendmain
+    );
     smashline::install_acmd_scripts!(
         ganon_jab,
         ganon_dashattack,

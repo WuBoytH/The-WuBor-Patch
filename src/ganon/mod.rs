@@ -6,6 +6,7 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
+use crate::globals::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
@@ -18,12 +19,42 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    StatusModule::init_settings(module_accessor, SituationKind(*SITUATION_KIND_AIR), *FIGHTER_KINETIC_TYPE_UNIQ, *GROUND_CORRECT_KIND_AIR as u32, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE), false, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT, 1);
+    FighterStatusModuleImpl::set_fighter_status_data(module_accessor, false, *FIGHTER_TREADED_KIND_NO_REAC, false, true, false, *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64, 0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32, 0);
+    L2CValue::I32(0)
+}
+
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecialairendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
     let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    MotionModule::change_motion(module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
+    MotionModule::change_motion(module_accessor, Hash40::new("special_air_s"), 0.0, 0.0, false, 0.0, false, false);
     KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-    L2CValue::I32(0)
+    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_s_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn ganon_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
+
+        }
+        else {
+            if MotionModule::is_end(fighter.module_accessor) {
+                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            }
+        }
+    }
+    else {
+        // if fighter.sub_wait_ground_check_common(L2CValue::I32(0x80)) == L2CValue::Bool(false) {
+
+        // }
+        // if fighter.sub_air_check_fall_common() == L2CValue::Bool(false) {
+            
+        // }
+    }
+    L2CValue::I32(1)
 }
 
 #[acmd_script( agent = "ganon", script = "game_attack11", category = ACMD_GAME, low_priority )]
@@ -154,7 +185,8 @@ pub fn install() {
     smashline::install_agent_frames!(
         ganon_frame
     );
-    smashline::install_status_script!(
+    smashline::install_status_scripts!(
+        ganon_sspecialairendpre,
         ganon_sspecialairendmain
     );
     smashline::install_acmd_scripts!(

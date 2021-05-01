@@ -251,23 +251,19 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
-// #[skyline::hook(replace = sv_animcmd::ATTACK)]
+// #[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
 // unsafe fn attack_replace(lua_state: u64) {
-//     let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-//     let mut l2c_agent = L2CAgent::new(lua_state);
-//     let fighter_kind = utility::get_kind(module_accessor);
-//     if fighter_kind == *FIGHTER_KIND_GAMEWATCH {
+//     let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
+//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     if SOUND[ENTRY_ID] == true && GLOBAL_STASIS == true {
+//         let mut l2c_agent = L2CAgent::new(lua_state);
 //         let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
 //         l2c_agent.clear_lua_stack();
 //         for i in 0..36 {
 //             let mut x = hitbox_params[i];
-//             if i == 15 {
-                
-//             }
-//             if i == 16 {
-//                 l2c_agent.push_lua_stack(&mut L2CValue::new_num(0.2));
-//             }
-//             else {
+//             if i == 34 {
+//                 l2c_agent.push_lua_stack(&mut L2CValue::new_int(*COLLISION_SOUND_ATTR_NONE as u64));
+//             } else {
 //                 l2c_agent.push_lua_stack(&mut x);
 //             }
 //         }

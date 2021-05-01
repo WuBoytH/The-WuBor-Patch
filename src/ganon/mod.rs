@@ -1,4 +1,5 @@
 use smash::phx::Hash40;
+use smash::phx::Vector3f;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
 use smash::lib::lua_const::*;
@@ -30,29 +31,24 @@ unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecialairendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
     let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    MotionModule::change_motion(module_accessor, Hash40::new("special_air_s"), 0.0, 0.0, false, 0.0, false, false);
+    MotionModule::change_motion(module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
     KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_s_main_loop as *const () as _))
+    KineticModule::add_speed(module_accessor, &Vector3f {x: 0.0, y: 5.0, z: 0.0});
+    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_air_s_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ganon_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
-
+            if MotionModule::is_end(fighter.module_accessor) {
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            }
         }
         else {
             if MotionModule::is_end(fighter.module_accessor) {
                 fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             }
         }
-    }
-    else {
-        // if fighter.sub_wait_ground_check_common(L2CValue::I32(0x80)) == L2CValue::Bool(false) {
-
-        // }
-        // if fighter.sub_air_check_fall_common() == L2CValue::Bool(false) {
-            
-        // }
     }
     L2CValue::I32(1)
 }

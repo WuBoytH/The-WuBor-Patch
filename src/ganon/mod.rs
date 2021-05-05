@@ -58,7 +58,12 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
             if TELEPORT[get_player_number(boma)] == 3 {
-                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0 - TELE_Y[get_player_number(boma)], -2.0 - TELE_X[get_player_number(boma)], 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, 33.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                }
+                else {
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0 + TELE_Y[get_player_number(boma)], -2.0 + TELE_X[get_player_number(boma)] * PostureModule::lr(boma), 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                }
                 macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 TELEPORT[get_player_number(boma)] = 4;
             }
@@ -294,24 +299,18 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         TELEPORT[get_player_number(boma)] = 2;
     }
-    sv_animcmd::frame(lua_state, 45.0);
-    if macros::is_excute(fighter) {
-        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
-        PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
-        if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
-            TELE_X[get_player_number(boma)] = -35.0;
-        }
-    }
     sv_animcmd::frame(lua_state, 50.0);
     if macros::is_excute(fighter) {
         TELEPORT[get_player_number(boma)] = 3;
-        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
+        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
+        PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    macros::FT_MOTION_RATE(fighter, 3.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 64.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {

@@ -1,5 +1,6 @@
 use smash::phx::Hash40;
 // use smash::phx::Vector3f;
+use smash::phx::Vector2f;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
 use smash::lib::lua_const::*;
@@ -7,8 +8,14 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
+use crate::IS_FUNNY;
 use crate::globals::*;
-use skyline::nn::ro::LookupSymbol;
+use crate::commonfuncs::*;
+// use skyline::nn::ro::LookupSymbol;
+
+pub static mut TELEPORT : [i32; 8] = [0; 8];
+static mut TELE_X : [f32; 8] = [0.0; 8];
+static mut TELE_Y : [f32; 8] = [0.0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
@@ -17,6 +24,49 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
         
         if StatusModule::status_kind(boma) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_FALL {
             fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
+        }
+
+        if get_player_number(boma) < 8 {
+            if TELEPORT[get_player_number(boma)] == 1 {
+                let dir = get_command_stick_direction(boma, false);
+                if dir == 5 || dir == 2 || dir == 8 {
+                    TELE_X[get_player_number(boma)] = 0.0;
+                }
+                else if dir == 6 || dir == 3 || dir == 9 {
+                    TELE_X[get_player_number(boma)] = 35.0;
+                }
+                else if dir == 4 || dir == 1 || dir == 7 {
+                    TELE_X[get_player_number(boma)] = -35.0;
+                }
+                if dir == 5
+                || dir == 4
+                || dir == 6
+                || (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
+                || (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
+                || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND) {
+                    TELE_Y[get_player_number(boma)] = 0.0;
+                }
+                else if (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
+                || (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
+                || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
+                    TELE_Y[get_player_number(boma)] = -30.0;
+                }
+                else if dir == 7
+                || dir == 8
+                || dir == 9 {
+                    TELE_Y[get_player_number(boma)] = 30.0;
+                }
+            }
+            if TELEPORT[get_player_number(boma)] == 3 {
+                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0 - TELE_Y[get_player_number(boma)], -2.0 - TELE_X[get_player_number(boma)], 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                TELEPORT[get_player_number(boma)] = 4;
+            }
+
+            if (StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND || IS_FUNNY[get_player_number(boma)])
+            && TELEPORT[get_player_number(boma)] == 4 {
+                TELEPORT[get_player_number(boma)] = 0;
+            }
         }
     }
 }
@@ -223,6 +273,86 @@ unsafe fn ganon_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ganon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
+unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.2);
+    sv_animcmd::frame(lua_state, 25.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    sv_animcmd::frame(lua_state, 30.0);
+    if macros::is_excute(fighter) {
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
+        HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
+    }
+    sv_animcmd::frame(lua_state, 34.0);
+    if macros::is_excute(fighter) {
+        TELEPORT[get_player_number(boma)] = 1;
+    }
+    sv_animcmd::frame(lua_state, 40.0);
+    if macros::is_excute(fighter) {
+        TELEPORT[get_player_number(boma)] = 2;
+    }
+    sv_animcmd::frame(lua_state, 45.0);
+    if macros::is_excute(fighter) {
+        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
+        PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
+        if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
+            TELE_X[get_player_number(boma)] = -35.0;
+        }
+    }
+    sv_animcmd::frame(lua_state, 50.0);
+    if macros::is_excute(fighter) {
+        TELEPORT[get_player_number(boma)] = 3;
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
+    sv_animcmd::frame(lua_state, 60.0);
+    if macros::is_excute(fighter) {
+        HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+    macros::FT_MOTION_RATE(fighter, 3.0);
+    sv_animcmd::frame(lua_state, 64.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+        WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_FALL, true);
+        }
+        else {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_WAIT, true);
+        }
+    }
+}
+
+#[acmd_script( agent = "ganon", scripts = ["effect_specialn", "effect_specialairn"], category = ACMD_EFFECT, low_priority )]
+unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 30.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::FLASH(fighter, 1, 0, 1, 1.0);
+    }
+    sv_animcmd::frame(lua_state, 34.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_model_visible(boma, false);
+    }
+    sv_animcmd::frame(lua_state, 60.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_model_visible(boma, true);
+    }
+    sv_animcmd::frame(lua_state, 64.0);
+    if macros::is_excute(fighter) {
+        macros::COL_NORMAL(fighter);
+    }
+}
+
 #[acmd_script( agent = "ganon", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -249,6 +379,8 @@ pub fn install() {
         ganon_dtilt,
         ganon_nair,
         ganon_bair,
+        ganon_nspecial,
+        ganon_nspecialeff,
         ganon_sspecialair
     );
 }

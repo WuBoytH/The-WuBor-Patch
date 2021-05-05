@@ -59,3 +59,48 @@ pub unsafe fn get_player_number(module_accessor:  &mut BattleObjectModuleAccesso
         return player_number;
     }
 }
+
+pub unsafe fn get_command_stick_direction(module_accessor: &mut BattleObjectModuleAccessor, command: bool) -> i32 {
+    let status_kind = StatusModule::status_kind(module_accessor);
+    let mut stick_x = ControlModule::get_stick_x(module_accessor);
+    if command {
+        stick_x = stick_x * PostureModule::lr(module_accessor);
+        if status_kind == *FIGHTER_STATUS_KIND_TURN_RUN {
+            stick_x *= -1.0;
+        }
+    }
+
+    if stick_x >= 0.2 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.2 {
+            return 3;
+        }
+        else if ControlModule::get_stick_y(module_accessor) >= 0.2 {
+            return 9;
+        }
+        else {
+            return 6;
+        }
+    }
+    else if stick_x <= -0.2 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.2 {
+            return 1;
+        }
+        else if ControlModule::get_stick_y(module_accessor) >= 0.2 {
+            return 7;
+        }
+        else {
+            return 4;
+        }
+    }
+    else {
+        if ControlModule::get_stick_y(module_accessor) <= -0.2 {
+            return 2;
+        }
+        else if ControlModule::get_stick_y(module_accessor) >= 0.2 {
+            return 8;
+        }
+        else {
+            return 5;
+        }
+    }
+}

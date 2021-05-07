@@ -70,22 +70,22 @@ pub unsafe fn get_command_stick_direction(module_accessor: &mut BattleObjectModu
         }
     }
 
-    if stick_x >= 0.2 {
-        if ControlModule::get_stick_y(module_accessor) <= -0.2 {
+    if stick_x >= 0.4 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.4 {
             return 3;
         }
-        else if ControlModule::get_stick_y(module_accessor) >= 0.2 {
+        else if ControlModule::get_stick_y(module_accessor) >= 0.4 {
             return 9;
         }
         else {
             return 6;
         }
     }
-    else if stick_x <= -0.2 {
-        if ControlModule::get_stick_y(module_accessor) <= -0.2 {
+    else if stick_x <= -0.4 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.4 {
             return 1;
         }
-        else if ControlModule::get_stick_y(module_accessor) >= 0.2 {
+        else if ControlModule::get_stick_y(module_accessor) >= 0.4 {
             return 7;
         }
         else {
@@ -93,10 +93,10 @@ pub unsafe fn get_command_stick_direction(module_accessor: &mut BattleObjectModu
         }
     }
     else {
-        if ControlModule::get_stick_y(module_accessor) <= -0.2 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.4 {
             return 2;
         }
-        else if ControlModule::get_stick_y(module_accessor) >= 0.2 {
+        else if ControlModule::get_stick_y(module_accessor) >= 0.4 {
             return 8;
         }
         else {

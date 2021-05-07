@@ -362,7 +362,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
         }
     }
     if fighter_kind == *FIGHTER_KIND_GANON && get_player_number(module_accessor) < 8 {
-        if (TELEPORT[get_player_number(module_accessor)] != 0 && !IS_FUNNY[get_player_number(module_accessor)])
+        if !(TELEPORT[get_player_number(module_accessor)] == 0 || TELEPORT[get_player_number(module_accessor)] == 4)
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
             return false;
         }

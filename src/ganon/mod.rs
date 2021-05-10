@@ -32,11 +32,17 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 if dir == 5 || dir == 2 || dir == 8 {
                     TELE_X[get_player_number(boma)] = 0.0;
                 }
-                else if dir == 6 || dir == 3 || dir == 9 {
+                else if dir == 3 || dir == 9 {
                     TELE_X[get_player_number(boma)] = 35.0;
                 }
-                else if dir == 4 || dir == 1 || dir == 7 {
+                else if dir == 6 {
+                    TELE_X[get_player_number(boma)] = 40.0;
+                }
+                else if dir == 1 || dir == 7 {
                     TELE_X[get_player_number(boma)] = -35.0;
+                }
+                else if dir == 6 {
+                    TELE_X[get_player_number(boma)] = -40.0;
                 }
                 if dir == 5
                 || dir == 4
@@ -46,15 +52,19 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND) {
                     TELE_Y[get_player_number(boma)] = 0.0;
                 }
-                else if (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
-                || (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
+                else if (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
                 || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
                     TELE_Y[get_player_number(boma)] = -30.0;
                 }
+                else if (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
+                    TELE_Y[get_player_number(boma)] = -40.0;
+                }
                 else if dir == 7
-                || dir == 8
                 || dir == 9 {
                     TELE_Y[get_player_number(boma)] = 30.0;
+                }
+                else if dir == 8 {
+                    TELE_Y[get_player_number(boma)] = 40.0;
                 }
             }
             if TELEPORT[get_player_number(boma)] == 3 || TELEPORT[get_player_number(boma)] == 7 {
@@ -70,7 +80,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
                 KineticModule::unable_energy_all(boma);
                 if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
-                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, 33.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, 38.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 }
                 else {
                     macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);

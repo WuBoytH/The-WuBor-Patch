@@ -48,7 +48,6 @@ fn richter_frame(fighter: &mut L2CFighterCommon) {
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_REFLET
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_RIDLEY
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK_AIR
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_MISS_FOOT
         || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD

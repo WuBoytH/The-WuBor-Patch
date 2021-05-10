@@ -16,6 +16,7 @@ use crate::commonfuncs::*;
 pub static mut TELEPORT : [i32; 8] = [0; 8];
 static mut TELE_X : [f32; 8] = [0.0; 8];
 static mut TELE_Y : [f32; 8] = [0.0; 8];
+static mut TELE_STOP : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
@@ -41,7 +42,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 else if dir == 1 || dir == 7 {
                     TELE_X[get_player_number(boma)] = -35.0;
                 }
-                else if dir == 6 {
+                else if dir == 4 {
                     TELE_X[get_player_number(boma)] = -40.0;
                 }
                 if dir == 5
@@ -79,7 +80,6 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
                 PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
-                KineticModule::unable_energy_all(boma);
                 if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
                     macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, 38.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 }
@@ -103,6 +103,9 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
             || StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_N) {
                 TELEPORT[get_player_number(boma)] = 0;
             }
+        }
+        if TELE_STOP[get_player_number(boma)] {
+            KineticModule::unable_energy_all(boma);
         }
     }
 }
@@ -496,7 +499,7 @@ unsafe fn ganon_dair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    sv_animcmd::frame(lua_state, 8.0);
+    sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 270, 100, 0, 20, 7.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 361, 100, 0, 20, 6.0, 0.0, 10.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
@@ -522,7 +525,7 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 30.0);
     if macros::is_excute(fighter) {
-        KineticModule::unable_energy_all(boma);
+        TELE_STOP[get_player_number(boma)] = true;
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(boma, false);
@@ -541,11 +544,10 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
+        TELE_STOP[get_player_number(boma)] = false;
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
-    macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 64.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -626,7 +628,7 @@ unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 15.0, 260, 82, 0, 40, 1.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_NONE);
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 260, 82, 0, 40, 1.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_NONE);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
         macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }

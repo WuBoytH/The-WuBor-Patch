@@ -68,7 +68,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
                 PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
-                KineticModule::suspend_energy_all(boma);
+                KineticModule::unable_energy_all(boma);
                 if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
                     macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, 33.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 }
@@ -355,7 +355,7 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 30.0);
     if macros::is_excute(fighter) {
-        KineticModule::suspend_energy_all(boma);
+        KineticModule::unable_energy_all(boma);
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(boma, false);
@@ -380,12 +380,10 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 64.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        KineticModule::resume_energy_all(boma);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        KineticModule::suspend_energy(boma, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         JostleModule::set_status(boma, true);
         if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {

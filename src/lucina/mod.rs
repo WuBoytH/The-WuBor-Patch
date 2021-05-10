@@ -346,7 +346,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_LANDING {
                 LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = true;
             }
-            else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+            else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+            || StatusModule::situation_kind(boma) == *SITUATION_KIND_CLIFF {
                 LUCINA_SPECIAL_AIR_S[get_player_number(boma)] = false;
             }
 

@@ -56,7 +56,8 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
                     TELE_Y[get_player_number(boma)] = -30.0;
                 }
-                else if (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
+                else if dir == 2
+                && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
                     TELE_Y[get_player_number(boma)] = -40.0;
                 }
                 else if dir == 7

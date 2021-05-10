@@ -157,6 +157,7 @@ move_type_again: bool) -> u64 {
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if attacker_fighter_kind == *FIGHTER_KIND_KEN {
         if d_entry_id < 8
+        && a_entry_id < 8
         && utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
         }

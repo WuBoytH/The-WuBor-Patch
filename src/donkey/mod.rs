@@ -5,6 +5,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
+use crate::commonfuncs::*;
+use crate::IS_FUNNY;
 
 #[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_ftilt(fighter: &mut L2CAgentBase) {
@@ -129,7 +131,12 @@ unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::have_item(boma, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
         if ItemModule::get_have_item_kind(boma, 0) == *ITEM_KIND_BARREL {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP, true);
+            if IS_FUNNY[get_player_number(boma)] == false && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_FALL, true);
+            }
+            else {
+                StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP, true);
+            }
         }
     }
 }

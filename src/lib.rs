@@ -278,6 +278,10 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
     let fighter_kind = utility::get_kind(module_accessor);
     let ret = original!()(module_accessor,term);
     
+    // Global Edits
+
+    
+
     // Fighter-Specific Param Edits
     
     if fighter_kind == *FIGHTER_KIND_LUCINA && get_player_number(module_accessor) < 8 {

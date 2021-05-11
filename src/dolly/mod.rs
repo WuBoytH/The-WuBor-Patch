@@ -1,686 +1,641 @@
-use smash::hash40;
-use smash::app::lua_bind::*;
+use smash::phx::Hash40;
+use smash::phx::Vector3f;
+use smash::lua2cpp::L2CAgentBase;
+use smash::app::*;
 use smash::lib::lua_const::*;
-use smash::lua2cpp::L2CFighterCommon;
-use acmd::{acmd, acmd_func};
+use smash::app::lua_bind::*;
+use smash_script::*;
+use smashline::*;
+// use crate::IS_FUNNY;
+// use crate::globals::*;
+// use crate::commonfuncs::*;
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_DOLLY,
-    animation = "special_lw_attack",
-    animcmd = "game_specialairlw")]
-pub fn dolly_dspecialair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=0)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                WorkModule::on_flag(Flag=FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK)
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.3, y: -1.0, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-                WorkModule::off_flag(Flag=FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK)
-            }
-            else{
-                if(is_excute){
-                    WorkModule::on_flag(Flag=FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 1.3, y: -1.5, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                    WorkModule::off_flag(Flag=FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK)
-                }
-            }
+#[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let mut feint = false;
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
         }
-        frame(Frame=1)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: -0.3, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: -1.0, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
+    }
+    else {
+        MotionModule::set_rate(boma, 0.83);
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+        feint = true;
+    }
+    sv_animcmd::frame(lua_state, 18.0);
+    if macros::is_excute(fighter) {
+        if feint == false {
+            MotionModule::set_rate(boma, 1.0);
+            WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
-        frame(Frame=2)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: -0.5, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
+        else {
+            MotionModule::set_rate(boma, 1.4);
         }
-        frame(Frame=3)
-        if(WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND)){
-            if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-                if(is_excute){
-                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=11.0, Angle=50, KBG=70, FKB=0, BKB=80, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                }
-                else{
-                    if(WorkModule::get_int(module_accessor, *ATTACK_REGION_PUNCH) == *FIGHTER_DOLLY_STRENGTH_W){
-                        if(is_excute){
-                            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=12.0, Angle=50, KBG=65, FKB=0, BKB=80, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                        }
-                        else{
-                            if(is_excute){
-                                ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=11.0, Angle=50, KBG=75, FKB=0, BKB=80, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_CRITICAL, Type=ATTACK_REGION_PUNCH)
-                            }
-                            else{
-                                if(is_excute){
-                                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=12.0, Angle=50, KBG=70, FKB=0, BKB=80, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        frame(Frame=4)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=5)
-        if(WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND)){
-            if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-                if(is_excute){
-                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=14.0, Angle=50, KBG=80, FKB=0, BKB=60, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                }
-                else{
-                    if(WorkModule::get_int(module_accessor, *ATTACK_REGION_PUNCH) == *FIGHTER_DOLLY_STRENGTH_W){
-                        if(is_excute){
-                            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=14.0, Angle=50, KBG=80, FKB=0, BKB=60, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=8, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                        }
-                        else{
-                            if(is_excute){
-                                ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=14.0, Angle=310, KBG=95, FKB=0, BKB=30, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=8, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_CRITICAL, Type=ATTACK_REGION_PUNCH)
-                            }
-                            else{
-                                if(is_excute){
-                                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=14.0, Angle=50, KBG=80, FKB=0, BKB=60, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.2, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=8, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                MotionModule::set_rate(1.2)
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=6)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=7)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=8)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=9)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=10)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=11)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.05, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=12)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=13)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                rust{
-                    let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-                    KineticModule::add_speed(module_accessor, &speed_vector);
-                }
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(1.0)
-                    rust{
-                        let speed_vector = smash::phx::Vector3f { x: 0.0, y: 0.2, z: 0.0 };
-                        KineticModule::add_speed(module_accessor, &speed_vector);
-                    }
-                }
-            }
-        }
-        frame(Frame=14)
-        if(WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND)){
-            if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-                if(is_excute){
-                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=14.0, Angle=50, KBG=80, FKB=0, BKB=60, Size=7.0, X=0.0, Y=8.0, Z=5.5, X2=0.0, Y2=4.0, Z2=3.5, Hitlag=1.8, SDI=1.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=8, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_PUNCH)
-                }
-            }
-        }
-        frame(Frame=15)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                MotionModule::set_rate(10.0)
-            }
-            else{
-                if(is_excute){
-                    MotionModule::set_rate(10.0)
-                }
-            }
-        }
-        frame(Frame=35)
-        if(is_excute){
-            AttackModule::clear_all()
-            KineticModule::change_kinetic(FIGHTER_KINETIC_TYPE_DOLLY_SPECIAL_LW_FALL)
-            MotionModule::set_rate(1.0)
-        }
-        frame(Frame=37)
-        if(is_excute){
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_LANDING_HEAVY)
-        }
-    });
+    }
 }
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_DOLLY,
-    animation = "special_air_hi",
-    animcmd = "game_specialairhi")]
-pub fn dolly_uspecialair(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=6)
-        if(is_excute){
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR)
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH)
+#[acmd_script( agent = "dolly", script = "game_specialairn", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let mut feint = false;
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD) {
+        feint = true;
+    }
+    sv_animcmd::frame(lua_state, 18.0);
+    if macros::is_excute(fighter) {
+        if feint == false {
+            WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
-        frame(Frame=9)
-        if(is_excute){
-            HIT_NODE(hash40("kneer"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("kneel"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("legr"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("legl"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("hip"), HIT_STATUS_XLU)
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_JUMP)
+        else {
+            KineticModule::add_speed(boma, &Vector3f {x: 0.0, y: 1.0, z: 0.0});
+            MotionModule::set_rate(boma, 1.4);
         }
-        frame(Frame=10)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=4.0, Angle=98, KBG=110, FKB=110, BKB=30, Size=4.0, X=0.0, Y=10.0, Z=6.5, X2=0.0, Y2=10.0, Z2=2.0, Hitlag=1.0, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=4.0, Angle=75, KBG=110, FKB=110, BKB=30, Size=4.0, X=0.0, Y=10.0, Z=-2.0, X2=0.0, Y2=10.0, Z2=-3.0, Hitlag=1.0, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            AttackModule::set_no_finish_camera(0, true, false)
-            AttackModule::set_no_finish_camera(1, true, false)
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-        }
-        frame(Frame=11)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=12)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=4.5, Z=0.0, X2=0.0, Y2=4.5, Z2=6.0, Hitlag=1.0, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=30, FKB=30, BKB=30, Size=3.5, X=0.0, Y=17.0, Z=1.0, X2=0.0, Y2=19.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=10, Size=4.5, X=0.0, Y=10.0, Z=3.0, X2=0.0, Y2=10.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=10, Size=4.5, X=0.0, Y=10.0, Z=3.0, X2=0.0, Y2=10.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
-            }
-        }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=4.5, Z=-4.0, X2=0.0, Y2=4.5, Z2=-6.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-            WorkModule::off_flag(Flag=FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-        }
-        frame(Frames=13)
-        if(is_excute){
-            sv_battle_object::notify_event_msc_cmd(0x2127e37c07, GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES)
-        }
-        frame(Frame=15)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=3.5, Z=6.0, X2=0.0, Y2=3.5, Z2=0.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=30, FKB=30, BKB=30, Size=3.5, X=0.0, Y=16.0, Z=1.0, X2=0.0, Y2=18.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=10, Size=4.5, X=0.0, Y=9.0, Z=3.0, X2=0.0, Y2=9.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=40, FKB=40, BKB=10, Size=4.5, X=0.0, Y=9.0, Z=3.0, X2=0.0, Y2=9.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
-            }
-        }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=3.5, Z=-4.0, X2=LUA_VOID, Y2=LUA_VOID, Z2=LUA_VOID, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=20)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=3.5, Z=0.0, X2=0.0, Y2=3.5, Z2=6.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=30, FKB=30, BKB=30, Size=3.5, X=0.0, Y=16.0, Z=1.0, X2=0.0, Y2=18.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=10, Size=4.5, X=0.0, Y=9.0, Z=3.0, X2=0.0, Y2=9.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=40, FKB=40, BKB=10, Size=4.5, X=0.0, Y=9.0, Z=3.0, X2=0.0, Y2=9.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
-            }
-        }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=3.5, Z=-4.0, X2=0.0, Y2=3.5, Z2=-6.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            HIT_NODE(hash40("kneer"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("kneel"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("legr"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("legl"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("hip"), HIT_STATUS_NORMAL)
-            AttackModule::clear_all()
-        }
-        frame(Frame=25)
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=7.0, Angle=83, KBG=65, FKB=0, BKB=90, Size=7.0, X=0.0, Y=7.0, Z=2.0, X2=0.0, Y2=14.0, Z2=2.0, Hitlag=2.0, SDI=0.5, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=9.0, Angle=83, KBG=55, FKB=0, BKB=90, Size=7.0, X=0.0, Y=7.0, Z=2.0, X2=0.0, Y2=14.0, Z2=2.0, Hitlag=2.0, SDI=0.5, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
-            }
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=30)
-        if(is_excute){
-            MotionModule::set_rate(1.5)
-        }
-    });
+    }
 }
 
-#[acmd_func(
-    battle_object_category = BATTLE_OBJECT_CATEGORY_FIGHTER, 
-    battle_object_kind = FIGHTER_KIND_DOLLY,
-    animation = "special_air_hi_command",
-    animcmd = "game_specialairhicommand")]
-pub fn dolly_uspecialaircommand(fighter: &mut L2CFighterCommon) {
-    acmd!({
-        frame(Frame=6)
-        if(is_excute){
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR)
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH)
+#[acmd_script( agent = "dolly", script = "game_speciallwattack", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 0.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.3, y: -1.0, z: 0.0 });
+            WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         }
-        frame(Frame=9)
-        if(is_excute){
-            HIT_NODE(hash40("kneer"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("kneel"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("legr"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("legl"), HIT_STATUS_XLU)
-            HIT_NODE(hash40("hip"), HIT_STATUS_XLU)
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_JUMP)
+    }
+    else {
+        if macros::is_excute(fighter) {
+            WorkModule::on_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+            KineticModule::add_speed(boma, &Vector3f { x: 1.3, y: -1.5, z: 0.0 });
+            WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         }
-        frame(Frame=10)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=4.5, Angle=98, KBG=110, FKB=110, BKB=30, Size=4.5, X=0.0, Y=10.0, Z=6.5, X2=0.0, Y2=10.0, Z2=2.0, Hitlag=1.0, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=4.5, Angle=75, KBG=110, FKB=110, BKB=30, Size=4.5, X=0.0, Y=10.0, Z=-2.0, X2=0.0, Y2=10.0, Z2=-3.0, Hitlag=1.0, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            AttackModule::set_no_finish_camera(0, true, false)
-            AttackModule::set_no_finish_camera(1, true, false)
-            WorkModule::on_flag(Flag=FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    }
+    sv_animcmd::frame(lua_state, 1.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: -0.3, z: 0.0 });
         }
-        frame(Frame=11)
-        if(is_excute){
-            AttackModule::clear_all()
+    }
+    else {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: -1.0, z: 0.0 });
         }
-        frame(Frame=12)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=7.5, Z=0.0, X2=0.0, Y2=7.5, Z2=6.0, Hitlag=1.0, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=20.0, Z=1.0, X2=0.0, Y2=22.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
+    }
+    sv_animcmd::frame(lua_state, 2.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
         }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=40, FKB=40, BKB=20, Size=4.5, X=0.0, Y=13.0, Z=3.0, X2=0.0, Y2=13.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=20, Size=4.5, X=0.0, Y=13.0, Z=3.0, X2=0.0, Y2=13.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
-            }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: -0.5, z: 0.0 });
         }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=7.5, Z=-4.0, X2=0.0, Y2=7.5, Z2=-7.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-            WorkModule::off_flag(Flag=FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-        }
-        frame(Frame=13)
-        if(is_excute){
-            sv_battle_object::notify_event_msc_cmd(0x2127e37c07, GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES)
-            MotionModule::set_rate(1.5)
-        }
-        frame(Frame=14)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=6.5, Z=7.5, X2=0.0, Y2=6.5, Z2=0.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=19.0, Z=1.0, X2=0.0, Y2=21.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=20, Size=4.5, X=0.0, Y=12.0, Z=3.0, X2=0.0, Y2=12.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=20, Size=4.5, X=0.0, Y=12.0, Z=3.0, X2=0.0, Y2=12.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
+    }
+    sv_animcmd::frame(lua_state, 3.0);
+    if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 50, 70, 0, 80, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=6.5, Z=-4.0, X2=0.0, Y2=6.5, Z2=-4.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=16)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=5.5, Z=0.0, X2=0.0, Y2=5.5, Z2=6.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=18.0, Z=1.0, X2=0.0, Y2=20.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=20, Size=4.5, X=0.0, Y=11.0, Z=3.0, X2=0.0, Y2=11.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=20, Size=4.5, X=0.0, Y=11.0, Z=3.0, X2=0.0, Y2=11.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
+        else if WorkModule::get_int(boma, *ATTACK_REGION_PUNCH) == *FIGHTER_DOLLY_STRENGTH_W {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 50, 65, 0, 80, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=5.5, Z=-4.0, X2=0.0, Y2=5.5, Z2=-7.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=19)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=5.5, Z=7.5, X2=0.0, Y2=5.5, Z2=0.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=18.0, Z=1.0, X2=0.0, Y2=20.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=20, Size=4.5, X=0.0, Y=11.0, Z=3.0, X2=0.0, Y2=11.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=20, Size=4.5, X=0.0, Y=11.0, Z=3.0, X2=0.0, Y2=11.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
+        else {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 50, 75, 0, 80, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             }
         }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=5.5, Z=-4.0, X2=0.0, Y2=5.5, Z2=-4.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 50, 70, 0, 80, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
+    }
+    sv_animcmd::frame(lua_state, 4.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
-        frame(Frame=21)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=5.5, Z=0.0, X2=0.0, Y2=5.5, Z2=6.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=18.0, Z=1.0, X2=0.0, Y2=20.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
+    }
+    else {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
         }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=20, Size=4.5, X=0.0, Y=11.0, Z=3.0, X2=0.0, Y2=11.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=20, Size=4.5, X=0.0, Y=11.0, Z=3.0, X2=0.0, Y2=11.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
-            }
-        }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=5.5, Z=-4.0, X2=0.0, Y2=5.5, Z2=-7.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=24)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=4.5, Z=7.5, X2=0.0, Y2=4.5, Z2=0.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_POS, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=17.0, Z=1.0, X2=0.0, Y2=19.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=35, FKB=30, BKB=20, Size=4.5, X=0.0, Y=10.0, Z=3.0, X2=0.0, Y2=10.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=45, FKB=40, BKB=20, Size=4.5, X=0.0, Y=10.0, Z=3.0, X2=0.0, Y2=10.0, Z2=1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
+    }
+    sv_animcmd::frame(lua_state, 5.0);
+    if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 50, 80, 0, 60, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-        if(is_excute){
-            ATTACK(ID=3, Part=0, Bone=hash40("top"), Damage=0.3, Angle=367, KBG=30, FKB=50, BKB=30, Size=3.0, X=0.0, Y=4.5, Z=-4.0, X2=0.0, Y2=4.5, Z2=-4.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        wait(Frames=1)
-        if(is_excute){
-            HIT_NODE(hash40("kneer"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("kneel"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("legr"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("legl"), HIT_STATUS_NORMAL)
-            HIT_NODE(hash40("hip"), HIT_STATUS_NORMAL)
-            AttackModule::clear_all()
-        }
-        frame(Frame=29)
-        if(is_excute){
-            ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=30, FKB=50, BKB=30, Size=3.5, X=0.0, Y=3.5, Z=5.0, X2=0.0, Y2=3.5, Z2=-7.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_M, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            ATTACK(ID=1, Part=0, Bone=hash40("top"), Damage=0.3, Angle=70, KBG=50, FKB=5, BKB=20, Size=3.5, X=0.0, Y=16.0, Z=1.0, X2=0.0, Y2=18.5, Z2=1.0, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=40, FKB=45, BKB=20, Size=4.5, X=0.0, Y=10.0, Z=3.0, X2=0.0, Y2=10.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=2, Part=0, Bone=hash40("top"), Damage=0.3, Angle=90, KBG=50, FKB=45, BKB=20, Size=4.5, X=0.0, Y=10.0, Z=3.0, X2=0.0, Y2=10.0, Z2=-1.5, Hitlag=0.5, SDI=0.0, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=true, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_S, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
+        else if WorkModule::get_int(boma, *ATTACK_REGION_PUNCH) == *FIGHTER_DOLLY_STRENGTH_W {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 50, 80, 0, 60, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
             }
         }
-        wait(Frames=1)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        frame(Frame=34)
-        if(is_excute){
-            AttackModule::clear_all()
-        }
-        if(WorkModule::get_int(module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W){
-            if(is_excute){
-                ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=8.0, Angle=83, KBG=73, FKB=0, BKB=90, Size=7.0, X=0.0, Y=8.0, Z=2.0, X2=0.0, Y2=15.0, Z2=2.0, Hitlag=2.0, SDI=0.5, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-            }
-            else{
-                if(is_excute){
-                    ATTACK(ID=0, Part=0, Bone=hash40("top"), Damage=10.0, Angle=83, KBG=62, FKB=0, BKB=90, Size=7.0, X=0.0, Y=8.0, Z=2.0, X2=0.0, Y2=15.0, Z2=2.0, Hitlag=2.0, SDI=0.5, Clang_Rebound=ATTACK_SETOFF_KIND_ON, FacingRestrict=ATTACK_LR_CHECK_F, SetWeight=false, ShieldDamage=0, Trip=0.0, Rehit=0, Reflectable=false, Absorbable=false, Flinchless=false, DisableHitlag=false, Direct_Hitbox=true, Ground_or_Air=COLLISION_SITUATION_MASK_GA, Hitbits=COLLISION_CATEGORY_MASK_ALL, CollisionPart=COLLISION_PART_MASK_ALL, FriendlyFire=false, Effect=hash40("collision_attr_normal"), SFXLevel=ATTACK_SOUND_LEVEL_L, SFXType=COLLISION_SOUND_ATTR_DOLLY_PUNCH, Type=ATTACK_REGION_BODY)
-                }
+        else {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 310, 95, 0, 30, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_CRITICAL, *ATTACK_REGION_PUNCH);
             }
         }
-        frame(Frame=35)
-        if(is_excute){
-            AttackModule::clear_all()
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 50, 80, 0, 60, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
         }
-        frame(Frame=40)
-        if(is_excute){
-            MotionModule::set_rate(1.5)
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.2);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
         }
-    });
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 6.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 7.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 8.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 10.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 11.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.05, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 13.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            MotionModule::set_rate(boma, 1.0);
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.2, z: 0.0 });
+        }
+    }
+    sv_animcmd::frame(lua_state, 14.0);
+    if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+            if macros::is_excute(fighter) {
+                macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 50, 80, 0, 60, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+            }
+        }
+    }
+    sv_animcmd::frame(lua_state, 15.0);
+    if macros::is_excute(fighter) {
+        MotionModule::set_rate(boma, 10.0);
+    }
+    sv_animcmd::frame(lua_state, 35.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_DOLLY_SPECIAL_LW_FALL);
+        MotionModule::set_rate(boma, 1.0);
+    }
+    sv_animcmd::frame(lua_state, 37.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_LANDING_HEAVY);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "game_specialairhi1", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    if macros::is_excute(fighter) {
+        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_JUMP);
+    }
+    sv_animcmd::frame(lua_state, 10.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 98, 110, 110, 30, 4.0, 0.0, 10.0, 6.5, Some(0.0), Some(10.0), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 75, 110, 110, 30, 4.0, 0.0, 10.0, -2.0, Some(0.0), Some(10.0), Some(-3.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        AttackModule::set_no_finish_camera(boma, 0, true, false);
+        AttackModule::set_no_finish_camera(boma, 1, true, false);
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
+    sv_animcmd::frame(lua_state, 11.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 4.5, 0.0, Some(0.0), Some(4.5), Some(6.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 30, 30, 30, 3.5, 0.0, 17.0, 1.0, Some(0.0), Some(19.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 10, 4.5, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 10, 4.5, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 4.5, -4.0, Some(0.0), Some(4.5), Some(-6.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    sv_animcmd::frame(lua_state, 15.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 3.5, 6.0, Some(0.0), Some(3.5), Some(0.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 30, 30, 30, 3.5, 0.0, 16.0, 1.0, Some(0.0), Some(18.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 10, 4.5, 0.0, 9.0, 3.0, Some(0.0), Some(9.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 40, 40, 10, 4.5, 0.0, 9.0, 3.0, Some(0.0), Some(9.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 3.5, -4.0, None, None, None, 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 20.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 3.5, 0.0, Some(0.0), Some(3.5), Some(6.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 30, 30, 30, 3.5, 0.0, 16.0, 1.0, Some(0.0), Some(18.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 10, 4.5, 0.0, 9.0, 3.0, Some(0.0), Some(9.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 40, 40, 10, 4.5, 0.0, 9.0, 3.0, Some(0.0), Some(9.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 3.5, -4.0, Some(0.0), Some(3.5), Some(-6.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_NORMAL);
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 25.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 83, 65, 0, 90, 7.0, 0.0, 7.0, 2.0, Some(0.0), Some(14.0), Some(2.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 83, 55, 0, 90, 7.0, 0.0, 7.0, 2.0, Some(0.0), Some(14.0), Some(2.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 30.0);
+    if macros::is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.5);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "game_specialairhicommand", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    if macros::is_excute(fighter) {
+        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_XLU);
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_JUMP);
+    }
+    sv_animcmd::frame(lua_state, 10.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.5, 98, 110, 110, 30, 4.5, 0.0, 10.0, 6.5, Some(0.0), Some(10.0), Some(2.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 4.5, 75, 110, 110, 30, 4.5, 0.0, 10.0, -2.0, Some(0.0), Some(10.0), Some(-3.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        AttackModule::set_no_finish_camera(boma, 0, true, false);
+        AttackModule::set_no_finish_camera(boma, 1, true, false);
+        WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+    }
+    sv_animcmd::frame(lua_state, 11.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 7.5, 0.0, Some(0.0), Some(7.5), Some(6.0), 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 20.0, 1.0, Some(0.0), Some(22.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 40, 40, 20, 4.5, 0.0, 13.0, 3.0, Some(0.0), Some(13.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 20, 4.5, 0.0, 13.0, 3.0, Some(0.0), Some(13.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 7.5, -4.0, Some(0.0), Some(7.5), Some(-7.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+    sv_animcmd::frame(lua_state, 14.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 6.5, 7.5, Some(0.0), Some(6.5), Some(0.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 19.0, 1.0, Some(0.0), Some(21.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 20, 4.5, 0.0, 12.0, 3.0, Some(0.0), Some(12.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 20, 4.5, 0.0, 12.0, 3.0, Some(0.0), Some(12.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 6.5, -4.0, Some(0.0), Some(6.5), Some(-4.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 16.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 5.5, 0.0, Some(0.0), Some(5.5), Some(6.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 18.0, 1.0, Some(0.0), Some(20.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 20, 4.5, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 20, 4.5, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 5.5, -4.0, Some(0.0), Some(5.5), Some(-7.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 19.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 5.5, 7.5, Some(0.0), Some(5.5), Some(0.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 18.0, 1.0, Some(0.0), Some(20.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 20, 4.5, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 20, 4.5, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 5.5, -4.0, Some(0.0), Some(5.5), Some(-4.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 21.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 5.5, 0.0, Some(0.0), Some(5.5), Some(6.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 18.0, 1.0, Some(0.0), Some(20.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 20, 4.5, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 20, 4.5, 0.0, 11.0, 3.0, Some(0.0), Some(11.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 5.5, -4.0, Some(0.0), Some(5.5), Some(-7.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 24.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.5, 0.0, 4.5, 7.5, Some(0.0), Some(4.5), Some(0.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 17.0, 1.0, Some(0.0), Some(19.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 35, 30, 20, 4.5, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 45, 40, 20, 4.5, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.3, 367, 30, 50, 30, 3.0, 0.0, 4.5, -4.0, Some(0.0), Some(4.5), Some(-4.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("hip"), *HIT_STATUS_NORMAL);
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 29.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.3, 90, 30, 50, 30, 3.5, 0.0, 3.5, 5.0, Some(0.0), Some(3.5), Some(-7.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.3, 70, 50, 5, 20, 3.5, 0.0, 16.0, 1.0, Some(0.0), Some(18.5), Some(1.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+    }
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 40, 45, 20, 4.5, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.3, 90, 50, 45, 20, 4.5, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(-1.5), 0.5, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    sv_animcmd::wait(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 34.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 83, 73, 0, 90, 7.0, 0.0, 8.0, 2.0, Some(0.0), Some(15.0), Some(2.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 83, 62, 0, 90, 7.0, 0.0, 8.0, 2.0, Some(0.0), Some(15.0), Some(2.0), 2.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_BODY);
+        }
+    }
+    sv_animcmd::frame(lua_state, 35.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 40.0);
+    if macros::is_excute(fighter) {
+        MotionModule::set_rate(boma, 1.5);
+    }
 }
 
 pub fn install() {
-    acmd::add_hooks!(
+    smashline::install_acmd_scripts!(
+        dolly_nspecial,
+        dolly_nspecialair,
         dolly_dspecialair,
         dolly_uspecialair,
-        dolly_uspecialaircommand
+        dolly_uspecialaircomm
     );
 }

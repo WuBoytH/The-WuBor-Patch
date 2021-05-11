@@ -38,7 +38,7 @@ unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
         else {
-            MotionModule::set_rate(boma, 1.4);
+            MotionModule::set_rate(boma, 1.5);
         }
     }
 }
@@ -62,8 +62,8 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
         else {
-            KineticModule::add_speed(boma, &Vector3f {x: 0.0, y: 1.0, z: 0.0});
-            MotionModule::set_rate(boma, 1.4);
+            KineticModule::add_speed(boma, &Vector3f {x: 0.0, y: 1.7, z: 0.0});
+            MotionModule::set_rate(boma, 1.5);
         }
     }
 }

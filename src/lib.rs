@@ -109,7 +109,7 @@ mod ken;
 use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA, TATSULOOPS};
 mod metaknight;
 mod ganon;
-use crate::ganon::TELEPORT;
+use crate::ganon::CAN_TELEPORT;
 
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
 // pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
@@ -367,7 +367,16 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
         }
     }
     if fighter_kind == *FIGHTER_KIND_GANON && get_player_number(module_accessor) < 8 {
-        if !(TELEPORT[get_player_number(module_accessor)] == 0 || TELEPORT[get_player_number(module_accessor)] == 4)
+        if CAN_TELEPORT[get_player_number(module_accessor)] == false
+        && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
+            return false;
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_KIRBY && get_player_number(module_accessor) < 8 {
+        if CAN_TELEPORT[get_player_number(module_accessor)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
             return false;
         }

@@ -1,10 +1,14 @@
 use smash::phx::Hash40;
+use smash::phx::Vector2f;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
+use crate::ganon::*;
+use crate::commonfuncs::*;
+use crate::IS_FUNNY;
 
 #[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
 fn kirby_frame(fighter: &mut L2CFighterCommon) {
@@ -19,6 +23,81 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        }
+
+        // Ganon Teleport
+
+        if get_player_number(boma) < 8 {
+            if TELEPORT[get_player_number(boma)] == 1 || TELEPORT[get_player_number(boma)] == 5 {
+                let dir = get_command_stick_direction(boma, false);
+                if dir == 5 || dir == 2 || dir == 8 {
+                    TELE_X[get_player_number(boma)] = 0.0;
+                }
+                else if dir == 3 || dir == 9 {
+                    TELE_X[get_player_number(boma)] = 35.0;
+                }
+                else if dir == 6 {
+                    TELE_X[get_player_number(boma)] = 40.0;
+                }
+                else if dir == 1 || dir == 7 {
+                    TELE_X[get_player_number(boma)] = -35.0;
+                }
+                else if dir == 4 {
+                    TELE_X[get_player_number(boma)] = -40.0;
+                }
+                if dir == 5
+                || dir == 4
+                || dir == 6
+                || (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
+                || (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
+                || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND) {
+                    TELE_Y[get_player_number(boma)] = 0.0;
+                }
+                else if (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
+                || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
+                    TELE_Y[get_player_number(boma)] = -30.0;
+                }
+                else if dir == 2
+                && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+                    TELE_Y[get_player_number(boma)] = -40.0;
+                }
+                else if dir == 7
+                || dir == 9 {
+                    TELE_Y[get_player_number(boma)] = 30.0;
+                }
+                else if dir == 8 {
+                    TELE_Y[get_player_number(boma)] = 40.0;
+                }
+            }
+            if TELEPORT[get_player_number(boma)] == 3 || TELEPORT[get_player_number(boma)] == 7 {
+                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+                    if TELE_Y[get_player_number(boma)] != 0.0 {
+                        StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
+                    }
+                    else {
+                        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    }
+                }
+                PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
+                if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8.0, 38.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                }
+                else {
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                }
+                TELEPORT[get_player_number(boma)] += 1;
+            }
+
+            if StatusModule::situation_kind(boma) == *SITUATION_KIND_CLIFF
+            || StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+            || IS_FUNNY[get_player_number(boma)] {
+                CAN_TELEPORT[get_player_number(boma)] = true;
+            }
+
+            if TELE_STOP[get_player_number(boma)] {
+                KineticModule::unable_energy_all(boma);
+            }
         }
     }
 }
@@ -87,6 +166,65 @@ unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
 }
 
+#[acmd_script( agent = "kirby", scripts = ["effect_ganonspecialn", "effect_ganonspecialairn"], category = ACMD_EFFECT, low_priority )]
+unsafe fn kirby_ganonspecialeff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14020f4ff6), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    sv_animcmd::frame(lua_state, 30.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::FLASH(fighter, 1, 0, 1, 1.0);
+    }
+    sv_animcmd::frame(lua_state, 34.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_whole(boma, false);
+        ItemModule::set_have_item_visibility(boma, false, 0);
+        ItemModule::set_attach_item_visibility(boma, false, 0);
+    }
+    sv_animcmd::frame(lua_state, 60.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_whole(boma, true);
+        ItemModule::set_have_item_visibility(boma, true, 0);
+        ItemModule::set_attach_item_visibility(boma, true, 0);
+    }
+    sv_animcmd::frame(lua_state, 64.0);
+    if macros::is_excute(fighter) {
+        macros::COL_NORMAL(fighter);
+    }
+}
+
+#[acmd_script( agent = "kirby", scripts = ["sound_ganonspecialn", "sound_ganonspecialairn"], category = ACMD_SOUND, low_priority )]
+unsafe fn kirby_ganonspecialsnd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 12.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ganon_special_n01"));
+        macros::PLAY_SE(fighter, Hash40::new("vc_ganon_appeal_h01"));
+    }
+    sv_animcmd::frame(lua_state, 30.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
+    }
+    sv_animcmd::frame(lua_state, 50.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
+    }
+    sv_animcmd::frame(lua_state, 60.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_model_visible(boma, true);
+        ItemModule::set_have_item_visibility(boma, true, 0);
+        ItemModule::set_attach_item_visibility(boma, true, 0);
+    }
+    sv_animcmd::frame(lua_state, 64.0);
+    if macros::is_excute(fighter) {
+        macros::COL_NORMAL(fighter);
+    }
+}
+
 pub fn install() {
     smashline::install_agent_frames!(
         kirby_frame
@@ -95,6 +233,8 @@ pub fn install() {
         kirby_uair,
         kirby_sspecialstart,
         kirby_sspecialstartair,
-        kirby_uspecial
+        kirby_uspecial,
+        kirby_ganonspecialeff,
+        kirby_ganonspecialsnd
     );
 }

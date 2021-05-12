@@ -14,9 +14,10 @@ use crate::commonfuncs::*;
 // use skyline::nn::ro::LookupSymbol;
 
 pub static mut TELEPORT : [i32; 8] = [0; 8];
-static mut TELE_X : [f32; 8] = [0.0; 8];
-static mut TELE_Y : [f32; 8] = [0.0; 8];
-static mut TELE_STOP : [bool; 8] = [false; 8];
+pub static mut TELE_X : [f32; 8] = [0.0; 8];
+pub static mut TELE_Y : [f32; 8] = [0.0; 8];
+pub static mut TELE_STOP : [bool; 8] = [false; 8];
+pub static mut CAN_TELEPORT : [bool; 8] = [true; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
@@ -89,23 +90,15 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 TELEPORT[get_player_number(boma)] += 1;
             }
 
-            if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
-                if TELEPORT[get_player_number(boma)] == 0
-                || (TELEPORT[get_player_number(boma)] >= 8 && IS_FUNNY[get_player_number(boma)]) {
-                    TELEPORT[get_player_number(boma)] = 4;
-                }
+            if StatusModule::situation_kind(boma) == *SITUATION_KIND_CLIFF
+            || StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
+            || IS_FUNNY[get_player_number(boma)] {
+                CAN_TELEPORT[get_player_number(boma)] = true;
             }
-            else if StatusModule::situation_kind(boma) == *SITUATION_KIND_CLIFF {
-                TELEPORT[get_player_number(boma)] = 4;
+
+            if TELE_STOP[get_player_number(boma)] {
+                KineticModule::unable_energy_all(boma);
             }
-            else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-            && ((TELEPORT[get_player_number(boma)] == 4 || TELEPORT[get_player_number(boma)] >= 8)
-            || StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_N) {
-                TELEPORT[get_player_number(boma)] = 0;
-            }
-        }
-        if TELE_STOP[get_player_number(boma)] {
-            KineticModule::unable_energy_all(boma);
         }
     }
 }
@@ -158,7 +151,6 @@ unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterC
 //                 .as_ptr(),
 //         );
 //         if fighter.global_table[PREV_STATUS_KIND] as usize == *FIGHTER_STATUS_KIND_CATCHED_AIR_FALL_GANON {
-
 //         }
 //     }
 //     L2CValue::I32(0)
@@ -525,24 +517,26 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 30.0);
     if macros::is_excute(fighter) {
         TELE_STOP[get_player_number(boma)] = true;
+        CAN_TELEPORT[get_player_number(boma)] = false;
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(boma, false);
     }
     sv_animcmd::frame(lua_state, 34.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] += 1;
+        TELEPORT[get_player_number(boma)] = 1;
     }
     sv_animcmd::frame(lua_state, 40.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] += 1;
+        TELEPORT[get_player_number(boma)] = 2;
     }
     sv_animcmd::frame(lua_state, 50.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] += 1;
+        TELEPORT[get_player_number(boma)] = 3;
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
+        TELEPORT[get_player_number(boma)] = 0;
         TELE_STOP[get_player_number(boma)] = false;
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
@@ -577,13 +571,13 @@ unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 34.0);
     if macros::is_excute(fighter) {
-        VisibilityModule::set_model_visible(boma, false);
+        VisibilityModule::set_whole(boma, false);
         ItemModule::set_have_item_visibility(boma, false, 0);
         ItemModule::set_attach_item_visibility(boma, false, 0);
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
-        VisibilityModule::set_model_visible(boma, true);
+        VisibilityModule::set_whole(boma, true);
         ItemModule::set_have_item_visibility(boma, true, 0);
         ItemModule::set_attach_item_visibility(boma, true, 0);
     }

@@ -6,7 +6,7 @@ use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use smashline::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use crate::{IS_FUNNY, IS_FGC, COUNTER_HIT_STATE, COUNTER_HIT_HELPER};
+use crate::{IS_FUNNY, IS_FGC, COUNTER_HIT_STATE, COUNTER_HIT_HELPER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::*;
@@ -40,25 +40,33 @@ fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
         && IS_FUNNY[get_player_number(boma)] {
             IS_FUNNY[get_player_number(boma)] = false;
         }
-        if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
-        && IS_FGC[get_player_number(boma)] == false {
-            IS_FGC[get_player_number(boma)] = true;
-            println!("FGC is on!");
-        }
-        if IS_FGC[get_player_number(boma)] {
-            if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR) {
-                WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR);
-                println!("Disabled Badge Reflector!");
-            }
-        }
-        if !ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_BADGE))
-        && IS_FGC[get_player_number(boma)] {
-            IS_FGC[get_player_number(boma)] = false;
-            println!("FGC is off!");
-        }
+        // if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
+        // && IS_FGC[get_player_number(boma)] == false {
+        //     IS_FGC[get_player_number(boma)] = true;
+        //     println!("FGC is on!");
+        // }
+        // if IS_FGC[get_player_number(boma)] {
+        //     if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR) {
+        //         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR);
+        //         println!("Disabled Badge Reflector!");
+        //     }
+        // }
+        // if !ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_BADGE))
+        // && IS_FGC[get_player_number(boma)] {
+        //     IS_FGC[get_player_number(boma)] = false;
+        //     println!("FGC is off!");
+        // }
         if IS_FUNNY[get_player_number(boma)] {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
                 StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
+            }
+        }
+
+        if get_player_number(boma) < 8 {
+            if OPPONENT_BOMA[get_player_number(boma)] != 0 {
+                if StatusModule::status_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *FIGHTER_STATUS_KIND_DEAD {
+                    OPPONENT_BOMA[get_player_number(boma)] = 0;
+                }
             }
         }
 

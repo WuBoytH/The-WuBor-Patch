@@ -53,6 +53,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 SPECIAL_LW_TIMER[get_player_number(boma)] = -1;
                 SECRET_SENSATION[get_player_number(boma)] = false;
                 SEC_SEN_STATE[get_player_number(boma)] = false;
+                OPPONENT_BOMA[get_player_number(boma)] = 0;
             }
 
             // EX Focus Attack Check
@@ -192,9 +193,11 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                             }
                             SEC_SEN_DIREC[get_player_number(boma)] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F;
                         }
-                        if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() <= 12.0
-                        && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
-                            VERT_EXTRA[get_player_number(boma)] = 0.0;
+                        if OPPONENT_BOMA[get_player_number(boma)] != 0 {
+                            if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() <= 12.0
+                            && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
+                                VERT_EXTRA[get_player_number(boma)] = 0.0;
+                            }
                         }
                         else {
                             StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
@@ -209,9 +212,11 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         CAMERA[get_player_number(boma)] = true;
                     }
                     if SEC_SEN_TIMER[get_player_number(boma)] >= 0.0 {
-                        if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() <= 12.0
-                        && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
-                            GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                        if OPPONENT_BOMA[get_player_number(boma)] != 0 {
+                            if (RYU_Y[get_player_number(boma)] - OPPONENT_Y[get_player_number(boma)]).abs() <= 12.0
+                            && StatusModule::situation_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
+                                GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                            }
                         }
                         if StatusModule::status_kind(boma) != SEC_SEN_DIREC[get_player_number(boma)] {
                             KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
@@ -241,6 +246,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         SlowModule::clear_whole(boma);
                         JostleModule::set_status(boma, true);
                         SEC_SEN_TIMER[get_player_number(boma)] = -0.6;
+                        OPPONENT_BOMA[get_player_number(boma)] = 0;
                     }
                 }
                 else if MotionModule::motion_kind(boma) == hash40("appeal_hi_r")

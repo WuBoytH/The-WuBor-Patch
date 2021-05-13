@@ -18,7 +18,7 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
         
         if MotionModule::motion_kind(boma) == hash40("throw_b") {
             if MotionModule::frame(boma) >= 10.0 && MotionModule::frame(boma) < 57.0 {
-                macros::SET_SPEED_EX(fighter, 1.56 * PostureModule::lr(boma) * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                macros::SET_SPEED_EX(fighter, 1.1 * PostureModule::lr(boma) * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
             if MotionModule::frame(boma) == 57.0 {
                 macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

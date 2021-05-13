@@ -27,13 +27,7 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
             if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
-                let facing_dirn = PostureModule::lr(boma);
-                if facing_dirn > 0.0 {
-                    macros::SET_SPEED_EX(fighter, &SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                }
-                else{
-                    macros::SET_SPEED_EX(fighter, -&SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                }
+                macros::SET_SPEED_EX(fighter, PostureModule::lr(boma) * &SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }
     }

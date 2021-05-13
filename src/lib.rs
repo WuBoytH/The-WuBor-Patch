@@ -110,7 +110,7 @@ use crate::ken::{QUICK_STEP_STATE, V_SHIFT, V_GAUGE, V_TRIGGER, SHORYUREPPA, TAT
 mod metaknight;
 mod ganon;
 use crate::ganon::CAN_TELEPORT;
-// mod wario;
+mod wario;
 
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
 // pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
@@ -842,7 +842,7 @@ pub fn main() {
     ken::install();
     metaknight::install();
     ganon::install();
-    // wario::install();
+    wario::install();
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);

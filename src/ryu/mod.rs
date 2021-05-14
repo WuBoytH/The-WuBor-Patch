@@ -24,7 +24,7 @@ static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
 static mut SEC_SEN_TIMER : [f32; 8] = [-0.6; 8];
 static mut OPPONENT_DIRECTION : [f32; 8] = [12.0; 8];
 static mut VERT_EXTRA : [f32; 8] = [12.0; 8];
-static mut SEC_SEN_STATE : [bool; 8] = [false; 8];
+pub static mut SEC_SEN_STATE : [bool; 8] = [false; 8];
 static mut SEC_SEN_DIREC : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
@@ -114,7 +114,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         _TIME_COUNTER[get_player_number(boma)] -= 1;
                     }
                     if _TIME_COUNTER[get_player_number(boma)] > 4 {
-                        macros::FLASH(fighter, 0, 0.55, 1, 1.75);
+                        macros::FLASH(fighter, 0, 0.55, 1, 1.0);
                         _TIME_COUNTER[get_player_number(boma)] -= 1;
                     }
                 }
@@ -128,7 +128,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         _TIME_COUNTER[get_player_number(boma)] -= 1;
                     }
                     else {
-                        macros::FLASH(fighter, 1, 1, 0.0, 1.5);
+                        macros::FLASH(fighter, 1, 1, 0.0, 0.75);
                         _TIME_COUNTER[get_player_number(boma)] -= 1;
                     }
                 }

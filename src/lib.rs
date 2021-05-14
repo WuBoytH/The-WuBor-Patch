@@ -87,7 +87,7 @@ mod snake;
 mod palutena;
 mod master;
 mod ryu;
-use crate::ryu::{SECRET_SENSATION, OPPONENT_X, OPPONENT_Y, CAMERA};
+use crate::ryu::{SECRET_SENSATION, SEC_SEN_STATE, OPPONENT_X, OPPONENT_Y, CAMERA};
 mod toonlink;
 mod zelda;
 mod buddy;
@@ -192,11 +192,7 @@ move_type_again: bool) -> u64 {
         }
     }
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
-        if (MotionModule::motion_kind(defender_boma) == hash40("appeal_hi_r")
-        || MotionModule::motion_kind(defender_boma) == hash40("appeal_hi_l"))
-        && MotionModule::frame(defender_boma) <= 30.0
-        && MotionModule::frame(defender_boma) >= 4.0
-        && IS_FUNNY[d_entry_id] {
+        if SEC_SEN_STATE[d_entry_id] {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
                 OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
@@ -520,6 +516,14 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             TATSULOOPS[get_player_number(module_accessor)][2] = 3;
             return 3;
         }
+        if param_hash == smash::hash40("fall_frame") {
+            if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
+                return 15;
+            }
+            else {
+                return ret;
+            }
+        }
         else {
             return ret;
         }
@@ -620,9 +624,9 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
         }
     }
     if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 { // Shoryureppa
-        if param_hash == smash::hash40("stick_x_speed_mul_max") {
+        if param_hash == smash::hash40("speed_x_mul_s") {
             if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
-                return 1.0;
+                return 0.15;
             }
             else {
                 return ret;
@@ -631,7 +635,7 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
         if param_hash == smash::hash40("speed_y_mul_s") {
             if V_TRIGGER[get_player_number(module_accessor)]
             && SHORYUREPPA[get_player_number(module_accessor)] <= 1 {
-                return 0.25;
+                return 0.1;
             }
             else {
                 return ret;

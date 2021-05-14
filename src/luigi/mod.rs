@@ -1,13 +1,13 @@
 use smash::phx::Hash40;
-use smash::hash40;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
+// use smash::hash40;
+use smash::lua2cpp::{L2CAgentBase/*, L2CFighterCommon*/};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 // use crate::IS_FUNNY;
-use crate::commonfuncs::*;
+// use crate::commonfuncs::*;
 
 // static mut UP_B_CANCEL : [bool; 8] = [false; 8];
 

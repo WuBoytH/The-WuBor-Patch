@@ -6,7 +6,7 @@ use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use smashline::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use crate::{IS_FUNNY, IS_FGC, COUNTER_HIT_STATE, COUNTER_HIT_HELPER, OPPONENT_BOMA};
+use crate::{IS_FUNNY, /*IS_FGC,*/ COUNTER_HIT_STATE, COUNTER_HIT_HELPER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::*;

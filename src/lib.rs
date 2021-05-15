@@ -111,6 +111,7 @@ mod metaknight;
 mod ganon;
 use crate::ganon::CAN_TELEPORT;
 mod wario;
+use crate::wario::FINISH_SIGN;
 mod luigi;
 
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
@@ -395,7 +396,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
 
     // Global Param Edits
     
-    if param_hash == smash::hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
+    if param_hash == hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
         if IS_FUNNY[get_player_number(module_accessor)] {
             return 5;
         }
@@ -404,7 +405,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
         }
     }
 
-    if param_hash == smash::hash40("invalid_capture_frame") { // The Chain Grab Param
+    if param_hash == hash40("invalid_capture_frame") { // The Chain Grab Param
         if IS_FUNNY[get_player_number(module_accessor)] {
             return 1;
         }
@@ -418,7 +419,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
         let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        if param_hash == smash::hash40("life") {
+        if param_hash == hash40("life") {
             if IS_SPIRIT_BOMB[o_entry_id] {
                 return 6000;
             }
@@ -433,7 +434,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT { // Phazon Orb Life
         let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        if param_hash == smash::hash40("life") {
+        if param_hash == hash40("life") {
             if IS_FUNNY[o_entry_id] {
                 return 6000;
             }
@@ -447,10 +448,10 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
     if fighter_kind == *FIGHTER_KIND_RIDLEY && get_player_number(module_accessor) < 8 { // Funny Ridley
         if FUNNY_RIDLEY[get_player_number(module_accessor)] {
-            if param_hash == smash::hash40("max_charge_frame") {// Funny Plasma Breath
+            if param_hash == hash40("max_charge_frame") {// Funny Plasma Breath
                 return 300;
             }
-            if param_hash == smash::hash40("max_fire_num") {
+            if param_hash == hash40("max_fire_num") {
                 return 40;
             }
             else {
@@ -463,7 +464,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
     if fighter_kind == *FIGHTER_KIND_DAISY && get_player_number(module_accessor) < 8 {
         if IS_FUNNY[get_player_number(module_accessor)] {
-            if param_hash == smash::hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
+            if param_hash == hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
                 return 300;
             }
             else {
@@ -476,7 +477,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
     if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(module_accessor) < 8 { // Limit Shenanigans
         if IS_FUNNY[get_player_number(module_accessor)] {
-            if param_hash == smash::hash40("limit_break_clear_frame") {
+            if param_hash == hash40("limit_break_clear_frame") {
                 return 6000;
             }
             else {
@@ -501,22 +502,22 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
         }
     }
     if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
-        if param_hash == smash::hash40("loop_num_w")
-        || param_hash == smash::hash40("air_loop_num_w") {
+        if param_hash == hash40("loop_num_w")
+        || param_hash == hash40("air_loop_num_w") {
             TATSULOOPS[get_player_number(module_accessor)][0] = 1;
             return 1;
         }
-        if param_hash == smash::hash40("loop_num_m")
-        || param_hash == smash::hash40("air_loop_num_m") {
+        if param_hash == hash40("loop_num_m")
+        || param_hash == hash40("air_loop_num_m") {
             TATSULOOPS[get_player_number(module_accessor)][1] = 2;
             return 2;
         }
-        if param_hash == smash::hash40("loop_num_s")
-        || param_hash == smash::hash40("air_loop_num_s") {
+        if param_hash == hash40("loop_num_s")
+        || param_hash == hash40("air_loop_num_s") {
             TATSULOOPS[get_player_number(module_accessor)][2] = 3;
             return 3;
         }
-        if param_hash == smash::hash40("fall_frame") {
+        if param_hash == hash40("fall_frame") {
             if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
                 return 15;
             }
@@ -546,7 +547,7 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
         let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        if param_hash == smash::hash40("max_speed") {
+        if param_hash == hash40("max_speed") {
             if IS_SPIRIT_BOMB[o_entry_id] {
                 return 0.4;
             }
@@ -560,16 +561,16 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     }
     if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(module_accessor) < 8 { // Limit Shenanigans
         if IS_FUNNY[get_player_number(module_accessor)] {
-            if param_hash == smash::hash40("lw2_spd_x_mul") {
+            if param_hash == hash40("lw2_spd_x_mul") {
                 return 0.6;
             }
-            if param_hash == smash::hash40("lw2_spd_y_mul") {
+            if param_hash == hash40("lw2_spd_y_mul") {
                 return 0.6;
             }
-            if param_hash == smash::hash40("lw2_accel_y") {
+            if param_hash == hash40("lw2_accel_y") {
                 return 0.06;
             }
-            if param_hash == smash::hash40("lw2_speed_max_y") {
+            if param_hash == hash40("lw2_speed_max_y") {
                 return 1.2;
             }
             else {
@@ -582,37 +583,37 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
     }
     if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(module_accessor) < 8 {
         if IS_FUNNY[get_player_number(module_accessor)] {
-            if param_hash == smash::hash40("active_time_jump") {
+            if param_hash == hash40("active_time_jump") {
                 return 100.0;
             }
-            if param_hash == smash::hash40("active_time_speed") {
+            if param_hash == hash40("active_time_speed") {
                 return 100.0;
             }
-            if param_hash == smash::hash40("active_time_shield") {
+            if param_hash == hash40("active_time_shield") {
                 return 100.0;
             }
-            if param_hash == smash::hash40("active_time_buster") {
+            if param_hash == hash40("active_time_buster") {
                 return 100.0;
             }
-            if param_hash == smash::hash40("active_time_smash") {
+            if param_hash == hash40("active_time_smash") {
                 return 100.0;
             }
-            if param_hash == smash::hash40("unavailable_time_jump") {
+            if param_hash == hash40("unavailable_time_jump") {
                 return 0.1;
             }
-            if param_hash == smash::hash40("unavailable_time_speed") {
+            if param_hash == hash40("unavailable_time_speed") {
                 return 0.1;
             }
-            if param_hash == smash::hash40("unavailable_time_shield") {
+            if param_hash == hash40("unavailable_time_shield") {
                 return 0.1;
             }
-            if param_hash == smash::hash40("unavailable_time_buster") {
+            if param_hash == hash40("unavailable_time_buster") {
                 return 0.1;
             }
-            if param_hash == smash::hash40("unavailable_time_smash") {
+            if param_hash == hash40("unavailable_time_smash") {
                 return 0.1;
             }
-            if param_hash == smash::hash40("shield_endure_mul") {
+            if param_hash == hash40("shield_endure_mul") {
                 return 100.0;
             }
             else {
@@ -624,7 +625,7 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
         }
     }
     if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 { // Shoryureppa
-        if param_hash == smash::hash40("speed_x_mul_s") {
+        if param_hash == hash40("speed_x_mul_s") {
             if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
                 return 0.15;
             }
@@ -632,10 +633,39 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
                 return ret;
             }
         }
-        if param_hash == smash::hash40("speed_y_mul_s") {
+        if param_hash == hash40("speed_y_mul_s") {
             if V_TRIGGER[get_player_number(module_accessor)]
             && SHORYUREPPA[get_player_number(module_accessor)] <= 1 {
                 return 0.1;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_WARIO && get_player_number(module_accessor) < 8 {
+        if param_hash == hash40("gass_middle_time") {
+            if FINISH_SIGN[get_player_number(module_accessor)] > 0 {
+                return 1.0;
+            }
+            else {
+                return ret;
+            }
+        }
+        if param_hash == hash40("gass_large_time") {
+            if FINISH_SIGN[get_player_number(module_accessor)] > 8 {
+                return 1.0;
+            }
+            else {
+                return ret;
+            }
+        }
+        if param_hash == hash40("gass_max_time") {
+            if FINISH_SIGN[get_player_number(module_accessor)] >= 15 {
+                return 1.0;
             }
             else {
                 return ret;
@@ -668,12 +698,12 @@ pub fn music_function_replace(
         MUSIC_PARAM2 = param_2;
         NUS3AUDIO_HASH = nus3audio_hash;
     }
-    // if nus3bank_hash != smash::hash40("bgm_crs2_03_shuuten")
-    // && nus3audio_hash != smash::hash40("bgm_crs2_03_shuuten") {
+    // if nus3bank_hash != hash40("bgm_crs2_03_shuuten")
+    // && nus3audio_hash != hash40("bgm_crs2_03_shuuten") {
     //     for x in 0..7 {
     //         if DRAGON_INSTALL[x] {
-    //             nus3bank_hash = smash::hash40("bgm_crs2_03_shuuten");
-    //             nus3audio_hash = smash::hash40("bgm_crs2_03_shuuten");
+    //             nus3bank_hash = hash40("bgm_crs2_03_shuuten");
+    //             nus3audio_hash = hash40("bgm_crs2_03_shuuten");
     //             break;
     //         }
     //     }

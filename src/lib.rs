@@ -113,6 +113,7 @@ use crate::ganon::CAN_TELEPORT;
 mod wario;
 use crate::wario::FINISH_SIGN;
 mod luigi;
+mod reflet;
 
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
 // pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
@@ -879,6 +880,7 @@ pub fn main() {
     ganon::install();
     wario::install();
     luigi::install();
+    reflet::install();
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);

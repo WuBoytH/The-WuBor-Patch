@@ -15,10 +15,11 @@ fn reflet_frame(fighter: &mut L2CFighterCommon) {
         let lua_state = fighter.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
 
-        if MotionModule::motion_kind(boma) != hash40("special_lw_start")
-        && MotionModule::motion_kind(boma) != hash40("special_air_lw_start")
+        if MotionModule::motion_kind(boma) == hash40("game_specialhi")
+        && MotionModule::motion_kind(boma) == hash40("game_specialairhi")
         && MotionModule::frame(boma) >= 12.0 && MotionModule::frame(boma) < 46.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
+            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+            || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
                 WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
             }
         }

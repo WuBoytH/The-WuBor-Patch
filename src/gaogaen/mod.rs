@@ -449,6 +449,7 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        DamageModule::set_damage_mul(boma, 0.5);
         REVENGE[get_player_number(boma)] = 1;
     }
     sv_animcmd::frame(lua_state, 9.0);
@@ -458,6 +459,7 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 28.0);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        DamageModule::set_damage_mul(boma, 1.0);
         PostureModule::reverse_lr(boma);
         StatusModule::change_status_request_from_script(boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
     }
@@ -475,22 +477,24 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if REVENGE[get_player_number(boma)] > 0 {
-        let mut dmg = 4.0 + 0.164 * DamageModule::damage(boma, 0);
+        let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(boma, 0));
         let mut hitlag = 1.0 + 0.5 * DamageModule::damage(boma, 0);
-        if DamageModule::damage(boma, 0) > 196.0 {
+        if dmg > 36.0 {
             dmg = 36.0;
             hitlag = 2.0;
         }
         if REVENGE[get_player_number(boma)] == 2 {
             HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_XLU), 0);
         }
+        if macros::is_excute(fighter) {
+            JostleModule::set_status(boma, false);
+            WorkModule::set_int(boma, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
+            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
+        }
         sv_animcmd::frame(lua_state, 9.0);
         if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), dmg, 45, 40, 0, 40, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), dmg, 45, 69, 0, 80, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
             macros::CHECK_FINISH_CAMERA(fighter, 0, 0);
-            let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-            lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-            lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
         }
         sv_animcmd::frame(lua_state, 14.0);
         if macros::is_excute(fighter) {

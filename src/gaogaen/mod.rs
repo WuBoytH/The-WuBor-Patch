@@ -479,7 +479,7 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     if REVENGE[get_player_number(boma)] > 0 {
         let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(boma, 0));
         let mut hitlag = 1.0 + 0.5 * DamageModule::damage(boma, 0);
-        if dmg > 36.0 {
+        if dmg > 36.0 && IS_FUNNY[get_player_number(boma)] == false {
             dmg = 36.0;
             hitlag = 2.0;
         }

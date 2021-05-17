@@ -60,7 +60,7 @@ macro_rules! c_str {
 mod commonfuncs;
 use crate::commonfuncs::*;
 // mod vars;
-mod statuses;
+// mod statuses;
 mod globals;
 mod custom;
 mod daisy;
@@ -533,6 +533,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
     if fighter_kind == FIGHTER_KIND_SHULK {
         if param_hash == hash40("circle_menu_release_after_interval_frame") {
+            let status_kind = StatusModule::status_kind(module_accessor);
             if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_AIR
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY
@@ -763,21 +764,63 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
     original!()(boma, param_2)
 }
 
-// #[skyline::hook(replace = StatusModule::init_settings)]
-// pub unsafe fn hook_init_settings(
-//     boma: *mut smash::app::BattleObjectModuleAccessor, 
-//     arg2: smash::app::SituationKind, 
-//     arg3: i32, 
-//     arg4: u32, 
-//     arg5: smash::app::GroundCliffCheckKind, 
-//     arg6: bool, 
-//     arg7: i32, 
-//     arg8: i32, 
-//     arg9: i32, 
-//     arg10: i32
-// ) -> u64 {
-//     let mut deref = *boma;
-//     return original!()(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10);
+// #[skyline::hook(replace = smash::app::lua_bind::StatusModule::init_settings)]
+// pub unsafe fn init_settings_replace(
+// module_accessor: &mut app::BattleObjectModuleAccessor,
+// situation_kind: i32,
+// arg3: i32, 
+// arg4: u64,
+// ground_cliff_check_kind: u64,
+// arg6: bool,
+// arg7: i32,
+// arg8: i32,
+// arg9: i32,
+// arg10: i32) -> u64 {
+// 	let status_kind = StatusModule::status_kind(module_accessor);
+// 	let fighter_kind = app::utility::get_kind(module_accessor);
+//     let ret = original!()(module_accessor, situation_kind, arg3, arg4, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+
+// 	if status_kind != *FIGHTER_STATUS_KIND_APPEAL
+// 	&& status_kind != *FIGHTER_STATUS_KIND_DASH
+// 	&& status_kind != *FIGHTER_STATUS_KIND_TURN
+// 	&& status_kind != *FIGHTER_STATUS_KIND_TURN_DASH
+// 	&& status_kind != *FIGHTER_STATUS_KIND_LANDING
+// 	&& status_kind != *FIGHTER_STATUS_KIND_LANDING_LIGHT
+// 	&& status_kind != *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
+// 	&& status_kind != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+// 	&& status_kind != *FIGHTER_STATUS_KIND_ESCAPE_AIR
+// 	&& fighter_kind != *FIGHTER_KIND_BUDDY {
+// 		return ret;
+// 	}
+// 	else if status_kind == *FIGHTER_STATUS_KIND_APPEAL
+// 	|| status_kind == *FIGHTER_STATUS_KIND_DASH
+// 	|| status_kind == *FIGHTER_STATUS_KIND_TURN
+// 	|| status_kind == *FIGHTER_STATUS_KIND_TURN_DASH
+// 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING
+// 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING_LIGHT
+// 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
+// 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
+// 		return original!()(module_accessor, situation_kind, arg3, 1 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 	}
+// 	else if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+// 		if ControlModule::get_stick_y(module_accessor) >= 0.66 {
+// 			return original!()(module_accessor, situation_kind, arg3, 1 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 		}
+// 		else {
+// 			return ret;
+// 		}
+// 	}
+// 	else if fighter_kind == FIGHTER_KIND_BUDDY {
+// 		if (status_kind == *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S) && situation_kind == SITUATION_KIND_GROUND {
+// 			return original!()(module_accessor, situation_kind, arg3, 7 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 		}
+// 		else {
+// 			return ret;
+// 		}
+// 	}  
+// 	else {
+// 		return ret;
+// 	}
 // }
 
 #[skyline::hook(replace = sv_animcmd::PLAY_SE)]
@@ -868,7 +911,7 @@ pub fn main() {
             MUSIC_OFFSET = offset;
         }
     }
-    statuses::install();
+    // statuses::install();
     custom::install();
     daisy::install();
     samusd::install();
@@ -921,4 +964,5 @@ pub fn main() {
     skyline::install_hook!(get_param_int_replace);
     skyline::install_hook!(music_function_replace);
     skyline::install_hook!(correct_hook);
+    // skyline::install_hook!(init_settings_replace);
 }

@@ -16,9 +16,9 @@ pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vecto
 
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
-fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
+fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
-        let lua_state = _fighter.lua_state_agent;
+        let lua_state = fighter.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
         let status_kind = StatusModule::status_kind(boma);
 
@@ -68,6 +68,13 @@ fn global_fighter_frame(_fighter : &mut L2CFighterCommon) {
                     OPPONENT_BOMA[get_player_number(boma)] = 0;
                 }
             }
+        }
+        
+        if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD
+        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD_ON)
+        && ControlModule::get_stick_y(boma) < -0.5
+        && GroundModule::is_passable_ground(boma) {
+            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
         }
 
         if status_kind == *FIGHTER_STATUS_KIND_ATTACK

@@ -309,6 +309,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
                 return ret;
             }
         }
+        
         else {
             return ret;
         }
@@ -521,6 +522,34 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
         if param_hash == hash40("fall_frame") {
             if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
                 return 15;
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == FIGHTER_KIND_SHULK {
+        if param_hash == hash40("circle_menu_release_after_interval_frame") {
+            if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_AIR
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
+            || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL 
+            || status_kind == *FIGHTER_STATUS_KIND_TREAD_DAMAGE) && WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) == false {
+                let hitstun = (WorkModule::get_int(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME) - WorkModule::get_int(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME)) as f32;
+                if WorkModule::get_float(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) + hitstun < 40.0 {
+                    return WorkModule::get_float(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) as i32;
+                }
+                else {
+                    return (40.0 - hitstun) as i32;
+                }
             }
             else {
                 return ret;

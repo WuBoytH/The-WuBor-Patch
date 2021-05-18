@@ -77,13 +77,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                         StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
                     }
                     else {
-                        if IS_FUNNY[get_player_number(boma)]
-                        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
-                            GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
-                        }
-                        else {
-                            GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                        }
+                        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     }
                 }
                 PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});

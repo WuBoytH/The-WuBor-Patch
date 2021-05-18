@@ -68,7 +68,7 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_speciallwattack", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "dolly", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -98,18 +98,6 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
             KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: -1.0, z: 0.0 });
         }
     }
-    sv_animcmd::frame(lua_state, 2.0);
-    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-        if macros::is_excute(fighter) {
-            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
-        }
-    }
-    else {
-        if macros::is_excute(fighter) {
-            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: -0.5, z: 0.0 });
-        }
-    }
-    sv_animcmd::frame(lua_state, 3.0);
     if WorkModule::is_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
             if macros::is_excute(fighter) {
@@ -130,6 +118,17 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
     else {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 50, 70, 0, 80, 7.0, 0.0, 8.0, 5.5, Some(0.0), Some(4.0), Some(3.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_PUNCH);
+        }
+    }
+    sv_animcmd::frame(lua_state, 2.0);
+    if WorkModule::get_int(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(boma, &Vector3f { x: 0.0, y: -0.5, z: 0.0 });
         }
     }
     sv_animcmd::frame(lua_state, 4.0);

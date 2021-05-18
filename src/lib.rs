@@ -230,7 +230,7 @@ move_type_again: bool) -> u64 {
     }
     else if defender_fighter_kind == *FIGHTER_KIND_KEN {
         if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
-        && MotionModule::frame(defender_boma) <= 5.625 {
+        && MotionModule::frame(defender_boma) <= 8.75 {
             V_SHIFT[d_entry_id] = true;
         }
     }

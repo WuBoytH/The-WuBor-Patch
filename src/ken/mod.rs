@@ -381,7 +381,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                     macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x15a0de794a), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
                 }
-                if MotionModule::frame(boma) == 6.25 {
+                if MotionModule::frame(boma) == 9.375 {
                     if V_SHIFT[get_player_number(boma)] {
                         V_GAUGE[get_player_number(boma)] += 150;
                         SlowModule::set_whole(boma, 5, 0);
@@ -520,7 +520,7 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
         // HitModule::set_whole(boma, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
-    sv_animcmd::frame(lua_state, 5.625);
+    sv_animcmd::frame(lua_state, 8.75);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         DamageModule::set_damage_lock(boma, false);

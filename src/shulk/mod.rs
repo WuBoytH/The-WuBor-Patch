@@ -6,7 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
-use crate::custom::{TIME_SLOW_EFFECT_VECTOR, /*TIME_SLOW_EFFECT_HASH*/};
 use crate::{IS_FUNNY, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, _TIME_COUNTER};
 use crate::commonfuncs::*;
 
@@ -95,7 +94,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 
             if StatusModule::status_kind(boma) == *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT {
                 macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
-                EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("head"), &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, 1.0, &TIME_SLOW_EFFECT_VECTOR, &TIME_SLOW_EFFECT_VECTOR, false, 0, 0, 0);
+                EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("head"), &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, 1.0, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, false, 0, 0, 0);
             }
             if _TIME_COUNTER[get_player_number(boma)] > 0 {
                 _TIME_COUNTER[get_player_number(boma)] = _TIME_COUNTER[get_player_number(boma)] - 1;

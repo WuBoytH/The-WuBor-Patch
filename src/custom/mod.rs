@@ -11,9 +11,6 @@ use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::*;
 
-pub static mut TIME_SLOW_EFFECT_VECTOR: smash::phx::Vector3f = smash::phx::Vector3f {x:-3.0,y:3.0,z:0.0};
-//pub const TIME_SLOW_EFFECT_HASH: u64 = smash::hash40("sys_sp_flash");
-
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {

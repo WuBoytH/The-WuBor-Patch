@@ -1,6 +1,7 @@
 use smash::phx::Hash40;
 use smash::hash40;
 use smash::phx::Vector2f;
+use smash::phx::Vector3f;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::lib::lua_const::*;
@@ -8,7 +9,7 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
-// use crate::IS_FUNNY;
+use crate::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
 
@@ -26,10 +27,25 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
                     UP_B_CANCEL[get_player_number(boma)] = true;
                 }
             }
-            if MotionModule::motion_kind(boma) == hash40("special_hi_drop")
-            && UP_B_CANCEL[get_player_number(boma)] {
-                // fighter.change_status(FIGHTER_STATUS_KIND_FALL_AERIAL.into(), false.into());
+            if (MotionModule::motion_kind(boma) == hash40("special_hi_drop")
+            && UP_B_CANCEL[get_player_number(boma)])
+            || IS_FUNNY[get_player_number(boma)] {
                 CancelModule::enable_cancel(boma);
+            }
+
+            if (StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S
+            || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
+            || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END)
+            && (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_S
+            && StatusModule::status_kind(boma) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
+            && StatusModule::status_kind(boma) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
+                EffectModule::kill_kind(boma, Hash40::new("sys_thunder"), false, true);
+                EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
+            }
+
+            if StatusModule::status_kind(boma) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END
+            && MotionModule::frame(boma) > 12.0 {
+                EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
             }
         }
     }
@@ -60,14 +76,14 @@ unsafe fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn luigi_specialschargemainstop(fighter: &mut L2CFighterCommon) {
     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let charge = WorkModule::get_float(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
-    let charge_frame = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_frame"));
-    if charge_frame <= charge {
-        if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING) == false {
-            EffectModule::req_common(module_accessor, Hash40::new("charge_max"), 0.0);
-            WorkModule::on_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
-        }
-    }
+    // let charge = WorkModule::get_float(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+    // let charge_frame = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_frame"));
+    // if charge_frame <= charge {
+    //     if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING) == false {
+    //         EffectModule::req_common(module_accessor, Hash40::new("charge_max"), 0.0);
+    //         WorkModule::on_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
+    //     }
+    // }
     let charge_speed = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_speed_mul"));
     WorkModule::add_float(module_accessor, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
 }
@@ -106,9 +122,8 @@ unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon)
     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) == false {
         let charge = WorkModule::get_float(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
-        let charge_max = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_frame_max"));
-        let mut change = false;
-        if charge_max <= charge {
+        let charge_frame = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_frame"));
+        if charge_frame <= charge {
             fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
             return L2CValue::I32(0);
         }
@@ -119,9 +134,6 @@ unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon)
         //     }
         // }
         if StatusModule::is_situation_changed(module_accessor) {
-            change = true;
-        }
-        if change {
             luigi_specialschargemain2(fighter);
         }
         return L2CValue::I32(0);
@@ -243,6 +255,16 @@ unsafe fn luigi_uair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "luigi", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        // _TIME_COUNTER[get_player_number(boma)] = 12;
+        EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
+        EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
+    }
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.4);
     sv_animcmd::frame(lua_state, 10.0);
@@ -255,7 +277,7 @@ unsafe fn luigi_sspecialhold(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 180, 100, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.0, 180, 50, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.0, 180, 80, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
 }
 
@@ -269,23 +291,43 @@ unsafe fn luigi_sspecialairhold(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "luigi", scripts = ["effect_specialshold", "effect_specialairshold"], category = ACMD_EFFECT, low_priority )]
+unsafe fn luigi_sspecialholdeff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        EffectModule::req_follow(boma, Hash40::new_raw(0x1133c5d194), smash::phx::Hash40::new("top"), &Vector3f { x: 0.0, y: 10.0, z: 11.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 1.0, true, 0, 0, 0, 0, 0, true, true);
+    }
+    for _ in 0..9 {
+        if macros::is_excute(fighter) {
+            macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
+        }
+        sv_animcmd::wait(lua_state, 10.0);
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
+        EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 180, 100, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.0, 180, 50, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.0, 180, 80, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        EffectModule::req_follow(boma, Hash40::new_raw(0x1133c5d194), smash::phx::Hash40::new("top"), &Vector3f { x: 0.0, y: 10.0, z: 11.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 1.0, true, 0, 0, 0, 0, 0, true, true);
     }
     sv_animcmd::frame(lua_state, 12.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 270, 45, 20, 0, 5.0, 0.0, 13.0, 9.0, Some(0.0), Some(6.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         AttackModule::set_add_reaction_frame(boma, 0, 21.0, false);
+        EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
     }
     sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
+        EffectModule::kill_kind(boma, Hash40::new("sys_thunder"), false, true);
         AttackModule::clear_all(boma);
     }
 }
@@ -295,17 +337,21 @@ unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
+        EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 180, 60, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 0.0, 180, 40, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        EffectModule::req_follow(boma, Hash40::new_raw(0x1133c5d194), smash::phx::Hash40::new("top"), &Vector3f { x: 0.0, y: 10.0, z: 11.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 1.0, true, 0, 0, 0, 0, 0, true, true);
     }
     sv_animcmd::frame(lua_state, 12.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 15, 40, 0, 60, 5.0, 0.0, 13.0, 9.0, Some(0.0), Some(6.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
     }
     sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
+        EffectModule::kill_kind(boma, Hash40::new("sys_thunder"), false, true);
         AttackModule::clear_all(boma);
     }
 }
@@ -445,6 +491,7 @@ pub fn install() {
         luigi_uair,
         luigi_sspecialstart,
         luigi_sspecialhold,
+        luigi_sspecialholdeff,
         luigi_sspecialairhold,
         luigi_sspecialend,
         luigi_sspecialairend,

@@ -7,7 +7,7 @@ use smash_script::*;
 use smashline::*;
 use smash::phx::Hash40;
 use smash::phx::Vector3f;
-use crate::{IS_FUNNY, _TIME_COUNTER};
+use crate::{IS_FUNNY, _TIME_COUNTER, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
 use crate::commonfuncs::*;
 
 pub static mut LUCINA_SPECIAL_AIR_S : [bool; 8] = [false; 8];
@@ -20,8 +20,6 @@ static mut SP_GAUGE : [f32; 8] = [0.0; 8];
 static mut SPENT_SP : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
-static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
-static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 
 pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {

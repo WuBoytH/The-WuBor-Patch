@@ -8,7 +8,7 @@ use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
-use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA};
+use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
 use crate::commonfuncs::*;
 
 pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
@@ -28,8 +28,6 @@ static mut V_FLASH : [bool; 8] = [false; 8];
 static mut FLASH_MAX : [i32; 8] = [0; 8];
 static mut FLASH_COUNTER : [i32; 8] = [0; 8];
 static mut DMG_RATIO : [f32; 8] = [0.8; 8];
-static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
-static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
 pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
 static mut CURR_LOOPS : [i32; 8] = [0; 8];

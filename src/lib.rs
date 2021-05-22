@@ -21,6 +21,8 @@ pub static mut IS_FGC : [bool; 8] = [false; 8];
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
 pub static mut COUNTER_HIT_HELPER : [f32; 8] = [0.0; 8];
 pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
+pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
+pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 static mut INT_OFFSET : usize = 0x4E19D0;
 // static mut INT64_OFFSET : usize = 0x4E19F0;
 static mut FLOAT_OFFSET : usize = 0x4E19D0;
@@ -248,6 +250,21 @@ move_type_again: bool) -> u64 {
             // }
             StatusModule::change_status_request_from_script(defender_boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
             PostureModule::reverse_lr(defender_boma);
+        }
+    }
+    else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
+        if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+        || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
+            OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
+        }
+        else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
+            let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+            if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+            }
+        }
+        else {
+            OPPONENT_BOMA[d_entry_id] = 0;
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)

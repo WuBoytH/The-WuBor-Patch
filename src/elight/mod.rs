@@ -383,70 +383,70 @@ unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 2.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    sv_animcmd::frame(lua_state, 4.0);
-    macros::FT_MOTION_RATE(fighter, 0.5);
-    sv_animcmd::frame(lua_state, 8.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    sv_animcmd::frame(lua_state, 9.0);
-    if ArticleModule::is_exist(boma, 17456) {
-        if macros::is_excute(fighter) {
-            ArticleModule::add_motion_partial(boma, 17456, 60344, Hash40::new_raw(0x07439e926b), 5.0, 5.0, false, false, 0.0, false, true, false);
-        }
-    }
-    if MotionModule::is_changing(boma) == true {
-        if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, 60348);
-        }
-    }
-    sv_animcmd::frame(lua_state, 11.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 4.0, 0.0, 5.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.5, 0.0, 8.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 6.0, 0, 0, 0, 0, 2.5, 0.0, 11.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-    }
-    sv_animcmd::frame(lua_state, 12.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 4.0, -1.0, 5.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.5, -2.0, 8.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 6.0, 0, 0, 0, 0, 2.5, -3.0, 11.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.0, -1.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-    }
-    sv_animcmd::frame(lua_state, 16.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    sv_animcmd::frame(lua_state, 17.0);
-    macros::FT_MOTION_RATE(fighter, 0.5);
-    sv_animcmd::frame(lua_state, 19.0);
-    if ArticleModule::is_exist(boma, 17456) {
-        if macros::is_excute(fighter) {
-            ArticleModule::add_motion_partial(boma, 17456, 60344, Hash40::new_raw(0x08183db0f4), 5.0, 5.0, false, false, 0.0, false, true, false);
-        }
-    }
-    if MotionModule::is_changing(boma) == true {
-        if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, 60348);
-        }
-    }
-    if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    sv_animcmd::frame(lua_state, 43.0);
-    macros::FT_MOTION_RATE(fighter, 0.8);
-    sv_animcmd::frame(lua_state, 75.0);
-    if macros::is_excute(fighter) {
-        smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
-}
+// #[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+// unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
+//     let lua_state = fighter.lua_state_agent;
+//     let boma = sv_system::battle_object_module_accessor(lua_state);
+//     sv_animcmd::frame(lua_state, 2.0);
+//     if macros::is_excute(fighter) {
+//         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+//     }
+//     sv_animcmd::frame(lua_state, 4.0);
+//     macros::FT_MOTION_RATE(fighter, 0.5);
+//     sv_animcmd::frame(lua_state, 8.0);
+//     macros::FT_MOTION_RATE(fighter, 1.0);
+//     sv_animcmd::frame(lua_state, 9.0);
+//     if ArticleModule::is_exist(boma, 17456) {
+//         if macros::is_excute(fighter) {
+//             ArticleModule::add_motion_partial(boma, 17456, 60344, Hash40::new_raw(0x07439e926b), 5.0, 5.0, false, false, 0.0, false, true, false);
+//         }
+//     }
+//     if MotionModule::is_changing(boma) == true {
+//         if macros::is_excute(fighter) {
+//             WorkModule::on_flag(boma, 60348);
+//         }
+//     }
+//     sv_animcmd::frame(lua_state, 11.0);
+//     if macros::is_excute(fighter) {
+//         macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 4.0, 0.0, 5.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//         macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.5, 0.0, 8.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//         macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 6.0, 0, 0, 0, 0, 2.5, 0.0, 11.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//         macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//     }
+//     sv_animcmd::frame(lua_state, 12.0);
+//     if macros::is_excute(fighter) {
+//         macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 4.0, -1.0, 5.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//         macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.5, -2.0, 8.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//         macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 6.0, 0, 0, 0, 0, 2.5, -3.0, 11.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//         macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 6.0, 81, 60, 0, 90, 3.0, -1.0, 0.0, 0.0, None, None, None, 0.75, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+//     }
+//     sv_animcmd::frame(lua_state, 16.0);
+//     if macros::is_excute(fighter) {
+//         AttackModule::clear_all(boma);
+//     }
+//     sv_animcmd::frame(lua_state, 17.0);
+//     macros::FT_MOTION_RATE(fighter, 0.5);
+//     sv_animcmd::frame(lua_state, 19.0);
+//     if ArticleModule::is_exist(boma, 17456) {
+//         if macros::is_excute(fighter) {
+//             ArticleModule::add_motion_partial(boma, 17456, 60344, Hash40::new_raw(0x08183db0f4), 5.0, 5.0, false, false, 0.0, false, true, false);
+//         }
+//     }
+//     if MotionModule::is_changing(boma) == true {
+//         if macros::is_excute(fighter) {
+//             WorkModule::on_flag(boma, 60348);
+//         }
+//     }
+//     if macros::is_excute(fighter) {
+//         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+//     }
+//     sv_animcmd::frame(lua_state, 43.0);
+//     macros::FT_MOTION_RATE(fighter, 0.8);
+//     sv_animcmd::frame(lua_state, 75.0);
+//     if macros::is_excute(fighter) {
+//         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+//     }
+// }
 
 #[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
@@ -707,7 +707,7 @@ pub fn install() {
         elight_dtilt,
         elight_fair,
         elight_bair,
-        elight_uair,
+        // elight_uair,
         elight_dair,
         elight_nspecial
     );

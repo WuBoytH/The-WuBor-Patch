@@ -356,6 +356,18 @@ unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "luigi", scripts = ["sound_specialsend", "sound_specialairsend"], category = ACMD_SOUND, low_priority )]
+unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_luigi_special_s03_s"));
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_luigi_004"));
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -495,6 +507,7 @@ pub fn install() {
         luigi_sspecialairhold,
         luigi_sspecialend,
         luigi_sspecialairend,
+        luigi_sspecialendsnd,
         luigi_uspecial,
         luigi_uspecialair,
         luigi_dspecial

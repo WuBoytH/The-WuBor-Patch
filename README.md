@@ -5,8 +5,8 @@ A mod for Super Smash Bros. Ultimate that brings character balance and mechanics
 ## Dependencies
 
 * [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab the latest version!
-* [lua_replace](https://github.com/blu-dev/lua-replace)
-* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin)
+* [smashline_hook](https://github.com/blu-dev/smashline_hook/releases/latest)
+* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/master)
 
 ### How to Install
 

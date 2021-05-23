@@ -683,7 +683,7 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
         }
         if param_hash == hash40("speed_y_mul_s") {
             if V_TRIGGER[get_player_number(module_accessor)]
-            && SHORYUREPPA[get_player_number(module_accessor)] <= 1 {
+            && SHORYUREPPA[get_player_number(module_accessor)] == 1 {
                 return 0.1;
             }
             else {

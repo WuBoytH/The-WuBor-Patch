@@ -255,7 +255,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             }
 
             if CAN_ONE_MORE[get_player_number(boma)] == true {
-                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW) && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
                     if spent_meter(boma, true) {
                         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                     }
@@ -289,7 +289,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     CAN_ONE_MORE[get_player_number(boma)] = true;
                 }
                 if CAN_ONE_MORE[get_player_number(boma)] == true {
-                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)  && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
                         if spent_meter(boma, true) {
                             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                         }

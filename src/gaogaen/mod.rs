@@ -445,6 +445,10 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::set_int(boma, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
+        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
+    }
     macros::FT_MOTION_RATE(fighter, 0.25);
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
@@ -488,13 +492,10 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
         }
         if macros::is_excute(fighter) {
             JostleModule::set_status(boma, false);
-            WorkModule::set_int(boma, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
         }
         sv_animcmd::frame(lua_state, 9.0);
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), dmg, 45, 69, 0, 80, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-            macros::CHECK_FINISH_CAMERA(fighter, 0, 0);
         }
         sv_animcmd::frame(lua_state, 14.0);
         if macros::is_excute(fighter) {

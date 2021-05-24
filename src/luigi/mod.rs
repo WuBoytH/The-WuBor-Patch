@@ -68,8 +68,11 @@ unsafe fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StopModule::is_stop(module_accessor) {
         luigi_specialschargemainstop(fighter);
     }
+    println!("Set sub status 2");
     fighter.global_table[SUB_STATUS2] = L2CValue::Ptr(luigi_specialschargemainstop as *const () as _);
+    println!("main 2!");
     luigi_specialschargemain2(fighter);
+    println!("main sub!");
     fighter.sub_shift_status_main(L2CValue::Ptr(luigi_specialschargemainsub as *const () as _))
 }
 
@@ -78,7 +81,6 @@ unsafe extern "C" fn luigi_specialschargemainstop(fighter: &mut L2CFighterCommon
     let charge_speed = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_speed_mul"));
     WorkModule::add_float(module_accessor, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
 }
-
 unsafe extern "C" fn luigi_specialschargemain2(fighter: &mut L2CFighterCommon) {
     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
@@ -107,7 +109,6 @@ unsafe extern "C" fn luigi_specialschargemain2(fighter: &mut L2CFighterCommon) {
     }
     return
 }
-
 unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon) -> L2CValue {
     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) == false {
@@ -365,11 +366,12 @@ unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
 unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_luigi_special_s03_s"));
+        macros::PLAY_SE(fighter, Hash40::new("se_luigi_special_s04"));
     }
     sv_animcmd::frame(lua_state, 12.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_luigi_004"));
+        macros::PLAY_SE(fighter, Hash40::new("se_luigi_special_s03_s"));
     }
 }
 

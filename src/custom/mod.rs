@@ -25,6 +25,9 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 .as_bytes()
                 .as_ptr(),
         );
+
+        // The code to set up Funny Mode.
+
         if ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_USAGIHAT))
         && IS_FUNNY[get_player_number(boma)] == false {
             IS_FUNNY[get_player_number(boma)] = true;
@@ -32,11 +35,11 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
             WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
         }
-        // if !ItemModule::is_attach_item(boma, app::ItemKind(*ITEM_KIND_USAGIHAT))
         if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD || sv_information::is_ready_go() == false)
         && IS_FUNNY[get_player_number(boma)] {
             IS_FUNNY[get_player_number(boma)] = false;
         }
+
         // if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
         // && IS_FGC[get_player_number(boma)] == false {
         //     IS_FGC[get_player_number(boma)] = true;
@@ -53,11 +56,16 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         //     IS_FGC[get_player_number(boma)] = false;
         //     println!("FGC is off!");
         // }
+
+        // Remove Special Fall in Funny Mode
+
         if IS_FUNNY[get_player_number(boma)] {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
                 StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
             }
         }
+
+        // Remove an OPPONENT_BOMA if the opponent is dead.
 
         if get_player_number(boma) < 8 {
             if OPPONENT_BOMA[get_player_number(boma)] != 0 {
@@ -67,12 +75,16 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             }
         }
         
+        // Platform Dropping while in shield.
+
         if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD
         || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_GUARD_ON)
-        && ControlModule::get_stick_y(boma) < -0.5
+        && ControlModule::get_stick_y(boma) < -0.8
         && GroundModule::is_passable_ground(boma) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
         }
+
+        // The Counter-Hit Code (only applicable to Jabs, Tilts, and Smash Attacks)
 
         if status_kind == *FIGHTER_STATUS_KIND_ATTACK
         || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S3

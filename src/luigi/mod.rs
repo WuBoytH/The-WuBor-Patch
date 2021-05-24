@@ -13,6 +13,12 @@ use crate::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
 
+// The Bor Description
+// We had to do our civic duty and rework Luigi. This was not easy by any means.
+
+// Air speed: 0.77 > 0.8
+// Luigi also no longer has a tether aerial (zair).
+
 static mut UP_B_CANCEL : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_LUIGI )]
@@ -20,17 +26,16 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
         if get_player_number(boma) < 8 {
-            // if MotionModule::motion_kind(boma) == hash40("special_hi")
-            // ||MotionModule::motion_kind(boma) == hash40("special_air_hi") {
-            //     if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
-            //         UP_B_CANCEL[get_player_number(boma)] = true;
-            //     }
-            // }
-            if (MotionModule::motion_kind(boma) == hash40("special_hi_drop")
-            && UP_B_CANCEL[get_player_number(boma)])
-            || IS_FUNNY[get_player_number(boma)] {
+
+            // What allows Luigi to cancel Super Jump Punch if he lands the sweetspot.
+
+            if MotionModule::motion_kind(boma) == hash40("special_hi_drop")
+            && (UP_B_CANCEL[get_player_number(boma)]
+            || IS_FUNNY[get_player_number(boma)]) {
                 CancelModule::enable_cancel(boma);
             }
+
+            // Kills any residual effects from Thunderhand if Luigi is no longer in the move.
 
             if (StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S
             || StatusModule::prev_status_kind(boma, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
@@ -41,14 +46,11 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
                 EffectModule::kill_kind(boma, Hash40::new("sys_thunder"), false, true);
                 EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
             }
-
-            if StatusModule::status_kind(boma) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END
-            && MotionModule::frame(boma) > 12.0 {
-                EffectModule::kill_kind(boma, Hash40::new_raw(0x1133c5d194), false, true);
-            }
         }
     }
 }
+
+// Rewritten Side-B Charging status script for Thunderhand
 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -65,24 +67,13 @@ unsafe fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StopModule::is_stop(module_accessor) {
         luigi_specialschargemainstop(fighter);
     }
-    println!("Set sub status 2");
     fighter.global_table[SUB_STATUS2] = L2CValue::Ptr(luigi_specialschargemainstop as *const () as _);
-    println!("main 2!");
     luigi_specialschargemain2(fighter);
-    println!("main sub!");
     fighter.sub_shift_status_main(L2CValue::Ptr(luigi_specialschargemainsub as *const () as _))
 }
 
 unsafe extern "C" fn luigi_specialschargemainstop(fighter: &mut L2CFighterCommon) {
     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    // let charge = WorkModule::get_float(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
-    // let charge_frame = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_frame"));
-    // if charge_frame <= charge {
-    //     if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING) == false {
-    //         EffectModule::req_common(module_accessor, Hash40::new("charge_max"), 0.0);
-    //         WorkModule::on_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
-    //     }
-    // }
     let charge_speed = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_speed_mul"));
     WorkModule::add_float(module_accessor, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
 }
@@ -90,7 +81,6 @@ unsafe extern "C" fn luigi_specialschargemainstop(fighter: &mut L2CFighterCommon
 unsafe extern "C" fn luigi_specialschargemain2(fighter: &mut L2CFighterCommon) {
     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-    // if fighter.global_table[SITUATION_KIND].get_i32() == fighter.sub_end_added_lines().get_i32() {
         KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
@@ -126,12 +116,6 @@ unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon)
             fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
             return L2CValue::I32(0);
         }
-        // if StatusModule::is_changing(module_accessor) {
-        //     if fighter.global_table[PREV_STATUS_KIND].get_i32() != WorkModule::get_int(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS)
-        //     && fighter.global_table[STATUS_KIND].get_i32() != WorkModule::get_int(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS) {
-        //         change = true;
-        //     }
-        // }
         if StatusModule::is_situation_changed(module_accessor) {
             luigi_specialschargemain2(fighter);
         }
@@ -142,6 +126,8 @@ unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon)
         return L2CValue::I32(0);
     }
 }
+
+// Up Tilt has increased Base Knockback and a lowered Cancel Frame (28 -> 26)
 
 #[acmd_script( agent = "luigi", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_utilt(fighter: &mut L2CAgentBase) {
@@ -159,6 +145,8 @@ unsafe fn luigi_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Down Tilt can no longer trip opponents, and its Cancel Frame was raised (14 -> 16)
+
 #[acmd_script( agent = "luigi", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -174,6 +162,8 @@ unsafe fn luigi_dtilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Neutral Air's sourspot has a new angle (80 > 361)
 
 #[acmd_script( agent = "luigi", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_nair(fighter: &mut L2CAgentBase) {
@@ -200,6 +190,8 @@ unsafe fn luigi_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Forward Air has a new angle (361 -> 55)
+
 #[acmd_script( agent = "luigi", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -222,6 +214,8 @@ unsafe fn luigi_fair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Up Air's sweetspot does less damage (11 -> 10) and has a different angle (55 > 68)
 
 #[acmd_script( agent = "luigi", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uair(fighter: &mut L2CAgentBase) {
@@ -251,12 +245,15 @@ unsafe fn luigi_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Thunderhand Scripts
+
+// Generate Electric effects
+
 #[acmd_script( agent = "luigi", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        // _TIME_COUNTER[get_player_number(boma)] = 12;
         EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
         EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
         EffectModule::req_follow(boma, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, &Vector3f { x: 0.0, y: 0.0, z: 0.0 }, 0.6, true, 0, 0, 0, 0, 0, true, true);
@@ -270,9 +267,10 @@ unsafe fn luigi_sspecialstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
+// Generates the windboxes and Green Missile charging effect.
+
 #[acmd_script( agent = "luigi", script = "game_specialshold", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialhold(fighter: &mut L2CAgentBase) {
-    // let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 180, 100, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -282,7 +280,6 @@ unsafe fn luigi_sspecialhold(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "luigi", script = "game_specialairshold", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialairhold(fighter: &mut L2CAgentBase) {
-    // let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 0.0, 180, 60, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -305,6 +302,8 @@ unsafe fn luigi_sspecialholdeff(fighter: &mut L2CAgentBase) {
         sv_animcmd::wait(lua_state, 10.0);
     }
 }
+
+// The ending part of Thunderhand
 
 #[acmd_script( agent = "luigi", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
@@ -355,6 +354,8 @@ unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Thunderrrrrrrr
+
 #[acmd_script( agent = "luigi", scripts = ["sound_specialsend", "sound_specialairsend"], category = ACMD_SOUND, low_priority )]
 unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -366,6 +367,10 @@ unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("vc_luigi_004"));
     }
 }
+
+// Super Jump Punch's sweetspot has a new angle (88 -> 42) and less Knockback Growth (88 -> 60).
+// If you hit the sweetspot, you can jump-cancel at the peak of his jump.
+// The grounded version deals less damage (25 -> 20)...
 
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
@@ -408,6 +413,9 @@ unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+// ... while the aerial version also deals less damage (20 -> 18).
+// The aerial version also now does the critical zoom-in on the sweetspot.
+
 #[acmd_script( agent = "luigi", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -448,6 +456,13 @@ unsafe fn luigi_uspecialair(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Luigi Cyclone is now the same between the grounded and aerial versions.
+// Cyclone's invincibility has been unified (Frames 3 -> 8),
+// and the Knockback Growth has been severely reduced (130 -> 75).
+// You can also gain more height from mashing the move,
+// and the horizontal distance in the air is now the same as on the ground.
+// The aerial version can also cancel much earlier (Frame 90 -> 75).
 
 #[acmd_script( agent = "luigi", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
 unsafe fn luigi_dspecial(fighter: &mut L2CAgentBase) {

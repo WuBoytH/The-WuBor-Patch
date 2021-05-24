@@ -22,6 +22,8 @@ static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
 static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 
+// Generates a special effect when you use an EX move.
+
 pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
@@ -33,6 +35,8 @@ pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
         EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
     }
 }
+
+// Handles meter usage, and determines if you can spend it or not.
 
 pub unsafe fn spent_meter(module_accessor: &mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
@@ -55,6 +59,8 @@ pub unsafe fn spent_meter(module_accessor: &mut BattleObjectModuleAccessor, onem
     return spent;
 }
 
+// Sets Yu's upper-body invincibility, only used for Big Gamble.
+
 pub unsafe fn upper_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_status_joint(boma, Hash40::new("waist"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
@@ -76,6 +82,8 @@ pub unsafe fn upper_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: boo
     }
 }
 
+// Sets Yu's full invulnerability, only used for Big Gamble.
+
 pub unsafe fn full_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
@@ -84,6 +92,8 @@ pub unsafe fn full_invuln(boma: &mut BattleObjectModuleAccessor, is_invuln: bool
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
+
+// Checks if you are playing as Shadow Yu.
 
 pub unsafe fn shadow_id(module_accessor: &mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
@@ -163,7 +173,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
 
-            // Meter Controller (Move to hook?)
+            // Meter Controller
 
             DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
             if DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)]
@@ -255,7 +265,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             }
 
             if CAN_ONE_MORE[get_player_number(boma)] == true {
-                if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
+                if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                     if spent_meter(boma, true) {
                         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                     }
@@ -289,7 +299,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     CAN_ONE_MORE[get_player_number(boma)] = true;
                 }
                 if CAN_ONE_MORE[get_player_number(boma)] == true {
-                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
+                    if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                         if spent_meter(boma, true) {
                             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                         }

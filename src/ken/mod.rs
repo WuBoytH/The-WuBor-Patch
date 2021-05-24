@@ -625,7 +625,7 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     }
 }
 
-// V Trigger Properties
+// The rest of the scripts below have their properties changed to Fire when V-Trigger is activated
 
 #[acmd_script( agent = "ken", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
@@ -848,6 +848,8 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Special Hi Command also allows you to use Shoryureppa in V-Trigger
 
 #[acmd_script( agent = "ken", script = "game_specialhicommand", category = ACMD_GAME, low_priority )]
 unsafe fn ken_uspecialcommand(fighter: &mut L2CAgentBase) {

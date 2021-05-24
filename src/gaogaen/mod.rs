@@ -10,6 +10,14 @@ use smash::phx::Vector3f;
 use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
 use crate::commonfuncs::*;
 
+// The Bor Description
+// Our goal was to make Incineroar more fun, without being broken. You be the judge of that...
+
+//Weight: 110	Walk speed: 0.62 > 1
+// Air accel (additional): 0.06 > 0.075		Run speed: 1.465
+// Dash speed: 1.76 > 1.86			Air speed: 0.88 > 1.05
+// Landing lag: Forward and back air have had their landing lag swapped. Neutral air’s landing lag now matches up air’s at 8 frames.
+
 pub static mut REVENGE : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
@@ -37,6 +45,128 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         }
     }
 }
+
+// Forward Smash has lowered Knockback Growth (89 -> 79)
+
+#[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 2.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    sv_animcmd::frame(lua_state, 16.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 16.0, 47, 71, 0, 65, 2.2, 1.4, 0.6, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("legr"), 20.0, 47, 71, 0, 65, 5.4, 8.4, 1.8, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::frame(lua_state, 19.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 24.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
+    }
+}
+
+// Up Smash has lowered Base Knockback (89 -> 79)
+
+#[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    sv_animcmd::frame(lua_state, 13.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 17.0, 88, 61, 0, 79, 4.4, 4.4, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 17.0, 88, 61, 0, 79, 3.6, 3.4, 0.0, -0.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+    }
+    sv_animcmd::frame(lua_state, 19.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+    }
+    sv_animcmd::frame(lua_state, 24.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
+    }
+}
+
+// Neutral Air's sweetspot has lowered damage (13 -> 11)
+
+#[acmd_script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 4.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 361, 70, 0, 50, 9.2, 0.0, 6.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::frame(lua_state, 8.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 361, 70, 0, 15, 7.2, 0.0, 6.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
+    }
+    sv_animcmd::frame(lua_state, 26.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+    sv_animcmd::frame(lua_state, 36.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+// Down Air has lowered Base Knockback (30 -> 20)
+
+#[acmd_script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 2.0);
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(boma, false);
+    }
+    sv_animcmd::frame(lua_state, 4.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    sv_animcmd::frame(lua_state, 16.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 270, 100, 0, 20, 5.4, 0.0, 0.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 67, 0, 50, 5.8, 0.0, 8.2, 0.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::frame(lua_state, 20.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 70, 0, 50, 5.4, 0.0, 0.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 361, 70, 0, 50, 5.8, 0.0, 8.2, 0.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::frame(lua_state, 22.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+        JostleModule::set_status(boma, true);
+    }
+    sv_animcmd::frame(lua_state, 45.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+// Darkest Lariat damage reduced to 10...
+// ... but its angles have also been changed (45 -> 75)...
+// ... and you can Jump Cancel the grounded version on hit.
+// You can also move faster horizontally during the spinning.
 
 #[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
@@ -348,6 +478,8 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Lowered damage (12 -> 9) and Base Knockback (128 -> 96) on Alolan Whip's shoulder follow-up due to new Jump Cancel Darkest Lariat.
+
 #[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -440,41 +572,12 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 1.0);
-    if macros::is_excute(fighter) {
-        WorkModule::set_int(boma, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
-    }
-    macros::FT_MOTION_RATE(fighter, 0.25);
-    sv_animcmd::frame(lua_state, 8.0);
-    if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
-        DamageModule::set_damage_mul(boma, 0.5);
-        REVENGE[get_player_number(boma)] = 1;
-    }
-    sv_animcmd::frame(lua_state, 9.0);
-    macros::FT_MOTION_RATE(fighter, 1.5);
-    sv_animcmd::frame(lua_state, 21.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    sv_animcmd::frame(lua_state, 28.0);
-    if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        DamageModule::set_damage_mul(boma, 1.0);
-        PostureModule::reverse_lr(boma);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
-    }
-    macros::FT_MOTION_RATE(fighter, 0.5);
-    sv_animcmd::frame(lua_state, 32.0);
-    if macros::is_excute(fighter) {
-        smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
-    sv_animcmd::frame(lua_state, 46.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-}
+// The lariat on Alolan Whip is reused in Revenge, so this script is divided into two parts.
+// The first part is used for Revenge while the second part is used for Alolan Whip.
+// The Alolan Whip version has lowered damage (20 -> 16).
+// The Revenge version's damage grows as Incineroar's current % increases, from 8 damage to 36 damage.
+// The move reaches 36 damage when Incineroar reaches 196%.
+// In Funny Mode, the 36 damage cap is removed.
 
 #[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
@@ -548,114 +651,7 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 4.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    sv_animcmd::frame(lua_state, 5.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 361, 70, 0, 50, 9.2, 0.0, 6.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
-    }
-    sv_animcmd::frame(lua_state, 8.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 361, 70, 0, 15, 7.2, 0.0, 6.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_BODY);
-    }
-    sv_animcmd::frame(lua_state, 26.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    sv_animcmd::frame(lua_state, 36.0);
-    if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-}
-
-#[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 2.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    sv_animcmd::frame(lua_state, 16.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 16.0, 47, 71, 0, 65, 2.2, 1.4, 0.6, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("legr"), 20.0, 47, 71, 0, 65, 5.4, 8.4, 1.8, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    sv_animcmd::frame(lua_state, 19.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-    sv_animcmd::frame(lua_state, 24.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
-    }
-}
-
-#[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 6.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
-    sv_animcmd::frame(lua_state, 13.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 17.0, 88, 61, 0, 79, 4.4, 4.4, -0.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("shoulderr"), 17.0, 88, 61, 0, 79, 3.6, 3.4, 0.0, -0.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
-    }
-    sv_animcmd::frame(lua_state, 19.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
-    }
-    sv_animcmd::frame(lua_state, 24.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
-    }
-}
-
-#[acmd_script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 2.0);
-    if macros::is_excute(fighter) {
-        JostleModule::set_status(boma, false);
-    }
-    sv_animcmd::frame(lua_state, 4.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    sv_animcmd::frame(lua_state, 16.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 270, 100, 0, 20, 5.4, 0.0, 0.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 14.0, 361, 67, 0, 50, 5.8, 0.0, 8.2, 0.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    sv_animcmd::frame(lua_state, 20.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 70, 0, 50, 5.4, 0.0, 0.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 361, 70, 0, 50, 5.8, 0.0, 8.2, 0.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    sv_animcmd::frame(lua_state, 22.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
-    }
-    sv_animcmd::frame(lua_state, 45.0);
-    if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-}
+// Cross Chop's spike hitbox has lowered Fixed Knockback (175 -> 120).
 
 #[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
@@ -729,22 +725,63 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Old Revenge repurposed into... new Revenge...
+// Instead of storing power for a future move, Revenge now works like Scintilla.
+// He takes half of the damage of the move he gets hit by...
+// ... but if he gets hit, he will immediately follow-up with a Lariat.
+
+#[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
+unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::set_int(boma, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
+        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
+    }
+    macros::FT_MOTION_RATE(fighter, 0.25);
+    sv_animcmd::frame(lua_state, 8.0);
+    if macros::is_excute(fighter) {
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        DamageModule::set_damage_mul(boma, 0.5);
+        REVENGE[get_player_number(boma)] = 1;
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    macros::FT_MOTION_RATE(fighter, 1.5);
+    sv_animcmd::frame(lua_state, 21.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    sv_animcmd::frame(lua_state, 28.0);
+    if macros::is_excute(fighter) {
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        DamageModule::set_damage_mul(boma, 1.0);
+        PostureModule::reverse_lr(boma);
+        StatusModule::change_status_request_from_script(boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
+    }
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    sv_animcmd::frame(lua_state, 32.0);
+    if macros::is_excute(fighter) {
+        smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+    sv_animcmd::frame(lua_state, 46.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
 pub fn install() {
     smashline::install_agent_frames!(
         gaogaen_frame
     );
     smashline::install_acmd_scripts!(
+        gaogaen_fsmash,
+        gaogaen_usmash,
+        gaogaen_nair,
+        gaogaen_dair,
         gaogaen_nspecial,
         gaogaen_nspecialair,
         gaogaen_sspecialshoulder,
         gaogaen_sspecialshoulderair,
-        gaogaen_dspecial,
         gaogaen_sspeciallariat,
-        gaogaen_nair,
-        gaogaen_fsmash,
-        gaogaen_usmash,
-        gaogaen_dair,
         gaogaen_upbfall,
-        gaogaen_upbfall2
+        gaogaen_upbfall2,
+        gaogaen_dspecial
     );
 }

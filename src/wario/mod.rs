@@ -9,7 +9,20 @@ use smashline::*;
 use crate::commonfuncs::*;
 // use crate::IS_FUNNY;
 
+// ---------------------------------------------------------
+// This one was all on WuBoy. Wario’s playstyle should stay relatively the same,
+// and while it’s easier to charge Waft, the disgusting reward for hitting Waft is decreased.
+// Wario camping to charge Waft should also be easier to recognize,
+// though whether or not it’s as easy to punish remains a different story…
+// ---------------------------------------------------------
+
 pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
+
+// Wario now gains levels of Waft by using Down-Taunt, inspired by Super Saiyan 4 Gogeta’s Finish Sign from FighterZ.
+// - 0 Taunts: Uncharged Waft
+// - 1 - 8 Taunts: Weak Waft
+// - 9 - 14 Taunts: Medium Waft
+// - 15 Taunts: Max Charge Waft
 
 #[fighter_frame( agent = FIGHTER_KIND_WARIO )]
 fn wario_frame(fighter: &mut L2CFighterCommon) {
@@ -30,6 +43,8 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
                 FINISH_SIGN[get_player_number(boma)] = 0;
             }
 
+            // Wario can now move during his back throw.
+
             if (MotionModule::motion_kind(boma) == hash40("appeal_lw_l")
             || MotionModule::motion_kind(boma) == hash40("appeal_lw_r"))
             && MotionModule::frame(boma) == 10.0 {
@@ -47,6 +62,8 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
         }
     }
 }
+
+// Since Wario can manually charge Waft now, his wafts (barring the uncharged one) have been nerfed slightly overall.
 
 #[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
 unsafe fn wario_dspecials(fighter: &mut L2CAgentBase) {

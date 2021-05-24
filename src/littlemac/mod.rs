@@ -6,6 +6,13 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
+// ---------------------------------------------------------
+// These are all the buffs Little Mac will be receiving; quality of life changes
+// that allow Little Mac to execute his current gameplan, while keeping his recovery and landing weaknesses intact.
+// ---------------------------------------------------------
+
+// Neutral Air has increased Base Knockback (5 -> 25) and has a lower angle (80 -> 60) on the glove hitboxes.
+
 #[acmd_script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -34,6 +41,8 @@ unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Forward Air's "sweetspot" has increased Base Knockback (25 -> 55), damage (5 -> 8), and range.
+
 #[acmd_script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -58,6 +67,8 @@ unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Back Air's "sweetspot" has increased Base Knockback (25 -> 60), damage (6 -> 9), and range.
+
 #[acmd_script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -81,6 +92,8 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Up Air's "sweetspot" has increased Base Knockback (25 -> 60), damage (5 -> 10), and range.
 
 #[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
@@ -110,6 +123,8 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Down Air has increased Base Knockback (0 -> 40).
+
 #[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -133,6 +148,8 @@ unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Also, Straight Lunge can be cancelled in the middle of the move.
 
 pub fn install() {
     smashline::install_acmd_scripts!(

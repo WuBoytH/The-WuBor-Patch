@@ -8,6 +8,15 @@ use smashline::*;
 use crate::commonfuncs::*;
 use crate::IS_FUNNY;
 
+// ---------------------------------------------------------
+// Heck, even giving DK a nerfed form of the barrel is a massive buff. But we nerfed his weight and
+// didn’t compensate, and his recovery and disadvantage are still garbage, so...
+// ---------------------------------------------------------
+
+// Weight: 127 > 120
+
+// Forward Tilt has 2 more damage on all versions and has an earlier cancel frame (34 -> 31).
+
 #[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -82,6 +91,8 @@ unsafe fn donkey_ftiltlw(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Up Tilt has 1 more damage on all hitboxes and has an earlier cancel frame (39 -> 35).
+
 #[acmd_script( agent = "donkey", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -99,6 +110,8 @@ unsafe fn donkey_utilt(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
+
+// Down Tilt has a new angle (361 -> 70) and more Knockback Growth (80 -> 120).
 
 #[acmd_script( agent = "donkey", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
@@ -122,6 +135,8 @@ unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
+
+// Instead of Headbutt, Donkey Kong now spawns a Barrel item.
 
 #[acmd_script( agent = "donkey", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
 unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {

@@ -6,6 +6,12 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
+// ---------------------------------------------------------
+// It’s very late at night and I have no idea what to say about Byleth except we buffed them. Enjoy.
+// ---------------------------------------------------------
+
+// Forward Tilt's hitbox was enlarged to match the sword.
+
 #[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -35,6 +41,8 @@ unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 4.0);
     }
 }
+
+// Down Tilt has faster startup (13 -> 10).
 
 #[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
@@ -85,6 +93,10 @@ unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Not a script edit, but Forward Smash can be acted out of sooner (64 -> 58).
+
+// Forward Air's sweetspot sound effects have been upgraded.
+
 #[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -123,6 +135,8 @@ unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Areadbhar has faster startup (20 > 17 on the ground, 21 -> 18 in the air).
+
 #[acmd_script( agent = "master", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
 unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -132,6 +146,8 @@ unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
+
+// Aymr's super armor starts earlier (34 -> 12).
 
 #[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {

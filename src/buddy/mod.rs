@@ -6,6 +6,14 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
+// ---------------------------------------------------------
+// Egg spitting losers no longer. These buffs to the duo’s disappointing aerial toolkit,
+// fake DK dash attack, and RNG-dependent item spawn should clean up their toolkit in all the right places.
+// ---------------------------------------------------------
+
+// Neutral Air's hitboxes have better range.
+// It has a faster autocancel frame (39 -> 37) and is actionable earlier (47 -> 44).
+
 #[acmd_script( agent = "buddy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -38,6 +46,8 @@ unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Up Air has more damage (1.6/5.8 -> 1.8/6.7). The second hitbox also has more range.
 
 #[acmd_script( agent = "buddy", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
@@ -74,6 +84,11 @@ unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Also, Dash Attack has an earlier cancel frame (38 -> 31).
+// Back Air has less landing lag (18 -> 14).
+// Down Air has less landing lag (27 -> 20).
+// Rear Egg has an earlier cancel frame (45 -> 33).
 
 pub fn install() {
     smashline::install_acmd_scripts!(

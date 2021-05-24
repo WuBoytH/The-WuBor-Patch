@@ -13,6 +13,11 @@ use crate::globals::*;
 use crate::commonfuncs::*;
 // use skyline::nn::ro::LookupSymbol;
 
+// ---------------------------------------------------------
+// Say hello to the new, ‘deceptive’ King of Evil. Ganondorf’s still got pretty slow movement,
+// but his flashy new conversions and strong close-range teleport give him lots more flexibility.
+// ---------------------------------------------------------
+
 pub static mut TELEPORT : [i32; 8] = [0; 8];
 pub static mut TELE_X : [f32; 8] = [0.0; 8];
 pub static mut TELE_Y : [f32; 8] = [0.0; 8];

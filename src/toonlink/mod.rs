@@ -11,6 +11,10 @@ use smashline::*;
 use crate::IS_FUNNY;
 use crate::commonfuncs::*;
 
+// ---------------------------------------------------------
+// How else can we even buff this character? Maybe down throw could combo better? That’s it…
+// ---------------------------------------------------------
+
 static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
@@ -25,6 +29,8 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
             SPIN_SPEED[get_player_number(boma)] = 1.56;
         }
 
+        // Toon Link can now move during his grounded Spin Attack.
+
         if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
             if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
                 macros::SET_SPEED_EX(fighter, PostureModule::lr(boma) * &SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -32,6 +38,9 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
         }
     }
 }
+
+// Dash Attack's sourspot now deals the same damage as the sweetspot.
+// Also, it has a different angle (67 -> 82) and less Base Knockback (70 -> 55).
 
 #[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {

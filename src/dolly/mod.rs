@@ -10,6 +10,14 @@ use smashline::*;
 // use crate::globals::*;
 // use crate::commonfuncs::*;
 
+// ---------------------------------------------------------
+// It was a long time coming, but now Terry’s got his buffs.
+// ---------------------------------------------------------
+
+// Power Wave can now be feinted by holding Shield during the move's startup.
+// If you feint the move, the rest of the Power Wave animation is sped-up.
+// Kirby gets this as well.
+
 #[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -67,6 +75,9 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
         }
     }
 }
+
+// Power Dunk's falling hitbox comes out two frames earlier,
+// and the hitbox was enlarged and moved up a little.
 
 #[acmd_script( agent = "dolly", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
@@ -295,6 +306,8 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_LANDING_HEAVY);
     }
 }
+
+// Rising Tackle in the air can grab ledge on frame 13.
 
 #[acmd_script( agent = "dolly", script = "game_specialairhi1", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {

@@ -304,7 +304,9 @@ unsafe fn luigi_sspecialholdeff(fighter: &mut L2CAgentBase) {
     }
 }
 
-// The ending part of Thunderhand
+// The ending part of Thunderhand.
+// On the ground, Luigi will lock down the opponent, allowing him to either follow-up with a true Jab
+// or go for mixups.
 
 #[acmd_script( agent = "luigi", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
@@ -330,6 +332,8 @@ unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// In the air, the move simply launches away at a low angle.
 
 #[acmd_script( agent = "luigi", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {

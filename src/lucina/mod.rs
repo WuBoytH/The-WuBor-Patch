@@ -10,6 +10,12 @@ use smash::phx::Vector3f;
 use crate::{IS_FUNNY, _TIME_COUNTER, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
 use crate::commonfuncs::*;
 
+// ---------------------------------------------------------
+// We’ve revamped Lucina with a moveset inspired by Yu Narukami’s appearance in Persona 4 Arena.
+// Lucina’s skins have been fully replaced with Yu in the WuBoy Modpack,
+// so it was only fitting that this became our premiere challenge for The Bor Patch.
+// ---------------------------------------------------------
+
 pub static mut LUCINA_SPECIAL_AIR_S : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
@@ -443,6 +449,9 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
+// A back-handed punch. Yu can act out of this very early, allowing him to pressure with multiple single jabs.
+// Deals 2.5 damage.
+
 #[acmd_script( agent = "lucina", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -450,7 +459,7 @@ unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 361, 15, 0, 20, 2.0, 0.0, 9.4, 6.2, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.5, 361, 15, 0, 20, 2.0, 0.0, 9.4, 8.8, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.5, 361, 15, 0, 20, 5.0, 0.0, 9.4, 8.8, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
@@ -476,6 +485,9 @@ unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), -1, 10, 10, 0, 0, 0, 1.15, 0, 0, 0, 0, 0, 360, true);
     }
 }
+
+// A standing roundhouse kick. Jump-Cancellable on hit.
+// Deals 4.5 damage, sends at a 50 degree angle.
 
 #[acmd_script( agent = "lucina", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
@@ -505,6 +517,9 @@ unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+// An upward slash that starts very low to the ground. Jump-Cancellable on hit.
+// Deals 6 damage, sends at a 71 degree angle.
+
 #[acmd_script( agent = "lucina", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -531,6 +546,9 @@ unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Animation is unchanged from Lucina.
+// Deals 6 damage, sends at a 75 degree angle.
+
 #[acmd_script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -547,13 +565,17 @@ unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
+// A sliding move inspired by Swift Strike.
+// Deals 7 damage, sends at a 65 degree angle, and can be EX'd.
+// The EX version is Jump-Cancellable on hit.
+
 #[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    sv_animcmd::frame(lua_state, 5.0);
+    sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
+        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
         && spent_meter(boma, false) {
             SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
             special_effect(boma);
@@ -562,9 +584,6 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
         else{
             IS_EX[get_player_number(boma)] = false;
         }
-    }
-    sv_animcmd::frame(lua_state, 7.0);
-    if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 7.0, 65, 85, 0, 65, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 65, 85, 0, 65, 2.5, 0.0, 2.5, -2.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_LOW), false);
@@ -592,6 +611,9 @@ unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
     }
 }
 
+// A fast, horizontal kick. Jump-Cancellable on hit.
+// Deals 4.5 damage, has 40 Base Knockback, 100 Kockback Growth, and is actionable on frame 23.
+
 #[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -617,6 +639,9 @@ unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Forward and Back Air have been made pretty much identical.
+// Deals 10 damage and has 74 Knockback Growth.
 
 #[acmd_script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
@@ -671,6 +696,9 @@ unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Animation is unchanged from Lucina. Jump-Cancellable on hit.
+// Deals 8 damage, sends at a 55 degree angle, and has 40 Knockback Growth.
+
 #[acmd_script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -696,6 +724,9 @@ unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Animation is unchanged from Lucina. Jump-Cancellable on hit.
+// Deals 8 damage, sends at an 80 degree angle, and has 8 frames of landing lag, so you can combo if you land with it.
+
 #[acmd_script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -720,6 +751,9 @@ unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Animation borrowed from Ike Forward Tilt.
+// Deals 13.5 damage and will steal your soul at ranges you never thought possible.
+
 #[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -737,6 +771,9 @@ unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Animation is unchanged from Lucina.
+// The sweetspot deals 12 damage. Otherwise unchanged.
 
 #[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
@@ -762,6 +799,10 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Based off of Heroic Bravery. Borrows Chrom's Forward Smash animation.
+// Kirby gets this as well, though it uses the old Shield Breaker animation.
+// Uncharged it simply deals a bit of damage and launches away...
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnend", "game_specialnendhi", "game_specialnendlw", "game_specialairnend", "game_specialairnendhi", "game_specialairnendlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
@@ -817,6 +858,8 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
     }
 }
 
+// ... while fully-charged it will ignore shields, paralyze on hit, and allow Yu to combo without using One More!.
+
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnendmax", "game_specialnendmaxhi", "game_specialnendmaxlw", "game_specialairnendmax", "game_specialairnendmaxhi", "game_specialairnendmaxlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -871,6 +914,10 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Based off of Lightning Flash. Borrows Lucina's old Neutral Special animation. Can be EX'd.
+// Yu lunges forward with a very active hitbox on his sword. Launches opponents away.
+// The EX version starts up faster and deals more damage for slightly less knockback.
+
 #[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -880,7 +927,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 4.0);
     sv_animcmd::frame(lua_state, 2.0);
-    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
         special_effect(boma);
@@ -896,7 +943,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if IS_EX[get_player_number(boma)] == true {
             dmg = 18.0;
-            kbg = 45;
+            kbg = 55;
         }
         else {
             dmg = 14.0;
@@ -928,6 +975,9 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     }
 }
 
+// An original move, due to Smash's restrictions, dubbed "Lion's Leap." Borrows Corrin's Dragon Lunge jump animation.
+// Yu jumps forward with forward momentum. Can only be used once in the air, and is usable again when Yu touches the ground or grabs a ledge.
+
 #[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -951,6 +1001,9 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Hold Down and press Special during Lion's Leap to perform a divekick. Borrows Zero Suit Samus's down air animation.
+// Can be EX'd for more damage.
+
 #[acmd_script( agent = "lucina", script = "game_specialairs2lw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -968,7 +1021,7 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 12.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 13.0);
-    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
         special_effect(boma);
@@ -1011,6 +1064,8 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Hold Up and press Special during Lion's Leap to perform Raging Lion. Can be EX'd for more damage.
+
 #[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1024,7 +1079,7 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
     sv_animcmd::frame(lua_state, 4.0);
-    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
         special_effect(boma);
@@ -1068,44 +1123,10 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-}
-
-#[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME, low_priority )]
-unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    if shadow_id(boma) {
-        macros::FT_START_CUTIN(fighter);
-        macros::SLOW_OPPONENT(fighter, 20.0, 8.0);
-        SHADOW_FRENZY[get_player_number(boma)] = true;
-    }
-    sv_animcmd::frame(lua_state, 5.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 3.4, 90, 0, 60, 40, 5.0, 1.0, 0.0, 1.5, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 3.4, 90, 0, 60, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("colonells"), 3.4, 90, 0, 60, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("sword1"), 3.4, 90, 0, 60, 40, 5.0, 1.0, 0.0, 7.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
-        AttackModule::set_force_reaction(boma, 0, true, false);
-        AttackModule::set_force_reaction(boma, 1, true, false);
-        AttackModule::set_force_reaction(boma, 2, true, false);
-        AttackModule::set_force_reaction(boma, 3, true, false);
-        if WorkModule::is_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
-            AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("se_lucina_criticalhit"));
-            AttackModule::set_optional_hit_effect(boma, 1, Hash40::new("se_lucina_criticalhit"));
-            AttackModule::set_optional_hit_effect(boma, 2, Hash40::new("se_lucina_criticalhit"));
-            AttackModule::set_optional_hit_effect(boma, 3, Hash40::new("se_lucina_criticalhit"));
-        }
-    }
-    sv_animcmd::frame(lua_state, 8.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-    }
-}
+// The following two scripts are used for Big Gamble. Can be EX'd.
+// The normal version launches opponents nearly straight up.
+// The EX version is fully invincible on frame 5 on and is a proper multi-hit,
+// sending opponents up. The EX version can NOT be cancelled into One More!.
 
 #[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
@@ -1118,7 +1139,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
         special_effect(boma);
@@ -1201,7 +1222,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
+    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
         special_effect(boma);
@@ -1276,43 +1297,48 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
-// unsafe fn lucina_runeffect(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     macros::wait_loop_sync_mot(fighter);
-//     sv_animcmd::frame(lua_state, 4.0);
-//     if macros::is_excute(fighter) {
-//         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-//     }
-//     sv_animcmd::frame(lua_state, 21.0);
-//     if macros::is_excute(fighter) {
-//         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-//     }
-//     sv_animcmd::frame(lua_state, 37.0);
-//     if macros::is_excute(fighter) {
-//         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-//     }
-//     sv_animcmd::frame(lua_state, 56.0);
-// }
+// An empty script for Down Special. The animation has been reused for Yu's One More!.
 
-// #[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND, low_priority )]
-// unsafe fn lucina_runsound(fighter: &mut L2CAgentBase) {
-//     let lua_state = fighter.lua_state_agent;
-//     macros::wait_loop_sync_mot(fighter);
-//     sv_animcmd::frame(lua_state, 5.0);
-//     if macros::is_excute(fighter) {
-//         macros::PLAY_STEP(fighter, Hash40::new("se_lucina_step_right_l"));
-//     }
-//     sv_animcmd::wait(lua_state, 17.0);
-//     if macros::is_excute(fighter) {
-//         macros::PLAY_STEP(fighter, Hash40::new("se_lucina_step_right_l"));
-//     }
-//     sv_animcmd::wait(lua_state, 17.0);
-//     if macros::is_excute(fighter) {
-//         macros::PLAY_STEP(fighter, Hash40::new("se_lucina_step_right_l"));
-//     }
-//     sv_animcmd::wait(lua_state, 17.0);
-// }
+#[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
+unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
+}
+
+// Repurposed for Shadow Yu's Shadow Frenzy. 
+
+#[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME, low_priority )]
+unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if shadow_id(boma) {
+        macros::FT_START_CUTIN(fighter);
+        macros::SLOW_OPPONENT(fighter, 20.0, 8.0);
+        SHADOW_FRENZY[get_player_number(boma)] = true;
+    }
+    sv_animcmd::frame(lua_state, 5.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 3.4, 90, 0, 60, 40, 5.0, 1.0, 0.0, 1.5, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 3.4, 90, 0, 60, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("colonells"), 3.4, 90, 0, 60, 40, 5.0, 0.0, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("sword1"), 3.4, 90, 0, 60, 40, 5.0, 1.0, 0.0, 7.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
+        AttackModule::set_force_reaction(boma, 0, true, false);
+        AttackModule::set_force_reaction(boma, 1, true, false);
+        AttackModule::set_force_reaction(boma, 2, true, false);
+        AttackModule::set_force_reaction(boma, 3, true, false);
+        if WorkModule::is_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SPECIAL_EFFECT) {
+            AttackModule::set_optional_hit_effect(boma, 0, Hash40::new("se_lucina_criticalhit"));
+            AttackModule::set_optional_hit_effect(boma, 1, Hash40::new("se_lucina_criticalhit"));
+            AttackModule::set_optional_hit_effect(boma, 2, Hash40::new("se_lucina_criticalhit"));
+            AttackModule::set_optional_hit_effect(boma, 3, Hash40::new("se_lucina_criticalhit"));
+        }
+    }
+    sv_animcmd::frame(lua_state, 8.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(boma);
+    }
+}
 
 pub fn install() {
     smashline::install_agent_frames!(
@@ -1340,12 +1366,10 @@ pub fn install() {
         lucina_sspecial1air,
         lucina_sspecial2lwair,
         lucina_sspecial2hiair,
-        lucina_dspecial,
-        lucina_dspecialhit,
         lucina_uspecial,
         lucina_uspecialair,
-        // lucina_runeffect,
-        // lucina_runsound
+        lucina_dspecial,
+        lucina_dspecialhit
     );
     // skyline::install_hook!(lucina_is_enable_transition_term_replace);
 }

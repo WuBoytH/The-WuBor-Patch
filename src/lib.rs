@@ -64,7 +64,7 @@ use crate::commonfuncs::*;
 // mod vars;
 // mod statuses;
 mod globals;
-mod custom;
+mod system;
 mod daisy;
 mod samusd;
 mod lucina;
@@ -117,6 +117,8 @@ use crate::wario::FINISH_SIGN;
 mod luigi;
 mod reflet;
 
+// An unused experiment to make the Grab button work as a Smash Attack button.
+
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
 // pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
 //     let mut flag = original!()(module_accessor, category);
@@ -161,6 +163,9 @@ move_type_again: bool) -> u64 {
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
     let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+
+    // Used for Ken's meter building, as well as sets the opponent he will track towards with V-Trigger.
+
     if attacker_fighter_kind == *FIGHTER_KIND_KEN {
         if d_entry_id < 8
         && a_entry_id < 8
@@ -175,17 +180,14 @@ move_type_again: bool) -> u64 {
             if MotionModule::motion_kind(attacker_boma) == hash40("attack_s3_s_w")
             && QUICK_STEP_STATE[a_entry_id] == 1 {
                 V_GAUGE[a_entry_id] += 100;
-                // println!("Hit Quick Step Kick: {}", V_GAUGE[a_entry_id]);
             }
             else if d_entry_id < 8 {
                 if COUNTER_HIT_STATE[d_entry_id] == 1 {
                     V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
-                    // println!("Hit Counter Hit: {}", V_GAUGE[a_entry_id]);
                 }
             }
             else {
                 V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
-                // println!("Hit Normal: {}", V_GAUGE[a_entry_id]);
             }
             if V_GAUGE[a_entry_id] > 900 {
                 V_GAUGE[a_entry_id] = 900;
@@ -195,6 +197,9 @@ move_type_again: bool) -> u64 {
             OPPONENT_BOMA[a_entry_id] = 0;
         }
     }
+
+    // Used for Ultra Instinct's tracking.
+
     if defender_fighter_kind == *FIGHTER_KIND_RYU {
         if SEC_SEN_STATE[d_entry_id] {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -230,28 +235,38 @@ move_type_again: bool) -> u64 {
             SECRET_SENSATION[d_entry_id] = true;
         }
     }
+
+    // Used to detect if Ken was hit during V-Shift's startup.
+
     else if defender_fighter_kind == *FIGHTER_KIND_KEN {
         if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
         && MotionModule::frame(defender_boma) <= 8.75 {
             V_SHIFT[d_entry_id] = true;
         }
     }
+
+    // Used to detect if Incineroar was hit during Revenge's counter frames, as well as turning Incineroar to the correct direction.
+
     else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
         if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
         || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
         && MotionModule::frame(defender_boma) >= 8.0
         && MotionModule::frame(defender_boma) <= 27.0 {
             REVENGE[d_entry_id] = 2;
-            // if StatusModule::situation_kind(defender_boma) == *SITUATION_KIND_GROUND {
-            //     MotionModule::change_motion(defender_boma, Hash40::new("special_s_lariat"), 0.0, 1.0, false, 0.0, false, false);
-            // }
-            // else {
-            //     MotionModule::change_motion(defender_boma, Hash40::new("special_air_s_lariat"), 0.0, 1.0, false, 0.0, false, false);
-            // }
+            if PostureModule::pos_x(defender_boma) < PostureModule::pos_x(attacker_boma)
+            && PostureModule::lr(defender_boma) == 1.0 {
+                PostureModule::reverse_lr(defender_boma);
+            }
+            else if PostureModule::pos_x(defender_boma) > PostureModule::pos_x(attacker_boma)
+            && PostureModule::lr(defender_boma) == -1.0 {
+                PostureModule::reverse_lr(defender_boma);
+            }
             StatusModule::change_status_request_from_script(defender_boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
-            PostureModule::reverse_lr(defender_boma);
         }
     }
+
+    // Used to make sure Shulk is facing the right direction for Vision Burst.
+
     else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
         if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
         || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
@@ -929,7 +944,7 @@ pub fn main() {
         }
     }
     // statuses::install();
-    custom::install();
+    system::install();
     daisy::install();
     samusd::install();
     lucina::install();

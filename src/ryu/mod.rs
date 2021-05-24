@@ -134,7 +134,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
 
-            // Secret Sensation???
+            // Secret Sensation Code
 
             if IS_FUNNY[get_player_number(boma)] {
 

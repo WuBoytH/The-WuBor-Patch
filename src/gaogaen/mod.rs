@@ -10,8 +10,9 @@ use smash::phx::Vector3f;
 use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
 use crate::commonfuncs::*;
 
-// The Bor Description
+// ---------------------------------------------------------
 // Our goal was to make Incineroar more fun, without being broken. You be the judge of that...
+// ---------------------------------------------------------
 
 //Weight: 110	Walk speed: 0.62 > 1
 // Air accel (additional): 0.06 > 0.075		Run speed: 1.465

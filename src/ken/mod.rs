@@ -11,6 +11,13 @@ use smash::phx::Vector2f;
 use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
 use crate::commonfuncs::*;
 
+// ---------------------------------------------------------
+// This one was all WuBoy. He wanted to give Ken his tools from Street Fighter V
+// to differentiate him from Ryu, who’s now primarily based on Super Street Fighter IV.
+// Hopefully this incentivises a more ground-based combo game and rushdown,
+// and will likely be much more balanced after reworking his damage output.
+// ---------------------------------------------------------
+
 pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
 /*
 State list:
@@ -137,6 +144,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
 
             // V Skill 1
+
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK
             || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1
             || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2
@@ -428,7 +436,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Motion Rate the Run Animation
+// Motion Rate the Run Animation so that it moves at the right speed during Quick Step
 
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
 unsafe fn ken_run(fighter: &mut L2CAgentBase) {
@@ -506,7 +514,7 @@ unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
     }
 }
 
-// V Shift Related
+// V Shift start-up.
 
 #[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
@@ -529,6 +537,8 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
         }
     }
 }
+
+// V-Shift Break - Shadow-Thunder Kick
 
 #[acmd_script( agent = "ken", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {

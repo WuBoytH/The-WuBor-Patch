@@ -13,8 +13,9 @@ use crate::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
 
-// The Bor Description
+// ---------------------------------------------------------
 // We had to do our civic duty and rework Luigi. This was not easy by any means.
+// ---------------------------------------------------------
 
 // Air speed: 0.77 > 0.8
 // Luigi also no longer has a tether aerial (zair).

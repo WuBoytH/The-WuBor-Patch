@@ -24,11 +24,16 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
         
+        // Force Ganon's state to the final part of Aerial Flame Choke.
+
         if StatusModule::status_kind(boma) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_FALL {
             fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
         }
 
         if get_player_number(boma) < 8 {
+
+            // Teleport Handler
+
             if TELEPORT[get_player_number(boma)] == 1 || TELEPORT[get_player_number(boma)] == 5 {
                 let dir = get_command_stick_direction(boma, false);
                 if dir == 5 || dir == 2 || dir == 8 {
@@ -90,11 +95,16 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 TELEPORT[get_player_number(boma)] += 1;
             }
 
+            // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
+
             if StatusModule::situation_kind(boma) == *SITUATION_KIND_CLIFF
             || StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
             || IS_FUNNY[get_player_number(boma)] {
                 CAN_TELEPORT[get_player_number(boma)] = true;
             }
+
+            // Stops Ganondorf's momentum during Dark Deception.
+            // Necessary because transitioning from Ground to Air re-enables his momentum.
 
             if TELE_STOP[get_player_number(boma)] {
                 KineticModule::unable_energy_all(boma);
@@ -102,6 +112,8 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
         }
     }
 }
+
+// Edited the end of Flame Choke so he stays still in the air, instead of immediately cancelling into his falling animation.
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -132,29 +144,7 @@ unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterC
     L2CValue::I32(1)
 }
 
-// #[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END,
-//     symbol = "_ZN7lua2cpp16L2CFighterCommon29status_end_CatchedAirEndGanonEv")]
-// unsafe fn status_CatchedAirEndGanon(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-//     let l2c;
-//     LookupSymbol(
-//         &mut l2c,
-//         "__ZNK3lib8L2CValuecvbEv\u{0}"
-//             .as_bytes()
-//             .as_ptr(),
-//     );
-//     if fighter.global_table[STATUS_KIND] as usize != l2c {
-//         LookupSymbol(
-//             &mut l2c,
-//             "__ZNK3lib8L2CValuecvbEv\u{0}"
-//                 .as_bytes()
-//                 .as_ptr(),
-//         );
-//         if fighter.global_table[PREV_STATUS_KIND] as usize == *FIGHTER_STATUS_KIND_CATCHED_AIR_FALL_GANON {
-//         }
-//     }
-//     L2CValue::I32(0)
-// }
+// Jab deals less damage (11 -> 7) and sends slightly up and away.
 
 #[acmd_script( agent = "ganon", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_jab(fighter: &mut L2CAgentBase) {
@@ -176,6 +166,8 @@ unsafe fn ganon_jab(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.9);
 }
 
+// Dash attack deals less damage (15/11 -> 11/7).
+
 #[acmd_script( agent = "ganon", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -194,6 +186,8 @@ unsafe fn ganon_dashattack(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Forward Tilt deals less damage (13/14 -> 12).
+
 #[acmd_script( agent = "ganon", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -209,6 +203,9 @@ unsafe fn ganon_ftilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Up Tilt was changed to Ganondorf's Smash 4 Up Smash.
+// Has 15 frames of startup, deals 14 damage, and launches up and slightly away.
 
 #[acmd_script( agent = "ganon", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_utilt(fighter: &mut L2CAgentBase) {
@@ -273,6 +270,8 @@ unsafe fn ganon_utiltexp(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Down Tilt deals less damage (14 -> 12) and always sends at an 80 degree angle.
+
 #[acmd_script( agent = "ganon", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -288,6 +287,8 @@ unsafe fn ganon_dtilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Forward Smash deals less damage (24 -> 21).
 
 #[acmd_script( agent = "ganon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_fsmash(fighter: &mut L2CAgentBase) {
@@ -319,6 +320,8 @@ unsafe fn ganon_fsmash(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Up Smash deals less damage (24 -> 21).
+
 #[acmd_script( agent = "ganon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -342,6 +345,8 @@ unsafe fn ganon_usmash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// Down Smash deals less damage (5/15 -> 4/14).
 
 #[acmd_script( agent = "ganon", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_dsmash(fighter: &mut L2CAgentBase) {
@@ -377,6 +382,11 @@ unsafe fn ganon_dsmash(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, true);
     }
 }
+
+// Neutral Air's first hit will always launch grounded opponents upward.
+// This allows rising short-hop neutral air to work.
+// The sourspots on the first hit are also made identical to the sweetspot.
+// Landing lag is also reduced (10 -> 9).
 
 #[acmd_script( agent = "ganon", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_nair(fighter: &mut L2CAgentBase) {
@@ -432,6 +442,8 @@ unsafe fn ganon_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Back Air deals less damage (17/18.5 -> 15) and landing lag is reduced (11 -> 10).
+
 #[acmd_script( agent = "ganon", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -455,6 +467,9 @@ unsafe fn ganon_bair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Forward Air now starts up slower (16 -> 20), but on frame 4 Ganondorf gets a huge boost in forward momentum.
+// Forward Air also deals less damage (17/18 -> 16).
 
 #[acmd_script( agent = "ganon", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_fair(fighter: &mut L2CAgentBase) {
@@ -490,6 +505,8 @@ unsafe fn ganon_fair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Forward Air also has a landing hitbox that Ganondorf can combo off of at lower percents.
+
 #[acmd_script( agent = "ganon", script = "game_landingairf", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_fairland(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -504,6 +521,9 @@ unsafe fn ganon_fairland(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(boma);
     }
 }
+
+// The first hit of Up Air has reduced damage (13/12 -> 12/10).
+// Up Air's landing lag was also reduced (11 -> 10).
 
 #[acmd_script( agent = "ganon", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_uair(fighter: &mut L2CAgentBase) {
@@ -541,6 +561,8 @@ unsafe fn ganon_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Down Air has reduced damage (19/17 -> 12/10).
+
 #[acmd_script( agent = "ganon", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -568,6 +590,13 @@ unsafe fn ganon_dair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
+
+// Warlock Punch is no more! Say hello to Dark Deception, a short teleport that Ganon can act out of.
+// Ganondorf can teleport in 5 directions on the ground and 8 directions in the air.
+// Fully invulnerable on frame 10, actionable on frame 44.
+// Ganondorf can only use this once in the air, but if he teleports into an airborne state,
+// he still has his aerial use.
+// Also, Kirby gets this as well.
 
 #[acmd_script( agent = "ganon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
 unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
@@ -679,6 +708,8 @@ unsafe fn ganon_nspecialsnd(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Aerial Flame Choke has slightly buffed grab range.
+
 #[acmd_script( agent = "ganon", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_sspecialairstart(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -705,6 +736,8 @@ unsafe fn ganon_sspecialairstart(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Aerial Flame Choke also has reduced damage (15 -> 12), and the rest of the animation is much faster.
+
 #[acmd_script( agent = "ganon", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -716,6 +749,8 @@ unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(fighter, 0.5);
 }
+
+// Dark Dive has faster startup (14 -> 11) and its initial grab box has increased vertical reach.
 
 #[acmd_script( agent = "ganon", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME, low_priority )]
 unsafe fn ganon_uspecial(fighter: &mut L2CAgentBase) {
@@ -765,6 +800,8 @@ unsafe fn ganon_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+// The multi-hit portion of Dark Dive deals less damage (1.9 -> 1.5)...
+
 #[acmd_script( agent = "ganon", script = "game_specialhicatch", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_uspecialcatch(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -785,6 +822,27 @@ unsafe fn ganon_uspecialcatch(fighter: &mut L2CAgentBase) {
         }
     }
 }
+
+// ... along with the launching portion, which also deals less damage (9 -> 7).
+
+#[acmd_script( agent = "ganon", script = "game_specialhithrow", category = ACMD_GAME, low_priority )]
+unsafe fn ganon_uspecialthrow(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 361, 108, 0, 50, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 8.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_THROW);
+        macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+    }
+    sv_animcmd::frame(lua_state, 2.0);
+    macros::FT_MOTION_RATE(fighter, 0.75);
+    sv_animcmd::frame(lua_state, 46.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(boma, *FIGHTER_GANON_STATUS_SPECIAL_HI_THROW_FLAG_FALL);
+    }
+}
+
+// Wizard's Foot always deals 14 damage, and both ground and air versions launch at a 45 degree angle.
 
 #[acmd_script( agent = "ganon", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_dspecial(fighter: &mut L2CAgentBase) {
@@ -818,6 +876,8 @@ unsafe fn ganon_dspecial(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(boma, true);
     }
 }
+
+// The air version also gives Ganondorf his mid-air jump back.
 
 #[acmd_script( agent = "ganon", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_dspecialair(fighter: &mut L2CAgentBase) {
@@ -871,6 +931,7 @@ pub fn install() {
         ganon_sspecialair,
         ganon_uspecial,
         ganon_uspecialcatch,
+        ganon_uspecialthrow,
         ganon_dspecial,
         ganon_dspecialair
     );

@@ -18,6 +18,10 @@ use crate::commonfuncs::*;
 // and will likely be much more balanced after reworking his damage output.
 // ---------------------------------------------------------
 
+// Notes:
+// vc_ken_special_l01 is "I hit my boiling point!"
+// vc_ken_special_l02 is "Shoryureppa"
+
 pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
 /*
 State list:
@@ -304,7 +308,11 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                     else {
                         DIFF_X[get_player_number(boma)] = 0.0;
                     }
+                    macros::PLAY_SE(fighter, Hash40::new("se_ken_special_l01"));
                     V_TRIGGER[get_player_number(boma)] = true;
+                }
+                if MotionModule::frame(boma) == 4.0 {
+                    macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l01"));
                 }
                 if MotionModule::frame(boma) >= 4.0
                 && MotionModule::frame(boma) < 9.0 {
@@ -952,6 +960,42 @@ unsafe fn ken_uspecialcommand(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "sound_specialhicommand", category = ACMD_SOUND, low_priority )]
+unsafe fn ken_uspecialcommandsnd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ken_command_success"));
+    }
+    sv_animcmd::frame(lua_state, 2.0);
+    if macros::is_excute(fighter) {
+        if SHORYUREPPA[get_player_number(boma)] == 0 {
+            macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_h01_command"));
+        }
+        else {
+            macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l02"));
+        }
+    }
+    sv_animcmd::frame(lua_state, 6.0);
+    if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_S {
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h03"));
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h01"));
+        }
+    }
+    sv_animcmd::frame(lua_state, 10.0);
+    if WorkModule::get_int(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_S {
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h02"));
+        }
+    }
+}
+
 #[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
@@ -1087,6 +1131,7 @@ pub fn install() {
         ken_sspecialair,
         ken_uspecial,
         ken_uspecialcommand,
+        ken_uspecialcommandsnd,
         ken_uspecialair,
         ken_hadokenw,
         ken_hadokenm,

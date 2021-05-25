@@ -15,6 +15,16 @@ fn reflet_frame(fighter: &mut L2CFighterCommon) {
         let lua_state = fighter.lua_state_agent;
         let boma = sv_system::battle_object_module_accessor(lua_state);
 
+        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ENTRY {
+            WorkModule::set_int(boma, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
+        }
+
+        if smashball::is_training_mode(){
+            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+                WorkModule::set_int(boma, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
+            }
+        }
+
         if (MotionModule::motion_kind(boma) == hash40("special_hi")
         || MotionModule::motion_kind(boma) == hash40("special_air_hi"))
         && MotionModule::frame(boma) >= 12.0 && MotionModule::frame(boma) < 46.0 {

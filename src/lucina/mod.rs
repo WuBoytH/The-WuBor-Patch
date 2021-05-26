@@ -9,6 +9,7 @@ use smash::phx::Hash40;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use crate::{IS_FUNNY, _TIME_COUNTER, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
+use crate::system::QCB;
 use crate::commonfuncs::*;
 
 // ---------------------------------------------------------
@@ -443,18 +444,39 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
 
+            if MotionModule::motion_kind(boma) == hash40("attack_12") {
+                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+                || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+                    if QCB[get_player_number(boma)] == 3
+                    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+                        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
+                    }
+                    if QCB[get_player_number(boma)] != 3
+                    && (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
+                    || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+                        CancelModule::enable_cancel(boma);
+                    }
+                }
+            }
+
             // Jump Cancels
 
-            if MotionModule::motion_kind(boma) == hash40("attack_hi3")
-            || MotionModule::motion_kind(boma) == hash40("attack_12")
-            || MotionModule::motion_kind(boma) == hash40("attack_air_n")
-            || MotionModule::motion_kind(boma) == hash40("attack_air_hi")
-            || MotionModule::motion_kind(boma) == hash40("attack_air_lw")
-            || (MotionModule::motion_kind(boma) == hash40("attack_dash") && IS_EX[get_player_number(boma)]) {
+            if MotionModule::motion_kind(boma) == hash40("attack_hi3") {
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
                     if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP)
-                    && (WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 || IS_FUNNY[get_player_number(boma)]) {
-                        CancelModule::enable_cancel(boma);
+                    && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+                    }
+                }
+            }
+
+            if MotionModule::motion_kind(boma) == hash40("attack_air_n")
+            || MotionModule::motion_kind(boma) == hash40("attack_air_hi")
+            || MotionModule::motion_kind(boma) == hash40("attack_air_lw") {
+                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+                    if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP)
+                    && WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
                     }
                 }
             }
@@ -545,8 +567,8 @@ unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 6.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.5, 50, 100, 0, 50, 4.2, 5.0, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 3.5, 50, 100, 0, 50, 3.8, -1.0, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.5, 361, 40, 0, 30, 4.2, 5.0, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 3.5, 361, 40, 0, 30, 3.8, -1.0, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
@@ -643,15 +665,6 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
-        && spent_meter(boma, false) {
-            SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-            special_effect(boma);
-            IS_EX[get_player_number(boma)] = true;
-        }
-        else{
-            IS_EX[get_player_number(boma)] = false;
-        }
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 7.0, 65, 85, 0, 65, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 6.0, 65, 85, 0, 65, 2.5, 0.0, 2.5, -2.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(boma, AttackHeight(*ATTACK_HEIGHT_LOW), false);

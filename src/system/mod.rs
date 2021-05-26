@@ -11,6 +11,9 @@ use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::*;
 
+pub static mut QCF : [i32; 8] = [0; 8];
+pub static mut QCB : [i32; 8] = [0; 8];
+
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
@@ -82,6 +85,74 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         && ControlModule::get_stick_y(boma) < -0.8
         && GroundModule::is_passable_ground(boma) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_PASS, true);
+        }
+        
+        // Command Inputs
+
+        let dir = get_command_stick_direction(boma, true);
+
+        // Quarter Circle Back
+
+        if QCB[get_player_number(boma)] == 0 {
+            if dir == 2 {
+                QCB[get_player_number(boma)] = 1;
+            }
+        }
+        else if QCB[get_player_number(boma)] == 1 {
+            if dir == 1 {
+                QCB[get_player_number(boma)] = 2;
+            }
+            else if dir != 4
+            && dir != 1
+            && dir != 2 {
+                QCB[get_player_number(boma)] = 0;
+            }
+        }
+        else if QCB[get_player_number(boma)] == 2 {
+            if dir == 4 {
+                QCB[get_player_number(boma)] = 3;
+            }
+            else if dir != 4
+            && dir != 1 {
+                QCB[get_player_number(boma)] = 0;
+            }
+        }
+        else {
+            if dir != 4 {
+                QCB[get_player_number(boma)] = 0;
+            }
+        }
+
+        //Quarter Circle Forward
+
+        if QCF[get_player_number(boma)] == 0 {
+            if dir == 2 {
+                QCF[get_player_number(boma)] = 1;
+            }
+        }
+        else if QCF[get_player_number(boma)] == 1 {
+            if dir == 1 {
+                QCF[get_player_number(boma)] = 3;
+            }
+            else if dir != 6
+            && dir != 3
+            && dir != 2 {
+                QCF[get_player_number(boma)] = 0;
+            }
+        }
+        else if QCF[get_player_number(boma)] == 2 {
+            if dir == 6 {
+                QCF[get_player_number(boma)] = 3;
+            }
+            else if dir != 6
+            && dir != 3 {
+                QCF[get_player_number(boma)] = 0;
+            }
+        }
+        else {
+            if dir != 6 {
+                QCF[get_player_number(boma)] = 0;
+            }
         }
 
         // The Counter-Hit Code (only applicable to Jabs, Tilts, and Smash Attacks)

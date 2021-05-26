@@ -325,7 +325,26 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
                 return ret;
             }
         }
-        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW { // No One More! Spam
+        if MotionModule::motion_kind(module_accessor) == hash40("attack_12") {
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
+                return false;
+            }
+            else {
+                return ret;
+            }
+        }
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
         else {

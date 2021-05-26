@@ -7,6 +7,7 @@ use smash_script::*;
 use smashline::*;
 use smash::phx::Hash40;
 use smash::phx::Vector3f;
+use smash::phx::Vector2f;
 use crate::{IS_FUNNY, _TIME_COUNTER, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
 use crate::commonfuncs::*;
 
@@ -27,6 +28,9 @@ static mut SPENT_SP : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
 static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+static mut ROMAN_MOVE : [f32; 8] = [0.0; 8];
+static mut ROMAN_ON_HIT : [bool; 8] = [false; 8];
+static mut IS_ROMAN_MOVE : [bool; 8] = [false; 8];
 
 // Generates a special effect when you use an EX move.
 
@@ -264,49 +268,17 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 CAN_ONE_MORE[get_player_number(boma)] = false;
             }
 
-            if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
-            && MotionModule::motion_kind(boma) != hash40("catch_attack")
-            && !((MotionModule::motion_kind(boma) == hash40("special_hi") || MotionModule::motion_kind(boma) == hash40("special_air_hi")) && IS_EX[get_player_number(boma)]) {
-                CAN_ONE_MORE[get_player_number(boma)] = true;
-            }
-
-            if CAN_ONE_MORE[get_player_number(boma)] == true {
-                if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-                    if spent_meter(boma, true) {
-                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
-                    }
-                }
-                else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
-                && SP_GAUGE[get_player_number(boma)] == 100.0
-                && SHADOW_FRENZY[get_player_number(boma)] == false
-                && shadow_id(boma) {
-                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
-                    StatusModule::change_status_request_from_script(boma, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
-                }
-            }
-            else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROW {
-                let throwframe : f32;
-                if MotionModule::motion_kind(boma) == hash40("throw_f") {
-                    throwframe = 18.0;
-                }
-                else if MotionModule::motion_kind(boma) == hash40("throw_b") {
-                    throwframe = 19.0;
-                }
-                else if MotionModule::motion_kind(boma) == hash40("throw_hi") {
-                    throwframe = 13.0;
-                }
-                else if MotionModule::motion_kind(boma) == hash40("throw_lw") {
-                    throwframe = 20.0;
-                }
-                else{
-                    throwframe = 20.0;
-                }
-                if MotionModule::frame(boma) > throwframe && CAN_ONE_MORE[get_player_number(boma)] == false {
+            if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
+                && MotionModule::motion_kind(boma) != hash40("catch_attack")
+                && !((MotionModule::motion_kind(boma) == hash40("special_hi") || MotionModule::motion_kind(boma) == hash40("special_air_hi")) && IS_EX[get_player_number(boma)]) {
                     CAN_ONE_MORE[get_player_number(boma)] = true;
                 }
+    
                 if CAN_ONE_MORE[get_player_number(boma)] == true {
                     if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                         if spent_meter(boma, true) {
+                            ROMAN_ON_HIT[get_player_number(boma)] = true;
                             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                         }
                     }
@@ -315,8 +287,69 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     && SHADOW_FRENZY[get_player_number(boma)] == false
                     && shadow_id(boma) {
                         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
+                        StatusModule::change_status_request_from_script(boma, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
                     }
                 }
+                else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROW {
+                    let throwframe : f32;
+                    if MotionModule::motion_kind(boma) == hash40("throw_f") {
+                        throwframe = 18.0;
+                    }
+                    else if MotionModule::motion_kind(boma) == hash40("throw_b") {
+                        throwframe = 19.0;
+                    }
+                    else if MotionModule::motion_kind(boma) == hash40("throw_hi") {
+                        throwframe = 13.0;
+                    }
+                    else if MotionModule::motion_kind(boma) == hash40("throw_lw") {
+                        throwframe = 20.0;
+                    }
+                    else{
+                        throwframe = 20.0;
+                    }
+                    if MotionModule::frame(boma) > throwframe && CAN_ONE_MORE[get_player_number(boma)] == false {
+                        CAN_ONE_MORE[get_player_number(boma)] = true;
+                    }
+                    if CAN_ONE_MORE[get_player_number(boma)] == true {
+                        if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+                            if spent_meter(boma, true) {
+                                ROMAN_ON_HIT[get_player_number(boma)] = true;
+                                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                            }
+                        }
+                        else if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_APPEAL_HI)
+                        && SP_GAUGE[get_player_number(boma)] == 100.0
+                        && SHADOW_FRENZY[get_player_number(boma)] == false
+                        && shadow_id(boma) {
+                            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
+                        }
+                    }
+                }
+                else {
+                    if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+                        if spent_meter(boma, true) {
+                            ROMAN_ON_HIT[get_player_number(boma)] = false;
+                            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                        }
+                    }
+                }
+            }
+
+            if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                IS_ROMAN_MOVE[get_player_number(boma)] = false;
+            }
+            else {
+                if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+                || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+                    macros::SLOW_OPPONENT(fighter, 10.0, 30.0);
+                }
+            }
+            if IS_ROMAN_MOVE[get_player_number(boma)] {
+                PostureModule::add_pos_2d(boma, &Vector2f{
+                    x: ROMAN_MOVE[get_player_number(boma)],
+                    y: 0.0
+                });
+                ROMAN_MOVE[get_player_number(boma)] *= 0.9;
             }
 
             // Meter Effects
@@ -1315,13 +1348,76 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// An empty script for Down Special. The animation has been reused for Yu's One More!.
+// Insert Roman One More! here
 
 #[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
+    sv_animcmd::frame(lua_state, 1.0);
+    if macros::is_excute(fighter) {
+        SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
+        SPENT_SP[get_player_number(boma)] = 0.0;
+        JostleModule::set_status(boma, false);
+        KineticModule::unable_energy_all(boma);
+        macros::SLOW_OPPONENT(fighter, 10.0, 18.0);
+        if ROMAN_ON_HIT[get_player_number(boma)] {
+            full_invuln(boma, true);
+        }
+    }
+    sv_animcmd::frame(lua_state, 14.0);
+    if macros::is_excute(fighter) {
+        let dir = get_command_stick_direction(boma, false);
+        if dir == 5
+        || dir == 8
+        || dir == 2 {
+            ROMAN_MOVE[get_player_number(boma)] = 0.0;
+        }
+        else if dir == 4
+        || dir == 7
+        || dir == 1 {
+            ROMAN_MOVE[get_player_number(boma)] = -2.0;
+        }
+        else {
+            ROMAN_MOVE[get_player_number(boma)] = 2.0;
+        }
+    }
+    sv_animcmd::frame(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 30.0, 0.0, 10.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        IS_ROMAN_MOVE[get_player_number(boma)] = true;
+    }
+    macros::FT_MOTION_RATE(fighter, 5.0);
+    sv_animcmd::frame(lua_state, 21.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        if ROMAN_ON_HIT[get_player_number(boma)] {
+            IS_ROMAN_MOVE[get_player_number(boma)] = false;
+            full_invuln(boma, false);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucina", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn lucina_dspecialeff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    // let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new_raw(0x144a0746f9), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.3);
+        // macros::EFFECT(fighter, Hash40::new("sys_catch"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
+    }
+}
+
+#[acmd_script( agent = "lucina", scripts = [ "sound_speciallw", "sound_specialairlw" ], category = ACMD_SOUND, low_priority )]
+unsafe fn lucina_dspecialsnd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    // let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 17.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_l01"));
+    }
 }
 
 // Repurposed for Shadow Yu's Shadow Frenzy. 
@@ -1388,6 +1484,8 @@ pub fn install() {
         lucina_uspecial,
         lucina_uspecialair,
         lucina_dspecial,
+        lucina_dspecialeff,
+        lucina_dspecialsnd,
         lucina_dspecialhit
     );
     // skyline::install_hook!(lucina_is_enable_transition_term_replace);

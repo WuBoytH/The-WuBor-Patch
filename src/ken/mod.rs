@@ -309,10 +309,8 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                         DIFF_X[get_player_number(boma)] = 0.0;
                     }
                     macros::PLAY_SE(fighter, Hash40::new("se_ken_special_l01"));
-                    V_TRIGGER[get_player_number(boma)] = true;
-                }
-                if MotionModule::frame(boma) == 4.0 {
                     macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l01"));
+                    V_TRIGGER[get_player_number(boma)] = true;
                 }
                 if MotionModule::frame(boma) >= 4.0
                 && MotionModule::frame(boma) < 9.0 {

@@ -35,7 +35,19 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY_WAIT
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ICE {
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ICE
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_DAMAGE
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_STAND_FB
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_STAND
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_WAIT
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_EAT
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LAY_DOWN
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_SPOT
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE_WALL
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE_CEIL
+    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE_FB {
         return true;
     }
     else {

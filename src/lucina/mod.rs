@@ -1348,7 +1348,11 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Insert Roman One More! here
+// Counter was changed to One More!, though unlike Persona 4 Arena's One More!, this one works more like Guilty Gear's Roman Cancel.
+// For the first part of the move, everything on the screen slows down as Yu prepares to, uh, Roman.
+// Yu will then strike a pose, creating a large hitbox around him.
+// If something gets hit by this hitbox, things will stay slow for another 30 frames,
+// allowing Yu to follow-up with whatever he would like.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
@@ -1406,7 +1410,6 @@ unsafe fn lucina_dspecialeff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new_raw(0x144a0746f9), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.3);
-        // macros::EFFECT(fighter, Hash40::new("sys_catch"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
@@ -1420,7 +1423,10 @@ unsafe fn lucina_dspecialsnd(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Repurposed for Shadow Yu's Shadow Frenzy. 
+// If you press Up Taunt as Shadow Yu at 100 SP, Shadow Yu activates Shadow Frenzy.
+// Shadow Yu performs a quick slash that can be cancelled out of very quickly.
+// Upon use, his SP will slowly drain to 0, but during Shadow Frenzy,
+// EX moves and One More! are performed for less SP.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {

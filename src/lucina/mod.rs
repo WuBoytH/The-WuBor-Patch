@@ -341,7 +341,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         }
                     }
                 }
-                else if !is_damage_check(boma) {
+                else if !is_damage_check(boma)
+                || IS_FUNNY[get_player_number(boma)] {
                     if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                         if spent_meter(boma, true) {
                             ROMAN_ON_HIT[get_player_number(boma)] = false;

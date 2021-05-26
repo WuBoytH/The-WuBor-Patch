@@ -233,6 +233,22 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         }
                     }
                 }
+                if SoundModule::is_playing(boma, Hash40::new("vc_lucina_missfoot01")) {
+                    SoundModule::stop_se(boma, Hash40::new("vc_lucina_missfoot01"), 0);
+                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_missfoot01"));
+                }
+                if SoundModule::is_playing(boma, Hash40::new("vc_lucina_missfoot02")) {
+                    SoundModule::stop_se(boma, Hash40::new("vc_lucina_missfoot02"), 0);
+                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_missfoot02"));
+                }
+                if SoundModule::is_playing(boma, Hash40::new("vc_lucina_damage_twinkle")) {
+                    SoundModule::stop_se(boma, Hash40::new("vc_lucina_damage_twinkle"), 0);
+                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_damage_twinkle"));
+                }
+                if SoundModule::is_playing(boma, Hash40::new("vc_lucina_knockout")) {
+                    SoundModule::stop_se(boma, Hash40::new("vc_lucina_knockout"), 0);
+                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_knockout"));
+                }
             }
             else {
                 AttackModule::set_power_up(boma, 1.0);
@@ -325,7 +341,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         }
                     }
                 }
-                else {
+                else if !is_damage_check(boma) {
                     if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                         if spent_meter(boma, true) {
                             ROMAN_ON_HIT[get_player_number(boma)] = false;

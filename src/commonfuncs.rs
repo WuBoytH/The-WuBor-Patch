@@ -14,7 +14,6 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U 
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FALL
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FINAL
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SLEEP
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_B

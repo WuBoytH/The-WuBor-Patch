@@ -923,6 +923,90 @@ pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
     original!()(lua_state)
 }
 
+#[skyline::hook(replace = sv_animcmd::PLAY_STATUS)]
+unsafe fn play_status_replace(lua_state: u64) {
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let se = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_se = se.get_int();
+        for i in 0..36 {
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
+    }
+    original!()(lua_state);
+}
+
+#[skyline::hook(replace = sv_animcmd::PLAY_DOWN_SE)]
+unsafe fn play_down_se_replace(lua_state: u64) {
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let se = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_se = se.get_int();
+        for i in 0..36 {
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
+    }
+    original!()(lua_state);
+}
+
+#[skyline::hook(replace = sv_animcmd::PLAY_SE_REMAIN)]
+unsafe fn play_se_remain_replace(lua_state: u64) {
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let se = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_se = se.get_int();
+        for i in 0..36 {
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
+    }
+    original!()(lua_state);
+}
+
+#[skyline::hook(replace = sv_animcmd::PLAY_SE_NO_3D)]
+unsafe fn play_se_no_3d_replace(lua_state: u64) {
+    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(module_accessor);
+    if fighter_kind == *FIGHTER_KIND_LUCINA
+    && shadow_id(module_accessor) {
+        let mut l2c_agent = L2CAgent::new(lua_state);
+        let se = l2c_agent.pop_lua_stack(1); //sound effect
+        l2c_agent.clear_lua_stack();
+        let mut new_se = se.get_int();
+        for i in 0..36 {
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+                break;
+            }
+        }
+        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
+    }
+    original!()(lua_state);
+}
+
 #[skyline::main(name = "the_bor_patch")]
 pub fn main() {
     unsafe{
@@ -988,13 +1072,17 @@ pub fn main() {
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);
-    skyline::install_hook!(play_se_replace);
-    skyline::install_hook!(play_fly_voice_replace);
-    skyline::install_hook!(play_sequence_replace);
     skyline::install_hook!(is_enable_transition_term_replace);
     skyline::install_hook!(get_param_float_replace);
     skyline::install_hook!(get_param_int_replace);
     skyline::install_hook!(music_function_replace);
     skyline::install_hook!(correct_hook);
+    skyline::install_hook!(play_se_replace);
+    skyline::install_hook!(play_fly_voice_replace);
+    skyline::install_hook!(play_sequence_replace);
+    skyline::install_hook!(play_status_replace);
+    skyline::install_hook!(play_down_se_replace);
+    skyline::install_hook!(play_se_remain_replace);
+    skyline::install_hook!(play_se_no_3d_replace);
     // skyline::install_hook!(init_settings_replace);
 }

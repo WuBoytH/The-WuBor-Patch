@@ -34,6 +34,7 @@ static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 static mut ROMAN_MOVE : [f32; 8] = [0.0; 8];
 static mut ROMAN_ON_HIT : [bool; 8] = [false; 8];
 static mut IS_ROMAN_MOVE : [bool; 8] = [false; 8];
+pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
 
 // Generates a special effect when you use an EX move.
 
@@ -469,6 +470,27 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
 
+            if HEROIC_GRAB[get_player_number(boma)] {
+                if MotionModule::motion_kind(boma) == hash40("catch_wait") {
+                    fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), true.into());
+                }
+                if MotionModule::motion_kind(boma) == hash40("throw_hi")
+                && MotionModule::frame(boma) > 18.0 {
+                    StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
+                }
+            }
+            if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH_WAIT
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH_DASH
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH_TURN
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH_PULL
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH_JUMP
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH_CUT
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_CATCH
+            && CatchModule::is_catch(boma) == false
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_THROW {
+                HEROIC_GRAB[get_player_number(boma)] = false;
+            }
+
             // Jump Cancels
 
             if MotionModule::motion_kind(boma) == hash40("attack_hi3") {
@@ -570,6 +592,7 @@ unsafe extern "C" fn lucina_specialnloopmainsub(fighter: &mut L2CFighterCommon) 
                 return L2CValue::I32(0);
             }
             else {
+                HEROIC_GRAB[get_player_number(module_accessor)] = true;
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), false.into());
                 return L2CValue::I32(0);
             }
@@ -935,6 +958,29 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
+unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    if macros::is_excute(fighter) {
+        if HEROIC_GRAB[get_player_number(boma)] {
+            macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 85, 0, 20, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        }
+        else {
+            macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 93, 102, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        }
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    sv_animcmd::frame(lua_state, 12.0);
+    if macros::is_excute(fighter) {
+        macros::CHECK_FINISH_CAMERA(fighter, 1, 21);
+    }
+    sv_animcmd::frame(lua_state, 13.0);
+    if macros::is_excute(fighter) {
+        macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(boma,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
 }
 
@@ -1562,6 +1608,7 @@ pub fn install() {
         lucina_dair,
         lucina_fsmash,
         lucina_usmash,
+        lucina_uthrow,
         lucina_nspecialend,
         lucina_nspecialendmax,
         lucina_sspecial1,

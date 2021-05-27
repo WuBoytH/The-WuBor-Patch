@@ -68,7 +68,7 @@ mod system;
 mod daisy;
 mod samusd;
 mod lucina;
-use crate::lucina::{LUCINA_SPECIAL_AIR_S, shadow_id};
+use crate::lucina::{LUCINA_SPECIAL_AIR_S, HEROIC_GRAB, shadow_id};
 mod littlemac;
 mod gaogaen;
 use crate::gaogaen::REVENGE;
@@ -317,6 +317,13 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
     // Fighter-Specific Param Edits
     
     if fighter_kind == *FIGHTER_KIND_LUCINA && get_player_number(module_accessor) < 8 {
+        if HEROIC_GRAB[get_player_number(module_accessor)]
+        && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
+        && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
+        && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3
+        && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN {
+            return false;
+        }
         if LUCINA_SPECIAL_AIR_S[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap if used once unless in Funny
                 return false;
@@ -799,6 +806,15 @@ pub fn music_function_replace(
     );
 }
 
+#[skyline::hook(replace = WorkModule::get_int64 )]
+pub unsafe fn get_int64_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
+    let ret = original!()(module_accessor,term);
+    if HEROIC_GRAB[get_player_number(module_accessor)] {
+        return 0x8a0abc72cu64;
+    }
+    return ret;
+}
+
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
 }
@@ -1096,6 +1112,7 @@ pub fn main() {
     skyline::install_hook!(get_param_int_replace);
     skyline::install_hook!(music_function_replace);
     skyline::install_hook!(correct_hook);
+    skyline::install_hook!(get_int64_replace);
     skyline::install_hook!(play_se_replace);
     skyline::install_hook!(play_fly_voice_replace);
     skyline::install_hook!(play_sequence_replace);

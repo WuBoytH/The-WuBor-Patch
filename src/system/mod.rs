@@ -113,12 +113,14 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 QCB[get_player_number(boma)] = 3;
             }
             else if dir != 4
-            && dir != 1 {
+            && dir != 1
+            && dir != 7 {
                 QCB[get_player_number(boma)] = 0;
             }
         }
         else {
-            if dir != 4 {
+            if dir != 4
+            && dir != 7 {
                 QCB[get_player_number(boma)] = 0;
             }
         }
@@ -145,12 +147,14 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 QCF[get_player_number(boma)] = 3;
             }
             else if dir != 6
-            && dir != 3 {
+            && dir != 3
+            && dir != 9 {
                 QCF[get_player_number(boma)] = 0;
             }
         }
         else {
-            if dir != 6 {
+            if dir != 6
+            && dir != 9 {
                 QCF[get_player_number(boma)] = 0;
             }
         }

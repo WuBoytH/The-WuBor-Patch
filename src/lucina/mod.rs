@@ -288,7 +288,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
                 if (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD))
                 && MotionModule::motion_kind(boma) != hash40("catch_attack")
-                && !((MotionModule::motion_kind(boma) == hash40("special_hi") || MotionModule::motion_kind(boma) == hash40("special_air_hi")) && IS_EX[get_player_number(boma)]) {
+                && (MotionModule::motion_kind(boma) != hash40("special_hi") || IS_FUNNY[get_player_number(boma)]) {
                     CAN_ONE_MORE[get_player_number(boma)] = true;
                 }
     
@@ -342,7 +342,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         }
                     }
                 }
-                else if !is_damage_check(boma)
+                else if (!is_damage_check(boma)
+                && MotionModule::motion_kind(boma) != hash40("special_hi"))
                 || IS_FUNNY[get_player_number(boma)] {
                     if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                         if spent_meter(boma, true) {
@@ -359,7 +360,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             else {
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
                 || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-                    macros::SLOW_OPPONENT(fighter, 10.0, 30.0);
+                    macros::SLOW_OPPONENT(fighter, 10.0, 20.0);
                 }
             }
             if IS_ROMAN_MOVE[get_player_number(boma)] {
@@ -448,12 +449,13 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
                 || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
                     if QCB[get_player_number(boma)] == 3
-                    && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
+                    && (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
+                    || ControlModule::check_button_on_release(boma, *CONTROL_PAD_BUTTON_ATTACK)) {
                         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
                     }
                     if QCB[get_player_number(boma)] != 3
-                    && (ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK)
-                    || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
+                    && (ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK)
+                    || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL)) {
                         CancelModule::enable_cancel(boma);
                     }
                 }
@@ -1253,7 +1255,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         sv_animcmd::frame(lua_state, 8.0);
         if macros::is_excute(fighter) {
             AttackModule::clear_all(boma);
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 75, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 85, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
         sv_animcmd::frame(lua_state, 9.0);
@@ -1335,7 +1337,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         sv_animcmd::frame(lua_state, 8.0);
         if macros::is_excute(fighter) {
             AttackModule::clear_all(boma);
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 75, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 40, 85, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
         sv_animcmd::frame(lua_state, 9.0);

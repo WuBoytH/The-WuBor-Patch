@@ -809,8 +809,10 @@ pub fn music_function_replace(
 #[skyline::hook(replace = WorkModule::get_int64 )]
 pub unsafe fn get_int64_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
     let ret = original!()(module_accessor,term);
-    if HEROIC_GRAB[get_player_number(module_accessor)] {
-        return 0x8a0abc72cu64;
+    if term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
+        if HEROIC_GRAB[get_player_number(module_accessor)] {
+            return 0x8a0abc72cu64;
+        }
     }
     return ret;
 }

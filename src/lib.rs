@@ -68,7 +68,7 @@ mod system;
 mod daisy;
 mod samusd;
 mod lucina;
-use crate::lucina::{LUCINA_SPECIAL_AIR_S, HEROIC_GRAB, shadow_id};
+use crate::lucina::{AIR_ACTION, HEROIC_GRAB, shadow_id};
 mod littlemac;
 mod gaogaen;
 use crate::gaogaen::REVENGE;
@@ -317,6 +317,9 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
     // Fighter-Specific Param Edits
     
     if fighter_kind == *FIGHTER_KIND_LUCINA && get_player_number(module_accessor) < 8 {
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+            return false;
+        }
         if HEROIC_GRAB[get_player_number(module_accessor)]
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
@@ -324,8 +327,9 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN {
             return false;
         }
-        if LUCINA_SPECIAL_AIR_S[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap if used once unless in Funny
+        if AIR_ACTION[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false {
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap and Heroic Bravery if used once unless in Funny
                 return false;
             }
             else {
@@ -350,9 +354,6 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             else {
                 return ret;
             }
-        }
-        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-            return false;
         }
         else {
             return ret;

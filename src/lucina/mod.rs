@@ -38,17 +38,17 @@ pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
 
 // Generates a special effect when you use an EX move.
 
-pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
-    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40{hash: hash40("sys_counter_flash")}, Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-    if SHADOW_FRENZY[get_player_number(module_accessor)] == false {
-        EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
-    }
-    else if SHADOW_FRENZY[get_player_number(module_accessor)] == true {
-        EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
-    }
-}
+// pub unsafe fn special_effect(module_accessor: &mut BattleObjectModuleAccessor) {
+//     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+//     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+    // let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40{hash: hash40("sys_counter_flash")}, Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+    // if SHADOW_FRENZY[get_player_number(module_accessor)] == false {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 5.0, 5.0, 0.0);
+    // }
+    // else if SHADOW_FRENZY[get_player_number(module_accessor)] == true {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 2.0, 0.0, 5.0);
+    // }
+// }
 
 // Handles meter usage, and determines if you can spend it or not.
 
@@ -581,7 +581,7 @@ unsafe extern "C" fn lucina_specialnloopmainsub(fighter: &mut L2CFighterCommon) 
     if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(module_accessor, false) {
         SP_GAUGE[get_player_number(module_accessor)] -= SPENT_SP[get_player_number(module_accessor)];
-        special_effect(module_accessor);
+        // special_effect(module_accessor);
         IS_EX[get_player_number(module_accessor)] = true;
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
         return L2CValue::I32(0);
@@ -815,6 +815,28 @@ unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucina", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucina_naireff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), -2, 9.3, -5.5, 0, 10, 0, 1, true);
+    }
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 11, 9.3, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, 0.7);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+unsafe fn lucina_nairsnd(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
+    }
+}
+
 // Forward and Back Air have been made pretty much identical.
 // Deals 10 damage and has 74 Knockback Growth.
 
@@ -822,18 +844,18 @@ unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    macros::FT_MOTION_RATE(fighter, 1.6);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    sv_animcmd::frame(lua_state, 6.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    sv_animcmd::frame(lua_state, 5.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 10.0, 361, 75, 0, 50, 3.0, 1.0, 0.0, 3.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 10.0, 361, 75, 0, 50, 3.8, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("sword1"), 10.0, 361, 75, 0, 50, 3.0, 1.0, 0.0, 7.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    sv_animcmd::wait(lua_state, 3.0);
+    sv_animcmd::wait(lua_state, 4.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -847,21 +869,20 @@ unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    macros::FT_MOTION_RATE(fighter, 1.5);
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
         macros::REVERSE_LR(fighter);
     }
+    macros::FT_MOTION_RATE(fighter, 2.0);
     sv_animcmd::frame(lua_state, 6.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 10.0, 361, 75, 0, 50, 3.5, 0.0, 0.0, 3.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 10.0, 361, 75, 0, 50, 3.5, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("sword1"), 10.0, 361, 75, 0, 50, 3.5, 0.0, 0.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    sv_animcmd::wait(lua_state, 5.0);
+    sv_animcmd::wait(lua_state, 6.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(boma);
     }
@@ -884,10 +905,10 @@ unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 9.0, 55, 40, 0, 40, 3.5, 1.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 9.0, 55, 40, 0, 40, 3.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("colonells"), 9.0, 55, 40, 0, 40, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("sword1"), 9.0, 55, 40, 0, 40, 3.5, 1.0, 0.0, 6.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 8.0, 55, 40, 0, 40, 3.5, 1.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 8.0, 55, 40, 0, 40, 3.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("colonells"), 8.0, 55, 40, 0, 40, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("sword1"), 8.0, 55, 40, 0, 40, 3.5, 1.0, 0.0, 6.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     sv_animcmd::frame(lua_state, 13.0);
     if macros::is_excute(fighter) {
@@ -912,9 +933,9 @@ unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 9.0, 73, 75, 0, 30, 3.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 9.0, 73, 75, 0, 30, 3.5, 1.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("sword1"), 9.0, 73, 75, 0, 30, 3.5, 1.0, 0.0, 6.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 8.0, 73, 75, 0, 30, 3.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 8.0, 73, 75, 0, 30, 3.5, 1.0, 0.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("sword1"), 8.0, 73, 75, 0, 30, 3.5, 1.0, 0.0, 6.7, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     sv_animcmd::frame(lua_state, 14.0);
     if macros::is_excute(fighter) {
@@ -1127,7 +1148,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-        special_effect(boma);
+        // special_effect(boma);
         IS_EX[get_player_number(boma)] = true;
         macros::FT_MOTION_RATE(fighter, 0.333);
     }
@@ -1221,7 +1242,7 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-        special_effect(boma);
+        // special_effect(boma);
         IS_EX[get_player_number(boma)] = true;
     }
     else {
@@ -1282,7 +1303,7 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-        special_effect(boma);
+        // special_effect(boma);
         IS_EX[get_player_number(boma)] = true;
     }
     else {
@@ -1344,7 +1365,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-        special_effect(boma);
+        // special_effect(boma);
         IS_EX[get_player_number(boma)] = true;
     }
     else {
@@ -1427,7 +1448,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(boma, false) {
         SP_GAUGE[get_player_number(boma)] -= SPENT_SP[get_player_number(boma)];
-        special_effect(boma);
+        // special_effect(boma);
         IS_EX[get_player_number(boma)] = true;
     }
     else {
@@ -1628,6 +1649,8 @@ pub fn install() {
         lucina_dashattack,
         lucina_dashattacksound,
         lucina_nair,
+        lucina_naireff,
+        lucina_nairsnd,
         lucina_fair,
         lucina_bair,
         lucina_uair,

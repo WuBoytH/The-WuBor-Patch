@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 use smash::phx::Vector3f;
-use smash::lua2cpp::L2CAgentBase;
+use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
@@ -8,11 +8,83 @@ use smash_script::*;
 use smashline::*;
 // use crate::IS_FUNNY;
 // use crate::globals::*;
-// use crate::commonfuncs::*;
+use crate::commonfuncs::*;
+
+static mut GO_SAUCE : [f32; 8] = [0.0; 8];
 
 // ---------------------------------------------------------
 // It was a long time coming, but now Terry’s got his buffs.
 // ---------------------------------------------------------
+
+#[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
+fn dolly_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+        if get_player_number(boma) < 8 {
+
+            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
+                GO_SAUCE[get_player_number(boma)] = 0.0;
+            }
+
+            if GO_SAUCE[get_player_number(boma)] >= 50.0
+            && WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) == false {
+                WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+            }
+            else {
+                if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
+                    WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+                }
+            }
+            
+            if StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
+            && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_FINAL
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE01
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE02
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE03
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE04
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE05
+            && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_END {
+                if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
+                    GO_SAUCE[get_player_number(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) * 0.8;
+                }
+                if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD) {
+                    GO_SAUCE[get_player_number(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) * 0.4;
+                }
+                if GO_SAUCE[get_player_number(boma)] > 100.0 {
+                    GO_SAUCE[get_player_number(boma)] = 100.0;
+                }
+            }
+
+            if WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) > 0.0 {
+                GO_SAUCE[get_player_number(boma)] += WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) * 0.2;
+                if GO_SAUCE[get_player_number(boma)] > 100.0 {
+                    GO_SAUCE[get_player_number(boma)] = 100.0;
+                }
+            }
+
+            if smashball::is_training_mode(){
+                if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+                    if GO_SAUCE[get_player_number(boma)] > 50.0 {
+                        GO_SAUCE[get_player_number(boma)] -= 50.0
+                    }
+                    else {
+                        GO_SAUCE[get_player_number(boma)] = 0.0;
+                    }
+                }
+                if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+                    if GO_SAUCE[get_player_number(boma)] < 50.0 {
+                        GO_SAUCE[get_player_number(boma)] += 50.0;
+                    }
+                    else {
+                        GO_SAUCE[get_player_number(boma)] = 100.0;
+                    }
+                }
+            }
+        }
+    }
+}
 
 // Power Wave can now be feinted by holding Shield during the move's startup.
 // If you feint the move, the rest of the Power Wave animation is sped-up.
@@ -642,12 +714,33 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "dolly", script = "game_superspecial", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_geezah(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    GO_SAUCE[get_player_number(boma)] -= 50.0;
+    original!(fighter);
+}
+
+#[acmd_script( agent = "dolly", script = "game_superspecial2start", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_bustah(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    GO_SAUCE[get_player_number(boma)] -= 50.0;
+    original!(fighter);
+}
+
 pub fn install() {
+    smashline::install_agent_frames!(
+        dolly_frame
+    );
     smashline::install_acmd_scripts!(
         dolly_nspecial,
         dolly_nspecialair,
         dolly_dspecialair,
         dolly_uspecialair,
-        dolly_uspecialaircomm
+        dolly_uspecialaircomm,
+        dolly_geezah,
+        dolly_bustah
     );
 }

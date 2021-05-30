@@ -9,8 +9,9 @@ use smashline::*;
 // use crate::IS_FUNNY;
 // use crate::globals::*;
 use crate::commonfuncs::*;
+use crate::{DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
 
-static mut GO_SAUCE : [f32; 8] = [0.0; 8];
+pub static mut GO_SAUCE : [f32; 8] = [0.0; 8];
 
 // ---------------------------------------------------------
 // It was a long time coming, but now Terry’s got his buffs.
@@ -26,14 +27,11 @@ fn dolly_frame(fighter: &mut L2CFighterCommon) {
                 GO_SAUCE[get_player_number(boma)] = 0.0;
             }
 
-            if GO_SAUCE[get_player_number(boma)] >= 50.0
-            && WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) == false {
+            if GO_SAUCE[get_player_number(boma)] >= 50.0 {
                 WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
             }
             else {
-                if WorkModule::is_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
-                    WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-                }
+                WorkModule::off_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
             }
             
             if StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
@@ -57,12 +55,14 @@ fn dolly_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
 
-            if WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) > 0.0 {
-                GO_SAUCE[get_player_number(boma)] += WorkModule::get_float(boma,*FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) * 0.2;
+            DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
+            if DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)] {
+                GO_SAUCE[get_player_number(boma)] += (DAMAGE_TAKEN[get_player_number(boma)] - DAMAGE_TAKEN_PREV[get_player_number(boma)]) * 0.2;
                 if GO_SAUCE[get_player_number(boma)] > 100.0 {
                     GO_SAUCE[get_player_number(boma)] = 100.0;
                 }
             }
+            DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
 
             if smashball::is_training_mode(){
                 if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {

@@ -1,5 +1,5 @@
 // use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
+use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
@@ -8,6 +8,23 @@ use smashline::*;
 // use crate::IS_FUNNY;
 // use crate::globals::*;
 // use crate::commonfuncs::*;
+
+// #[fighter_frame( agent = FIGHTER_KIND_MIISWORDSMAN )]
+// fn miisword_frame(fighter: &mut L2CFighterCommon) {
+//     unsafe {
+//         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+        
+//         if StatusModule::status_kind(boma) == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK
+//         && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+//             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+//             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
+//                 CancelModule::enable_cancel(boma);
+//             }
+//         }
+//     }
+// }
+
+// Air Gale Stab can now grab the ledge after hitting the opponent.
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs2end", category = ACMD_GAME, low_priority )]
 unsafe fn miisword_galestabend(fighter: &mut L2CAgentBase) {
@@ -23,6 +40,9 @@ unsafe fn miisword_galestabend(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
+    // smashline::install_agent_frames!(
+    //     miisword_frame
+    // );
     smashline::install_acmd_scripts!(
         miisword_galestabend
     );

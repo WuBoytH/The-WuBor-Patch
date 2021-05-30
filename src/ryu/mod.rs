@@ -38,7 +38,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
             if MotionModule::motion_kind(boma) == hash40("attack_hi3_s") {
                 if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
-                    if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
+                    if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_JUMP) {
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
                     }
                 }

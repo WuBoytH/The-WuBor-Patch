@@ -122,18 +122,18 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    StatusModule::init_settings(module_accessor, SituationKind(*SITUATION_KIND_AIR), *FIGHTER_KINETIC_TYPE_UNIQ, *GROUND_CORRECT_KIND_GROUND as u32, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE), false, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT, 1);
-    FighterStatusModuleImpl::set_fighter_status_data(module_accessor, false, *FIGHTER_TREADED_KIND_NO_REAC, false, true, false, *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64, 0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32, 0);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    StatusModule::init_settings(boma, SituationKind(*SITUATION_KIND_AIR), *FIGHTER_KINETIC_TYPE_UNIQ, *GROUND_CORRECT_KIND_GROUND as u32, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE), false, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT, 1);
+    FighterStatusModuleImpl::set_fighter_status_data(boma, false, *FIGHTER_TREADED_KIND_NO_REAC, false, true, false, *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64, 0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32, 0);
     L2CValue::I32(0)
 }
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecialairendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    MotionModule::change_motion(module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
-    KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-    // KineticModule::add_speed(module_accessor, &Vector3f {x: 2.0, y: 2.0, z: 0.0});
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    MotionModule::change_motion(boma, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
+    KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
+    // KineticModule::add_speed(boma, &Vector3f {x: 2.0, y: 2.0, z: 0.0});
     fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_air_s_end_main_loop as *const () as _))
 }
 

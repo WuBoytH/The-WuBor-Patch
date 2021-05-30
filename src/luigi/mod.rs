@@ -55,17 +55,17 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    WorkModule::off_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
-    WorkModule::off_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
-    if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_BONUS) == false {
-        WorkModule::set_float(module_accessor, 0.0, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    WorkModule::off_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
+    WorkModule::off_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
+    if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_BONUS) == false {
+        WorkModule::set_float(boma, 0.0, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
     }
     else {
-        WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_bonus"));
-        WorkModule::set_float(module_accessor, 0.0, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+        WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("charge_bonus"));
+        WorkModule::set_float(boma, 0.0, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
     }
-    if StopModule::is_stop(module_accessor) {
+    if StopModule::is_stop(boma) {
         luigi_specialschargemainstop(fighter);
     }
     fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(luigi_specialschargemainstop as *const () as _));
@@ -74,48 +74,48 @@ unsafe fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn luigi_specialschargemainstop(fighter: &mut L2CFighterCommon) {
-    let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    let charge_speed = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_speed_mul"));
-    WorkModule::add_float(module_accessor, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let charge_speed = WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("charge_speed_mul"));
+    WorkModule::add_float(boma, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
 }
 unsafe extern "C" fn luigi_specialschargemain2(fighter: &mut L2CFighterCommon) {
-    let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
-            MotionModule::change_motion(module_accessor, Hash40::new("special_air_s_hold"), 1.0, 1.0, false, 0.0, false, false);
-            WorkModule::on_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+        if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
+            MotionModule::change_motion(boma, Hash40::new("special_air_s_hold"), 1.0, 1.0, false, 0.0, false, false);
+            WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST);
         }
         else {
-            MotionModule::change_motion_inherit_frame(module_accessor, Hash40::new("special_air_s_hold"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_air_s_hold"), -1.0, 1.0, 0.0, false, false);
         }
-        WorkModule::set_int(module_accessor, fighter.sub_end_added_lines().get_i32(), *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
+        WorkModule::set_int(boma, fighter.sub_end_added_lines().get_i32(), *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
     }
     else {
-        KineticModule::change_kinetic(module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-        GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        if WorkModule::is_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
-            MotionModule::change_motion(module_accessor, Hash40::new("special_s_hold"), 1.0, 1.0, false, 0.0, false, false);
-            WorkModule::on_flag(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST);
+        KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+        if WorkModule::is_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
+            MotionModule::change_motion(boma, Hash40::new("special_s_hold"), 1.0, 1.0, false, 0.0, false, false);
+            WorkModule::on_flag(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST);
         }
         else {
-            MotionModule::change_motion_inherit_frame(module_accessor, Hash40::new("special_s_hold"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(boma, Hash40::new("special_s_hold"), -1.0, 1.0, 0.0, false, false);
         }
-        WorkModule::set_int(module_accessor, *SITUATION_KIND_AIR, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
+        WorkModule::set_int(boma, *SITUATION_KIND_AIR, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
     }
     return
 }
 unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let module_accessor = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) == false {
-        let charge = WorkModule::get_float(module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
-        let charge_frame = WorkModule::get_param_float(module_accessor, hash40("param_special_s"), hash40("charge_frame"));
+    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    if ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_SPECIAL) == false {
+        let charge = WorkModule::get_float(boma, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+        let charge_frame = WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("charge_frame"));
         if charge_frame <= charge {
             fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
             return L2CValue::I32(0);
         }
-        if StatusModule::is_situation_changed(module_accessor) {
+        if StatusModule::is_situation_changed(boma) {
             luigi_specialschargemain2(fighter);
         }
         return L2CValue::I32(0);
@@ -289,7 +289,6 @@ unsafe fn luigi_sspecialairhold(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "luigi", scripts = ["effect_specialshold", "effect_specialairshold"], category = ACMD_EFFECT, low_priority )]
 unsafe fn luigi_sspecialholdeff(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1133c5d194), Hash40::new("top"), 0, 10, 11, 0, 0, 0, 1, true);

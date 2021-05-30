@@ -81,6 +81,7 @@ mod lucario;
 use crate::lucario::IS_SPIRIT_BOMB;
 mod bayonetta;
 mod dolly;
+use crate::dolly::GO_SAUCE;
 mod shulk;
 use crate::shulk::SHULK_SPECIAL_LW;
 mod pikachu;
@@ -121,9 +122,9 @@ mod miiswordsman;
 // An unused experiment to make the Grab button work as a Smash Attack button.
 
 // #[skyline::hook(replace = ControlModule::get_command_flag_cat )]
-// pub unsafe fn get_command_flag_cat_replace(module_accessor: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
-//     let mut flag = original!()(module_accessor, category);
-//     let entry_id = WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+// pub unsafe fn get_command_flag_cat_replace(boma: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
+//     let mut flag = original!()(boma, category);
+//     let entry_id = WorkModule::get_int(boma,*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 //     LookupSymbol(
 //         &mut FIGHTER_MANAGER,
 //         "_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E\u{0}"
@@ -133,9 +134,9 @@ mod miiswordsman;
 //     let fighter_manager = *(FIGHTER_MANAGER as *mut *mut smash::app::FighterManager);
 //     if smash::app::lua_bind::FighterInformation::is_operation_cpu(smash::app::lua_bind::FighterManager::get_fighter_information(fighter_manager, smash::app::FighterEntryID(entry_id as i32))) == false
 //     && flag & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
-//     && ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_CATCH) {
-//         let stickx = ControlModule::get_stick_x(module_accessor);
-//         let sticky = ControlModule::get_stick_y(module_accessor);
+//     && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_CATCH) {
+//         let stickx = ControlModule::get_stick_x(boma);
+//         let sticky = ControlModule::get_stick_y(boma);
 //         if stickx.abs() < 0.5 && sticky >= 0.5 {
 //             flag = *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4;
 //         }
@@ -288,8 +289,8 @@ move_type_again: bool) -> u64 {
 
 // #[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
 // unsafe fn attack_replace(lua_state: u64) {
-//     let module_accessor = smash::app::sv_system::battle_object_module_accessor(lua_state);
-//     let fighter_kind = smash::app::utility::get_kind(module_accessor);
+//     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+//     let fighter_kind = smash::app::utility::get_kind(boma);
 //     if SOUND[ENTRY_ID] == true && GLOBAL_STASIS == true {
 //         let mut l2c_agent = L2CAgent::new(lua_state);
 //         let hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
@@ -307,9 +308,9 @@ move_type_again: bool) -> u64 {
 // }
 
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
-pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-    let fighter_kind = utility::get_kind(module_accessor);
-    let ret = original!()(module_accessor,term);
+pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
+    let fighter_kind = utility::get_kind(boma);
+    let ret = original!()(boma,term);
     
     // Global Edits
 
@@ -317,18 +318,18 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
 
     // Fighter-Specific Param Edits
     
-    if fighter_kind == *FIGHTER_KIND_LUCINA && get_player_number(module_accessor) < 8 {
+    if fighter_kind == *FIGHTER_KIND_LUCINA && get_player_number(boma) < 8 {
         if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
-        if HEROIC_GRAB[get_player_number(module_accessor)]
+        if HEROIC_GRAB[get_player_number(boma)]
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3
         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN {
             return false;
         }
-        if AIR_ACTION[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false {
+        if AIR_ACTION[get_player_number(boma)] && IS_FUNNY[get_player_number(boma)] == false {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap and Heroic Bravery if used once unless in Funny
                 return false;
@@ -337,7 +338,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
                 return ret;
             }
         }
-        if MotionModule::motion_kind(module_accessor) == hash40("attack_12") {
+        if MotionModule::motion_kind(boma) == hash40("attack_12") {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
@@ -360,8 +361,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(module_accessor) < 8 {
-        if SHULK_SPECIAL_LW[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false { // Disable Vision if used Burst and not in Funny
+    if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(boma) < 8 {
+        if SHULK_SPECIAL_LW[get_player_number(boma)] && IS_FUNNY[get_player_number(boma)] == false { // Disable Vision if used Burst and not in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return false;
             }
@@ -374,8 +375,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RICHTER && get_player_number(module_accessor) < 8 {
-        if RICHTER_SPECIAL_HI[get_player_number(module_accessor)] && IS_FUNNY[get_player_number(module_accessor)] == false { // Disable Multiple Up-Bs unless in Funny
+    if fighter_kind == *FIGHTER_KIND_RICHTER && get_player_number(boma) < 8 {
+        if RICHTER_SPECIAL_HI[get_player_number(boma)] && IS_FUNNY[get_player_number(boma)] == false { // Disable Multiple Up-Bs unless in Funny
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                 return false;
             }
@@ -387,15 +388,15 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RYU && get_player_number(module_accessor) < 8 {
-        if CAMERA[get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_RYU && get_player_number(boma) < 8 {
+        if CAMERA[get_player_number(boma)] {
             return false;
         }
         else {
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
+    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(boma) < 8 {
         if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
@@ -407,7 +408,7 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
         || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
         || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START
         || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
-            if QUICK_STEP_STATE[get_player_number(module_accessor)] == 1 {
+            if QUICK_STEP_STATE[get_player_number(boma)] == 1 {
                 return false;
             }
             else {
@@ -418,8 +419,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(module_accessor) < 8 {
-        if CAN_DRAGON_INSTALL[get_player_number(module_accessor)] == false
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(boma) < 8 {
+        if CAN_DRAGON_INSTALL[get_player_number(boma)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
             return false;
         }
@@ -427,8 +428,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_GANON && get_player_number(module_accessor) < 8 {
-        if CAN_TELEPORT[get_player_number(module_accessor)] == false
+    if fighter_kind == *FIGHTER_KIND_GANON && get_player_number(boma) < 8 {
+        if CAN_TELEPORT[get_player_number(boma)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
             return false;
         }
@@ -436,8 +437,8 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_KIRBY && get_player_number(module_accessor) < 8 {
-        if CAN_TELEPORT[get_player_number(module_accessor)] == false
+    if fighter_kind == *FIGHTER_KIND_KIRBY && get_player_number(boma) < 8 {
+        if CAN_TELEPORT[get_player_number(boma)] == false
         && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
             return false;
         }
@@ -451,15 +452,15 @@ pub unsafe fn is_enable_transition_term_replace(module_accessor: &mut BattleObje
 }
 
 #[skyline::hook(offset = INT_OFFSET)]
-pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64) -> i32 {
-    let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let ret = original!()(boma, param_type, param_hash);
-    let fighter_kind = utility::get_kind(module_accessor);
+pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> i32 {
+    let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let ret = original!()(module_accessor, param_type, param_hash);
+    let fighter_kind = utility::get_kind(boma);
 
     // Global Param Edits
     
     if param_hash == hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
-        if IS_FUNNY[get_player_number(module_accessor)] {
+        if IS_FUNNY[get_player_number(boma)] {
             return 5;
         }
         else {
@@ -468,7 +469,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
 
     if param_hash == hash40("invalid_capture_frame") { // The Chain Grab Param
-        if IS_FUNNY[get_player_number(module_accessor)] {
+        if IS_FUNNY[get_player_number(boma)] {
             return 1;
         }
         else {
@@ -479,7 +480,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     // Fighter-Specific Param Edits
 
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
-        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == hash40("life") {
             if IS_SPIRIT_BOMB[o_entry_id] {
@@ -494,7 +495,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
         }
     }
     if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT { // Phazon Orb Life
-        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == hash40("life") {
             if IS_FUNNY[o_entry_id] {
@@ -508,8 +509,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_RIDLEY && get_player_number(module_accessor) < 8 { // Funny Ridley
-        if FUNNY_RIDLEY[get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_RIDLEY && get_player_number(boma) < 8 { // Funny Ridley
+        if FUNNY_RIDLEY[get_player_number(boma)] {
             if param_hash == hash40("max_charge_frame") {// Funny Plasma Breath
                 return 300;
             }
@@ -524,8 +525,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_DAISY && get_player_number(module_accessor) < 8 {
-        if IS_FUNNY[get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_DAISY && get_player_number(boma) < 8 {
+        if IS_FUNNY[get_player_number(boma)] {
             if param_hash == hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
                 return 300;
             }
@@ -537,8 +538,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(module_accessor) < 8 { // Limit Shenanigans
-        if IS_FUNNY[get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(boma) < 8 { // Limit Shenanigans
+        if IS_FUNNY[get_player_number(boma)] {
             if param_hash == hash40("limit_break_clear_frame") {
                 return 6000;
             }
@@ -550,8 +551,8 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(module_accessor) < 8 {
-        if IS_FUNNY[get_player_number(module_accessor)] { // DRAGON INSTALL
+    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(boma) < 8 {
+        if IS_FUNNY[get_player_number(boma)] { // DRAGON INSTALL
             if param_hash == 0x202e02971b { // Unstaled Deep Breathing Timer hash
                 return 420;
             }
@@ -563,24 +564,24 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 {
+    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(boma) < 8 {
         if param_hash == hash40("loop_num_w")
         || param_hash == hash40("air_loop_num_w") {
-            TATSULOOPS[get_player_number(module_accessor)][0] = 1;
+            TATSULOOPS[get_player_number(boma)][0] = 1;
             return 1;
         }
         if param_hash == hash40("loop_num_m")
         || param_hash == hash40("air_loop_num_m") {
-            TATSULOOPS[get_player_number(module_accessor)][1] = 2;
+            TATSULOOPS[get_player_number(boma)][1] = 2;
             return 2;
         }
         if param_hash == hash40("loop_num_s")
         || param_hash == hash40("air_loop_num_s") {
-            TATSULOOPS[get_player_number(module_accessor)][2] = 3;
+            TATSULOOPS[get_player_number(boma)][2] = 3;
             return 3;
         }
         if param_hash == hash40("fall_frame") {
-            if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
+            if SHORYUREPPA[get_player_number(boma)] == 1 {
                 return 15;
             }
             else {
@@ -593,7 +594,7 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
     }
     if fighter_kind == FIGHTER_KIND_SHULK {
         if param_hash == hash40("circle_menu_release_after_interval_frame") {
-            let status_kind = StatusModule::status_kind(module_accessor);
+            let status_kind = StatusModule::status_kind(boma);
             if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_AIR
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY
@@ -603,10 +604,10 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
             || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL 
-            || status_kind == *FIGHTER_STATUS_KIND_TREAD_DAMAGE) && WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) == false {
-                let hitstun = (WorkModule::get_int(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME) - WorkModule::get_int(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME)) as f32;
-                if WorkModule::get_float(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) + hitstun < 40.0 {
-                    return WorkModule::get_float(module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) as i32;
+            || status_kind == *FIGHTER_STATUS_KIND_TREAD_DAMAGE) && WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) == false {
+                let hitstun = (WorkModule::get_int(boma, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME) - WorkModule::get_int(boma, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME)) as f32;
+                if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) + hitstun < 40.0 {
+                    return WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) as i32;
                 }
                 else {
                     return (40.0 - hitstun) as i32;
@@ -626,17 +627,17 @@ pub unsafe fn get_param_int_replace(boma: u64, param_type: u64, param_hash: u64)
 }
 
 #[skyline::hook(offset = FLOAT_OFFSET)]
-pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u64) -> f32 {
-    let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let ret = original!()(boma, param_type, param_hash);
-    let fighter_kind = utility::get_kind(module_accessor);
+pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> f32 {
+    let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let ret = original!()(module_accessor, param_type, param_hash);
+    let fighter_kind = utility::get_kind(boma);
 
     // Universal Param Edits
     
     // Fighter-Specific Param Edits
     
     if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
-        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+        let oboma = sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
         let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
         if param_hash == hash40("max_speed") {
             if IS_SPIRIT_BOMB[o_entry_id] {
@@ -650,8 +651,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(module_accessor) < 8 { // Limit Shenanigans
-        if IS_FUNNY[get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_CLOUD && get_player_number(boma) < 8 { // Limit Shenanigans
+        if IS_FUNNY[get_player_number(boma)] {
             if param_hash == hash40("lw2_spd_x_mul") {
                 return 0.6;
             }
@@ -672,8 +673,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(module_accessor) < 8 {
-        if IS_FUNNY[get_player_number(module_accessor)] {
+    if fighter_kind == *FIGHTER_KIND_SHULK && get_player_number(boma) < 8 {
+        if IS_FUNNY[get_player_number(boma)] {
             if param_hash == hash40("active_time_jump") {
                 return 100.0;
             }
@@ -715,9 +716,9 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(module_accessor) < 8 { // Shoryureppa
+    if fighter_kind == *FIGHTER_KIND_KEN && get_player_number(boma) < 8 { // Shoryureppa
         if param_hash == hash40("speed_x_mul_s") {
-            if SHORYUREPPA[get_player_number(module_accessor)] == 1 {
+            if SHORYUREPPA[get_player_number(boma)] == 1 {
                 return 0.15;
             }
             else {
@@ -725,8 +726,8 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             }
         }
         if param_hash == hash40("speed_y_mul_s") {
-            if V_TRIGGER[get_player_number(module_accessor)]
-            && SHORYUREPPA[get_player_number(module_accessor)] == 1 {
+            if V_TRIGGER[get_player_number(boma)]
+            && SHORYUREPPA[get_player_number(boma)] == 1 {
                 return 0.1;
             }
             else {
@@ -737,9 +738,9 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WARIO && get_player_number(module_accessor) < 8 {
+    if fighter_kind == *FIGHTER_KIND_WARIO && get_player_number(boma) < 8 {
         if param_hash == hash40("gass_middle_time") {
-            if FINISH_SIGN[get_player_number(module_accessor)] > 0 {
+            if FINISH_SIGN[get_player_number(boma)] > 0 {
                 return 1.0;
             }
             else {
@@ -747,7 +748,7 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             }
         }
         if param_hash == hash40("gass_large_time") {
-            if FINISH_SIGN[get_player_number(module_accessor)] > 8 {
+            if FINISH_SIGN[get_player_number(boma)] > 8 {
                 return 1.0;
             }
             else {
@@ -755,11 +756,43 @@ pub unsafe fn get_param_float_replace(boma: u64, param_type: u64, param_hash: u6
             }
         }
         if param_hash == hash40("gass_max_time") {
-            if FINISH_SIGN[get_player_number(module_accessor)] >= 15 {
+            if FINISH_SIGN[get_player_number(boma)] >= 15 {
                 return 1.0;
             }
             else {
                 return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_DOLLY && get_player_number(boma) < 8 {
+        if param_hash == hash40("super_special_damage") {
+            if GO_SAUCE[get_player_number(boma)] < 50.0 {
+                return 999.0;
+            }
+            else {
+                return 0.0;
+            }
+        }
+        if param_hash == hash40("super_special_hp_rate") {
+            if GO_SAUCE[get_player_number(boma)] < 50.0 {
+                return 0.0;
+            }
+            else {
+                return 100.0;
+            }
+        }
+        if param_hash == hash40("super_special_hp_min") {
+            return 0.0;
+        }
+        if param_hash == hash40("super_special_hp_max") {
+            if GO_SAUCE[get_player_number(boma)] < 50.0 {
+                return 0.0;
+            }
+            else {
+                return 999.0;
             }
         }
         else {
@@ -809,10 +842,10 @@ pub fn music_function_replace(
 }
 
 #[skyline::hook(replace = WorkModule::get_int64 )]
-pub unsafe fn get_int64_replace(module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
-    let ret = original!()(module_accessor,term);
+pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
+    let ret = original!()(boma,term);
     if term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
-        if HEROIC_GRAB[get_player_number(module_accessor)] {
+        if HEROIC_GRAB[get_player_number(boma)] {
             return 0x8a0abc72cu64;
         }
     }
@@ -837,7 +870,7 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 
 // #[skyline::hook(replace = smash::app::lua_bind::StatusModule::init_settings)]
 // pub unsafe fn init_settings_replace(
-// module_accessor: &mut app::BattleObjectModuleAccessor,
+// boma: &mut app::BattleObjectModuleAccessor,
 // situation_kind: i32,
 // arg3: i32, 
 // arg4: u64,
@@ -847,9 +880,9 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 // arg8: i32,
 // arg9: i32,
 // arg10: i32) -> u64 {
-// 	let status_kind = StatusModule::status_kind(module_accessor);
-// 	let fighter_kind = app::utility::get_kind(module_accessor);
-//     let ret = original!()(module_accessor, situation_kind, arg3, arg4, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 	let status_kind = StatusModule::status_kind(boma);
+// 	let fighter_kind = app::utility::get_kind(boma);
+//     let ret = original!()(boma, situation_kind, arg3, arg4, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
 
 // 	if status_kind != *FIGHTER_STATUS_KIND_APPEAL
 // 	&& status_kind != *FIGHTER_STATUS_KIND_DASH
@@ -871,11 +904,11 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 // 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING_LIGHT
 // 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
 // 	|| status_kind == *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
-// 		return original!()(module_accessor, situation_kind, arg3, 1 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 		return original!()(boma, situation_kind, arg3, 1 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
 // 	}
 // 	else if status_kind == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-// 		if ControlModule::get_stick_y(module_accessor) >= 0.66 {
-// 			return original!()(module_accessor, situation_kind, arg3, 1 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 		if ControlModule::get_stick_y(boma) >= 0.66 {
+// 			return original!()(boma, situation_kind, arg3, 1 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
 // 		}
 // 		else {
 // 			return ret;
@@ -883,7 +916,7 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 // 	}
 // 	else if fighter_kind == FIGHTER_KIND_BUDDY {
 // 		if (status_kind == *FIGHTER_BUDDY_STATUS_KIND_SPECIAL_S_DASH || status_kind == *FIGHTER_STATUS_KIND_SPECIAL_S) && situation_kind == SITUATION_KIND_GROUND {
-// 			return original!()(module_accessor, situation_kind, arg3, 7 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
+// 			return original!()(boma, situation_kind, arg3, 7 as u64, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
 // 		}
 // 		else {
 // 			return ret;
@@ -896,10 +929,10 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 
 #[skyline::hook(replace = sv_animcmd::PLAY_SE)]
 unsafe fn play_se_replace(lua_state: u64) {
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let mut l2c_agent = L2CAgent::new(lua_state);
         let se = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();
@@ -918,10 +951,10 @@ unsafe fn play_se_replace(lua_state: u64) {
 #[skyline::hook(replace = sv_animcmd::PLAY_SEQUENCE)]
 pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
     let mut l2c_agent = L2CAgent::new(lua_state);
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let seq = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();
         let mut new_seq = seq.get_int();
@@ -939,10 +972,10 @@ pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
 #[skyline::hook(replace = sv_animcmd::PLAY_FLY_VOICE)]
 pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
     let mut l2c_agent = L2CAgent::new(lua_state);
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let seq = l2c_agent.pop_lua_stack(1); //sound effect
         let seq2 = l2c_agent.pop_lua_stack(1);
         l2c_agent.clear_lua_stack();
@@ -964,10 +997,10 @@ pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
 
 #[skyline::hook(replace = sv_animcmd::PLAY_STATUS)]
 unsafe fn play_status_replace(lua_state: u64) {
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let mut l2c_agent = L2CAgent::new(lua_state);
         let se = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();
@@ -985,10 +1018,10 @@ unsafe fn play_status_replace(lua_state: u64) {
 
 #[skyline::hook(replace = sv_animcmd::PLAY_DOWN_SE)]
 unsafe fn play_down_se_replace(lua_state: u64) {
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let mut l2c_agent = L2CAgent::new(lua_state);
         let se = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();
@@ -1006,10 +1039,10 @@ unsafe fn play_down_se_replace(lua_state: u64) {
 
 #[skyline::hook(replace = sv_animcmd::PLAY_SE_REMAIN)]
 unsafe fn play_se_remain_replace(lua_state: u64) {
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let mut l2c_agent = L2CAgent::new(lua_state);
         let se = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();
@@ -1027,10 +1060,10 @@ unsafe fn play_se_remain_replace(lua_state: u64) {
 
 #[skyline::hook(replace = sv_animcmd::PLAY_SE_NO_3D)]
 unsafe fn play_se_no_3d_replace(lua_state: u64) {
-    let module_accessor = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(module_accessor);
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    let fighter_kind = utility::get_kind(boma);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(module_accessor) {
+    && shadow_id(boma) {
         let mut l2c_agent = L2CAgent::new(lua_state);
         let se = l2c_agent.pop_lua_stack(1); //sound effect
         l2c_agent.clear_lua_stack();

@@ -372,7 +372,7 @@ unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
 }
 
 // Super Jump Punch's sweetspot has a new angle (88 -> 42) and less Knockback Growth (88 -> 60).
-// If you hit the sweetspot, you can jump-cancel at the peak of his jump.
+// If you hit the sweetspot, you can cancel into anything at the peak of his jump.
 // The grounded version deals less damage (25 -> 20)...
 
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]

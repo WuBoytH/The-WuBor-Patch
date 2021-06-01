@@ -288,22 +288,22 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
-#[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
-unsafe fn attack_replace(lua_state: u64) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = smash::app::utility::get_kind(boma);
-    let mut l2c_agent = L2CAgent::new(lua_state);
-    let mut hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
-    l2c_agent.clear_lua_stack();
-    for i in 0..36 {
-        if i == 21 && hitbox_params[i].get_f32() >= 0.0 {
-            l2c_agent.push_lua_stack(&mut L2CValue::new_num(1.0));
-        } else {
-            l2c_agent.push_lua_stack(&mut hitbox_params[i]);
-        }
-    }
-    original!()(lua_state);
-}
+// #[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
+// unsafe fn attack_replace(lua_state: u64) {
+//     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+//     let fighter_kind = smash::app::utility::get_kind(boma);
+//     let mut l2c_agent = L2CAgent::new(lua_state);
+//     let mut hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
+//     l2c_agent.clear_lua_stack();
+//     for i in 0..36 {
+//         if i == 21 && hitbox_params[i].get_f32() >= 0.0 {
+//             l2c_agent.push_lua_stack(&mut L2CValue::new_num(1.0));
+//         } else {
+//             l2c_agent.push_lua_stack(&mut hitbox_params[i]);
+//         }
+//     }
+//     original!()(lua_state);
+// }
 
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {

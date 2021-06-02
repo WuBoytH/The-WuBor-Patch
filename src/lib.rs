@@ -81,7 +81,7 @@ mod lucario;
 use crate::lucario::IS_SPIRIT_BOMB;
 mod bayonetta;
 mod dolly;
-use crate::dolly::GO_SAUCE;
+// use crate::dolly::GO_SAUCE;
 mod shulk;
 use crate::shulk::SHULK_SPECIAL_LW;
 mod pikachu;
@@ -765,38 +765,38 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_DOLLY && get_player_number(boma) < 8 {
-        if param_hash == hash40("super_special_damage") {
-            if GO_SAUCE[get_player_number(boma)] < 50.0 {
-                return 999.0;
-            }
-            else {
-                return 0.0;
-            }
-        }
-        if param_hash == hash40("super_special_hp_rate") {
-            if GO_SAUCE[get_player_number(boma)] < 50.0 {
-                return 0.0;
-            }
-            else {
-                return 100.0;
-            }
-        }
-        if param_hash == hash40("super_special_hp_min") {
-            return 0.0;
-        }
-        if param_hash == hash40("super_special_hp_max") {
-            if GO_SAUCE[get_player_number(boma)] < 50.0 {
-                return 0.0;
-            }
-            else {
-                return 999.0;
-            }
-        }
-        else {
-            return ret;
-        }
-    }
+    // if fighter_kind == *FIGHTER_KIND_DOLLY && get_player_number(boma) < 8 {
+    //     if param_hash == hash40("super_special_damage") {
+    //         if GO_SAUCE[get_player_number(boma)] < 50.0 {
+    //             return 999.0;
+    //         }
+    //         else {
+    //             return 0.0;
+    //         }
+    //     }
+    //     if param_hash == hash40("super_special_hp_rate") {
+    //         if GO_SAUCE[get_player_number(boma)] < 50.0 {
+    //             return 0.0;
+    //         }
+    //         else {
+    //             return 100.0;
+    //         }
+    //     }
+    //     if param_hash == hash40("super_special_hp_min") {
+    //         return 0.0;
+    //     }
+    //     if param_hash == hash40("super_special_hp_max") {
+    //         if GO_SAUCE[get_player_number(boma)] < 50.0 {
+    //             return 0.0;
+    //         }
+    //         else {
+    //             return 999.0;
+    //         }
+    //     }
+    //     else {
+    //         return ret;
+    //     }
+    // }
     else {
         return ret;
     }

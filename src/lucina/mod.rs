@@ -386,33 +386,39 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if (SP_GAUGE[get_player_number(boma)] >= 25.0 && SHADOW_FRENZY[get_player_number(boma)] == false)
             || SHADOW_FRENZY[get_player_number(boma)] == true {
                 if _TIME_COUNTER[get_player_number(boma)] == 0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_damage_aura"), smash::phx::Hash40::new("handr"), &Vector3f {x: 3.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(boma, Hash40::new("sys_damage_aura"), smash::phx::Hash40::new("handl"), &Vector3f {x: 3.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.06, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    if SHADOW_FRENZY[get_player_number(boma)] || (SP_GAUGE[get_player_number(boma)] >= 125.0 && SP_GAUGE[get_player_number(boma)] < 150.0) {
-                        EffectModule::set_rgb(boma, onemoreeff, 2.0, 0.0, 5.0);
-                        EffectModule::set_rgb(boma, onemoreeff2, 2.0, 0.0, 5.0);
+                    let onemoreeff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_damage_aura"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+                    let onemoreeff2: u32 = EffectModule::req_follow(boma, Hash40::new("sys_damage_aura"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+                    EffectModule::set_rate(boma, onemoreeff, 2.0);
+                    EffectModule::set_rate(boma, onemoreeff2, 2.0);
+                    if SHADOW_FRENZY[get_player_number(boma)] {
+                        EffectModule::set_rgb(boma, onemoreeff, 0.6, 0.0, 1.0);
+                        EffectModule::set_rgb(boma, onemoreeff2, 0.6, 0.0, 1.0);
+                    }
+                    else if SP_GAUGE[get_player_number(boma)] >= 125.0 && SP_GAUGE[get_player_number(boma)] < 150.0 {
+                        EffectModule::set_rgb(boma, onemoreeff, 1.0, 0.5, 0.5);
+                        EffectModule::set_rgb(boma, onemoreeff2, 1.0, 0.5, 0.5);
                     }
                     else if SP_GAUGE[get_player_number(boma)] >= 50.0 && SP_GAUGE[get_player_number(boma)] < 75.0 {
-                        EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 5.0);
-                        EffectModule::set_rgb(boma, onemoreeff2, 0.0, 0.0, 5.0);
+                        EffectModule::set_rgb(boma, onemoreeff, 0.0, 0.0, 1.0);
+                        EffectModule::set_rgb(boma, onemoreeff2, 0.0, 0.0, 1.0);
                     }
                     else if SP_GAUGE[get_player_number(boma)] >= 75.0 && SP_GAUGE[get_player_number(boma)] < 100.0 {
-                        EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 0.0);
-                        EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 0.0);
+                        EffectModule::set_rgb(boma, onemoreeff, 1.0, 0.8, 0.0);
+                        EffectModule::set_rgb(boma, onemoreeff2, 1.0, 0.8, 0.0);
                     }
                     else if SP_GAUGE[get_player_number(boma)] >= 100.0 && SP_GAUGE[get_player_number(boma)] < 125.0 {
-                        EffectModule::set_rgb(boma, onemoreeff, 5.0, 0.0, 0.0);
-                        EffectModule::set_rgb(boma, onemoreeff2, 5.0, 0.0, 0.0);
+                        EffectModule::set_rgb(boma, onemoreeff, 1.0, 0.0, 0.0);
+                        EffectModule::set_rgb(boma, onemoreeff2, 1.0, 0.0, 0.0);
                     }
                     else if SP_GAUGE[get_player_number(boma)] >= 25.0 && SP_GAUGE[get_player_number(boma)] < 50.0 {
-                        EffectModule::set_rgb(boma, onemoreeff, 0.0, 5.0, 5.0);
-                        EffectModule::set_rgb(boma, onemoreeff2, 0.0, 5.0, 5.0);
+                        EffectModule::set_rgb(boma, onemoreeff, 0.0, 1.0, 1.0);
+                        EffectModule::set_rgb(boma, onemoreeff2, 0.0, 1.0, 1.0);
                     }
                     else{
-                        EffectModule::set_rgb(boma, onemoreeff, 5.0, 5.0, 5.0);
-                        EffectModule::set_rgb(boma, onemoreeff2, 5.0, 5.0, 5.0);
+                        EffectModule::set_rgb(boma, onemoreeff, 1.0, 1.0, 1.0);
+                        EffectModule::set_rgb(boma, onemoreeff2, 1.0, 1.0, 1.0);
                     }
-                    _TIME_COUNTER[get_player_number(boma)] = 12;
+                    _TIME_COUNTER[get_player_number(boma)] = 4;
                 }
                 _TIME_COUNTER[get_player_number(boma)] -= 1;
             }
@@ -522,7 +528,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
             }
-
+            
             if MotionModule::motion_kind(boma) == hash40("attack_air_n")
             || MotionModule::motion_kind(boma) == hash40("attack_air_hi")
             || MotionModule::motion_kind(boma) == hash40("attack_air_lw") {

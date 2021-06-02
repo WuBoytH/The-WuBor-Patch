@@ -12,12 +12,15 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
-nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs.git" }
+# nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs.git" }
+# skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash.git", features = ["weak_l2cvalue"] }
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
 # smash_script = { path = "../smash-script-development" }
+# smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "smashline-ver" }
+# smashline = { git = "https://github.com/blu-dev/smashline.git" }
 smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
 smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
-interpolation = "0.2.0"
+# interpolation = "0.2.0"
 
 [profile.dev]
 panic = "abort"

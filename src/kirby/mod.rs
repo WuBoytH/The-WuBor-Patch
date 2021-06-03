@@ -1,4 +1,6 @@
 use smash::phx::Hash40;
+use smash::hash40;
+// use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
@@ -9,6 +11,8 @@ use smashline::*;
 use crate::ganon::*;
 use crate::commonfuncs::*;
 use crate::IS_FUNNY;
+
+pub static mut SLIDE_BOUNCE : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
 fn kirby_frame(fighter: &mut L2CFighterCommon) {
@@ -23,6 +27,28 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         && AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        }
+
+        // Down Tilt Bounce
+
+        if MotionModule::motion_kind(boma) == hash40("attack_lw3") {
+            if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
+                SLIDE_BOUNCE[get_player_number(boma)] = true;
+                StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
+                GroundModule::set_correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_JUMP);
+                macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            }
+        }
+        if SLIDE_BOUNCE[get_player_number(boma)]
+        && MotionModule::motion_kind(boma) != hash40("jump_b") {
+            MotionModule::change_motion(boma, Hash40::new("jump_b"), 22.0, 1.0, false, 0.0, false, false);
+            macros::SET_SPEED_EX(fighter, -1.0, 1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
+        else if (MotionModule::motion_kind(boma) == hash40("jump_b")
+        && MotionModule::frame(boma) >= 30.0)
+        || MotionModule::motion_kind(boma) != hash40("jump_b") {
+            SLIDE_BOUNCE[get_player_number(boma)] = false;
         }
 
         // Ganon Teleport
@@ -99,6 +125,26 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
                 KineticModule::unable_energy_all(boma);
             }
         }
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+unsafe fn kirby_dtilt(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    let boma = sv_system::battle_object_module_accessor(lua_state);
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(boma, false);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 48, 50, 0, 72, 4.0, 0.0, 2.0, 7.0, Some(0.0), Some(2.0), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::frame(lua_state, 20.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 60, 50, 0, 72, 4.0, 0.0, 2.0, 7.0, Some(0.0), Some(2.0), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+    }
+    sv_animcmd::wait(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(boma, true);
+        AttackModule::clear_all(boma);
     }
 }
 
@@ -230,6 +276,7 @@ pub fn install() {
         kirby_frame
     );
     smashline::install_acmd_scripts!(
+        kirby_dtilt,
         kirby_uair,
         kirby_sspecialstart,
         kirby_sspecialstartair,

@@ -76,6 +76,7 @@ mod dedede;
 mod lucas;
 mod jack;
 mod kirby;
+use crate::kirby::SLIDE_BOUNCE;
 mod cloud;
 mod lucario;
 use crate::lucario::IS_SPIRIT_BOMB;
@@ -388,6 +389,14 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     }
     if fighter_kind == *FIGHTER_KIND_RYU && get_player_number(boma) < 8 {
         if CAMERA[get_player_number(boma)] {
+            return false;
+        }
+        else {
+            return ret;
+        }
+    }
+    if fighter_kind == *FIGHTER_KIND_KIRBY && get_player_number(boma) < 8 {
+        if SLIDE_BOUNCE[get_player_number(boma)] {
             return false;
         }
         else {

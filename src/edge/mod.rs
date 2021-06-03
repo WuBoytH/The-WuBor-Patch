@@ -5,7 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 // use smash_script::*;
 use smashline::*;
-// use crate::IS_FUNNY;
+use crate::IS_FUNNY;
 // use crate::globals::*;
 use crate::commonfuncs::*;
 
@@ -22,7 +22,8 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
             UP_SPECIAL_CANCEL[get_player_number(boma)] = false;
         }
         if StatusModule::status_kind(boma) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH {
-            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT) {
+            if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
+            || IS_FUNNY[get_player_number(boma)] {
                 UP_SPECIAL_CANCEL[get_player_number(boma)] = true;
             }
         }

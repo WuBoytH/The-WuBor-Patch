@@ -558,14 +558,22 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
             return ret;
         }
     }
-    if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(boma) < 8 {
-        if IS_FUNNY[get_player_number(boma)] { // DRAGON INSTALL
-            if param_hash == 0x202e02971b { // Unstaled Deep Breathing Timer hash
-                return 420;
-            }
-            else {
-                return ret;
-            }
+    // if fighter_kind == *FIGHTER_KIND_WIIFIT && get_player_number(boma) < 8 {
+    //     if IS_FUNNY[get_player_number(boma)] { // DRAGON INSTALL
+    //         if param_hash == 0x202e02971b { // Unstaled Deep Breathing Timer hash
+    //             return 420;
+    //         }
+    //         else {
+    //             return ret;
+    //         }
+    //     }
+    //     else {
+    //         return ret;
+    //     }
+    // }
+    if fighter_kind == *FIGHTER_KIND_REFLET {
+        if param_hash == hash40("grimoire_el_window_revival_time") {
+            return 480;
         }
         else {
             return ret;

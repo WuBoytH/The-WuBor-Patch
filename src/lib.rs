@@ -59,6 +59,7 @@ macro_rules! c_str {
     };
 }
 
+mod api;
 mod commonfuncs;
 use crate::commonfuncs::*;
 // mod vars;
@@ -1114,6 +1115,7 @@ pub fn main() {
             MUSIC_OFFSET = offset;
         }
     }
+    api::install();
     // statuses::install();
     system::install();
     daisy::install();

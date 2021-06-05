@@ -8,7 +8,7 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
-use crate::IS_FUNNY;
+use crate::system::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
 // use skyline::nn::ro::LookupSymbol;
@@ -35,26 +35,26 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
             fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
         }
 
-        if get_player_number(boma) < 8 {
+        if entry_id(boma) < 8 {
 
             // Teleport Handler
 
-            if TELEPORT[get_player_number(boma)] == 1 || TELEPORT[get_player_number(boma)] == 5 {
+            if TELEPORT[entry_id(boma)] == 1 || TELEPORT[entry_id(boma)] == 5 {
                 let dir = get_command_stick_direction(boma, false);
                 if dir == 5 || dir == 2 || dir == 8 {
-                    TELE_X[get_player_number(boma)] = 0.0;
+                    TELE_X[entry_id(boma)] = 0.0;
                 }
                 else if dir == 3 || dir == 9 {
-                    TELE_X[get_player_number(boma)] = 35.0;
+                    TELE_X[entry_id(boma)] = 35.0;
                 }
                 else if dir == 6 {
-                    TELE_X[get_player_number(boma)] = 40.0;
+                    TELE_X[entry_id(boma)] = 40.0;
                 }
                 else if dir == 1 || dir == 7 {
-                    TELE_X[get_player_number(boma)] = -35.0;
+                    TELE_X[entry_id(boma)] = -35.0;
                 }
                 else if dir == 4 {
-                    TELE_X[get_player_number(boma)] = -40.0;
+                    TELE_X[entry_id(boma)] = -40.0;
                 }
                 if dir == 5
                 || dir == 4
@@ -62,56 +62,56 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 || (dir == 2 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
                 || (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND)
                 || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND) {
-                    TELE_Y[get_player_number(boma)] = 0.0;
+                    TELE_Y[entry_id(boma)] = 0.0;
                 }
                 else if (dir == 1 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR)
                 || (dir == 3 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR) {
-                    TELE_Y[get_player_number(boma)] = -30.0;
+                    TELE_Y[entry_id(boma)] = -30.0;
                 }
                 else if dir == 2
                 && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
-                    TELE_Y[get_player_number(boma)] = -40.0;
+                    TELE_Y[entry_id(boma)] = -40.0;
                 }
                 else if dir == 7
                 || dir == 9 {
-                    TELE_Y[get_player_number(boma)] = 30.0;
+                    TELE_Y[entry_id(boma)] = 30.0;
                 }
                 else if dir == 8 {
-                    TELE_Y[get_player_number(boma)] = 40.0;
+                    TELE_Y[entry_id(boma)] = 40.0;
                 }
             }
-            if TELEPORT[get_player_number(boma)] == 3 || TELEPORT[get_player_number(boma)] == 7 {
+            if TELEPORT[entry_id(boma)] == 3 || TELEPORT[entry_id(boma)] == 7 {
                 macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-                    if TELE_Y[get_player_number(boma)] != 0.0 {
+                    if TELE_Y[entry_id(boma)] != 0.0 {
                         StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
                     }
                     else {
                         GroundModule::correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     }
                 }
-                PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[get_player_number(boma)], y: TELE_Y[get_player_number(boma)]});
-                if TELE_X[get_player_number(boma)] == 0.0 && TELE_Y[get_player_number(boma)] == 0.0 {
+                PostureModule::add_pos_2d(boma, &Vector2f {x: TELE_X[entry_id(boma)], y: TELE_Y[entry_id(boma)]});
+                if TELE_X[entry_id(boma)] == 0.0 && TELE_Y[entry_id(boma)] == 0.0 {
                     macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, 38.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 }
                 else {
                     macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 }
-                TELEPORT[get_player_number(boma)] += 1;
+                TELEPORT[entry_id(boma)] += 1;
             }
 
             // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
 
             if StatusModule::situation_kind(boma) == *SITUATION_KIND_CLIFF
             || StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-            || IS_FUNNY[get_player_number(boma)] {
-                CAN_TELEPORT[get_player_number(boma)] = true;
+            || IS_FUNNY[entry_id(boma)] {
+                CAN_TELEPORT[entry_id(boma)] = true;
             }
 
             // Stops Ganondorf's momentum during Dark Deception.
             // Necessary because transitioning from Ground to Air re-enables his momentum.
 
-            if TELE_STOP[get_player_number(boma)] {
+            if TELE_STOP[entry_id(boma)] {
                 KineticModule::unable_energy_all(boma);
             }
         }
@@ -613,28 +613,28 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 30.0);
     if macros::is_excute(fighter) {
-        TELE_STOP[get_player_number(boma)] = true;
-        CAN_TELEPORT[get_player_number(boma)] = false;
+        TELE_STOP[entry_id(boma)] = true;
+        CAN_TELEPORT[entry_id(boma)] = false;
         KineticModule::change_kinetic(boma, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(boma, false);
     }
     sv_animcmd::frame(lua_state, 34.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] = 1;
+        TELEPORT[entry_id(boma)] = 1;
     }
     sv_animcmd::frame(lua_state, 40.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] = 2;
+        TELEPORT[entry_id(boma)] = 2;
     }
     sv_animcmd::frame(lua_state, 50.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] = 3;
+        TELEPORT[entry_id(boma)] = 3;
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
-        TELEPORT[get_player_number(boma)] = 0;
-        TELE_STOP[get_player_number(boma)] = false;
+        TELEPORT[entry_id(boma)] = 0;
+        TELE_STOP[entry_id(boma)] = false;
         HitModule::set_whole(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     sv_animcmd::frame(lua_state, 64.0);

@@ -5,7 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::IS_FUNNY;
+use crate::system::IS_FUNNY;
 use crate::commonfuncs;
 
 #[acmd_script( agent = "brave", scripts = ["game_speciallw9", "game_specialairlw9"], category = ACMD_GAME, low_priority )]

@@ -5,7 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-// use crate::IS_FUNNY;
+// use crate::system::IS_FUNNY;
 // use crate::globals::*;
 // use crate::commonfuncs::*;
 

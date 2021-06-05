@@ -6,7 +6,7 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 use crate::commonfuncs::*;
-use crate::IS_FUNNY;
+use crate::system::IS_FUNNY;
 
 // ---------------------------------------------------------
 // Heck, even giving DK a nerfed form of the barrel is a massive buff. But we nerfed his weight and
@@ -146,7 +146,7 @@ unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::have_item(boma, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
         if ItemModule::get_have_item_kind(boma, 0) == *ITEM_KIND_BARREL {
-            if IS_FUNNY[get_player_number(boma)] == false && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
+            if IS_FUNNY[entry_id(boma)] == false && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
                 StatusModule::change_status_request_from_script(boma, *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_FALL, true);
             }
             else {

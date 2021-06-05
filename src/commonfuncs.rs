@@ -28,7 +28,6 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_REFLET
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_RIDLEY
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ATTACK_AIR
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_MISS_FOOT
     || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD
@@ -55,7 +54,7 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     }
 }
 
-pub unsafe fn get_player_number(module_accessor:  &mut BattleObjectModuleAccessor) -> usize {
+pub unsafe fn entry_id(module_accessor:  &mut BattleObjectModuleAccessor) -> usize {
     if utility::get_kind(module_accessor) == *WEAPON_KIND_PTRAINER_PTRAINER {
         let player_number = WorkModule::get_int(module_accessor, *WEAPON_PTRAINER_PTRAINER_INSTANCE_WORK_ID_INT_FIGHTER_ENTRY_ID) as usize;
         return player_number;

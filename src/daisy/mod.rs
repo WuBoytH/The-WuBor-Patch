@@ -5,7 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::IS_FUNNY;
+use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_DAISY )]
@@ -13,9 +13,9 @@ fn daisy_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-        if get_player_number(boma) < 8 {
+        if entry_id(boma) < 8 {
             if WorkModule::is_flag(boma, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT) == false
-            && IS_FUNNY[get_player_number(boma)] == false {
+            && IS_FUNNY[entry_id(boma)] == false {
                 WorkModule::set_flag(boma, true, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT);
             }
         }

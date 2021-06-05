@@ -8,7 +8,7 @@ use smashline::*;
 //use smash::phx::Vector3f;
 //use smash::app::BattleObjectModuleAccessor;
 //use smash::app::lua_bind::EffectModule;
-use crate::IS_FUNNY;
+use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
 
 // ---------------------------------------------------------
@@ -22,18 +22,18 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-        if IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 3.0 {
-            SPIN_SPEED[get_player_number(boma)] = 3.0;
+        if IS_FUNNY[entry_id(boma)] && SPIN_SPEED[entry_id(boma)] != 3.0 {
+            SPIN_SPEED[entry_id(boma)] = 3.0;
         }
-        else if !IS_FUNNY[get_player_number(boma)] && SPIN_SPEED[get_player_number(boma)] != 1.56 {
-            SPIN_SPEED[get_player_number(boma)] = 1.56;
+        else if !IS_FUNNY[entry_id(boma)] && SPIN_SPEED[entry_id(boma)] != 1.56 {
+            SPIN_SPEED[entry_id(boma)] = 1.56;
         }
 
         // Toon Link can now move during his grounded Spin Attack.
 
         if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
             if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
-                macros::SET_SPEED_EX(fighter, PostureModule::lr(boma) * &SPIN_SPEED[get_player_number(boma)] * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                macros::SET_SPEED_EX(fighter, PostureModule::lr(boma) * &SPIN_SPEED[entry_id(boma)] * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }
     }

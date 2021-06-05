@@ -6,7 +6,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-// use crate::IS_FUNNY;
+// use crate::system::{DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, IS_FUNNY};
 // use crate::globals::*;
 // use crate::commonfuncs::*;
 // use crate::{DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
@@ -21,13 +21,13 @@ use smashline::*;
 // fn dolly_frame(fighter: &mut L2CFighterCommon) {
 //     unsafe {
 //         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-//         if get_player_number(boma) < 8 {
+//         if entry_id(boma) < 8 {
 
 //             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-//                 GO_SAUCE[get_player_number(boma)] = 0.0;
+//                 GO_SAUCE[entry_id(boma)] = 0.0;
 //             }
 
-//             if GO_SAUCE[get_player_number(boma)] >= 50.0 {
+//             if GO_SAUCE[entry_id(boma)] >= 50.0 {
 //                 WorkModule::on_flag(boma, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
 //             }
 //             else {
@@ -45,40 +45,40 @@ use smashline::*;
 //             && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE05
 //             && StatusModule::status_kind(boma) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_END {
 //                 if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
-//                     GO_SAUCE[get_player_number(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) * 0.8;
+//                     GO_SAUCE[entry_id(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) * 0.8;
 //                 }
 //                 if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_SHIELD) {
-//                     GO_SAUCE[get_player_number(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) * 0.4;
+//                     GO_SAUCE[entry_id(boma)] += AttackModule::get_power(boma, 0, false, 1.0, false) * 0.4;
 //                 }
-//                 if GO_SAUCE[get_player_number(boma)] > 100.0 {
-//                     GO_SAUCE[get_player_number(boma)] = 100.0;
+//                 if GO_SAUCE[entry_id(boma)] > 100.0 {
+//                     GO_SAUCE[entry_id(boma)] = 100.0;
 //                 }
 //             }
 
-//             DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
-//             if DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)] {
-//                 GO_SAUCE[get_player_number(boma)] += (DAMAGE_TAKEN[get_player_number(boma)] - DAMAGE_TAKEN_PREV[get_player_number(boma)]) * 0.2;
-//                 if GO_SAUCE[get_player_number(boma)] > 100.0 {
-//                     GO_SAUCE[get_player_number(boma)] = 100.0;
+//             DAMAGE_TAKEN[entry_id(boma)] = DamageModule::damage(boma, 0);
+//             if DAMAGE_TAKEN[entry_id(boma)] > DAMAGE_TAKEN_PREV[entry_id(boma)] {
+//                 GO_SAUCE[entry_id(boma)] += (DAMAGE_TAKEN[entry_id(boma)] - DAMAGE_TAKEN_PREV[entry_id(boma)]) * 0.2;
+//                 if GO_SAUCE[entry_id(boma)] > 100.0 {
+//                     GO_SAUCE[entry_id(boma)] = 100.0;
 //                 }
 //             }
-//             DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
+//             DAMAGE_TAKEN_PREV[entry_id(boma)] = DAMAGE_TAKEN[entry_id(boma)];
 
 //             if smashball::is_training_mode(){
 //                 if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
-//                     if GO_SAUCE[get_player_number(boma)] > 50.0 {
-//                         GO_SAUCE[get_player_number(boma)] -= 50.0
+//                     if GO_SAUCE[entry_id(boma)] > 50.0 {
+//                         GO_SAUCE[entry_id(boma)] -= 50.0
 //                     }
 //                     else {
-//                         GO_SAUCE[get_player_number(boma)] = 0.0;
+//                         GO_SAUCE[entry_id(boma)] = 0.0;
 //                     }
 //                 }
 //                 if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-//                     if GO_SAUCE[get_player_number(boma)] < 50.0 {
-//                         GO_SAUCE[get_player_number(boma)] += 50.0;
+//                     if GO_SAUCE[entry_id(boma)] < 50.0 {
+//                         GO_SAUCE[entry_id(boma)] += 50.0;
 //                     }
 //                     else {
-//                         GO_SAUCE[get_player_number(boma)] = 100.0;
+//                         GO_SAUCE[entry_id(boma)] = 100.0;
 //                     }
 //                 }
 //             }
@@ -718,7 +718,7 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
 // unsafe fn dolly_geezah(fighter: &mut L2CAgentBase) {
 //     let lua_state = fighter.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
-//     GO_SAUCE[get_player_number(boma)] -= 50.0;
+//     GO_SAUCE[entry_id(boma)] -= 50.0;
 //     original!(fighter);
 // }
 
@@ -726,7 +726,7 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
 // unsafe fn dolly_bustah(fighter: &mut L2CAgentBase) {
 //     let lua_state = fighter.lua_state_agent;
 //     let boma = sv_system::battle_object_module_accessor(lua_state);
-//     GO_SAUCE[get_player_number(boma)] -= 50.0;
+//     GO_SAUCE[entry_id(boma)] -= 50.0;
 //     original!(fighter);
 // }
 

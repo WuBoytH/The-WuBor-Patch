@@ -6,12 +6,12 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
-use crate::{IS_FUNNY, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, _TIME_COUNTER};
+use crate::system::{IS_FUNNY, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, _TIME_COUNTER};
 use crate::commonfuncs::*;
 
-// pub unsafe fn get_player_number(boma)(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
-//     let get_player_number(boma) = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-//     return get_player_number(boma);
+// pub unsafe fn entry_id(boma)(module_accessor: &mut BattleObjectModuleAccessor) -> usize {
+//     let entry_id(boma) = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+//     return entry_id(boma);
 // }
 
 pub static mut SHULK_SPECIAL_LW : [bool; 8] = [false; 8];
@@ -22,7 +22,7 @@ static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
 //     let fighter_kind = utility::get_kind(module_accessor);
 //     let ret = original!()(module_accessor,term);
 //     if fighter_kind == *FIGHTER_KIND_SHULK {
-//         if SHULK_SPECIAL_LW[get_player_number(boma)(module_accessor)] {
+//         if SHULK_SPECIAL_LW[entry_id(boma)(module_accessor)] {
 //             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
 //                 return false;
 //             }
@@ -44,49 +44,49 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
 
-        if get_player_number(boma) < 8 {
+        if entry_id(boma) < 8 {
             
             // Reset Vars
 
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-                SHULK_SPECIAL_LW[get_player_number(boma)] = false;
-                _TIME_COUNTER[get_player_number(boma)] = -1;
+                SHULK_SPECIAL_LW[entry_id(boma)] = false;
+                _TIME_COUNTER[entry_id(boma)] = -1;
             }
 
             // Damage Check
 
-            DAMAGE_TAKEN[get_player_number(boma)] = DamageModule::damage(boma, 0);
-            if DAMAGE_TAKEN[get_player_number(boma)] > DAMAGE_TAKEN_PREV[get_player_number(boma)] {
-                BURST_RECOVER[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)] - DAMAGE_TAKEN_PREV[get_player_number(boma)];
+            DAMAGE_TAKEN[entry_id(boma)] = DamageModule::damage(boma, 0);
+            if DAMAGE_TAKEN[entry_id(boma)] > DAMAGE_TAKEN_PREV[entry_id(boma)] {
+                BURST_RECOVER[entry_id(boma)] = DAMAGE_TAKEN[entry_id(boma)] - DAMAGE_TAKEN_PREV[entry_id(boma)];
             }
-            DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
+            DAMAGE_TAKEN_PREV[entry_id(boma)] = DAMAGE_TAKEN[entry_id(boma)];
 
             if StopModule::is_damage(boma) {
                 if ControlModule::check_button_trigger(boma, *CONTROL_PAD_BUTTON_GUARD) {
-                    if SHULK_SPECIAL_LW[get_player_number(boma)] == false {
-                        if OPPONENT_BOMA[get_player_number(boma)] != 0 {
+                    if SHULK_SPECIAL_LW[entry_id(boma)] == false {
+                        if OPPONENT_BOMA[entry_id(boma)] != 0 {
                             let shulkpos = PostureModule::pos_x(boma);
-                            let opppos = PostureModule::pos_x(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor);
+                            let opppos = PostureModule::pos_x(OPPONENT_BOMA[entry_id(boma)] as *mut BattleObjectModuleAccessor);
                             if shulkpos > opppos && PostureModule::lr(boma) == 1.0 {
                                 PostureModule::reverse_lr(boma);
                             }
                             else if shulkpos < opppos && PostureModule::lr(boma) == -1.0 {
                                 PostureModule::reverse_lr(boma);
                             }
-                            OPPONENT_BOMA[get_player_number(boma)] = 0;
+                            OPPONENT_BOMA[entry_id(boma)] = 0;
                         }
-                        DamageModule::add_damage(boma, BURST_RECOVER[get_player_number(boma)] * -0.5, 0);
+                        DamageModule::add_damage(boma, BURST_RECOVER[entry_id(boma)] * -0.5, 0);
                         KineticModule::change_kinetic(boma,*FIGHTER_KINETIC_TYPE_RESET);
                         StatusModule::change_status_request_from_script(boma, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
                         WorkModule::set_float(boma, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
                         WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
                         WorkModule::set_int(boma, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
-                        SHULK_SPECIAL_LW[get_player_number(boma)] = true;
-                        if IS_FUNNY[get_player_number(boma)] {
-                            _TIME_COUNTER[get_player_number(boma)] = 600;
+                        SHULK_SPECIAL_LW[entry_id(boma)] = true;
+                        if IS_FUNNY[entry_id(boma)] {
+                            _TIME_COUNTER[entry_id(boma)] = 600;
                         }
                         else {
-                            _TIME_COUNTER[get_player_number(boma)] = 3600;
+                            _TIME_COUNTER[entry_id(boma)] = 3600;
                         }
                     }
                 }
@@ -98,18 +98,18 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
                 macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
                 EffectModule::req_on_joint(boma, Hash40::new("sys_sp_flash"), Hash40::new("head"), &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, 1.0, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, false, 0, 0, 0);
             }
-            if _TIME_COUNTER[get_player_number(boma)] > 0 {
-                _TIME_COUNTER[get_player_number(boma)] = _TIME_COUNTER[get_player_number(boma)] - 1;
+            if _TIME_COUNTER[entry_id(boma)] > 0 {
+                _TIME_COUNTER[entry_id(boma)] = _TIME_COUNTER[entry_id(boma)] - 1;
             }
-            else if _TIME_COUNTER[get_player_number(boma)] == 0 {
-                _TIME_COUNTER[get_player_number(boma)] = -1;
+            else if _TIME_COUNTER[entry_id(boma)] == 0 {
+                _TIME_COUNTER[entry_id(boma)] = -1;
                 let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                 let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
                 let countereff: u32 = EffectModule::req_follow(boma, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
                 EffectModule::set_rgb(boma, countereff, 0.0, 5.0, 5.0);
             }
             else{
-                SHULK_SPECIAL_LW[get_player_number(boma)] = false;
+                SHULK_SPECIAL_LW[entry_id(boma)] = false;
             }
         }
     }

@@ -7,7 +7,8 @@ use smash::app::*;
 use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
-use crate::{IS_FUNNY, FIGHTER_CUTIN_MANAGER_ADDR};
+use crate::system::IS_FUNNY;
+use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::commonfuncs::*;
 
 // ---------------------------------------------------------
@@ -33,7 +34,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
         && MotionModule::frame(boma) > 19.0
         && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-        || IS_FUNNY[get_player_number(boma)])
+        || IS_FUNNY[entry_id(boma)])
         && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
             StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         }
@@ -42,7 +43,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && MotionModule::motion_kind(boma) != hash40("special_air_lw_start")
         && MotionModule::motion_kind(boma) != hash40("special_s_lariat")
         && MotionModule::motion_kind(boma) != hash40("special_air_s_lariat") {
-            REVENGE[get_player_number(boma)] = 0;
+            REVENGE[entry_id(boma)] = 0;
         }
     }
 }
@@ -584,14 +585,14 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
     let boma = sv_system::battle_object_module_accessor(lua_state);
-    if REVENGE[get_player_number(boma)] > 0 {
+    if REVENGE[entry_id(boma)] > 0 {
         let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(boma, 0));
         let mut hitlag = 1.0 + 0.5 * DamageModule::damage(boma, 0);
-        if dmg > 36.0 && IS_FUNNY[get_player_number(boma)] == false {
+        if dmg > 36.0 && IS_FUNNY[entry_id(boma)] == false {
             dmg = 36.0;
             hitlag = 2.0;
         }
-        if REVENGE[get_player_number(boma)] == 2 {
+        if REVENGE[entry_id(boma)] == 2 {
             HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_XLU), 0);
         }
         if macros::is_excute(fighter) {
@@ -745,7 +746,7 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
         DamageModule::set_damage_mul(boma, 0.5);
-        REVENGE[get_player_number(boma)] = 1;
+        REVENGE[entry_id(boma)] = 1;
     }
     sv_animcmd::frame(lua_state, 9.0);
     macros::FT_MOTION_RATE(fighter, 1.5);

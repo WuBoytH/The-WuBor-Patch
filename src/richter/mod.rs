@@ -5,6 +5,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
+use crate::commonfuncs::*;
 
 pub static mut RICHTER_SPECIAL_HI : [bool; 8] = [false; 8];
 
@@ -12,48 +13,20 @@ pub static mut RICHTER_SPECIAL_HI : [bool; 8] = [false; 8];
 fn richter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        let entry_id = WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH {
-            RICHTER_SPECIAL_HI[entry_id] = false;
+            RICHTER_SPECIAL_HI[entry_id(boma)] = false;
         }
         if sv_information::is_ready_go() == false {
-            RICHTER_SPECIAL_HI[entry_id] = false;
+            RICHTER_SPECIAL_HI[entry_id(boma)] = false;
         }
 
         if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_HI && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_LANDING {
-            RICHTER_SPECIAL_HI[entry_id] = true;
+            RICHTER_SPECIAL_HI[entry_id(boma)] = true;
         }
         else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_AIR
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROWN
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_WAIT
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U 
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FALL
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FINAL
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SLEEP
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_B
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_F
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SWALLOWED
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_REFLET
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_RIDLEY
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_MISS_FOOT
-        || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH
-        || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY {
-            RICHTER_SPECIAL_HI[entry_id] = false;
+        || is_damage_check(boma) {
+            RICHTER_SPECIAL_HI[entry_id(boma)] = false;
         }
     }
 }

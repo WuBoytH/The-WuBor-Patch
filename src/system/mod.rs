@@ -5,12 +5,19 @@ use smash::app::lua_bind::*;
 use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use smashline::*;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use crate::{IS_FUNNY, /*IS_FGC,*/ COUNTER_HIT_STATE, COUNTER_HIT_HELPER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
+use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::*;
 
+pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
+pub static mut IS_FUNNY : [bool; 8] = [false; 8];
+// pub static mut IS_FGC : [bool; 8] = [false; 8];
+pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
+static mut COUNTER_HIT_HELPER : [f32; 8] = [0.0; 8];
+pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
+pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
+pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
@@ -33,37 +40,37 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         // The code to set up Funny Mode.
 
         if ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_USAGIHAT))
-        && IS_FUNNY[get_player_number(boma)] == false {
-            IS_FUNNY[get_player_number(boma)] = true;
+        && IS_FUNNY[entry_id(boma)] == false {
+            IS_FUNNY[entry_id(boma)] = true;
         }
         if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
             WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
         }
         if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD || sv_information::is_ready_go() == false)
-        && IS_FUNNY[get_player_number(boma)] {
-            IS_FUNNY[get_player_number(boma)] = false;
+        && IS_FUNNY[entry_id(boma)] {
+            IS_FUNNY[entry_id(boma)] = false;
         }
 
         // if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
-        // && IS_FGC[get_player_number(boma)] == false {
-        //     IS_FGC[get_player_number(boma)] = true;
+        // && IS_FGC[entry_id(boma)] == false {
+        //     IS_FGC[entry_id(boma)] = true;
         //     println!("FGC is on!");
         // }
-        // if IS_FGC[get_player_number(boma)] {
+        // if IS_FGC[entry_id(boma)] {
         //     if WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR) {
         //         WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR);
         //         println!("Disabled Badge Reflector!");
         //     }
         // }
         // if !ItemModule::is_attach_item(boma, ItemKind(*ITEM_KIND_BADGE))
-        // && IS_FGC[get_player_number(boma)] {
-        //     IS_FGC[get_player_number(boma)] = false;
+        // && IS_FGC[entry_id(boma)] {
+        //     IS_FGC[entry_id(boma)] = false;
         //     println!("FGC is off!");
         // }
 
         // Remove Special Fall in Funny Mode
 
-        if IS_FUNNY[get_player_number(boma)] {
+        if IS_FUNNY[entry_id(boma)] {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
                 StatusModule::change_status_request_from_script(boma,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
             }
@@ -71,10 +78,10 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         // Remove an OPPONENT_BOMA if the opponent is dead.
 
-        if get_player_number(boma) < 8 {
-            if OPPONENT_BOMA[get_player_number(boma)] != 0 {
-                if StatusModule::status_kind(OPPONENT_BOMA[get_player_number(boma)] as *mut BattleObjectModuleAccessor) == *FIGHTER_STATUS_KIND_DEAD {
-                    OPPONENT_BOMA[get_player_number(boma)] = 0;
+        if entry_id(boma) < 8 {
+            if OPPONENT_BOMA[entry_id(boma)] != 0 {
+                if StatusModule::status_kind(OPPONENT_BOMA[entry_id(boma)] as *mut BattleObjectModuleAccessor) == *FIGHTER_STATUS_KIND_DEAD {
+                    OPPONENT_BOMA[entry_id(boma)] = 0;
                 }
             }
         }
@@ -94,69 +101,69 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         // Quarter Circle Back
 
-        if QCB[get_player_number(boma)] == 0 {
+        if QCB[entry_id(boma)] == 0 {
             if dir == 2 {
-                QCB[get_player_number(boma)] = 1;
+                QCB[entry_id(boma)] = 1;
             }
         }
-        else if QCB[get_player_number(boma)] == 1 {
+        else if QCB[entry_id(boma)] == 1 {
             if dir == 1 {
-                QCB[get_player_number(boma)] = 2;
+                QCB[entry_id(boma)] = 2;
             }
             else if dir != 4
             && dir != 1
             && dir != 2 {
-                QCB[get_player_number(boma)] = 0;
+                QCB[entry_id(boma)] = 0;
             }
         }
-        else if QCB[get_player_number(boma)] == 2 {
+        else if QCB[entry_id(boma)] == 2 {
             if dir == 4 {
-                QCB[get_player_number(boma)] = 3;
+                QCB[entry_id(boma)] = 3;
             }
             else if dir != 4
             && dir != 1
             && dir != 7 {
-                QCB[get_player_number(boma)] = 0;
+                QCB[entry_id(boma)] = 0;
             }
         }
         else {
             if dir != 4
             && dir != 7 {
-                QCB[get_player_number(boma)] = 0;
+                QCB[entry_id(boma)] = 0;
             }
         }
 
         //Quarter Circle Forward
 
-        if QCF[get_player_number(boma)] == 0 {
+        if QCF[entry_id(boma)] == 0 {
             if dir == 2 {
-                QCF[get_player_number(boma)] = 1;
+                QCF[entry_id(boma)] = 1;
             }
         }
-        else if QCF[get_player_number(boma)] == 1 {
+        else if QCF[entry_id(boma)] == 1 {
             if dir == 1 {
-                QCF[get_player_number(boma)] = 3;
+                QCF[entry_id(boma)] = 3;
             }
             else if dir != 6
             && dir != 3
             && dir != 2 {
-                QCF[get_player_number(boma)] = 0;
+                QCF[entry_id(boma)] = 0;
             }
         }
-        else if QCF[get_player_number(boma)] == 2 {
+        else if QCF[entry_id(boma)] == 2 {
             if dir == 6 {
-                QCF[get_player_number(boma)] = 3;
+                QCF[entry_id(boma)] = 3;
             }
             else if dir != 6
             && dir != 3
             && dir != 9 {
-                QCF[get_player_number(boma)] = 0;
+                QCF[entry_id(boma)] = 0;
             }
         }
         else {
             if dir != 6
             && dir != 9 {
-                QCF[get_player_number(boma)] = 0;
+                QCF[entry_id(boma)] = 0;
             }
         }
 
@@ -178,20 +185,20 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         || status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
         || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
             if MotionModule::frame(boma) <= 1.0 {
-                COUNTER_HIT_HELPER[get_player_number(boma)] = 0.0;
-                COUNTER_HIT_STATE[get_player_number(boma)] = 1;
+                COUNTER_HIT_HELPER[entry_id(boma)] = 0.0;
+                COUNTER_HIT_STATE[entry_id(boma)] = 1;
             }
             if AttackModule::is_attack(boma, 0, false)
-            && COUNTER_HIT_HELPER[get_player_number(boma)] == 0.0 {
-                COUNTER_HIT_HELPER[get_player_number(boma)] = MotionModule::frame(boma);
+            && COUNTER_HIT_HELPER[entry_id(boma)] == 0.0 {
+                COUNTER_HIT_HELPER[entry_id(boma)] = MotionModule::frame(boma);
             }
             if !AttackModule::is_attack(boma, 0, false)
-            && COUNTER_HIT_HELPER[get_player_number(boma)] != 0.0 {
-                COUNTER_HIT_STATE[get_player_number(boma)] = 0;
+            && COUNTER_HIT_HELPER[entry_id(boma)] != 0.0 {
+                COUNTER_HIT_STATE[entry_id(boma)] = 0;
             }
         }
         else {
-            COUNTER_HIT_STATE[get_player_number(boma)] = 0;
+            COUNTER_HIT_STATE[entry_id(boma)] = 0;
         }
     }
 }

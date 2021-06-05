@@ -14,13 +14,13 @@ pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 fn ridley_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        if get_player_number(boma) < 8 {
-            if IS_FUNNY[get_player_number(boma)] {
-                FUNNY_RIDLEY[get_player_number(boma)] = true;
+        if entry_id(boma) < 8 {
+            if IS_FUNNY[entry_id(boma)] {
+                FUNNY_RIDLEY[entry_id(boma)] = true;
             }
             else if MotionModule::motion_kind(boma) != smash::hash40("special_n_shoot")
             && MotionModule::motion_kind(boma) != smash::hash40("special_air_n_shoot") {
-                FUNNY_RIDLEY[get_player_number(boma)] = false;
+                FUNNY_RIDLEY[entry_id(boma)] = false;
             }
         }
     }

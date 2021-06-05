@@ -47,7 +47,7 @@ pub fn escapeair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
                 if !MotionModule::is_end(fighter.module_accessor) {
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
                 }
-                if IS_FUNNY[get_player_number(&mut *fighter.module_accessor)] == false {
+                if IS_FUNNY[entry_id(&mut *fighter.module_accessor)] == false {
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
                 }
             }

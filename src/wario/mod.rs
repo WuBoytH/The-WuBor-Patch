@@ -38,9 +38,9 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if get_player_number(boma) < 8 {
+        if entry_id(boma) < 8 {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-                FINISH_SIGN[get_player_number(boma)] = 0;
+                FINISH_SIGN[entry_id(boma)] = 0;
             }
 
             // Wario can now move during his back throw.
@@ -48,16 +48,16 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
             if (MotionModule::motion_kind(boma) == hash40("appeal_lw_l")
             || MotionModule::motion_kind(boma) == hash40("appeal_lw_r"))
             && MotionModule::frame(boma) == 10.0 {
-                FINISH_SIGN[get_player_number(boma)] += 1;
-                if FINISH_SIGN[get_player_number(boma)] > 15 {
-                    FINISH_SIGN[get_player_number(boma)] = 15;
+                FINISH_SIGN[entry_id(boma)] += 1;
+                if FINISH_SIGN[entry_id(boma)] > 15 {
+                    FINISH_SIGN[entry_id(boma)] = 15;
                 }
             }
 
             if (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW
             || StatusModule::status_kind(boma) != *FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING)
             && StatusModule::prev_status_kind(boma, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                FINISH_SIGN[get_player_number(boma)] = 0;
+                FINISH_SIGN[entry_id(boma)] = 0;
             }
         }
     }

@@ -113,17 +113,18 @@ unsafe extern "C" fn luigi_specialschargemainsub(fighter: &mut L2CFighterCommon)
         let charge_frame = WorkModule::get_param_float(boma, hash40("param_special_s"), hash40("charge_frame"));
         if charge_frame <= charge {
             fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
-            return L2CValue::I32(0);
+            // return L2CValue::I32(0);
         }
         if StatusModule::is_situation_changed(boma) {
             luigi_specialschargemain2(fighter);
         }
-        return L2CValue::I32(0);
+        // return L2CValue::I32(0);
     }
     else {
         fighter.change_status(FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END.into(), false.into());
-        return L2CValue::I32(0);
+        // return L2CValue::I32(0);
     }
+    L2CValue::I32(0)
 }
 
 // Up Tilt has increased Base Knockback and a lowered Cancel Frame (28 -> 26)

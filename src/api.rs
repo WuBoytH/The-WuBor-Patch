@@ -1,6 +1,5 @@
-use arcropolis_api::arc_callback;
+use arcropolis_api::{arc_callback, hash40};
 use sli::SliFile;
-use arcropolis_api::hash40;
 
 #[arc_callback]
 fn api_callback(hash: u64, data: &mut [u8]) -> Option<usize> {

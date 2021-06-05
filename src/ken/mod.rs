@@ -218,18 +218,25 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 QUICK_STEP_STATE[get_player_number(boma)] = 2;
             }
 
-            if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-            && VS1_CANCEL[get_player_number(boma)]
-            && QUICK_STEP_STATE[get_player_number(boma)] == 0 {
-                if MotionModule::motion_kind(boma) == hash40("attack_air_b") {
-                    PostureModule::reverse_lr(boma);
+            if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+                if VS1_CANCEL[get_player_number(boma)]
+                && QUICK_STEP_STATE[get_player_number(boma)] == 0
+                && V_GAUGE[get_player_number(bom)] < 900 {
+                    if MotionModule::motion_kind(boma) == hash40("attack_air_b") {
+                        PostureModule::reverse_lr(boma);
+                    }
+                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
+                    if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
+                        QUICK_STEP_STATE[get_player_number(boma)] = 1;
+                    }
+                    else {
+                        QUICK_STEP_STATE[get_player_number(boma)] = 2;
+                    }
                 }
-                fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
-                if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-                    QUICK_STEP_STATE[get_player_number(boma)] = 1;
-                }
-                else {
-                    QUICK_STEP_STATE[get_player_number(boma)] = 2;
+                else if VT1_CANCEL[get_player_number(boma)]
+                && V_GAUGE[get_player_number(boma)] == 900
+                && V_TRIGGER[get_player_number(boma)] == false {
+                    VT_ACTIVATION[get_player_number(boma)] = true;
                 }
             }
 
@@ -267,14 +274,14 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 VT1_CANCEL[get_player_number(boma)] = false;
             }
 
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
-            && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
-            && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)
-            && VT1_CANCEL[get_player_number(boma)]
-            && V_GAUGE[get_player_number(boma)] == 900
-            && V_TRIGGER[get_player_number(boma)] == false {
-                VT_ACTIVATION[get_player_number(boma)] = true;
-            }
+            // if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_GUARD)
+            // && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
+            // && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK_RAW)
+            // && VT1_CANCEL[get_player_number(boma)]
+            // && V_GAUGE[get_player_number(boma)] == 900
+            // && V_TRIGGER[get_player_number(boma)] == false {
+            //     VT_ACTIVATION[get_player_number(boma)] = true;
+            // }
 
             if VT_ACTIVATION[get_player_number(boma)] {
                 if StatusModule::status_kind(boma) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {

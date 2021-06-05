@@ -607,26 +607,27 @@ unsafe extern "C" fn lucina_specialnloopmainsub(fighter: &mut L2CFighterCommon) 
         EX_FLASH[get_player_number(boma)] = 40;
         IS_EX[get_player_number(boma)] = true;
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
-        return L2CValue::I32(0);
+        // return L2CValue::I32(0);
     }
     else if ControlModule::check_button_off(boma, *CONTROL_PAD_BUTTON_SPECIAL) {
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
-        return L2CValue::I32(0);
+        // return L2CValue::I32(0);
     }
     else {
         if MotionModule::is_end(boma) {
             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
                 fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
-                return L2CValue::I32(0);
+                // return L2CValue::I32(0);
             }
             else {
                 HEROIC_GRAB[get_player_number(boma)] = true;
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), false.into());
-                return L2CValue::I32(0);
+                // return L2CValue::I32(0);
             }
         }
-        return L2CValue::I32(0);
+        // return L2CValue::I32(0);
     }
+    L2CValue::I32(0)
 }
 
 // A back-handed punch. Yu can act out of this very early, allowing him to pressure with multiple single jabs.

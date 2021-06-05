@@ -1115,7 +1115,6 @@ pub fn main() {
             MUSIC_OFFSET = offset;
         }
     }
-    api::install();
     // statuses::install();
     system::install();
     daisy::install();
@@ -1177,4 +1176,5 @@ pub fn main() {
     skyline::install_hook!(play_se_remain_replace);
     skyline::install_hook!(play_se_no_3d_replace);
     // skyline::install_hook!(init_settings_replace);
+    // api::install();
 }

@@ -9,6 +9,7 @@ use smashline::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use crate::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
+use crate::system::DMG_RATIO;
 use crate::commonfuncs::*;
 
 // ---------------------------------------------------------
@@ -35,10 +36,8 @@ pub static mut V_TRIGGER : [bool; 8] = [false; 8];
 static mut VT_ACTIVATION : [bool; 8] = [false; 8];
 static mut VT1_CANCEL : [bool; 8] = [false; 8];
 pub static mut V_GAUGE : [i32; 8] = [0; 8];
-static mut V_FLASH : [bool; 8] = [false; 8];
 static mut FLASH_MAX : [i32; 8] = [0; 8];
 static mut FLASH_COUNTER : [i32; 8] = [0; 8];
-static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
 pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
 static mut CURR_LOOPS : [i32; 8] = [0; 8];
@@ -102,13 +101,6 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
             DAMAGE_TAKEN_PREV[get_player_number(boma)] = DAMAGE_TAKEN[get_player_number(boma)];
 
-            if V_GAUGE[get_player_number(boma)] >= 300 {
-                V_FLASH[get_player_number(boma)] = true;
-            }
-            else {
-                V_FLASH[get_player_number(boma)] = false;
-            }
-
             // V-Gauge Effects
 
             if V_GAUGE[get_player_number(boma)] < 300
@@ -134,6 +126,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 macros::COL_NORMAL(fighter);
                 FLASH_MAX[get_player_number(boma)] = 20;
             }
+
             if FLASH_MAX[get_player_number(boma)] != 0 {
                 if FLASH_COUNTER[get_player_number(boma)] == 0 {
                     FLASH_COUNTER[get_player_number(boma)] = FLASH_MAX[get_player_number(boma)];
@@ -221,7 +214,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             if ControlModule::get_command_flag_cat(boma, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                 if VS1_CANCEL[get_player_number(boma)]
                 && QUICK_STEP_STATE[get_player_number(boma)] == 0
-                && V_GAUGE[get_player_number(bom)] < 900 {
+                && V_GAUGE[get_player_number(boma)] < 900 {
                     if MotionModule::motion_kind(boma) == hash40("attack_air_b") {
                         PostureModule::reverse_lr(boma);
                     }

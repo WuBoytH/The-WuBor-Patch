@@ -33,6 +33,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(boma) == hash40("attack_lw3") {
             if AttackModule::is_infliction(boma, *COLLISION_KIND_MASK_HIT) {
+                macros::EFFECT(fighter, Hash40::new_raw(0x0ab6e0ea34), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
                 SLIDE_BOUNCE[get_player_number(boma)] = true;
                 StatusModule::set_situation_kind(boma, SituationKind(*SITUATION_KIND_AIR), true);
                 GroundModule::set_correct(boma, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -145,6 +146,25 @@ unsafe fn kirby_dtilt(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(boma, true);
         AttackModule::clear_all(boma);
+    }
+}
+
+#[acmd_script( agent = "kirby", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+unsafe fn kirby_dtilteff(fighter: &mut L2CAgentBase) {
+    let lua_state = fighter.lua_state_agent;
+    sv_animcmd::frame(lua_state, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 2, 2, 0, 0, 0, 0.8, true);
+	    macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 2, 2.5, 2, 0, 0, 0, 0.75, true, *EF_FLIP_YZ);
+    }
+    sv_animcmd::frame(lua_state, 7.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.55, 0, 0, 0, 0, 0, 0, false);
+    }
+    sv_animcmd::frame(lua_state, 9.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), -1, 0, 8, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
+	    macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 2, 3, 0, 0, 0, 0.8, true);
     }
 }
 
@@ -277,6 +297,7 @@ pub fn install() {
     );
     smashline::install_acmd_scripts!(
         kirby_dtilt,
+        kirby_dtilteff,
         kirby_uair,
         kirby_sspecialstart,
         kirby_sspecialstartair,

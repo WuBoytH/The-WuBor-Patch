@@ -11,6 +11,7 @@ use crate::commonfuncs::*;
 use skyline::nn::ro::LookupSymbol;
 use smash::app::*;
 
+pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
 

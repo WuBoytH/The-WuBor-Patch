@@ -16,10 +16,9 @@ use smashline::*;
 #[acmd_script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
@@ -29,11 +28,11 @@ unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 39.0);
     if macros::is_excute(fighter) {
@@ -46,10 +45,9 @@ unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 10.0);
     if macros::is_excute(fighter) {
@@ -59,11 +57,11 @@ unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 35.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
@@ -72,10 +70,9 @@ unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 11.0);
     if macros::is_excute(fighter) {
@@ -85,11 +82,11 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 36.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
@@ -98,10 +95,9 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
@@ -111,11 +107,11 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 4.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 40.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 65.0);
     if macros::is_excute(fighter) {
@@ -128,10 +124,9 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
@@ -141,11 +136,11 @@ unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 4.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 25.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 

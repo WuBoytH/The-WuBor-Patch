@@ -12,13 +12,11 @@ use smashline::*;
 // #[fighter_frame( agent = FIGHTER_KIND_MIISWORDSMAN )]
 // fn miisword_frame(fighter: &mut L2CFighterCommon) {
 //     unsafe {
-//         let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        
-//         if StatusModule::status_kind(boma) == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK
-//         && StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
-//             if AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-//             || AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_SHIELD) {
-//                 CancelModule::enable_cancel(boma);
+//         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_S2_ATTACK
+//         && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+//             if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+//             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+//                 CancelModule::enable_cancel(fighter.module_accessor);
 //             }
 //         }
 //     }
@@ -29,9 +27,8 @@ use smashline::*;
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs2end", category = ACMD_GAME, low_priority )]
 unsafe fn miisword_galestabend(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_ATTACK_END);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_ATTACK_END);
     }
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {

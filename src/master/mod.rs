@@ -15,7 +15,6 @@ use smashline::*;
 #[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     sv_animcmd::frame(lua_state, 4.0);
@@ -30,15 +29,15 @@ unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 12.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 11.0, 35, 76, 0, 48, 6.0, 0.0, 7.5, 12.0, Some(0.0), Some(7.5), Some(18.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        AttackModule::clear(boma, 1, false);
-        AttackModule::clear(boma, 2, false);
-        AttackModule::clear(boma, 3, false);
-        AttackModule::clear(boma, 4, false);
+        AttackModule::clear(fighter.module_accessor, 1, false);
+        AttackModule::clear(fighter.module_accessor, 2, false);
+        AttackModule::clear(fighter.module_accessor, 3, false);
+        AttackModule::clear(fighter.module_accessor, 4, false);
     }
     sv_animcmd::frame(lua_state, 13.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 4.0);
+        AttackModule::clear_all(fighter.module_accessor);
+        FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 4.0);
     }
 }
 
@@ -47,10 +46,9 @@ unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
-        ArticleModule::change_motion(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("attack_lw3"), false, 0.0);
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
+        ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("attack_lw3"), false, 0.0);
     }
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -63,21 +61,20 @@ unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 59.0);
     if macros::is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
 #[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        WorkModule::set_float(boma, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
-        WorkModule::set_float(boma, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
+        WorkModule::set_float(fighter.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
+        WorkModule::set_float(fighter.module_accessor, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
     }
     sv_animcmd::frame(lua_state, 3.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -85,11 +82,11 @@ unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
     sv_animcmd::frame(lua_state, 24.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
+        WorkModule::on_flag(fighter.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
     }
     sv_animcmd::frame(lua_state, 34.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
+        WorkModule::off_flag(fighter.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
     }
 }
 
@@ -100,13 +97,12 @@ unsafe fn master_dtiltsword(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 12.0);
     if macros::is_excute(fighter) {
@@ -123,15 +119,15 @@ unsafe fn master_fair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 14.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 36.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 53.0);
     if macros::is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -139,10 +135,8 @@ unsafe fn master_fair(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "master", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
 unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
@@ -152,52 +146,51 @@ unsafe fn master_sspecialstart(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(boma, 3.0, 3.0);
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
+        FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 3.0);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
     }
     sv_animcmd::frame(lua_state, 12.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_TURN_CHECK);
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_START_SUPER_ARMOR);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_TURN_CHECK);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_START_SUPER_ARMOR);
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_TURN_CHECK);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_TURN_CHECK);
     }
     sv_animcmd::frame(lua_state, 51.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
     }
     sv_animcmd::frame(lua_state, 60.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_attack_height(boma, 0, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
+        AttackModule::set_attack_height(fighter.module_accessor, 0, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
     }
     sv_animcmd::frame(lua_state, 64.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_END_SUPER_ARMOR);
-        ArticleModule::set_flag(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, true, *WEAPON_PIERCE_INSTANCE_WORK_ID_FLAG_PIERCE_GROUND);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_END_SUPER_ARMOR);
+        ArticleModule::set_flag(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, true, *WEAPON_PIERCE_INSTANCE_WORK_ID_FLAG_PIERCE_GROUND);
     }
     sv_animcmd::frame(lua_state, 65.0);
     if macros::is_excute(fighter) {
-        ArticleModule::set_flag(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, false, *WEAPON_PIERCE_INSTANCE_WORK_ID_FLAG_PIERCE_GROUND);
-        WorkModule::off_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_2);
+        ArticleModule::set_flag(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, false, *WEAPON_PIERCE_INSTANCE_WORK_ID_FLAG_PIERCE_GROUND);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_FORBID_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_2);
     }
     sv_animcmd::frame(lua_state, 96.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_CONTROL_ENERGY);
-        WorkModule::on_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_REVERT_FALL_SPEED);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_CONTROL_ENERGY);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_REVERT_FALL_SPEED);
     }
     sv_animcmd::frame(lua_state, 117.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_2);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_2);
     }
     sv_animcmd::frame(lua_state, 118.0);
     if macros::is_excute(fighter) {
-        ArticleModule::remove_exist(boma, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 

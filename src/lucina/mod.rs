@@ -635,11 +635,17 @@ unsafe extern "C" fn lucina_specialsmainsub(fighter: &mut L2CFighterCommon) -> L
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
     else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if CancelModule::is_enable_cancel(boma) {
+            fighter.sub_wait_ground_check_common(L2CValue::I32(0));
+        }
         if MotionModule::is_end(boma) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
     else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        if CancelModule::is_enable_cancel(boma) {
+            fighter.sub_air_check_fall_common();
+        }
         if WorkModule::is_flag(boma, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE) {
             if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_SPECIAL)
             || ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_ATTACK) {
@@ -1207,10 +1213,6 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(lua_state, 23.0);
     if macros::is_excute(fighter) {
-        // macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 367, 30, 20, 40, 3.0, 0.0, 12.0, 9.0, Some(0.0), Some(4.0), Some(9.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        // macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.8, 367, 30, 0, 80, 3.0, 0.0, 12.0, -5.0, Some(0.0), Some(4.0), Some(-5.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        // AttackModule::set_vec_target_pos(boma, 0, Hash40::new("top"), &Vector2f {x: 12.0, y: 0.0}, 9, false);
-        // AttackModule::set_vec_target_pos(boma, 1, Hash40::new("top"), &Vector2f {x: 25.0, y: 0.0}, 9, false);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 367, 30, 20, 40, 8.0, 0.0, 7.0, 1.0, Some(0.0), Some(7.0), Some(7.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.8, 367, 30, 20, 40, 8.0, 0.0, 7.0, -3.0, Some(0.0), Some(7.0), Some(7.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
@@ -1261,7 +1263,7 @@ unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1475cf263f), Hash40::new("top"), -0.0, 9.7, 12, 0, 0, 0, 1.2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1475cf263f), Hash40::new("top"), -0.0, 11.0, 12, 0, 0, 0, 1.2, true);
         macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 9.5, 6, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
         macros::LAST_EFFECT_SET_COLOR(fighter, 0.264, 0.47, 1.3);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.7);

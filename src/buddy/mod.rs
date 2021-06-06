@@ -17,10 +17,9 @@ use smashline::*;
 #[acmd_script( agent = "buddy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 10.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     for _ in 0..7 {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.8, 48, 100, 60, 0, 4.5, 0.0, 4.2, -4.8, None, None, None, 0.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
@@ -30,7 +29,7 @@ unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 4, 0, Hash40::new("top"), 0.8, 130, 100, 75, 0, 4.5, 0.0, 4.2, 5.8, None, None, None, 0.5, 0.8, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         sv_animcmd::wait(lua_state, 2.0);
         if macros::is_excute(fighter) {
-            AttackModule::clear_all(boma);
+            AttackModule::clear_all(fighter.module_accessor);
         }
         sv_animcmd::wait(lua_state, 1.0);
     }
@@ -39,11 +38,11 @@ unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 37.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
@@ -52,10 +51,9 @@ unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "buddy", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 7.0);
     if macros::is_excute(fighter) {
@@ -71,17 +69,17 @@ unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 1, Hash40::new("top"), 6.7, 76, 94, 0, 42, 5.8, 0.0, 13.8, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BUDDY_WING, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 1, 1, Hash40::new("top"), 6.7, 76, 94, 0, 42, 6.4, 0.0, 20.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BUDDY_WING, *ATTACK_REGION_PUNCH);
     }
     sv_animcmd::wait(lua_state, 3.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 30.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 

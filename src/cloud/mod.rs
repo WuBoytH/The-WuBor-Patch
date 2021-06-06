@@ -9,10 +9,9 @@ use smashline::*;
 #[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME, low_priority )]
 unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
-        GrabModule::set_rebound(boma, true);
+        GrabModule::set_rebound(fighter.module_accessor, true);
     }
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
@@ -23,8 +22,8 @@ unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
         smash_script::grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
-        GrabModule::set_rebound(boma, false);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
+        GrabModule::set_rebound(fighter.module_accessor, false);
     }
 }
 

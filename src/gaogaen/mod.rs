@@ -25,25 +25,23 @@ pub static mut REVENGE : [i32; 8] = [0; 8];
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
 fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        let lua_state = fighter.lua_state_agent;
-        let boma = sv_system::battle_object_module_accessor(lua_state);
         
         // Darkest Lariat Jump Cancel
 
-        if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND
-        && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_N
-        && MotionModule::frame(boma) > 19.0
-        && (AttackModule::is_infliction_status(boma, *COLLISION_KIND_MASK_HIT)
-        || IS_FUNNY[entry_id(boma)])
-        && ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_JUMP) {
-            StatusModule::change_status_request_from_script(boma, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+        && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
+        && MotionModule::frame(fighter.module_accessor) > 19.0
+        && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        || IS_FUNNY[entry_id(fighter.module_accessor)])
+        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         }
 
-        if MotionModule::motion_kind(boma) != hash40("special_lw_start")
-        && MotionModule::motion_kind(boma) != hash40("special_air_lw_start")
-        && MotionModule::motion_kind(boma) != hash40("special_s_lariat")
-        && MotionModule::motion_kind(boma) != hash40("special_air_s_lariat") {
-            REVENGE[entry_id(boma)] = 0;
+        if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_start")
+        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_air_lw_start")
+        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_s_lariat")
+        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_air_s_lariat") {
+            REVENGE[entry_id(fighter.module_accessor)] = 0;
         }
     }
 }
@@ -53,10 +51,9 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
 #[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
@@ -65,11 +62,11 @@ unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 19.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 24.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
     }
 }
 
@@ -78,10 +75,9 @@ unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 6.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }
     sv_animcmd::frame(lua_state, 13.0);
     if macros::is_excute(fighter) {
@@ -92,13 +88,13 @@ unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 19.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
         macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
     }
     sv_animcmd::frame(lua_state, 24.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
     }
 }
 
@@ -107,10 +103,9 @@ unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
@@ -122,11 +117,11 @@ unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 26.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 36.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
@@ -135,14 +130,13 @@ unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        JostleModule::set_status(boma, false);
+        JostleModule::set_status(fighter.module_accessor, false);
     }
     sv_animcmd::frame(lua_state, 4.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     sv_animcmd::frame(lua_state, 16.0);
     if macros::is_excute(fighter) {
@@ -156,12 +150,12 @@ unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 22.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        JostleModule::set_status(boma, true);
+        AttackModule::clear_all(fighter.module_accessor);
+        JostleModule::set_status(fighter.module_accessor, true);
     }
     sv_animcmd::frame(lua_state, 45.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(boma, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
 
@@ -173,7 +167,6 @@ unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 75, 47, 0, 85, 5.8, 0.0, 11.0, 4.0, Some(0.0), Some(11.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -182,34 +175,34 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
         macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
-    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
             macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         }
     }
     sv_animcmd::wait(lua_state, 1.0);
     if macros::is_excute(fighter) {
         macros::HIT_NODE(fighter, Hash40::new("head"), *HIT_STATUS_NORMAL);
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
-    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         if macros::is_excute(fighter) {
             macros::HIT_RESET_ALL(fighter);
-            AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-            AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-            AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-            AttackModule::set_size(boma, 0, 0.1);
-            AttackModule::set_size(boma, 1, 0.1);
-            AttackModule::set_size(boma, 2, 0.1);
+            AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+            AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+            AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+            AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+            AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+            AttackModule::set_size(fighter.module_accessor, 2, 0.1);
         }
     }
     sv_animcmd::frame(lua_state, 9.0);
@@ -220,12 +213,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
@@ -235,12 +228,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 23.0);
     if macros::is_excute(fighter) {
@@ -250,12 +243,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 29.0);
     if macros::is_excute(fighter) {
@@ -265,12 +258,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 37.0);
     if macros::is_excute(fighter) {
@@ -280,12 +273,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
@@ -295,12 +288,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 50.0);
     if macros::is_excute(fighter) {
@@ -310,12 +303,12 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 56.0);
     if macros::is_excute(fighter) {
@@ -325,15 +318,15 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
-            AttackModule::clear_all(boma);
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
+        HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            AttackModule::clear_all(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
     }
-    if WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
         if macros::is_excute(fighter) {
             macros::HIT_RESET_ALL(fighter);
-            AttackModule::clear_all(boma);
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
+            AttackModule::clear_all(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
         }
     }
 }
@@ -341,7 +334,6 @@ unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 75, 47, 0, 85, 4.6, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -350,13 +342,13 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 9.0);
     if macros::is_excute(fighter) {
@@ -366,12 +358,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 15.0);
     if macros::is_excute(fighter) {
@@ -381,12 +373,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 23.0);
     if macros::is_excute(fighter) {
@@ -396,12 +388,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 29.0);
     if macros::is_excute(fighter) {
@@ -411,12 +403,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 37.0);
     if macros::is_excute(fighter) {
@@ -426,12 +418,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
@@ -441,12 +433,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 50.0);
     if macros::is_excute(fighter) {
@@ -456,12 +448,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::set_target_category(boma, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_target_category(boma, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
-        AttackModule::set_size(boma, 0, 0.1);
-        AttackModule::set_size(boma, 1, 0.1);
-        AttackModule::set_size(boma, 2, 0.1);
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 1, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_target_category(fighter.module_accessor, 2, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 1, 0.1);
+        AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
     sv_animcmd::frame(lua_state, 56.0);
     if macros::is_excute(fighter) {
@@ -471,12 +463,12 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(lua_state, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
+        AttackModule::clear_all(fighter.module_accessor);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
     }
     sv_animcmd::frame(lua_state, 85.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_REQUEST_GRAVITY_DEFAULT);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_REQUEST_GRAVITY_DEFAULT);
     }
 }
 
@@ -485,11 +477,10 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 105, 280, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        AttackModule::set_force_reaction(boma, 0, true, true);
+        AttackModule::set_force_reaction(fighter.module_accessor, 0, true, true);
     }
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.75);
@@ -507,16 +498,16 @@ unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 18.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
     }
     sv_animcmd::frame(lua_state, 20.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
         macros::REVERSE_LR(fighter);
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
     }
     sv_animcmd::frame(lua_state, 45.0);
     if macros::is_excute(fighter) {
@@ -524,18 +515,17 @@ unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
     }
 }
 
 #[acmd_script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 105, 280, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-        AttackModule::set_force_reaction(boma, 0, true, true);
+        AttackModule::set_force_reaction(fighter.module_accessor, 0, true, true);
     }
     sv_animcmd::frame(lua_state, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.75);
@@ -553,16 +543,16 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 18.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
     }
     sv_animcmd::frame(lua_state, 20.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
         macros::REVERSE_LR(fighter);
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
     }
     sv_animcmd::frame(lua_state, 45.0);
     if macros::is_excute(fighter) {
@@ -570,7 +560,7 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 42.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
     }
 }
 
@@ -584,19 +574,18 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    if REVENGE[entry_id(boma)] > 0 {
-        let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(boma, 0));
-        let mut hitlag = 1.0 + 0.5 * DamageModule::damage(boma, 0);
-        if dmg > 36.0 && IS_FUNNY[entry_id(boma)] == false {
+    if REVENGE[entry_id(fighter.module_accessor)] > 0 {
+        let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(fighter.module_accessor, 0));
+        let mut hitlag = 1.0 + 0.5 * DamageModule::damage(fighter.module_accessor, 0);
+        if dmg > 36.0 && IS_FUNNY[entry_id(fighter.module_accessor)] == false {
             dmg = 36.0;
             hitlag = 2.0;
         }
-        if REVENGE[entry_id(boma)] == 2 {
-            HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_XLU), 0);
+        if REVENGE[entry_id(fighter.module_accessor)] == 2 {
+            HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         }
         if macros::is_excute(fighter) {
-            JostleModule::set_status(boma, false);
+            JostleModule::set_status(fighter.module_accessor, false);
         }
         sv_animcmd::frame(lua_state, 9.0);
         if macros::is_excute(fighter) {
@@ -604,25 +593,25 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 14.0);
         if macros::is_excute(fighter) {
-            AttackModule::clear_all(boma);
-            HitModule::set_status_all(boma, HitStatus(*HIT_STATUS_NORMAL), 0);
+            AttackModule::clear_all(fighter.module_accessor);
+            HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
             macros::REVERSE_LR(fighter);
         }
         sv_animcmd::frame(lua_state, 50.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
         }
         sv_animcmd::frame(lua_state, 58.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
         }
     }
     else {
         if macros::is_excute(fighter) {
             smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
             macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 0.0, 145, 454, 0, 20, 0.0, 1.0, *ATTACK_LR_CHECK_B, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
-            AttackModule::set_force_reaction(boma, 0, true, true);
-            WorkModule::set_float(boma, 9.0, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLOAT_LARIAT_HIT_FRAME);
+            AttackModule::set_force_reaction(fighter.module_accessor, 0, true, true);
+            WorkModule::set_float(fighter.module_accessor, 9.0, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLOAT_LARIAT_HIT_FRAME);
         }
         sv_animcmd::frame(lua_state, 9.0);
         if macros::is_excute(fighter) {
@@ -634,20 +623,20 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
         }
         sv_animcmd::frame(lua_state, 14.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_DAMAGE_CUT);
         }
         sv_animcmd::frame(lua_state, 20.0);
         if macros::is_excute(fighter) {
-            AttackModule::clear_all(boma);
+            AttackModule::clear_all(fighter.module_accessor);
             macros::REVERSE_LR(fighter);
         }
         sv_animcmd::frame(lua_state, 50.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_ENABLE_GRAVITY);
         }
         sv_animcmd::frame(lua_state, 58.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_WORK_ID_FLAG_AIR_CONTROL);
             smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         }
     }
@@ -658,7 +647,6 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -666,7 +654,7 @@ unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_HI_FLAG_DISABLE_OPPONENT_PASSIVE);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_HI_FLAG_DISABLE_OPPONENT_PASSIVE);
     }
     macros::FT_MOTION_RATE(fighter, 0.423);
     if macros::is_excute(fighter) {
@@ -694,7 +682,6 @@ unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", script = "game_specialairhifall_2", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 2.0);
     if macros::is_excute(fighter) {
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -702,7 +689,7 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(lua_state, 3.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_STATUS_SPECIAL_HI_FLAG_DISABLE_OPPONENT_PASSIVE);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_HI_FLAG_DISABLE_OPPONENT_PASSIVE);
     }
     macros::FT_MOTION_RATE(fighter, 0.356);
     if macros::is_excute(fighter) {
@@ -735,18 +722,17 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::set_int(boma, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
-        WorkModule::on_flag(boma, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
+        WorkModule::set_int(fighter.module_accessor, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
     }
     macros::FT_MOTION_RATE(fighter, 0.25);
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
-        DamageModule::set_damage_mul(boma, 0.5);
-        REVENGE[entry_id(boma)] = 1;
+        DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
+        REVENGE[entry_id(fighter.module_accessor)] = 1;
     }
     sv_animcmd::frame(lua_state, 9.0);
     macros::FT_MOTION_RATE(fighter, 1.5);
@@ -755,9 +741,9 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(lua_state, 28.0);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        DamageModule::set_damage_mul(boma, 1.0);
-        PostureModule::reverse_lr(boma);
-        StatusModule::change_status_request_from_script(boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
+        DamageModule::set_damage_mul(fighter.module_accessor, 1.0);
+        PostureModule::reverse_lr(fighter.module_accessor);
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
     }
     macros::FT_MOTION_RATE(fighter, 0.5);
     sv_animcmd::frame(lua_state, 32.0);

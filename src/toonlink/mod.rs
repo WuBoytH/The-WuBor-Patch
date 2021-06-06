@@ -20,20 +20,21 @@ static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-
-        if IS_FUNNY[entry_id(boma)] && SPIN_SPEED[entry_id(boma)] != 3.0 {
-            SPIN_SPEED[entry_id(boma)] = 3.0;
+        if IS_FUNNY[entry_id(fighter.module_accessor)] && SPIN_SPEED[entry_id(fighter.module_accessor)] != 3.0 {
+            SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
         }
-        else if !IS_FUNNY[entry_id(boma)] && SPIN_SPEED[entry_id(boma)] != 1.56 {
-            SPIN_SPEED[entry_id(boma)] = 1.56;
+        else if !IS_FUNNY[entry_id(fighter.module_accessor)] && SPIN_SPEED[entry_id(fighter.module_accessor)] != 1.56 {
+            SPIN_SPEED[entry_id(fighter.module_accessor)] = 1.56;
         }
 
         // Toon Link can now move during his grounded Spin Attack.
 
-        if MotionModule::motion_kind(boma) == smash::hash40("special_hi") {
-            if MotionModule::frame(boma) > 6.0 && MotionModule::frame(boma) < 46.0 {
-                macros::SET_SPEED_EX(fighter, PostureModule::lr(boma) * &SPIN_SPEED[entry_id(boma)] * ControlModule::get_stick_x(boma), 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_hi") {
+            if MotionModule::frame(fighter.module_accessor) > 6.0 && MotionModule::frame(fighter.module_accessor) < 46.0 {
+                let stickx = ControlModule::get_stick_x(fighter.module_accessor);
+                let lr = PostureModule::lr(fighter.module_accessor);
+                let speed = SPIN_SPEED[entry_id(fighter.module_accessor)];
+                macros::SET_SPEED_EX(fighter, lr * speed * stickx, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }
     }
@@ -45,7 +46,6 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 #[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     macros::FT_MOTION_RATE(fighter, 0.7);
     sv_animcmd::frame(lua_state, 8.0);
     macros::FT_MOTION_RATE(fighter, 1.1);
@@ -57,7 +57,7 @@ unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(lua_state, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.6186);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(boma);
+        AttackModule::clear_all(fighter.module_accessor);
     }
     sv_animcmd::frame(lua_state, 43.0);
     macros::FT_MOTION_RATE(fighter, 1.0);

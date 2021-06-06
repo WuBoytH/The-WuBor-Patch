@@ -12,25 +12,22 @@ use smashline::*;
 #[fighter_frame( agent = FIGHTER_KIND_REFLET )]
 fn reflet_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        let lua_state = fighter.lua_state_agent;
-        let boma = sv_system::battle_object_module_accessor(lua_state);
-
-        if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ENTRY {
-            WorkModule::set_int(boma, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ENTRY {
+            WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
         }
 
         if smashball::is_training_mode(){
-            if ControlModule::check_button_on_trriger(boma, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-                WorkModule::set_int(boma, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+                WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
             }
         }
 
-        if (MotionModule::motion_kind(boma) == hash40("special_hi")
-        || MotionModule::motion_kind(boma) == hash40("special_air_hi"))
-        && MotionModule::frame(boma) >= 12.0 && MotionModule::frame(boma) < 46.0 {
-            if ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_SPECIAL)
-            || ControlModule::check_button_on(boma, *CONTROL_PAD_BUTTON_ATTACK) {
-                WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
+        if (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi")
+        || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_hi"))
+        && MotionModule::frame(fighter.module_accessor) >= 12.0 && MotionModule::frame(fighter.module_accessor) < 46.0 {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+            || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
             }
         }
     }
@@ -39,11 +36,10 @@ fn reflet_frame(fighter: &mut L2CFighterCommon) {
 #[acmd_script( agent = "reflet", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME, low_priority )]
 unsafe fn reflet_uspecial1(fighter: &mut L2CAgentBase) {
     let lua_state = fighter.lua_state_agent;
-    let boma = sv_system::battle_object_module_accessor(lua_state);
     sv_animcmd::frame(lua_state, 8.0);
     if macros::is_excute(fighter) {
-        ArticleModule::generate_article(boma, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
-        WorkModule::on_flag(boma, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
     }
     sv_animcmd::frame(lua_state, 28.0);
     if macros::is_excute(fighter) {

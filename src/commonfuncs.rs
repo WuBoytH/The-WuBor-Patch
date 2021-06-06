@@ -2,51 +2,99 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::app::*;
 
-pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
-    if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_AIR
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_THROWN
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_WAIT
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY 
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR 
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U 
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_FINAL
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SLEEP
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_B
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_F
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CLIFF_ESCAPE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SWALLOWED
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_AIR_LASSO
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_REFLET
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_CATCHED_RIDLEY
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_MISS_FOOT
-    || WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DEAD
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_REBIRTH
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_BURY_WAIT
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ICE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_DAMAGE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_STAND_FB
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_STAND
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_WAIT
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_EAT
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_LAY_DOWN
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DOWN_SPOT
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE_WALL
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE_CEIL
-    || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_PASSIVE_FB {
+// let DMG_STATUS = [
+//     FIGHTER_STATUS_KIND_DAMAGE,
+//     FIGHTER_STATUS_KIND_DAMAGE_AIR,
+//     FIGHTER_STATUS_KIND_THROWN,
+//     FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+//     FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+//     FIGHTER_STATUS_KIND_DAMAGE_FLY,
+//     FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+//     FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+//     FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+//     FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+//     FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+//     FIGHTER_STATUS_KIND_FINAL,
+//     FIGHTER_STATUS_KIND_SLEEP,
+//     FIGHTER_STATUS_KIND_ESCAPE_B,
+//     FIGHTER_STATUS_KIND_ESCAPE_F,
+//     FIGHTER_STATUS_KIND_ESCAPE,
+//     FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
+//     FIGHTER_STATUS_KIND_ESCAPE_AIR,
+//     FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+//     FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND,
+//     FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD,
+//     FIGHTER_STATUS_KIND_SWALLOWED,
+//     FIGHTER_STATUS_KIND_AIR_LASSO,
+//     FIGHTER_STATUS_KIND_CATCHED_REFLET,
+//     FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+//     FIGHTER_STATUS_KIND_MISS_FOOT,
+//     FIGHTER_STATUS_KIND_DEAD,
+//     FIGHTER_STATUS_KIND_REBIRTH,
+//     FIGHTER_STATUS_KIND_BURY,
+//     FIGHTER_STATUS_KIND_BURY_WAIT,
+//     FIGHTER_STATUS_KIND_ICE,
+//     FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+//     FIGHTER_STATUS_KIND_DOWN_STAND_FB,
+//     FIGHTER_STATUS_KIND_DOWN_STAND,
+//     FIGHTER_STATUS_KIND_DOWN_WAIT,
+//     FIGHTER_STATUS_KIND_DOWN_EAT,
+//     FIGHTER_STATUS_KIND_LAY_DOWN,
+//     FIGHTER_STATUS_KIND_DOWN,
+//     FIGHTER_STATUS_KIND_DOWN_SPOT,
+//     FIGHTER_STATUS_KIND_PASSIVE,
+//     FIGHTER_STATUS_KIND_PASSIVE_WALL,
+//     FIGHTER_STATUS_KIND_PASSIVE_CEIL,
+//     FIGHTER_STATUS_KIND_PASSIVE_FB
+// ];
+
+pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
+    if WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
+    || [
+        *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_AIR,
+        *FIGHTER_STATUS_KIND_THROWN,
+        *FIGHTER_STATUS_KIND_CAPTURE_WAIT,
+        *FIGHTER_STATUS_KIND_CAPTURE_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_FINAL,
+        *FIGHTER_STATUS_KIND_SLEEP,
+        *FIGHTER_STATUS_KIND_ESCAPE_B,
+        *FIGHTER_STATUS_KIND_ESCAPE_F,
+        *FIGHTER_STATUS_KIND_ESCAPE,
+        *FIGHTER_STATUS_KIND_CLIFF_ESCAPE,
+        *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+        *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
+        *FIGHTER_STATUS_KIND_CAPTURE_MASTERHAND,
+        *FIGHTER_STATUS_KIND_CAPTURE_MASTER_SWORD,
+        *FIGHTER_STATUS_KIND_SWALLOWED,
+        *FIGHTER_STATUS_KIND_AIR_LASSO,
+        *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+        *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+        *FIGHTER_STATUS_KIND_MISS_FOOT,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_BURY,
+        *FIGHTER_STATUS_KIND_BURY_WAIT,
+        *FIGHTER_STATUS_KIND_ICE,
+        *FIGHTER_STATUS_KIND_DOWN_DAMAGE,
+        *FIGHTER_STATUS_KIND_DOWN_STAND_FB,
+        *FIGHTER_STATUS_KIND_DOWN_STAND,
+        *FIGHTER_STATUS_KIND_DOWN_WAIT,
+        *FIGHTER_STATUS_KIND_DOWN_EAT,
+        *FIGHTER_STATUS_KIND_LAY_DOWN,
+        *FIGHTER_STATUS_KIND_DOWN,
+        *FIGHTER_STATUS_KIND_DOWN_SPOT,
+        *FIGHTER_STATUS_KIND_PASSIVE,
+        *FIGHTER_STATUS_KIND_PASSIVE_WALL,
+        *FIGHTER_STATUS_KIND_PASSIVE_CEIL,
+        *FIGHTER_STATUS_KIND_PASSIVE_FB
+    ].contains(&StatusModule::status_kind(module_accessor)) {
         return true;
     }
     else {
@@ -54,23 +102,20 @@ pub unsafe fn is_damage_check(boma : &mut BattleObjectModuleAccessor) -> bool {
     }
 }
 
-pub unsafe fn entry_id(module_accessor:  &mut BattleObjectModuleAccessor) -> usize {
-    if utility::get_kind(module_accessor) == *WEAPON_KIND_PTRAINER_PTRAINER {
-        let player_number = WorkModule::get_int(module_accessor, *WEAPON_PTRAINER_PTRAINER_INSTANCE_WORK_ID_INT_FIGHTER_ENTRY_ID) as usize;
-        return player_number;
+pub unsafe fn entry_id(module_accessor: *mut BattleObjectModuleAccessor) -> usize {
+    if utility::get_kind(&mut *module_accessor) == *WEAPON_KIND_PTRAINER_PTRAINER {
+        return WorkModule::get_int(module_accessor, *WEAPON_PTRAINER_PTRAINER_INSTANCE_WORK_ID_INT_FIGHTER_ENTRY_ID) as usize;
     }
-    else if utility::get_category(module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        let player_number = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        return player_number;
+    else if utility::get_category(&mut *module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        return WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     }
     else {
         let owner_module_accessor = &mut *sv_battle_object::module_accessor((WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-        let player_number = WorkModule::get_int(owner_module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-        return player_number;
+        return WorkModule::get_int(owner_module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     }
 }
 
-pub unsafe fn get_command_stick_direction(module_accessor: &mut BattleObjectModuleAccessor, command: bool) -> i32 {
+pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModuleAccessor, command: bool) -> i32 {
     let status_kind = StatusModule::status_kind(module_accessor);
     let mut stick_x = ControlModule::get_stick_x(module_accessor);
     if command {

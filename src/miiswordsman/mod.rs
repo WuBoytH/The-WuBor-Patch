@@ -26,11 +26,10 @@ use smashline::*;
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialairs2end", category = ACMD_GAME, low_priority )]
 unsafe fn miisword_galestabend(fighter: &mut L2CAgentBase) {
-    let lua_state = fighter.lua_state_agent;
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_STATUS_SHIPPU_SLASH_FLAG_ATTACK_END);
     }
-    sv_animcmd::frame(lua_state, 4.0);
+    sv_animcmd::frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }

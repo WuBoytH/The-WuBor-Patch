@@ -143,7 +143,6 @@ mod edge;
 //             flag = *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4;
 //         }
 //     }
-
 //     return flag;
 // }
 
@@ -892,7 +891,6 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 // 	let status_kind = StatusModule::status_kind(boma);
 // 	let fighter_kind = app::utility::get_kind(boma);
 //     let ret = original!()(boma, situation_kind, arg3, arg4, ground_cliff_check_kind, arg6, arg7, arg8, arg9, arg10);
-
 // 	if status_kind != *FIGHTER_STATUS_KIND_APPEAL
 // 	&& status_kind != *FIGHTER_STATUS_KIND_DASH
 // 	&& status_kind != *FIGHTER_STATUS_KIND_TURN

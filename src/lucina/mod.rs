@@ -1202,6 +1202,8 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     let mut dmg : f32;
     let kbg : i32;
+    sv_animcmd::frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0/3.0);
     sv_animcmd::frame(fighter.lua_state_agent, 15.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(fighter.module_accessor, false) {
@@ -1212,6 +1214,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     }
     else {
         IS_EX[entry_id(fighter.module_accessor)] = false;
+        macros::FT_MOTION_RATE(fighter, 1.0);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
@@ -1294,6 +1297,10 @@ unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_sspecial1snd(fighter: &mut L2CAgentBase) {
+    sv_animcmd::frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_lucina_jump02"));
+    }
     sv_animcmd::frame(fighter.lua_state_agent, 44.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_lucina_special_n01"));
@@ -1333,7 +1340,9 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
         KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
+    macros::FT_MOTION_RATE(fighter, 24.0/35.0);
     sv_animcmd::frame(fighter.lua_state_agent, 52.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -1434,8 +1443,8 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
         else {
             dmg = 12.0 * DMG_RATIO[entry_id(fighter.module_accessor)];
             kbg = 66;
-            velx = 1.5;
-            vely = -3.0;
+            velx = 2.1;
+            vely = -2.1;
         }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, velx, vely, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

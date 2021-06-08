@@ -17,8 +17,6 @@ use skyline::nn::ro::LookupSymbol;
 
 // Weight: 127 > 120
 
-
-
 // Forward Tilt has 2 more damage on all versions and has an earlier cancel frame (34 -> 31).
 
 #[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME, low_priority )]

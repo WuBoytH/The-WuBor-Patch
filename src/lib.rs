@@ -14,7 +14,6 @@ use smash::app::FighterManager;
 use skyline::hooks::{getRegionAddress, Region};
 // use skyline::nn::ro::LookupSymbol;
 
-pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 static mut INT_OFFSET : usize = 0x4E19D0;
 // static mut INT64_OFFSET : usize = 0x4E19F0;
 static mut FLOAT_OFFSET : usize = 0x4E19D0;
@@ -23,7 +22,9 @@ static mut MUSIC_OFFSET: usize = 0x3451f30; // default = 8.1.0 offset
 static mut MUSIC_PARAM1: *mut u64 = 0 as *mut u64;
 static mut MUSIC_PARAM2: i64 = 0;
 static mut NUS3AUDIO_HASH: *mut u64 = 0 as *mut u64;
+pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 pub static mut FIGHTER_MANAGER: usize = 0;
+pub static mut ITEM_MANAGER: usize = 0;
 
 static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
 static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];

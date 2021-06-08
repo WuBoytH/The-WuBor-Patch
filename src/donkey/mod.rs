@@ -5,8 +5,10 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
+use crate::ITEM_MANAGER;
 use crate::commonfuncs::*;
-use crate::system::IS_FUNNY;
+use crate::system::{IS_FUNNY, IS_DK};
+use skyline::nn::ro::LookupSymbol;
 
 // ---------------------------------------------------------
 // Heck, even giving DK a nerfed form of the barrel is a massive buff. But we nerfed his weight and
@@ -14,6 +16,8 @@ use crate::system::IS_FUNNY;
 // ---------------------------------------------------------
 
 // Weight: 127 > 120
+
+
 
 // Forward Tilt has 2 more damage on all versions and has an earlier cancel frame (34 -> 31).
 
@@ -130,6 +134,16 @@ unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "donkey", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
 unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        if !barrel_check() {
+            if PostureModule::lr(fighter.module_accessor) == 1.0 {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_r"), 1.0, 1.0, false, 0.0, false, false);
+            }
+            else {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_l"), 1.0, 1.0, false, 0.0, false, false);
+            }
+        }
+    }
     sv_animcmd::frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
         ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
@@ -142,6 +156,26 @@ unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
             }
         }
     }
+}
+
+pub unsafe fn barrel_check() -> bool {
+    LookupSymbol(
+        &mut ITEM_MANAGER,
+        "_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E\u{0}"
+        .as_bytes()
+        .as_ptr(),
+    );
+    let item_manager = *(ITEM_MANAGER as *mut *mut smash::app::ItemManager);
+    let mut dks = 0;
+    for i in 0..IS_DK.len() {
+        if IS_DK[i] {
+            dks += 1;
+        }
+    }
+    if smash::app::lua_bind::ItemManager::get_num_of_active_item_all(item_manager) >= dks * 2 {
+        return false;
+    }
+    return true;
 }
 
 pub fn install() {

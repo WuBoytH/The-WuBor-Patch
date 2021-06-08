@@ -3,7 +3,7 @@ use smash::lua2cpp::{/*L2CAgentBase, */L2CFighterCommon};
 // use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
-use smash::lib::L2CValue;
+// use smash::lib::L2CValue;
 // use smash_script::*;
 use smashline::*;
 use crate::system::IS_FUNNY;
@@ -31,8 +31,7 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING)
         && UP_SPECIAL_CANCEL[entry_id(fighter.module_accessor)] == true {
-            fighter.sub_wait_ground_check_common(L2CValue::I32(0));
-            fighter.sub_air_check_fall_common();
+            CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
 }

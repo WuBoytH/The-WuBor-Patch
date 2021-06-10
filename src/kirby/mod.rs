@@ -54,21 +54,21 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         // Ganon Teleport
 
         if entry_id(fighter.module_accessor) < 8 {
-            if TELEPORT[entry_id(fighter.module_accessor)] == 1 || TELEPORT[entry_id(fighter.module_accessor)] == 5 {
+            if TELEPORT[entry_id(fighter.module_accessor)] == 1 {
                 let dir = get_command_stick_direction(fighter.module_accessor, false);
-                if dir == 5 || dir == 2 || dir == 8 {
+                if dir == 2 || dir == 8 {
                     TELE_X[entry_id(fighter.module_accessor)] = 0.0;
                 }
                 else if dir == 3 || dir == 9 {
                     TELE_X[entry_id(fighter.module_accessor)] = 35.0;
                 }
-                else if dir == 6 {
+                else if (dir == 5 && PostureModule::lr(fighter.module_accessor) == 1.0) || dir == 6 {
                     TELE_X[entry_id(fighter.module_accessor)] = 40.0;
                 }
                 else if dir == 1 || dir == 7 {
                     TELE_X[entry_id(fighter.module_accessor)] = -35.0;
                 }
-                else if dir == 4 {
+                else if (dir == 5 && PostureModule::lr(fighter.module_accessor) == -1.0) || dir == 4 {
                     TELE_X[entry_id(fighter.module_accessor)] = -40.0;
                 }
                 if dir == 5
@@ -95,31 +95,46 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
                     TELE_Y[entry_id(fighter.module_accessor)] = 40.0;
                 }
             }
-            if TELEPORT[entry_id(fighter.module_accessor)] == 3 || TELEPORT[entry_id(fighter.module_accessor)] == 7 {
-                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-                if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                    if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
-                        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+            if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
+                if OG_X[entry_id(fighter.module_accessor)] == 0.0 {
+                    OG_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);
+                    OG_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+                        if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
+                            StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+                        }
+                        else {
+                            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                        }
                     }
-                    else {
-                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                    }
-                }
-                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: TELE_X[entry_id(fighter.module_accessor)], y: TELE_Y[entry_id(fighter.module_accessor)]});
-                if TELE_X[entry_id(fighter.module_accessor)] == 0.0 && TELE_Y[entry_id(fighter.module_accessor)] == 0.0 {
-                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8.0, 38.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                    PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: TELE_X[entry_id(fighter.module_accessor)], y: TELE_Y[entry_id(fighter.module_accessor)]});
                 }
                 else {
-                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                        // StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                        let ogx = OG_X[entry_id(fighter.module_accessor)];
+                        let ogy = OG_Y[entry_id(fighter.module_accessor)];
+                        PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
+                    }
+                    OG_X[entry_id(fighter.module_accessor)] = 0.0;
+                    OG_Y[entry_id(fighter.module_accessor)] = 0.0;
+                    TELEPORT[entry_id(fighter.module_accessor)] += 1;
                 }
-                TELEPORT[entry_id(fighter.module_accessor)] += 1;
             }
+
+            // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
 
             if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
             || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
             || IS_FUNNY[entry_id(fighter.module_accessor)] {
                 CAN_TELEPORT[entry_id(fighter.module_accessor)] = true;
             }
+
+            // Stops Ganondorf's momentum during Dark Deception.
+            // Necessary because transitioning from Ground to Air re-enables his momentum.
 
             if TELE_STOP[entry_id(fighter.module_accessor)] {
                 KineticModule::unable_energy_all(fighter.module_accessor);

@@ -1285,7 +1285,7 @@ unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_sspecial1snd(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("vc_lucina_jump02"));
+        macros::PLAY_SE(fighter, Hash40::new("se_lucina_jump02"));
     }
     sv_animcmd::frame(fighter.lua_state_agent, 44.0);
     if macros::is_excute(fighter) {

@@ -1,5 +1,6 @@
 use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
+use smash::hash40;
+use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
@@ -7,8 +8,10 @@ use smash_script::*;
 use smashline::*;
 use crate::ITEM_MANAGER;
 use crate::commonfuncs::*;
-use crate::system::{IS_FUNNY, IS_DK};
+use crate::system::{IS_FUNNY/*, IS_DK*/};
 use skyline::nn::ro::LookupSymbol;
+use crate::globals::*;
+use smash::lib::L2CValue;
 
 // ---------------------------------------------------------
 // Heck, even giving DK a nerfed form of the barrel is a massive buff. But we nerfed his weight and
@@ -16,6 +19,56 @@ use skyline::nn::ro::LookupSymbol;
 // ---------------------------------------------------------
 
 // Weight: 127 > 120
+
+
+#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn donkey_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
+    PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
+    if !barrel_check(fighter.module_accessor) {
+        if PostureModule::lr(fighter.module_accessor) == 1.0 {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_r"), 1.0, 1.0, false, 0.0, false, false);
+        }
+        else {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_l"), 1.0, 1.0, false, 0.0, false, false);
+        }
+    }
+    else {
+        fighter.sub_change_motion_by_situation(L2CValue::Hash40(Hash40::new("special_s")), L2CValue::Hash40(Hash40::new("special_air_s")), L2CValue::Bool(false));
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(donkey_specialsmain as *const () as _))
+}
+
+unsafe extern "C" fn donkey_specialsmain(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_r")
+    && MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_l") {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s"), -1.0, 1.0, 0.0, false, false);
+            }
+            else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), -1.0, 1.0, 0.0, false, false);
+            }
+        }
+    }
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+    }
+    else if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(L2CValue::I32(112)).get_bool() == false
+        && fighter.sub_air_check_fall_common().get_bool() == false {
+            return L2CValue::I32(1);
+        }
+    }
+    L2CValue::I32(0)
+}
+
 
 // Forward Tilt has 2 more damage on all versions and has an earlier cancel frame (34 -> 31).
 
@@ -130,19 +183,12 @@ unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
 
 // Instead of Headbutt, Donkey Kong now spawns a Barrel item.
 
-#[acmd_script( agent = "donkey", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "donkey", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        if !barrel_check() {
-            if PostureModule::lr(fighter.module_accessor) == 1.0 {
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_r"), 1.0, 1.0, false, 0.0, false, false);
-            }
-            else {
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_l"), 1.0, 1.0, false, 0.0, false, false);
-            }
-        }
-    }
+    sv_animcmd::frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 1.5);
     sv_animcmd::frame(fighter.lua_state_agent, 20.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
         if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_BARREL {
@@ -156,7 +202,26 @@ unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub unsafe fn barrel_check() -> bool {
+#[acmd_script( agent = "donkey", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+unsafe fn donkey_sspecialair(fighter: &mut L2CAgentBase) {
+    sv_animcmd::frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 30.0/19.0);
+    sv_animcmd::frame(fighter.lua_state_agent, 20.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
+        if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_BARREL {
+            if IS_FUNNY[entry_id(fighter.module_accessor)] == false && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_FALL, true);
+            }
+            else {
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP, true);
+            }
+        }
+    }
+}
+
+pub unsafe fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     LookupSymbol(
         &mut ITEM_MANAGER,
         "_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E\u{0}"
@@ -164,25 +229,33 @@ pub unsafe fn barrel_check() -> bool {
         .as_ptr(),
     );
     let item_manager = *(ITEM_MANAGER as *mut *mut smash::app::ItemManager);
-    let mut dks = 0;
-    for i in 0..IS_DK.len() {
-        if IS_DK[i] {
-            dks += 1;
-        }
-    }
-    if smash::app::lua_bind::ItemManager::get_num_of_active_item_all(item_manager) >= dks * 2 {
+    // let mut dks = 0;
+    // for i in 0..IS_DK.len() {
+    //     if IS_DK[i] {
+    //         dks += 1;
+    //     }
+    // }
+    // if smash::app::lua_bind::ItemManager::get_num_of_active_item_all(item_manager) >= dks * 2 {
+    //     return false;
+    // }
+    let entry_id = entry_id(module_accessor) as u32;
+    if smash::app::lua_bind::ItemManager::get_num_of_ownered_item(item_manager, entry_id, ItemKind(*ITEM_KIND_BARREL)) >= 2 {
         return false;
     }
     return true;
 }
 
 pub fn install() {
+    smashline::install_status_scripts!(
+        donkey_specials
+    );
     smashline::install_acmd_scripts!(
         donkey_ftilt,
         donkey_ftilthi,
         donkey_ftiltlw,
         donkey_utilt,
         donkey_dtilt,
-        donkey_sspecial
+        donkey_sspecial,
+        donkey_sspecialair
     );
 }

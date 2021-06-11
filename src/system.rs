@@ -22,7 +22,7 @@ pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
 
-pub static mut IS_DK : [bool; 8] = [false; 8];
+// pub static mut IS_DK : [bool; 8] = [false; 8];
 
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
@@ -37,17 +37,17 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 .as_ptr(),
         );
 
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ENTRY {
-            if utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
-                IS_DK[entry_id(fighter.module_accessor)] = true;
-            }
-        }
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WIN
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_LOSE {
-            for i in 0..IS_DK.len() {
-                IS_DK[i] = false;
-            }
-        }
+        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ENTRY {
+        //     if utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
+        //         IS_DK[entry_id(fighter.module_accessor)] = true;
+        //     }
+        // }
+        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WIN
+        // || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_LOSE {
+        //     for i in 0..IS_DK.len() {
+        //         IS_DK[i] = false;
+        //     }
+        // }
 
         // The code to set up Funny Mode.
 

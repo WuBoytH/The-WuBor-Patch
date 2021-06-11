@@ -185,10 +185,7 @@ unsafe fn donkey_dtilt(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "donkey", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe fn donkey_sspecial(fighter: &mut L2CAgentBase) {
-    sv_animcmd::frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 1.5);
     sv_animcmd::frame(fighter.lua_state_agent, 20.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
         if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_BARREL {

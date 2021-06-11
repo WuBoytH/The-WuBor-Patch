@@ -1,5 +1,4 @@
 use smash::phx::Hash40;
-use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
@@ -25,6 +24,7 @@ pub static mut TELE_X : [f32; 8] = [0.0; 8];
 pub static mut TELE_Y : [f32; 8] = [0.0; 8];
 pub static mut TELE_STOP : [bool; 8] = [false; 8];
 pub static mut CAN_TELEPORT : [bool; 8] = [true; 8];
+pub static mut FEINT : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
@@ -80,35 +80,21 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 else if dir == 8 {
                     TELE_Y[entry_id(fighter.module_accessor)] = 40.0;
                 }
+                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                    FEINT[entry_id(fighter.module_accessor)] = true;
+                }
             }
             if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
-                if OG_X[entry_id(fighter.module_accessor)] == 0.0 {
-                    OG_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);
-                    OG_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
-                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
-                            StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                        }
-                        else {
-                            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                        }
-                    }
-                    PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: TELE_X[entry_id(fighter.module_accessor)], y: TELE_Y[entry_id(fighter.module_accessor)]});
+                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                if FEINT[entry_id(fighter.module_accessor)] {
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                    let ogx = OG_X[entry_id(fighter.module_accessor)];
+                    let ogy = OG_Y[entry_id(fighter.module_accessor)];
+                    PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
                 }
-                else {
-                    macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                        // StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                        let ogx = OG_X[entry_id(fighter.module_accessor)];
-                        let ogy = OG_Y[entry_id(fighter.module_accessor)];
-                        PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
-                    }
-                    OG_X[entry_id(fighter.module_accessor)] = 0.0;
-                    OG_Y[entry_id(fighter.module_accessor)] = 0.0;
-                    TELEPORT[entry_id(fighter.module_accessor)] += 1;
-                }
+                OG_X[entry_id(fighter.module_accessor)] = 0.0;
+                OG_Y[entry_id(fighter.module_accessor)] = 0.0;
+                TELEPORT[entry_id(fighter.module_accessor)] += 1;
             }
 
             // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
@@ -139,13 +125,13 @@ unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ganon_sspecialairendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn ganon_sspecialairend(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_air_s_end_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specialairsendmain as *const () as _))
 }
 
-unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_specialairsendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
@@ -582,27 +568,35 @@ unsafe fn ganon_dair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
 unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        TELEPORT[entry_id(fighter.module_accessor)] = 1;
+        FEINT[entry_id(fighter.module_accessor)] = false;
+    }
     macros::FT_MOTION_RATE(fighter, 0.2);
     sv_animcmd::frame(fighter.lua_state_agent, 25.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     sv_animcmd::frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
-        OG_X[entry_id(fighter.module_accessor)] = 0.0;
-        OG_Y[entry_id(fighter.module_accessor)] = 0.0;
         TELE_STOP[entry_id(fighter.module_accessor)] = true;
+        OG_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);
+        OG_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
         CAN_TELEPORT[entry_id(fighter.module_accessor)] = false;
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(fighter.module_accessor, false);
-        CameraModule::set_camera_range_offset(fighter.module_accessor, &Vector3f {x: 15.0, y: 15.0, z: 0.0}, 0);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
-        TELEPORT[entry_id(fighter.module_accessor)] = 1;
-    }
-    sv_animcmd::frame(fighter.lua_state_agent, 40.0);
-    if macros::is_excute(fighter) {
         TELEPORT[entry_id(fighter.module_accessor)] = 2;
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
+                StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+            }
+            else {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+            }
+        }
+        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: TELE_X[entry_id(fighter.module_accessor)], y: TELE_Y[entry_id(fighter.module_accessor)]});
     }
     sv_animcmd::frame(fighter.lua_state_agent, 50.0);
     if macros::is_excute(fighter) {
@@ -612,10 +606,11 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         TELEPORT[entry_id(fighter.module_accessor)] = 0;
         TELE_STOP[entry_id(fighter.module_accessor)] = false;
-        CameraModule::reset_camera_range(fighter.module_accessor, 0);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
+    macros::FT_MOTION_RATE(fighter, 1.5);
     sv_animcmd::frame(fighter.lua_state_agent, 64.0);
+    macros::FT_MOTION_RATE(fighter, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -623,6 +618,11 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         JostleModule::set_status(fighter.module_accessor, true);
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 65.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
         }
@@ -636,6 +636,7 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14020f4ff6), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+        WorkModule::set_flag(fighter.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
@@ -644,7 +645,6 @@ unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
-        WorkModule::set_flag(fighter.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
         VisibilityModule::set_whole(fighter.module_accessor, false);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
         ItemModule::set_attach_item_visibility(fighter.module_accessor, false, 0);
@@ -871,7 +871,7 @@ pub fn install() {
     );
     smashline::install_status_scripts!(
         ganon_sspecialairendpre,
-        ganon_sspecialairendmain
+        ganon_sspecialairend
     );
     smashline::install_acmd_scripts!(
         ganon_jab,

@@ -9,7 +9,6 @@ use smashline::*;
 use crate::ITEM_MANAGER;
 use crate::commonfuncs::*;
 use crate::system::{IS_FUNNY/*, IS_DK*/};
-use skyline::nn::ro::LookupSymbol;
 use crate::globals::*;
 use smash::lib::L2CValue;
 
@@ -219,22 +218,7 @@ unsafe fn donkey_sspecialair(fighter: &mut L2CAgentBase) {
 }
 
 pub unsafe fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    LookupSymbol(
-        &mut ITEM_MANAGER,
-        "_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E\u{0}"
-        .as_bytes()
-        .as_ptr(),
-    );
     let item_manager = *(ITEM_MANAGER as *mut *mut smash::app::ItemManager);
-    // let mut dks = 0;
-    // for i in 0..IS_DK.len() {
-    //     if IS_DK[i] {
-    //         dks += 1;
-    //     }
-    // }
-    // if smash::app::lua_bind::ItemManager::get_num_of_active_item_all(item_manager) >= dks * 2 {
-    //     return false;
-    // }
     let entry_id = entry_id(module_accessor) as u32;
     if smash::app::lua_bind::ItemManager::get_num_of_ownered_item(item_manager, entry_id, ItemKind(*ITEM_KIND_BARREL)) >= 2 {
         return false;

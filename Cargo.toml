@@ -22,6 +22,7 @@ smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "
 smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
 arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
 smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
+# smash_utils = { git = "https://github.com/FaultyPine/smash_utils" }
 # interpolation = "0.2.0"
 
 [profile.dev]

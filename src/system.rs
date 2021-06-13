@@ -6,9 +6,8 @@ use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use smashline::*;
 use crate::commonfuncs::*;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
-use skyline::nn::ro::LookupSymbol;
 use smash::app::*;
+// use smash::lib::L2CValue;
 
 pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
@@ -22,32 +21,17 @@ pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
 
-// pub static mut IS_DK : [bool; 8] = [false; 8];
+// #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
+// pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+//     call_original!(fighter)
+// }
 
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
         let status_kind = StatusModule::status_kind(fighter.module_accessor);
-
-        LookupSymbol(
-            &mut FIGHTER_CUTIN_MANAGER_ADDR,
-            "_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E\u{0}"
-                .as_bytes()
-                .as_ptr(),
-        );
-
-        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ENTRY {
-        //     if utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
-        //         IS_DK[entry_id(fighter.module_accessor)] = true;
-        //     }
-        // }
-        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WIN
-        // || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_LOSE {
-        //     for i in 0..IS_DK.len() {
-        //         IS_DK[i] = false;
-        //     }
-        // }
 
         // The code to set up Funny Mode.
 
@@ -228,6 +212,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 //}
 
 pub fn install() {
+    // skyline::install_hook!(damage_air_main);
     smashline::install_agent_frame_callbacks!(
         global_fighter_frame
     );

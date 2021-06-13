@@ -124,12 +124,6 @@ mod api;
 // pub unsafe fn get_command_flag_cat_replace(boma: &mut BattleObjectModuleAccessor, category: i32) -> i32 {
 //     let mut flag = original!()(boma, category);
 //     let entry_id = WorkModule::get_int(boma,*FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-//     LookupSymbol(
-//         &mut FIGHTER_MANAGER,
-//         "_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E\u{0}"
-//         .as_bytes()
-//         .as_ptr(),
-//     );
 //     let fighter_manager = *(FIGHTER_MANAGER as *mut *mut smash::app::FighterManager);
 //     if smash::app::lua_bind::FighterInformation::is_operation_cpu(smash::app::lua_bind::FighterManager::get_fighter_information(fighter_manager, smash::app::FighterEntryID(entry_id as i32))) == false
 //     && flag & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
@@ -1093,6 +1087,8 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 pub fn main() {
     unsafe{
         skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
+        skyline::nn::ro::LookupSymbol(&mut ITEM_MANAGER, c_str!("_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E"));
+        skyline::nn::ro::LookupSymbol(&mut FIGHTER_MANAGER, c_str!("_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E"));
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
         let text_size = (getRegionAddress(Region::Rodata) as usize) - (text_ptr as usize);
         let text = std::slice::from_raw_parts(text_ptr, text_size);

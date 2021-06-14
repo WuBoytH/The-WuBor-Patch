@@ -386,9 +386,9 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.6, 0.0, 1.0);
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.6, 0.0, 1.0);
                     }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 125.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 150.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.0, 0.6);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.0, 0.6);
+                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 50.0 {
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 1.0, 1.0);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.0, 1.0, 1.0);
                     }
                     else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 50.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 75.0 {
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 1.0);
@@ -402,9 +402,9 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.8, 0.0);
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
                     }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 50.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 1.0, 1.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.0, 1.0, 1.0);
+                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 125.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 150.0 {
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.0, 0.6);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.0, 0.6);
                     }
                     else{
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 1.0, 1.0);

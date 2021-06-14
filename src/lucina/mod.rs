@@ -378,8 +378,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if (SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0 && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false)
             || SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
                 if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_aura"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_aura"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+                    let onemoreeff2: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
                     EffectModule::set_rate(fighter.module_accessor, onemoreeff, 2.0);
                     EffectModule::set_rate(fighter.module_accessor, onemoreeff2, 2.0);
                     if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
@@ -387,20 +387,20 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.6, 0.0, 1.0);
                     }
                     else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 125.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 150.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.5, 0.5);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.5, 0.5);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.0, 0.6);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.0, 0.6);
                     }
                     else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 50.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 75.0 {
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 1.0);
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.0, 0.0, 1.0);
                     }
                     else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 75.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 100.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.8, 0.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.1, 0.1);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.1, 0.1);
                     }
                     else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 100.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 125.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.0, 0.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.0, 0.0);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.8, 0.0);
+                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
                     }
                     else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 50.0 {
                         EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 1.0, 1.0);
@@ -496,8 +496,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
             // Jump Cancels
 
-            if (MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3")
-            && MotionModule::frame(fighter.module_accessor) > 8.0)
+            if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3")
             || (MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_dash")
             && IS_FUNNY[entry_id(fighter.module_accessor)]) {
                 if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -1724,6 +1723,7 @@ unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(fighter.module_accessor, false);
         KineticModule::unable_energy_all(fighter.module_accessor);
         if ROMAN_ON_HIT[entry_id(fighter.module_accessor)] {
+            AIR_ACTION[entry_id(fighter.module_accessor)] = false;
             macros::SLOW_OPPONENT(fighter, 50.0, 19.0);
             full_invuln(fighter.module_accessor, true);
         }
@@ -1747,7 +1747,7 @@ unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 30.0, 0.0, 10.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 40.0, 0.0, 10.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         IS_ROMAN_MOVE[entry_id(fighter.module_accessor)] = true;
     }
     macros::FT_MOTION_RATE(fighter, 5.0);

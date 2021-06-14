@@ -18,6 +18,7 @@ pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
 pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
+static mut INPUT_TIMER : [i32; 8] = [0; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
 
@@ -94,12 +95,20 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         // Command Inputs
 
         let dir = get_command_stick_direction(fighter.module_accessor, true);
+        if INPUT_TIMER[entry_id(fighter.module_accessor)] <= 10 {
+            INPUT_TIMER[entry_id(fighter.module_accessor)] += 1;
+        }
+        else {
+            QCF[entry_id(fighter.module_accessor)] = 0;
+            QCB[entry_id(fighter.module_accessor)] = 0;
+        }
 
         // Quarter Circle Back
 
         if QCB[entry_id(fighter.module_accessor)] == 0 {
             if dir == 2 {
                 QCB[entry_id(fighter.module_accessor)] = 1;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
         }
         else if QCB[entry_id(fighter.module_accessor)] == 1 {
@@ -134,6 +143,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         if QCF[entry_id(fighter.module_accessor)] == 0 {
             if dir == 2 {
                 QCF[entry_id(fighter.module_accessor)] = 1;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
         }
         else if QCF[entry_id(fighter.module_accessor)] == 1 {

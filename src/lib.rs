@@ -160,9 +160,9 @@ move_type_again: bool) -> u64 {
 
     // Used for Ken's meter building, as well as sets the opponent he will track towards with V-Trigger.
 
-    if attacker_fighter_kind == *FIGHTER_KIND_KEN {
+    if attacker_fighter_kind == *FIGHTER_KIND_KEN
+    && a_entry_id < 8 {
         if d_entry_id < 8
-        && a_entry_id < 8
         && utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
         }
@@ -194,7 +194,8 @@ move_type_again: bool) -> u64 {
 
     // Used for Ultra Instinct's tracking.
 
-    if defender_fighter_kind == *FIGHTER_KIND_RYU {
+    if defender_fighter_kind == *FIGHTER_KIND_RYU
+    && d_entry_id < 8 {
         if SEC_SEN_STATE[d_entry_id] {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
@@ -232,7 +233,8 @@ move_type_again: bool) -> u64 {
 
     // Used to detect if Ken was hit during V-Shift's startup.
 
-    else if defender_fighter_kind == *FIGHTER_KIND_KEN {
+    else if defender_fighter_kind == *FIGHTER_KIND_KEN
+    && d_entry_id < 8 {
         if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
         && MotionModule::frame(defender_boma) <= 8.75 {
             V_SHIFT[d_entry_id] = true;
@@ -241,7 +243,8 @@ move_type_again: bool) -> u64 {
 
     // Used to detect if Incineroar was hit during Revenge's counter frames, as well as turning Incineroar to the correct direction.
 
-    else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
+    else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN
+    && d_entry_id < 8 {
         if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
         || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
         && MotionModule::frame(defender_boma) >= 8.0
@@ -261,7 +264,8 @@ move_type_again: bool) -> u64 {
 
     // Used to make sure Shulk is facing the right direction for Vision Burst.
 
-    else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
+    else if defender_fighter_kind == *FIGHTER_KIND_SHULK
+    && d_entry_id < 8 {
         if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
         || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
             OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;

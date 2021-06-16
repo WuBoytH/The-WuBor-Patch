@@ -1813,6 +1813,29 @@ unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
     }
 }
 
+// #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
+// unsafe fn lucina_runeff(fighter: &mut L2CAgentBase) {
+//     while {
+//         sv_animcmd::frame(fighter.lua_state_agent, 4.0);
+//         if macros::is_excute(fighter) {
+//             macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+//         }
+//         sv_animcmd::frame(fighter.lua_state_agent, 21.0);
+//         if macros::is_excute(fighter) {
+//             macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+//         }
+//         sv_animcmd::frame(fighter.lua_state_agent, 37.0);
+//         if macros::is_excute(fighter) {
+//             macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 1, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+//         }
+//         sv_animcmd::frame(fighter.lua_state_agent, 56.0);
+//         fighter.clear_lua_stack();
+//         sv_animcmd::wait_loop_sync_mot(fighter.lua_state_agent);
+//         fighter.pop_lua_stack(1);
+//         true
+//     } {}
+// }
+
 pub fn install() {
     smashline::install_agent_frames!(
         lucina_frame
@@ -1867,7 +1890,8 @@ pub fn install() {
         lucina_dspecial,
         lucina_dspecialeff,
         lucina_dspecialsnd,
-        lucina_dspecialhit
+        lucina_dspecialhit,
+        // lucina_runeff
     );
     // skyline::install_hook!(lucina_is_enable_transition_term_replace);
 }

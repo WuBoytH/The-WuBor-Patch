@@ -883,8 +883,8 @@ unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 // A sliding move inspired by Swift Strike.
-// Deals 7 damage, sends at a 65 degree angle, and can be EX'd.
-// The EX version is Jump-Cancellable on hit.
+// Deals 7 damage, sends at a 65 degree angle.
+// In Funny Mode, this is Jump-Cancellable on hit.
 
 #[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
@@ -1113,6 +1113,8 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Up-Throw itself isn't edited, but it's reused for Heroic Bravery's "command grab".
+
 #[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -1149,7 +1151,9 @@ unsafe fn lucina_nspecialloop(fighter: &mut L2CAgentBase) {
 
 // Based off of Heroic Bravery. Borrows Chrom's Forward Smash animation.
 // Kirby gets this as well, though it uses the old Shield Breaker animation.
-// Uncharged it simply deals a bit of damage and launches away...
+// Uncharged it simply deals a bit of damage and launches away.
+// Holding Special until the end of the move's travel time will perform a "command grab" on the ground.
+// In the air it still does the slash.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnend", "game_specialnendhi", "game_specialnendlw", "game_specialairnend", "game_specialairnendhi", "game_specialairnendlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
@@ -1189,7 +1193,7 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
     }
 }
 
-// ... while fully-charged it will ignore shields, paralyze on hit, and allow Yu to combo without using One More!.
+// Pressing Shield while dashing forward will do EX Heroic Bravery, which is pretty much just the normal slash but it paralyzes.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnendmax", "game_specialnendmaxhi", "game_specialnendmaxlw", "game_specialairnendmax", "game_specialairnendmaxhi", "game_specialairnendmaxlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
@@ -1243,9 +1247,9 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Based off of Lightning Flash. Borrows Lucina's old Neutral Special animation. Can be EX'd.
-// Yu lunges forward with a very active hitbox on his sword. Launches opponents away.
-// The EX version starts up faster and deals more damage for slightly less knockback.
+// Yu's Lightning Flash, an old super move that was demoted to a special. Can be EX'd.
+// Yu lunges forward with a very active hitbox on his sword. Drags opponents forward until the final hit. Launches opponents away.
+// The EX version starts up faster and deals more damage.
 
 #[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
@@ -1360,8 +1364,9 @@ unsafe fn lucina_sspecial1exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-// An original move, due to Smash's restrictions, dubbed "Lion's Leap." Borrows Corrin's Dragon Lunge jump animation.
-// Yu jumps forward with forward momentum. Can only be used once in the air, and is usable again when Yu touches the ground or grabs a ledge.
+// An original move, due to Smash's restrictions, dubbed "Lion's Leap."
+// Yu jumps forward with forward momentum. Can only be used once in the air,
+// and is usable again when Yu touches the ground or grabs a ledge.
 
 #[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
@@ -1384,8 +1389,8 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Hold Down and press Special during Lion's Leap to perform a divekick. Borrows Zero Suit Samus's down air animation.
-// Can be EX'd for more damage.
+// Pressing Attack during Lion's Leap performs his j.2A, a divekick. Borrows Zero Suit Samus's down air animation.
+// Can be EX'd for more damage and the ability to spike.
 
 #[acmd_script( agent = "lucina", script = "game_specialairs2lw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
@@ -1448,7 +1453,9 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Hold Up and press Special during Lion's Leap to perform Raging Lion. Can be EX'd for more damage.
+// Pressing Special during Lion's Leap performs the familiar Raging Lion.
+// Yu will keep falling until he hits the ground or uses One More!.
+// Can be EX'd for more damage, travel speed, and kill power.
 
 #[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
@@ -1518,6 +1525,8 @@ unsafe fn lucina_sspecial2hiairsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_n03"));
     }
 }
+
+// The following 8 scripts are used for the landing animations of Raging Lion and j.2A.
 
 #[acmd_script( agent = "lucina", script = "game_specials2lw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2lw(fighter: &mut L2CAgentBase) {
@@ -1592,7 +1601,8 @@ unsafe fn lucina_sspecial2hiexp(fighter: &mut L2CAgentBase) {
 // The following two scripts are used for Big Gamble. Can be EX'd.
 // The normal version launches opponents nearly straight up.
 // The EX version is fully invincible on frame 5 on and is a proper multi-hit,
-// sending opponents up. The EX version can NOT be cancelled into One More!.
+// sending opponents away. Both versions can NOT be cancelled into One More!.
+// On the ground, Big Gamble has upper-body invincibility on frame 1...
 
 #[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
@@ -1677,6 +1687,8 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         }
     }
 }
+
+// ... while in the air, it doesn't have invincibility at all unless EX'd.
 
 #[acmd_script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {

@@ -60,17 +60,17 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 if dir == 5
                 || dir == 4
                 || dir == 6
-                || (dir == 2 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND)
-                || (dir == 1 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND)
-                || (dir == 3 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND) {
+                || (dir == 2 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND && !IS_FUNNY[entry_id(fighter.module_accessor)])
+                || (dir == 1 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND && !IS_FUNNY[entry_id(fighter.module_accessor)])
+                || (dir == 3 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND && !IS_FUNNY[entry_id(fighter.module_accessor)]) {
                     TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
                 }
-                else if (dir == 1 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR)
-                || (dir == 3 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR) {
+                else if (dir == 1 || dir == 3)
+                && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR || IS_FUNNY[entry_id(fighter.module_accessor)])  {
                     TELE_Y[entry_id(fighter.module_accessor)] = -30.0;
                 }
                 else if dir == 2
-                && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+                && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR || IS_FUNNY[entry_id(fighter.module_accessor)]) {
                     TELE_Y[entry_id(fighter.module_accessor)] = -40.0;
                 }
                 else if dir == 7
@@ -100,8 +100,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
             // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
 
             if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
-            || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-            || IS_FUNNY[entry_id(fighter.module_accessor)] {
+            || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
                 CAN_TELEPORT[entry_id(fighter.module_accessor)] = true;
             }
 
@@ -544,8 +543,8 @@ unsafe fn ganon_dair(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 270, 100, 0, 20, 7.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 361, 100, 0, 20, 6.0, 0.0, 10.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 15.0, 270, 100, 0, 20, 7.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 361, 100, 0, 20, 6.0, 0.0, 10.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_KICK);
     }
     sv_animcmd::wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -584,6 +583,9 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(fighter.module_accessor, false);
+        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
+        }
     }
     sv_animcmd::frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {

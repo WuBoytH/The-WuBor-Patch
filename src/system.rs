@@ -1,4 +1,4 @@
-//use smash::app::utility::get_kind;
+use smash::hash40;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 // use smash::lua2cpp::L2CAgentBase;
@@ -7,7 +7,8 @@ use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 use smashline::*;
 use crate::commonfuncs::*;
 use smash::app::*;
-// use smash::lib::L2CValue;
+use smash::lib::L2CValue;
+use crate::globals::*;
 
 pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
@@ -26,6 +27,57 @@ pub static mut QCB : [i32; 8] = [0; 8];
 //     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
 //     call_original!(fighter)
 // }
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn common_status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_DamageFall_common();
+    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_damagefall_main as *const () as _))
+}
+
+unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() == true
+    || fighter.check_damage_fall_transition().get_bool() == true {
+        return L2CValue::I32(0);
+    }
+    let tech : bool;
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND) == false {
+        tech = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
+    }
+    else {
+        // let mut flame_choke_tech_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("ganon_special_s_passive_trigger_frame")) as f32;
+        // let tech_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0 as u64);
+        // flame_choke_tech_frame *= tech_mul;
+        tech = fighter.sub_check_passive_button(L2CValue::I32(0x30)).get_bool();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB) {
+        if FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+            if WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value")) <= fighter.global_table[STICK_X].get_f32().abs() {
+                if tech {
+                    fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
+                    return L2CValue::Bool(true);
+                }
+            }
+        }
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE) {
+        if FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
+            if FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) == false {
+                if tech {
+                    fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE.into(), true.into());
+                    return L2CValue::Bool(true);
+                }
+            }
+        }
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_DOWN.into(), true.into());
+            return L2CValue::I32(0);
+        }
+    }
+    fighter.sub_damage_fall_uniq_process_exec_fix_pos();
+    L2CValue::I32(0)
+}
 
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
@@ -207,7 +259,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_S3,
             *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_LW3,
         ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
-            println!("Don't get hit, scrub.");
             COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 1;
         }
         else {
@@ -230,6 +281,9 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
 pub fn install() {
     // skyline::install_hook!(damage_air_main);
+    smashline::install_status_scripts!(
+        common_status_damagefall
+    );
     smashline::install_agent_frame_callbacks!(
         global_fighter_frame
     );

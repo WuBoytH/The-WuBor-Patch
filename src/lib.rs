@@ -58,7 +58,7 @@ use crate::commonfuncs::*;
 // mod statuses;
 mod globals;
 mod system;
-use crate::system::{IS_FUNNY, /*IS_FGC,*/ COUNTER_HIT_STATE, OPPONENT_BOMA};
+use crate::system::{IS_FUNNY/*, IS_FGC*/, COUNTER_HIT_STATE, OPPONENT_BOMA};
 mod daisy;
 mod samusd;
 mod lucina;
@@ -876,11 +876,12 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
     let ret = original!()(boma,term);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if entry_id(boma) < 8
-        && utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
-        && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
-            if HEROIC_GRAB[entry_id(boma)] {
-                return 0x8a0abc72cu64;
+        if entry_id(boma) < 8 {
+            if utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
+            && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
+                if HEROIC_GRAB[entry_id(boma)] {
+                    return 0x8a0abc72cu64;
+                }
             }
         }
     }

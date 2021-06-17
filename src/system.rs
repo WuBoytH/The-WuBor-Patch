@@ -11,9 +11,8 @@ use smash::app::*;
 
 pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
-// pub static mut IS_FGC : [bool; 8] = [false; 8];
+pub static mut IS_FGC : [bool; 8] = [false; 8];
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
-static mut COUNTER_HIT_HELPER : [f32; 8] = [0.0; 8];
 pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
 pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
@@ -32,7 +31,6 @@ pub static mut QCB : [i32; 8] = [0; 8];
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
-        let status_kind = StatusModule::status_kind(fighter.module_accessor);
 
         // The code to set up Funny Mode.
 
@@ -48,22 +46,12 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             IS_FUNNY[entry_id(fighter.module_accessor)] = false;
         }
 
-        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR)
-        // && IS_FGC[entry_id(fighter.module_accessor)] == false {
-        //     IS_FGC[entry_id(fighter.module_accessor)] = true;
-        //     println!("FGC is on!");
-        // }
-        // if IS_FGC[entry_id(fighter.module_accessor)] {
-        //     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR) {
-        //         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_REFLECTOR);
-        //         println!("Disabled Badge Reflector!");
-        //     }
-        // }
-        // if !ItemModule::is_attach_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BADGE))
-        // && IS_FGC[entry_id(fighter.module_accessor)] {
-        //     IS_FGC[entry_id(fighter.module_accessor)] = false;
-        //     println!("FGC is off!");
-        // }
+        if FighterUtil::is_hp_mode(fighter.module_accessor) {
+            IS_FGC[entry_id(fighter.module_accessor)] = true;
+        }
+        else {
+            IS_FGC[entry_id(fighter.module_accessor)] = false;
+        }
 
         // Remove Special Fall in Funny Mode
 
@@ -138,7 +126,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             }
         }
 
-        //Quarter Circle Forward
+        // Quarter Circle Forward
 
         if QCF[entry_id(fighter.module_accessor)] == 0 {
             if dir == 2 {
@@ -148,7 +136,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         }
         else if QCF[entry_id(fighter.module_accessor)] == 1 {
             if dir == 1 {
-                QCF[entry_id(fighter.module_accessor)] = 3;
+                QCF[entry_id(fighter.module_accessor)] = 2;
             }
             else if dir != 6
             && dir != 3
@@ -175,33 +163,52 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         // The Counter-Hit Code (only applicable to Jabs, Tilts, and Smash Attacks)
 
-        if status_kind == *FIGHTER_STATUS_KIND_ATTACK
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S3
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI3
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW3
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_START
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4_START
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4_START
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_DASH
-        || status_kind == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if MotionModule::frame(fighter.module_accessor) <= 1.0 {
-                COUNTER_HIT_HELPER[entry_id(fighter.module_accessor)] = 0.0;
-                COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 1;
-            }
-            if AttackModule::is_attack(fighter.module_accessor, 0, false)
-            && COUNTER_HIT_HELPER[entry_id(fighter.module_accessor)] == 0.0 {
-                COUNTER_HIT_HELPER[entry_id(fighter.module_accessor)] = MotionModule::frame(fighter.module_accessor);
-            }
-            if !AttackModule::is_attack(fighter.module_accessor, 0, false)
-            && COUNTER_HIT_HELPER[entry_id(fighter.module_accessor)] != 0.0 {
-                COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 0;
-            }
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK,
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
+            *FIGHTER_STATUS_KIND_ATTACK_AIR,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F,
+            *FIGHTER_RYU_STATUS_KIND_ATTACK_NEAR,
+            *FIGHTER_SIMON_STATUS_KIND_ATTACK_HOLD_START,
+            *FIGHTER_SIMON_STATUS_KIND_ATTACK_HOLD,
+            *FIGHTER_SIMON_STATUS_KIND_ATTACK_LW32,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_FALL,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_FALL_AERIAL,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_WAIT,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_WALK,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_LANDING,
+            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_WALK_BACK,
+            *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1,
+            *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_COMBO,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_WAIT,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_WALK,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_SQUAT,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_SQUAT_RV,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_LANDING,
+            *FIGHTER_TANTAN_STATUS_KIND_ATTACK_LADDER,
+            *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_LW3,
+        ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
+            println!("Don't get hit, scrub.");
+            COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 1;
         }
         else {
             COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 0;

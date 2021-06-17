@@ -4,7 +4,6 @@ use sli::SliFile;
 #[arc_callback]
 fn api_callback(hash: u64, data: &mut [u8]) -> Option<usize> {
     if hash == hash40("sound/param/soundlabelinfo.sli").as_u64() {
-        println!("Calling soundlabelinfo.sli!");
         let mut reader = std::io::Cursor::new(data);
         
         // let mut soundlabel = SliFile::read(&mut reader).unwrap();

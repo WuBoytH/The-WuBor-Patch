@@ -35,6 +35,19 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
             if StopModule::is_damage(fighter.module_accessor) {
                 if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
                     if SHULK_SPECIAL_LW[entry_id(fighter.module_accessor)] == false {
+                        DamageModule::add_damage(fighter.module_accessor, BURST_RECOVER[entry_id(fighter.module_accessor)] * -0.5, 0);
+                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
+                        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
+                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
+                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
+                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_EFFECT_HANDLE);
+                        SHULK_SPECIAL_LW[entry_id(fighter.module_accessor)] = true;
+                        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+                            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 600;
+                        }
+                        else {
+                            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 3600;
+                        }
                         if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
                             let shulkpos = PostureModule::pos_x(fighter.module_accessor);
                             let opppos = PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor);
@@ -46,19 +59,8 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
                             }
                             OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
                         }
-                        DamageModule::add_damage(fighter.module_accessor, BURST_RECOVER[entry_id(fighter.module_accessor)] * -0.5, 0);
                         KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_RESET);
-                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
-                        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
-                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
-                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
-                        SHULK_SPECIAL_LW[entry_id(fighter.module_accessor)] = true;
-                        if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 600;
-                        }
-                        else {
-                            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 3600;
-                        }
+                        KineticModule::unable_energy_all(fighter.module_accessor);
                     }
                 }
             }

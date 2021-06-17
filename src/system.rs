@@ -98,6 +98,8 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             IS_FUNNY[entry_id(fighter.module_accessor)] = false;
         }
 
+        // The code to set up FGC Mode.
+
         if FighterUtil::is_hp_mode(fighter.module_accessor) {
             IS_FGC[entry_id(fighter.module_accessor)] = true;
         }
@@ -109,7 +111,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         if IS_FUNNY[entry_id(fighter.module_accessor)] {
             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
-                StatusModule::change_status_request_from_script(fighter.module_accessor,*FIGHTER_STATUS_KIND_FALL_AERIAL,true);
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
             }
         }
 

@@ -22,12 +22,6 @@ static mut INPUT_TIMER : [i32; 8] = [0; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
 
-// #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
-// pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-//     call_original!(fighter)
-// }
-
 #[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn common_status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_DamageFall_common();
@@ -77,6 +71,12 @@ unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommo
     }
     fighter.sub_damage_fall_uniq_process_exec_fix_pos();
     L2CValue::I32(0)
+}
+
+#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_DamageAir_MainEv")]
+unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
+    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    original!()(fighter);
 }
 
 // Use this for general per-frame fighter-level hooks
@@ -283,6 +283,9 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
 pub fn install() {
     // skyline::install_hook!(damage_air_main);
+    smashline::install_hook!(
+        damage_air_main
+    );
     smashline::install_status_scripts!(
         common_status_damagefall
     );

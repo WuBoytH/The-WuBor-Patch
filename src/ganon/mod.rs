@@ -38,6 +38,10 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
 
         if entry_id(fighter.module_accessor) < 8 {
 
+            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
+                TELE_STOP[entry_id(fighter.module_accessor)] = false;
+            }
+
             // Teleport Handler
 
             if TELEPORT[entry_id(fighter.module_accessor)] == 1 {

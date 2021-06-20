@@ -40,6 +40,7 @@ pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
 static mut EX_FLASH : [i32; 8] = [0; 8];
 static mut START_SITUATION : [i32; 8] = [0; 8];
 
+#[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
     if SP_GAUGE[entry_id(module_accessor)] > 0.0 {
@@ -63,6 +64,7 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
 
 // Sets Yu's upper-body invincibility, only used for Big Gamble.
 
+#[inline(always)]
 pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_status_joint(module_accessor, Hash40::new("waist"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
@@ -86,6 +88,7 @@ pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_
 
 // Sets Yu's full invulnerability, only used for Big Gamble.
 
+#[inline(always)]
 pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_whole(module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
@@ -97,6 +100,7 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
 
 // Checks if you are playing as Shadow Yu.
 
+#[inline(always)]
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
     || WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {

@@ -32,9 +32,9 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
         
         // Force Ganon's state to the final part of Aerial Flame Choke.
 
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_FALL {
-            fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
-        }
+        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_FALL {
+        //     fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
+        // }
 
         if entry_id(fighter.module_accessor) < 8 {
 
@@ -95,6 +95,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                     let ogx = OG_X[entry_id(fighter.module_accessor)];
                     let ogy = OG_Y[entry_id(fighter.module_accessor)];
                     PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                 }
                 OG_X[entry_id(fighter.module_accessor)] = 0.0;
                 OG_Y[entry_id(fighter.module_accessor)] = 0.0;
@@ -127,23 +128,94 @@ unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
     L2CValue::I32(0)
 }
 
+#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ganon_sspecialaircatch(fighter: &mut L2CFighterCommon) -> L2CValue {
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+    MotionModule::set_rate(fighter.module_accessor, 0.0);
+    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specialairscatchmain as *const () as _))
+}
+
+unsafe extern "C" fn ganon_specialairscatchmain(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut val = 0;
+    if fighter.global_table[CURRENT_FRAME].get_f32() == 1.0 {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_catch"), 1.0, 1.0, false, 0.0, false, false);
+        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        fighter.clear_lua_stack();
+        smash_script::lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0x8cdc1683 as u64, 0.0);
+        sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+    }
+    if fighter.global_table[CURRENT_FRAME].get_f32() >= 1.0 {
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
+        }
+        val = 1;
+    }
+    L2CValue::I32(val)
+}
+
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecialairend(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specialairsendmain as *const () as _))
 }
 
 unsafe extern "C" fn ganon_specialairsendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
         if MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_AERIAL.into(), false.into());
         }
     }
-    else {
-        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
-    }
     L2CValue::I32(1)
+}
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn common_status_catchedairganon(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25e as u64, 0x7d88ea0 as u64);
+    if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
+        FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new("catched_ganon"), *BODY_TYPE_MOTION_DX);
+    }
+    else if motion_share == *FIGHTER_MOTION_SHARE_TYPE_GIRL {
+        FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new("catched_ganon"), *BODY_TYPE_MOTION_GIRL);
+    }
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("catched_ganon"), 1.0, 1.0, false, 0.0, false, false);
+    // let parent_id = LinkModule::get_parent_id(fighter.module_accessor, *LINK_NO_CAPTURE, true) as i32;
+    // let boma = sv_battle_object::module_accessor(parent_id);
+    // let l2cval;
+    // if boma == 0x0 {
+    //     l2cval = 0;
+    // }
+    // else {
+    //     l2cval = 1;
+    // }
+    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairganon_main as *const () as _))
+}
+
+unsafe extern "C" fn common_status_catchedairganon_main(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    L2CValue::I32(0)
+}
+
+#[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+pub unsafe fn common_status_catchedairendganon(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25e as u64, 0x7d88ea0 as u64);
+    let throw_motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_INT_MOTION_KIND);
+    if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
+        FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new_raw(throw_motion), *BODY_TYPE_MOTION_DX);
+    }
+    else if motion_share == *FIGHTER_MOTION_SHARE_TYPE_GIRL {
+        FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new_raw(throw_motion), *BODY_TYPE_MOTION_GIRL);
+    }
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(throw_motion), 1.0, 1.0, false, 0.0, false, false);
+    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairendganon_main as *const () as _))
+}
+
+unsafe extern "C" fn common_status_catchedairendganon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
+    }
+    L2CValue::I32(0)
 }
 
 // Jab deals less damage (11 -> 7) and sends slightly up and away.
@@ -726,11 +798,14 @@ unsafe fn ganon_sspecialairstart(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 260, 82, 0, 40, 1.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_NONE);
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 292, 82, 0, 40, 1.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
         macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
     }
-    macros::FT_MOTION_RATE(fighter, 0.5);
+    sv_animcmd::wait(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        PostureModule::reverse_lr(fighter.module_accessor);
+    }
 }
 
 // Dark Dive has faster startup (14 -> 11) and its initial grab box has increased vertical reach.
@@ -876,8 +951,11 @@ pub fn install() {
         ganon_frame
     );
     smashline::install_status_scripts!(
+        ganon_sspecialaircatch,
         ganon_sspecialairendpre,
-        ganon_sspecialairend
+        ganon_sspecialairend,
+        common_status_catchedairganon,
+        common_status_catchedairendganon
     );
     smashline::install_acmd_scripts!(
         ganon_jab,

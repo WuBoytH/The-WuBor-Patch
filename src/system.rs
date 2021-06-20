@@ -21,6 +21,7 @@ pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 static mut INPUT_TIMER : [i32; 8] = [0; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
+pub static mut IS_DK : [bool; 8] = [false; 8];
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn common_status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -83,6 +84,19 @@ unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
+
+        // DK Check
+
+        if sv_information::is_ready_go() {
+            if utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
+                IS_DK[entry_id(fighter.module_accessor)] = true;
+            }
+        }
+        else {
+            for i in 0..IS_DK.len() {
+                IS_DK[i] = false;
+            }
+        }
 
         // The code to set up Funny Mode.
 

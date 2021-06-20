@@ -6,9 +6,9 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::ITEM_MANAGER;
+// use crate::ITEM_MANAGER;
 use crate::commonfuncs::*;
-use crate::system::{IS_FUNNY/*, IS_DK*/};
+use crate::system::{IS_FUNNY, IS_DK};
 use crate::globals::*;
 use smash::lib::L2CValue;
 
@@ -24,7 +24,7 @@ use smash::lib::L2CValue;
 unsafe fn donkey_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
-    if !barrel_check(fighter.module_accessor) {
+    if !barrel_check() {
         if PostureModule::lr(fighter.module_accessor) == 1.0 {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_r"), 1.0, 1.0, false, 0.0, false, false);
         }
@@ -217,10 +217,16 @@ unsafe fn donkey_sspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub unsafe fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    let item_manager = *(ITEM_MANAGER as *mut *mut smash::app::ItemManager);
-    let entry_id = entry_id(module_accessor) as u32;
-    if smash::app::lua_bind::ItemManager::get_num_of_ownered_item(item_manager, entry_id, ItemKind(*ITEM_KIND_BARREL)) >= 2 {
+pub unsafe fn barrel_check() -> bool {
+    // let item_manager = *(ITEM_MANAGER as *mut *mut smash::app::ItemManager);
+    // let entry_id = entry_id(module_accessor) as u32;
+    let mut dks = 0;
+    for i in 0..IS_DK.len() {
+        if IS_DK[i] {
+            dks += 1;
+        }
+    }
+    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= 2 * dks {
         return false;
     }
     return true;

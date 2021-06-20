@@ -119,14 +119,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Edited the end of Flame Choke so he stays still in the air, instead of immediately cancelling into his falling animation.
-
-#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), *FIGHTER_KINETIC_TYPE_UNIQ, *GROUND_CORRECT_KIND_GROUND as u32, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE), false, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT, 1);
-    FighterStatusModuleImpl::set_fighter_status_data(fighter.module_accessor, false, *FIGHTER_TREADED_KIND_NO_REAC, false, true, false, *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64, 0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32, 0);
-    L2CValue::I32(0)
-}
+// Air Flame Choke is now completely different.
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecialaircatch(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -155,6 +148,13 @@ unsafe extern "C" fn ganon_specialairscatchmain(fighter: &mut L2CFighterCommon) 
     L2CValue::I32(val)
 }
 
+#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn ganon_sspecialairendpre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), *FIGHTER_KINETIC_TYPE_UNIQ, *GROUND_CORRECT_KIND_GROUND as u32, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE), false, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT, 1);
+    FighterStatusModuleImpl::set_fighter_status_data(fighter.module_accessor, false, *FIGHTER_TREADED_KIND_NO_REAC, false, true, false, *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64, 0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32, 0);
+    L2CValue::I32(0)
+}
+
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecialairend(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
@@ -181,15 +181,6 @@ pub unsafe fn common_status_catchedairganon(fighter: &mut L2CFighterCommon) -> L
         FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new("catched_ganon"), *BODY_TYPE_MOTION_GIRL);
     }
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("catched_ganon"), 1.0, 1.0, false, 0.0, false, false);
-    // let parent_id = LinkModule::get_parent_id(fighter.module_accessor, *LINK_NO_CAPTURE, true) as i32;
-    // let boma = sv_battle_object::module_accessor(parent_id);
-    // let l2cval;
-    // if boma == 0x0 {
-    //     l2cval = 0;
-    // }
-    // else {
-    //     l2cval = 1;
-    // }
     fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairganon_main as *const () as _))
 }
 
@@ -795,9 +786,19 @@ unsafe fn ganon_sspecialairstart(fighter: &mut L2CAgentBase) {
 
 // Aerial Flame Choke also has reduced damage (15 -> 12), and the rest of the animation is much faster.
 
+#[acmd_script( agent = "ganon", script = "game_specialairscatch", category = ACMD_GAME, low_priority )]
+unsafe fn ganon_sspecialaircatch(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+    }
+    macros::FT_MOTION_RATE(fighter, 0.8);
+}
+
 #[acmd_script( agent = "ganon", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 12.0, 292, 82, 0, 40, 1.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_purple"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
         macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
@@ -806,6 +807,7 @@ unsafe fn ganon_sspecialair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         PostureModule::reverse_lr(fighter.module_accessor);
     }
+    macros::FT_MOTION_RATE(fighter, 0.5);
 }
 
 // Dark Dive has faster startup (14 -> 11) and its initial grab box has increased vertical reach.
@@ -979,6 +981,7 @@ pub fn install() {
         ganon_nspecialeff,
         ganon_nspecialsnd,
         ganon_sspecialairstart,
+        ganon_sspecialaircatch,
         ganon_sspecialair,
         ganon_uspecial,
         ganon_uspecialcatch,

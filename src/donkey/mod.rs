@@ -68,7 +68,6 @@ unsafe extern "C" fn donkey_specialsmain(fighter: &mut L2CFighterCommon) -> L2CV
     L2CValue::I32(0)
 }
 
-
 // Forward Tilt has 2 more damage on all versions and has an earlier cancel frame (34 -> 31).
 
 #[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME, low_priority )]

@@ -46,36 +46,52 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
 
             if TELEPORT[entry_id(fighter.module_accessor)] == 1 {
                 let dir = get_command_stick_direction(fighter.module_accessor, false);
-                if dir == 2 || dir == 8 {
-                    TELE_X[entry_id(fighter.module_accessor)] = 0.0;
+                if dir == 5 {
+                    TELE_X[entry_id(fighter.module_accessor)] = 40.0 * PostureModule::lr(fighter.module_accessor);
+                }
+                if dir == 4 {
+                    TELE_X[entry_id(fighter.module_accessor)] = -40.0;
+                }
+                else if dir == 6 {
+                    TELE_X[entry_id(fighter.module_accessor)] = 40.0;
                 }
                 else if dir == 3 || dir == 9 {
                     TELE_X[entry_id(fighter.module_accessor)] = 35.0;
                 }
-                else if (dir == 5 && PostureModule::lr(fighter.module_accessor) == 1.0) || dir == 6 {
-                    TELE_X[entry_id(fighter.module_accessor)] = 40.0;
-                }
                 else if dir == 1 || dir == 7 {
                     TELE_X[entry_id(fighter.module_accessor)] = -35.0;
                 }
-                else if (dir == 5 && PostureModule::lr(fighter.module_accessor) == -1.0) || dir == 4 {
-                    TELE_X[entry_id(fighter.module_accessor)] = -40.0;
+                else if dir == 2 {
+                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+                        TELE_X[entry_id(fighter.module_accessor)] = 40.0 * PostureModule::lr(fighter.module_accessor);
+                    }
+                    else {
+                        TELE_X[entry_id(fighter.module_accessor)] = 0.0;
+                    }
+                }
+                else if dir == 8 {
+                    TELE_X[entry_id(fighter.module_accessor)] = 0.0;
                 }
                 if dir == 5
                 || dir == 4
-                || dir == 6
-                || (dir == 2 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND && !IS_FUNNY[entry_id(fighter.module_accessor)])
-                || (dir == 1 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND && !IS_FUNNY[entry_id(fighter.module_accessor)])
-                || (dir == 3 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND && !IS_FUNNY[entry_id(fighter.module_accessor)]) {
+                || dir == 6 {
                     TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
                 }
-                else if (dir == 1 || dir == 3)
-                && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR || IS_FUNNY[entry_id(fighter.module_accessor)])  {
-                    TELE_Y[entry_id(fighter.module_accessor)] = -30.0;
+                else if dir == 1 || dir == 3 {
+                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+                        TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
+                    }
+                    else {
+                        TELE_Y[entry_id(fighter.module_accessor)] = -30.0;
+                    }
                 }
-                else if dir == 2
-                && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR || IS_FUNNY[entry_id(fighter.module_accessor)]) {
-                    TELE_Y[entry_id(fighter.module_accessor)] = -40.0;
+                else if dir == 2 {
+                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+                        TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
+                    }
+                    else {
+                        TELE_Y[entry_id(fighter.module_accessor)] = -40.0;
+                    }
                 }
                 else if dir == 7
                 || dir == 9 {
@@ -91,11 +107,16 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
             if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
                 macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 if FEINT[entry_id(fighter.module_accessor)] {
-                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                    if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
+                        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                    }
                     let ogx = OG_X[entry_id(fighter.module_accessor)];
                     let ogy = OG_Y[entry_id(fighter.module_accessor)];
                     PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
-                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    if TELE_Y[entry_id(fighter.module_accessor)] == 0.0 {
+                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+                    }
                 }
                 OG_X[entry_id(fighter.module_accessor)] = 0.0;
                 OG_Y[entry_id(fighter.module_accessor)] = 0.0;
@@ -218,9 +239,10 @@ unsafe fn ganon_jab(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 8.0);
     macros::FT_MOTION_RATE(fighter, 1);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 62, 60, 0, 40, 4.4, 0.0, 12.0, 11.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 62, 60, 0, 40, 5.0, 0.0, 12.0, 19.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 62, 60, 0, 40, 3.5, 0.0, 12.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.2, 62, 60, 0, 40, 4.4, 0.0, 12.0, 11.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 7.2, 62, 60, 0, 40, 5.0, 0.0, 12.0, 19.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 7.2, 62, 60, 0, 40, 3.5, 0.0, 12.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+        macros::ATK_SET_SHIELD_SETOFF_MUL_arg4(fighter, 0, 1, 2, 1.5);
     }
     sv_animcmd::wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

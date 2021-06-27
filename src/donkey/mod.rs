@@ -225,7 +225,7 @@ pub unsafe fn barrel_check() -> bool {
             dks += 1;
         }
     }
-    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= 2 * dks {
+    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= 3 * dks {
         return false;
     }
     return true;

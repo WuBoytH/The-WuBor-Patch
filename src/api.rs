@@ -4,29 +4,27 @@ use prc;
 
 #[arc_callback]
 fn api_callback(hash: u64, data: &mut [u8]) -> Option<usize> {
-    if hash == hash40("ui/param/database/ui_chara_db.prc").as_u64() {
-        let mut reader = std::io::Cursor::new(data);
-        match prc::read_stream(&mut reader)
-        {
-            Ok(f) => {
+    // if hash == hash40("ui/param/database/ui_chara_db.prc").as_u64() {
+    //     let mut reader = std::io::Cursor::new(data);
+    //     match prc::read_stream(&mut reader)
+    //     {
+    //         Ok(f) => {
 
-                let mut charaprc = f;
+    //             let mut charaprc = f;
 
-                // charaprc.
+    //             match prc::write_stream(&mut reader, &charaprc)
+    //             {
+    //                 Ok(_f) => {
+    //                     return Some(reader.position() as usize);
+    //                 }
+    //                 Err(_e) => return None,
+    //             }
 
-                match prc::write_stream(&mut reader, &charaprc)
-                {
-                    Ok(_f) => {
-                        return Some(reader.position() as usize);
-                    }
-                    Err(_e) => return None,
-                }
+    //         }
 
-            }
-
-            Err(_e) => return None,
-        };
-    }
+    //         Err(_e) => return None,
+    //     };
+    // }
     if hash == hash40("sound/param/soundlabelinfo.sli").as_u64() {
         let mut reader = std::io::Cursor::new(data);
         match SliFile::read(&mut reader)
@@ -245,9 +243,9 @@ fn api_callback(hash: u64, data: &mut [u8]) -> Option<usize> {
 }
 
 const SOUNDLABELSIZE: usize = 0x61A80;
-const CHARASIZE: usize = 0x9C40;
+// const CHARASIZE: usize = 0x9C40;
 
 pub fn install() {
-    api_callback::install("ui/param/database/ui_chara_db.prc", CHARASIZE);
+    // api_callback::install("ui/param/database/ui_chara_db.prc", CHARASIZE);
     api_callback::install("sound/param/soundlabelinfo.sli", SOUNDLABELSIZE);
 }

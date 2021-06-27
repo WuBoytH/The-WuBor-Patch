@@ -399,6 +399,14 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             if SLIDE_BOUNCE[entry_id(boma)] {
                 return false;
             }
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
+                if CAN_TELEPORT[entry_id(boma)] == false {
+                    return false;
+                }
+                else {
+                    return ret;
+                }
+            }
             else {
                 return ret;
             }
@@ -436,15 +444,6 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
         //     }
         // }
         if fighter_kind == *FIGHTER_KIND_GANON && entry_id(boma) < 8 {
-            if CAN_TELEPORT[entry_id(boma)] == false
-            && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
-                return false;
-            }
-            else {
-                return ret;
-            }
-        }
-        if fighter_kind == *FIGHTER_KIND_KIRBY && entry_id(boma) < 8 {
             if CAN_TELEPORT[entry_id(boma)] == false
             && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
                 return false;

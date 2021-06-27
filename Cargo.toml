@@ -24,6 +24,7 @@ arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
 smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
 # smash_utils = { git = "https://github.com/FaultyPine/smash_utils" }
 # interpolation = "0.2.0"
+prc-rs = "1.3"
 
 [profile.dev]
 panic = "abort"

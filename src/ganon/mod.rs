@@ -105,7 +105,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
             if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
-                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 if FEINT[entry_id(fighter.module_accessor)] {
                     if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
                         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
@@ -727,6 +727,9 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14020f4ff6), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+        for _ in 0..5 {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
         WorkModule::set_flag(fighter.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 30.0);
@@ -746,6 +749,9 @@ unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(fighter.module_accessor, true);
         ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
         ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
+        for _ in 0..5 {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
+        }
     }
     sv_animcmd::frame(fighter.lua_state_agent, 64.0);
     if macros::is_excute(fighter) {

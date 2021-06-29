@@ -117,7 +117,7 @@ mod edge;
 mod pickel;
 mod pitb;
 mod diddy;
-mod api;
+// mod api;
 
 // An unused experiment to make the Grab button work as a Smash Attack button.
 
@@ -1201,5 +1201,5 @@ pub fn main() {
     skyline::install_hook!(play_se_remain_replace);
     skyline::install_hook!(play_se_no_3d_replace);
     // skyline::install_hook!(init_settings_replace);
-    api::install();
+    // api::install();
 }

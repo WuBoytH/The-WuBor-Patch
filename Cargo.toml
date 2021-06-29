@@ -12,6 +12,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = { git = "https://github.com/ultimate-research/skyline-rs.git" }
+# skyline-web = { git = "https://github.com/skyline-rs/skyline-web" }
 # nnsdk = { git = "https://github.com/ultimate-research/nnsdk-rs.git" }
 # skyline_smash = { git = "https://github.com/ultimate-research/skyline-smash.git", features = ["weak_l2cvalue"] }
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
@@ -20,11 +21,11 @@ skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features
 # smashline = { git = "https://github.com/blu-dev/smashline.git" }
 smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
 smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
-arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
-smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
+# arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
+# smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
 # smash_utils = { git = "https://github.com/FaultyPine/smash_utils" }
 # interpolation = "0.2.0"
-prc-rs = "1.3"
+# prc-rs = "1.3"
 
 [profile.dev]
 panic = "abort"

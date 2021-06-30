@@ -812,7 +812,7 @@ unsafe fn ganon_sspecialairstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Aerial Flame Choke also has reduced damage (15 -> 12), and the rest of the animation is much faster.
+// The animation of Aerial Flame Choke has been changed to reflect Ganondorf's sorcery.
 
 #[acmd_script( agent = "ganon", script = "game_specialairscatch", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_sspecialaircatch(fighter: &mut L2CAgentBase) {

@@ -1393,6 +1393,14 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucina", script = "effect_specialairs1", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucina_sspecial1aireff(fighter: &mut L2CAgentBase) {
+    sv_animcmd::frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
 // Pressing Attack during Lion's Leap performs his j.2A, a divekick. Borrows Zero Suit Samus's down air animation.
 // Can be EX'd for more damage and the ability to spike.
 
@@ -1454,6 +1462,14 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "effect_specialairs2lw", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucina_sspecial2lwaireff(fighter: &mut L2CAgentBase) {
+    sv_animcmd::frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -1939,7 +1955,9 @@ pub fn install() {
         lucina_sspecial1snd,
         lucina_sspecial1exp,
         lucina_sspecial1air,
+        lucina_sspecial1aireff,
         lucina_sspecial2lwair,
+        lucina_sspecial2lwaireff,
         lucina_sspecial2hiair,
         lucina_sspecial2hiaireff,
         lucina_sspecial2hiairsnd,

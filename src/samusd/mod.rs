@@ -1,4 +1,5 @@
 use smash::phx::Hash40;
+use smash::hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon, L2CFighterBase};
 use smash::app::*;
 use smash::lib::lua_const::*;
@@ -101,14 +102,14 @@ unsafe fn samusd_jab2(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_jab2effect(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new_raw(0x15368a2a9c), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+        macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new("samusd_gbeam_flash_01"), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
         macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        macros::EFFECT(fighter, Hash40::new_raw(0x0f4b6cda63), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new("samusd_atk_bomb"), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x15368a2a9c), false, true);
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_gbeam_flash_01"), false, true);
     }
 }
 
@@ -152,7 +153,7 @@ unsafe fn samusd_dashattack(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 8.0);
     for _ in 0..4 {
         if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 10, 0, 50, 38, 4.3, 0.0, 9.0, 3.0, Some(0.0), Some(0.0), Some(0.0), 0.3, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 367, 0, 50, 38, 4.3, 0.0, 9.0, 3.0, Some(0.0), Some(0.0), Some(0.0), 0.3, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
         sv_animcmd::wait(fighter.lua_state_agent, 2.0);
         if macros::is_excute(fighter) {
@@ -166,6 +167,35 @@ unsafe fn samusd_dashattack(fighter: &mut L2CAgentBase) {
     sv_animcmd::wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+unsafe fn samusd_dashattackeff(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 2.5, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("colonellm"), 2, 0, 0.5, 0, 0, 0, 2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("kneer"), 0, 0, -0.5, 0, 0, 0, 1.7, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 2.1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("colonells"), 2, 0, -0.5, 0, 0, 0, 2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), 0, 0, 0.5, 0, 0, 0, 1.7, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 2.1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+	    macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_dash_attack"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 22.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
+	    macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
+	    macros::BURN_COLOR_NORMAL(fighter);
     }
 }
 
@@ -235,8 +265,8 @@ unsafe fn samusd_utilt(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_utilteffect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("armr"), 0, 0, 0, 0, 0, 0, 1.9, true);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 2.0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 2.0, true);
         macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 8.0);
@@ -246,7 +276,7 @@ unsafe fn samusd_utilteffect(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10c8b4f661), false, true);
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
         macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
         macros::BURN_COLOR_NORMAL(fighter);
     }
@@ -401,8 +431,8 @@ unsafe fn samusd_uair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn samusd_uaireffect(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x10c8b4f661), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 2.0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 2.0, true);
         macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 7.0);
@@ -412,7 +442,7 @@ unsafe fn samusd_uaireffect(fighter: &mut L2CAgentBase) {
     }
     sv_animcmd::wait(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x10c8b4f661), false, true);
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
         macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
         macros::BURN_COLOR_NORMAL(fighter);
     }
@@ -450,6 +480,35 @@ unsafe fn samusd_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "samusd", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+unsafe fn samusd_naireff(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 2.5, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("colonellm"), 2, 0, 0.5, 0, 0, 0, 2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("kneer"), 0, 0, -0.5, 0, 0, 0, 1.7, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("footr"), 0, 0, 0, 0, 0, 0, 2.1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("armr"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("colonells"), 2, 0, -0.5, 0, 0, 0, 2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("kneel"), 0, 0, 0.5, 0, 0, 0, 1.7, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("footl"), 0, 0, 0, 0, 0, 0, 2.1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("arml"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1.9, true);
+        macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3.0, 0, 0, 0, 0, 0, 360, true);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 26.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3.0, 0, 0, 0, 0, 0, 360, true);
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
+	    macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
+	    macros::BURN_COLOR_NORMAL(fighter);
+    }
+}
+
 #[acmd_script( agent = "samusd", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_fair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -468,6 +527,54 @@ unsafe fn samusd_fair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 36.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
+unsafe fn samusd_faireff(fighter: &mut L2CAgentBase) {
+    sv_animcmd::frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new("samusd_gbeam_flash_01"), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+	    macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+	    macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+	    macros::EFFECT(fighter, Hash40::new("samusd_atk_bomb"), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 40.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_gbeam_flash_01"), false, true);
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
+unsafe fn samusd_fairsnd(fighter: &mut L2CAgentBase) {
+    sv_animcmd::frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_samusd_smash_s01"));
+    }
+    sv_animcmd::wait(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_samusd_smash_s02"));
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samusd_fairexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, true, 0);
+        ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, Hash40::new("s4s"), false, 0.0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack11"), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+    }
+    sv_animcmd::frame(fighter.lua_state_agent, 50.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
     }
 }
 
@@ -657,6 +764,7 @@ pub fn install() {
         samusd_jab2ex,
         samusd_jab2sound,
         samusd_dashattack,
+        samusd_dashattackeff,
         samusd_ftilt,
         samusd_ftilthi,
         samusd_ftiltlw,
@@ -669,7 +777,11 @@ pub fn install() {
         samusd_uair,
         samusd_uaireffect,
         samusd_nair,
+        samusd_naireff,
         samusd_fair,
+        samusd_faireff,
+        samusd_fairsnd,
+        samusd_fairexp,
         samusd_bair,
         samusd_special,
         samusd_specialair,

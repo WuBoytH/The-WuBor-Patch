@@ -1129,7 +1129,7 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
     original!()(lua_state);
 }
 
-#[skyline::main(name = "the_bor_patch")]
+#[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
     unsafe{
         skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));

@@ -1,12 +1,12 @@
-# The Bor Patch
+# The WuBor Patch
 
-A mod for Super Smash Bros. Ultimate that brings character balance and mechanics changes to various characters. [You can find a full changelog here.](https://docs.google.com/document/d/1-1xWPIfCt0kfxvREXpTbLL_J5DpK6GPFxKNIGyXiqzQ/edit?usp=sharing)
+A mod for Super Smash Bros. Ultimate that brings character balance and mechanics changes to various characters. [You can find a full changelog for the beta release here.](https://docs.google.com/document/d/1zGBMh0nS9fj-ejxOqP-fd_XHtAIRetYXqfS7GVNQuhk/edit#)
 
 ## Dependencies
 
 * [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab the latest version!
 * [smashline_hook](https://github.com/blu-dev/smashline_hook/releases/latest)
-* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/master)
+* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/latest)
 
 ### How to Install
 

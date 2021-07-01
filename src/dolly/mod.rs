@@ -13,26 +13,22 @@ use smashline::*;
 
 // pub static mut GO_SAUCE : [f32; 8] = [0.0; 8];
 
-// ---------------------------------------------------------
-// It was a long time coming, but now Terry’s got his buffs.
-// ---------------------------------------------------------
-
 // #[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
 // fn dolly_frame(fighter: &mut L2CFighterCommon) {
 //     unsafe {
 //         if entry_id(fighter.module_accessor) < 8 {
-
+//
 //             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
 //                 GO_SAUCE[entry_id(fighter.module_accessor)] = 0.0;
 //             }
-
+//
 //             if GO_SAUCE[entry_id(fighter.module_accessor)] >= 50.0 {
 //                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
 //             }
 //             else {
 //                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
 //             }
-            
+//
 //             if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
 //             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2
 //             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
@@ -53,7 +49,7 @@ use smashline::*;
 //                     GO_SAUCE[entry_id(fighter.module_accessor)] = 100.0;
 //                 }
 //             }
-
+//
 //             DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
 //             if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] {
 //                 GO_SAUCE[entry_id(fighter.module_accessor)] += (DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * 0.2;
@@ -62,7 +58,7 @@ use smashline::*;
 //                 }
 //             }
 //             DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
-
+//
 //             if smashball::is_training_mode(){
 //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
 //                     if GO_SAUCE[entry_id(fighter.module_accessor)] > 50.0 {
@@ -84,10 +80,6 @@ use smashline::*;
 //         }
 //     }
 // }
-
-// Power Wave can now be feinted by holding Shield during the move's startup.
-// If you feint the move, the rest of the Power Wave animation is sped-up.
-// Kirby gets this as well.
 
 #[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
@@ -142,9 +134,6 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
-// Power Dunk's falling hitbox comes out two frames earlier,
-// and the hitbox was enlarged and moved up a little.
 
 #[acmd_script( agent = "dolly", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
@@ -371,8 +360,6 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_LANDING_HEAVY);
     }
 }
-
-// Rising Tackle in the air can grab ledge on frame 13.
 
 #[acmd_script( agent = "dolly", script = "game_specialairhi1", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {

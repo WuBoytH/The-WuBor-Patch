@@ -16,12 +16,6 @@ use crate::system::{
 use crate::commonfuncs::*;
 use crate::globals::*;
 
-// ---------------------------------------------------------
-// We’ve revamped Lucina with a moveset inspired by Yu Narukami’s appearance in Persona 4 Arena.
-// Lucina’s skins have been fully replaced with Yu in the WuBoy Modpack,
-// so it was only fitting that this became our premiere challenge for The Bor Patch.
-// ---------------------------------------------------------
-
 pub static mut AIR_ACTION : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
 static mut AWAKENING : [bool; 8] = [false; 8];
@@ -62,8 +56,6 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
     return spent;
 }
 
-// Sets Yu's upper-body invincibility, only used for Big Gamble.
-
 #[inline(always)]
 pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
@@ -86,8 +78,6 @@ pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_
     }
 }
 
-// Sets Yu's full invulnerability, only used for Big Gamble.
-
 #[inline(always)]
 pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
@@ -97,8 +87,6 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
         HitModule::set_whole(module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
-
-// Checks if you are playing as Shadow Yu.
 
 #[inline(always)]
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
@@ -110,60 +98,6 @@ pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> boo
         return false;
     }
 }
-
-// This is left here for the standalone release of Yu Narukami
-// #[skyline::hook(replace=lua_bind::WorkModule::is_enable_transition_term)]
-// pub unsafe fn lucina_is_enable_transition_term_replace(fighter.module_accessor: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-//     let fighter_kind = utility::get_kind(fighter.module_accessor);
-//     let ret = original!()(fighter.module_accessor,term);
-//     let entry_id(fighter.module_accessor) = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_entry_id(fighter.module_accessor)) as usize;
-//     if fighter_kind == *FIGHTER_KIND_LUCINA && entry_id(fighter.module_accessor) < 8 {
-//         if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-//             return false;
-//         }
-//         if HEROIC_GRAB[entry_id(fighter.module_accessor)]
-//         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
-//         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
-//         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3
-//         && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN {
-//             return false;
-//         }
-//         if AIR_ACTION[entry_id(fighter.module_accessor)] && IS_FUNNY[entry_id(fighter.module_accessor)] == false {
-//             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap and Heroic Bravery if used once unless in Funny
-//                 return false;
-//             }
-//             else {
-//                 return ret;
-//             }
-//         }
-//         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
-//             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON
-//             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
-//                 return false;
-//             }
-//             else {
-//                 return ret;
-//             }
-//         }
-//         else {
-//             return ret;
-//         }
-//     }
-//     else {
-//         return ret;
-//     }
-// }
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
@@ -758,9 +692,6 @@ unsafe extern "C" fn lucina_specials2main(fighter: &mut L2CFighterCommon) -> L2C
     L2CValue::I32(0)
 }
 
-// A back-handed punch. Yu can act out of this very early, allowing him to pressure with multiple single jabs.
-// Deals 2.5 damage.
-
 #[acmd_script( agent = "lucina", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_jab1(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 4.0);
@@ -792,9 +723,6 @@ unsafe fn lucina_jab1eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-// A standing roundhouse kick. Jump-Cancellable on hit.
-// Deals 4.5 damage, sends at a 50 degree angle.
-
 #[acmd_script( agent = "lucina", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_jab2(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 6.0);
@@ -820,8 +748,6 @@ unsafe fn lucina_jab2eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Deals 10 damage. Otherwise unchange from Lucina.
-
 #[acmd_script( agent = "lucina", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_ftilt(fighter: &mut L2CAgentBase) {
     if HEROIC_GRAB[entry_id(fighter.module_accessor)] {
@@ -840,9 +766,6 @@ unsafe fn lucina_ftilt(fighter: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
-
-// An upward slash that starts very low to the ground. Jump-Cancellable on hit.
-// Deals 6 damage, sends at a 71 degree angle.
 
 #[acmd_script( agent = "lucina", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
@@ -869,9 +792,6 @@ unsafe fn lucina_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Animation is unchanged from Lucina.
-// Deals 6 damage, sends at a 75 degree angle.
-
 #[acmd_script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 7.0);
@@ -885,10 +805,6 @@ unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// A sliding move inspired by Swift Strike.
-// Deals 7 damage, sends at a 65 degree angle.
-// In Funny Mode, this is Jump-Cancellable on hit.
 
 #[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
@@ -919,9 +835,6 @@ unsafe fn lucina_dashattacksound(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_swing_ll"));
     }
 }
-
-// A fast, horizontal kick. Jump-Cancellable on hit.
-// Deals 4.5 damage, has 40 Base Knockback, 100 Kockback Growth, and is actionable on frame 23.
 
 #[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
@@ -969,9 +882,6 @@ unsafe fn lucina_nairsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
     }
 }
-
-// Forward and Back Air have been made pretty much identical.
-// Deals 10 damage and has 74 Knockback Growth.
 
 #[acmd_script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_fair(fighter: &mut L2CAgentBase) {
@@ -1021,9 +931,6 @@ unsafe fn lucina_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Animation is unchanged from Lucina. Jump-Cancellable on hit.
-// Deals 8 damage, sends at a 55 degree angle, and has 40 Knockback Growth.
-
 #[acmd_script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 3.0);
@@ -1047,9 +954,6 @@ unsafe fn lucina_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Animation is unchanged from Lucina. Jump-Cancellable on hit.
-// Deals 8 damage, sends at an 80 degree angle, and has 8 frames of landing lag, so you can combo if you land with it.
-
 #[acmd_script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 3.0);
@@ -1072,9 +976,6 @@ unsafe fn lucina_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Animation borrowed from Ike Forward Tilt.
-// Deals 13.5 damage and will steal your soul at ranges you never thought possible.
-
 #[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 7.0);
@@ -1090,9 +991,6 @@ unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Animation is unchanged from Lucina.
-// The sweetspot deals 12 damage. Otherwise unchanged.
 
 #[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
@@ -1116,8 +1014,6 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Up-Throw itself isn't edited, but it's reused for Heroic Bravery's "command grab".
 
 #[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
@@ -1152,12 +1048,6 @@ unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_nspecialloop(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.4);
 }
-
-// Based off of Heroic Bravery. Borrows Chrom's Forward Smash animation.
-// Kirby gets this as well, though it uses the old Shield Breaker animation.
-// Uncharged it simply deals a bit of damage and launches away.
-// Holding Special until the end of the move's travel time will perform a "command grab" on the ground.
-// In the air it still does the slash.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnend", "game_specialnendhi", "game_specialnendlw", "game_specialairnend", "game_specialairnendhi", "game_specialairnendlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
@@ -1196,8 +1086,6 @@ unsafe fn lucina_nspecialend(fighter: &mut L2CAgentBase) {
         }
     }
 }
-
-// Pressing Shield while dashing forward will do EX Heroic Bravery, which is pretty much just the normal slash but it paralyzes.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnendmax", "game_specialnendmaxhi", "game_specialnendmaxlw", "game_specialairnendmax", "game_specialairnendmaxhi", "game_specialairnendmaxlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
@@ -1250,10 +1138,6 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
         macros::FT_MOTION_RATE(fighter, 1.0);
     }
 }
-
-// Yu's Lightning Flash, an old super move that was demoted to a special. Can be EX'd.
-// Yu lunges forward with a very active hitbox on his sword. Drags opponents forward until the final hit. Launches opponents away.
-// The EX version starts up faster and deals more damage.
 
 #[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
@@ -1368,10 +1252,6 @@ unsafe fn lucina_sspecial1exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-// An original move, due to Smash's restrictions, dubbed "Lion's Leap."
-// Yu jumps forward with forward momentum. Can only be used once in the air,
-// and is usable again when Yu touches the ground or grabs a ledge.
-
 #[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 1.0);
@@ -1400,9 +1280,6 @@ unsafe fn lucina_sspecial1aireff(fighter: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
-
-// Pressing Attack during Lion's Leap performs his j.2A, a divekick. Borrows Zero Suit Samus's down air animation.
-// Can be EX'd for more damage and the ability to spike.
 
 #[acmd_script( agent = "lucina", script = "game_specialairs2lw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
@@ -1473,10 +1350,6 @@ unsafe fn lucina_sspecial2lwaireff(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Pressing Special during Lion's Leap performs the familiar Raging Lion.
-// Yu will keep falling until he hits the ground or uses One More!.
-// Can be EX'd for more damage, travel speed, and kill power.
-
 #[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -1545,8 +1418,6 @@ unsafe fn lucina_sspecial2hiairsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_n03"));
     }
 }
-
-// The following 8 scripts are used for the landing animations of Raging Lion and j.2A.
 
 #[acmd_script( agent = "lucina", script = "game_specials2lw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2lw(fighter: &mut L2CAgentBase) {
@@ -1617,12 +1488,6 @@ unsafe fn lucina_sspecial2hiexp(fighter: &mut L2CAgentBase) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, 0);
     }
 }
-
-// The following two scripts are used for Big Gamble. Can be EX'd.
-// The normal version launches opponents nearly straight up.
-// The EX version is fully invincible on frame 5 on and is a proper multi-hit,
-// sending opponents away. Both versions can NOT be cancelled into One More!.
-// On the ground, Big Gamble has upper-body invincibility on frame 1...
 
 #[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
@@ -1708,8 +1573,6 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-// ... while in the air, it doesn't have invincibility at all unless EX'd.
-
 #[acmd_script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 1.0);
@@ -1791,12 +1654,6 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Counter was changed to One More!, though unlike Persona 4 Arena's One More!, this one works more like Guilty Gear's Roman Cancel.
-// For the first part of the move, everything on the screen slows down as Yu prepares to, uh, Roman.
-// Yu will then strike a pose, creating a large hitbox around him.
-// If something gets hit by this hitbox, things will stay slow for another 30 frames,
-// allowing Yu to follow-up with whatever he would like.
-
 #[acmd_script( agent = "lucina", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 1.0);
@@ -1859,11 +1716,6 @@ unsafe fn lucina_dspecialsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_l01"));
     }
 }
-
-// If you press Up Taunt as Shadow Yu at 100 SP, Shadow Yu activates Shadow Frenzy.
-// Shadow Yu performs a quick slash that can be cancelled out of very quickly.
-// Upon use, his SP will slowly drain to 0, but during Shadow Frenzy,
-// EX moves and One More! are performed for less SP.
 
 #[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {

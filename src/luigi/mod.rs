@@ -13,13 +13,6 @@ use crate::system::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
 
-// ---------------------------------------------------------
-// We had to do our civic duty and rework Luigi. This was not easy by any means.
-// ---------------------------------------------------------
-
-// Air speed: 0.77 > 0.8
-// Luigi also no longer has a tether aerial (zair).
-
 static mut UP_B_CANCEL : [bool; 8] = [false; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_LUIGI )]
@@ -49,8 +42,6 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
-// Rewritten Side-B Charging status script for Thunderhand
 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn luigi_specialscharge(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -119,8 +110,6 @@ unsafe extern "C" fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) ->
     L2CValue::I32(0)
 }
 
-// Up Tilt has increased Base Knockback and a lowered Cancel Frame (28 -> 26)
-
 #[acmd_script( agent = "luigi", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_utilt(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 5.0);
@@ -135,8 +124,6 @@ unsafe fn luigi_utilt(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Down Tilt can no longer trip opponents, and its Cancel Frame was raised (14 -> 16)
-
 #[acmd_script( agent = "luigi", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_dtilt(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 5.0);
@@ -150,8 +137,6 @@ unsafe fn luigi_dtilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Neutral Air's sourspot has a new angle (80 > 361)
 
 #[acmd_script( agent = "luigi", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_nair(fighter: &mut L2CAgentBase) {
@@ -176,8 +161,6 @@ unsafe fn luigi_nair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Forward Air has a new angle (361 -> 55)
-
 #[acmd_script( agent = "luigi", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_fair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 2.0);
@@ -198,8 +181,6 @@ unsafe fn luigi_fair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
-// Up Air's sweetspot does less damage (11 -> 10) and has a different angle (55 > 68)
 
 #[acmd_script( agent = "luigi", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uair(fighter: &mut L2CAgentBase) {
@@ -227,10 +208,6 @@ unsafe fn luigi_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Thunderhand Scripts
-
-// Generate Electric effects
-
 #[acmd_script( agent = "luigi", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -246,8 +223,6 @@ unsafe fn luigi_sspecialstart(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
-
-// Generates the windboxes and Green Missile charging effect.
 
 #[acmd_script( agent = "luigi", script = "game_specialshold", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialhold(fighter: &mut L2CAgentBase) {
@@ -282,10 +257,6 @@ unsafe fn luigi_sspecialholdeff(fighter: &mut L2CAgentBase) {
     }
 }
 
-// The ending part of Thunderhand.
-// On the ground, Luigi will lock down the opponent, allowing him to either follow-up with a true Jab
-// or go for mixups.
-
 #[acmd_script( agent = "luigi", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -307,8 +278,6 @@ unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// In the air, the move simply launches away at a low angle.
 
 #[acmd_script( agent = "luigi", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
@@ -332,8 +301,6 @@ unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Thunderrrrrrrr
-
 #[acmd_script( agent = "luigi", scripts = ["sound_specialsend", "sound_specialairsend"], category = ACMD_SOUND, low_priority )]
 unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -345,10 +312,6 @@ unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_luigi_special_s03_s"));
     }
 }
-
-// Super Jump Punch's sweetspot has a new angle (88 -> 42) and less Knockback Growth (88 -> 60).
-// If you hit the sweetspot, you can cancel into anything at the peak of his jump.
-// The grounded version deals less damage (25 -> 20)...
 
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
@@ -389,9 +352,6 @@ unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-// ... while the aerial version also deals less damage (20 -> 18).
-// The aerial version also now does the critical zoom-in on the sweetspot.
-
 #[acmd_script( agent = "luigi", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_uspecialair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 1.0);
@@ -430,13 +390,6 @@ unsafe fn luigi_uspecialair(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Luigi Cyclone is now the same between the grounded and aerial versions.
-// Cyclone's invincibility has been unified (Frames 3 -> 8),
-// and the Knockback Growth has been severely reduced (130 -> 75).
-// You can also gain more height from mashing the move,
-// and the horizontal distance in the air is now the same as on the ground.
-// The aerial version can also cancel much earlier (Frame 90 -> 75).
 
 #[acmd_script( agent = "luigi", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
 unsafe fn luigi_dspecial(fighter: &mut L2CAgentBase) {

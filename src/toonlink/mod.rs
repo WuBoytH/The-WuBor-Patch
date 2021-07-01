@@ -6,14 +6,8 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 //use smash::phx::Vector3f;
-//use smash::app::BattleObjectModuleAccessor;
-//use smash::app::lua_bind::EffectModule;
 use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
-
-// ---------------------------------------------------------
-// How else can we even buff this character? Maybe down throw could combo better? That’s it…
-// ---------------------------------------------------------
 
 static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
 
@@ -39,9 +33,6 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
         }
     }
 }
-
-// Dash Attack's sourspot now deals the same damage as the sweetspot.
-// Also, it has a different angle (67 -> 82) and less Base Knockback (70 -> 55).
 
 #[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {

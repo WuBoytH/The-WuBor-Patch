@@ -6,14 +6,6 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 
-// ---------------------------------------------------------
-// Zelda is a mess of very powerful and very weak tools. So here’s a better Zelda.
-// If she’s really that good, we’ll nerf Nayru’s Love and Forward Smash for the haters,
-// but don’t count on it.
-// ---------------------------------------------------------
-
-// Down Tilt's angle was changed (68 -> 80).
-
 #[acmd_script( agent = "zelda", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 5.0);
@@ -28,8 +20,6 @@ unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Dash Attack no longer has sourspots, and the last hit's range is increased.
 
 #[acmd_script( agent = "zelda", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dashattack(fighter: &mut L2CAgentBase) {
@@ -46,8 +36,6 @@ unsafe fn zelda_dashattack(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Down Smash always deals 11 damage, launches at a lower angle, and can be acted out of earlier (38 -> 31).
 
 #[acmd_script( agent = "zelda", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dsmash(fighter: &mut L2CAgentBase) {
@@ -76,8 +64,6 @@ unsafe fn zelda_dsmash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-
-// Neutral Air now always launches forward, and can be acted out of earlier (51 -> 41).
 
 #[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_nair(fighter: &mut L2CAgentBase) {
@@ -116,9 +102,6 @@ unsafe fn zelda_nair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
-// Forward Air and Back Air's sourspots deal more damage (4 -> 5.5) and Base Knockback (5 -> 15).
-// Their landing lag was also reduced (15/16 -> 12).
 
 #[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_fair(fighter: &mut L2CAgentBase) {
@@ -180,9 +163,6 @@ unsafe fn zelda_bair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Down Air's sourspot has increased damage (5/4 -> 5.5),
-// deals more Base Knockback (5/0 -> 15), and always deals 70 Knockback Growth.
-
 #[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn zelda_dair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 4.0);
@@ -209,8 +189,6 @@ unsafe fn zelda_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Din's Fire starts up faster (13 -> 8).
-
 #[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
 unsafe fn zelda_sspecialstart(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 2.0);
@@ -222,8 +200,6 @@ unsafe fn zelda_sspecialstart(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_ZELDA_STATUS_SPECIAL_S_FLAG_1);
     }
 }
-
-// Releasing Special to activate Din's Fire is also faster (14 -> 8).
 
 #[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
 unsafe fn zelda_sspecialend(fighter: &mut L2CAgentBase) {

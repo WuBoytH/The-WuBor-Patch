@@ -11,15 +11,6 @@ use crate::system::IS_FUNNY;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::commonfuncs::*;
 
-// ---------------------------------------------------------
-// Our goal was to make Incineroar more fun, without being broken. You be the judge of that...
-// ---------------------------------------------------------
-
-//Weight: 110	Walk speed: 0.62 > 1
-// Air accel (additional): 0.06 > 0.075		Run speed: 1.465
-// Dash speed: 1.76 > 1.86			Air speed: 0.88 > 1.05
-// Landing lag: Forward and back air have had their landing lag swapped. Neutral air’s landing lag now matches up air’s at 8 frames.
-
 pub static mut REVENGE : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
@@ -46,8 +37,6 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// Forward Smash has lowered Knockback Growth (89 -> 79)
-
 #[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 2.0);
@@ -68,8 +57,6 @@ unsafe fn gaogaen_fsmash(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_IS_FOLLOW_THROUGH);
     }
 }
-
-// Up Smash has lowered Base Knockback (89 -> 79)
 
 #[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
@@ -96,8 +83,6 @@ unsafe fn gaogaen_usmash(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Neutral Air's sweetspot has lowered damage (13 -> 11)
-
 #[acmd_script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 4.0);
@@ -121,8 +106,6 @@ unsafe fn gaogaen_nair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
-// Down Air has lowered Base Knockback (30 -> 20)
 
 #[acmd_script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
@@ -154,11 +137,6 @@ unsafe fn gaogaen_dair(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }
-
-// Darkest Lariat damage reduced to 10...
-// ... but its angles have also been changed (45 -> 75)...
-// ... and you can Jump Cancel the grounded version on hit.
-// You can also move faster horizontally during the spinning.
 
 #[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_nspecial(fighter: &mut L2CAgentBase) {
@@ -466,8 +444,6 @@ unsafe fn gaogaen_nspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Lowered damage (12 -> 9) and Base Knockback (128 -> 96) on Alolan Whip's shoulder follow-up due to new Jump Cancel Darkest Lariat.
-
 #[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspecialshoulder(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -556,13 +532,6 @@ unsafe fn gaogaen_sspecialshoulderair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// The lariat on Alolan Whip is reused in Revenge, so this script is divided into two parts.
-// The first part is used for Revenge while the second part is used for Alolan Whip.
-// The Alolan Whip version has lowered damage (20 -> 16).
-// The Revenge version's damage grows as Incineroar's current % increases, from 8 damage to 36 damage.
-// The move reaches 36 damage when Incineroar reaches 196%.
-// In Funny Mode, the 36 damage cap is removed.
-
 #[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     if REVENGE[entry_id(fighter.module_accessor)] > 0 {
@@ -633,8 +602,6 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Cross Chop's spike hitbox has lowered Fixed Knockback (175 -> 120).
-
 #[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_upbfall(fighter: &mut L2CAgentBase) {
     sv_animcmd::frame(fighter.lua_state_agent, 2.0);
@@ -702,11 +669,6 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.5, 312, 100, 40, 0, 6.0, 0.0, 8.0, 2.0, Some(0.0), Some(6.0), Some(3.5), 1.3, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PUNCH);
     }
 }
-
-// Old Revenge repurposed into... new Revenge...
-// Instead of storing power for a future move, Revenge now works like Scintilla.
-// He takes half of the damage of the move he gets hit by...
-// ... but if he gets hit, he will immediately follow-up with a Lariat.
 
 #[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {

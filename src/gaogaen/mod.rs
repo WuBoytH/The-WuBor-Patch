@@ -677,7 +677,6 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
         WorkModule::set_int(fighter.module_accessor, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
     }
-    macros::FT_MOTION_RATE(fighter, 0.25);
     sv_animcmd::frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);

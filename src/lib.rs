@@ -126,7 +126,7 @@ mod wario;
 use crate::wario::FINISH_SIGN;
 mod luigi;
 mod reflet;
-// mod miiswordsman;
+mod miiswordsman;
 mod edge;
 mod pickel;
 mod pitb;
@@ -1198,7 +1198,7 @@ pub fn main() {
     wario::install();
     luigi::install();
     reflet::install();
-    // miiswordsman::install();
+    miiswordsman::install();
     edge::install();
     pickel::install();
     pitb::install();

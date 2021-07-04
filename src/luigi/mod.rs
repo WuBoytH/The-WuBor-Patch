@@ -60,6 +60,7 @@ unsafe extern "C" fn luigi_specialschargestop(fighter: &mut L2CFighterCommon) {
     let charge_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_speed_mul"));
     WorkModule::add_float(fighter.module_accessor, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
 }
+
 unsafe extern "C" fn luigi_specialscharge2(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
@@ -87,6 +88,7 @@ unsafe extern "C" fn luigi_specialscharge2(fighter: &mut L2CFighterCommon) {
     }
     return
 }
+
 unsafe extern "C" fn luigi_specialschargemain(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) == false {
         let charge = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);

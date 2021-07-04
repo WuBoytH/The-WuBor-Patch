@@ -265,6 +265,7 @@ unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 270, 45, 20, 0, 5.0, 0.0, 13.0, 9.0, Some(0.0), Some(6.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 5.0);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 21.0, false);
         EffectModule::kill_kind(fighter.module_accessor, Hash40::new_raw(0x1133c5d194), false, true);
     }
@@ -288,6 +289,7 @@ unsafe fn luigi_sspecialairend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 15, 40, 0, 60, 5.0, 0.0, 13.0, 9.0, Some(0.0), Some(6.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 2.5);
         EffectModule::kill_kind(fighter.module_accessor, Hash40::new_raw(0x1133c5d194), false, true);
     }
     sv_animcmd::frame(fighter.lua_state_agent, 16.0);

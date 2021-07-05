@@ -660,6 +660,22 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 return ret;
             }
         }
+        if fighter_kind == *WEAPON_KIND_YOSHI_TAMAGO {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("life") {
+                    return 6000;
+                }
+                if param_hash == hash40("max_bound_num") {
+                    return 100;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
         else {
             return ret;
         }

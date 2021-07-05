@@ -125,14 +125,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             IS_FGC[entry_id(fighter.module_accessor)] = false;
         }
 
-        // Remove Special Fall in Funny Mode
-
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
-            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_FALL_SPECIAL {
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
-            }
-        }
-
         // Remove an OPPONENT_BOMA if the opponent is dead.
 
         if entry_id(fighter.module_accessor) < 8 {

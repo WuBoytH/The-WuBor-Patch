@@ -2,6 +2,7 @@
 use smash::hash40;
 use smash::lua2cpp::L2CAgentBase;
 use smash::app::*;
+use smash::app::sv_animcmd::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
@@ -45,7 +46,7 @@ unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
         rng = 101;
         randitem = 0;
     }
-    sv_animcmd::frame(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         if rng == 101 {
             ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_ITEM_BANANA, false, 0);
@@ -54,13 +55,13 @@ unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
             ItemModule::have_item(fighter.module_accessor, ItemKind(randitem), 0, 0, false, false);
         }
     }
-    sv_animcmd::frame(fighter.lua_state_agent, 14.0);
+    frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         if rng == 101 {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DIDDY_STATUS_SPECIAL_LW_FLAG_ITEM_THROW);
         }
     }
-    sv_animcmd::frame(fighter.lua_state_agent, 18.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         if rng != 101 {
             let angle : f32;
@@ -76,7 +77,7 @@ unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
             ItemModule::throw_item(fighter.module_accessor, angle, power, 1.0, 0, true, 0.0);
         }
     }
-    sv_animcmd::frame(fighter.lua_state_agent, 20.0);
+    frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
         if rng == 101 {
             ArticleModule::shoot(fighter.module_accessor, *FIGHTER_DIDDY_GENERATE_ARTICLE_ITEM_BANANA, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);

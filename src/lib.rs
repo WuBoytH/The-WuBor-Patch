@@ -128,11 +128,13 @@ mod luigi;
 mod reflet;
 mod miiswordsman;
 mod edge;
+// use crate::edge::ONE_WING;
 mod pickel;
 mod pitb;
 mod diddy;
 mod sheik;
 mod tantan;
+mod yoshi;
 // mod api;
 
 // An unused experiment to make the Grab button work as a Smash Attack button.
@@ -594,7 +596,7 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 return ret;
             }
         }
-        if fighter_kind == FIGHTER_KIND_SHULK {
+        if fighter_kind == *FIGHTER_KIND_SHULK {
             if param_hash == hash40("circle_menu_release_after_interval_frame") {
                 let status_kind = StatusModule::status_kind(boma);
                 if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE
@@ -812,6 +814,20 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         //     }
         //     if param_hash == hash40("super_special_hp_max") {
         //         if GO_SAUCE[entry_id(boma)] < 50.0 {
+        //             return 0.0;
+        //         }
+        //         else {
+        //             return 999.0;
+        //         }
+        //     }
+        //     else {
+        //         return ret;
+        //     }
+        // }
+        // if fighter_kind == *FIGHTER_KIND_EDGE && entry_id(boma) < 8 {
+        //     if ONE_WING[entry_id(boma)] == 900.0 {
+        //         if param_hash == hash40("activate_point_init")
+        //         || param_hash == hash40("activate_point_init_hp") {
         //             return 0.0;
         //         }
         //         else {
@@ -1205,6 +1221,7 @@ pub fn main() {
     diddy::install();
     sheik::install();
     tantan::install();
+    yoshi::install();
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);

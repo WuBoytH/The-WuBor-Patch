@@ -137,6 +137,7 @@ mod tantan;
 mod yoshi;
 mod mario;
 mod duckhunt;
+mod rockman;
 // mod api;
 
 // An unused experiment to make the Grab button work as a Smash Attack button.
@@ -337,6 +338,22 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
 
         // Fighter-Specific Param Edits
         
+        if fighter_kind == *FIGHTER_KIND_ROCKMAN && entry_id(boma) < 8 {
+            if IS_FUNNY[entry_id(boma)] {
+                if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
+                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
+                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
+                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_RUN_BRAKE {
+                    return false;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
         if fighter_kind == *FIGHTER_KIND_LUCINA && entry_id(boma) < 8 {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return false;
@@ -633,10 +650,8 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
-            let oboma = sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-            let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
             if param_hash == hash40("life") {
-                if IS_SPIRIT_BOMB[o_entry_id] {
+                if IS_SPIRIT_BOMB[entry_id(boma)] {
                     return 6000;
                 }
                 else {
@@ -648,10 +663,8 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
             }
         }
         if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT { // Phazon Orb Life
-            let oboma = sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-            let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
             if param_hash == hash40("life") {
-                if IS_FUNNY[o_entry_id] {
+                if IS_FUNNY[entry_id(boma)] {
                     return 6000;
                 }
                 else {
@@ -669,6 +682,80 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 }
                 if param_hash == hash40("max_bound_num") {
                     return 100;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_ROCKMAN_ROCKBUSTER {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("life") {
+                    return 6000;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_ROCKMAN_CHARGESHOT {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("life_min")
+                || param_hash == hash40("life_max") {
+                    return 6000;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_ROCKMAN_HARDKNUCKLE {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("life") {
+                    return 60;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_ROCKMAN_CRASHBOMB {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("life") {
+                    return 6000;
+                }
+                if param_hash == hash40("is_penetration") {
+                    return 1;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM {
+        if fighter_kind == *ITEM_KIND_METALBLADE {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("life") {
+                    return 6000;
                 }
                 else {
                     return ret;
@@ -862,11 +949,61 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
-            let oboma = sv_battle_object::module_accessor((WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-            let o_entry_id = WorkModule::get_int(oboma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
             if param_hash == hash40("max_speed") {
-                if IS_SPIRIT_BOMB[o_entry_id] {
+                if IS_SPIRIT_BOMB[entry_id(boma)] {
                     return 0.4;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_ROCKMAN_ROCKBUSTER {
+            if param_hash == hash40("speed") {
+                if IS_FUNNY[entry_id(boma)] {
+                    return 5.0;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_ROCKMAN_CHARGESHOT {
+            if param_hash == hash40("speed_min") {
+                if IS_FUNNY[entry_id(boma)] {
+                    return 5.5;
+                }
+                else {
+                    return ret;
+                }
+            }
+            if param_hash == hash40("speed_max") {
+                if IS_FUNNY[entry_id(boma)] {
+                    return 5.5;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        else {
+            return ret;
+        }
+    }
+    else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM {
+        if fighter_kind == *ITEM_KIND_METALBLADE {
+            if IS_FUNNY[entry_id(boma)] {
+                if param_hash == hash40("speed") {
+                    return 8.0;
                 }
                 else {
                     return ret;
@@ -1242,6 +1379,7 @@ pub fn main() {
     yoshi::install();
     mario::install();
     duckhunt::install();
+    rockman::install();
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);

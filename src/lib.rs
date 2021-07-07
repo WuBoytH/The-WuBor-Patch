@@ -751,24 +751,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
             return ret;
         }
     }
-    else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM {
-        if fighter_kind == *ITEM_KIND_METALBLADE {
-            if IS_FUNNY[entry_id(boma)] {
-                if param_hash == hash40("life") {
-                    return 6000;
-                }
-                else {
-                    return ret;
-                }
-            }
-            else {
-                return ret;
-            }
-        }
-        else {
-            return ret;
-        }
-    }
     else {
         return ret;
     }
@@ -986,24 +968,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             if param_hash == hash40("speed_max") {
                 if IS_FUNNY[entry_id(boma)] {
                     return 5.5;
-                }
-                else {
-                    return ret;
-                }
-            }
-            else {
-                return ret;
-            }
-        }
-        else {
-            return ret;
-        }
-    }
-    else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_ITEM {
-        if fighter_kind == *ITEM_KIND_METALBLADE {
-            if IS_FUNNY[entry_id(boma)] {
-                if param_hash == hash40("speed") {
-                    return 8.0;
                 }
                 else {
                     return ret;

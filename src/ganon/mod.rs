@@ -24,12 +24,6 @@ pub static mut FEINT : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        
-        // Force Ganon's state to the final part of Aerial Flame Choke.
-
-        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_FALL {
-        //     fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
-        // }
 
         if entry_id(fighter.module_accessor) < 8 {
 

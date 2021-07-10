@@ -29,7 +29,7 @@ fn samusd_cshot_frame(weapon: &mut L2CFighterBase) {
         if IS_FUNNY[entry_id(weapon.module_accessor)] {
             if MotionModule::motion_kind(weapon.module_accessor) == smash::hash40("regular") {
                 let slowdownvec : Vector3f = Vector3f{x: 0.,y: 0.9,z: 0.0};
-                KineticModule::mul_speed(weapon.module_accessor, &slowdownvec, *WEAPON_KINETIC_TYPE_NONE);
+                KineticModule::mul_speed(weapon.module_accessor, &slowdownvec, *WEAPON_KINETIC_TYPE_NORMAL);
             }
         }
     }

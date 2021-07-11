@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
 // use smash::hash40;
-// use smash::phx::Vector2f;
+// use smash::phx::Vector3f;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
 use smash::app::sv_animcmd::*;
@@ -12,6 +12,7 @@ use smashline::*;
 // use crate::system::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
+use crate::system::_TIME_COUNTER;
 
 static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
 
@@ -20,12 +21,32 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             DRAGON_INSTALL[entry_id(fighter.module_accessor)] = 0.0;
+            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
         }
 
         if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
             if !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 DRAGON_INSTALL[entry_id(fighter.module_accessor)] -= 1.0;
+            }
+            else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+                DRAGON_INSTALL[entry_id(fighter.module_accessor)] += 2.0;
+            }
+        }
+
+        if _TIME_COUNTER[entry_id(fighter.module_accessor)] > 0 {
+            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 24 {
+                macros::EFFECT(fighter, Hash40::new("kamui_water_sibuki_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+                macros::EFFECT(fighter, Hash40::new("kamui_water_sibuki_s"), Hash40::new("top"), 0, 0, 0, 0, 180, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+            	// macros::EFFECT_FOLLOW(fighter, Hash40::new("kamui_transform_splash_start"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+            }
+            _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+            if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0
+            && _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
+                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 24;
             }
         }
     }
@@ -80,6 +101,10 @@ unsafe extern "C" fn kamui_speciallwdragonmotion(fighter: &mut L2CFighterCommon)
             }
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, Hash40::new("special_air_lw_hit"), true, -1.0);
+                let frame = MotionModule::frame(fighter.module_accessor);
+                if frame >= 12.0 && frame < 20.0 {
+                    ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, 0.5);
+                }
             }
         }
         else {
@@ -90,6 +115,10 @@ unsafe extern "C" fn kamui_speciallwdragonmotion(fighter: &mut L2CFighterCommon)
             }
             else {
                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, Hash40::new("special_lw_hit"), true, -1.0);
+                let frame = MotionModule::frame(fighter.module_accessor);
+                if frame >= 12.0 && frame < 20.0 {
+                    ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, 0.5);
+                }
             }
         }
     }
@@ -319,10 +348,17 @@ unsafe fn kamui_fair(fighter: &mut L2CAgentBase) {
     if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
         di = true;
     }
-    frame(fighter.lua_state_agent, 8.0);
+    frame(fighter.lua_state_agent, 7.0);
     let mut hold = false;
     if di && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         hold = true;
+    }
+    if hold {
+        macros::FT_MOTION_RATE(fighter, 5.0);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if hold {
+        macros::FT_MOTION_RATE(fighter, 1.0);
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -379,11 +415,12 @@ unsafe fn kamui_faireff(fighter: &mut L2CAgentBase) {
     if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
         di = true;
     }
-    frame(fighter.lua_state_agent, 8.0);
+    frame(fighter.lua_state_agent, 7.0);
     let mut hold = false;
     if di && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         hold = true;
     }
+    frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         if !hold {
             macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 5, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
@@ -416,13 +453,7 @@ unsafe fn kamui_uair(fighter: &mut L2CAgentBase) {
     if di && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
         hold = true;
     }
-    frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        if !hold {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.0, 70, 97, 0, 55, 5.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.0, 70, 97, 0, 55, 5.5, 0.0, 4.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 10.0, 70, 97, 0, 55, 5.5, 0.0, 8.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        }
         if hold {
             macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 2.0, 367, 35, 0, 22, 5.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 2.0, 367, 35, 0, 22, 5.5, 0.0, 4.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -432,8 +463,13 @@ unsafe fn kamui_uair(fighter: &mut L2CAgentBase) {
     if hold {
         macros::FT_MOTION_RATE(fighter, 4.0);
     }
-    wait(fighter.lua_state_agent, 1.0);
+    frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
+        if !hold {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.0, 70, 97, 0, 55, 5.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.0, 70, 97, 0, 55, 5.5, 0.0, 4.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 10.0, 70, 97, 0, 55, 5.5, 0.0, 8.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        }
         if hold {
             AttackModule::clear_all(fighter.module_accessor);
             macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 4.0, 70, 97, 0, 55, 5.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -444,7 +480,7 @@ unsafe fn kamui_uair(fighter: &mut L2CAgentBase) {
     if hold {
         macros::FT_MOTION_RATE(fighter, 1.0);
     }
-    wait(fighter.lua_state_agent, 5.0);
+    wait(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -507,6 +543,7 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             DRAGON_INSTALL[entry_id(fighter.module_accessor)] = 600.0;
+            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 24;
         }
     }
 }

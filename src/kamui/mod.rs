@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
-// use smash::hash40;
-// use smash::phx::Vector3f;
+use smash::hash40;
+use smash::phx::Vector3f;
 use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
 use smash::app::*;
 use smash::app::sv_animcmd::*;
@@ -15,6 +15,52 @@ use crate::commonfuncs::*;
 use crate::system::_TIME_COUNTER;
 
 static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
+static mut SET_DRAGON_OFF : [bool; 8] = [true; 8];
+
+pub unsafe fn mask_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
+    if MotionModule::motion_kind(module_accessor) == hash40("attack_air_b")
+    || MotionModule::motion_kind(module_accessor) == hash40("attack_air_n")
+    || MotionModule::motion_kind(module_accessor) == hash40("attack_air_lw")
+    || [
+        *FIGHTER_STATUS_KIND_ATTACK_100,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_HOLD,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_SHOOT,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_N_BITE,
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_JUMP_END,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_ATTACK_END,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_JUMP,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_END,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_F_LANDING,
+        *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_S_WALL_ATTACK_B_LANDING,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_STATUS_KIND_FINAL,
+        *FIGHTER_KAMUI_STATUS_KIND_FINAL_READY,
+        *FIGHTER_KAMUI_STATUS_KIND_FINAL_SCENE_ENTRY,
+        *FIGHTER_KAMUI_STATUS_KIND_FINAL_SCENE_ATTACK,
+        *FIGHTER_KAMUI_STATUS_KIND_FINAL_SCENE_ATTACK_WAIT
+    ].contains(&StatusModule::status_kind(module_accessor)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 
 #[fighter_frame( agent = FIGHTER_KIND_KAMUI )]
 fn kamui_frame(fighter: &mut L2CFighterCommon) {
@@ -22,9 +68,17 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             DRAGON_INSTALL[entry_id(fighter.module_accessor)] = 0.0;
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
+            // CURR_MOT[entry_id(fighter.module_accessor)] = 0;
         }
 
         if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+            ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("mask"), &Vector3f{x: 1.0, y: 1.0, z: 1.0});
+            ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("kamui_mask"), true);
+            ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("kamui_fronthair"), false);
+            ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("kamui_hair"), false);
+            // VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+            // VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+            // VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_hide") as i64);
             if !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 DRAGON_INSTALL[entry_id(fighter.module_accessor)] -= 1.0;
@@ -32,6 +86,22 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
             else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 DRAGON_INSTALL[entry_id(fighter.module_accessor)] += 2.0;
+            }
+        }
+
+        if DRAGON_INSTALL[entry_id(fighter.module_accessor)] <= 0.0 {
+            if SET_DRAGON_OFF[entry_id(fighter.module_accessor)] == false
+            && !SET_DRAGON_OFF[entry_id(fighter.module_accessor)] {
+                if !mask_check(fighter.module_accessor) {
+                    macros::EFFECT_FOLLOW(fighter, Hash40::new("kamui_transform_splash_end"), Hash40::new("neck"), 2, 0, 0, 0, 0, 0, 1, true);
+                    ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("kamui_mask"), false);
+                    ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("kamui_fronthair"), true);
+                    ModelModule::set_mesh_visibility(fighter.module_accessor, Hash40::new("kamui_hair"), true);
+                }
+                // VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_normal") as i64);
+                // VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+                // VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_none") as i64);
+                SET_DRAGON_OFF[entry_id(fighter.module_accessor)] = true;
             }
         }
 
@@ -44,9 +114,10 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
             	// macros::EFFECT_FOLLOW(fighter, Hash40::new("kamui_transform_splash_start"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
             }
             _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
-            if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0
-            && _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 24;
+            if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+                if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
+                    _TIME_COUNTER[entry_id(fighter.module_accessor)] = 24;
+                }
             }
         }
     }
@@ -342,6 +413,199 @@ unsafe fn kamui_dtilt(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kamui", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_fthrowexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("arml"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        fighter.clear_lua_stack();
+        lua_args!(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_hide") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 14.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+    }
+    frame(fighter.lua_state_agent, 41.0);
+    let mut di = false;
+    if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+        di = true;
+    }
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 42.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 45.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_none") as i64);
+        }
+    }
+}
+
+#[acmd_script( agent = "kamui", script = "expression_throwb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_bthrowexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("arml"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y));
+        fighter.clear_lua_stack();
+        lua_args!(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_hide") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+    }
+    frame(fighter.lua_state_agent, 26.0);
+    let mut di = false;
+    if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+        di = true;
+    }
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 27.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 30.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_none") as i64);
+        }
+    }
+}
+
+#[acmd_script( agent = "kamui", script = "expression_throwhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_uthrowexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+    }
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_hide") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+    }
+    frame(fighter.lua_state_agent, 43.0);
+    let mut di = false;
+    if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+        di = true;
+    }
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 44.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 47.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_none") as i64);
+        }
+    }
+}
+
+#[acmd_script( agent = "kamui", script = "expression_throwlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_dthrowexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+    }
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_hide") as i64);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 26.0);
+    if macros::is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(fighter.lua_state_agent, 45.0);
+    let mut di = false;
+    if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+        di = true;
+    }
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 46.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 49.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_none") as i64);
+        }
+    }
+}
+
 #[acmd_script( agent = "kamui", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_fair(fighter: &mut L2CAgentBase) {
     let mut di = false;
@@ -518,9 +782,47 @@ unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kamui", scripts = ["expression_speciallwhit", "expression_specialairlwhit"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn kamui_speciallwhitexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_counter"), 0, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_horn") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_hide") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_hide") as i64);
+    }
+    frame(fighter.lua_state_agent, 26.0);
+    if macros::is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_explosionm"), 0, false, 0);
+    }
+    frame(fighter.lua_state_agent, 46.0);
+    let mut di = false;
+    if macros::is_excute(fighter) {
+        if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {
+            di = true;
+        }
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("hair") as i64, hash40("hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 47.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("front_hair") as i64, hash40("front_hair_normal") as i64);
+        }
+    }
+    frame(fighter.lua_state_agent, 50.0);
+    if macros::is_excute(fighter) {
+        if !di {
+            VisibilityModule::set_int64(fighter.module_accessor, hash40("dragon") as i64, hash40("dragon_none") as i64);
+        }
+    }
+}
+
 #[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
 unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 25.0);
+    frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 12.0, 0.0, 6.0, 11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 12.0, 0.0, 6.0, -11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
@@ -544,6 +846,7 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             DRAGON_INSTALL[entry_id(fighter.module_accessor)] = 600.0;
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = 24;
+            SET_DRAGON_OFF[entry_id(fighter.module_accessor)] = false;
         }
     }
 }
@@ -563,10 +866,15 @@ pub fn install() {
         kamui_ftilt,
         kamui_utilt,
         kamui_dtilt,
+        kamui_fthrowexp,
+        kamui_bthrowexp,
+        kamui_uthrowexp,
+        kamui_dthrowexp,
         kamui_fair,
         kamui_faireff,
         kamui_uair,
         kamui_speciallwhit,
+        kamui_speciallwhitexp,
         kamui_waterdragon_speciallwhit
     );
 }

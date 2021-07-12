@@ -21,13 +21,6 @@ skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features
 # smashline = { git = "https://github.com/blu-dev/smashline.git" }
 smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
 smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
-# hdr-core = { path = "../hdr-core-master" }
-# hdr-core = { git = "https://github.com/blu-dev/hdr-core.git" }
-# arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
-# smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
-# smash_utils = { git = "https://github.com/FaultyPine/smash_utils" }
-# interpolation = "0.2.0"
-# prc-rs = "1.3"
 
 [profile.dev]
 panic = "abort"

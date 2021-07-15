@@ -1,14 +1,112 @@
 use smash::phx::Hash40;
-use smash::lua2cpp::{L2CAgentBase/*, L2CFighterCommon*/};
+use smash::hash40;
+use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::app::sv_animcmd::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
+use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
 use crate::FIGHTER_CUTIN_MANAGER_ADDR;
+use crate::globals::*;
 // use crate::system::IS_FUNNY;
 // use crate::commonfuncs::*;
+
+#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn pitb_specialncharge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_DIR_S) {
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
+        WorkModule::set_int64(fighter.module_accessor, 0x7cabbcbb5, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, 0xbd2abc95c, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
+    }
+    else {
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_s") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_s") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
+        WorkModule::set_int64(fighter.module_accessor, 0x684068652, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
+        WorkModule::set_int64(fighter.module_accessor, 0xa23431885, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(pitb_specialncharge_charge as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(pitb_specialncharge_loop as *const () as _))
+}
+
+unsafe extern "C" fn pitb_specialncharge_charge(fighter: &mut L2CFighterCommon) {
+    WorkModule::inc_int(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_CHARGE);
+    return
+}
+
+unsafe extern "C" fn pitb_specialncharge_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_PIT_SPECIAL_AIR_N);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_FIRST) {
+            let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0, false, false);
+            let bowmot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
+            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(bowmot), true, -1.0);
+        }
+        else {
+            let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
+            let bowmot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
+            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(bowmot), false, -1.0);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_FIRST);
+        }
+    }
+    else {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_FIRST) {
+            let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0, false, false);
+            let bowmot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
+            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(bowmot), true, -1.0);
+        }
+        else {
+            let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
+            let bowmot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
+            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(bowmot), false, -1.0);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_FIRST);
+        }
+    }
+    let curr_charge = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_CHARGE);
+    let max_charge = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("charge_frame"));
+    if !ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+    && curr_charge < max_charge {
+        let sticky = fighter.global_table[STICK_Y].get_f32();
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_DIR_S) {
+            let upsticky = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("up_stick_y"));
+            if sticky < upsticky {
+                fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_DIR.into(), true.into());
+            }
+        }
+        else {
+            let upsticky = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("up_stick_y"));
+            if sticky >= upsticky {
+                fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_DIR.into(), true.into());
+            }
+        }
+    }
+    else {
+        if curr_charge >= max_charge {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_CHARGE_MAX);
+            fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
+        }
+        else {
+            let stickx = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor);
+            let turnstickx = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("turn_stick_x"));
+            if stickx <= turnstickx {
+                fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN.into(), true.into());
+            }
+            else {
+                fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), true.into());
+            }
+        }
+    }
+    L2CValue::I32(0)
+}
 
 #[acmd_script( agent = "pitb", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn pitb_ftilt(fighter: &mut L2CAgentBase) {
@@ -121,6 +219,81 @@ unsafe fn pitb_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pitb", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+unsafe fn pitb_nspecialstart(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, false, 0);
+        ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
+#[acmd_script( agent = "pitb", scripts = ["expression_specialnstart", "expression_specialairnstart"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pitb_nspecialstartexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("weapon") as i64, hash40("weapon_final") as i64);
+    }
+}
+
+#[acmd_script( agent = "pitb", script = "effect_specialnholds", category = ACMD_EFFECT, low_priority )]
+unsafe fn pitb_nspecialholdseff(fighter: &mut L2CAgentBase) {
+    for _ in 0..10 {
+        if macros::is_excute(fighter) {
+            macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 15, 0, 4, 0, 0, 0, false);
+        }
+        wait(fighter.lua_state_agent, 5.0);
+    }
+}
+
+#[acmd_script( agent = "pitb", script = "effect_specialairnholds", category = ACMD_EFFECT, low_priority )]
+unsafe fn pitb_nspecialholdsaireff(_fighter: &mut L2CAgentBase) {
+}
+
+#[acmd_script( agent = "pitb", scripts = ["game_specialnfires", "game_specialairnfires", "game_specialnfirehi", "game_specialairnfirehi"], category = ACMD_GAME, low_priority )]
+unsafe fn pitb_nspecialfires(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::shoot(fighter.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+    }
+}
+
+#[acmd_script( agent = "pitb", scripts = ["expression_specialnfires", "expression_specialairnfires", "expression_specialnfirehi", "expression_specialairnfirehi"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pitb_nspecialfiresexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_CHARGE_MAX) {
+        if macros::is_excute(fighter) {
+            macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_CHARGE_MAX) {
+        if macros::is_excute(fighter) {
+            ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, 0);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attacks"), 0, false, 0);
+        }
+    }
+    frame(fighter.lua_state_agent, 35.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("weapon") as i64, hash40("weapon_none") as i64);
+    }
+    frame(fighter.lua_state_agent, 52.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+    }
+}
+
 #[acmd_script( agent = "pitb", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn pitb_uspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -149,12 +322,21 @@ unsafe fn pitb_uspecialend(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
+    smashline::install_status_scripts!(
+        pitb_specialncharge_main
+    );
     smashline::install_acmd_scripts!(
         pitb_ftilt,
         pitb_dtilt,
         pitb_dthrow,
         pitb_fair,
         pitb_dair,
+        pitb_nspecialstart,
+        pitb_nspecialstartexp,
+        pitb_nspecialholdseff,
+        pitb_nspecialholdsaireff,
+        pitb_nspecialfires,
+        pitb_nspecialfiresexp,
         pitb_uspecial,
         pitb_uspecialend
     );

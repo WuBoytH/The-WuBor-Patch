@@ -108,6 +108,52 @@ unsafe extern "C" fn pitb_specialncharge_loop(fighter: &mut L2CFighterCommon) ->
     L2CValue::I32(0)
 }
 
+#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn pitb_specialnturn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    PostureModule::reverse_lr(fighter.module_accessor);
+    fighter.sub_shift_status_main(L2CValue::Ptr(pitb_specialnturn_loop as *const () as _))
+}
+
+unsafe extern "C" fn pitb_specialnturn_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if StatusModule::is_situation_changed(fighter.module_accessor)
+    || !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST) {
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_PIT_SPECIAL_AIR_N);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST) {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_s_to_s"), 0.0, 1.0, false, 0.0, false, false);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0xa728bc2ca), false, -1.0);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST);
+            }
+            else {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n_s_to_s"), -1.0, 1.0, 0.0, false, false);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0xa728bc2ca), true, -1.0);
+            }
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST) {
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_s_to_s"), 0.0, 1.0, false, 0.0, false, false);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0x6d5ce5c1d), false, -1.0);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST);
+            }
+            else {
+                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_s_to_s"), -1.0, 1.0, 0.0, false, false);
+                ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0x6d5ce5c1d), true, -1.0);
+            }
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
+        }
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
+    }
+    L2CValue::I32(0)
+}
+
 #[acmd_script( agent = "pitb", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn pitb_ftilt(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
@@ -239,8 +285,8 @@ unsafe fn pitb_nspecialstartexp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "effect_specialnholds", category = ACMD_EFFECT, low_priority )]
-unsafe fn pitb_nspecialholdseff(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "pitb", scripts = ["effect_specialnholds", "effect_specialnholdhi"], category = ACMD_EFFECT, low_priority )]
+unsafe fn pitb_nspecialholdeff(fighter: &mut L2CAgentBase) {
     for _ in 0..10 {
         if macros::is_excute(fighter) {
             macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 15, 0, 4, 0, 0, 0, false);
@@ -249,7 +295,7 @@ unsafe fn pitb_nspecialholdseff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "effect_specialairnholds", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "pitb", scripts = ["effect_specialairnholds", "effect_specialnstos", "effect_specialairnstos", "effect_specialnstohi", "effect_specialairnstohi", "effect_specialnhitos", "effect_specialairnhitos"], category = ACMD_EFFECT, low_priority )]
 unsafe fn pitb_nspecialholdsaireff(_fighter: &mut L2CAgentBase) {
 }
 
@@ -294,20 +340,37 @@ unsafe fn pitb_nspecialfiresexp(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pitb", scripts = ["game_specialhistart", "game_specialairhistart"], category = ACMD_GAME, low_priority )]
+unsafe fn pitb_uspecialstart(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(fighter, 2.0/3.0);
+    frame(fighter.lua_state_agent, 12.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
 #[acmd_script( agent = "pitb", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn pitb_uspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
+        macros::ATTACK(fighter, 0, 1, Hash40::new("rot"), 1.4, 100, 100, 150, 0, 4.0, 0.0, 0.0, 6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 1, Hash40::new("rot"), 1.4, 100, 100, 150, 0, 4.0, 0.0, 0.0, -6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 2, 1, Hash40::new("rot"), 1.4, 100, 100, 170, 0, 3.5, 0.0, -5.0, 6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 3, 1, Hash40::new("rot"), 1.4, 100, 100, 170, 0, 3.5, 0.0, -5.0, -6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        AttackModule::set_no_damage_fly_smoke_all(fighter.module_accessor, true, false);
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        AttackModule::clear_all(fighter.module_accessor);
+        macros::ATTACK(fighter, 0, 1, Hash40::new("rot"), 6.0, 80, 60, 0, 105, 5.0, 0.0, 3.0, 6.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 1, 1, Hash40::new("rot"), 6.0, 80, 60, 0, 105, 5.0, 0.0, 3.0, -6.0, None, None, None, 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
     macros::FT_MOTION_RATE(fighter, 1.0/11.0);
     frame(fighter.lua_state_agent, 44.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_FIX_ANGLE);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_BACK_ANGLE);
         JostleModule::set_status(fighter.module_accessor, false);
@@ -323,7 +386,8 @@ unsafe fn pitb_uspecialend(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     smashline::install_status_scripts!(
-        pitb_specialncharge_main
+        pitb_specialncharge_main,
+        pitb_specialnturn_main
     );
     smashline::install_acmd_scripts!(
         pitb_ftilt,
@@ -333,10 +397,11 @@ pub fn install() {
         pitb_dair,
         pitb_nspecialstart,
         pitb_nspecialstartexp,
-        pitb_nspecialholdseff,
+        pitb_nspecialholdeff,
         pitb_nspecialholdsaireff,
         pitb_nspecialfires,
         pitb_nspecialfiresexp,
+        pitb_uspecialstart,
         pitb_uspecial,
         pitb_uspecialend
     );

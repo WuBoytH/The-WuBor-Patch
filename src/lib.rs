@@ -72,7 +72,7 @@ use crate::commonfuncs::*;
 // mod statuses;
 mod globals;
 mod system;
-use crate::system::{IS_FUNNY/*, IS_FGC*/, COUNTER_HIT_STATE, OPPONENT_BOMA};
+use crate::system::{IS_FUNNY/*, IS_FGC*/, COUNTER_HIT_STATE, OPPONENT_BOMA/*, AIR_WHIFF*/};
 mod daisy;
 mod samusd;
 mod lucina;
@@ -762,8 +762,28 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let ret = original!()(module_accessor, param_type, param_hash);
     let fighter_kind = utility::get_kind(boma);
+
+    // if (param_type == hash40("landing_frame_attack_air_lw")
+    // || param_type == hash40("landing_frame_attack_air_hi")
+    // || param_type == hash40("landing_frame_attack_air_n")
+    // || param_type == hash40("landing_frame_attack_air_f")
+    // || param_type == hash40("landing_frame_attack_air_b"))
+    // && entry_id(boma) < 8 {
+    //     println!("Hi");
+    //     if AIR_WHIFF[entry_id(boma)] {
+    //         println!("Hello");
+    //         return ret + 3.0;
+    //     }
+    //     else {
+    //         println!("Hee hee");
+    //         return ret;
+    //     }
+    // }
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+
+        
+
         if fighter_kind == *FIGHTER_KIND_CLOUD && entry_id(boma) < 8 { // Limit Shenanigans
             if IS_FUNNY[entry_id(boma)] {
                 if param_hash == hash40("lw2_spd_x_mul") {

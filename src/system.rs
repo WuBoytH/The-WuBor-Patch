@@ -11,7 +11,8 @@ use smash::app::*;
 use smash::lib::L2CValue;
 use crate::globals::*;
 
-pub static mut _TIME_COUNTER: [i32; 8] = [0; 8];
+pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
+// pub static mut AIR_WHIFF : [bool; 8] = [true; 8];
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
 pub static mut IS_FGC : [bool; 8] = [false; 8];
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
@@ -88,7 +89,7 @@ unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
-
+        let status = StatusModule::status_kind(fighter.module_accessor);
         // DK Check
 
         if sv_information::is_ready_go() {
@@ -111,7 +112,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
         }
-        if (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_DEAD || sv_information::is_ready_go() == false)
+        if (status == *FIGHTER_STATUS_KIND_DEAD || sv_information::is_ready_go() == false)
         && IS_FUNNY[entry_id(fighter.module_accessor)] {
             IS_FUNNY[entry_id(fighter.module_accessor)] = false;
         }
@@ -137,12 +138,27 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         
         // Platform Dropping while in shield.
 
-        if (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD_ON)
+        if (status == *FIGHTER_STATUS_KIND_GUARD
+        || status == *FIGHTER_STATUS_KIND_GUARD_ON)
         && ControlModule::get_stick_y(fighter.module_accessor) < -0.8
         && GroundModule::is_passable_ground(fighter.module_accessor) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_PASS, true);
         }
+
+        // Whifflag???
+
+        // if [
+        //     *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        //     *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
+        // ].contains(&status) {
+        //     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        //     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        //         AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+        //     }
+        //     else {
+        //         AIR_WHIFF[entry_id(fighter.module_accessor)] = true;
+        //     }
+        // }
         
         // Command Inputs
 
@@ -270,7 +286,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             *FIGHTER_TANTAN_STATUS_KIND_ATTACK_LADDER,
             *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_S3,
             *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_LW3,
-        ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
+        ].contains(&status) {
             COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 1;
         }
         else {

@@ -68,8 +68,6 @@ macro_rules! c_str {
 
 mod commonfuncs;
 use crate::commonfuncs::*;
-// mod vars;
-// mod statuses;
 mod globals;
 mod system;
 use crate::system::{IS_FUNNY/*, IS_FGC*/, COUNTER_HIT_STATE, OPPONENT_BOMA/*, AIR_WHIFF*/};
@@ -139,7 +137,6 @@ mod mario;
 mod duckhunt;
 mod rockman;
 mod kamui;
-// mod api;
 
 // An unused experiment to make the Grab button work as a Smash Attack button.
 
@@ -769,13 +766,10 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     // || param_type == hash40("landing_frame_attack_air_f")
     // || param_type == hash40("landing_frame_attack_air_b"))
     // && entry_id(boma) < 8 {
-    //     println!("Hi");
     //     if AIR_WHIFF[entry_id(boma)] {
-    //         println!("Hello");
     //         return ret + 3.0;
     //     }
     //     else {
-    //         println!("Hee hee");
     //         return ret;
     //     }
     // }
@@ -1016,11 +1010,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 //     nus3audio_index: usize,
 // ) {
 //     unsafe {
-//         // println!("Param 1: {:#x}", &*param_1);
-//         // println!("Param 2: {}", param_2);
-//         // println!("Nus3bank Hash: {}", nus3bank_hash);
-//         // println!("Nus3audio Raw: {:?}", nus3audio_hash);
-//         // println!("Nus3audio Hash: {:#x}", &*nus3audio_hash);
 //         MUSIC_PARAM1 = param_1;
 //         MUSIC_PARAM2 = param_2;
 //         NUS3AUDIO_HASH = nus3audio_hash;
@@ -1312,7 +1301,7 @@ pub fn main() {
         //     MUSIC_OFFSET = offset;
         // }
     }
-    // statuses::install();
+    
     system::install();
     daisy::install();
     samusd::install();
@@ -1383,5 +1372,4 @@ pub fn main() {
     skyline::install_hook!(play_se_remain_replace);
     skyline::install_hook!(play_se_no_3d_replace);
     // skyline::install_hook!(init_settings_replace);
-    // api::install();
 }

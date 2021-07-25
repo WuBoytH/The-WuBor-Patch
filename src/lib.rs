@@ -70,7 +70,7 @@ mod commonfuncs;
 use crate::commonfuncs::*;
 mod globals;
 mod system;
-use crate::system::{IS_FUNNY/*, IS_FGC*/, COUNTER_HIT_STATE, OPPONENT_BOMA/*, AIR_WHIFF*/};
+use crate::system::{IS_FUNNY/*, IS_FGC*/, COUNTER_HIT_STATE, OPPONENT_BOMA, AIR_WHIFF};
 mod daisy;
 mod samusd;
 mod lucina;
@@ -137,6 +137,8 @@ mod mario;
 mod duckhunt;
 mod rockman;
 mod kamui;
+mod samus;
+mod mariod;
 
 // An unused experiment to make the Grab button work as a Smash Attack button.
 
@@ -760,19 +762,19 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     let ret = original!()(module_accessor, param_type, param_hash);
     let fighter_kind = utility::get_kind(boma);
 
-    // if (param_type == hash40("landing_frame_attack_air_lw")
-    // || param_type == hash40("landing_frame_attack_air_hi")
-    // || param_type == hash40("landing_frame_attack_air_n")
-    // || param_type == hash40("landing_frame_attack_air_f")
-    // || param_type == hash40("landing_frame_attack_air_b"))
-    // && entry_id(boma) < 8 {
-    //     if AIR_WHIFF[entry_id(boma)] {
-    //         return ret + 3.0;
-    //     }
-    //     else {
-    //         return ret;
-    //     }
-    // }
+    if (param_type == hash40("landing_attack_air_frame_n")
+    || param_type == hash40("landing_attack_air_frame_f")
+    || param_type == hash40("landing_attack_air_frame_b")
+    || param_type == hash40("landing_attack_air_frame_hi")
+    || param_type == hash40("landing_attack_air_frame_lw"))
+    && entry_id(boma) < 8 {
+        if AIR_WHIFF[entry_id(boma)] {
+            return ret + 3.0;
+        }
+        else {
+            return ret;
+        }
+    }
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
@@ -1355,6 +1357,8 @@ pub fn main() {
     duckhunt::install();
     rockman::install();
     kamui::install();
+    samus::install();
+    mariod::install();
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hook!(notify_log_event_collision_hit_replace);
     // skyline::install_hook!(attack_replace);

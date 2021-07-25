@@ -12,7 +12,7 @@ use smash::lib::L2CValue;
 use crate::globals::*;
 
 pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
-// pub static mut AIR_WHIFF : [bool; 8] = [true; 8];
+pub static mut AIR_WHIFF : [bool; 8] = [false; 8];
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
 pub static mut IS_FGC : [bool; 8] = [false; 8];
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
@@ -147,18 +147,21 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         // Whifflag???
 
-        // if [
-        //     *FIGHTER_STATUS_KIND_ATTACK_AIR,
-        //     *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
-        // ].contains(&status) {
-        //     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        //     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        //         AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
-        //     }
-        //     else {
-        //         AIR_WHIFF[entry_id(fighter.module_accessor)] = true;
-        //     }
-        // }
+        if [
+            *FIGHTER_STATUS_KIND_ATTACK_AIR,
+            *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
+        ].contains(&status) {
+            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+                AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+            }
+            else if AttackModule::is_attack(fighter.module_accessor, 0, false) {
+                AIR_WHIFF[entry_id(fighter.module_accessor)] = true;
+            }
+        }
+        else {
+            AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+        }
         
         // Command Inputs
 

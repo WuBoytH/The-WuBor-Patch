@@ -47,7 +47,13 @@ pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor)
         *FIGHTER_STATUS_KIND_PASSIVE,
         *FIGHTER_STATUS_KIND_PASSIVE_WALL,
         *FIGHTER_STATUS_KIND_PASSIVE_CEIL,
-        *FIGHTER_STATUS_KIND_PASSIVE_FB
+        *FIGHTER_STATUS_KIND_PASSIVE_FB,
+        *FIGHTER_STATUS_KIND_CATCHED_REFLET,
+        *FIGHTER_STATUS_KIND_CATCHED_RIDLEY,
+        *FIGHTER_STATUS_KIND_CATCHED_GANON,
+        *FIGHTER_STATUS_KIND_CATCHED_AIR_GANON,
+        *FIGHTER_STATUS_KIND_CATCHED_AIR_FALL_GANON,
+        *FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON
     ].contains(&StatusModule::status_kind(module_accessor)) {
         return true;
     }

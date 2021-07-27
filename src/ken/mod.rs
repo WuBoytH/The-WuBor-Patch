@@ -222,11 +222,12 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
 
             if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-                if (VT1_CANCEL[entry_id(fighter.module_accessor)]
+                if ((VT1_CANCEL[entry_id(fighter.module_accessor)]
                 && V_GAUGE[entry_id(fighter.module_accessor)] == 900)
                 || (VS1_CANCEL[entry_id(fighter.module_accessor)]
                 && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 0
-                && V_GAUGE[entry_id(fighter.module_accessor)] < 900) {
+                && V_GAUGE[entry_id(fighter.module_accessor)] < 900))
+                && !is_damage_check(fighter.module_accessor) {
                     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
                         PostureModule::reverse_lr(fighter.module_accessor);
                     }

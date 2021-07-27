@@ -778,8 +778,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
-        
-
         if fighter_kind == *FIGHTER_KIND_CLOUD && entry_id(boma) < 8 { // Limit Shenanigans
             if IS_FUNNY[entry_id(boma)] {
                 if param_hash == hash40("lw2_spd_x_mul") {
@@ -846,7 +844,15 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             }
         }
         if fighter_kind == *FIGHTER_KIND_KEN && entry_id(boma) < 8 { // Shoryureppa
-            if param_hash == hash40("speed_x_mul_s") {
+            if param_hash == hash40("endurance_min")
+            || param_hash == hash40("endurance_max") {
+                return 0.0;
+            }
+            if param_hash == hash40("defense_mul") {
+                return 1.0;
+            }
+            if param_hash == hash40("speed_x_mul_s")
+            || param_hash == hash40("hit_stop_frame_mul") {
                 if SHORYUREPPA[entry_id(boma)] == 1 {
                     return 0.15;
                 }

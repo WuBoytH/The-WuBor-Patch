@@ -476,8 +476,11 @@ unsafe extern "C" fn ken_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CVa
 
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
 unsafe fn ken_run(fighter: &mut L2CAgentBase) {
-    if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
-        macros::FT_MOTION_RATE(fighter, 0.7);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
+        if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
+            macros::FT_MOTION_RATE(fighter, 0.7);
+        }
     }
 }
 
@@ -1052,6 +1055,9 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
+    }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
@@ -1151,6 +1157,9 @@ unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepfair(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
+    }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {

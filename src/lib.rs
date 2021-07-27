@@ -196,7 +196,7 @@ move_type_again: bool) -> u64 {
             if MotionModule::motion_kind(attacker_boma) != hash40("special_lw")
             && V_TRIGGER[a_entry_id] == false {
                 if MotionModule::motion_kind(attacker_boma) == hash40("attack_s3_s_w")
-                && QUICK_STEP_STATE[a_entry_id] == 1 {
+                && StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                     V_GAUGE[a_entry_id] += 100;
                 }
                 else if d_entry_id < 8 {
@@ -450,7 +450,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
         }
         if fighter_kind == *FIGHTER_KIND_KEN && entry_id(boma) < 8 {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return false;
+                return (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW) && (QUICK_STEP_STATE[entry_id(boma)] != 2);
             }
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK

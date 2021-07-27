@@ -9,8 +9,10 @@ use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
+use smash::lib::L2CValue;
 use crate::system::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, DMG_RATIO};
 use crate::commonfuncs::*;
+use crate::globals::*;
 
 // ---------------------------------------------------------
 // This one was all WuBoy. He wanted to give Ken his tools from Street Fighter V
@@ -33,7 +35,6 @@ State list:
 static mut VS1_CANCEL : [bool; 8] = [false; 8];
 pub static mut V_SHIFT : [bool; 8] = [false; 8];
 pub static mut V_TRIGGER : [bool; 8] = [false; 8];
-static mut VT_ACTIVATION : [bool; 8] = [false; 8];
 static mut VT1_CANCEL : [bool; 8] = [false; 8];
 pub static mut V_GAUGE : [i32; 8] = [0; 8];
 static mut FLASH_MAX : [i32; 8] = [0; 8];
@@ -42,6 +43,7 @@ pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
 pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
 static mut CURR_LOOPS : [i32; 8] = [0; 8];
 static mut DIFF_X : [f32; 8] = [0.0; 8];
+static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 fn ken_frame(fighter: &mut L2CFighterCommon) {
@@ -179,56 +181,10 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 VS1_CANCEL[entry_id(fighter.module_accessor)] = false;
             }
 
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw_step_f")
-            && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1
-            && MotionModule::frame(fighter.module_accessor) == 1.0 {
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("run"), 0.0, 1.0, true, 0.0, false, false);
-            }
-
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("run")
-            && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
-                if MotionModule::frame(fighter.module_accessor) >= 22.0 && MotionModule::frame(fighter.module_accessor) <= 23.0
-                && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s3_s_w"), 0.0, 1.0, false, 0.0, false, false);
-                }
-                if MotionModule::frame(fighter.module_accessor) >= 31.0 {
-                    CancelModule::enable_cancel(fighter.module_accessor);
-                }
-            }
-
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_s_w") {
-                if MotionModule::frame(fighter.module_accessor) > 26.0 {
-                    QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 0;
-                    CancelModule::enable_cancel(fighter.module_accessor);
-                }
-            }
-
             if (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_RUN
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW)
             && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
                 QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 2;
-            }
-
-            if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-                if VT1_CANCEL[entry_id(fighter.module_accessor)]
-                && V_GAUGE[entry_id(fighter.module_accessor)] == 900
-                && V_TRIGGER[entry_id(fighter.module_accessor)] == false {
-                    VT_ACTIVATION[entry_id(fighter.module_accessor)] = true;
-                }
-                else if VS1_CANCEL[entry_id(fighter.module_accessor)]
-                && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 0
-                && V_GAUGE[entry_id(fighter.module_accessor)] < 900 {
-                    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
-                        PostureModule::reverse_lr(fighter.module_accessor);
-                    }
-                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
-                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 1;
-                    }
-                    else {
-                        QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 2;
-                    }
-                }
             }
 
             if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 2
@@ -265,77 +221,16 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 VT1_CANCEL[entry_id(fighter.module_accessor)] = false;
             }
 
-            // if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-            // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
-            // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK_RAW)
-            // && VT1_CANCEL[entry_id(fighter.module_accessor)]
-            // && V_GAUGE[entry_id(fighter.module_accessor)] == 900
-            // && V_TRIGGER[entry_id(fighter.module_accessor)] == false {
-            //     VT_ACTIVATION[entry_id(fighter.module_accessor)] = true;
-            // }
-
-            if VT_ACTIVATION[entry_id(fighter.module_accessor)] {
-                if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
-                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), false.into());
-                    V_GAUGE[entry_id(fighter.module_accessor)] = 0;
-                }
-                if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
-                && MotionModule::frame(fighter.module_accessor) <= 1.0
-                && V_TRIGGER[entry_id(fighter.module_accessor)] == false {
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+            if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+                if (VT1_CANCEL[entry_id(fighter.module_accessor)]
+                && V_GAUGE[entry_id(fighter.module_accessor)] == 900)
+                || (VS1_CANCEL[entry_id(fighter.module_accessor)]
+                && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 0
+                && V_GAUGE[entry_id(fighter.module_accessor)] < 900) {
+                    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
+                        PostureModule::reverse_lr(fighter.module_accessor);
                     }
-                    HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-                    SlowModule::set_whole(fighter.module_accessor, 6, 0);
-                    macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
-                    macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
-                    if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
-                        DIFF_X[entry_id(fighter.module_accessor)] = (
-                            PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) - PostureModule::pos_x(fighter.module_accessor)
-                        ).abs();
-                        if DIFF_X[entry_id(fighter.module_accessor)] > 50.0 {
-                            DIFF_X[entry_id(fighter.module_accessor)] -= 5.0;
-                        }
-                        else {
-                            DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
-                        }
-                        OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
-                    }
-                    else {
-                        DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
-                    }
-                    macros::PLAY_SE(fighter, Hash40::new("se_ken_special_l01"));
-                    macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l01"));
-                    V_TRIGGER[entry_id(fighter.module_accessor)] = true;
-                }
-                if MotionModule::frame(fighter.module_accessor) >= 4.0
-                && MotionModule::frame(fighter.module_accessor) < 9.0 {
-                    SlowModule::clear_whole(fighter.module_accessor);
-                    if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
-                        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
-                            x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
-                            y: 0.0
-                        });
-                    }
-                    else {
-                        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
-                            x: 10.0 * PostureModule::lr(fighter.module_accessor),
-                            y: 0.0
-                        });
-                    }
-                }
-                if MotionModule::frame(fighter.module_accessor) >= 9.0
-                && MotionModule::frame(fighter.module_accessor) < 19.0 {
-                    MotionModule::set_frame(fighter.module_accessor, 19.0, true);
-                }
-                if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F
-                && MotionModule::frame(fighter.module_accessor) >= 19.0 {
-                    HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-                    macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
-                    CancelModule::enable_cancel(fighter.module_accessor);
-                    VT_ACTIVATION[entry_id(fighter.module_accessor)] = false;
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
                 }
             }
 
@@ -440,6 +335,143 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW);
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        if V_GAUGE[entry_id(fighter.module_accessor)] < 900
+        || V_TRIGGER[entry_id(fighter.module_accessor)] {
+            QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 1;
+            SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("run"), 0.0, 1.0, true, 0.0, false, false);
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+            HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+            SlowModule::set_whole(fighter.module_accessor, 6, 0);
+            macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
+            macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+            if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
+                DIFF_X[entry_id(fighter.module_accessor)] = 
+                    PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) - PostureModule::pos_x(fighter.module_accessor);
+                if (DIFF_X[entry_id(fighter.module_accessor)] > 0.0
+                && PostureModule::lr(fighter.module_accessor) < 0.0)
+                || (DIFF_X[entry_id(fighter.module_accessor)] < 0.0
+                && PostureModule::lr(fighter.module_accessor) > 0.0) {
+                    PostureModule::reverse_lr(fighter.module_accessor);
+                    PostureModule::reverse_rot_y_lr(fighter.module_accessor);
+                }
+                DIFF_X[entry_id(fighter.module_accessor)] = DIFF_X[entry_id(fighter.module_accessor)].abs();
+                if DIFF_X[entry_id(fighter.module_accessor)] > 50.0 {
+                    DIFF_X[entry_id(fighter.module_accessor)] -= 5.0;
+                }
+                else {
+                    DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
+                }
+                OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
+            }
+            else {
+                DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
+            }
+            macros::PLAY_SE(fighter, Hash40::new("se_ken_special_l01"));
+            macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l01"));
+            V_TRIGGER[entry_id(fighter.module_accessor)] = true;
+            SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 1;
+            V_GAUGE[entry_id(fighter.module_accessor)] = 0;
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_step_f"), 0.0, 1.0, false, 0.0, false, false);
+        }
+    }
+    else {
+        if V_GAUGE[entry_id(fighter.module_accessor)] < 900
+        || V_TRIGGER[entry_id(fighter.module_accessor)] {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
+            macros::SET_SPEED_EX(fighter, 0.8, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 2;
+            SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+            HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+            SlowModule::set_whole(fighter.module_accessor, 6, 0);
+            macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
+            macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+            if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
+                DIFF_X[entry_id(fighter.module_accessor)] = 
+                    PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) - PostureModule::pos_x(fighter.module_accessor);
+                if (DIFF_X[entry_id(fighter.module_accessor)] > 0.0
+                && PostureModule::lr(fighter.module_accessor) < 0.0)
+                || (DIFF_X[entry_id(fighter.module_accessor)] < 0.0
+                && PostureModule::lr(fighter.module_accessor) > 0.0) {
+                    PostureModule::reverse_lr(fighter.module_accessor);
+                    PostureModule::reverse_rot_y_lr(fighter.module_accessor);
+                }
+                DIFF_X[entry_id(fighter.module_accessor)] = DIFF_X[entry_id(fighter.module_accessor)].abs();
+                if DIFF_X[entry_id(fighter.module_accessor)] > 50.0 {
+                    DIFF_X[entry_id(fighter.module_accessor)] -= 5.0;
+                }
+                else {
+                    DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
+                }
+                OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
+            }
+            else {
+                DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
+            }
+            macros::PLAY_SE(fighter, Hash40::new("se_ken_special_l01"));
+            macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l01"));
+            V_TRIGGER[entry_id(fighter.module_accessor)] = true;
+            SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 1;
+            V_GAUGE[entry_id(fighter.module_accessor)] = 0;
+        }
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_step_f"), 0.0, 1.0, false, 0.0, false, false);
+    }   
+    fighter.sub_shift_status_main(L2CValue::Ptr(ken_speciallw_loop as *const () as _))
+}
+
+unsafe extern "C" fn ken_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        fighter.sub_wait_ground_check_common(L2CValue::I32(0));
+        fighter.sub_air_check_fall_common();
+    }
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("run")
+    && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
+        if MotionModule::frame(fighter.module_accessor) >= 22.0 && MotionModule::frame(fighter.module_accessor) <= 23.0
+        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("attack_s3_s_w"), 0.0, 1.0, false, 0.0, false, false);
+        }
+        if MotionModule::frame(fighter.module_accessor) >= 31.0 {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_s_w") {
+        if MotionModule::frame(fighter.module_accessor) > 26.0 {
+            QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 0;
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw_step_f")
+    && SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+        }
+    }
+    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+        
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+        else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+    }
+    L2CValue::I32(0)
+}
+
+
 // Motion Rate the Run Animation so that it moves at the right speed during Quick Step
 
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
@@ -455,6 +487,7 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
 unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 2;
     }
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -464,7 +497,7 @@ unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_XLU);
     }
     frame(fighter.lua_state_agent, 8.0);
-    if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
+    if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 72, 46, 33, 50, 3.8, 0.0, 11.0, 6.5, Some(0.0), Some(11.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.5, 72, 46, 33, 50, 3.8, 0.0, 11.0, 14.0, Some(0.0), Some(11.0), Some(5.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
@@ -624,8 +657,6 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, true);
     }
 }
-
-// The rest of the scripts below have their properties changed to Fire when V-Trigger is activated
 
 #[acmd_script( agent = "ken", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
@@ -841,8 +872,6 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
-// Special Hi Command also allows you to use Shoryureppa in V-Trigger
-
 #[acmd_script( agent = "ken", script = "game_specialhicommand", category = ACMD_GAME, low_priority )]
 unsafe fn ken_uspecialcommand(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
@@ -1021,6 +1050,207 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME, low_priority )]
+unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            SlowModule::clear_whole(fighter.module_accessor);
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+            MotionModule::set_frame(fighter.module_accessor, 19.0, true);
+        }
+    }
+    frame(fighter.lua_state_agent, 19.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+}
+
+#[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
+unsafe fn ken_dspecialstepfair(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            SlowModule::clear_whole(fighter.module_accessor);
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
+        }
+        else if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            if DIFF_X[entry_id(fighter.module_accessor)] != 0.0 {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: (DIFF_X[entry_id(fighter.module_accessor)] / 5.0) * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            else {
+                PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
+                    x: 10.0 * PostureModule::lr(fighter.module_accessor),
+                    y: 0.0
+                });
+            }
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+            MotionModule::set_frame(fighter.module_accessor, 19.0, true);
+        }
+    }
+    frame(fighter.lua_state_agent, 19.0);
+    if macros::is_excute(fighter) {
+        if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+}
+
 #[acmd_script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME, low_priority )]
 unsafe fn ken_hadokenw(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
@@ -1079,6 +1309,9 @@ pub fn install() {
     smashline::install_agent_frames!(
         ken_frame
     );
+    smashline::install_status_scripts!(
+        ken_speciallw_main
+    );
     smashline::install_acmd_scripts!(
         ken_run,
         ken_ftiltwnp,
@@ -1095,6 +1328,8 @@ pub fn install() {
         ken_uspecialcommand,
         ken_uspecialcommandsnd,
         ken_uspecialair,
+        ken_dspecialstepf,
+        ken_dspecialstepfair,
         ken_hadokenw,
         ken_hadokenm,
         ken_hadokens

@@ -848,11 +848,11 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             || param_hash == hash40("endurance_max") {
                 return 0.0;
             }
-            if param_hash == hash40("defense_mul") {
+            if param_hash == hash40("defense_mul")
+            || param_hash == hash40("hit_stop_frame_mul") {
                 return 1.0;
             }
-            if param_hash == hash40("speed_x_mul_s")
-            || param_hash == hash40("hit_stop_frame_mul") {
+            if param_hash == hash40("speed_x_mul_s") {
                 if SHORYUREPPA[entry_id(boma)] == 1 {
                     return 0.15;
                 }

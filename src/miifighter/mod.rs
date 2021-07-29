@@ -15,9 +15,11 @@ unsafe fn miifighter_uspecial3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
-    macros::FT_MOTION_RATE(fighter, 4.0/3.0);
-    frame(fighter.lua_state_agent, 4.0);
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 1.5);
+    frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::SA_SET(fighter, *SITUATION_KIND_AIR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);

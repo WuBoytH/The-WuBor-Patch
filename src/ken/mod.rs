@@ -44,6 +44,7 @@ pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
 static mut CURR_LOOPS : [i32; 8] = [0; 8];
 static mut DIFF_X : [f32; 8] = [0.0; 8];
 static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
+static mut SPECIAL_S_START_SIT : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 fn ken_frame(fighter: &mut L2CFighterCommon) {
@@ -267,8 +268,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
             && V_GAUGE[entry_id(fighter.module_accessor)] >= 300 {
                 let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
-                if (stick_x < -0.5 && PostureModule::lr(fighter.module_accessor) == 1.0)
-                || (stick_x > 0.5 && PostureModule::lr(fighter.module_accessor) == -1.0) {
+                if stick_x * PostureModule::lr(fighter.module_accessor) < -0.5 {
                     V_GAUGE[entry_id(fighter.module_accessor)] -= 300;
                     if V_GAUGE[entry_id(fighter.module_accessor)] < 0 {
                         V_GAUGE[entry_id(fighter.module_accessor)] = 0;
@@ -297,7 +297,8 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 }
                 if MotionModule::frame(fighter.module_accessor) == 12.5 {
                     SlowModule::clear_whole(fighter.module_accessor);
-                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+                    && V_SHIFT[entry_id(fighter.module_accessor)] {
                         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
                     }
                     else if V_SHIFT[entry_id(fighter.module_accessor)] {
@@ -310,6 +311,16 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_step_b")
             && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw") {
                 V_SHIFT[entry_id(fighter.module_accessor)] = false;
+            }
+            
+            // Tatsu in da air
+
+            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP {
+                if SPECIAL_S_START_SIT[entry_id(fighter.module_accessor)] == 1
+                && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+                && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+                    fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END.into(), false.into());
+                }
             }
 
             // Training Mode Tools
@@ -472,7 +483,6 @@ unsafe extern "C" fn ken_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CVa
     L2CValue::I32(0)
 }
 
-
 // Motion Rate the Run Animation so that it moves at the right speed during Quick Step
 
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
@@ -560,14 +570,15 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
     frame(fighter.lua_state_agent, 8.75);
-    if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        DamageModule::set_damage_lock(fighter.module_accessor, false);
-    }
     if V_SHIFT[entry_id(fighter.module_accessor)] {
         if macros::is_excute(fighter) {
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         }
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        DamageModule::set_damage_lock(fighter.module_accessor, false);
     }
 }
 
@@ -662,9 +673,10 @@ unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
+    SPECIAL_S_START_SIT[entry_id(fighter.module_accessor)] = 0;
     DMG_RATIO[entry_id(fighter.module_accessor)] = 0.9;
     if V_TRIGGER[entry_id(fighter.module_accessor)] {
         property = "collision_attr_fire";
@@ -758,6 +770,43 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+unsafe fn ken_sspecialstartair(fighter: &mut L2CAgentBase) {
+    let mut property = "collision_attr_normal";
+    SPECIAL_S_START_SIT[entry_id(fighter.module_accessor)] = 0;
+    DMG_RATIO[entry_id(fighter.module_accessor)] = 0.9;
+    if V_TRIGGER[entry_id(fighter.module_accessor)] {
+        property = "collision_attr_fire";
+        DMG_RATIO[entry_id(fighter.module_accessor)] = 1.2;
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        CURR_LOOPS[entry_id(fighter.module_accessor)] = 0;
+        FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 1.0, 3.5, 8.5, 8.5);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            SPECIAL_S_START_SIT[entry_id(fighter.module_accessor)] = 1;
+            let speedx = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+            macros::SET_SPEED_EX(fighter, speedx, -1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 80, 30, 0, 100, 4.5, 0.0, 9.0, 4.5, Some(0.0), Some(9.0), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
+        else {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 0, 50, 100, 0, 4.5, 0.0, 9.0, 4.5, Some(0.0), Some(9.0), Some(4.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+        }
+        FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 3.0, 3.5, 8.5, 4.5);
+    }
+    wait(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
+        AttackModule::set_size(fighter.module_accessor, 0, 0.1);
+    }
+}
+
 #[acmd_script( agent = "ken", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
@@ -776,7 +825,10 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 80, 30, 0, 100, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+    }
+    else if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 30, 30, 0, 60, 3.5, 0.0, 12.5, 12.5, Some(0.0), Some(12.5), Some(2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
     }
     else if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
@@ -801,7 +853,10 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
         AttackModule::set_size(fighter.module_accessor, 0, 0.1);
     }
     frame(fighter.lua_state_agent, 9.0);
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 80, 30, 0, 100, 3.5, 0.0, 12.5, -11.0, Some(0.0), Some(12.5), Some(-2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+    }
+    else if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 45, 120, 0, 30, 3.5, 0.0, 12.5, -11.0, Some(0.0), Some(12.5), Some(-2.0), 1.0, 0.5, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_B, false, 0, 0.0, 9, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
     }
     else if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_M {
@@ -1333,6 +1388,7 @@ pub fn install() {
         ken_dspecialeff,
         ken_sspecialstart,
         ken_sspecial,
+        ken_sspecialstartair,
         ken_sspecialair,
         ken_uspecial,
         ken_uspecialcommand,

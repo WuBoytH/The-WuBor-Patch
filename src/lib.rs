@@ -852,6 +852,14 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             || param_hash == hash40("hit_stop_frame_mul") {
                 return 1.0;
             }
+            if param_hash == hash40("air_max_speed_y") {
+                if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+                    return 1.0;
+                }
+                else {
+                    return ret;
+                }
+            }
             if param_hash == hash40("speed_x_mul_s") {
                 if SHORYUREPPA[entry_id(boma)] == 1 {
                     return 0.15;
@@ -864,6 +872,19 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 if V_TRIGGER[entry_id(boma)]
                 && SHORYUREPPA[entry_id(boma)] == 1 {
                     return 0.1;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *FIGHTER_KIND_RYU && entry_id(boma) < 8 {
+            if param_hash == hash40("air_max_speed_y") {
+                if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+                    return 1.0;
                 }
                 else {
                     return ret;

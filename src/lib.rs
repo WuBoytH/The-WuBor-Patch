@@ -845,15 +845,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 return ret;
             }
         }
-        if fighter_kind == *FIGHTER_KIND_KEN && entry_id(boma) < 8 { // Shoryureppa
-            if param_hash == hash40("endurance_min")
-            || param_hash == hash40("endurance_max") {
-                return 0.0;
-            }
-            if param_hash == hash40("defense_mul")
-            || param_hash == hash40("hit_stop_frame_mul") {
-                return 1.0;
-            }
+        if fighter_kind == *FIGHTER_KIND_KEN && entry_id(boma) < 8 {
             if param_hash == hash40("air_max_speed_y") {
                 if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
                     return 1.0;

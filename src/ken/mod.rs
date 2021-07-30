@@ -14,13 +14,6 @@ use crate::system::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOM
 use crate::commonfuncs::*;
 use crate::globals::*;
 
-// ---------------------------------------------------------
-// This one was all WuBoy. He wanted to give Ken his tools from Street Fighter V
-// to differentiate him from Ryu, who’s now primarily based on Super Street Fighter IV.
-// Hopefully this incentivises a more ground-based combo game and rushdown,
-// and will likely be much more balanced after reworking his damage output.
-// ---------------------------------------------------------
-
 // Notes:
 // vc_ken_special_l01 is "I hit my boiling point!"
 // vc_ken_special_l02 is "Shoryureppa"
@@ -347,6 +340,41 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, *ENERGY_STOP_RESET_TYPE_AIR, 0.0, 0.0, 0.0, 0.0);
+    sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    fighter.clear_lua_stack();
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_MOTION, *ENERGY_MOTION_RESET_TYPE_AIR_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+    else {
+        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_MOTION, *ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+    sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, 0.0, 0.0, 0.0);
+    sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    else {
+        let accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("accel_y"));
+        fighter.clear_lua_stack();
+        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -accel_y);
+        sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+        let max_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("max_speed_y"));
+        fighter.clear_lua_stack();
+        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, max_y);
+        sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    L2CValue::I32(0)
+}
+
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW);
@@ -488,7 +516,6 @@ unsafe extern "C" fn ken_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CVa
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
 unsafe fn ken_run(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
         if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
             macros::FT_MOTION_RATE(fighter, 0.7);
         }
@@ -566,7 +593,6 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
         DamageModule::set_damage_lock(fighter.module_accessor, true);
-        // HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
     frame(fighter.lua_state_agent, 8.75);
@@ -1111,9 +1137,6 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
-    }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
@@ -1213,9 +1236,6 @@ unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepfair(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_FLAG_DISABLE_SUPER_ARMOR);
-    }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
@@ -1375,6 +1395,7 @@ pub fn install() {
         ken_frame
     );
     smashline::install_status_scripts!(
+        ken_speciallw_init,
         ken_speciallw_main
     );
     smashline::install_acmd_scripts!(

@@ -190,7 +190,7 @@ unsafe fn snake_dair(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
-        let dairspeed = Vector3f{x: 0.0,y: -0.2,z: 0.0};
+        let dairspeed = Vector3f{x: 0.0, y: -0.2, z: 0.0};
         KineticModule::add_speed(fighter.module_accessor, &dairspeed);
     }
     frame(fighter.lua_state_agent, 10.0);

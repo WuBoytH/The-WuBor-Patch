@@ -31,7 +31,7 @@ unsafe fn pickel_forge_wait(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pickel", script = "game_specialsride", category = ACMD_GAME, low_priority )]
 unsafe fn pickel_sspecialride(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, 60192);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 350, 100, 30, 10, 3.0, 0.0, 8.0, 4.5, Some(0.0), Some(4.0), Some(4.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     macros::FT_MOTION_RATE(fighter, 1.5);
@@ -42,7 +42,7 @@ unsafe fn pickel_sspecialride(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "pickel", script = "game_specialairsride", category = ACMD_GAME, low_priority )]
 unsafe fn pickel_sspecialrideair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, 60192);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
     macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 16.0);

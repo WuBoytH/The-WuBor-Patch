@@ -33,7 +33,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_lw3") {
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                macros::EFFECT(fighter, Hash40::new_raw(0x0ab6e0ea34), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+                macros::EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
                 SLIDE_BOUNCE[entry_id(fighter.module_accessor)] = true;
                 StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
                 GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -117,7 +117,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
             if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
-                macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+                macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 8, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
                 if FEINT[entry_id(fighter.module_accessor)] {
                     if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
                         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
@@ -247,12 +247,12 @@ unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "kirby", scripts = ["effect_ganonspecialn", "effect_ganonspecialairn"], category = ACMD_EFFECT, low_priority )]
 unsafe fn kirby_ganonspecialeff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14020f4ff6), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("ganon_majinken_start"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
         WorkModule::set_flag(fighter.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 8, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 8, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         macros::FLASH(fighter, 1, 0, 1, 1.0);
     }
     frame(fighter.lua_state_agent, 34.0);

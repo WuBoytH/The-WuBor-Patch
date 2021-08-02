@@ -1226,7 +1226,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1388f0ac45), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
@@ -1234,7 +1234,7 @@ unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1475cf263f), Hash40::new("top"), -0.0, 11.0, 12, 0, 0, 0, 1.2, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 11.0, 12, 0, 0, 0, 1.2, true);
         macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 9.5, 6, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
         macros::LAST_EFFECT_SET_COLOR(fighter, 0.264, 0.47, 1.3);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.7);
@@ -1250,7 +1250,7 @@ unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 51.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(0x1388f0ac45), false, true);
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_purple"), false, true);
     }
 }
 
@@ -1427,11 +1427,11 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucina", script = "effect_specialairs2hi", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_sspecial2hiaireff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1388f0ac45), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
     }
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x1475cf263f), Hash40::new("top"), -0.0, 6, 8, 40, 0, 0, 0.9, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 6, 8, 40, 0, 0, 0.9, true);
         macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 7.5, 6, 40, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
         macros::LAST_EFFECT_SET_COLOR(fighter, 0.264, 0.47, 1.3);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.7);
@@ -1736,7 +1736,7 @@ unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_dspecialeff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new_raw(0x144a0746f9), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new("lucina_counter_flash"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.3);
     }
 }

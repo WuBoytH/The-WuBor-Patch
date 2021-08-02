@@ -329,7 +329,7 @@ unsafe fn pitb_nspecialholdeff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", scripts = ["effect_specialairnholds", "effect_specialairnholdhi", "effect_specialnstos", "effect_specialairnstos", "effect_specialnstohi", "effect_specialairnstohi", "effect_specialnhitos", "effect_specialairnhitos"], category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "pitb", scripts = ["effect_specialnstos", "effect_specialairnstos", "effect_specialairnholds", "effect_specialairnholdhi", "effect_specialnstos", "effect_specialairnstos", "effect_specialnstohi", "effect_specialairnstohi", "effect_specialnhitos", "effect_specialairnhitos"], category = ACMD_EFFECT, low_priority )]
 unsafe fn pitb_nspecialholdsaireff(_fighter: &mut L2CAgentBase) {
 }
 

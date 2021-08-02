@@ -672,7 +672,7 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", scripts = ["effect_specialn", "effect_specialairn"], category = ACMD_EFFECT, low_priority )]
 unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(0x14020f4ff6), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("ganon_majinken_start"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
         for _ in 0..5 {
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ganon_entry_aura"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1, true);
         }
@@ -680,7 +680,7 @@ unsafe fn ganon_nspecialeff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new_raw(0x0b7a7552cf), Hash40::new("top"), 0, 12, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
         macros::FLASH(fighter, 1, 0, 1, 1.0);
     }
     frame(fighter.lua_state_agent, 34.0);

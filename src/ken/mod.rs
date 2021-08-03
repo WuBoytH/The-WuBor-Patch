@@ -70,14 +70,12 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_s_w")
                 && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
                     V_GAUGE[entry_id(fighter.module_accessor)] += 50;
-                    // println!("Quick Step Kick Blocked: {}", V_GAUGE[entry_id(fighter.module_accessor)]);
                 }
                 else {
                     V_GAUGE[entry_id(fighter.module_accessor)] += AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) as i32 * 2;
                     if V_GAUGE[entry_id(fighter.module_accessor)] > 900 {
                         V_GAUGE[entry_id(fighter.module_accessor)] = 900;
                     }
-                    // println!("Move Blocked: {}", V_GAUGE[entry_id(fighter.module_accessor)]);
                 }
                 if V_GAUGE[entry_id(fighter.module_accessor)] > 900 {
                     V_GAUGE[entry_id(fighter.module_accessor)] = 900;
@@ -91,7 +89,6 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 if V_GAUGE[entry_id(fighter.module_accessor)] > 900 {
                     V_GAUGE[entry_id(fighter.module_accessor)] = 900;
                 }
-                // println!("Got Hit: {}", V_GAUGE[entry_id(fighter.module_accessor)]);
             }
             DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
 

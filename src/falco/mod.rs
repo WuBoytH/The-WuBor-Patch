@@ -6,7 +6,7 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
+// use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
 
 static mut KAA : [bool; 8] = [false; 8];
@@ -14,24 +14,15 @@ static mut KAA : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_FALCO )]
 fn falco_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
-            if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("appeal_lw_l")
-                || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("appeal_lw_r") {
-                    KAA[entry_id(fighter.module_accessor)] = true;
-                    println!("Is Down Taunt!");
-                }
-                else if MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("attack_lw4")
-                && MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("appeal_lw_l")
-                && MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("appeal_lw_r")
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SQUAT {
-                    KAA[entry_id(fighter.module_accessor)] = false;
-                    println!("Can no longer KAA");
-                }
-            }
-            else if KAA[entry_id(fighter.module_accessor)] {
-                KAA[entry_id(fighter.module_accessor)] = false;
-            }
+        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("appeal_lw_l")
+        || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("appeal_lw_r") {
+            KAA[entry_id(fighter.module_accessor)] = true;
+        }
+        else if MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("attack_lw4")
+        && MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("appeal_lw_l")
+        && MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("appeal_lw_r")
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SQUAT {
+            KAA[entry_id(fighter.module_accessor)] = false;
         }
     }
 }

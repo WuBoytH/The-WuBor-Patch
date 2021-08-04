@@ -494,7 +494,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
                 if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                     if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-                    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < 2 {
+                    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
                         fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
                     }
                 }

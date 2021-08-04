@@ -137,6 +137,7 @@ mod mario;
 mod duckhunt;
 mod rockman;
 mod kamui;
+use crate::kamui::DRAGON_INSTALL;
 mod samus;
 mod mariod;
 mod pacman;
@@ -973,6 +974,35 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             if param_hash == hash40("max_speed") {
                 if IS_SPIRIT_BOMB[entry_id(boma)] {
                     return 0.4;
+                }
+                else {
+                    return ret;
+                }
+            }
+            else {
+                return ret;
+            }
+        }
+        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
+            if param_hash == hash40("speed_max") {
+                if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
+                    return 1.5;
+                }
+                else {
+                    return ret;
+                }
+            }
+            if param_hash == hash40("life_max") {
+                if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
+                    return 120.0;
+                }
+                else {
+                    return ret;
+                }
+            }
+            if param_hash == hash40("scale_max") {
+                if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
+                    return 1.7;
                 }
                 else {
                     return ret;

@@ -11,6 +11,7 @@ use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use crate::system::{IS_FUNNY, _TIME_COUNTER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
+use crate::gameplay::*;
 
 static mut SPECIAL_LW : [bool; 8] = [false; 8];
 static mut CANCEL : [bool; 8] = [false; 8];
@@ -37,12 +38,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             // Jump Cancel Heavy Up-Tilt
 
             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3_s") {
-                if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                    if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
-                    || ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
-                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    }
-                }
+                jump_cancel_check(fighter.module_accessor);
             }
 
             // Reset Vars

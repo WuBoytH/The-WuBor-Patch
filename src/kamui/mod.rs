@@ -13,6 +13,7 @@ use smashline::*;
 use crate::globals::*;
 use crate::commonfuncs::*;
 use crate::system::_TIME_COUNTER;
+use crate::gameplay::*;
 
 pub static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
 // static mut SET_DRAGON_OFF : [bool; 8] = [true; 8];
@@ -92,6 +93,9 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
             else if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 DRAGON_INSTALL[entry_id(fighter.module_accessor)] += 2.0;
+            }
+            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+                wall_jump_check(fighter.module_accessor);
             }
         }
 

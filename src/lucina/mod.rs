@@ -16,6 +16,7 @@ use crate::system::{
     QCB};
 use crate::commonfuncs::*;
 use crate::globals::*;
+use crate::gameplay::*;
 
 pub static mut AIR_ACTION : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
@@ -480,24 +481,11 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3")
             || (MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_dash")
-            && IS_FUNNY[entry_id(fighter.module_accessor)]) {
-                if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                    if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-                    && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-                    }
-                }
-            }
-            
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
+            && IS_FUNNY[entry_id(fighter.module_accessor)])
+            || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
             || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi")
             || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
-                if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                    if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-                    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-                        fighter.change_status(FIGHTER_STATUS_KIND_JUMP_AERIAL.into(), false.into());
-                    }
-                }
+                jump_cancel_check(fighter.module_accessor);
             }
 
             // Training Mode Tools

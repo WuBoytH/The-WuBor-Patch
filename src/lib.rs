@@ -66,6 +66,7 @@ macro_rules! c_str {
     };
 }
 
+mod gameplay;
 mod commonfuncs;
 use crate::commonfuncs::*;
 mod globals;

@@ -494,6 +494,16 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 return ret;
             }
         }
+        if fighter_kind == *FIGHTER_KIND_KAMUI && entry_id(boma) < 8 {
+            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
+            && !IS_FUNNY[entry_id(boma)]
+            && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR {
+                return false;
+            }
+            else {
+                return ret;
+            }
+        }
         else {
             return ret;
         }

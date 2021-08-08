@@ -417,7 +417,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         if fighter_kind == *FIGHTER_KIND_RICHTER && entry_id(boma) < 8 {
-            if RICHTER_SPECIAL_HI[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false { // Disable Multiple Up-Bs unless in Funny
+            if RICHTER_SPECIAL_HI[entry_id(boma)] { // Disable Multiple Up-Bs unless in Funny
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                     return false;
                 }

@@ -37,6 +37,14 @@ pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
 static mut EX_FLASH : [i32; 8] = [0; 8];
 static mut START_SITUATION : [i32; 8] = [0; 8];
 
+// For article stuff
+// if macros::is_excute(fighter) {
+//     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, false, 0);
+//     ArticleModule::have(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("havel"), ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), 0, true);
+//     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("appeal_lw"), false, -1.0);
+// }
+
+
 #[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;

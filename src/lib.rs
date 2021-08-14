@@ -456,7 +456,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
         }
         if fighter_kind == *FIGHTER_KIND_KEN && entry_id(boma) < 8 {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW) && (QUICK_STEP_STATE[entry_id(boma)] != 2);
+                return (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW & *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR) && (QUICK_STEP_STATE[entry_id(boma)] != 2) && !is_damage_check(boma);
             }
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK

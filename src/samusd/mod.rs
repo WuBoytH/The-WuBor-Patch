@@ -28,10 +28,9 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
         // Morph Ball Drop Bounce
         if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw")
         || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_lw") {
-            if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
             && BOUNCE[entry_id(fighter.module_accessor)] == false {
-                MotionModule::set_frame(fighter.module_accessor, 44.0, true);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw"), 44.0, 1.0, false, 0.0, false, false);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
                 macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

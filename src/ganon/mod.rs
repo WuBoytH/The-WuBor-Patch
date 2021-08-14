@@ -21,6 +21,88 @@ pub static mut TELE_STOP : [bool; 8] = [false; 8];
 pub static mut CAN_TELEPORT : [bool; 8] = [true; 8];
 pub static mut FEINT : [bool; 8] = [false; 8];
 
+#[inline(always)]
+pub unsafe fn deception_init(module_accessor: *mut BattleObjectModuleAccessor) {
+    let dir = get_command_stick_direction(module_accessor, false);
+    if dir == 5 {
+        TELE_X[entry_id(module_accessor)] = 40.0 * PostureModule::lr(module_accessor);
+    }
+    if dir == 4 {
+        TELE_X[entry_id(module_accessor)] = -40.0;
+    }
+    else if dir == 6 {
+        TELE_X[entry_id(module_accessor)] = 40.0;
+    }
+    else if dir == 3 || dir == 9 {
+        TELE_X[entry_id(module_accessor)] = 35.0;
+    }
+    else if dir == 1 || dir == 7 {
+        TELE_X[entry_id(module_accessor)] = -35.0;
+    }
+    else if dir == 2 {
+        if StatusModule::situation_kind(module_accessor) == *SITUATION_KIND_GROUND {
+            TELE_X[entry_id(module_accessor)] = 40.0 * PostureModule::lr(module_accessor);
+        }
+        else {
+            TELE_X[entry_id(module_accessor)] = 0.0;
+        }
+    }
+    else if dir == 8 {
+        TELE_X[entry_id(module_accessor)] = 0.0;
+    }
+    if dir == 5
+    || dir == 4
+    || dir == 6 {
+        TELE_Y[entry_id(module_accessor)] = 0.0;
+    }
+    else if dir == 1 || dir == 3 {
+        if StatusModule::situation_kind(module_accessor) == *SITUATION_KIND_GROUND {
+            TELE_Y[entry_id(module_accessor)] = 0.0;
+        }
+        else {
+            TELE_Y[entry_id(module_accessor)] = -30.0;
+        }
+    }
+    else if dir == 2 {
+        if StatusModule::situation_kind(module_accessor) == *SITUATION_KIND_GROUND {
+            TELE_Y[entry_id(module_accessor)] = 0.0;
+        }
+        else {
+            TELE_Y[entry_id(module_accessor)] = -40.0;
+        }
+    }
+    else if dir == 7
+    || dir == 9 {
+        TELE_Y[entry_id(module_accessor)] = 30.0;
+    }
+    else if dir == 8 {
+        TELE_Y[entry_id(module_accessor)] = 40.0;
+    }
+    if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+        FEINT[entry_id(module_accessor)] = true;
+    }
+}
+
+#[inline(always)]
+pub unsafe fn deception_feint_handler(module_accessor: *mut BattleObjectModuleAccessor) {
+    if FEINT[entry_id(module_accessor)] {
+        if TELE_Y[entry_id(module_accessor)] != 0.0 {
+            StatusModule::set_situation_kind(module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+            GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        }
+        let ogx = OG_X[entry_id(module_accessor)];
+        let ogy = OG_Y[entry_id(module_accessor)];
+        GroundModule::set_passable_check(module_accessor, true);
+        PostureModule::set_pos_2d(module_accessor, &Vector2f {x: ogx, y: ogy});
+        if TELE_Y[entry_id(module_accessor)] == 0.0 {
+            GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        }
+    }
+    OG_X[entry_id(module_accessor)] = 0.0;
+    OG_Y[entry_id(module_accessor)] = 0.0;
+    TELEPORT[entry_id(module_accessor)] += 1;
+}
+
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -32,82 +114,11 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
         // Teleport Handler
 
         if TELEPORT[entry_id(fighter.module_accessor)] == 1 {
-            let dir = get_command_stick_direction(fighter.module_accessor, false);
-            if dir == 5 {
-                TELE_X[entry_id(fighter.module_accessor)] = 40.0 * PostureModule::lr(fighter.module_accessor);
-            }
-            if dir == 4 {
-                TELE_X[entry_id(fighter.module_accessor)] = -40.0;
-            }
-            else if dir == 6 {
-                TELE_X[entry_id(fighter.module_accessor)] = 40.0;
-            }
-            else if dir == 3 || dir == 9 {
-                TELE_X[entry_id(fighter.module_accessor)] = 35.0;
-            }
-            else if dir == 1 || dir == 7 {
-                TELE_X[entry_id(fighter.module_accessor)] = -35.0;
-            }
-            else if dir == 2 {
-                if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                    TELE_X[entry_id(fighter.module_accessor)] = 40.0 * PostureModule::lr(fighter.module_accessor);
-                }
-                else {
-                    TELE_X[entry_id(fighter.module_accessor)] = 0.0;
-                }
-            }
-            else if dir == 8 {
-                TELE_X[entry_id(fighter.module_accessor)] = 0.0;
-            }
-            if dir == 5
-            || dir == 4
-            || dir == 6 {
-                TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
-            }
-            else if dir == 1 || dir == 3 {
-                if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                    TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
-                }
-                else {
-                    TELE_Y[entry_id(fighter.module_accessor)] = -30.0;
-                }
-            }
-            else if dir == 2 {
-                if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                    TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
-                }
-                else {
-                    TELE_Y[entry_id(fighter.module_accessor)] = -40.0;
-                }
-            }
-            else if dir == 7
-            || dir == 9 {
-                TELE_Y[entry_id(fighter.module_accessor)] = 30.0;
-            }
-            else if dir == 8 {
-                TELE_Y[entry_id(fighter.module_accessor)] = 40.0;
-            }
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                FEINT[entry_id(fighter.module_accessor)] = true;
-            }
+            deception_init(fighter.module_accessor);
         }
         if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
             macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-            if FEINT[entry_id(fighter.module_accessor)] {
-                if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
-                    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                }
-                let ogx = OG_X[entry_id(fighter.module_accessor)];
-                let ogy = OG_Y[entry_id(fighter.module_accessor)];
-                PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
-                if TELE_Y[entry_id(fighter.module_accessor)] == 0.0 {
-                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                }
-            }
-            OG_X[entry_id(fighter.module_accessor)] = 0.0;
-            OG_Y[entry_id(fighter.module_accessor)] = 0.0;
-            TELEPORT[entry_id(fighter.module_accessor)] += 1;
+            deception_feint_handler(fighter.module_accessor);
         }
 
         // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).

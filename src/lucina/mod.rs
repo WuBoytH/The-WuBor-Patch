@@ -108,8 +108,7 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
 
 #[inline(always)]
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
-    || WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+    if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 | 7 {
         return true;
     }
     else {
@@ -131,30 +130,6 @@ pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) 
         EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.8, 0.0);
         EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
     }
-    // else if SP_GAUGE[entry_id(module_accessor)] >= 25.0 && SP_GAUGE[entry_id(module_accessor)] < 50.0 {
-    //     EffectModule::set_rgb(module_accessor, onemoreeff, 0.0, 1.0, 1.0);
-    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 0.0, 1.0, 1.0);
-    // }
-    // else if SP_GAUGE[entry_id(module_accessor)] >= 50.0 && SP_GAUGE[entry_id(module_accessor)] < 75.0 {
-    //     EffectModule::set_rgb(module_accessor, onemoreeff, 0.0, 0.0, 1.0);
-    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 0.0, 0.0, 1.0);
-    // }
-    // else if SP_GAUGE[entry_id(module_accessor)] >= 75.0 && SP_GAUGE[entry_id(module_accessor)] < 100.0 {
-    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.1, 0.1);
-    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.1, 0.1);
-    // }
-    // else if SP_GAUGE[entry_id(module_accessor)] >= 100.0 && SP_GAUGE[entry_id(module_accessor)] < 125.0 {
-    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.8, 0.0);
-    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
-    // }
-    // else if SP_GAUGE[entry_id(module_accessor)] >= 125.0 && SP_GAUGE[entry_id(module_accessor)] < 150.0 {
-    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.0, 0.6);
-    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.0, 0.6);
-    // }
-    // else{
-    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 1.0, 1.0);
-    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 1.0, 1.0);
-    // }
 }
 
 #[inline(always)]
@@ -167,23 +142,13 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
         }
         while level > 0 {
             let pos;
-            if level == 6 {
-                pos = SP_6;
-            }
-            else if level == 5 {
-                pos = SP_5;
-            }
-            else if level == 4 {
-                pos = SP_4;
-            }
-            else if level == 3 {
-                pos = SP_3;
-            }
-            else if level == 2 {
-                pos = SP_2;
-            }
-            else {
-                pos = SP_1;
+            match level {
+                2 => pos = SP_2,
+                3 => pos = SP_3,
+                4 => pos = SP_4,
+                5 => pos = SP_5,
+                6 => pos = SP_6,
+                _ => pos = SP_1,
             }
             EffectModule::req_follow(module_accessor, Hash40::new("sys_starrod_bullet"), Hash40::new("top"), &pos, &ZERO_VECTOR, 0.3, false, 0, 0, 0, 0, 0, false, false);
             level -= 1;
@@ -503,8 +468,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Air Action Reset
 
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-        || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF {
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND | *SITUATION_KIND_CLIFF {
             AIR_ACTION[entry_id(fighter.module_accessor)] = false;
         }
 
@@ -522,8 +486,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         // Move Effects
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
                 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
                 && get_command_stick_direction(fighter.module_accessor, true) == 6 {
@@ -536,8 +499,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
                 }
                 if QCB[entry_id(fighter.module_accessor)] != 3
-                && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-                || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)) {
+                && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK | *CONTROL_PAD_BUTTON_SPECIAL) {
                     CancelModule::enable_cancel(fighter.module_accessor);
                 }
             }
@@ -963,9 +925,6 @@ unsafe fn lucina_nair(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.5 * DMG_RATIO[entry_id(fighter.module_accessor)], 51, 70, 0, 40, 5.0, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 4.5 * DMG_RATIO[entry_id(fighter.module_accessor)], 51, 70, 0, 40, 5.0, -2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 4.5 * DMG_RATIO[entry_id(fighter.module_accessor)], 51, 70, 0, 40, 3.0, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        // macros::ATTACK(fighter, 3, 0, Hash40::new("kneer"), 4.5 * DMG_RATIO[entry_id(fighter.module_accessor)], 361, 60, 0, 40, 5.0, 3.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        // macros::ATTACK(fighter, 4, 0, Hash40::new("kneer"), 4.5 * DMG_RATIO[entry_id(fighter.module_accessor)], 361, 60, 0, 40, 5.0, -2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        // macros::ATTACK(fighter, 5, 0, Hash40::new("kneel"), 4.5 * DMG_RATIO[entry_id(fighter.module_accessor)], 361, 60, 0, 40, 3.0, 1.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     frame(fighter.lua_state_agent, 31.0);
     macros::FT_MOTION_RATE(fighter, 1.0);

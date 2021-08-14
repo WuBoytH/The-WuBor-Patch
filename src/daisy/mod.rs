@@ -12,8 +12,8 @@ use crate::commonfuncs::*;
 #[fighter_frame( agent = FIGHTER_KIND_DAISY )]
 fn daisy_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT) == false
-        && IS_FUNNY[entry_id(fighter.module_accessor)] == false {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT)
+        && !IS_FUNNY[entry_id(fighter.module_accessor)] {
             WorkModule::set_flag(fighter.module_accessor, true, *FIGHTER_PEACH_INSTANCE_WORK_ID_FLAG_UNIQ_FLOAT);
         }
     }

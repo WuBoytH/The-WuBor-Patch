@@ -57,9 +57,7 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
                 UP_SPECIAL_CANCEL[entry_id(fighter.module_accessor)] = true;
             }
         }
-        if (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING)
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH | *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END | *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING
         && UP_SPECIAL_CANCEL[entry_id(fighter.module_accessor)] == true {
             CancelModule::enable_cancel(fighter.module_accessor);
         }

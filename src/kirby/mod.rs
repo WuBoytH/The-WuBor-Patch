@@ -1,7 +1,7 @@
 use smash::phx::Hash40;
 use smash::hash40;
 // use smash::phx::Vector3f;
-use smash::phx::Vector2f;
+// use smash::phx::Vector2f;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
 use smash::app::sv_animcmd::*;
@@ -52,102 +52,28 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
             SLIDE_BOUNCE[entry_id(fighter.module_accessor)] = false;
         }
 
-        if entry_id(fighter.module_accessor) < 8 {
+        // Teleport Handler
 
-            // Teleport Handler
+        if TELEPORT[entry_id(fighter.module_accessor)] == 1 {
+            deception_init(fighter.module_accessor);
+        }
+        if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
+            macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+            deception_feint_handler(fighter.module_accessor);
+        }
 
-            if TELEPORT[entry_id(fighter.module_accessor)] == 1 {
-                let dir = get_command_stick_direction(fighter.module_accessor, false);
-                if dir == 5 {
-                    TELE_X[entry_id(fighter.module_accessor)] = 40.0 * PostureModule::lr(fighter.module_accessor);
-                }
-                if dir == 4 {
-                    TELE_X[entry_id(fighter.module_accessor)] = -40.0;
-                }
-                else if dir == 6 {
-                    TELE_X[entry_id(fighter.module_accessor)] = 40.0;
-                }
-                else if dir == 3 || dir == 9 {
-                    TELE_X[entry_id(fighter.module_accessor)] = 35.0;
-                }
-                else if dir == 1 || dir == 7 {
-                    TELE_X[entry_id(fighter.module_accessor)] = -35.0;
-                }
-                else if dir == 2 {
-                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        TELE_X[entry_id(fighter.module_accessor)] = 40.0 * PostureModule::lr(fighter.module_accessor);
-                    }
-                    else {
-                        TELE_X[entry_id(fighter.module_accessor)] = 0.0;
-                    }
-                }
-                else if dir == 8 {
-                    TELE_X[entry_id(fighter.module_accessor)] = 0.0;
-                }
-                if dir == 5
-                || dir == 4
-                || dir == 6 {
-                    TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
-                }
-                else if dir == 1 || dir == 3 {
-                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
-                    }
-                    else {
-                        TELE_Y[entry_id(fighter.module_accessor)] = -30.0;
-                    }
-                }
-                else if dir == 2 {
-                    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                        TELE_Y[entry_id(fighter.module_accessor)] = 0.0;
-                    }
-                    else {
-                        TELE_Y[entry_id(fighter.module_accessor)] = -40.0;
-                    }
-                }
-                else if dir == 7
-                || dir == 9 {
-                    TELE_Y[entry_id(fighter.module_accessor)] = 30.0;
-                }
-                else if dir == 8 {
-                    TELE_Y[entry_id(fighter.module_accessor)] = 40.0;
-                }
-                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                    FEINT[entry_id(fighter.module_accessor)] = true;
-                }
-            }
-            if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
-                macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 8, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-                if FEINT[entry_id(fighter.module_accessor)] {
-                    if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
-                        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                    }
-                    let ogx = OG_X[entry_id(fighter.module_accessor)];
-                    let ogy = OG_Y[entry_id(fighter.module_accessor)];
-                    PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
-                    if TELE_Y[entry_id(fighter.module_accessor)] == 0.0 {
-                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-                    }
-                }
-                OG_X[entry_id(fighter.module_accessor)] = 0.0;
-                OG_Y[entry_id(fighter.module_accessor)] = 0.0;
-                TELEPORT[entry_id(fighter.module_accessor)] += 1;
-            }
+        // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
 
-            // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
+        || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            CAN_TELEPORT[entry_id(fighter.module_accessor)] = true;
+        }
 
-            if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
-            || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-                CAN_TELEPORT[entry_id(fighter.module_accessor)] = true;
-            }
+        // Stops Ganondorf's momentum during Dark Deception.
+        // Necessary because transitioning from Ground to Air re-enables his momentum.
 
-            // Stops Ganondorf's momentum during Dark Deception.
-            // Necessary because transitioning from Ground to Air re-enables his momentum.
-
-            if TELE_STOP[entry_id(fighter.module_accessor)] {
-                KineticModule::unable_energy_all(fighter.module_accessor);
-            }
+        if TELE_STOP[entry_id(fighter.module_accessor)] {
+            KineticModule::unable_energy_all(fighter.module_accessor);
         }
     }
 }

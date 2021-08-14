@@ -74,29 +74,15 @@ unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
     let randitem : i32;
     if IS_FUNNY[entry_id(fighter.module_accessor)] {
         rng = sv_math::rand(hash40("fighter"), 100);
-        if rng > 20 && rng <= 45 {
-            randitem = *ITEM_KIND_SENSORBOMB;
-        }
-        else if rng > 45 && rng <= 60 {
-            randitem = *ITEM_KIND_UNIRA;
-        }
-        else if rng > 60 && rng <= 74 {
-            randitem = *ITEM_KIND_HAMMERHEAD;
-        }
-        else if rng > 74 && rng <= 86 {
-            randitem = *ITEM_KIND_BUMPER;
-        }
-        else if rng > 86 && rng <= 96 {
-            randitem = *ITEM_KIND_POWBLOCK;
-        }
-        else if rng > 96 && rng <= 98 {
-            randitem = *ITEM_KIND_SMASHBOMB;
-        }
-        else if rng > 98 {
-            randitem = *ITEM_KIND_SMASHBALL;
-        }
-        else {
-            randitem = *ITEM_KIND_BOMBHEI;
+        match rng {
+            21..=45 => randitem = *ITEM_KIND_SENSORBOMB,
+            46..=60 => randitem = *ITEM_KIND_UNIRA,
+            61..=74 => randitem = *ITEM_KIND_HAMMERHEAD,
+            75..=86 => randitem = *ITEM_KIND_BUMPER,
+            87..=96 => randitem = *ITEM_KIND_POWBLOCK,
+            97..=98 => randitem = *ITEM_KIND_SMASHBOMB,
+            99..=100 => randitem = *ITEM_KIND_SMASHBALL,
+            _ => randitem = *ITEM_KIND_BOMBHEI,
         }
     }
     else {

@@ -132,40 +132,21 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         // V Skill 1
 
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_NEAR
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S3
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI3
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S4
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW4
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI4
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_DASH
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND2
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_NEAR
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S3
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI3
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S4
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW4
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI4
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_DASH
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_AIR {
                 VS1_CANCEL[entry_id(fighter.module_accessor)] = true;
             }
-            else {
-                VS1_CANCEL[entry_id(fighter.module_accessor)] = false;
-            }
-        }
-        else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WAIT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WALK
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_B
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_F
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_RV
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_WAIT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WALL_JUMP
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP_AERIAL
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_FALL
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_FALL_AERIAL
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_DAMAGE_FALL {
-            VS1_CANCEL[entry_id(fighter.module_accessor)] = true;
         }
         else {
             VS1_CANCEL[entry_id(fighter.module_accessor)] = false;
@@ -184,43 +165,21 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         // V Trigger 1
 
-        if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-        || ((StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND)
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        || (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N | *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
         && MotionModule::frame(fighter.module_accessor) >= 13.0) {
-            VT1_CANCEL[entry_id(fighter.module_accessor)] = true;
-        }
-        else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WAIT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_WALK
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_B
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_F
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_RV
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SQUAT_WAIT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP_SQUAT
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_JUMP_AERIAL
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_FALL
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_FALL_AERIAL
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_CATCH {
             VT1_CANCEL[entry_id(fighter.module_accessor)] = true;
         }
         else {
             VT1_CANCEL[entry_id(fighter.module_accessor)] = false;
         }
-
+        
         if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-            if ((VT1_CANCEL[entry_id(fighter.module_accessor)]
+            if ((VT1_CANCEL[entry_id(fighter.module_accessor)] == true
             && V_GAUGE[entry_id(fighter.module_accessor)] == 900)
-            || (VS1_CANCEL[entry_id(fighter.module_accessor)]
-            && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 0
-            && V_GAUGE[entry_id(fighter.module_accessor)] < 900))
+            || (VS1_CANCEL[entry_id(fighter.module_accessor)] == true
+            && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 0))
             && !is_damage_check(fighter.module_accessor) {
-                if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
-                    PostureModule::reverse_lr(fighter.module_accessor);
-                }
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
             }
         }
@@ -297,8 +256,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
         }
         
-        if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_step_b")
-        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw") {
+        if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_step_b") & hash40("special_lw") {
             V_SHIFT[entry_id(fighter.module_accessor)] = false;
         }
         

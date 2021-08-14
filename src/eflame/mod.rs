@@ -36,6 +36,10 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_READY
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE01
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE02
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_END
             && is_damage_check(fighter.module_accessor) == false {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }

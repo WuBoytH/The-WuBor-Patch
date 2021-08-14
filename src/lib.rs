@@ -998,7 +998,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             if param_hash == hash40("speed_max") {
                 if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
-                    return 1.5;
+                    return 1.2;
                 }
                 else {
                     return ret;
@@ -1006,7 +1006,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             }
             if param_hash == hash40("life_max") {
                 if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
-                    return 120.0;
+                    return 150.0;
                 }
                 else {
                     return ret;

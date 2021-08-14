@@ -17,36 +17,34 @@ static mut BOUNCE : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]
 fn samusd_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
 
-            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
+            BOUNCE[entry_id(fighter.module_accessor)] = false;
+        }
+        if sv_information::is_ready_go() == false {
+            BOUNCE[entry_id(fighter.module_accessor)] = false;
+        }
+    
+        // Morph Ball Drop Bounce
+        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw")
+        || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_lw") {
+            if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            && BOUNCE[entry_id(fighter.module_accessor)] == false {
+                MotionModule::set_frame(fighter.module_accessor, 44.0, true);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+                macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+                KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+                KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
+                BOUNCE[entry_id(fighter.module_accessor)] = true;
+            }
+        }
+        else {
+            if BOUNCE[entry_id(fighter.module_accessor)] {
+                KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
                 BOUNCE[entry_id(fighter.module_accessor)] = false;
-            }
-            if sv_information::is_ready_go() == false {
-                BOUNCE[entry_id(fighter.module_accessor)] = false;
-            }
-        
-            // Morph Ball Drop Bounce
-            if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw")
-            || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_lw") {
-                if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-                || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-                && BOUNCE[entry_id(fighter.module_accessor)] == false {
-                    MotionModule::set_frame(fighter.module_accessor, 44.0, true);
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-                    macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-                    KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                    KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
-                    BOUNCE[entry_id(fighter.module_accessor)] = true;
-                }
-            }
-            else {
-                if BOUNCE[entry_id(fighter.module_accessor)] {
-                    KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
-                    BOUNCE[entry_id(fighter.module_accessor)] = false;
-                }
             }
         }
     }

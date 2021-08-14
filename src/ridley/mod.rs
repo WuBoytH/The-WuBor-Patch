@@ -14,14 +14,12 @@ pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_RIDLEY )]
 fn ridley_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
-            if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                FUNNY_RIDLEY[entry_id(fighter.module_accessor)] = true;
-            }
-            else if MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("special_n_shoot")
-            && MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("special_air_n_shoot") {
-                FUNNY_RIDLEY[entry_id(fighter.module_accessor)] = false;
-            }
+        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+            FUNNY_RIDLEY[entry_id(fighter.module_accessor)] = true;
+        }
+        else if MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("special_n_shoot")
+        && MotionModule::motion_kind(fighter.module_accessor) != smash::hash40("special_air_n_shoot") {
+            FUNNY_RIDLEY[entry_id(fighter.module_accessor)] = false;
         }
     }
 }

@@ -1,6 +1,6 @@
 use smash::phx::Hash40;
-use smash::hash40;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
+// use smash::hash40;
+use smash::lua2cpp::{L2CAgentBase/*, L2CFighterCommon*/};
 use smash::app::*;
 use smash::app::sv_animcmd::*;
 use smash::lib::lua_const::*;
@@ -15,29 +15,27 @@ use smash::phx::Vector3f;
 static mut _AURA_SPHERE_TIMER: [i32; 8] = [0; 8];
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
-fn lucario_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
-            if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_n_shoot")
-                || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_n_shoot") {
-                    if MotionModule::frame(fighter.module_accessor) == 4.0 {
-                        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                            IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = true;
-                        }
-                        else {
-                            IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
-                        }
-                    }
-                }
-            }
-            else if IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] {
-                IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
-            }
-        }
-    }
-}
+// #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
+// fn lucario_frame(fighter: &mut L2CFighterCommon) {
+//     unsafe {
+//         if IS_FUNNY[entry_id(fighter.module_accessor)] {
+//             if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_n_shoot")
+//             || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_n_shoot") {
+//                 if MotionModule::frame(fighter.module_accessor) == 4.0 {
+//                     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+//                         IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = true;
+//                     }
+//                     else {
+//                         IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
+//                     }
+//                 }
+//             }
+//         }
+//         else if IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] {
+//             IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
+//         }
+//     }
+// }
 
 #[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
@@ -203,6 +201,25 @@ unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
+unsafe fn lucario_nspecialshoot(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = true;
+            }
+            else {
+                IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::shoot(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
+    }
+}
+
 #[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -249,9 +266,9 @@ unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
-        lucario_frame
-    );
+    // smashline::install_agent_frames!(
+    //     lucario_frame
+    // );
     smashline::install_acmd_scripts!(
         lucario_jab3,
         lucario_dashattack,
@@ -260,6 +277,7 @@ pub fn install() {
         lucario_nair,
         lucario_dthrow,
         lucario_dair,
+        lucario_nspecialshoot,
         lucario_sspecial,
         lucario_qigong
     );

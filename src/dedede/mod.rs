@@ -14,24 +14,22 @@ static mut HAMMER_SPEED : [f32; 8] = [1.56; 8];
 #[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]
 fn dedede_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
-            if IS_FUNNY[entry_id(fighter.module_accessor)] && HAMMER_SPEED[entry_id(fighter.module_accessor)] != 3.6 {
-                HAMMER_SPEED[entry_id(fighter.module_accessor)] = 3.6;
-            }
-            else if !IS_FUNNY[entry_id(fighter.module_accessor)] && HAMMER_SPEED[entry_id(fighter.module_accessor)] != 1.88 {
-                HAMMER_SPEED[entry_id(fighter.module_accessor)] = 1.88;
-            }
-    
-            // Jet Hammer Movement
-            
-            if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_hold")
-            || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_jump")
-            || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_fall")
-            || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_hold_max") {
-                let dedespeedy = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                let speed = HAMMER_SPEED[entry_id(fighter.module_accessor)];
-                macros::SET_SPEED_EX(fighter, speed, dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            }
+        if IS_FUNNY[entry_id(fighter.module_accessor)] && HAMMER_SPEED[entry_id(fighter.module_accessor)] != 3.6 {
+            HAMMER_SPEED[entry_id(fighter.module_accessor)] = 3.6;
+        }
+        else if !IS_FUNNY[entry_id(fighter.module_accessor)] && HAMMER_SPEED[entry_id(fighter.module_accessor)] != 1.88 {
+            HAMMER_SPEED[entry_id(fighter.module_accessor)] = 1.88;
+        }
+
+        // Jet Hammer Movement
+        
+        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_hold")
+        || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_jump")
+        || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_fall")
+        || MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_lw_hold_max") {
+            let dedespeedy = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            let speed = HAMMER_SPEED[entry_id(fighter.module_accessor)];
+            macros::SET_SPEED_EX(fighter, speed, dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }
 }

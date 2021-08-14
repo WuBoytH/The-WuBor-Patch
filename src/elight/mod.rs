@@ -15,59 +15,57 @@ static mut CANCEL : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
 fn elight_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
-            if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
-                && is_damage_check(fighter.module_accessor) == false {
-                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                }
-                if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_s")
-                && MotionModule::frame(fighter.module_accessor) >= 11.0 {
-                    if ControlModule::check_button_trigger(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL) == true {
-                        StatusModule::change_status_request_from_script(fighter.module_accessor,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
-                        CANCEL[entry_id(fighter.module_accessor)] = true;
-                    }
-                }
-                else if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_s")
-                && MotionModule::frame(fighter.module_accessor) >= 11.0 {
-                    if ControlModule::check_button_trigger(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL) == true {
-                        StatusModule::change_status_request_from_script(fighter.module_accessor,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
-                        CANCEL[entry_id(fighter.module_accessor)] = true;
-                    }
-                }
-                if CANCEL[entry_id(fighter.module_accessor)] == true && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
-                    CANCEL[entry_id(fighter.module_accessor)] = false;
-                    MotionModule::set_frame(fighter.module_accessor,35.0,false);
-                }
-                if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_hi_jump") {
-                    if PostureModule::lr(fighter.module_accessor) == 1.0 && ControlModule::get_stick_x(fighter.module_accessor) < -0.75 {
-                        PostureModule::reverse_lr(fighter.module_accessor);
-                    }
-                    else if PostureModule::lr(fighter.module_accessor) == -1.0 && ControlModule::get_stick_x(fighter.module_accessor) > 0.75 {
-                        PostureModule::reverse_lr(fighter.module_accessor);
-                    }
+        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+            if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
+            && is_damage_check(fighter.module_accessor) == false {
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+            }
+            if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_s")
+            && MotionModule::frame(fighter.module_accessor) >= 11.0 {
+                if ControlModule::check_button_trigger(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL) == true {
+                    StatusModule::change_status_request_from_script(fighter.module_accessor,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
+                    CANCEL[entry_id(fighter.module_accessor)] = true;
                 }
             }
-            // if IS_FUNNY[entry_id(fighter.module_accessor)] == false {
-            //     if MYTHRA[entry_id(fighter.module_accessor)] {
-            //         let conditions = [*LUA_SCRIPT_STATUS_FUNC_STATUS_PRE, *LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN, *LUA_SCRIPT_STATUS_FUNC_STATUS_END];
-            //         for x in conditions.iter() {
-            //             let addr: *mut skyline::libc::c_void = fighter.sv_get_status_func(
-            //                 &L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64) as *const L2CValue as u64,
-            //                 &L2CValue::new_int(*x as u64) as *const L2CValue as u64
-            //             ).get_ptr();
-            //             fighter.sv_set_status_func(
-            //                 L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64),
-            //                 L2CValue::new_int(*x as u64),
-            //                 std::mem::transmute(addr)
-            //             );
-            //         }
-            //         MYTHRA[entry_id(fighter.module_accessor)] = false;
-            //     }
-            // }
+            else if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_s")
+            && MotionModule::frame(fighter.module_accessor) >= 11.0 {
+                if ControlModule::check_button_trigger(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL) == true {
+                    StatusModule::change_status_request_from_script(fighter.module_accessor,*FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END,true);
+                    CANCEL[entry_id(fighter.module_accessor)] = true;
+                }
+            }
+            if CANCEL[entry_id(fighter.module_accessor)] == true && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
+                CANCEL[entry_id(fighter.module_accessor)] = false;
+                MotionModule::set_frame(fighter.module_accessor,35.0,false);
+            }
+            if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_air_hi_jump") {
+                if PostureModule::lr(fighter.module_accessor) == 1.0 && ControlModule::get_stick_x(fighter.module_accessor) < -0.75 {
+                    PostureModule::reverse_lr(fighter.module_accessor);
+                }
+                else if PostureModule::lr(fighter.module_accessor) == -1.0 && ControlModule::get_stick_x(fighter.module_accessor) > 0.75 {
+                    PostureModule::reverse_lr(fighter.module_accessor);
+                }
+            }
         }
+        // if IS_FUNNY[entry_id(fighter.module_accessor)] == false {
+        //     if MYTHRA[entry_id(fighter.module_accessor)] {
+        //         let conditions = [*LUA_SCRIPT_STATUS_FUNC_STATUS_PRE, *LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN, *LUA_SCRIPT_STATUS_FUNC_STATUS_END];
+        //         for x in conditions.iter() {
+        //             let addr: *mut skyline::libc::c_void = fighter.sv_get_status_func(
+        //                 &L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64) as *const L2CValue as u64,
+        //                 &L2CValue::new_int(*x as u64) as *const L2CValue as u64
+        //             ).get_ptr();
+        //             fighter.sv_set_status_func(
+        //                 L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64),
+        //                 L2CValue::new_int(*x as u64),
+        //                 std::mem::transmute(addr)
+        //             );
+        //         }
+        //         MYTHRA[entry_id(fighter.module_accessor)] = false;
+        //     }
+        // }
     }
 }
 

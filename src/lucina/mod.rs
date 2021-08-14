@@ -17,6 +17,7 @@ use crate::system::{
 use crate::commonfuncs::*;
 use crate::globals::*;
 use crate::gameplay::*;
+use crate::vars::*;
 
 pub static mut AIR_ACTION : [bool; 8] = [false; 8];
 static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
@@ -25,11 +26,12 @@ static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
 static mut TRAINING_TOOLS : [bool; 8] = [false; 8];
 static mut IS_EX : [bool; 8] = [false; 8];
 static mut SP_GAUGE : [f32; 8] = [0.0; 8];
+static mut SP_LEVEL : [i32; 8] = [0; 8];
+static mut SP_GAUGE_TIMER : [i32; 8] = [0; 8];
 static mut SPENT_SP : [f32; 8] = [0.0; 8];
 static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
 static mut METER_GAIN : [f32; 8] = [0.0; 8];
 static mut METER_PENALTY : [f32; 8] = [0.0; 8];
-static mut GFXCOORDS : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 static mut ROMAN_MOVE : [f32; 8] = [0.0; 8];
 static mut ROMAN_ON_HIT : [bool; 8] = [false; 8];
 static mut IS_ROMAN_MOVE : [bool; 8] = [false; 8];
@@ -44,7 +46,6 @@ static mut START_SITUATION : [i32; 8] = [0; 8];
 //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("appeal_lw"), false, -1.0);
 // }
 
-
 #[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
@@ -53,15 +54,18 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
             if onemore {
                 SPENT_SP[entry_id(module_accessor)] = 12.5;
                 spent = true;
+                SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
             }
             else {
                 SPENT_SP[entry_id(module_accessor)] = 6.25;
                 spent = true;
+                SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
             }
         }
         else if SP_GAUGE[entry_id(module_accessor)] >= 25.0 {
             SPENT_SP[entry_id(module_accessor)] = 25.0;
             spent = true;
+            SP_GAUGE_TIMER[entry_id(module_accessor)] = 300;
         }
     }
     if spent {
@@ -113,153 +117,352 @@ pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> boo
     }
 }
 
+#[inline(always)]
+pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) {
+    let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+    let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
+    EffectModule::set_rate(module_accessor, onemoreeff, 2.0);
+    EffectModule::set_rate(module_accessor, onemoreeff2, 2.0);
+    if SHADOW_FRENZY[entry_id(module_accessor)] {
+        EffectModule::set_rgb(module_accessor, onemoreeff, 0.6, 0.0, 1.0);
+        EffectModule::set_rgb(module_accessor, onemoreeff2, 0.6, 0.0, 1.0);
+    }
+    else {
+        EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.8, 0.0);
+        EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
+    }
+    // else if SP_GAUGE[entry_id(module_accessor)] >= 25.0 && SP_GAUGE[entry_id(module_accessor)] < 50.0 {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 0.0, 1.0, 1.0);
+    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 0.0, 1.0, 1.0);
+    // }
+    // else if SP_GAUGE[entry_id(module_accessor)] >= 50.0 && SP_GAUGE[entry_id(module_accessor)] < 75.0 {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 0.0, 0.0, 1.0);
+    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 0.0, 0.0, 1.0);
+    // }
+    // else if SP_GAUGE[entry_id(module_accessor)] >= 75.0 && SP_GAUGE[entry_id(module_accessor)] < 100.0 {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.1, 0.1);
+    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.1, 0.1);
+    // }
+    // else if SP_GAUGE[entry_id(module_accessor)] >= 100.0 && SP_GAUGE[entry_id(module_accessor)] < 125.0 {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.8, 0.0);
+    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
+    // }
+    // else if SP_GAUGE[entry_id(module_accessor)] >= 125.0 && SP_GAUGE[entry_id(module_accessor)] < 150.0 {
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 0.0, 0.6);
+    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 0.0, 0.6);
+    // }
+    // else{
+    //     EffectModule::set_rgb(module_accessor, onemoreeff, 1.0, 1.0, 1.0);
+    //     EffectModule::set_rgb(module_accessor, onemoreeff2, 1.0, 1.0, 1.0);
+    // }
+}
+
+#[inline(always)]
+pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor, remove: bool) {
+    EffectModule::kill_kind(module_accessor, Hash40::new("sys_starrod_bullet"), false, true);
+    if !remove {
+        let mut level = SP_LEVEL[entry_id(module_accessor)];
+        if SHADOW_FRENZY[entry_id(module_accessor)] {
+            level += 1;
+        }
+        while level > 0 {
+            let pos;
+            if level == 6 {
+                pos = SP_6;
+            }
+            else if level == 5 {
+                pos = SP_5;
+            }
+            else if level == 4 {
+                pos = SP_4;
+            }
+            else if level == 3 {
+                pos = SP_3;
+            }
+            else if level == 2 {
+                pos = SP_2;
+            }
+            else {
+                pos = SP_1;
+            }
+            EffectModule::req_follow(module_accessor, Hash40::new("sys_starrod_bullet"), Hash40::new("top"), &pos, &ZERO_VECTOR, 0.3, false, 0, 0, 0, 0, 0, false, false);
+            level -= 1;
+        }
+    }
+}
+
+#[inline(always)]
+pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
+    if SP_GAUGE[entry_id(module_accessor)] < 25.0 {
+        SP_LEVEL[entry_id(module_accessor)] = 0;
+    }
+    else {
+        while SP_LEVEL[entry_id(module_accessor)] < 6 {
+            if SP_GAUGE[entry_id(module_accessor)] >= SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0
+            && SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0 > SP_GAUGE[entry_id(module_accessor)] {
+                break;
+            }
+            SP_LEVEL[entry_id(module_accessor)] += 1;
+        }
+    }
+    if SHADOW_FRENZY[entry_id(module_accessor)] {
+        SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
+    }
+    else {
+        SP_GAUGE_TIMER[entry_id(module_accessor)] = 300;
+    }
+    SP_LEVEL[entry_id(module_accessor)] = (SP_GAUGE[entry_id(module_accessor)] / 25.0) as i32;
+    if SP_LEVEL[entry_id(module_accessor)] == 0 && !SHADOW_FRENZY[entry_id(module_accessor)] {
+        sp_gauge_handler(module_accessor, true);
+    }
+    else {
+        sp_gauge_handler(module_accessor, false);
+    }
+}
+
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
 
-            // Reset Vars
-            
-            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-                AIR_ACTION[entry_id(fighter.module_accessor)] = false;
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
-                if shadow_id(fighter.module_accessor) {
-                    if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE[entry_id(fighter.module_accessor)] / 2.0;
-                        SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
-                    }
-                }
-                else {
-                    SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 100.0;
-                    SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
-                    AWAKENING[entry_id(fighter.module_accessor)] = false;
-                }
-            }
-            if sv_information::is_ready_go() == false {
-                DamageModule::set_damage_mul(fighter.module_accessor, 1.0);
-                AIR_ACTION[entry_id(fighter.module_accessor)] = false;
-                SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
-                if !(smashball::is_training_mode() && TRAINING_TOOLS[entry_id(fighter.module_accessor)]) {
-                    SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
-                    AWAKENING[entry_id(fighter.module_accessor)] = false;
-                    TRAINING_TOOLS[entry_id(fighter.module_accessor)] = false;
-                    SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 100.0;
-                    DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = 0.0;
-                    DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = 0.0;
-                }
-            }
-
-            // Meter Controller
-
-            DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
-            if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]
-            && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false {
-                SP_GAUGE[entry_id(fighter.module_accessor)] += (DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * (1.0/6.0);
-            }
-            DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
-
-            if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false {
-                if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_S
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                    IS_EX[entry_id(fighter.module_accessor)] = false;
-                }
-                if IS_EX[entry_id(fighter.module_accessor)] == false {
-                    METER_GAIN[entry_id(fighter.module_accessor)] = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false);
-                    if shadow_id(fighter.module_accessor) == false {
-                        METER_GAIN[entry_id(fighter.module_accessor)] *= 0.75;
-                    }
-                    if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                        METER_GAIN[entry_id(fighter.module_accessor)] *= 3.0;
-                    }
-                    if METER_PENALTY[entry_id(fighter.module_accessor)] > 0.0 {
-                        METER_GAIN[entry_id(fighter.module_accessor)] *= 0.1;
-                    }
-                    SP_GAUGE[entry_id(fighter.module_accessor)] += METER_GAIN[entry_id(fighter.module_accessor)];
-                }
-            }
-
-            if SP_GAUGE[entry_id(fighter.module_accessor)] > SP_GAUGE_MAX[entry_id(fighter.module_accessor)] {
-                SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE_MAX[entry_id(fighter.module_accessor)];
-            }
-
-            if METER_PENALTY[entry_id(fighter.module_accessor)] > 0.0 {
-                METER_PENALTY[entry_id(fighter.module_accessor)] -= 1.0;
-            }
-            // Normal vs Shadow Effects
-
-            if shadow_id(fighter.module_accessor) == true {
-                DamageModule::set_damage_mul(fighter.module_accessor, 0.92);
-                DMG_RATIO[entry_id(fighter.module_accessor)] = 0.8;
-                if SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
-                    if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
-                        if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                            SP_GAUGE[entry_id(fighter.module_accessor)] -= 1.0/64.0;
-                        }
-                        else {
-                            SP_GAUGE[entry_id(fighter.module_accessor)] -= 1.0/16.0;
-                        }
-                    }
-                }
-                if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_missfoot01")) {
-                    SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_missfoot01"), 0);
-                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_missfoot01"));
-                }
-                if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_missfoot02")) {
-                    SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_missfoot02"), 0);
-                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_missfoot02"));
-                }
-                if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_damage_twinkle")) {
-                    SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_damage_twinkle"), 0);
-                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_damage_twinkle"));
-                }
-                if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_knockout")) {
-                    SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_knockout"), 0);
-                    macros::PLAY_SE(fighter, Hash40::new("vc_shadow_knockout"));
+        // Reset Vars
+        
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
+            AIR_ACTION[entry_id(fighter.module_accessor)] = false;
+            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
+            SP_GAUGE_TIMER[entry_id(fighter.module_accessor)] = 0;
+            if shadow_id(fighter.module_accessor) {
+                if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
+                    SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE[entry_id(fighter.module_accessor)] / 2.0;
+                    SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
                 }
             }
             else {
-                DMG_RATIO[entry_id(fighter.module_accessor)] = 1.0;
-                if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
-                    if AWAKENING[entry_id(fighter.module_accessor)] == false
-                    && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-                    && (!is_damage_check(fighter.module_accessor)
-                    || IS_FUNNY[entry_id(fighter.module_accessor)])
-                    && sv_information::is_ready_go() {
-                        DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
-                        SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 150.0;
-                        SP_GAUGE[entry_id(fighter.module_accessor)] += 50.0;
-                        AWAKENING[entry_id(fighter.module_accessor)] = true;
-                        macros::FT_START_CUTIN(fighter);
+                SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 100.0;
+                SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
+                AWAKENING[entry_id(fighter.module_accessor)] = false;
+            }
+        }
+        if sv_information::is_ready_go() == false {
+            DamageModule::set_damage_mul(fighter.module_accessor, 1.0);
+            AIR_ACTION[entry_id(fighter.module_accessor)] = false;
+            SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
+            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
+            if !(smashball::is_training_mode() && TRAINING_TOOLS[entry_id(fighter.module_accessor)]) {
+                SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
+                AWAKENING[entry_id(fighter.module_accessor)] = false;
+                TRAINING_TOOLS[entry_id(fighter.module_accessor)] = false;
+                SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 100.0;
+                DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = 0.0;
+                DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = 0.0;
+            }
+        }
+
+        // Meter Controller
+
+        DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
+        if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]
+        && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false {
+            SP_GAUGE[entry_id(fighter.module_accessor)] += (DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * (1.0/6.0);
+        }
+        DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
+
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false {
+            if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_S
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
+                IS_EX[entry_id(fighter.module_accessor)] = false;
+            }
+            if IS_EX[entry_id(fighter.module_accessor)] == false {
+                METER_GAIN[entry_id(fighter.module_accessor)] = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false);
+                if shadow_id(fighter.module_accessor) == false {
+                    METER_GAIN[entry_id(fighter.module_accessor)] *= 0.75;
+                }
+                if IS_FUNNY[entry_id(fighter.module_accessor)] {
+                    METER_GAIN[entry_id(fighter.module_accessor)] *= 3.0;
+                }
+                if METER_PENALTY[entry_id(fighter.module_accessor)] > 0.0 {
+                    METER_GAIN[entry_id(fighter.module_accessor)] *= 0.1;
+                }
+                SP_GAUGE[entry_id(fighter.module_accessor)] += METER_GAIN[entry_id(fighter.module_accessor)];
+            }
+        }
+
+        if SP_GAUGE[entry_id(fighter.module_accessor)] > SP_GAUGE_MAX[entry_id(fighter.module_accessor)] {
+            SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE_MAX[entry_id(fighter.module_accessor)];
+        }
+
+        if SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0
+        || SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
+            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
+                sp_glow_handler(fighter.module_accessor);
+                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 4;
+            }
+            _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+        }
+
+        // Training Mode Tools
+
+        if smashball::is_training_mode(){
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+                if SP_GAUGE[entry_id(fighter.module_accessor)] > 25.0 {
+                    SP_GAUGE[entry_id(fighter.module_accessor)] -= 25.0
+                }
+                else {
+                    SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
+                }
+            }
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+                if SP_GAUGE[entry_id(fighter.module_accessor)] < SP_GAUGE_MAX[entry_id(fighter.module_accessor)] - 25.0 {
+                    SP_GAUGE[entry_id(fighter.module_accessor)] += 25.0
+                }
+                else {
+                    SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE_MAX[entry_id(fighter.module_accessor)];
+                }
+            }
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+                if TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
+                    TRAINING_TOOLS[entry_id(fighter.module_accessor)] = false;
+                    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                    EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 5.0);
+                }
+                else {
+                    TRAINING_TOOLS[entry_id(fighter.module_accessor)] = true;
+                    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                    EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 5.0, 0.0, 0.0);
+                }
+            }
+        }
+
+        if SP_LEVEL[entry_id(fighter.module_accessor)] != (SP_GAUGE[entry_id(fighter.module_accessor)] / 25.0) as i32 {
+            sp_diff_checker(fighter.module_accessor);
+        }
+
+        if METER_PENALTY[entry_id(fighter.module_accessor)] > 0.0 {
+            METER_PENALTY[entry_id(fighter.module_accessor)] -= 1.0;
+        }
+
+        if SP_GAUGE_TIMER[entry_id(fighter.module_accessor)] > 0 {
+            SP_GAUGE_TIMER[entry_id(fighter.module_accessor)] -= 1;
+            if SP_GAUGE_TIMER[entry_id(fighter.module_accessor)] == 0 {
+                sp_gauge_handler(fighter.module_accessor, true);
+            }
+        }
+
+        // Normal vs Shadow Effects
+
+        if shadow_id(fighter.module_accessor) == true {
+            DamageModule::set_damage_mul(fighter.module_accessor, 0.92);
+            DMG_RATIO[entry_id(fighter.module_accessor)] = 0.8;
+            if SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
+                if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
+                    if IS_FUNNY[entry_id(fighter.module_accessor)] {
+                        SP_GAUGE[entry_id(fighter.module_accessor)] -= 1.0/64.0;
+                    }
+                    else {
+                        SP_GAUGE[entry_id(fighter.module_accessor)] -= 1.0/16.0;
                     }
                 }
             }
+            if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_missfoot01")) {
+                SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_missfoot01"), 0);
+                macros::PLAY_SE(fighter, Hash40::new("vc_shadow_missfoot01"));
+            }
+            if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_missfoot02")) {
+                SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_missfoot02"), 0);
+                macros::PLAY_SE(fighter, Hash40::new("vc_shadow_missfoot02"));
+            }
+            if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_damage_twinkle")) {
+                SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_damage_twinkle"), 0);
+                macros::PLAY_SE(fighter, Hash40::new("vc_shadow_damage_twinkle"));
+            }
+            if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_knockout")) {
+                SoundModule::stop_se(fighter.module_accessor, Hash40::new("vc_lucina_knockout"), 0);
+                macros::PLAY_SE(fighter, Hash40::new("vc_shadow_knockout"));
+            }
+        }
+        else {
+            DMG_RATIO[entry_id(fighter.module_accessor)] = 1.0;
+            if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
+                if AWAKENING[entry_id(fighter.module_accessor)] == false
+                && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+                && (!is_damage_check(fighter.module_accessor)
+                || IS_FUNNY[entry_id(fighter.module_accessor)])
+                && sv_information::is_ready_go() {
+                    DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
+                    SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 150.0;
+                    SP_GAUGE[entry_id(fighter.module_accessor)] += 50.0;
+                    AWAKENING[entry_id(fighter.module_accessor)] = true;
+                    macros::FT_START_CUTIN(fighter);
+                }
+            }
+        }
 
-            if SP_GAUGE[entry_id(fighter.module_accessor)] <= 0.0{
-                SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
-                SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
+        if SP_GAUGE[entry_id(fighter.module_accessor)] <= 0.0{
+            SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
+            SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
+        }
+
+        // Special Lw Check
+
+        if StatusModule::prev_status_kind(fighter.module_accessor, 0) != StatusModule::status_kind(fighter.module_accessor) {
+            CAN_ONE_MORE[entry_id(fighter.module_accessor)] = false;
+        }
+
+        if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+            if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            && MotionModule::motion_kind(fighter.module_accessor) != hash40("catch_attack")
+            && (MotionModule::motion_kind(fighter.module_accessor) != hash40("special_hi") || IS_FUNNY[entry_id(fighter.module_accessor)]) {
+                CAN_ONE_MORE[entry_id(fighter.module_accessor)] = true;
             }
 
-            // Special Lw Check
-
-            if StatusModule::prev_status_kind(fighter.module_accessor, 0) != StatusModule::status_kind(fighter.module_accessor) {
-                CAN_ONE_MORE[entry_id(fighter.module_accessor)] = false;
+            if CAN_ONE_MORE[entry_id(fighter.module_accessor)] == true {
+                if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+                    if spent_meter(fighter.module_accessor, true) {
+                        ROMAN_ON_HIT[entry_id(fighter.module_accessor)] = true;
+                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                        sp_diff_checker(fighter.module_accessor);
+                    }
+                }
+                else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+                && SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0
+                && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false
+                && shadow_id(fighter.module_accessor) {
+                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
+                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
+                }
             }
-
-            if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-                && MotionModule::motion_kind(fighter.module_accessor) != hash40("catch_attack")
-                && (MotionModule::motion_kind(fighter.module_accessor) != hash40("special_hi") || IS_FUNNY[entry_id(fighter.module_accessor)]) {
+            else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW {
+                let throwframe : f32;
+                if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_f") {
+                    throwframe = 18.0;
+                }
+                else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_b") {
+                    throwframe = 19.0;
+                }
+                else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_hi") {
+                    throwframe = 13.0;
+                }
+                else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_lw") {
+                    throwframe = 20.0;
+                }
+                else{
+                    throwframe = 20.0;
+                }
+                if MotionModule::frame(fighter.module_accessor) > throwframe && CAN_ONE_MORE[entry_id(fighter.module_accessor)] == false {
                     CAN_ONE_MORE[entry_id(fighter.module_accessor)] = true;
                 }
-    
                 if CAN_ONE_MORE[entry_id(fighter.module_accessor)] == true {
                     if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                         if spent_meter(fighter.module_accessor, true) {
                             ROMAN_ON_HIT[entry_id(fighter.module_accessor)] = true;
                             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                            sp_diff_checker(fighter.module_accessor);
                         }
                     }
                     else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
@@ -267,271 +470,157 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false
                     && shadow_id(fighter.module_accessor) {
                         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
-                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
-                    }
-                }
-                else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW {
-                    let throwframe : f32;
-                    if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_f") {
-                        throwframe = 18.0;
-                    }
-                    else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_b") {
-                        throwframe = 19.0;
-                    }
-                    else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_hi") {
-                        throwframe = 13.0;
-                    }
-                    else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_lw") {
-                        throwframe = 20.0;
-                    }
-                    else{
-                        throwframe = 20.0;
-                    }
-                    if MotionModule::frame(fighter.module_accessor) > throwframe && CAN_ONE_MORE[entry_id(fighter.module_accessor)] == false {
-                        CAN_ONE_MORE[entry_id(fighter.module_accessor)] = true;
-                    }
-                    if CAN_ONE_MORE[entry_id(fighter.module_accessor)] == true {
-                        if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-                            if spent_meter(fighter.module_accessor, true) {
-                                ROMAN_ON_HIT[entry_id(fighter.module_accessor)] = true;
-                                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
-                            }
-                        }
-                        else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
-                        && SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0
-                        && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false
-                        && shadow_id(fighter.module_accessor) {
-                            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
-                        }
-                    }
-                }
-                else if (!is_damage_check(fighter.module_accessor)
-                && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI)
-                || IS_FUNNY[entry_id(fighter.module_accessor)] {
-                    if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-                        if spent_meter(fighter.module_accessor, true) {
-                            ROMAN_ON_HIT[entry_id(fighter.module_accessor)] = false;
-                            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
-                        }
                     }
                 }
             }
-
-            // Meter Effects
-
-            if (SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0 && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false)
-            || SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
-                if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
-                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    let onemoreeff2: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &GFXCOORDS, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
-                    EffectModule::set_rate(fighter.module_accessor, onemoreeff, 2.0);
-                    EffectModule::set_rate(fighter.module_accessor, onemoreeff2, 2.0);
-                    if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.6, 0.0, 1.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.6, 0.0, 1.0);
-                    }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 50.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 1.0, 1.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.0, 1.0, 1.0);
-                    }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 50.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 75.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 1.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 0.0, 0.0, 1.0);
-                    }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 75.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 100.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.1, 0.1);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.1, 0.1);
-                    }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 100.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 125.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.8, 0.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.8, 0.0);
-                    }
-                    else if SP_GAUGE[entry_id(fighter.module_accessor)] >= 125.0 && SP_GAUGE[entry_id(fighter.module_accessor)] < 150.0 {
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 0.0, 0.6);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 0.0, 0.6);
-                    }
-                    else{
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 1.0, 1.0, 1.0);
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff2, 1.0, 1.0, 1.0);
-                    }
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] = 4;
-                }
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
-            }
-
-            if EX_FLASH[entry_id(fighter.module_accessor)] > 0 {
-                if EX_FLASH[entry_id(fighter.module_accessor)] % 10 == 0 {
-                    if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
-                        macros::FLASH(fighter, 0.4, 0.0, 1.0, 1.0);
-                    }
-                    else {
-                        macros::FLASH(fighter, 1.0, 1.0, 0.0, 0.75);
-                    }
-                }
-                else if EX_FLASH[entry_id(fighter.module_accessor)] % 5 == 0 {
-                    macros::COL_NORMAL(fighter);
-                }
-                EX_FLASH[entry_id(fighter.module_accessor)] -= 1;
-            }
-
-            // Air Action Reset
-
-            if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-            || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF {
-                AIR_ACTION[entry_id(fighter.module_accessor)] = false;
-            }
-
-            // Shadow Frenzy Check
-
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_l") || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r") {
-                if SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0 && shadow_id(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                    SHADOW_FRENZY[entry_id(fighter.module_accessor)] = true;
-                }
-            }
-            else if SP_GAUGE[entry_id(fighter.module_accessor)] == 0.0 {
-                SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
-            }
-
-            // Move Effects
-
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
-                if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-                || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-                    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-                    && get_command_stick_direction(fighter.module_accessor, true) == 6 {
-                        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), false.into());
-                    }
-                    if QCB[entry_id(fighter.module_accessor)] == 3
-                    && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-                    || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)) {
-                        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
-                    }
-                    if QCB[entry_id(fighter.module_accessor)] != 3
-                    && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-                    || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)) {
-                        CancelModule::enable_cancel(fighter.module_accessor);
+            else if (!is_damage_check(fighter.module_accessor)
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI)
+            || IS_FUNNY[entry_id(fighter.module_accessor)] {
+                if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+                    if spent_meter(fighter.module_accessor, true) {
+                        ROMAN_ON_HIT[entry_id(fighter.module_accessor)] = false;
+                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                        sp_diff_checker(fighter.module_accessor);
                     }
                 }
             }
+        }
 
-            // if IS_FGC[entry_id(fighter.module_accessor)] {
-            //     if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW == 0 {
-            //         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            //         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            //             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-            //                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 {
-            //                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), false.into());
-            //                 }
-            //             }
-            //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
-            //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            //                 && get_command_stick_direction(fighter.module_accessor, true) != 6) {
-            //                     CancelModule::enable_cancel(fighter.module_accessor);
-            //                 }
-            //             }
-            //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
-            //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            //                 && get_command_stick_direction(fighter.module_accessor, true) != 8) {
-            //                     CancelModule::enable_cancel(fighter.module_accessor);
-            //                 }
-            //             }
-            //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
-            //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            //                 && get_command_stick_direction(fighter.module_accessor, true) != 4) {
-            //                     CancelModule::enable_cancel(fighter.module_accessor);
-            //                 }
-            //             }
-            //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
-            //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            //                 && get_command_stick_direction(fighter.module_accessor, true) != 2) {
-            //                     CancelModule::enable_cancel(fighter.module_accessor);
-            //                 }
-            //             }
-            //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n") {
-            //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            //                 || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            //                     CancelModule::enable_cancel(fighter.module_accessor);
-            //                 }
-            //             }
-            //         }
-            //     }
-            // }
-
-            if HEROIC_GRAB[entry_id(fighter.module_accessor)] {
-                if MotionModule::motion_kind(fighter.module_accessor) == hash40("catch_wait")
-                || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_CATCH_ATTACK {
-                    fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), true.into());
+        if EX_FLASH[entry_id(fighter.module_accessor)] > 0 {
+            if EX_FLASH[entry_id(fighter.module_accessor)] % 10 == 0 {
+                if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
+                    macros::FLASH(fighter, 0.4, 0.0, 1.0, 1.0);
                 }
-                if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_hi")
-                && MotionModule::frame(fighter.module_accessor) > 22.0 {
-                    StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
+                else {
+                    macros::FLASH(fighter, 1.0, 1.0, 0.0, 0.75);
                 }
             }
-            if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_WAIT
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_DASH
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_TURN
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_PULL
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_JUMP
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_CUT
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH
-            && CatchModule::is_catch(fighter.module_accessor) == false
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_THROW {
-                HEROIC_GRAB[entry_id(fighter.module_accessor)] = false;
+            else if EX_FLASH[entry_id(fighter.module_accessor)] % 5 == 0 {
+                macros::COL_NORMAL(fighter);
             }
+            EX_FLASH[entry_id(fighter.module_accessor)] -= 1;
+        }
 
-            // Jump Cancels
+        // Air Action Reset
 
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3")
-            || (MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_dash")
-            && IS_FUNNY[entry_id(fighter.module_accessor)])
-            || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
-            || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi")
-            || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
-                jump_cancel_check(fighter.module_accessor);
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+        || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF {
+            AIR_ACTION[entry_id(fighter.module_accessor)] = false;
+        }
+
+        // Shadow Frenzy Check
+
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_l") || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r") {
+            if SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0 && shadow_id(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                SHADOW_FRENZY[entry_id(fighter.module_accessor)] = true;
             }
+        }
+        else if SP_GAUGE[entry_id(fighter.module_accessor)] == 0.0 {
+            SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
+        }
 
-            // Training Mode Tools
+        // Move Effects
 
-            if smashball::is_training_mode(){
-                if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
-                    if SP_GAUGE[entry_id(fighter.module_accessor)] > 25.0 {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] -= 25.0
-                    }
-                    else {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
-                    }
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
+            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
+                && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+                && get_command_stick_direction(fighter.module_accessor, true) == 6 {
+                    StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), false.into());
                 }
-                if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-                    if SP_GAUGE[entry_id(fighter.module_accessor)] < SP_GAUGE_MAX[entry_id(fighter.module_accessor)] - 25.0 {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] += 25.0
-                    }
-                    else {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE_MAX[entry_id(fighter.module_accessor)];
-                    }
+                if QCB[entry_id(fighter.module_accessor)] == 3
+                && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+                || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)) {
+                    fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
                 }
-                if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
-                    if TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
-                        TRAINING_TOOLS[entry_id(fighter.module_accessor)] = false;
-                        let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-                        let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-                        let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 5.0);
-                    }
-                    else {
-                        TRAINING_TOOLS[entry_id(fighter.module_accessor)] = true;
-                        let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-                        let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-                        let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_counter_flash")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-                        EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 5.0, 0.0, 0.0);
-                    }
+                if QCB[entry_id(fighter.module_accessor)] != 3
+                && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+                || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)) {
+                    CancelModule::enable_cancel(fighter.module_accessor);
                 }
             }
+        }
+
+        // if IS_FGC[entry_id(fighter.module_accessor)] {
+        //     if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW == 0 {
+        //         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        //         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        //             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
+        //                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 {
+        //                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), false.into());
+        //                 }
+        //             }
+        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
+        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        //                 && get_command_stick_direction(fighter.module_accessor, true) != 6) {
+        //                     CancelModule::enable_cancel(fighter.module_accessor);
+        //                 }
+        //             }
+        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
+        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        //                 && get_command_stick_direction(fighter.module_accessor, true) != 8) {
+        //                     CancelModule::enable_cancel(fighter.module_accessor);
+        //                 }
+        //             }
+        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
+        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        //                 && get_command_stick_direction(fighter.module_accessor, true) != 4) {
+        //                     CancelModule::enable_cancel(fighter.module_accessor);
+        //                 }
+        //             }
+        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
+        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        //                 && get_command_stick_direction(fighter.module_accessor, true) != 2) {
+        //                     CancelModule::enable_cancel(fighter.module_accessor);
+        //                 }
+        //             }
+        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n") {
+        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        //                 || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        //                     CancelModule::enable_cancel(fighter.module_accessor);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        if HEROIC_GRAB[entry_id(fighter.module_accessor)] {
+            if MotionModule::motion_kind(fighter.module_accessor) == hash40("catch_wait")
+            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_CATCH_ATTACK {
+                fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), true.into());
+            }
+            if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_hi")
+            && MotionModule::frame(fighter.module_accessor) > 22.0 {
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
+            }
+        }
+        if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_WAIT
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_DASH
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_TURN
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_PULL
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_JUMP
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_CUT
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH
+        && CatchModule::is_catch(fighter.module_accessor) == false
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_THROW {
+            HEROIC_GRAB[entry_id(fighter.module_accessor)] = false;
+        }
+
+        // Jump Cancels
+
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3")
+        || (MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_dash")
+        && IS_FUNNY[entry_id(fighter.module_accessor)])
+        || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
+        || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi")
+        || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
+            jump_cancel_check(fighter.module_accessor);
         }
     }
 }
@@ -556,6 +645,7 @@ unsafe extern "C" fn lucina_specialnloop_loop(fighter: &mut L2CFighterCommon) ->
         EX_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
+        sp_diff_checker(fighter.module_accessor);
     }
     else if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
@@ -1182,6 +1272,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         EX_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
         macros::FT_MOTION_RATE(fighter, 0.2);
     }
     else {
@@ -1329,6 +1420,7 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         EX_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
     }
     else {
         IS_EX[entry_id(fighter.module_accessor)] = false;
@@ -1386,6 +1478,7 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
             SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
             EX_FLASH[entry_id(fighter.module_accessor)] = 40;
             IS_EX[entry_id(fighter.module_accessor)] = true;
+            sp_diff_checker(fighter.module_accessor);
         }
         else {
             IS_EX[entry_id(fighter.module_accessor)] = false;
@@ -1531,6 +1624,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         EX_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
     }
     else {
         IS_EX[entry_id(fighter.module_accessor)] = false;
@@ -1612,6 +1706,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         EX_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
     }
     else {
         IS_EX[entry_id(fighter.module_accessor)] = false;

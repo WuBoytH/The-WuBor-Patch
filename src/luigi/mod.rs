@@ -19,27 +19,25 @@ static mut UP_B_CANCEL : [bool; 8] = [false; 8];
 #[fighter_frame( agent = FIGHTER_KIND_LUIGI )]
 fn luigi_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if entry_id(fighter.module_accessor) < 8 {
 
-            // What allows Luigi to cancel Super Jump Punch if he lands the sweetspot.
+        // What allows Luigi to cancel Super Jump Punch if he lands the sweetspot.
 
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_drop")
-            && (UP_B_CANCEL[entry_id(fighter.module_accessor)]
-            || IS_FUNNY[entry_id(fighter.module_accessor)]) {
-                CancelModule::enable_cancel(fighter.module_accessor);
-            }
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_drop")
+        && (UP_B_CANCEL[entry_id(fighter.module_accessor)]
+        || IS_FUNNY[entry_id(fighter.module_accessor)]) {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
 
-            // Kills any residual effects from Thunderhand if Luigi is no longer in the move.
+        // Kills any residual effects from Thunderhand if Luigi is no longer in the move.
 
-            if (StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S
-            || StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
-            || StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END)
-            && (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_S
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
-                EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_thunder"), false, true);
-                EffectModule::kill_kind(fighter.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
-            }
+        if (StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_S
+        || StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
+        || StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END)
+        && (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_S
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_thunder"), false, true);
+            EffectModule::kill_kind(fighter.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
         }
     }
 }

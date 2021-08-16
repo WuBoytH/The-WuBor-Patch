@@ -10,34 +10,13 @@ use smashline::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use smash::lib::L2CValue;
-use crate::system::{/*IS_FUNNY, COUNTER_HIT_STATE, */_TIME_COUNTER, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, DMG_RATIO};
 use crate::commonfuncs::*;
 use crate::globals::*;
+use crate::vars::*;
 
 // Notes:
 // vc_ken_special_l01 is "I hit my boiling point!"
 // vc_ken_special_l02 is "Shoryureppa"
-
-pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
-/*
-State list:
-0 = Can Quick Step
-2 = Cannot Quick Step
-1 = Used to show you're in the first 22 frames of Quick Step.
-*/
-static mut VS1_CANCEL : [bool; 8] = [false; 8];
-pub static mut V_SHIFT : [bool; 8] = [false; 8];
-pub static mut V_TRIGGER : [bool; 8] = [false; 8];
-static mut VT1_CANCEL : [bool; 8] = [false; 8];
-pub static mut V_GAUGE : [i32; 8] = [0; 8];
-static mut FLASH_MAX : [i32; 8] = [0; 8];
-static mut FLASH_COUNTER : [i32; 8] = [0; 8];
-pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
-pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
-static mut CURR_LOOPS : [i32; 8] = [0; 8];
-static mut DIFF_X : [f32; 8] = [0.0; 8];
-static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
-static mut SPECIAL_S_START_SIT : [i32; 8] = [0; 8];
 
 #[fighter_frame( agent = FIGHTER_KIND_KEN )]
 fn ken_frame(fighter: &mut L2CFighterCommon) {

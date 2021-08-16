@@ -6,8 +6,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use smash::phx::Vector3f;
+use crate::vars::*;
 
 #[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {

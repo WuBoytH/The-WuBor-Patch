@@ -7,11 +7,8 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
-use crate::system::{IS_FUNNY, OPPONENT_BOMA, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, _TIME_COUNTER};
 use crate::commonfuncs::*;
-
-pub static mut SHULK_SPECIAL_LW : [bool; 8] = [false; 8];
-static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_SHULK )]
 fn shulk_frame(fighter: &mut L2CFighterCommon) {

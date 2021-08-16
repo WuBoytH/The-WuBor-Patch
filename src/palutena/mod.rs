@@ -6,8 +6,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use smash::phx::Vector3f;
+use crate::vars::*;
 
 #[acmd_script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn palutena_dtilt(fighter: &mut L2CAgentBase) {

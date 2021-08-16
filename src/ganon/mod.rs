@@ -8,18 +8,9 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
-
-pub static mut TELEPORT : [i32; 8] = [0; 8];
-pub static mut OG_X : [f32; 8] = [0.0; 8];
-pub static mut OG_Y : [f32; 8] = [0.0; 8];
-pub static mut TELE_X : [f32; 8] = [0.0; 8];
-pub static mut TELE_Y : [f32; 8] = [0.0; 8];
-pub static mut TELE_STOP : [bool; 8] = [false; 8];
-pub static mut CAN_TELEPORT : [bool; 8] = [true; 8];
-pub static mut FEINT : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 #[inline(always)]
 pub unsafe fn deception_init(module_accessor: *mut BattleObjectModuleAccessor) {
@@ -107,7 +98,7 @@ pub unsafe fn deception_feint_handler(module_accessor: *mut BattleObjectModuleAc
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             TELE_STOP[entry_id(fighter.module_accessor)] = false;
         }
 

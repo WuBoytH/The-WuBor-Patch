@@ -7,10 +7,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
-
-static mut CALLBACK : [i32; 8] = [0; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]
 fn eflame_frame(fighter: &mut L2CFighterCommon) {
@@ -25,7 +23,6 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             if ControlModule::check_button_trigger(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL)
             && CALLBACK[entry_id(fighter.module_accessor)] == 0 {
                 CALLBACK[entry_id(fighter.module_accessor)] = 1;
-                // StatusModule::change_status_request_from_script(fighter.module_accessor,*FIGHTER_EFLAME_STATUS_KIND_SPECIAL_S_CATCH,true);
             }
         }
         else {

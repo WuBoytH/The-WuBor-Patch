@@ -7,20 +7,12 @@ use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 //use smash::phx::Vector3f;
-use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
-
-static mut SPIN_SPEED : [f32; 8] = [1.56; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if IS_FUNNY[entry_id(fighter.module_accessor)] && SPIN_SPEED[entry_id(fighter.module_accessor)] != 3.0 {
-            SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
-        }
-        else if !IS_FUNNY[entry_id(fighter.module_accessor)] && SPIN_SPEED[entry_id(fighter.module_accessor)] != 1.56 {
-            SPIN_SPEED[entry_id(fighter.module_accessor)] = 1.56;
-        }
 
         // Toon Link can now move during his grounded Spin Attack.
 
@@ -28,7 +20,13 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
             if MotionModule::frame(fighter.module_accessor) > 6.0 && MotionModule::frame(fighter.module_accessor) < 46.0 {
                 let stickx = ControlModule::get_stick_x(fighter.module_accessor);
                 let lr = PostureModule::lr(fighter.module_accessor);
-                let speed = SPIN_SPEED[entry_id(fighter.module_accessor)];
+                let speed : f32;
+                if IS_FUNNY[entry_id(fighter.module_accessor)] {
+                    speed = 3.0;
+                }
+                else {
+                    speed = 1.56;
+                }
                 macros::SET_SPEED_EX(fighter, lr * speed * stickx, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }

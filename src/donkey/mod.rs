@@ -9,8 +9,8 @@ use smash_script::*;
 use smashline::*;
 // use crate::ITEM_MANAGER;
 use crate::commonfuncs::*;
-use crate::system::{IS_FUNNY, IS_DK};
 use crate::globals::*;
+use crate::vars::*;
 use smash::lib::L2CValue;
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

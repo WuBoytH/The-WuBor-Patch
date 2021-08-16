@@ -6,10 +6,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::IS_FUNNY;
 use crate::commonfuncs::*;
-
-pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_RIDLEY )]
 fn ridley_frame(fighter: &mut L2CFighterCommon) {

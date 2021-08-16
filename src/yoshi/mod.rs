@@ -6,8 +6,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
+use crate::vars::*;
 
 #[acmd_script( agent = "yoshi", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn yoshi_ftilt(fighter: &mut L2CAgentBase) {

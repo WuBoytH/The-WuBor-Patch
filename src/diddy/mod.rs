@@ -7,9 +7,9 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 // use crate::globals::*;
 use crate::commonfuncs::*;
+use crate::vars::*;
 
 #[acmd_script( agent = "diddy", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn diddy_usmash(fighter: &mut L2CAgentBase) {

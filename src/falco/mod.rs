@@ -6,10 +6,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-// use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
-
-static mut KAA : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_FALCO )]
 fn falco_frame(fighter: &mut L2CFighterCommon) {

@@ -7,8 +7,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-// use crate::system::IS_FUNNY;
 // use crate::commonfuncs::*;
+// use create::vars::*;
 
 #[acmd_script( agent = "mario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn mario_uspecial(fighter: &mut L2CAgentBase) {

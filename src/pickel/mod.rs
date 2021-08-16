@@ -6,7 +6,6 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-// use crate::system::IS_FUNNY;
 // use crate::commonfuncs::*;
 
 #[acmd_script( agent = "pickel_forge", script = "game_wait", category = ACMD_GAME, low_priority )]

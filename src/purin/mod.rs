@@ -7,8 +7,8 @@ use smash_script::*;
 use smashline::*;
 use smash::lib::L2CValue;
 use crate::globals::*;
-use crate::IS_FUNNY;
 use crate::commonfuncs::*;
+use crate::vars::*;
 
 #[status_script(agent = "purin", status = FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn purin_specialnhitend(fighter: &mut L2CFighterCommon) -> L2CValue {

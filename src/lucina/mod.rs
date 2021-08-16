@@ -10,34 +10,10 @@ use smash::phx::Hash40;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
 use smash::lib::L2CValue;
-use crate::system::{
-    IS_FUNNY/*, IS_FGC*/,
-    _TIME_COUNTER, DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, DMG_RATIO,
-    QCB};
 use crate::commonfuncs::*;
 use crate::globals::*;
 use crate::gameplay::*;
 use crate::vars::*;
-
-pub static mut AIR_ACTION : [bool; 8] = [false; 8];
-static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
-static mut AWAKENING : [bool; 8] = [false; 8];
-static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
-static mut TRAINING_TOOLS : [bool; 8] = [false; 8];
-static mut IS_EX : [bool; 8] = [false; 8];
-static mut SP_GAUGE : [f32; 8] = [0.0; 8];
-static mut SP_LEVEL : [i32; 8] = [0; 8];
-static mut SP_GAUGE_TIMER : [i32; 8] = [0; 8];
-static mut SPENT_SP : [f32; 8] = [0.0; 8];
-static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
-static mut METER_GAIN : [f32; 8] = [0.0; 8];
-static mut METER_PENALTY : [f32; 8] = [0.0; 8];
-static mut ROMAN_MOVE : [f32; 8] = [0.0; 8];
-static mut ROMAN_ON_HIT : [bool; 8] = [false; 8];
-static mut IS_ROMAN_MOVE : [bool; 8] = [false; 8];
-pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
-static mut EX_FLASH : [i32; 8] = [0; 8];
-static mut START_SITUATION : [i32; 8] = [0; 8];
 
 // For article stuff
 // if macros::is_excute(fighter) {
@@ -108,7 +84,8 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
 
 #[inline(always)]
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6 | 7 {
+    if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
+    || WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
         return true;
     }
     else {
@@ -209,17 +186,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         }
         if sv_information::is_ready_go() == false {
             DamageModule::set_damage_mul(fighter.module_accessor, 1.0);
-            AIR_ACTION[entry_id(fighter.module_accessor)] = false;
-            SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
-            if !(smashball::is_training_mode() && TRAINING_TOOLS[entry_id(fighter.module_accessor)]) {
-                SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
-                AWAKENING[entry_id(fighter.module_accessor)] = false;
-                TRAINING_TOOLS[entry_id(fighter.module_accessor)] = false;
-                SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 100.0;
-                DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = 0.0;
-                DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = 0.0;
-            }
         }
 
         // Meter Controller
@@ -380,7 +346,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
-            if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
             && MotionModule::motion_kind(fighter.module_accessor) != hash40("catch_attack")
             && (MotionModule::motion_kind(fighter.module_accessor) != hash40("special_hi") || IS_FUNNY[entry_id(fighter.module_accessor)]) {
                 CAN_ONE_MORE[entry_id(fighter.module_accessor)] = true;
@@ -419,7 +386,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 else{
                     throwframe = 20.0;
                 }
-                if MotionModule::frame(fighter.module_accessor) > throwframe && CAN_ONE_MORE[entry_id(fighter.module_accessor)] == false {
+                if MotionModule::frame(fighter.module_accessor) > throwframe
+                && CAN_ONE_MORE[entry_id(fighter.module_accessor)] == false {
                     CAN_ONE_MORE[entry_id(fighter.module_accessor)] = true;
                 }
                 if CAN_ONE_MORE[entry_id(fighter.module_accessor)] == true {
@@ -451,8 +419,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if EX_FLASH[entry_id(fighter.module_accessor)] > 0 {
-            if EX_FLASH[entry_id(fighter.module_accessor)] % 10 == 0 {
+        if SP_FLASH[entry_id(fighter.module_accessor)] > 0 {
+            if SP_FLASH[entry_id(fighter.module_accessor)] % 10 == 0 {
                 if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
                     macros::FLASH(fighter, 0.4, 0.0, 1.0, 1.0);
                 }
@@ -460,15 +428,16 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     macros::FLASH(fighter, 1.0, 1.0, 0.0, 0.75);
                 }
             }
-            else if EX_FLASH[entry_id(fighter.module_accessor)] % 5 == 0 {
+            else if SP_FLASH[entry_id(fighter.module_accessor)] % 5 == 0 {
                 macros::COL_NORMAL(fighter);
             }
-            EX_FLASH[entry_id(fighter.module_accessor)] -= 1;
+            SP_FLASH[entry_id(fighter.module_accessor)] -= 1;
         }
 
         // Air Action Reset
 
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND | *SITUATION_KIND_CLIFF {
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+        || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF {
             AIR_ACTION[entry_id(fighter.module_accessor)] = false;
         }
 
@@ -486,7 +455,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         // Move Effects
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
                 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
                 && get_command_stick_direction(fighter.module_accessor, true) == 6 {
@@ -499,7 +469,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
                 }
                 if QCB[entry_id(fighter.module_accessor)] != 3
-                && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK | *CONTROL_PAD_BUTTON_SPECIAL) {
+                && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+                || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)) {
                     CancelModule::enable_cancel(fighter.module_accessor);
                 }
             }
@@ -604,7 +575,7 @@ unsafe extern "C" fn lucina_specialnloop_loop(fighter: &mut L2CFighterCommon) ->
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        EX_FLASH[entry_id(fighter.module_accessor)] = 40;
+        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
         sp_diff_checker(fighter.module_accessor);
@@ -1229,7 +1200,7 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        EX_FLASH[entry_id(fighter.module_accessor)] = 40;
+        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
         macros::FT_MOTION_RATE(fighter, 0.2);
@@ -1377,7 +1348,7 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        EX_FLASH[entry_id(fighter.module_accessor)] = 40;
+        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
     }
@@ -1435,7 +1406,7 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
         && spent_meter(fighter.module_accessor, false) {
             SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-            EX_FLASH[entry_id(fighter.module_accessor)] = 40;
+            SP_FLASH[entry_id(fighter.module_accessor)] = 40;
             IS_EX[entry_id(fighter.module_accessor)] = true;
             sp_diff_checker(fighter.module_accessor);
         }
@@ -1581,7 +1552,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        EX_FLASH[entry_id(fighter.module_accessor)] = 60;
+        SP_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
     }
@@ -1663,7 +1634,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        EX_FLASH[entry_id(fighter.module_accessor)] = 60;
+        SP_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
     }

@@ -1,5 +1,5 @@
 use smash::phx::Hash40;
-use smash::hash40;
+// use smash::hash40;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
@@ -8,11 +8,8 @@ use smash::app::sv_animcmd::*;
 use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
-use crate::system::IS_FUNNY;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::commonfuncs::*;
-
-pub static mut REVENGE : [i32; 8] = [0; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
 fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
@@ -27,13 +24,6 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         || IS_FUNNY[entry_id(fighter.module_accessor)])
         && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
-
-        if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_start")
-        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_air_lw_start")
-        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_s_lariat")
-        && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_air_s_lariat") {
-            REVENGE[entry_id(fighter.module_accessor)] = 0;
         }
     }
 }
@@ -673,8 +663,8 @@ unsafe fn gaogaen_upbfall2(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        REVENGE[entry_id(fighter.module_accessor)] = 0;
         WorkModule::set_int(fighter.module_accessor, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
     }

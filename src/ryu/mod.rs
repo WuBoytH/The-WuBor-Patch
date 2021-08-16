@@ -9,26 +9,9 @@ use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
 use smash::phx::Vector2f;
-use crate::system::{IS_FUNNY, _TIME_COUNTER, OPPONENT_BOMA};
 use crate::commonfuncs::*;
 use crate::gameplay::*;
-
-static mut SPECIAL_LW : [bool; 8] = [false; 8];
-static mut CANCEL : [bool; 8] = [false; 8];
-static mut EX_FLASH : [bool; 8] = [false; 8];
-pub static mut SECRET_SENSATION : [bool; 8] = [false; 8];
-pub static mut CAMERA : [bool; 8] = [false; 8];
-pub static mut OPPONENT_X : [f32; 8] = [0.0; 8];
-pub static mut OPPONENT_Y : [f32; 8] = [0.0; 8];
-static mut RYU_X : [f32; 8] = [0.0; 8];
-static mut RYU_Y : [f32; 8] = [0.0; 8];
-static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
-static mut SEC_SEN_TIMER : [f32; 8] = [-0.6; 8];
-static mut OPPONENT_DIRECTION : [f32; 8] = [12.0; 8];
-static mut VERT_EXTRA : [f32; 8] = [12.0; 8];
-pub static mut SEC_SEN_STATE : [bool; 8] = [false; 8];
-static mut SEC_SEN_DIREC : [i32; 8] = [0; 8];
-static mut SPECIAL_S_START_SIT : [i32; 8] = [0; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 fn ryu_frame(fighter: &mut L2CFighterCommon) {

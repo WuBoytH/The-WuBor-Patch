@@ -10,11 +10,9 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
-
-static mut UP_B_CANCEL : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_LUIGI )]
 fn luigi_frame(fighter: &mut L2CFighterCommon) {
@@ -23,7 +21,7 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
         // What allows Luigi to cancel Super Jump Punch if he lands the sweetspot.
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_drop")
-        && (UP_B_CANCEL[entry_id(fighter.module_accessor)]
+        && (CANCEL[entry_id(fighter.module_accessor)]
         || IS_FUNNY[entry_id(fighter.module_accessor)]) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
@@ -314,7 +312,7 @@ unsafe fn luigi_sspecialendsnd(fighter: &mut L2CAgentBase) {
 unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        UP_B_CANCEL[entry_id(fighter.module_accessor)] = false;
+        CANCEL[entry_id(fighter.module_accessor)] = false;
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -324,7 +322,7 @@ unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        UP_B_CANCEL[entry_id(fighter.module_accessor)] = true;
+        CANCEL[entry_id(fighter.module_accessor)] = true;
     }
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("head"), 1.0, 80, 1, 0, 1, 5.8, 2.0, 2.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_PUNCH);
@@ -353,7 +351,7 @@ unsafe fn luigi_uspecial(fighter: &mut L2CAgentBase) {
 unsafe fn luigi_uspecialair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        UP_B_CANCEL[entry_id(fighter.module_accessor)] = false;
+        CANCEL[entry_id(fighter.module_accessor)] = false;
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -363,7 +361,7 @@ unsafe fn luigi_uspecialair(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        UP_B_CANCEL[entry_id(fighter.module_accessor)] = true;
+        CANCEL[entry_id(fighter.module_accessor)] = true;
     }
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("head"), 1.0, 80, 1, 0, 1, 5.8, 2.0, 2.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_PUNCH);

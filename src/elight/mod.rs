@@ -7,10 +7,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
-
-static mut CANCEL : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
 fn elight_frame(fighter: &mut L2CFighterCommon) {
@@ -53,23 +51,6 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
         }
-        // if IS_FUNNY[entry_id(fighter.module_accessor)] == false {
-        //     if MYTHRA[entry_id(fighter.module_accessor)] {
-        //         let conditions = [*LUA_SCRIPT_STATUS_FUNC_STATUS_PRE, *LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN, *LUA_SCRIPT_STATUS_FUNC_STATUS_END];
-        //         for x in conditions.iter() {
-        //             let addr: *mut skyline::libc::c_void = fighter.sv_get_status_func(
-        //                 &L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64) as *const L2CValue as u64,
-        //                 &L2CValue::new_int(*x as u64) as *const L2CValue as u64
-        //             ).get_ptr();
-        //             fighter.sv_set_status_func(
-        //                 L2CValue::new_int(*FIGHTER_STATUS_KIND_APPEAL as u64),
-        //                 L2CValue::new_int(*x as u64),
-        //                 std::mem::transmute(addr)
-        //             );
-        //         }
-        //         MYTHRA[entry_id(fighter.module_accessor)] = false;
-        //     }
-        // }
     }
 }
 

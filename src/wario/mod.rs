@@ -1,16 +1,14 @@
 use smash::phx::Hash40;
 use smash::hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::*;
+// use smash::app::*;
 use smash::app::sv_animcmd::*;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
 use crate::commonfuncs::*;
-// use crate::IS_FUNNY;
-
-pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_WARIO )]
 fn wario_frame(fighter: &mut L2CFighterCommon) {
@@ -26,27 +24,25 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if entry_id(fighter.module_accessor) < 8 {
-            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-                FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
-            }
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
+            FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
+        }
 
-            // Wario can now move during his back throw.
+        // Wario can now move during his back throw.
 
-            if (MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_l")
-            || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_r"))
-            && MotionModule::frame(fighter.module_accessor) == 10.0 {
-                FINISH_SIGN[entry_id(fighter.module_accessor)] += 1;
-                if FINISH_SIGN[entry_id(fighter.module_accessor)] > 15 {
-                    FINISH_SIGN[entry_id(fighter.module_accessor)] = 15;
-                }
+        if (MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_l")
+        || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_r"))
+        && MotionModule::frame(fighter.module_accessor) == 10.0 {
+            FINISH_SIGN[entry_id(fighter.module_accessor)] += 1;
+            if FINISH_SIGN[entry_id(fighter.module_accessor)] > 15 {
+                FINISH_SIGN[entry_id(fighter.module_accessor)] = 15;
             }
+        }
 
-            if (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-            || StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING)
-            && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
-            }
+        if (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+        || StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING)
+        && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+            FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
         }
     }
 }

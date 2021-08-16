@@ -9,11 +9,9 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::ganon::*;
 use crate::commonfuncs::*;
-// use crate::system::IS_FUNNY;
-
-pub static mut SLIDE_BOUNCE : [bool; 8] = [false; 8];
+use crate::vars::*;
+use crate::ganon::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_KIRBY )]
 fn kirby_frame(fighter: &mut L2CFighterCommon) {

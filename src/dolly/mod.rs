@@ -7,10 +7,9 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-// use crate::system::{DAMAGE_TAKEN, DAMAGE_TAKEN_PREV, IS_FUNNY};
 // use crate::globals::*;
 // use crate::commonfuncs::*;
-// use crate::{DAMAGE_TAKEN, DAMAGE_TAKEN_PREV};
+// use crate::vars::*;
 
 // pub static mut GO_SAUCE : [f32; 8] = [0.0; 8];
 

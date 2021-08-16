@@ -7,8 +7,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::commonfuncs::*;
+use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_ROCKMAN )]
 fn rockman_frame(fighter: &mut L2CFighterCommon) {

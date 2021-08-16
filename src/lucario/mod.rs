@@ -1,5 +1,6 @@
 use smash::phx::Hash40;
 // use smash::hash40;
+use smash::phx::Vector3f;
 use smash::lua2cpp::{L2CAgentBase/*, L2CFighterCommon*/};
 use smash::app::*;
 use smash::app::sv_animcmd::*;
@@ -7,13 +8,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::commonfuncs::*;
-use smash::phx::Vector3f;
-
-static mut _AURA_SPHERE_TIMER: [i32; 8] = [0; 8];
-pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 // #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
 // fn lucario_frame(fighter: &mut L2CFighterCommon) {

@@ -12,12 +12,8 @@ use smashline::*;
 // use crate::system::IS_FUNNY;
 use crate::globals::*;
 use crate::commonfuncs::*;
-use crate::system::_TIME_COUNTER;
 use crate::gameplay::*;
-
-pub static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
-// static mut SET_DRAGON_OFF : [bool; 8] = [true; 8];
-// static mut SPECIAL_DRAGON : [bool; 8] = [false; 8];
+use crate::vars::*;
 
 // pub unsafe fn mask_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
 //     if [

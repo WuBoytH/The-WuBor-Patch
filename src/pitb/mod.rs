@@ -9,10 +9,9 @@ use smash::app::lua_bind::*;
 use smash::lib::L2CValue;
 use smash_script::*;
 use smashline::*;
-use crate::FIGHTER_CUTIN_MANAGER_ADDR;
 use crate::globals::*;
-// use crate::system::IS_FUNNY;
 // use crate::commonfuncs::*;
+use crate::vars::*;
 
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pitb_specialncharge_main(fighter: &mut L2CFighterCommon) -> L2CValue {

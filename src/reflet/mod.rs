@@ -7,7 +7,6 @@ use smash::app::*;
 use smash::app::sv_animcmd::*;
 use smash_script::*;
 use smashline::*;
-// use crate::IS_FUNNY;
 // use crate::commonfuncs::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_REFLET )]

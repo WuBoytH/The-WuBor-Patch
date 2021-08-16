@@ -5,8 +5,8 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use crate::system::IS_FUNNY;
 use crate::commonfuncs;
+use crate::vars::*;
 
 #[acmd_script( agent = "brave", scripts = ["game_speciallw9", "game_specialairlw9"], category = ACMD_GAME, low_priority )]
 unsafe fn brave_kamikazee(fighter: &mut L2CAgentBase) {

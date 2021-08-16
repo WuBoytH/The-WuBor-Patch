@@ -9,7 +9,6 @@ use smash_script::*;
 use smashline::*;
 // use smash::phx::Vector3f;
 // use smash::phx::Vector2f;
-// use crate::system::IS_FUNNY;
 // use crate::commonfuncs::*;
 
 #[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME, low_priority )]

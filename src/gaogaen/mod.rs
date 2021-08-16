@@ -25,6 +25,22 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         }
+
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {
+            REVENGE[entry_id(fighter.module_accessor)] = 0;
+        }
+
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        && REVENGE[entry_id(fighter.module_accessor)] > 0
+        && REVENGE[entry_id(fighter.module_accessor)] < 3
+        && AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) >= 20.0 {
+            macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"),Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            SlowModule::set_whole(fighter.module_accessor, 2, 0);
+            macros:: CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.2, 0.0, 0.0);
+            macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+            REVENGE[entry_id(fighter.module_accessor)] = 3;
+        }
     }
 }
 
@@ -540,11 +556,14 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
         }
         frame(fighter.lua_state_agent, 9.0);
         if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), dmg, 45, 69, 0, 80, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), dmg, 45, 69, 0, 60, 7.0, 0.0, 0.0, 0.0, None, None, None, hitlag, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
         }
         frame(fighter.lua_state_agent, 14.0);
         if macros::is_excute(fighter) {
             AttackModule::clear_all(fighter.module_accessor);
+            macros::CAM_ZOOM_OUT(fighter);
+            macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_bg_criticalhit"), false, false);
+            SlowModule::clear_whole(fighter.module_accessor);
             HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
             macros::REVERSE_LR(fighter);
         }

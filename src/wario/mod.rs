@@ -39,8 +39,7 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-        || StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING)
+        if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
         && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
             FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
         }

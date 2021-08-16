@@ -125,7 +125,8 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         // Secret Sensation Code
 
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if IS_FUNNY[entry_id(fighter.module_accessor)]
+        || DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
 
             if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK

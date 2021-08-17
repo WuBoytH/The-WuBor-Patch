@@ -1,6 +1,9 @@
+use smash::lua2cpp::L2CAgentBase;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
+use smash::phx::Hash40;
 use smash::app::*;
+use smash_script::*;
 
 pub unsafe fn jump_cancel_check(module_accessor: *mut BattleObjectModuleAccessor) {
     if AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -25,5 +28,14 @@ pub unsafe fn wall_jump_check(module_accessor: *mut BattleObjectModuleAccessor) 
         || ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
             StatusModule::change_status_request_from_script(module_accessor, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
         }
+    }
+}
+
+pub unsafe fn critical_zoom(agent: &mut L2CAgentBase, rate : u8, frames : f32, zoom : f32) {
+    if !SoundModule::is_playing(agent.module_accessor, Hash40::new("se_common_finishhit")) {
+        macros::EFFECT(agent, Hash40::new("sys_bg_criticalhit"),Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        SlowModule::set_whole(agent.module_accessor, rate, 0);
+        macros:: CAM_ZOOM_IN_arg5(agent, frames, 0.0, zoom, 0.0, 0.0);
+        macros::PLAY_SE(agent, Hash40::new("se_common_criticalhit"));
     }
 }

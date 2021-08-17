@@ -60,9 +60,33 @@ unsafe fn tantan_beam_bigshoot(weapon: &mut L2CAgentBase) {
     }
 }
 
+// #[acmd_script( agent = "tantan_ring", script = "game_attackfly", category = ACMD_GAME, low_priority )]
+// unsafe fn tantan_ring_attackfly(weapon: &mut L2CAgentBase) {
+//     frame(weapon.lua_state_agent, 1.0);
+//     if macros::is_excute(weapon) {
+//         macros::ATTACK(weapon, 0, 0, Hash40::new("cakram1"), 2.5, 30, 85, 0, 35, 3.0, 0.0, 2.0, 0.0, Some(0.0), Some(-2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TANTAN_PUNCH03, *ATTACK_REGION_OBJECT);
+//         AttackModule::enable_safe_pos(weapon.module_accessor);
+//     }
+//     if !WorkModule::is_flag(weapon.module_accessor, *WEAPON_TANTAN_RING_INSTANCE_WORK_ID_FLAG_IS_AIR) {
+//         if !WorkModule::is_flag(weapon.module_accessor, *WEAPON_TANTAN_RING_INSTANCE_WORK_ID_FLAG_IS_LONG) {
+//             frame(weapon.lua_state_agent, 9.0);
+//         }
+//     }
+//     else if !WorkModule::is_flag(weapon.module_accessor, *WEAPON_TANTAN_RING_INSTANCE_WORK_ID_FLAG_IS_LONG) {
+//         frame(weapon.lua_state_agent, 11.0);
+//     }
+//     else {
+//         frame(weapon.lua_state_agent, 9.0);
+//     }
+//     if macros::is_excute(weapon) {
+//         AttackModule::clear_all(weapon.module_accessor);
+//     }
+// }
+
 pub fn install() {
     smashline::install_acmd_scripts!(
         tantan_usmash,
-        tantan_beam_bigshoot
+        tantan_beam_bigshoot,
+        // tantan_ring_attackfly
     );
 }

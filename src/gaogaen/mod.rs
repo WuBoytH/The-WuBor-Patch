@@ -9,6 +9,7 @@ use smash_script::*;
 use smashline::*;
 use smash::phx::Vector3f;
 use crate::commonfuncs::*;
+use crate::gameplay::*;
 use crate::vars::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
@@ -35,10 +36,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && REVENGE[entry_id(fighter.module_accessor)] > 0
         && REVENGE[entry_id(fighter.module_accessor)] < 3
         && AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) >= 20.0 {
-            macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"),Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            SlowModule::set_whole(fighter.module_accessor, 2, 0);
-            macros:: CAM_ZOOM_IN_arg5(fighter, 2.0, 0.0, 1.2, 0.0, 0.0);
-            macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+            critical_zoom(fighter, 2, 2.0, 1.5);
             REVENGE[entry_id(fighter.module_accessor)] = 3;
         }
     }

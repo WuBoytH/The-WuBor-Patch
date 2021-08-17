@@ -1,10 +1,9 @@
-use smash::phx::Hash40;
-use smash::phx::{Vector3f, Vector2f};
-use smash::lua2cpp::L2CAgentBase;
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    phx::{Hash40, Vector3f, Vector2f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
 

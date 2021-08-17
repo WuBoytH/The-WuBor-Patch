@@ -1,17 +1,17 @@
-use smash::phx::Hash40;
-use smash::hash40;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    phx::Hash40,
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::{lua_const::*, L2CValue}
+};
 use smash_script::*;
 use smashline::*;
-// use crate::ITEM_MANAGER;
-use crate::commonfuncs::*;
-use crate::globals::*;
-use crate::vars::*;
-use smash::lib::L2CValue;
+use crate::{
+    commonfuncs::*,
+    globals::*,
+    vars::*
+};
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn donkey_specials(fighter: &mut L2CFighterCommon) -> L2CValue {

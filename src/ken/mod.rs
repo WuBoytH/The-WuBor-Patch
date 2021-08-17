@@ -1,18 +1,17 @@
-use smash::phx::Hash40;
-use smash::hash40;
-use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    phx::{Hash40, Vector3f, Vector2f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::{lua_const::*, L2CValue}
+};
 use smash_script::*;
 use smashline::*;
-use smash::phx::Vector3f;
-use smash::phx::Vector2f;
-use smash::lib::L2CValue;
-use crate::commonfuncs::*;
-use crate::globals::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    globals::*,
+    vars::*
+};
 
 // Notes:
 // vc_ken_special_l01 is "I hit my boiling point!"

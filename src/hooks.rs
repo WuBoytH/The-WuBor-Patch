@@ -1,17 +1,17 @@
-// use smash::phx::*;
-use smash::hash40;
-// use smash::phx::Hash40;
-use smash::lib::L2CValue;
-use smash::lib::L2CAgent;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::app::*;
-use smash::app::FighterManager;
-use skyline::hooks::{getRegionAddress, Region};
-// use skyline::nn::ro::LookupSymbol;
-use crate::commonfuncs::*;
-use crate::vars::*;
-use crate::lucina::shadow_id;
+use smash::{
+    hash40,
+    app::{lua_bind::*, FighterManager, *},
+    lib::{lua_const::*, L2CValue, L2CAgent}
+};
+use crate::{
+    commonfuncs::*,
+    vars::*,
+    lucina::shadow_id
+};
+use skyline::hooks::{
+    getRegionAddress,
+    Region
+};
 
 macro_rules! c_str {
     ($l:tt) => {

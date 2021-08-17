@@ -1,15 +1,11 @@
-use smash::phx::Hash40;
-// use smash::hash40;
-use smash::lua2cpp::L2CAgentBase;
-// use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    phx::Hash40,
+    app::{lua_bind::*, sv_animcmd::*/*, **/},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-// use smash::phx::Vector3f;
-// use smash::phx::Vector2f;
-// use crate::commonfuncs::*;
 
 #[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn samus_uspecial(fighter: &mut L2CAgentBase) {

@@ -1,14 +1,11 @@
-use smash::phx::Hash40;
-// use smash::hash40;
-use smash::phx::Vector3f;
-use smash::lua2cpp::{L2CAgentBase/*, L2CFighterCommon*/};
-// use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    phx::{Hash40, Vector3f},
+    app::{lua_bind::*, sv_animcmd::*/*, **/},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-// use crate::commonfuncs::*;
 
 #[acmd_script( agent = "pit", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn pit_ftilt(fighter: &mut L2CAgentBase) {

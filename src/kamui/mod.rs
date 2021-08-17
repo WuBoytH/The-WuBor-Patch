@@ -1,19 +1,17 @@
-use smash::phx::Hash40;
-// use smash::hash40;
-use smash::phx::Vector3f;
-use smash::lua2cpp::{L2CFighterCommon, L2CAgentBase};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::lib::L2CValue;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    phx::{Hash40, Vector3f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::{lua_const::*, L2CValue}
+};
 use smash_script::*;
 use smashline::*;
-// use crate::system::IS_FUNNY;
-use crate::globals::*;
-use crate::commonfuncs::*;
-use crate::gameplay::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    globals::*,
+    gameplay::*,
+    vars::*
+};
 
 // pub unsafe fn mask_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
 //     if [

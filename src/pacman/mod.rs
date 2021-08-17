@@ -1,13 +1,10 @@
-// use smash::phx::Hash40;
-// use smash::hash40;
-use smash::lua2cpp::L2CAgentBase;
-// use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    app::{lua_bind::*, sv_animcmd::*/*, **/},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-// use crate::commonfuncs::*;
 
 #[acmd_script( agent = "pacman", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
 unsafe fn pacman_uspecialstart(fighter: &mut L2CAgentBase) {

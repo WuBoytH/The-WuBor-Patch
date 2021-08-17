@@ -1,14 +1,16 @@
-use smash::phx::Hash40;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-// use smash::app::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    phx::Hash40,
+    app::{lua_bind::*/*, sv_animcmd::*, **/},
+    lib::{lua_const::*, L2CValue}
+};
 use smash_script::*;
 use smashline::*;
-use smash::lib::L2CValue;
-use crate::globals::*;
-use crate::commonfuncs::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    globals::*,
+    vars::*
+};
 
 #[status_script(agent = "purin", status = FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn purin_specialnhitend(fighter: &mut L2CFighterCommon) -> L2CValue {

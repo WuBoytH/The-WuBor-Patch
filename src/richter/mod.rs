@@ -1,13 +1,15 @@
-use smash::phx::Hash40;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    phx::Hash40,
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-use crate::commonfuncs::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    vars::*
+};
 
 #[fighter_frame( agent = FIGHTER_KIND_RICHTER )]
 fn richter_frame(fighter: &mut L2CFighterCommon) {

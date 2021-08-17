@@ -1,17 +1,16 @@
-use smash::phx::Hash40;
-use smash::hash40;
-use smash::phx::Vector3f;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::lib::L2CValue;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    phx::{Hash40, Vector3f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::{lua_const::*, L2CValue}
+};
 use smash_script::*;
 use smashline::*;
-use crate::globals::*;
-// use crate::commonfuncs::*;
-use crate::vars::*;
+use crate::{
+    globals::*,
+    vars::*
+};
 
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pitb_specialncharge_main(fighter: &mut L2CFighterCommon) -> L2CValue {

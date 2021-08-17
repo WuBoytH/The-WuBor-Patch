@@ -1,8 +1,9 @@
-use smash::lua2cpp::L2CAgentBase;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::phx::Hash40;
-use smash::app::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    phx::Hash40,
+    app::{lua_bind::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 
 pub unsafe fn jump_cancel_check(module_accessor: *mut BattleObjectModuleAccessor) {

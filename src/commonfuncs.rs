@@ -1,6 +1,7 @@
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::app::*;
+use smash::{
+    app::{lua_bind::*, *},
+    lib::lua_const::*
+};
 
 pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)

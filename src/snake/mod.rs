@@ -1,12 +1,11 @@
-use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    phx::{Hash40, Vector3f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-use smash::phx::Vector3f;
 
 #[acmd_script( agent = "snake", script = "game_attacks3s2", category = ACMD_GAME, low_priority )]
 unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {

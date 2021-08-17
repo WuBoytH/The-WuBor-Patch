@@ -1,13 +1,11 @@
-// use smash::phx::Hash40;
-use smash::hash40;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-// use crate::commonfuncs::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_REFLET )]
 fn reflet_frame(fighter: &mut L2CFighterCommon) {

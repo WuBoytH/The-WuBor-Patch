@@ -88,6 +88,9 @@ pub static mut FEINT : [bool; 8] = [false; 8];
 // Wario
 pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
 
+// Toon Link
+pub static mut SPIN_SPEED : [f32; 8] = [0.0; 8];
+
 // Lucario
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
 

@@ -1,17 +1,16 @@
-use smash::phx::Hash40;
-// use smash::hash40;
-use smash::lua2cpp::{/*L2CFighterBase, */L2CAgentBase, L2CFighterCommon};
-// use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-// use smash::lib::L2CValue;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    phx::{Hash40, Vector3f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-//use smash::phx::Vector3f;
-use crate::commonfuncs::*;
-use crate::vars::*;
-// use crate::globals::*;
+use crate::{
+    commonfuncs::*,
+    vars::*
+};
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
@@ -19,18 +18,31 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 
         // Toon Link can now move during his grounded Spin Attack.
 
-        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_hi") {
-            if MotionModule::frame(fighter.module_accessor) > 6.0 && MotionModule::frame(fighter.module_accessor) < 46.0 {
-                let stickx = ControlModule::get_stick_x(fighter.module_accessor);
-                let lr = PostureModule::lr(fighter.module_accessor);
-                let speed : f32;
+        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_hi")
+        && WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME) >= WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32 {
+            if MotionModule::frame(fighter.module_accessor) > 46.0 {
+                macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            }
+            else if MotionModule::frame(fighter.module_accessor) > 6.0 {
+                let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
+                SPIN_SPEED[entry_id(fighter.module_accessor)] += 0.07 * stickx;
+                if IS_FUNNY[entry_id(fighter.module_accessor)]
+                && SPIN_SPEED[entry_id(fighter.module_accessor)] > 3.0 {
+                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
+                }
+                else if SPIN_SPEED[entry_id(fighter.module_accessor)] > 1.56 {
+                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 1.56;
+                }
+                let speed = SPIN_SPEED[entry_id(fighter.module_accessor)];
+                macros::SET_SPEED_EX(fighter, speed, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            }
+            else {
                 if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                    speed = 3.0;
+                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
                 }
                 else {
-                    speed = 1.56;
+                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 1.56;
                 }
-                macros::SET_SPEED_EX(fighter, lr * speed * stickx, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }
     }
@@ -109,6 +121,99 @@ unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "toonlink", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+unsafe fn toonlink_dthrow(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 150, 70, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+        macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
+    }
+    frame(fighter.lua_state_agent, 22.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 150, 0, 60, 5.0, 0.0, 2.4, 7.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ELBOW);
+        AttackModule::set_catch_only_all(fighter.module_accessor, true, false);
+    }
+    frame(fighter.lua_state_agent, 23.0);
+    macros::FT_MOTION_RATE(fighter, 0.6186);
+    if macros::is_excute(fighter) {
+        macros::CHECK_FINISH_CAMERA(fighter, -6, 4);
+        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 0.0, y: 0.0, z: 0.0});
+    }
+    frame(fighter.lua_state_agent, 24.0);
+    if macros::is_excute(fighter) {
+        macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
+    }
+}
+
+#[acmd_script( agent = "toonlink", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+unsafe fn toonlink_nair(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("sword2"), 8.5, 361, 100, 0, 20, 4.0, 4.3, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("sword2"), 8.5, 361, 100, 0, 20, 4.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("arml"), 8.5, 361, 100, 0, 20, 4.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("colonellm"), 8.5, 361, 100, 0, 20, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("sword2"), 7.0, 361, 100, 0, 20, 4.0, 4.3, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("sword2"), 7.0, 361, 100, 0, 20, 4.5, 0.0, 0.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("arml"), 7.0, 361, 100, 0, 20, 4.5, -0.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("colonellm"), 7.0, 361, 100, 0, 20, 2.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 39.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "toonlink", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+unsafe fn toonlink_uair(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    macros::FT_MOTION_RATE(fighter, 0.5);
+    frame(fighter.lua_state_agent, 11.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("sword2"), 14.0, 80, 95, 0, 25, 4.6, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("sword2"), 14.0, 80, 95, 0, 25, 5.2, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("arml"), 14.0, 80, 95, 0, 25, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+    }
+    wait(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        macros::ATK_POWER(fighter, 0, 11.0);
+        macros::ATK_POWER(fighter, 1, 11.0);
+        macros::ATK_POWER(fighter, 2, 11.0);
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    macros::FT_MOTION_RATE(fighter, 0.2);
+    frame(fighter.lua_state_agent, 35.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 41.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    wait(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
 #[acmd_script( agent = "toonlink", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_nspecialstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -157,6 +262,9 @@ pub fn install() {
     // );
     smashline::install_acmd_scripts!(
         toonlink_dashattack,
+        toonlink_dthrow,
+        toonlink_nair,
+        toonlink_uair,
         toonlink_nspecialstart,
         toonlink_bowarrow_fly,
         toonlink_boomerang_fly,

@@ -1,13 +1,15 @@
-use smash::phx::Hash40;
-use smash::lua2cpp::L2CAgentBase;
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::L2CAgentBase,
+    phx::Hash40,
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-use crate::commonfuncs::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    vars::*
+};
 
 #[acmd_script( agent = "yoshi", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn yoshi_ftilt(fighter: &mut L2CAgentBase) {

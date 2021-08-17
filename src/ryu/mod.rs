@@ -1,4 +1,4 @@
-use smash::phx::Hash40;
+use smash::phx::{Hash40, Vector3f, Vector2f};
 use smash::hash40;
 use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
 use smash::app::*;
@@ -7,8 +7,6 @@ use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
 use smash_script::*;
 use smashline::*;
-use smash::phx::Vector3f;
-use smash::phx::Vector2f;
 use crate::commonfuncs::*;
 use crate::gameplay::*;
 use crate::vars::*;

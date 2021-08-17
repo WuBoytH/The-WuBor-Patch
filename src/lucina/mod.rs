@@ -1,19 +1,18 @@
-use smash::lib::lua_const::*;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::lua_bind::*;
-use smash::hash40;
-use smash::app::*;
-use smash::app::sv_animcmd::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    phx::{Hash40, Vector3f, Vector2f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::{lua_const::*, L2CValue}
+};
 use smash_script::*;
 use smashline::*;
-use smash::phx::Hash40;
-use smash::phx::Vector3f;
-use smash::phx::Vector2f;
-use smash::lib::L2CValue;
-use crate::commonfuncs::*;
-use crate::globals::*;
-use crate::gameplay::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    globals::*,
+    gameplay::*,
+    vars::*
+};
 
 // For article stuff
 // if macros::is_excute(fighter) {

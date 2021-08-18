@@ -216,6 +216,19 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
         // Fighter-Specific Param Edits
+        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE {
+            if (StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DASH
+            || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_TURN_DASH
+            || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_DASH_BACK
+            || StatusModule::status_kind(boma) == *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK
+            || StatusModule::status_kind(boma) == *FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
+            && MotionModule::frame(boma) <= 5.0 {
+                return false;
+            }
+            else {
+                return ret;
+            }
+        }
         
         if fighter_kind == *FIGHTER_KIND_ROCKMAN && entry_id(boma) < 8 {
             if IS_FUNNY[entry_id(boma)] {
@@ -312,7 +325,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         if fighter_kind == *FIGHTER_KIND_KIRBY && entry_id(boma) < 8 {
-            if SLIDE_BOUNCE[entry_id(boma)] {
+            if BOUNCE[entry_id(boma)] {
                 return false;
             }
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {

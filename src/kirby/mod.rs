@@ -32,14 +32,14 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_lw3") {
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                 macros::EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-                SLIDE_BOUNCE[entry_id(fighter.module_accessor)] = true;
+                BOUNCE[entry_id(fighter.module_accessor)] = true;
                 StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
                 GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
                 macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
         }
-        if SLIDE_BOUNCE[entry_id(fighter.module_accessor)]
+        if BOUNCE[entry_id(fighter.module_accessor)]
         && MotionModule::motion_kind(fighter.module_accessor) != hash40("jump_b") {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 1.0, false, 0.0, false, false);
             macros::SET_SPEED_EX(fighter, -1.0, 1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -47,7 +47,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         else if (MotionModule::motion_kind(fighter.module_accessor) == hash40("jump_b")
         && MotionModule::frame(fighter.module_accessor) >= 30.0)
         || MotionModule::motion_kind(fighter.module_accessor) != hash40("jump_b") {
-            SLIDE_BOUNCE[entry_id(fighter.module_accessor)] = false;
+            BOUNCE[entry_id(fighter.module_accessor)] = false;
         }
 
         // Teleport Handler

@@ -114,6 +114,19 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 }
             }
         }
+
+        // Shielding... DURING DASH?????
+
+        if (status == *FIGHTER_STATUS_KIND_DASH
+        || status == *FIGHTER_STATUS_KIND_TURN_DASH
+        || status == *FIGHTER_RYU_STATUS_KIND_DASH_BACK
+        || status == *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK
+        || status == *FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
+        && MotionModule::frame(fighter.module_accessor) <= 5.0 {
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_GUARD_ON, true);
+            }
+        }
         
         // Platform Dropping while in shield.
 

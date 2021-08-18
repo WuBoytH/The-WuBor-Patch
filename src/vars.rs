@@ -21,6 +21,7 @@ pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
 pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
+pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;
@@ -66,12 +67,6 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 
 // Character Specific
 
-// Kirby
-pub static mut SLIDE_BOUNCE : [bool; 8] = [false; 8];
-
-// Dark Samus
-pub static mut BOUNCE : [bool; 8] = [false; 8];
-
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
 
@@ -90,6 +85,7 @@ pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
 
 // Toon Link
 pub static mut SPIN_SPEED : [f32; 8] = [0.0; 8];
+pub static mut BOUNCE_HELPER : [f32; 8] = [0.0; 8];
 
 // Lucario
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
@@ -208,8 +204,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         QCB[id] = 0;
         CANCEL[id] = false;
         IS_DK[id] = false;
-
-        SLIDE_BOUNCE[id] = false;
 
         BOUNCE[id] = false;
 

@@ -25,13 +25,13 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
             }
             else if MotionModule::frame(fighter.module_accessor) > 6.0 {
                 let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
-                SPIN_SPEED[entry_id(fighter.module_accessor)] += 0.07 * stickx;
+                SPIN_SPEED[entry_id(fighter.module_accessor)] += 0.1 * stickx;
                 if IS_FUNNY[entry_id(fighter.module_accessor)]
                 && SPIN_SPEED[entry_id(fighter.module_accessor)] > 3.0 {
                     SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
                 }
-                else if SPIN_SPEED[entry_id(fighter.module_accessor)] > 1.56 {
-                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 1.56;
+                else if SPIN_SPEED[entry_id(fighter.module_accessor)] > 2.0 {
+                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 2.0;
                 }
                 let speed = SPIN_SPEED[entry_id(fighter.module_accessor)];
                 macros::SET_SPEED_EX(fighter, speed, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -41,8 +41,31 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
                     SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
                 }
                 else {
-                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 1.56;
+                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 2.0;
                 }
+            }
+        }
+
+        // Down Air Bounce
+
+        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("attack_air_lw"){
+            if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                BOUNCE[entry_id(fighter.module_accessor)] = true;
+                BOUNCE_HELPER[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
+            }
+        }
+        if BOUNCE[entry_id(fighter.module_accessor)] {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_SET_ATTACK);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+            KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+            let speedx = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            macros::SET_SPEED_EX(fighter, speedx, 1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+            let posy = PostureModule::pos_y(fighter.module_accessor);
+            if posy > BOUNCE_HELPER[entry_id(fighter.module_accessor)] + 3.0 {
+                BOUNCE[entry_id(fighter.module_accessor)] = false;
             }
         }
     }
@@ -214,6 +237,70 @@ unsafe fn toonlink_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "toonlink", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+unsafe fn toonlink_dair(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        macros::SET_SPEED_EX(fighter, 0, 1.6, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_DAMAGE_FLY {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        }
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(fighter.lua_state_agent, 17.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        macros::SET_SPEED_EX(fighter, 0, -3.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_SET_ATTACK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 268, 60, 0, 30, 5.5, 1.0, -1.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+    }
+    wait(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 50, 98, 0, 40, 5.0, 1.0, -1.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+    }
+    frame(fighter.lua_state_agent, 65.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_SET_ATTACK);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(fighter.lua_state_agent, 71.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+}
+
+#[acmd_script( agent = "toonlink", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn toonlink_daireff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, -8, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+	    macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("toonlink_sword"), Hash40::new("sword1"), -0.03, 0.05, 0, 0, 0, -0.87, 1.01, true);
+	    macros::EFFECT_FOLLOW(fighter, Hash40::new("toonlink_sword_flare"), Hash40::new("sword1"), -0.03, 0.05, 0, 0, 0, -0.87, 1.01, true);
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    for _ in 0..17 {
+        if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            if macros::is_excute(fighter) {
+                macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 3, 0, -90, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, true);
+            }
+        }
+        wait(fighter.lua_state_agent, 3.0);
+    }
+}
+
 #[acmd_script( agent = "toonlink", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_nspecialstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -265,6 +352,8 @@ pub fn install() {
         toonlink_dthrow,
         toonlink_nair,
         toonlink_uair,
+        toonlink_dair,
+        toonlink_daireff,
         toonlink_nspecialstart,
         toonlink_bowarrow_fly,
         toonlink_boomerang_fly,

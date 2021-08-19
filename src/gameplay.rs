@@ -5,10 +5,17 @@ use smash::{
     lib::lua_const::*
 };
 use smash_script::*;
+use crate::{
+    commonfuncs::*,
+    vars::*
+};
 
 pub unsafe fn jump_cancel_check(module_accessor: *mut BattleObjectModuleAccessor) {
+    if AttackModule::is_infliction(module_accessor, *COLLISION_KIND_MASK_HIT) {
+        JUMP_CANCEL_HELPER[entry_id(module_accessor)] = MotionModule::frame(module_accessor);
+    }
     if AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT)
-    && !AttackModule::is_infliction(module_accessor, *COLLISION_KIND_MASK_HIT)
+    && MotionModule::frame(module_accessor) > JUMP_CANCEL_HELPER[entry_id(module_accessor)] + 1.0
     && ((ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
     && ControlModule::is_enable_flick_jump(module_accessor))
     || ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0) {

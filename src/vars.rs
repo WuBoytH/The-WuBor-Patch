@@ -22,6 +22,7 @@ pub static mut QCB : [i32; 8] = [0; 8];
 pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
+pub static mut JUMP_CANCEL_HELPER : [f32; 8] = [0.0; 8];
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;

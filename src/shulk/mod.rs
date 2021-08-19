@@ -71,13 +71,13 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         }
         if _TIME_COUNTER[entry_id(fighter.module_accessor)] > 0 {
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = _TIME_COUNTER[entry_id(fighter.module_accessor)] - 1;
-        }
-        else if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
-            let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-            let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-            let countereff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-            EffectModule::set_rgb(fighter.module_accessor, countereff, 0.0, 5.0, 5.0);
+            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
+                _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
+                let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                let countereff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                EffectModule::set_rgb(fighter.module_accessor, countereff, 0.0, 5.0, 5.0);
+            }
         }
         else{
             SHULK_SPECIAL_LW[entry_id(fighter.module_accessor)] = false;

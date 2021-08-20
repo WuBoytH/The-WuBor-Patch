@@ -276,7 +276,7 @@ unsafe fn samusd_utilteffect(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 3, 17, 0, 1.7, -0, 135, 1.25, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 3, 16, -1, 1.7, -0, 135, 1.0, true);
         // macros::LAST_EFFECT_SET_RATE(fighter, 0.3);
     }
     frame(fighter.lua_state_agent, 22.0);

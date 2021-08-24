@@ -399,11 +399,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 TATSULOOPS[entry_id(boma)][2] = 3;
                 return 3;
             }
-            else if param_hash == hash40("fall_frame") {
-                if SHORYUREPPA[entry_id(boma)] == 1 {
-                    return 15;
-                }
-            }
         }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             if param_hash == hash40("circle_menu_release_after_interval_frame") {
@@ -508,22 +503,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         || param_type == hash40("landing_attack_air_frame_lw") {
             if AIR_WHIFF[entry_id(boma)] {
                 return ret + 3.0;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_CLOUD { // Limit Shenanigans
-            if IS_FUNNY[entry_id(boma)] {
-                if param_hash == hash40("lw2_spd_x_mul") {
-                    return 0.6;
-                }
-                else if param_hash == hash40("lw2_spd_y_mul") {
-                    return 0.6;
-                }
-                else if param_hash == hash40("lw2_accel_y") {
-                    return 0.06;
-                }
-                else if param_hash == hash40("lw2_speed_max_y") {
-                    return 1.2;
-                }
             }
         }
         else if fighter_kind == *FIGHTER_KIND_SHULK {

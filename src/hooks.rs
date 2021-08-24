@@ -510,11 +510,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 return ret + 3.0;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_BAYONETTA { // Limit Shenanigans
-            if param_hash == hash40("ab_u_motion_speed_mul") {
-                return 0.75;
-            }
-        }
         else if fighter_kind == *FIGHTER_KIND_CLOUD { // Limit Shenanigans
             if IS_FUNNY[entry_id(boma)] {
                 if param_hash == hash40("lw2_spd_x_mul") {

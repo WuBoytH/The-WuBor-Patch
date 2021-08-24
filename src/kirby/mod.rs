@@ -226,10 +226,10 @@ unsafe fn kirby_ganonspecialsnd(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         kirby_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         kirby_dtilt,
         kirby_dtilteff,
         kirby_uair,

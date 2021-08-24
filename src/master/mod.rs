@@ -302,7 +302,7 @@ unsafe fn master_dspecialair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         master_ftilt,
         master_dtilt,
         master_sword_dtilt,

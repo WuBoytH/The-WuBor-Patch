@@ -33,7 +33,7 @@ unsafe fn mariod_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         mariod_uspecial
     );
 }

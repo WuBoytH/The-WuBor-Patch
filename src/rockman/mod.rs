@@ -61,10 +61,10 @@ unsafe fn rockman_rockbuster_shoot(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         rockman_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         rockman_rockbuster_shoot
     );
 }

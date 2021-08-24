@@ -40,7 +40,7 @@ unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         jack_dspecial,
         jack_dspecialcounter
     );

@@ -118,10 +118,10 @@ unsafe fn wario_dspecialfly(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         wario_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         wario_dspecials,
         wario_dspecialm,
         wario_dspeciall,

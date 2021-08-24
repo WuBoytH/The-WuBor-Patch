@@ -190,7 +190,7 @@ unsafe fn metaknight_nspecialspin(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         metaknight_dashattack,
         metaknight_utilt,
         metaknight_dtilt,

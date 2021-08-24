@@ -114,10 +114,10 @@ unsafe fn daisy_sideb(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         daisy_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         daisy_jab2,
         daisy_ftilt,
         daisy_utilt,

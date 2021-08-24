@@ -353,13 +353,13 @@ unsafe fn toonlink_boomerang_turn(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         toonlink_frame
     );
-    // smashline::install_status_scripts!(
+    // install_status_scripts!(
     //     toonlink_boomerang_fly_main
     // );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         toonlink_dashattack,
         toonlink_dthrow,
         toonlink_nair,

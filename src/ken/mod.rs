@@ -1326,14 +1326,14 @@ unsafe fn ken_hadokens(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         ken_frame
     );
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         ken_speciallw_init,
         ken_speciallw_main
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         ken_run,
         ken_ftiltwnp,
         ken_attackcommand3,

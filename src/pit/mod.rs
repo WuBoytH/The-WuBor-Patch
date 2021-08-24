@@ -79,7 +79,7 @@ unsafe fn pit_sspecialendair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         pit_ftilt,
         pit_nair,
         pit_sspecialend,

@@ -236,7 +236,7 @@ unsafe fn snake_cypher(_fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         snake_ftilt2,
         snake_utilt,
         snake_dtilt,

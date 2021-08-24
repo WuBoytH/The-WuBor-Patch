@@ -83,7 +83,7 @@ unsafe fn tantan_beam_bigshoot(weapon: &mut L2CAgentBase) {
 // }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         tantan_usmash,
         tantan_beam_bigshoot,
         // tantan_ring_attackfly

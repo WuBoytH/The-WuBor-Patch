@@ -292,7 +292,7 @@ unsafe fn miisword_uspecial3air(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         miisword_utilt,
         miisword_usmash,
         miisword_nair,

@@ -51,7 +51,7 @@ unsafe fn gamewatch_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         gamewatch_uspecial
     );
 }

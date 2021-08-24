@@ -152,8 +152,7 @@ move_type_again: bool) -> u64 {
         && d_entry_id < 8 {
             if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
             || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
-            && MotionModule::frame(defender_boma) >= 8.0
-            && MotionModule::frame(defender_boma) <= 27.0 {
+            && REVENGE[d_entry_id] == 1 {
                 REVENGE[d_entry_id] = 2;
                 if PostureModule::pos_x(defender_boma) < PostureModule::pos_x(attacker_boma)
                 && PostureModule::lr(defender_boma) == 1.0 {
@@ -511,7 +510,11 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 return ret + 3.0;
             }
         }
-
+        else if fighter_kind == *FIGHTER_KIND_BAYONETTA { // Limit Shenanigans
+            if param_hash == hash40("ab_u_motion_speed_mul") {
+                return 0.75;
+            }
+        }
         else if fighter_kind == *FIGHTER_KIND_CLOUD { // Limit Shenanigans
             if IS_FUNNY[entry_id(boma)] {
                 if param_hash == hash40("lw2_spd_x_mul") {

@@ -699,10 +699,10 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
 // }
 
 pub fn install() {
-    // smashline::install_agent_frames!(
+    // install_agent_frames!(
     //     dolly_frame
     // );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         dolly_nspecial,
         dolly_nspecialair,
         dolly_dspecialair,

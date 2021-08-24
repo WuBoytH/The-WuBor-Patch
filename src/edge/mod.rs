@@ -88,10 +88,10 @@ unsafe fn edge_bair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         edge_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         edge_bair
     );
 }

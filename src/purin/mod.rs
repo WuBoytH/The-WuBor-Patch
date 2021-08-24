@@ -41,10 +41,10 @@ unsafe fn purin_shieldbreak(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         purin_specialnhitend
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         purin_shieldbreak
     );
 }

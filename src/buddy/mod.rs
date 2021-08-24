@@ -73,7 +73,7 @@ unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         buddy_nair,
         buddy_uair
     );

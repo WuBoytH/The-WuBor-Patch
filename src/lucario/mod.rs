@@ -265,10 +265,10 @@ unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    // smashline::install_agent_frames!(
+    // install_agent_frames!(
     //     lucario_frame
     // );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         lucario_jab3,
         lucario_dashattack,
         lucario_utilt,

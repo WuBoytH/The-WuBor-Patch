@@ -159,7 +159,7 @@ unsafe fn yoshi_tamago_burst(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         yoshi_ftilt,
         yoshi_ftilthi,
         yoshi_ftiltlw,

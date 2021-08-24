@@ -130,7 +130,7 @@ unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         diddy_usmash,
         diddy_dspecial
     );

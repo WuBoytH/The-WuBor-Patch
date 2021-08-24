@@ -16,6 +16,7 @@ pub unsafe fn jump_cancel_check(module_accessor: *mut BattleObjectModuleAccessor
     }
     if AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT)
     && MotionModule::frame(module_accessor) > JUMP_CANCEL_HELPER[entry_id(module_accessor)] + 1.0
+    && MotionModule::frame(module_accessor) <= JUMP_CANCEL_HELPER[entry_id(module_accessor)] + 10.0
     && ((ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
     && ControlModule::is_enable_flick_jump(module_accessor))
     || ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0) {
@@ -36,6 +37,13 @@ pub unsafe fn wall_jump_check(module_accessor: *mut BattleObjectModuleAccessor) 
         || ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
             StatusModule::change_status_request_from_script(module_accessor, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
         }
+    }
+}
+
+pub unsafe fn dash_cancel_check(module_accessor: *mut BattleObjectModuleAccessor) {
+    if AttackModule::is_infliction_status(module_accessor, *COLLISION_KIND_MASK_HIT)
+    && ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
+        StatusModule::change_status_request_from_script(module_accessor, *FIGHTER_STATUS_KIND_DASH, true);
     }
 }
 

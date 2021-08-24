@@ -164,10 +164,10 @@ unsafe fn littlemac_uspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         littlemac_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         littlemac_nair,
         littlemac_fair,
         littlemac_uair,

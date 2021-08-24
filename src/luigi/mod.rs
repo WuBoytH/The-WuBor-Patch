@@ -428,13 +428,13 @@ unsafe fn luigi_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         luigi_frame
     );
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         luigi_specialscharge
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         luigi_utilt,
         luigi_dtilt,
         luigi_nair,

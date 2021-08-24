@@ -153,7 +153,7 @@ unsafe fn palutena_bthrow(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         palutena_dtilt,
         palutena_nair,
         palutena_bair,

@@ -498,12 +498,12 @@ unsafe fn pitb_dspecialhold(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         pitb_specialncharge_main,
         pitb_specialnturn_main,
         pitb_specialnshoot_end
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         pitb_ftilt,
         pitb_dtilt,
         pitb_dthrow,

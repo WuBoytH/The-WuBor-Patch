@@ -269,10 +269,10 @@ unsafe fn shulk_counterforward(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         shulk_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         shulk_jab1,
         shulk_dsmash,
         shulk_sspecial,
@@ -280,5 +280,4 @@ pub fn install() {
         shulk_counterattack,
         shulk_counterforward
     );
-    // skyline::install_hook!(shulk_is_enable_transition_term_replace);
 }

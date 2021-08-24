@@ -121,7 +121,7 @@ unsafe fn sheik_fair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         sheik_ftilt,
         sheik_utilt,
         sheik_dtilt,

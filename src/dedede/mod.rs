@@ -211,10 +211,10 @@ unsafe fn dedede_dspecialmax(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         dedede_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         dedede_jab1,
         dedede_utilt,
         dedede_dtilt,

@@ -1,7 +1,10 @@
-use smash::lua2cpp::{/*L2CFighterBase, */L2CFighterCommon};
-use smash::phx::Vector3f;
-use smash::app::*;
-// use smash::lib::lua_const::*;
+use smash::{
+    lua2cpp::{/*L2CFighterBase, */L2CFighterCommon},
+    phx::Vector3f,
+    app::*
+    // use smash::lib::lua_const::*
+};
+use smashline::*;
 use crate::commonfuncs::*;
 
 // Common
@@ -144,6 +147,9 @@ pub static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
 // pub static mut SET_DRAGON_OFF : [bool; 8] = [true; 8];
 // pub static mut SPECIAL_DRAGON : [bool; 8] = [false; 8];
 
+// Bayonetta
+pub static mut DASH : [bool; 8] = [false; 8];
+
 // Incineroar
 pub static mut REVENGE : [i32; 8] = [0; 8];
 
@@ -180,14 +186,14 @@ pub static mut IS_ROMAN_MOVE : [bool; 8] = [false; 8];
 pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
 pub static mut SP_FLASH : [i32; 8] = [0; 8];
 pub static mut START_SITUATION : [i32; 8] = [0; 8];
-pub const SP_1 : Vector3f = Vector3f{x: -6.0, y: 22.0, z: -6.0};
-pub const SP_2 : Vector3f = Vector3f{x: -2.0, y: 22.0, z: -2.0};
-pub const SP_3 : Vector3f = Vector3f{x: 2.0, y: 22.0, z: 2.0};
-pub const SP_4 : Vector3f = Vector3f{x: 6.0, y: 22.0, z: 6.0};
-pub const SP_5 : Vector3f = Vector3f{x: -2.0, y: 27.0, z: -2.0};
-pub const SP_6 : Vector3f = Vector3f{x: 2.0, y: 27.0, z: 2.0};
+pub const SP_1 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -6.0};
+pub const SP_2 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -2.0};
+pub const SP_3 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 2.0};
+pub const SP_4 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 6.0};
+pub const SP_5 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: -2.0};
+pub const SP_6 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: 2.0};
 
-#[smashline::fighter_reset]
+#[fighter_reset]
 fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = &mut *fighter.module_accessor;
@@ -269,7 +275,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    smashline::install_agent_resets!(
+    install_agent_resets!(
         fighter_reset
     );
 }

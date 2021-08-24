@@ -712,10 +712,10 @@ unsafe fn gaogaen_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         gaogaen_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         gaogaen_fsmash,
         gaogaen_usmash,
         gaogaen_nair,

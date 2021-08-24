@@ -908,17 +908,17 @@ unsafe fn ganon_dspecialair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         ganon_frame
     );
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         ganon_sspecialaircatch_main,
         ganon_sspecialairend_pre,
         ganon_sspecialairend_main,
         common_status_catchedairganon_main,
         common_status_catchedairendganon_main
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         ganon_jab,
         ganon_dashattack,
         ganon_ftilt,

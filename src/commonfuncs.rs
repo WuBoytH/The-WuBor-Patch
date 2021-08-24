@@ -5,6 +5,8 @@ use smash::{
 
 pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
+    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+    || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
     || [
         *FIGHTER_STATUS_KIND_DAMAGE,
         *FIGHTER_STATUS_KIND_DAMAGE_AIR,

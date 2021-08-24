@@ -204,7 +204,7 @@ unsafe fn duckhunt_clay_fly(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         duckhunt_utilt,
         duckhunt_dtilt,
         duckhunt_fsmash,

@@ -28,7 +28,7 @@ unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         cloud_grab
     );
 }

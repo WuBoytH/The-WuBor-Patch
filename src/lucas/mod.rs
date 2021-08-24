@@ -61,7 +61,7 @@ unsafe fn lucas_dthrow(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         lucas_nair,
         lucas_dthrow
     );

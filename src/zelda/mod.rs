@@ -215,7 +215,7 @@ unsafe fn zelda_sspecialend(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         zelda_dtilt,
         zelda_dashattack,
         zelda_dsmash,

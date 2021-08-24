@@ -1924,15 +1924,15 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         kamui_frame
     );
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         kamui_speciallwpre,
         kamui_speciallw,
         kamui_speciallwend
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         // kamui_utauntexp,
         kamui_jab2,
         kamui_jab3,

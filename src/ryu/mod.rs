@@ -1,15 +1,17 @@
-use smash::phx::{Hash40, Vector3f, Vector2f};
-use smash::hash40;
-use smash::lua2cpp::{L2CAgentBase, L2CFighterCommon};
-use smash::app::*;
-use smash::app::sv_animcmd::*;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
+use smash::{
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
+    phx::{Hash40, Vector3f, Vector2f},
+    app::{lua_bind::*, sv_animcmd::*, *},
+    lib::lua_const::*
+};
 use smash_script::*;
 use smashline::*;
-use crate::commonfuncs::*;
-use crate::gameplay::*;
-use crate::vars::*;
+use crate::{
+    commonfuncs::*,
+    gameplay::*,
+    vars::*
+};
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 fn ryu_frame(fighter: &mut L2CFighterCommon) {
@@ -401,10 +403,10 @@ unsafe fn ryu_hadoken_shaku_end(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         ryu_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         ryu_sspecialstart,
         ryu_sspecialstartair,
         ryu_hadokenw,

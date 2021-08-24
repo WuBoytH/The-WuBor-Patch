@@ -212,10 +212,10 @@ pub unsafe fn barrel_check() -> bool {
 }
 
 pub fn install() {
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         donkey_specials
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         donkey_ftilt,
         donkey_ftilthi,
         donkey_ftiltlw,

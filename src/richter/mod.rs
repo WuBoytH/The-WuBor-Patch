@@ -126,10 +126,10 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         richter_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         richter_nspecial,
         richter_sspecial,
         richter_dspecial,

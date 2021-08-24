@@ -78,7 +78,7 @@ unsafe fn miifighter_uspecial3(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         miifighter_uspecial3
     );
 }

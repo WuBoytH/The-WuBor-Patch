@@ -37,7 +37,7 @@ unsafe fn robot_sspecialendair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         robot_dtilt,
         robot_sspecialendair
     );

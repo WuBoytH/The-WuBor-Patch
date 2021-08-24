@@ -104,10 +104,10 @@ unsafe fn ridley_dairland(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         ridley_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         ridley_dtilt,
         ridley_dair,
         ridley_dairland

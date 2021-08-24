@@ -1823,16 +1823,16 @@ unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
 // }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         lucina_frame
     );
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         lucina_specialnloop_main,
         lucina_specials_main,
         lucina_specials2_main,
         lucina_speciallw_main
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         lucina_jab1,
         lucina_jab1eff,
         lucina_jab2,

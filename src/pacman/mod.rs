@@ -20,7 +20,7 @@ unsafe fn pacman_uspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         pacman_uspecialstart
     );
 }

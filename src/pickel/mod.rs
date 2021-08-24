@@ -48,7 +48,7 @@ unsafe fn pickel_sspecialrideair(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         pickel_forge_wait,
         pickel_sspecialride,
         pickel_sspecialrideair

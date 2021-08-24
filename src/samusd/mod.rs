@@ -854,11 +854,11 @@ unsafe fn samusd_supermissile_ready(_weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    smashline::install_agent_frames!(
+    install_agent_frames!(
         samusd_frame,
         samusd_cshot_frame
     );
-    smashline::install_acmd_scripts!(
+    install_acmd_scripts!(
         samusd_jab1,
         samusd_jab2,
         samusd_jab2effect,

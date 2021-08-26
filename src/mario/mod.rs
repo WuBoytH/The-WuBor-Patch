@@ -87,11 +87,12 @@ unsafe fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
         }
         else {
+            let air_accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
             fighter.clear_lua_stack();
             lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y / 1.5);
             sv_kinetic_energy::set_accel(fighter.lua_state_agent);
             fighter.clear_lua_stack();
-            lua_args!(fighter, 0.3);
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * 0.75);
             sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
             fighter.clear_lua_stack();
             lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_accel_y_stable / 2.0);

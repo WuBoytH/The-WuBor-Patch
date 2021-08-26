@@ -505,6 +505,11 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 return ret + 3.0;
             }
         }
+        else if fighter_kind == *FIGHTER_KIND_MARIO {
+            if param_hash == hash40("special_s_start_mul_spd_x") {
+                return 1.0;
+            }
+        }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             if IS_FUNNY[entry_id(boma)] {
                 if param_hash == hash40("active_time_jump") {

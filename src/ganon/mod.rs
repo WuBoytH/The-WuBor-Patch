@@ -719,16 +719,6 @@ unsafe fn ganon_nspecialsnd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
     }
-    frame(fighter.lua_state_agent, 60.0);
-    if macros::is_excute(fighter) {
-        VisibilityModule::set_model_visible(fighter.module_accessor, true);
-        ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
-        ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
-    }
-    frame(fighter.lua_state_agent, 64.0);
-    if macros::is_excute(fighter) {
-        macros::COL_NORMAL(fighter);
-    }
 }
 
 #[acmd_script( agent = "ganon", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]

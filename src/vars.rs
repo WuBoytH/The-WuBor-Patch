@@ -71,6 +71,9 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 
 // Character Specific
 
+// Mario
+pub static mut IS_BONKER : [i32; 8] = [0; 8];
+
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
 
@@ -213,6 +216,8 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         IS_DK[id] = false;
 
         BOUNCE[id] = false;
+
+        IS_BONKER[id] = 0;
 
         TELE_STOP[id] = false;
 

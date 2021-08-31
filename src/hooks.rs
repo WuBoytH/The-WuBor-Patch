@@ -224,8 +224,16 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 return false;
             }
         }
-        
-        if fighter_kind == *FIGHTER_KIND_ROCKMAN && entry_id(boma) < 8 {
+
+        if fighter_kind == *FIGHTER_KIND_CHROM {
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
+            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_RUN_BRAKE {
+                return false;
+            }
+        }
+        else if fighter_kind == *FIGHTER_KIND_ROCKMAN {
             if IS_FUNNY[entry_id(boma)] {
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
                 || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
@@ -235,7 +243,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_LUCINA && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_LUCINA {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return false;
             }
@@ -269,26 +277,26 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_SHULK && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_SHULK {
             if SHULK_SPECIAL_LW[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false { // Disable Vision if used Burst and not in Funny
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false;
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_RICHTER && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_RICHTER {
             if RICHTER_SPECIAL_HI[entry_id(boma)] {
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                     return false;
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_RYU && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_RYU {
             if CAMERA[entry_id(boma)] {
                 return false;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_KIRBY && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_KIRBY {
             if BOUNCE[entry_id(boma)] {
                 return false;
             }
@@ -298,7 +306,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_KEN && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_KEN {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 return (StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW & *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR) && (QUICK_STEP_STATE[entry_id(boma)] != 2) && !is_damage_check(boma);
             }
@@ -315,13 +323,13 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_GANON && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_GANON {
             if CAN_TELEPORT[entry_id(boma)] == false
             && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
                 return false;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_KAMUI && entry_id(boma) < 8 {
+        else if fighter_kind == *FIGHTER_KIND_KAMUI {
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
             && !IS_FUNNY[entry_id(boma)]
             && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR {
@@ -339,9 +347,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
     let fighter_kind = utility::get_kind(boma);
     
     // Fighter-Specific Param Edits
-    if entry_id(boma) > 7 {
-        return ret;
-    }
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         
         if param_hash == hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
@@ -491,9 +496,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     let ret = original!()(module_accessor, param_type, param_hash);
     let fighter_kind = utility::get_kind(boma);
     
-    if entry_id(boma) > 7 {
-        return ret;
-    }
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
         if param_type == hash40("landing_attack_air_frame_n")
@@ -715,8 +717,7 @@ pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32
     let ret = original!()(boma,term);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
-        && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND
-        && entry_id(boma) < 8 {
+        && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
             if HEROIC_GRAB[entry_id(boma)] {
                 return 0x8a0abc72cu64;
             }

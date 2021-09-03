@@ -28,7 +28,7 @@ fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
 
         if [hash40("attack_s3_s2"),
             hash40("attack_s3_s3")].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
-                jump_cancel_check(fighter.module_accessor);
+                jump_cancel_check(fighter);
         }
     }
 }
@@ -163,6 +163,13 @@ unsafe fn bayonetta_fair3(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 16.0);
+    if macros::is_excute(fighter) {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S, true);
+        }
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {

@@ -63,6 +63,8 @@ mod mariod;
 mod pacman;
 mod miifighter;
 mod pit;
+mod wolf;
+mod gekkouga;
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
@@ -126,4 +128,6 @@ pub fn main() {
     pacman::install();
     miifighter::install();
     pit::install();
+    wolf::install();
+    gekkouga::install();
 }

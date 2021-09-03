@@ -90,6 +90,9 @@ pub static mut FEINT : [bool; 8] = [false; 8];
 // Wario
 pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
 
+// Wolf
+pub static mut FLASH_CANCEL : [bool; 8] = [false; 8];
+
 // Toon Link
 pub static mut SPIN_SPEED : [f32; 8] = [0.0; 8];
 pub static mut BOUNCE_HELPER : [f32; 8] = [0.0; 8];

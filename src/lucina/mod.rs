@@ -552,7 +552,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
         || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi")
         || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
-            jump_cancel_check(fighter.module_accessor);
+            jump_cancel_check(fighter);
         }
     }
 }

@@ -16,11 +16,11 @@ use crate::{
 pub unsafe fn bonker_vis(module_accessor: *mut BattleObjectModuleAccessor) {
     if IS_BONKER[entry_id(module_accessor)] == 4 {
         ModelModule::set_mesh_visibility(module_accessor, Hash40::new("hammer"), false);
-        // ModelModule::set_mesh_visibility(module_accessor, Hash40::new("bonker"), true);
+        ModelModule::set_mesh_visibility(module_accessor, Hash40::new("bonker"), true);
     }
     else {
         ModelModule::set_mesh_visibility(module_accessor, Hash40::new("hammer"), true);
-        // ModelModule::set_mesh_visibility(module_accessor, Hash40::new("bonker"), false);
+        ModelModule::set_mesh_visibility(module_accessor, Hash40::new("bonker"), false);
     }
 }
 
@@ -43,7 +43,7 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
             hash40("attack_air_f"),
             hash40("landing_air_f"),
             hash40("attack_s4_s"),
-            hash40("attack_s4_s_hold")
+            hash40("attack_s4_hold")
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) == false {
             if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP) {
                 ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -103,6 +103,28 @@ unsafe fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     L2CValue::I32(0)
+}
+
+#[acmd_script( agent = "mario", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+unsafe fn mario_fsmash(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, false, 0);
+        ArticleModule::have(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, Hash40::new("haver"), ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), 0, true);
+        ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, Hash40::new("start"), false, -1.0);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 14.7, 361, 105, 0, 25, 3.0, 0.0, 8.0, 4.0, Some(0.0), Some(8.0), Some(14.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 17.8, 361, 99, 0, 25, 5.0, 0.0, 8.0, 16.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
+    }
+    wait(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
 }
 
 #[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
@@ -377,6 +399,7 @@ pub fn install() {
         mario_specials_exec
     );
     install_acmd_scripts!(
+        mario_fsmash,
         mario_fair,
         mario_fairexp,
         mario_dair,

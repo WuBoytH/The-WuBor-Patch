@@ -20,7 +20,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         // Jump Cancel Heavy Up-Tilt
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3_s") {
-            jump_cancel_check(fighter.module_accessor);
+            jump_cancel_check(fighter);
         }
 
         // Reset Vars

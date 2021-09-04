@@ -65,6 +65,8 @@ mod miifighter;
 mod pit;
 mod wolf;
 mod gekkouga;
+mod szerosuit;
+mod demon;
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
@@ -130,4 +132,6 @@ pub fn main() {
     pit::install();
     wolf::install();
     gekkouga::install();
+    szerosuit::install();
+    demon::install();
 }

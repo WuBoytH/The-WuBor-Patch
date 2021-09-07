@@ -20,15 +20,16 @@ fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
             hash40("attack_100_end"),
             hash40("special_s_hold_end")].contains(&MotionModule::motion_kind(fighter.module_accessor))
         && DASH[entry_id(fighter.module_accessor)] {
-            dash_cancel_check(fighter.module_accessor);
+            dash_cancel_check(fighter, false, false);
         }
         else {
             DASH[entry_id(fighter.module_accessor)] = false;
         }
 
         if [hash40("attack_s3_s2"),
-            hash40("attack_s3_s3")].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
-                jump_cancel_check(fighter);
+            hash40("attack_s3_s3")
+        ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
+            jump_cancel_check_hit(fighter, false);
         }
     }
 }

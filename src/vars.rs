@@ -25,7 +25,7 @@ pub static mut QCB : [i32; 8] = [0; 8];
 pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
-pub static mut JUMP_CANCEL_HELPER : [f32; 8] = [0.0; 8];
+pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;
@@ -73,6 +73,7 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 
 // Mario
 pub static mut IS_BONKER : [i32; 8] = [0; 8];
+pub static mut FIREBALL_CANCEL : [bool; 8] = [false; 8];
 
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
@@ -111,7 +112,7 @@ pub static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
 pub static mut SPECIAL_S_START_SIT : [i32; 8] = [0; 8];
 
 // Ryu
-pub static mut SPECIAL_LW : [bool; 8] = [false; 8];
+pub static mut EX_FOCUS : [bool; 8] = [false; 8];
 pub static mut EX_FLASH : [bool; 8] = [false; 8];
 pub static mut SECRET_SENSATION : [bool; 8] = [false; 8];
 pub static mut CAMERA : [bool; 8] = [false; 8];
@@ -231,7 +232,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         SPECIAL_S_START_SIT[id] = 0;
 
-        SPECIAL_LW[id] = false;
+        EX_FOCUS[id] = false;
         EX_FLASH[id] = false;
         SECRET_SENSATION[id] = false;
         CAMERA[id] = false;

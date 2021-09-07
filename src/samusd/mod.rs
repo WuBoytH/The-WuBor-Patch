@@ -9,13 +9,67 @@ use smash_script::*;
 use smashline::*;
 use crate::{
     commonfuncs::*,
-    vars::*
+    vars::*,
+    gameplay::*
 };
+
+#[inline(always)]
+pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    if DamageModule::damage(fighter.module_accessor, 0) < 90.0 {
+        let dmg = 90.0 - DamageModule::damage(fighter.module_accessor, 0);
+        DamageModule::add_damage(fighter.module_accessor, dmg, 0);
+    }
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH
+    ].contains(&status) {
+        let allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ];
+        cancel_system(fighter, status, &allowed_cancels);
+    }
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status) {
+        let allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ];
+        cancel_system(fighter, status, &allowed_cancels);
+    }
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4
+    ].contains(&status)
+    || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
+        jump_cancel_check_hit(fighter, false);
+    }
+
+    if status == *FIGHTER_STATUS_KIND_ATTACK_S4 {
+        dash_cancel_check(fighter, false, false);
+    }
+    if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
+        dash_cancel_check(fighter, false, true);
+    }
+}
 
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]
 fn samusd_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             BOUNCE[entry_id(fighter.module_accessor)] = false;
         }
@@ -45,6 +99,10 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
                 BOUNCE[entry_id(fighter.module_accessor)] = false;
             }
         }
+
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            samusd_fgc(fighter);
+        }
     }
 }
 
@@ -65,6 +123,9 @@ unsafe fn samusd_jab1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
+        }
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 10, 0, 25, 2.0, 0.0, 10.0, 6.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 10, 0, 25, 2.3, 0.0, 10.0, 8.8, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 361, 10, 0, 25, 2.5, 0.0, 10.0, 12.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);

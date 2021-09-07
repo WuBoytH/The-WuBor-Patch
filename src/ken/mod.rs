@@ -251,7 +251,8 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
         // Training Mode Tools
 
         if smashball::is_training_mode(){
-            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+            && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
                 if V_GAUGE[entry_id(fighter.module_accessor)] > 300 {
                     V_GAUGE[entry_id(fighter.module_accessor)] -= 300
                 }
@@ -259,7 +260,8 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                     V_GAUGE[entry_id(fighter.module_accessor)] = 0;
                 }
             }
-            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+            && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
                 if V_GAUGE[entry_id(fighter.module_accessor)] < 900 {
                     V_GAUGE[entry_id(fighter.module_accessor)] += 300;
                 }

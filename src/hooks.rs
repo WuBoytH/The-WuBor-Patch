@@ -225,7 +225,35 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
 
-        if fighter_kind == *FIGHTER_KIND_CHROM {
+        else if [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP
+        ].contains(&term) {
+            if IS_FGC[entry_id(boma)] {
+                if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
+                    return false;
+                }
+            }
+        }
+
+        else if [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL
+        ].contains(&term) {
+            if is_damage_check(boma) {
+                return false;
+            }
+        }
+
+        else if fighter_kind == *FIGHTER_KIND_CHROM {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
@@ -498,7 +526,25 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
-        if param_type == hash40("landing_attack_air_frame_n")
+        if param_hash == hash40("shield_dec1") {
+            if IS_FGC[entry_id(boma)] {
+                return 0.0;
+            }
+        }
+
+        else if param_hash == hash40("shield_damage_mul") {
+            if IS_FGC[entry_id(boma)] {
+                return 0.2;
+            }
+        }
+
+        else if param_hash == hash40("damage_fly_correction_max") {
+            if IS_FGC[entry_id(boma)] {
+                return 0.0;
+            }
+        }
+
+        else if param_type == hash40("landing_attack_air_frame_n")
         || param_type == hash40("landing_attack_air_frame_f")
         || param_type == hash40("landing_attack_air_frame_b")
         || param_type == hash40("landing_attack_air_frame_hi")
@@ -953,6 +999,19 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
     original!()(lua_state);
 }
 
+// #[skyline::hook(replace = ArticleModule::have)]
+// unsafe fn have_replace(boma: &mut BattleObjectModuleAccessor, article: i32, mut bone: u64, target: ArticleOperationTarget, unk1: u32, unk2: bool) -> u64 {
+//     if article == *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP {
+//         println!("Bone: {}", bone);
+//         println!("unk1: {}", unk1);
+//         println!("unk2: {}", unk2);
+//         if bone != hash40("haver") {
+//             bone = hash40("haver");
+//         }
+//     }
+//     original!()(boma, article, bone, target, unk1, unk2)
+// }
+
 pub fn install() {
     unsafe{
         skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
@@ -978,20 +1037,38 @@ pub fn install() {
         // }
     }
     // skyline::install_hook!(get_command_flag_cat_replace);
-    skyline::install_hook!(notify_log_event_collision_hit_replace);
+    skyline::install_hooks!(
+        notify_log_event_collision_hit_replace,
+        //attack_replace,
+        is_enable_transition_term_replace,
+        get_param_float_replace,
+        get_param_int_replace,
+        //music_function_replace,
+        correct_hook,
+        get_int64_replace,
+        play_se_replace,
+        play_fly_voice_replace,
+        play_sequence_replace,
+        play_status_replace,
+        play_down_se_replace,
+        play_se_remain_replace,
+        play_se_no_3d_replace,
+        // have_replace
+    );
     // skyline::install_hook!(attack_replace);
-    skyline::install_hook!(is_enable_transition_term_replace);
-    skyline::install_hook!(get_param_float_replace);
-    skyline::install_hook!(get_param_int_replace);
+    // skyline::install_hook!(is_enable_transition_term_replace);
+    // skyline::install_hook!(get_param_float_replace);
+    // skyline::install_hook!(get_param_int_replace);
     // skyline::install_hook!(music_function_replace);
-    skyline::install_hook!(correct_hook);
-    skyline::install_hook!(get_int64_replace);
-    skyline::install_hook!(play_se_replace);
-    skyline::install_hook!(play_fly_voice_replace);
-    skyline::install_hook!(play_sequence_replace);
-    skyline::install_hook!(play_status_replace);
-    skyline::install_hook!(play_down_se_replace);
-    skyline::install_hook!(play_se_remain_replace);
-    skyline::install_hook!(play_se_no_3d_replace);
+    // skyline::install_hook!(correct_hook);
+    // skyline::install_hook!(get_int64_replace);
+    // skyline::install_hook!(play_se_replace);
+    // skyline::install_hook!(play_fly_voice_replace);
+    // skyline::install_hook!(play_sequence_replace);
+    // skyline::install_hook!(play_status_replace);
+    // skyline::install_hook!(play_down_se_replace);
+    // skyline::install_hook!(play_se_remain_replace);
+    // skyline::install_hook!(play_se_no_3d_replace);
+    // skyline::install_hook!(have_replace);
     // skyline::install_hook!(init_settings_replace);
 }

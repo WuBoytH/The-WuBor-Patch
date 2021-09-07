@@ -20,13 +20,13 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         // Jump Cancel Heavy Up-Tilt
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_hi3_s") {
-            jump_cancel_check(fighter);
+            jump_cancel_check_hit(fighter, false);
         }
 
         // Reset Vars
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-            SPECIAL_LW[entry_id(fighter.module_accessor)] = false;
+            EX_FOCUS[entry_id(fighter.module_accessor)] = false;
             CANCEL[entry_id(fighter.module_accessor)] = false;
             EX_FLASH[entry_id(fighter.module_accessor)] = false;
             SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = -1;
@@ -36,7 +36,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         }
 
         // EX Focus Attack Check
-        if SPECIAL_LW[entry_id(fighter.module_accessor)] == false {
+        if EX_FOCUS[entry_id(fighter.module_accessor)] == false {
             if (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_n")
             && MotionModule::frame(fighter.module_accessor) > 13.0)
             || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_start") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s")
@@ -64,7 +64,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
             if !IS_FUNNY[entry_id(fighter.module_accessor)] {
                 SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = 1200;
-                SPECIAL_LW[entry_id(fighter.module_accessor)] = true;
+                EX_FOCUS[entry_id(fighter.module_accessor)] = true;
             }
             CANCEL[entry_id(fighter.module_accessor)] = false;
         }
@@ -78,7 +78,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
             let focuseff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
             EffectModule::set_rgb(fighter.module_accessor, focuseff, 0.0, 0.0, 0.0);
-            SPECIAL_LW[entry_id(fighter.module_accessor)] = false;
+            EX_FOCUS[entry_id(fighter.module_accessor)] = false;
         }
 
         // EX Flash

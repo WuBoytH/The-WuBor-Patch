@@ -15,6 +15,7 @@ pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
 pub static mut AIR_WHIFF : [bool; 8] = [false; 8];
 pub static mut IS_FUNNY : [bool; 8] = [false; 8];
 pub static mut IS_FGC : [bool; 8] = [false; 8];
+pub static mut FGC_TRAINING : bool = false;
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
 pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
 pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
@@ -209,7 +210,12 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         AIR_WHIFF[id] = false;
         IS_FUNNY[id] = false;
-        IS_FGC[id] = false;
+        if !smashball::is_training_mode() {
+            FGC_TRAINING = false;
+        }
+        if !FGC_TRAINING {
+            IS_FGC[id] = false;
+        }
         OPPONENT_BOMA[id] = 0;
         DAMAGE_TAKEN[id] = 0.0;
         DAMAGE_TAKEN_PREV[id] = 0.0;

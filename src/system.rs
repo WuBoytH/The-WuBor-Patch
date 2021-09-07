@@ -101,8 +101,8 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         if smashball::is_training_mode() {
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
             && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-                IS_FGC[entry_id(fighter.module_accessor)] = !IS_FGC[entry_id(fighter.module_accessor)];
-                if !IS_FGC[entry_id(fighter.module_accessor)] {
+                FGC_TRAINING = !FGC_TRAINING;
+                if !FGC_TRAINING {
                     let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                     let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
                     let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_flame")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
@@ -116,7 +116,11 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 }
             }
         }
-        else if FighterUtil::is_hp_mode(fighter.module_accessor) {
+        if FighterUtil::is_hp_mode(fighter.module_accessor) {
+            IS_FGC[entry_id(fighter.module_accessor)] = true;
+            FGC_TRAINING = false;
+        }
+        else if FGC_TRAINING {
             IS_FGC[entry_id(fighter.module_accessor)] = true;
         }
         else {

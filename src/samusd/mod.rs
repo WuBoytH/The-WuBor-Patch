@@ -16,10 +16,7 @@ use crate::{
 #[inline(always)]
 pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    if DamageModule::damage(fighter.module_accessor, 0) < 90.0 {
-        let dmg = 90.0 - DamageModule::damage(fighter.module_accessor, 0);
-        DamageModule::add_damage(fighter.module_accessor, dmg, 0);
-    }
+    set_hp(fighter, 90.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH

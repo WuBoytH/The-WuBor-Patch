@@ -174,3 +174,11 @@ pub unsafe fn cancel_exceptions(agent: &mut L2CAgentBase, next_status: i32, cat1
         }
     }
 }
+
+pub unsafe fn set_hp(agent: &mut L2CAgentBase, hp: f32) {
+    if DamageModule::damage(agent.module_accessor, 0) < hp
+    && !smashball::is_training_mode() {
+        let dmg = hp - DamageModule::damage(agent.module_accessor, 0);
+        DamageModule::add_damage(agent.module_accessor, dmg, 0);
+    }
+}

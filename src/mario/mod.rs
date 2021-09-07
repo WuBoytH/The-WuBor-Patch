@@ -28,10 +28,7 @@ pub unsafe fn bonker_vis(module_accessor: *mut BattleObjectModuleAccessor) {
 #[inline(always)]
 pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    if DamageModule::damage(fighter.module_accessor, 0) < 105.0 {
-        let dmg = 105.0 - DamageModule::damage(fighter.module_accessor, 0);
-        DamageModule::add_damage(fighter.module_accessor, dmg, 0);
-    }
+    set_hp(fighter, 105.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {

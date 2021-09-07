@@ -98,10 +98,7 @@ pub unsafe fn deception_feint_handler(module_accessor: *mut BattleObjectModuleAc
 #[inline(always)]
 pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    if DamageModule::damage(fighter.module_accessor, 0) < 70.0 {
-        let dmg = 70.0 - DamageModule::damage(fighter.module_accessor, 0);
-        DamageModule::add_damage(fighter.module_accessor, dmg, 0);
-    }
+    set_hp(fighter, 70.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH

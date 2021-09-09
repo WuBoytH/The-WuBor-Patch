@@ -1,5 +1,5 @@
 use smash::{
-    lua2cpp::L2CAgentBase,
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
     phx::{Hash40, Vector3f},
     app::{lua_bind::*, sv_animcmd::*, *},
     lib::lua_const::*
@@ -8,30 +8,91 @@ use smash_script::*;
 use smashline::*;
 use crate::{
     commonfuncs::*,
-    vars::*
+    vars::*,
+    gameplay::*
 };
 
-// #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
-// fn lucario_frame(fighter: &mut L2CFighterCommon) {
-//     unsafe {
-//         if IS_FUNNY[entry_id(fighter.module_accessor)] {
-//             if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_n_shoot")
-//             || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_n_shoot") {
-//                 if MotionModule::frame(fighter.module_accessor) == 4.0 {
-//                     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-//                         IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = true;
-//                     }
-//                     else {
-//                         IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
-//                     }
-//                 }
-//             }
-//         }
-//         else if IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] {
-//             IS_SPIRIT_BOMB[entry_id(fighter.module_accessor)] = false;
-//         }
-//     }
-// }
+#[inline(always)]
+pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    set_hp(fighter, 116.0);
+    if status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
+        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = false;
+    }
+    else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+    || is_damage_check(fighter.module_accessor) {
+        DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
+    }
+    if status == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
+    && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
+        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = true;
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
+    }
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK
+    ].contains(&status) {
+        let allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ];
+        cancel_system(fighter, status, &allowed_cancels);
+    }
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status) {
+        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
+        }
+        let allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ];
+        cancel_system(fighter, status, &allowed_cancels);
+    }
+    if status == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+        jump_cancel_check_hit(fighter, false);
+    }
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4
+    ].contains(&status) {
+        let allowed_cancels = [
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ];
+        cancel_system(fighter, status, &allowed_cancels);
+    }
+}
+
+#[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
+fn lucario_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
+            DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
+        }
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            lucario_fgc(fighter);
+        }
+    }
+}
 
 #[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
@@ -247,6 +308,94 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_uspecial(fighter: &mut L2CAgentBase) {
+    if IS_FGC[entry_id(fighter.module_accessor)] {
+        macros::FT_MOTION_RATE(fighter, 0.5);
+    }
+    frame(fighter.lua_state_agent, 21.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_uspecialair(fighter: &mut L2CAgentBase) {
+    if IS_FGC[entry_id(fighter.module_accessor)] {
+        macros::FT_MOTION_RATE(fighter, 0.5);
+    }
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);
+    }
+    frame(fighter.lua_state_agent, 21.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialhimove", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_uspecialmove(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 55, 100, 30, 60, 12.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairhimove", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_uspecialairmove(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 55, 100, 30, 60, 12.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialhiend", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_uspecialend(fighter: &mut L2CAgentBase) {
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        if !IS_FGC[entry_id(fighter.module_accessor)] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 6.0, 38, 100, 0, 70, 12.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        }
+    }
+    wait(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    wait(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairhiend", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_uspecialairend(fighter: &mut L2CAgentBase) {
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        if !IS_FGC[entry_id(fighter.module_accessor)] {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 6.0, 38, 100, 0, 70, 12.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        }
+    }
+    wait(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            if IS_SD_CANCEL[entry_id(fighter.module_accessor)] {
+                macros::SET_SPEED_EX(fighter, 1.1, 1.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            }
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
+        }
+    }
+    frame(fighter.lua_state_agent, 23.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X);
+    }
+}
+
 #[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
@@ -265,9 +414,9 @@ unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    // install_agent_frames!(
-    //     lucario_frame
-    // );
+    install_agent_frames!(
+        lucario_frame
+    );
     install_acmd_scripts!(
         lucario_jab3,
         lucario_dashattack,
@@ -278,6 +427,12 @@ pub fn install() {
         lucario_dair,
         lucario_nspecialshoot,
         lucario_sspecial,
+        lucario_uspecial,
+        lucario_uspecialair,
+        lucario_uspecialmove,
+        lucario_uspecialairmove,
+        lucario_uspecialend,
+        lucario_uspecialairend,
         lucario_qigong
     );
 }

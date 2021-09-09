@@ -27,6 +27,7 @@ pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
 pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
+pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;
@@ -101,6 +102,7 @@ pub static mut BOUNCE_HELPER : [f32; 8] = [0.0; 8];
 
 // Lucario
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
+pub static mut IS_SD_CANCEL : [bool; 8] = [false; 8];
 
 // Little Mac
 pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
@@ -160,9 +162,6 @@ pub static mut DASH : [bool; 8] = [false; 8];
 
 // Incineroar
 pub static mut REVENGE : [i32; 8] = [0; 8];
-
-// Richter
-pub static mut RICHTER_SPECIAL_HI : [bool; 8] = [false; 8];
 
 // Ridley
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
@@ -269,7 +268,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         REVENGE[id] = 0;
 
-        RICHTER_SPECIAL_HI[id] = false;
+        DISABLE_SPECIAL_HI[id] = false;
 
         FUNNY_RIDLEY[id] = false;
 

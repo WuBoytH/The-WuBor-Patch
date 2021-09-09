@@ -188,26 +188,31 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
-#[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
-unsafe fn attack_replace(lua_state: u64) {
-    let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
-    // let fighter_kind = smash::app::utility::get_kind(boma);
-    if entry_id(boma) < 8
-    && IS_FGC[entry_id(boma)] {
-        let mut l2c_agent = L2CAgent::new(lua_state);
-        let mut hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
-        l2c_agent.clear_lua_stack();
-        for i in 0..36 {
-            if i == 20 {
-                let shield_damage = hitbox_params[i].get_f32() - 10.0;
-                l2c_agent.push_lua_stack(&mut L2CValue::new_num(shield_damage));
-            } else {
-                l2c_agent.push_lua_stack(&mut hitbox_params[i]);
-            }
-        }
-    }
-    original!()(lua_state);
-}
+// #[skyline::hook(replace = smash::app::sv_animcmd::ATTACK)]
+// unsafe fn attack_replace(lua_state: u64) {
+//     let boma = smash::app::sv_system::battle_object_module_accessor(lua_state);
+//     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+//         let mut l2c_agent = L2CAgent::new(lua_state);
+//         let mut hitbox_params: Vec<L2CValue> = (0..36).map(|i| l2c_agent.pop_lua_stack(i + 1)).collect();
+//         l2c_agent.clear_lua_stack();
+//         for i in 0..36 {
+//             if i == 20
+//             && IS_FGC[entry_id(boma)] {
+//                 if hitbox_params[i].get_f32().is_normal() {
+//                     let shield_damage = hitbox_params[i].get_f32() - 10.0;
+//                     l2c_agent.push_lua_stack(&mut L2CValue::new_num(shield_damage));
+//                 }
+//                 else {
+//                     l2c_agent.push_lua_stack(&mut hitbox_params[i]);
+//                 }
+//             }
+//             else {
+//                 l2c_agent.push_lua_stack(&mut hitbox_params[i]);
+//             }
+//         }
+//     }
+//     original!()(lua_state);
+// }
 
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -316,8 +321,9 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_RICHTER {
-            if RICHTER_SPECIAL_HI[entry_id(boma)] {
+        else if fighter_kind == *FIGHTER_KIND_RICHTER
+        || fighter_kind == *FIGHTER_KIND_LUCARIO {
+            if DISABLE_SPECIAL_HI[entry_id(boma)] {
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
                     return false;
                 }
@@ -698,6 +704,13 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         //         return ret;
         //     }
         // }
+        else if fighter_kind == *FIGHTER_KIND_LUCARIO {
+            if param_hash == 0x189cd804c5 {
+                if IS_FGC[entry_id(boma)] {
+                    return 1.0;
+                }
+            }
+        }
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL { // Funny Mode Spirit Bomb Params
@@ -1060,7 +1073,7 @@ pub fn install() {
     // skyline::install_hook!(get_command_flag_cat_replace);
     skyline::install_hooks!(
         notify_log_event_collision_hit_replace,
-        attack_replace,
+        //attack_replace,
         is_enable_transition_term_replace,
         get_param_float_replace,
         get_param_int_replace,

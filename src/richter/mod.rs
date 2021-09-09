@@ -15,18 +15,14 @@ use crate::{
 fn richter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-            RICHTER_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
+            DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
         }
-        if sv_information::is_ready_go() == false {
-            RICHTER_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
-        }
-
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_HI && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_LANDING {
-            RICHTER_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
+            DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
         }
         else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         || is_damage_check(fighter.module_accessor) {
-            RICHTER_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
+            DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
         }
     }
 }

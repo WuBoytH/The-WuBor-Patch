@@ -16,12 +16,13 @@ use crate::{
 #[inline(always)]
 pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
+    let mut allowed_cancels : Vec<i32> = [].to_vec();
     set_hp(fighter, 90.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH
     ].contains(&status) {
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -30,23 +31,21 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_S,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+        ].to_vec();
     }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_LW4,
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_S,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+        ].to_vec();
     }
     if [
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -55,13 +54,13 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
         jump_cancel_check_hit(fighter, false);
     }
-
     if status == *FIGHTER_STATUS_KIND_ATTACK_S4 {
         dash_cancel_check(fighter, false, false);
     }
     if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
         dash_cancel_check(fighter, false, true);
     }
+    cancel_system(fighter, status, allowed_cancels);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]

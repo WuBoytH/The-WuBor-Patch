@@ -13,8 +13,8 @@ use crate::{
 pub unsafe fn jump_cancel_check_hit(agent: &mut L2CAgentBase, jump_on_block: bool) {
     if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
     || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_SHIELD) && jump_on_block))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 2.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 12.0
+    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
+    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0
     && ((ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
     && ControlModule::is_enable_flick_jump(agent.module_accessor))
     || ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0) {
@@ -67,8 +67,8 @@ pub unsafe fn dash_cancel_check(agent: &mut L2CAgentBase, dash_on_block: bool, r
     }
     if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
     || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_SHIELD) && dash_on_block))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 2.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 12.0
+    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
+    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0
     && ControlModule::get_command_flag_cat(agent.module_accessor, 0) & cat != 0
     && get_command_stick_direction(agent.module_accessor, true) == dir {
         StatusModule::change_status_request_from_script(agent.module_accessor, status, true);
@@ -84,7 +84,7 @@ pub unsafe fn critical_zoom(agent: &mut L2CAgentBase, rate : u8, frames : f32, z
     }
 }
 
-pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cancels: &[i32]) {
+pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cancels: Vec<i32>) {
     let cat1 = ControlModule::get_command_flag_cat(agent.module_accessor, 0);
     let level : i32;
     if [
@@ -114,8 +114,8 @@ pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cance
 
     if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 2.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 12.0 {
+    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
+    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0 {
         if level <= 4 {
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_N) {
                 StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
@@ -123,7 +123,8 @@ pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cance
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_S) {
                 StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
             }
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_HI) {
+            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_HI)
+            && DISABLE_SPECIAL_HI[entry_id(agent.module_accessor)] == false {
                 StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_LW) {

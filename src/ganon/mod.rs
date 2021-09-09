@@ -98,12 +98,13 @@ pub unsafe fn deception_feint_handler(module_accessor: *mut BattleObjectModuleAc
 #[inline(always)]
 pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
+    let mut allowed_cancels : Vec<i32> = [].to_vec();
     set_hp(fighter, 70.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH
     ].contains(&status) {
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -114,8 +115,7 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_S,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+        ].to_vec();
     }
     if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
@@ -126,7 +126,7 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
             cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
         }
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S4,
             *FIGHTER_STATUS_KIND_ATTACK_HI4,
             *FIGHTER_STATUS_KIND_ATTACK_LW4,
@@ -134,9 +134,9 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_S,
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+        ].to_vec();
     }
+    cancel_system(fighter, status, allowed_cancels);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]

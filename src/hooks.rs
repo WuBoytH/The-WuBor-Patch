@@ -323,8 +323,8 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
         }
         else if fighter_kind == *FIGHTER_KIND_RICHTER
         || fighter_kind == *FIGHTER_KIND_LUCARIO {
-            if DISABLE_SPECIAL_HI[entry_id(boma)] {
-                if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
+                if DISABLE_SPECIAL_HI[entry_id(boma)] {
                     return false;
                 }
             }

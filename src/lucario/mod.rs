@@ -15,12 +15,9 @@ use crate::{
 #[inline(always)]
 pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
+    let mut allowed_cancels : Vec<i32> = [].to_vec();
     set_hp(fighter, 116.0);
-    if status == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-        DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
-        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = false;
-    }
-    else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
     || is_damage_check(fighter.module_accessor) {
         DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
     }
@@ -33,18 +30,16 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+            *FIGHTER_STATUS_KIND_SPECIAL_LW
+        ].to_vec();
     }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -53,33 +48,33 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
             cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
         }
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S4,
             *FIGHTER_STATUS_KIND_ATTACK_HI4,
             *FIGHTER_STATUS_KIND_ATTACK_LW4,
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+            *FIGHTER_STATUS_KIND_SPECIAL_LW
+        ].to_vec();
     }
-    if status == *FIGHTER_STATUS_KIND_ATTACK_DASH {
-        jump_cancel_check_hit(fighter, false);
-    }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4
     ].contains(&status) {
-        let allowed_cancels = [
+        allowed_cancels = [
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_STATUS_KIND_SPECIAL_S,
-            *FIGHTER_STATUS_KIND_SPECIAL_LW,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI
-        ];
-        cancel_system(fighter, status, &allowed_cancels);
+            *FIGHTER_STATUS_KIND_SPECIAL_LW
+        ].to_vec();
     }
+    else if status == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+        jump_cancel_check_hit(fighter, false);
+    }
+    if DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] == false {
+        allowed_cancels.append(&mut [*FIGHTER_STATUS_KIND_SPECIAL_HI].to_vec());
+    }
+    cancel_system(fighter, status, allowed_cancels);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]
@@ -311,6 +306,7 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_uspecial(fighter: &mut L2CAgentBase) {
     if IS_FGC[entry_id(fighter.module_accessor)] {
+        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = false;
         macros::FT_MOTION_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 21.0);
@@ -322,6 +318,8 @@ unsafe fn lucario_uspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_uspecialair(fighter: &mut L2CAgentBase) {
     if IS_FGC[entry_id(fighter.module_accessor)] {
+        DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
+        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = false;
         macros::FT_MOTION_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 13.0);

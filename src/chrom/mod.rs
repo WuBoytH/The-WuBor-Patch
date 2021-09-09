@@ -10,23 +10,29 @@ use crate::{
     gameplay::*
 };
 
+#[inline(always)]
+pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    let mut allowed_cancels : Vec<i32> = [].to_vec();
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3
+    ].contains(&status) {
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ].to_vec();
+    }
+    cancel_system(fighter, status, allowed_cancels);
+}
+
 #[fighter_frame( agent = FIGHTER_KIND_CHROM )]
 fn chrom_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if [
-            *FIGHTER_STATUS_KIND_ATTACK_S3,
-            *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
-            let status = StatusModule::status_kind(fighter.module_accessor);
-            let allowed_cancels = [
-                *FIGHTER_STATUS_KIND_ATTACK_S4,
-                *FIGHTER_STATUS_KIND_ATTACK_HI4,
-                *FIGHTER_STATUS_KIND_ATTACK_LW4,
-                *FIGHTER_STATUS_KIND_SPECIAL_HI
-            ];
-            cancel_system(fighter, status, &allowed_cancels);
-        }
+        chrom_fgc(fighter);
     }
 }
 

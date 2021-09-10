@@ -51,6 +51,7 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW4
     ].contains(&status)
+    || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b")
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
         jump_cancel_check_hit(fighter, false);
     }
@@ -207,7 +208,7 @@ unsafe fn samusd_dashattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     for _ in 0..4 {
         if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 367, 0, 50, 38, 4.3, 0.0, 9.0, 3.0, Some(0.0), Some(0.0), Some(0.0), 0.3, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.8, 367, 0, 50, 38, 6.0, 0.0, 9.0, 3.0, Some(0.0), Some(9.0), Some(-2.0), 0.3, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
         }
         wait(fighter.lua_state_agent, 2.0);
         if macros::is_excute(fighter) {
@@ -216,7 +217,7 @@ unsafe fn samusd_dashattack(fighter: &mut L2CAgentBase) {
         wait(fighter.lua_state_agent, 1.0);
     }
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 72, 40, 0, 120, 5.5, 0.0, 11.0, 3.0, Some(0.0), Some(0.0), Some(-2.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 72, 40, 0, 120, 6.5, 0.0, 9.0, 3.0, Some(0.0), Some(9.0), Some(-2.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -899,10 +900,20 @@ unsafe fn samusd_cshot_shoot(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_missile_homing(weapon: &mut L2CAgentBase) {
+unsafe fn samusd_missile_homing(_weapon: &mut L2CAgentBase) {
+}
+
+#[acmd_script( agent = "samusd_missile", script = "game_hburst", category = ACMD_GAME, low_priority )]
+unsafe fn samusd_missile_hburst(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 361, 25, 0, 26, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-        AttackModule::enable_safe_pos(weapon.module_accessor);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 30, 25, 0, 45, 15.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
+        // AttackModule::enable_safe_pos(weapon.module_accessor);
+        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0);
+    }
+    wait(weapon.lua_state_agent, 1.0);
+    if macros::is_excute(weapon) {
+        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0);
+        notify_event_msc_cmd!(weapon, 0x199c462b5du64);
     }
 }
 
@@ -952,6 +963,7 @@ pub fn install() {
         samusd_dspecialeff,
         samusd_cshot_shoot,
         samusd_missile_homing,
+        samusd_missile_hburst,
         samusd_supermissile_ready
     );
 }

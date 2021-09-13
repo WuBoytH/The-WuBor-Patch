@@ -68,6 +68,7 @@ mod gekkouga;
 mod szerosuit;
 mod demon;
 mod chrom;
+// mod captain;
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
@@ -136,4 +137,5 @@ pub fn main() {
     szerosuit::install();
     demon::install();
     chrom::install();
+    // captain::install();
 }

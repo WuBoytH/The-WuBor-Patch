@@ -52,9 +52,10 @@ unsafe fn luigi_specialscharge(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(luigi_specialschargemain as *const () as _))
 }
 
-unsafe extern "C" fn luigi_specialschargestop(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn luigi_specialschargestop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let charge_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_speed_mul"));
     WorkModule::add_float(fighter.module_accessor, charge_speed, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
+    0.into()
 }
 
 unsafe extern "C" fn luigi_specialscharge2(fighter: &mut L2CFighterCommon) {

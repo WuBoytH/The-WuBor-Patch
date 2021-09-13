@@ -30,9 +30,9 @@ unsafe fn pitb_specialncharge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(pitb_specialncharge_loop as *const () as _))
 }
 
-unsafe extern "C" fn pitb_specialncharge_charge(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn pitb_specialncharge_charge(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_CHARGE);
-    return
+    0.into()
 }
 
 unsafe extern "C" fn pitb_specialncharge_loop(fighter: &mut L2CFighterCommon) -> L2CValue {

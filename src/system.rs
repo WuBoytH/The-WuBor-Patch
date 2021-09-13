@@ -116,7 +116,8 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 }
             }
         }
-        if FighterUtil::is_hp_mode(fighter.module_accessor) {
+        if FighterUtil::is_hp_mode(fighter.module_accessor)
+        && !smashball::is_training_mode() {
             IS_FGC[entry_id(fighter.module_accessor)] = true;
             FGC_TRAINING = false;
         }

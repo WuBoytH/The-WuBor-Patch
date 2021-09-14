@@ -28,6 +28,9 @@ pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
 pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
 pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
+pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
+pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
+pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;
@@ -223,6 +226,8 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         QCB[id] = 0;
         CANCEL[id] = false;
         IS_DK[id] = false;
+        SPECIAL_HITSTUN[id] = false;
+        HIT_BY_SPECIAL_HITSTUN[id] = false;
 
         BOUNCE[id] = false;
 

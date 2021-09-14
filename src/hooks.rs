@@ -60,11 +60,7 @@ move_type_again: bool) -> u64 {
     let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-
-        // Used for Ken's meter building, as well as sets the opponent he will track towards with V-Trigger.
-
-        if attacker_fighter_kind == *FIGHTER_KIND_KEN
-        && a_entry_id < 8 {
+        if attacker_fighter_kind == *FIGHTER_KIND_KEN {
             if d_entry_id < 8
             && utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                 OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
@@ -96,11 +92,11 @@ move_type_again: bool) -> u64 {
         }
     }
     if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-
-        // Used for Ultra Instinct's tracking.
-
-        if defender_fighter_kind == *FIGHTER_KIND_RYU
-        && d_entry_id < 8 {
+        if a_entry_id < 8
+        && SPECIAL_HITSTUN[a_entry_id] {
+            HIT_BY_SPECIAL_HITSTUN[d_entry_id] = true;
+        }
+        if defender_fighter_kind == *FIGHTER_KIND_RYU {
             if SEC_SEN_STATE[d_entry_id] {
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
                 || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
@@ -135,21 +131,13 @@ move_type_again: bool) -> u64 {
                 SECRET_SENSATION[d_entry_id] = true;
             }
         }
-
-        // Used to detect if Ken was hit during V-Shift's startup.
-
-        else if defender_fighter_kind == *FIGHTER_KIND_KEN
-        && d_entry_id < 8 {
+        else if defender_fighter_kind == *FIGHTER_KIND_KEN {
             if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
             && MotionModule::frame(defender_boma) <= 8.75 {
                 V_SHIFT[d_entry_id] = true;
             }
         }
-
-        // Used to detect if Incineroar was hit during Revenge's counter frames, as well as turning Incineroar to the correct direction.
-
-        else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN
-        && d_entry_id < 8 {
+        else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
             if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
             || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
             && REVENGE[d_entry_id] == 1 {
@@ -165,11 +153,7 @@ move_type_again: bool) -> u64 {
                 StatusModule::change_status_request_from_script(defender_boma, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT, true);
             }
         }
-
-        // Used to make sure Shulk is facing the right direction for Vision Burst.
-
-        else if defender_fighter_kind == *FIGHTER_KIND_SHULK
-        && d_entry_id < 8 {
+        else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
                 OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
@@ -183,6 +167,12 @@ move_type_again: bool) -> u64 {
             else {
                 OPPONENT_BOMA[d_entry_id] = 0;
             }
+        }
+    }
+    if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
+        if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
+            let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+            FIREBALL_CANCEL[entry_id(oboma)] = true;
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
@@ -792,6 +782,33 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 //     );
 // }
 
+// #[skyline::hook(replace = WorkModule::set_int )]
+// pub unsafe fn set_int_replace(boma: &mut BattleObjectModuleAccessor, mut val: i32, term: i32) {
+//     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+//         if IS_FGC[entry_id(boma)] {
+//             if term == *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME {
+//                 val = (val as f32 * FGC_HITSTUN_MUL[entry_id(boma)]) as i32;
+//             }
+//         }
+//     }
+//     original!()(boma, val, term);
+// }
+
+#[skyline::hook(replace = WorkModule::set_float )]
+pub unsafe fn set_float_replace(boma: &mut BattleObjectModuleAccessor, mut val: f32, term: i32) {
+    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        if IS_FGC[entry_id(boma)] {
+            if term == *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME && !HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] {
+                val = val * FGC_HITSTUN_MUL[entry_id(boma)];
+                if FGC_HITSTUN_MUL[entry_id(boma)] > 0.5 {
+                    FGC_HITSTUN_MUL[entry_id(boma)] -= 0.05;
+                }
+            }
+        }
+    }
+    original!()(boma, val, term);
+}
+
 #[skyline::hook(replace = WorkModule::get_int64 )]
 pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
     let ret = original!()(boma,term);
@@ -1079,6 +1096,8 @@ pub fn install() {
         get_param_int_replace,
         //music_function_replace,
         correct_hook,
+        // set_int_replace,
+        set_float_replace,
         get_int64_replace,
         play_se_replace,
         play_fly_voice_replace,

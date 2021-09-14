@@ -13,6 +13,17 @@ use crate::{
     vars::*
 };
 
+
+#[inline(always)]
+pub unsafe fn luigi_fgc(fighter: &mut L2CFighterCommon) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    // let mut allowed_cancels : Vec<i32> = [].to_vec();
+    // set_hp(fighter, 105.0);
+    if ![*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END].contains(&status) {
+        SPECIAL_HITSTUN[entry_id(fighter.module_accessor)] = false;
+    }
+}
+
 #[fighter_frame( agent = FIGHTER_KIND_LUIGI )]
 fn luigi_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -35,6 +46,10 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
         && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END) {
             EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_thunder"), false, true);
             EffectModule::kill_kind(fighter.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
+        }
+
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            luigi_fgc(fighter);
         }
     }
 }
@@ -260,6 +275,7 @@ unsafe fn luigi_sspecialend(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
+        SPECIAL_HITSTUN[entry_id(fighter.module_accessor)] = true;
         AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 270, 45, 20, 0, 5.0, 0.0, 13.0, 9.0, Some(0.0), Some(6.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 4.2);

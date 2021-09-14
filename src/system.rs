@@ -72,6 +72,13 @@ unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
 }
 
+#[inline(always)]
+pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
+    if !is_damage_check(fighter.module_accessor) {
+        FGC_HITSTUN_MUL[entry_id(fighter.module_accessor)] = 1.2;
+    }
+}
+
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
 fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
@@ -128,6 +135,10 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             IS_FGC[entry_id(fighter.module_accessor)] = false;
         }
 
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            global_fgc(fighter);
+        }
+
         // Checks what frame you hit the opponent.
 
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -142,6 +153,16 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                     OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
                 }
             }
+        }
+
+        if entry_id(fighter.module_accessor) == 1 {
+            let damage_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME);
+            // if damage_frame > 0 {
+                println!("FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME: {}", damage_frame);
+                // println!("REACTION: {}", DamageModule::reaction(fighter.module_accessor, 0) as f32);
+                println!("FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME));
+                println!("FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME));
+            // }
         }
 
         // Shielding... DURING DASH?????

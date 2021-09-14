@@ -782,27 +782,30 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 //     );
 // }
 
-// #[skyline::hook(replace = WorkModule::set_int )]
-// pub unsafe fn set_int_replace(boma: &mut BattleObjectModuleAccessor, mut val: i32, term: i32) {
-//     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-//         if IS_FGC[entry_id(boma)] {
-//             if term == *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME {
-//                 val = (val as f32 * FGC_HITSTUN_MUL[entry_id(boma)]) as i32;
-//             }
-//         }
-//     }
-//     original!()(boma, val, term);
-// }
+#[skyline::hook(replace = WorkModule::get_int )]
+pub unsafe fn get_int_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> i32 {
+    let mut ret = original!()(boma, term);
+    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        if term == *FIGHTER_STATUS_DAMAGE_WORK_INT_ESCAPE_DISABLE_FRAME {
+            if IS_FGC[entry_id(boma)] {
+                ret = (ret as f32 / FGC_HITSTUN_MUL[entry_id(boma)]) as i32;
+            }
+        }
+    }
+    ret
+}
 
 #[skyline::hook(replace = WorkModule::set_float )]
 pub unsafe fn set_float_replace(boma: &mut BattleObjectModuleAccessor, mut val: f32, term: i32) {
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if IS_FGC[entry_id(boma)] {
-            if term == *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME && !HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] {
+        if term == *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME {
+            if IS_FGC[entry_id(boma)]
+            && !HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] {
                 val = val * FGC_HITSTUN_MUL[entry_id(boma)];
                 if FGC_HITSTUN_MUL[entry_id(boma)] > 0.5 {
                     FGC_HITSTUN_MUL[entry_id(boma)] -= 0.05;
                 }
+                HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] = false;
             }
         }
     }
@@ -1096,7 +1099,7 @@ pub fn install() {
         get_param_int_replace,
         //music_function_replace,
         correct_hook,
-        // set_int_replace,
+        get_int_replace,
         set_float_replace,
         get_int64_replace,
         play_se_replace,

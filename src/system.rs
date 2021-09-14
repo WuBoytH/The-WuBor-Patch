@@ -74,6 +74,7 @@ unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
 
 #[inline(always)]
 pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
+    // let status = StatusModule::status_kind(fighter.module_accessor);
     if !is_damage_check(fighter.module_accessor) {
         FGC_HITSTUN_MUL[entry_id(fighter.module_accessor)] = 1.2;
     }
@@ -155,15 +156,16 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             }
         }
 
-        if entry_id(fighter.module_accessor) == 1 {
-            let damage_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME);
-            // if damage_frame > 0 {
-                println!("FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME: {}", damage_frame);
-                // println!("REACTION: {}", DamageModule::reaction(fighter.module_accessor, 0) as f32);
-                println!("FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME));
-                println!("FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME));
-            // }
-        }
+        // if entry_id(fighter.module_accessor) == 1 {
+        //     println!("status: {}", status);
+        //     let damage_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME);
+        //     // if damage_frame > 0 {
+        //         println!("FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME: {}", damage_frame);
+        //         // println!("REACTION: {}", DamageModule::reaction(fighter.module_accessor, 0) as f32);
+        //         println!("FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME));
+        //         println!("FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME));
+        //     // }
+        // }
 
         // Shielding... DURING DASH?????
 

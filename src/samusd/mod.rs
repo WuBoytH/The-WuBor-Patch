@@ -47,7 +47,7 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_HI
         ].to_vec();
     }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW4
     ].contains(&status)
@@ -55,10 +55,10 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
         jump_cancel_check_hit(fighter, false);
     }
-    if status == *FIGHTER_STATUS_KIND_ATTACK_S4 {
+    else if status == *FIGHTER_STATUS_KIND_ATTACK_S4 {
         dash_cancel_check(fighter, false, false);
     }
-    if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
+    else if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
         dash_cancel_check(fighter, false, true);
     }
     cancel_system(fighter, status, allowed_cancels);

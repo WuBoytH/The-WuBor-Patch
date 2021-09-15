@@ -78,7 +78,9 @@ pub unsafe fn dash_cancel_check(agent: &mut L2CAgentBase, dash_on_block: bool, r
 pub unsafe fn critical_zoom(agent: &mut L2CAgentBase, rate : u8, frames : f32, zoom : f32) {
     if !SoundModule::is_playing(agent.module_accessor, Hash40::new("se_common_finishhit")) {
         macros::EFFECT(agent, Hash40::new("sys_bg_criticalhit"),Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        SlowModule::set_whole(agent.module_accessor, rate, 0);
+        if rate != 0 {
+            SlowModule::set_whole(agent.module_accessor, rate, 0);
+        }
         macros:: CAM_ZOOM_IN_arg5(agent, frames, 0.0, zoom, 0.0, 0.0);
         macros::PLAY_SE(agent, Hash40::new("se_common_criticalhit"));
     }

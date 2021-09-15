@@ -21,12 +21,6 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     || is_damage_check(fighter.module_accessor) {
         DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
     }
-    if status == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
-    && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
-        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = true;
-        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
-    }
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {
@@ -70,6 +64,12 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     }
     else if status == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         jump_cancel_check_hit(fighter, false);
+    }
+    else if status == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
+    && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
+        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = true;
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
     }
     if DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] == false {
         allowed_cancels.append(&mut [*FIGHTER_STATUS_KIND_SPECIAL_HI].to_vec());

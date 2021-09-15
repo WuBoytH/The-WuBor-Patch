@@ -117,7 +117,7 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_HI
         ].to_vec();
     }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,

@@ -36,7 +36,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && REVENGE[entry_id(fighter.module_accessor)] > 0
         && REVENGE[entry_id(fighter.module_accessor)] < 3
         && AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) >= 20.0 {
-            critical_zoom(fighter, 2, 2.0, 1.5);
+            critical_zoom(fighter, 0, 2.0, 1.5);
             REVENGE[entry_id(fighter.module_accessor)] = 3;
         }
     }

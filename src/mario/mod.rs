@@ -43,7 +43,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_HI
         ].to_vec();
     }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -53,7 +53,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
             jump_cancel_check_hit(fighter, false);
         }
-        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+        else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
             cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
         }
         allowed_cancels = [
@@ -69,7 +69,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
             allowed_cancels.append(&mut [*FIGHTER_STATUS_KIND_ATTACK_AIR].to_vec());
         }
     }
-    if [
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4
@@ -84,8 +84,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_HI
         ].to_vec();
     }
-    
-    if status == *FIGHTER_STATUS_KIND_SPECIAL_N {
+    else if status == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if FIREBALL_CANCEL[entry_id(fighter.module_accessor)] {
             jump_cancel_check_exception(fighter);
         }

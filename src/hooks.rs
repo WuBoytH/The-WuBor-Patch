@@ -245,10 +245,16 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON
         ].contains(&term) {
-            if is_damage_check(boma) {
-                return false;
+            if IS_FGC[entry_id(boma)] {
+                if is_damage_check(boma) {
+                    return false;
+                }
             }
         }
 

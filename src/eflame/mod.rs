@@ -9,8 +9,65 @@ use smash_script::*;
 use smashline::*;
 use crate::{
     commonfuncs::*,
-    vars::*
+    vars::*,
+    gameplay::*
 };
+
+#[inline(always)]
+pub unsafe fn eflame_fgc(fighter: &mut L2CFighterCommon) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    let mut allowed_cancels : Vec<i32> = [].to_vec();
+    set_hp(fighter, 112.0);
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK
+    ].contains(&status) {
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_13") {
+            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
+        }
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status) {
+        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
+        }
+        else if status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
+            jump_cancel_check_hit(fighter, true);
+        }
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH
+    ].contains(&status)
+    || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_100_end") {
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW
+        ].to_vec();
+    }
+    cancel_system(fighter, status, allowed_cancels);
+}
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]
 fn eflame_frame(fighter: &mut L2CFighterCommon) {
@@ -42,6 +99,10 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             && is_damage_check(fighter.module_accessor) == false {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
+        }
+
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            eflame_fgc(fighter);
         }
     }
 }

@@ -258,7 +258,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
 
-        else if fighter_kind == *FIGHTER_KIND_CHROM {
+        if fighter_kind == *FIGHTER_KIND_CHROM {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
@@ -393,7 +393,8 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 return 1;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_RIDLEY { // Funny Ridley
+        
+        if fighter_kind == *FIGHTER_KIND_RIDLEY { // Funny Ridley
             if FUNNY_RIDLEY[entry_id(boma)] {
                 if param_hash == hash40("max_charge_frame") {// Funny Plasma Breath
                     return 300;
@@ -576,7 +577,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 return ret + 3.0;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_MARIO {
+        if fighter_kind == *FIGHTER_KIND_MARIO {
             if param_hash == hash40("special_s_start_mul_spd_x") {
                 return 1.0;
             }

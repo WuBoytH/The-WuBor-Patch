@@ -21,9 +21,6 @@ pub unsafe fn eflame_fgc(fighter: &mut L2CFighterCommon) {
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_13") {
-            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
-        }
         allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
@@ -34,7 +31,6 @@ pub unsafe fn eflame_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {

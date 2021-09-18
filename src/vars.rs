@@ -31,6 +31,7 @@ pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
 pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
 pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
+pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;
@@ -79,6 +80,7 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 // Mario
 pub static mut IS_BONKER : [i32; 8] = [0; 8];
 pub static mut FIREBALL_CANCEL : [bool; 8] = [false; 8];
+pub static mut LONG_JUMP_LANDING : [bool; 8] = [false; 8];
 
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
@@ -152,7 +154,6 @@ pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
 pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
 pub static mut CURR_LOOPS : [i32; 8] = [0; 8];
 pub static mut DIFF_X : [f32; 8] = [0.0; 8];
-pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 
 // Corrin

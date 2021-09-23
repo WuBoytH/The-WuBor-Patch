@@ -40,7 +40,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3);
+            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true);
         }
         allowed_cancels = [
             *FIGHTER_STATUS_KIND_ATTACK_S4,

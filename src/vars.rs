@@ -81,6 +81,9 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 pub static mut IS_BONKER : [i32; 8] = [0; 8];
 pub static mut FIREBALL_CANCEL : [bool; 8] = [false; 8];
 pub static mut LONG_JUMP_LANDING : [bool; 8] = [false; 8];
+pub static mut BLJ : [bool; 8] = [false; 8];
+pub static mut BLJ_PREV : [bool; 8] = [false; 8];
+pub static mut LONG_JUMP_KIND : [i32; 8] = [0; 8];
 
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];

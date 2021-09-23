@@ -232,7 +232,10 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP
         ].contains(&term) {
             if IS_FGC[entry_id(boma)] {
-                if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
+                // if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
+                //     return false;
+                // }
+                if !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
                     return false;
                 }
             }
@@ -794,8 +797,13 @@ pub unsafe fn get_int_replace(boma: &mut BattleObjectModuleAccessor, term: i32) 
     let mut ret = original!()(boma, term);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if term == *FIGHTER_STATUS_DAMAGE_WORK_INT_ESCAPE_DISABLE_FRAME {
-            if IS_FGC[entry_id(boma)] {
+            if IS_FGC[entry_id(boma)]
+            && !HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] {
                 ret = (ret as f32 / FGC_HITSTUN_MUL[entry_id(boma)]) as i32;
+                // if FGC_HITSTUN_MUL[entry_id(boma)] > 0.5 {
+                //     FGC_HITSTUN_MUL[entry_id(boma)] -= 0.05;
+                // }
+                // HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] = false;
             }
         }
     }

@@ -61,8 +61,13 @@ pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor)
         *FIGHTER_STATUS_KIND_CLUNG_GANON,
         *FIGHTER_STATUS_KIND_CLUNG_DIDDY,
         *FIGHTER_STATUS_KIND_CLUNG_DAMAGE_DIDDY,
+        *FIGHTER_STATUS_KIND_CLUNG_THROWN_DIDDY,
+        *FIGHTER_STATUS_KIND_CLUNG_THROWN_BLANK_DIDDY,
         *FIGHTER_STATUS_KIND_CLUNG_CAPTAIN,
-        *FIGHTER_STATUS_KIND_LAY_DOWN
+        *FIGHTER_STATUS_KIND_LAY_DOWN,
+        *FIGHTER_STATUS_KIND_STABBED_RIDLEY,
+        *FIGHTER_STATUS_KIND_STABBED_DAMAGE,
+        *FIGHTER_STATUS_KIND_KOOPA_DIVED
     ].contains(&StatusModule::status_kind(module_accessor)) {
         return true;
     }

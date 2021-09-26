@@ -91,7 +91,8 @@ pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cance
     let level : i32;
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
     ].contains(&status) {
         level = 1;
     }

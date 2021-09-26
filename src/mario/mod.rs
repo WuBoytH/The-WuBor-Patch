@@ -214,6 +214,7 @@ unsafe extern "C" fn mario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ControlModule::clear_command(fighter.module_accessor, true);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     BLJ[entry_id(fighter.module_accessor)] = false;
@@ -277,7 +278,7 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
     else {
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        let mystery_param : f32 = -4.8;
+        let mystery_param : f32 = -4.0;
         lua_bind::FighterKineticEnergyGravity::set_speed(gravity as *mut smash::app::FighterKineticEnergyGravity, mystery_param);
         lua_bind::FighterKineticEnergyGravity::set_accel(gravity as *mut smash::app::FighterKineticEnergyGravity, 0.0);
     }
@@ -323,18 +324,22 @@ unsafe extern "C" fn mario_speciallw_shoot_main_loop(fighter: &mut L2CFighterCom
 unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Special Lw Type: 0 for Long Jump, 1 for Ground Pound
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-    // if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_hold"), 0.0, 1.0, false, 0.0, false, false);
-    // }
-    // else {
-    //     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_hold"), 0.0, 1.0, false, 0.0, false, false);
-    // }
+    }
+    else {
+        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_hold"), 0.0, 1.0, false, 0.0, false, false);
+    }
     fighter.sub_shift_status_main(L2CValue::Ptr(mario_speciallw_charge_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn mario_speciallw_charge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        fighter.sub_wait_ground_check_common(L2CValue::I32(0));
+        fighter.sub_air_check_fall_common();
+    }
     if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
-        cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW, false);
+        cancel_exceptions(fighter, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW, false);
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
@@ -672,6 +677,10 @@ unsafe fn mario_uspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", script = "sound_speciallwstart", category = ACMD_SOUND, low_priority )]
+unsafe fn mario_dspecialstartsnd(_fighter: &mut L2CAgentBase) {
+}
+
 #[acmd_script( agent = "mario", script = "game_speciallwlight", category = ACMD_GAME, low_priority )]
 unsafe fn mario_dspecialjump(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
@@ -702,6 +711,17 @@ unsafe fn mario_dspecialjump(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND, low_priority )]
+unsafe fn mario_dspecialjumpsnd(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_mario_009"));
+    }
+}
+
+#[acmd_script( agent = "mario", script = "sound_speciallwhold", category = ACMD_SOUND, low_priority )]
+unsafe fn mario_dspeciallandsnd(_fighter: &mut L2CAgentBase) {
+}
+
 #[acmd_script( agent = "mario", script = "game_specialairlwstart", category = ACMD_GAME, low_priority )]
 unsafe fn mario_dspecialairstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
@@ -710,10 +730,40 @@ unsafe fn mario_dspecialairstart(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", script = "sound_specialairlwstart", category = ACMD_SOUND, low_priority )]
+unsafe fn mario_dspecialairstartsnd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_mario_special_l04"));
+    }
+}
+
 #[acmd_script( agent = "mario", script = "game_specialairlwlight", category = ACMD_GAME, low_priority )]
 unsafe fn mario_dspecialpound(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 30, 80, 0, 50, 5.0, 0.0, 0.0, -2.0, Some(0.0), Some(0.0), Some(2.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 30, 80, 0, 50, 5.0, 0.0, 2.8, -2.0, Some(0.0), Some(2.8), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
+    }
+}
+
+#[acmd_script( agent = "mario", script = "sound_specialairlwlight", category = ACMD_SOUND, low_priority )]
+unsafe fn mario_dspecialpoundsnd(_fighter: &mut L2CAgentBase) {
+}
+
+#[acmd_script( agent = "mario", script = "game_specialairlwhold", category = ACMD_GAME, low_priority )]
+unsafe fn mario_dspecialpoundland(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 30, 80, 0, 80, 5.0, 0.0, 2.8, -3.0, Some(0.0), Some(2.8), Some(3.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
+    }
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "mario", script = "sound_specialairlwhold", category = ACMD_SOUND, low_priority )]
+unsafe fn mario_dspecialpoundlandsnd(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_mario_special_l03"));
     }
 }
 
@@ -780,9 +830,16 @@ pub fn install() {
         mario_sspecialeff,
         mario_sspecialaireff,
         mario_uspecial,
+        mario_dspecialstartsnd,
         mario_dspecialjump,
+        mario_dspecialjumpsnd,
+        mario_dspeciallandsnd,
         mario_dspecialairstart,
+        mario_dspecialairstartsnd,
         mario_dspecialpound,
+        mario_dspecialpoundsnd,
+        mario_dspecialpoundland,
+        mario_dspecialpoundlandsnd,
         mario_fireball_regular,
         // mario_pump_starteff
     );

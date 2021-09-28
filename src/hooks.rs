@@ -269,6 +269,13 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 return false;
             }
         }
+        else if fighter_kind == *FIGHTER_KIND_MARIO {
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
+                if SPECIAL_LW_TYPE[entry_id(boma)] == 2 {
+                    return false;
+                }
+            }
+        }
         else if fighter_kind == *FIGHTER_KIND_ROCKMAN {
             if IS_FUNNY[entry_id(boma)] {
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH

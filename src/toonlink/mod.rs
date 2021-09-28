@@ -321,6 +321,9 @@ unsafe fn toonlink_dspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_WORK_ID_FLAG_BOMB_GENERATE_LINKBOMB);
     }
+    macros::FT_MOTION_RATE(fighter, 2.5);
+    frame(fighter.lua_state_agent, 21.0);
+    macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
         ItemModule::throw_item(fighter.module_accessor, 80.0, 3.0, 1.0, 0, true, 0.0);

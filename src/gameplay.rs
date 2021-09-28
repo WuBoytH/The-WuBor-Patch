@@ -81,7 +81,9 @@ pub unsafe fn critical_zoom(agent: &mut L2CAgentBase, rate : u8, frames : f32, z
         if rate != 0 {
             SlowModule::set_whole(agent.module_accessor, rate, 0);
         }
-        macros:: CAM_ZOOM_IN_arg5(agent, frames, 0.0, zoom, 0.0, 0.0);
+        if FighterUtil::get_opponent_fighter_num(agent.module_accessor, true) < 2 {
+            macros:: CAM_ZOOM_IN_arg5(agent, frames, 0.0, zoom, 0.0, 0.0);
+        }
         macros::PLAY_SE(agent, Hash40::new("se_common_criticalhit"));
     }
 }

@@ -92,7 +92,7 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE01
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE02
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_END
-            && is_damage_check(fighter.module_accessor) == false {
+            && is_damage_check(fighter.module_accessor, false) == false {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
         }

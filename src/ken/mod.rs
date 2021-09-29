@@ -157,7 +157,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             && V_GAUGE[entry_id(fighter.module_accessor)] == 900)
             || (VS1_CANCEL[entry_id(fighter.module_accessor)] == true
             && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 0))
-            && !is_damage_check(fighter.module_accessor) {
+            && !is_damage_check(fighter.module_accessor, false) {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
             }
         }

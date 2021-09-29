@@ -21,7 +21,7 @@ fn richter_frame(fighter: &mut L2CFighterCommon) {
             DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
         }
         else if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-        || is_damage_check(fighter.module_accessor) {
+        || is_damage_check(fighter.module_accessor, false) {
             DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
         }
     }

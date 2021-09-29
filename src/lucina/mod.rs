@@ -321,7 +321,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
                 if AWAKENING[entry_id(fighter.module_accessor)] == false
                 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-                && (!is_damage_check(fighter.module_accessor)
+                && (!is_damage_check(fighter.module_accessor, false)
                 || IS_FUNNY[entry_id(fighter.module_accessor)])
                 && sv_information::is_ready_go() {
                     DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
@@ -405,7 +405,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
             }
-            else if (!is_damage_check(fighter.module_accessor)
+            else if (!is_damage_check(fighter.module_accessor, false)
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI)
             || IS_FUNNY[entry_id(fighter.module_accessor)] {
                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {

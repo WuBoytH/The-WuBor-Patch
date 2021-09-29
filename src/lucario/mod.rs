@@ -18,7 +18,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     let mut allowed_cancels : Vec<i32> = [].to_vec();
     set_hp(fighter, 116.0);
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-    || is_damage_check(fighter.module_accessor) {
+    || is_damage_check(fighter.module_accessor, false) {
         DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
     }
     if [

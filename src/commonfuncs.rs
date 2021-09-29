@@ -3,7 +3,15 @@ use smash::{
     lib::lua_const::*
 };
 
-pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor) -> bool {
+pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor, is_prev : bool) -> bool {
+    let status : i32;
+    let ret : bool;
+    if is_prev {
+        status = StatusModule::prev_status_kind(module_accessor, 0);
+    }
+    else {
+        status = StatusModule::status_kind(module_accessor);
+    }
     if WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAPTURE_YOSHI)
     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
@@ -24,9 +32,16 @@ pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor)
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+        *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_JUMP_BOARD,
         *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+        *FIGHTER_STATUS_KIND_DAMAGE_SONG_START,
         *FIGHTER_STATUS_KIND_DAMAGE_SONG,
+        *FIGHTER_STATUS_KIND_DAMAGE_SONG_FALL,
+        *FIGHTER_STATUS_KIND_DAMAGE_SONG_END,
+        *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
         *FIGHTER_STATUS_KIND_DAMAGE_SLEEP,
+        *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_FALL,
+        *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
         *FIGHTER_STATUS_KIND_FINAL,
         *FIGHTER_STATUS_KIND_SLEEP,
         *FIGHTER_STATUS_KIND_CAPTURE_JACK_WIRE,
@@ -68,12 +83,16 @@ pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor)
         *FIGHTER_STATUS_KIND_STABBED_RIDLEY,
         *FIGHTER_STATUS_KIND_STABBED_DAMAGE,
         *FIGHTER_STATUS_KIND_KOOPA_DIVED
-    ].contains(&StatusModule::status_kind(module_accessor)) {
-        return true;
+    ].contains(&status) {
+        ret = true;
     }
     else {
-        return false;
+        ret = false;
     }
+    // if is_prev {
+    //     println!("Is prev? {} Is damage? {}", is_prev, ret);
+    // }
+    ret
 }
 
 pub unsafe fn entry_id(module_accessor: *mut BattleObjectModuleAccessor) -> usize {

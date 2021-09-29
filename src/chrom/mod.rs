@@ -36,6 +36,10 @@ fn chrom_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME, low_priority )]
+unsafe fn chrom_dash(_fighter: &mut L2CAgentBase) {
+}
+
 #[acmd_script( agent = "chrom", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_jab(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
@@ -334,6 +338,7 @@ pub fn install() {
         chrom_frame
     );
     install_acmd_scripts!(
+        chrom_dash,
         chrom_jab,
         chrom_jabeff,
         chrom_jabsnd,

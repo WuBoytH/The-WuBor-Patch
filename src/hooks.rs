@@ -235,7 +235,8 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 // if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
                 //     return false;
                 // }
-                if !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+                if !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR)
+                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
                     return false;
                 }
             }
@@ -255,21 +256,13 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON
         ].contains(&term) {
             if IS_FGC[entry_id(boma)] {
-                if is_damage_check(boma) {
+                if is_damage_check(boma, false) {
                     return false;
                 }
             }
         }
 
-        if fighter_kind == *FIGHTER_KIND_CHROM {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_RUN_BRAKE {
-                return false;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_MARIO {
+        if fighter_kind == *FIGHTER_KIND_MARIO {
             if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                 if SPECIAL_LW_TYPE[entry_id(boma)] == 2 {
                     return false;
@@ -401,6 +394,14 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
         else if param_hash == hash40("invalid_capture_frame") { // The Chain Grab Param
             if IS_FUNNY[entry_id(boma)] {
                 return 1;
+            }
+        }
+
+        else if param_hash == hash40("escape_air_slide_back_end_frame") {
+            if IS_FGC[entry_id(boma)] {
+                if !is_damage_check(boma, true) {
+                    return 0;
+                }
             }
         }
         
@@ -573,6 +574,42 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         else if param_hash == hash40("damage_fly_length_mul_min") {
             if IS_FGC[entry_id(boma)] {
                 return 1.0;
+            }
+        }
+
+        else if param_hash == hash40("escape_air_slide_hit_xlu_frame")
+        || param_hash == hash40("escape_air_slide_penalty_hit_xlu_frame") {
+            if IS_FGC[entry_id(boma)] {
+                // println!("Escape Air Slide XLU Is Hit: {}", is_damage_check(boma, true));
+                if is_damage_check(boma, true)
+                || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
+                    return 1.0;
+                }
+                else {
+                    return 0.0;
+                }
+            }
+        }
+
+        else if param_hash == hash40("escape_air_slide_hit_normal_frame")
+        || param_hash == hash40("escape_air_slide_penalty_hit_normal_frame") {
+            if IS_FGC[entry_id(boma)] {
+                // println!("Escape Air Slide NORMAL Is Hit: {}", is_damage_check(boma, true));
+                if is_damage_check(boma, true)
+                || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
+                    return 20.0;
+                }
+                else {
+                    return 0.0;
+                }
+            }
+        }
+
+        else if param_hash == hash40("escape_air_slide_back_distance") {
+            if IS_FGC[entry_id(boma)] {
+                if !is_damage_check(boma, true) {
+                    return 0.0;
+                }
             }
         }
 
@@ -813,6 +850,21 @@ pub unsafe fn get_int_replace(boma: &mut BattleObjectModuleAccessor, term: i32) 
                 // HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] = false;
             }
         }
+        // else if term == *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME {
+        //     if IS_FGC[entry_id(boma)] {
+        //         ret = 1;
+        //     }
+        // }
+        // else if term == *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME {
+        //     if IS_FGC[entry_id(boma)] {
+        //         if is_damage_check(boma, true) {
+        //             ret = 30;
+        //         }
+        //         else {
+        //             ret = 2;
+        //         }
+        //     }
+        // }
     }
     ret
 }

@@ -74,9 +74,27 @@ unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
 
 #[inline(always)]
 pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
-    // let status = StatusModule::status_kind(fighter.module_accessor);
-    if !is_damage_check(fighter.module_accessor) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    if !is_damage_check(fighter.module_accessor, false) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
         FGC_HITSTUN_MUL[entry_id(fighter.module_accessor)] = 1.2;
+    }
+    else  {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+    }
+    if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+            let frame : f32;
+            if !is_damage_check(fighter.module_accessor, true) {
+                frame = 7.0;
+            }
+            else {
+                frame = 30.0;
+            }
+            if MotionModule::frame(fighter.module_accessor) >= frame {
+                CancelModule::enable_cancel(fighter.module_accessor);
+            }
+        }
     }
 }
 

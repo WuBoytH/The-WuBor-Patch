@@ -814,6 +814,18 @@ unsafe fn mario_dspecialpoundlandeff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", script = "expression_specialairlwhold", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_dspecialpoundlandexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, 0);
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+    }
+    frame(fighter.lua_state_agent, 25.0);
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 3);
+    }
+}
+
 #[acmd_script( agent = "mario_fireball", script = "game_regular", category = ACMD_GAME, low_priority )]
 unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     let angle : u64;
@@ -891,6 +903,7 @@ pub fn install() {
         mario_dspecialpoundland,
         mario_dspecialpoundlandsnd,
         mario_dspecialpoundlandeff,
+        mario_dspecialpoundlandexp,
         mario_fireball_regular,
         // mario_pump_starteff
     );

@@ -67,9 +67,9 @@ unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommo
 }
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_DamageAir_MainEv")]
-unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) {
+unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-    original!()(fighter);
+    call_original!(fighter)
 }
 
 #[inline(always)]
@@ -374,7 +374,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
 pub fn install() {
     // skyline::install_hook!(damage_air_main);
-    smashline::install_hook!(
+    smashline::install_hooks!(
         damage_air_main
     );
     smashline::install_status_scripts!(

@@ -387,7 +387,8 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         
         if param_hash == hash40("guard_off_cancel_frame") { // Shield Drop Cancel Frame
-            if IS_FUNNY[entry_id(boma)] {
+            if IS_FUNNY[entry_id(boma)]
+            || IS_FGC[entry_id(boma)] {
                 return 5;
             }
         }
@@ -545,7 +546,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
         if [
-            hash40("shield_dec1"),
             hash40("damage_fly_correction_max")
         ].contains(&param_type) {
             if IS_FGC[entry_id(boma)] {
@@ -553,11 +553,11 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             }
         }
 
-        // else if param_hash == hash40("shield_damage_mul") {
-        //     if IS_FGC[entry_id(boma)] {
-        //         return 0.2;
-        //     }
-        // }
+        else if param_hash == hash40("shield_damage_mul") {
+            if IS_FGC[entry_id(boma)] {
+                return 0.2;
+            }
+        }
 
         else if param_hash == hash40("damage_fly_correction_max") {
             if IS_FGC[entry_id(boma)] {

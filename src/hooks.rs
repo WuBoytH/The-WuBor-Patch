@@ -1185,20 +1185,4 @@ pub fn install() {
         play_se_no_3d_replace,
         // have_replace
     );
-    // skyline::install_hook!(attack_replace);
-    // skyline::install_hook!(is_enable_transition_term_replace);
-    // skyline::install_hook!(get_param_float_replace);
-    // skyline::install_hook!(get_param_int_replace);
-    // skyline::install_hook!(music_function_replace);
-    // skyline::install_hook!(correct_hook);
-    // skyline::install_hook!(get_int64_replace);
-    // skyline::install_hook!(play_se_replace);
-    // skyline::install_hook!(play_fly_voice_replace);
-    // skyline::install_hook!(play_sequence_replace);
-    // skyline::install_hook!(play_status_replace);
-    // skyline::install_hook!(play_down_se_replace);
-    // skyline::install_hook!(play_se_remain_replace);
-    // skyline::install_hook!(play_se_no_3d_replace);
-    // skyline::install_hook!(have_replace);
-    // skyline::install_hook!(init_settings_replace);
 }

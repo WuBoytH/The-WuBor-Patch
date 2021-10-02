@@ -94,14 +94,14 @@ unsafe extern "C" fn pitb_specialncharge_loop(fighter: &mut L2CFighterCommon) ->
             fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
         }
         else {
-            let stickx = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor);
-            let turnstickx = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("turn_stick_x"));
-            if stickx <= turnstickx {
-                fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN.into(), true.into());
-            }
-            else {
+            // let stickx = fighter.global_table[STICK_X].get_f32() * PostureModule::lr(fighter.module_accessor);
+            // let turnstickx = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("turn_stick_x"));
+            // if stickx <= turnstickx {
+            //     fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN.into(), true.into());
+            // }
+            // else {
                 fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), true.into());
-            }
+            // }
         }
     }
     L2CValue::I32(0)

@@ -780,6 +780,17 @@ unsafe fn mario_dspecialpound(fighter: &mut L2CAgentBase) {
 unsafe fn mario_dspecialpoundsnd(_fighter: &mut L2CAgentBase) {
 }
 
+#[acmd_script( agent = "mario", script = "expression_specialairlwlight", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_dspecialpoundexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0);
+    }
+}
+
 #[acmd_script( agent = "mario", script = "game_specialairlwheavy", category = ACMD_GAME, low_priority )]
 unsafe fn mario_dspecialcancel(_fighter: &mut L2CAgentBase) {
 }
@@ -898,6 +909,7 @@ pub fn install() {
         mario_dspecialairstartsnd,
         mario_dspecialpound,
         mario_dspecialpoundsnd,
+        mario_dspecialpoundexp,
         mario_dspecialcancel,
         mario_dspecialcancelsnd,
         mario_dspecialpoundland,

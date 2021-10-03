@@ -17,7 +17,7 @@ use crate::{
 pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
     let mut allowed_cancels : Vec<i32> = [].to_vec();
-    set_hp(fighter, 152.0);
+    set_hp(fighter, 132.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {

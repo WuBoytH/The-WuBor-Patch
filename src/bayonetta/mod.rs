@@ -35,8 +35,7 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
         hash40("attack_100_end"),
         hash40("special_s_hold_end")
     ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
-        if DASH[entry_id(fighter.module_accessor)]
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
             cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F, false);
         }
     }
@@ -52,8 +51,7 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
             jump_cancel_check_hit(fighter, false);
         }
         else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-            if DASH[entry_id(fighter.module_accessor)]
-            && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F, false);
             }
         }

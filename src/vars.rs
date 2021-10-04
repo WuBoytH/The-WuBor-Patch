@@ -106,7 +106,6 @@ pub static mut FLASH_CANCEL : [bool; 8] = [false; 8];
 
 // Toon Link
 pub static mut SPIN_SPEED : [f32; 8] = [0.0; 8];
-pub static mut BOUNCE_HELPER : [f32; 8] = [0.0; 8];
 
 // Lucario
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];

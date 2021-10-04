@@ -51,21 +51,19 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
         if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("attack_air_lw"){
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                 BOUNCE[entry_id(fighter.module_accessor)] = true;
-                BOUNCE_HELPER[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
             }
-        }
-        if BOUNCE[entry_id(fighter.module_accessor)] {
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LINK_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_LW_SET_ATTACK);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-            KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-            let speedx = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            macros::SET_SPEED_EX(fighter, speedx, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-            let posy = PostureModule::pos_y(fighter.module_accessor);
-            if posy > BOUNCE_HELPER[entry_id(fighter.module_accessor)] + 0.1 {
-                BOUNCE[entry_id(fighter.module_accessor)] = false;
+            if BOUNCE[entry_id(fighter.module_accessor)] {
+                macros::SET_SPEED_EX(fighter, 0.0, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                KineticModule::suspend_energy_all(fighter.module_accessor);
+                if MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+                && MotionModule::frame(fighter.module_accessor) < 65.0 {
+                    MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 65.0, true, false, false);
+                }
+                else if MotionModule::frame(fighter.module_accessor) > 66.0 {
+                    KineticModule::resume_energy_all(fighter.module_accessor);
+                    BOUNCE[entry_id(fighter.module_accessor)] = false;
+                    MotionModule::set_rate(fighter.module_accessor, 0.4);
+                }
             }
         }
     }

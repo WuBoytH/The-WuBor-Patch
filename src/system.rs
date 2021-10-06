@@ -1,3 +1,5 @@
+#![allow(unused_must_use)]
+
 use smash::hash40;
 use smash::phx::Vector3f;
 use smash::lib::lua_const::*;
@@ -66,8 +68,8 @@ unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommo
     L2CValue::I32(0)
 }
 
-#[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon21status_DamageAir_MainEv")]
-unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
+pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     call_original!(fighter)
 }
@@ -372,11 +374,16 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 //    }
 //}
 
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            damage_air_main
+        );
+    }
+}
+
 pub fn install() {
-    // skyline::install_hook!(damage_air_main);
-    smashline::install_hooks!(
-        damage_air_main
-    );
+    skyline::nro::add_hook(nro_hook);
     smashline::install_status_scripts!(
         common_status_damagefall
     );

@@ -3,14 +3,15 @@ use smash::{
     hash40,
     phx::{Hash40, Vector3f, Vector2f},
     app::{lua_bind::*, sv_animcmd::*, *},
-    lib::lua_const::*
+    lib::{lua_const::*/*, L2CValue*/}
 };
 use smash_script::*;
 use smashline::*;
 use crate::{
     commonfuncs::*,
     vars::*,
-    gameplay::*
+    gameplay::*,
+    // globals::*
 };
 
 #[inline(always)]
@@ -112,6 +113,34 @@ fn samusd_cshot_frame(weapon: &mut L2CFighterBase) {
         }
     }
 }
+
+// #[status_script(agent = "samusd_missile", status = WEAPON_SAMUS_MISSILE_STATUS_KIND_HOMING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// unsafe fn samusd_missile_homing_main(weapon: &mut L2CFighterBase) -> L2CValue {
+//     MotionModule::change_motion(weapon.module_accessor, Hash40::new("homing"), 0.0, 1.0, false, 0.0, false, false);
+//     if !StopModule::is_stop(weapon.module_accessor) {
+//         WorkModule::dec_int(weapon.module_accessor, *WEAPON_SAMUS_MISSILE_INSTANCE_WORK_ID_INT_LIFE);
+//     }
+//     weapon.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(samusd_missile_dec_int as *const () as _));
+//     weapon.fastshift(L2CValue::Ptr(samusd_missile_homing_main_loop as *const () as _))
+// }
+
+// unsafe extern "C" fn samusd_missile_dec_int(weapon: &mut L2CFighterBase) -> L2CValue {
+//     WorkModule::dec_int(weapon.module_accessor, *WEAPON_SAMUS_MISSILE_INSTANCE_WORK_ID_INT_LIFE);
+//     0.into()
+// }
+
+// unsafe extern "C" fn samusd_missile_homing_main_loop(weapon: &mut L2CFighterBase) -> L2CValue {
+//     if !StatusModule::is_changing(weapon.module_accessor) {
+//         if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
+//             if !WorkModule::get_int(weapon.module_accessor, *WEAPON_SAMUS_MISSILE_INSTANCE_WORK_ID_INT_LIFE) <= 0 {
+//                 return 0.into();
+//             }
+//         }
+//         println!("burstin' time");
+//         weapon.change_status(WEAPON_SAMUS_MISSILE_STATUS_KIND_H_BURST.into(), false.into());
+//     }
+//     0.into()
+// }
 
 #[acmd_script( agent = "samusd", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_jab1(fighter: &mut L2CAgentBase) {
@@ -923,6 +952,9 @@ pub fn install() {
         samusd_frame,
         samusd_cshot_frame
     );
+    // install_status_scripts!(
+    //     samusd_missile_homing_main
+    // );
     install_acmd_scripts!(
         samusd_jab1,
         samusd_jab2,

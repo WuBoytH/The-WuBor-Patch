@@ -1,15 +1,16 @@
 use smash::{
-    lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    lua2cpp::{L2CFighterCommon, L2CAgentBase/*, L2CFighterBase*/},
     hash40,
     phx::{Hash40, Vector3f},
     app::{lua_bind::*, sv_animcmd::*, *},
-    lib::lua_const::*
+    lib::{lua_const::*/*, L2CValue*/}
 };
 use smash_script::*;
 use smashline::*;
 use crate::{
     commonfuncs::*,
-    vars::*
+    vars::*,
+    // globals::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
@@ -74,26 +75,25 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 //     WorkModule::off_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_INFLICTION);
 //     WorkModule::off_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_TO_HOP);
 //     if !StopModule::is_stop(weapon.module_accessor) {
-//         boomerang_ground_check(weapon, true, false);
+//         boomerang_ground_check(weapon, false.into());
 //     }
 //     weapon.global_table[SUB_STATUS].assign(&L2CValue::Ptr(boomerang_ground_check_wrap as *const () as _));
 //     MotionModule::change_motion(weapon.module_accessor, Hash40::new("fly"), 0.0, 1.0, false, 0.0, false, false);
 //     weapon.fastshift(L2CValue::Ptr(toonlink_boomerang_fly_main_loop as *const () as _))
 // }
 
-// unsafe extern "C" fn boomerang_ground_check_wrap(weapon: &mut L2CFighterBase) -> L2CValue {
-//     boomerang_ground_check(weapon, false, true)
+// unsafe extern "C" fn boomerang_ground_check_wrap(weapon: &mut L2CFighterBase, unk1: L2CValue) -> L2CValue {
+//     boomerang_ground_check(weapon, unk1)
 // }
 
-// unsafe extern "C" fn boomerang_ground_check(weapon: &mut L2CFighterBase, is_stop : bool, somethin : bool) -> L2CValue {
-//     if somethin {
+// unsafe extern "C" fn boomerang_ground_check(weapon: &mut L2CFighterBase, somethin : L2CValue) -> L2CValue {
+//     if somethin.get_bool() {
 //         if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
 //             notify_event_msc_cmd!(weapon, 0x18b78d41a0u64);
 //         }
 //         boomerang_dec_life(weapon);
 //     }
-//     // L2CValue::I32(0)
-//     return is_stop.into()
+//     0.into()
 // }
 
 // unsafe extern "C" fn boomerang_dec_life(weapon: &mut L2CFighterBase) {
@@ -101,26 +101,30 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 //     let life = WorkModule::get_int(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_INT_LIFE);
 //     if life <= 0 {
 //         notify_event_msc_cmd!(weapon, 0x199c462b5du64);
+//         weapon.pop_lua_stack(1);
 //     }
 // }
 
 // unsafe extern "C" fn toonlink_boomerang_fly_main_loop(weapon: &mut L2CFighterBase) -> L2CValue {
-//     let mut val = 0;
 //     let sum_speed_length = KineticModule::get_sum_speed_length(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
 //     let min_speed = WorkModule::get_param_float(weapon.module_accessor, hash40("param_boomerang"), hash40("speed_min"));
 //     let speed_mul = WorkModule::get_param_float(weapon.module_accessor, hash40("param_boomerang"), hash40("speed_mul"));
 //     if !WorkModule::is_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_TO_HOP) {
+//         println!("sum_speed_length: {}", sum_speed_length);
+//         println!("min speed * mul: {}", min_speed * speed_mul);
 //         if sum_speed_length as f32 <= min_speed * speed_mul {
-//             if !WorkModule::is_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_APPLY_FLY_SPEED) {
+//             println!("speed check pass");
+//             if WorkModule::is_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_APPLY_FLY_SPEED) {
+//                 println!("fly speed check pass");
 //                 weapon.change_status(WN_LINK_BOOMERANG_STATUS_KIND_TURN.into(), false.into());
-//                 val = 1;
+//                 return 1.into()
 //             }
 //         }
 //     }
 //     else {
 //         weapon.change_status(WN_LINK_BOOMERANG_STATUS_KIND_HOP.into(), false.into());
 //     }
-//     L2CValue::I32(val)
+//     0.into()
 // }
 
 #[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]

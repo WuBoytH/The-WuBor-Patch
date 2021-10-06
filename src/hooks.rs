@@ -1,5 +1,6 @@
 use smash::{
     hash40,
+    // phx::Hash40,
     app::{lua_bind::*, FighterManager, *},
     lib::{lua_const::*, L2CValue, L2CAgent}
 };
@@ -1127,6 +1128,30 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
     original!()(lua_state);
 }
 
+// #[skyline::hook(replace = MotionModule::change_motion)]
+// unsafe fn change_motion_replace(module_accessor: *mut BattleObjectModuleAccessor, 
+//     motion_kind: Hash40,
+//     frame: f32,
+//     rate: f32,
+//     unk1: bool,
+//     unk2: f32,
+//     unk3: bool,
+//     unk4: bool) -> u64 {
+//     let fighter_kind = utility::get_kind(&mut *module_accessor);
+//     if fighter_kind == *FIGHTER_KIND_FOX {
+//         if motion_kind.hash == hash40("special_n_loop") {
+//             println!("change hi");
+//             println!("frame: {}", frame);
+//             println!("rate: {}", rate);
+//             println!("unk1: {}", unk1);
+//             println!("unk2: {}", unk2);
+//             println!("unk3: {}", unk3);
+//             println!("unk4: {}", unk4);
+//         }
+//     }
+//     original!()(module_accessor, motion_kind, frame, rate, unk1, unk2, unk3, unk4)
+// }
+
 // #[skyline::hook(replace = ArticleModule::have)]
 // unsafe fn have_replace(boma: &mut BattleObjectModuleAccessor, article: i32, mut bone: u64, target: ArticleOperationTarget, unk1: u32, unk2: bool) -> u64 {
 //     if article == *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP {
@@ -1183,6 +1208,7 @@ pub fn install() {
         play_down_se_replace,
         play_se_remain_replace,
         play_se_no_3d_replace,
+        // change_motion_replace,
         // have_replace
     );
 }

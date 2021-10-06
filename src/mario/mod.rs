@@ -580,6 +580,18 @@ unsafe fn mario_nspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_FIREBALL, false, -1);
     }
+    // frame(fighter.lua_state_agent, 15.0);
+    // if macros::is_excute(fighter) {
+    //     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+    //         notify_event_msc_cmd!(fighter, 0x2b94de0d96u64, *FIGHTER_LOG_ACTION_CATEGORY_ATTACK, *FIGHTER_LOG_ATTACK_KIND_SPECIAL_N, true);
+    //         if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_GROUND {
+    //             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n"), 5.0, 1.0, false, 0.0, false, false);
+    //         }
+    //         else {
+    //             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n"), 5.0, 1.0, false, 0.0, false, false);
+    //         }
+    //     }
+    // }
 }
 
 #[acmd_script( agent = "mario", scripts = [ "game_specials", "game_specialairs" ], category = ACMD_GAME, low_priority )]

@@ -139,7 +139,13 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF {
             BOUNCE[entry_id(fighter.module_accessor)] = false;
-            SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
+            if ![
+                *FIGHTER_STATUS_KIND_SPECIAL_LW,
+                *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT,
+                *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE
+            ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
+                SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
+            }
         }
 
         if IS_FGC[entry_id(fighter.module_accessor)] {
@@ -358,6 +364,7 @@ unsafe extern "C" fn mario_speciallw_charge_main_loop(fighter: &mut L2CFighterCo
     }
     else {
         if CancelModule::is_enable_cancel(fighter.module_accessor) {
+            SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
             fighter.sub_wait_ground_check_common(L2CValue::I32(0));
             fighter.sub_air_check_fall_common();
         }

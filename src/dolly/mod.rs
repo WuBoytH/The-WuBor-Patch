@@ -80,6 +80,40 @@ use crate::{
 //     }
 // }
 
+#[acmd_script( agent = "dolly", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_dtilt(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 80, 30, 0, 35, 3.5, 0.0, 5.0, 2.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 80, 30, 0, 35, 3.5, 0.0, 4.0, 7.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 3.0, 86, 30, 0, 35, 3.5, 0.0, 3.0, 12.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 30, 40, 0, 50, 3.5, 0.0, 5.0, 2.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 4, 0, Hash40::new("top"), 3.0, 30, 40, 0, 50, 3.5, 0.0, 4.0, 7.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 5, 0, Hash40::new("top"), 3.0, 30, 40, 0, 50, 3.5, 0.0, 3.0, 12.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 0, 2.0, false);
+        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 1, 2.0, false);
+        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 2, 2.0, false);
+        // AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 4, -7.0, false);
+        AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+    }
+    wait(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    macros::FT_MOTION_RATE(fighter, 0.7);
+    frame(fighter.lua_state_agent, 18.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+    }
+}
+
 #[acmd_script( agent = "dolly", script = "game_throwf", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_fthrow(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -257,12 +291,10 @@ unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-        if macros::is_excute(fighter) {
-            MotionModule::set_rate(fighter.module_accessor, 1.0);
-        }
+        macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     }
     else {
-        MotionModule::set_rate(fighter.module_accessor, 0.83);
+        macros::FT_MOTION_RATE(fighter, 5.0 / 6.0);
     }
     frame(fighter.lua_state_agent, 12.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
@@ -287,17 +319,19 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
+    macros::FT_MOTION_RATE(fighter, 0.75);
     frame(fighter.lua_state_agent, 12.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
         feint = true;
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
+        MotionModule::set_rate(fighter.module_accessor, 1.0);
         if feint == false {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
         else {
-            KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 0.0, y: 1.7, z: 0.0});
+            KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 0.0, y: 1.2, z: 0.0});
             MotionModule::set_rate(fighter.module_accessor, 1.5);
         }
     }
@@ -583,7 +617,6 @@ unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
@@ -627,6 +660,7 @@ unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
@@ -705,7 +739,6 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -793,6 +826,7 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 24.0);
@@ -874,11 +908,48 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
 //     original!(fighter);
 // }
 
+#[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_wave_lightground(weapon: &mut L2CAgentBase) {
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(weapon.lua_state_agent, 2.0);
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(weapon.lua_state_agent, 6.0);
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
+#[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_wave_heavyground(weapon: &mut L2CAgentBase) {
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(weapon.lua_state_agent, 2.0);
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(weapon.lua_state_agent, 6.0);
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
 pub fn install() {
     // install_agent_frames!(
     //     dolly_frame
     // );
     install_acmd_scripts!(
+        dolly_dtilt,
         dolly_fthrow,
         dolly_fthroweff,
         dolly_fthrowsnd,
@@ -893,6 +964,8 @@ pub fn install() {
         dolly_uspecialair,
         dolly_uspecialaircomm,
         // dolly_geezah,
-        // dolly_bustah
+        // dolly_bustah,
+        dolly_wave_lightground,
+        dolly_wave_heavyground
     );
 }

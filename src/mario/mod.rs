@@ -230,7 +230,7 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
         let speed_x : f32;
         let speed_y : f32;
         if [6, 3, 9].contains(&dir) {
-            speed_x = 2.0;
+            speed_x = 1.7;
             speed_y = 1.6;
             LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 2;
             BLJ_PREV[entry_id(fighter.module_accessor)] = false;
@@ -238,8 +238,8 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
         else if [4, 7, 1].contains(&dir) {
             BLJ[entry_id(fighter.module_accessor)] = true;
             if BLJ_PREV[entry_id(fighter.module_accessor)] {
-                speed_x = -2.0;
-                speed_y = 1.6;
+                speed_x = -1.7;
+                speed_y = 0.0;
                 LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 3;
             }
             else {
@@ -250,7 +250,7 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
             BLJ_PREV[entry_id(fighter.module_accessor)] = true;
         }
         else {
-            speed_x = 1.5;
+            speed_x = 1.4;
             speed_y = 1.4;
             LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 0;
             BLJ_PREV[entry_id(fighter.module_accessor)] = false;
@@ -283,6 +283,7 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         fighter.clear_lua_stack();
         lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_accel_y_stable);
         sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
     }
     else {
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -338,7 +339,7 @@ unsafe extern "C" fn mario_speciallw_shoot_main_loop(fighter: &mut L2CFighterCom
 unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Special Lw Type: 0 for Long Jump, 1 for Ground Pound, 2 for Ground Pound Cancel
     if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+        // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw_hold"), 0.0, 1.0, false, 0.0, false, false);
     }
     else if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {

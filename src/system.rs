@@ -4,7 +4,6 @@ use smash::hash40;
 use smash::phx::Vector3f;
 use smash::lib::lua_const::*;
 use smash::app::lua_bind::*;
-// use smash::lua2cpp::L2CAgentBase;
 use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
 // use smash_script::*;
 use smashline::*;
@@ -363,16 +362,17 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 }
 
 // Use this for general per-frame weapon-level hooks
-//pub fn once_per_weapon_frame(fighter_base : &mut L2CFighterBase) {
+// #[weapon_frame_callback]
+// pub fn once_per_weapon_frame(fighter_base : &mut L2CFighterBase) {
 //    unsafe {
 //        let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter_base.lua_state_agent);
 //        let frame = smash::app::lua_bind::MotionModule::frame(module_accessor) as i32;
-//
+
 //        if frame % 10 == 0 {
 //            println!("[Weapon Hook] Frame : {}", frame);
 //        }
 //    }
-//}
+// }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
@@ -384,11 +384,11 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    smashline::install_status_scripts!(
+    install_status_scripts!(
         common_status_damagefall
     );
-    smashline::install_agent_frame_callbacks!(
-        global_fighter_frame
+    install_agent_frame_callbacks!(
+        global_fighter_frame,
+        // once_per_weapon_frame
     );
-//    acmd::add_custom_weapon_hooks!(once_per_weapon_frame);
 }

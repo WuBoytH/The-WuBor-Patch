@@ -193,7 +193,6 @@ pub unsafe fn chain_cancels(agent: &mut L2CAgentBase, next_status: i32, cat1_com
         if (cat1 & cat1_compare) != 0 {
             StatusModule::change_status_request_from_script(agent.module_accessor, next_status, false);
             flag[entry_id(agent.module_accessor)] += 1;
-            println!("flag increased");
         }
     }
 }

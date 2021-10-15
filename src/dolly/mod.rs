@@ -1,5 +1,5 @@
 use smash::{
-    lua2cpp::L2CAgentBase,
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
     phx::{Hash40, Vector3f},
     app::{lua_bind::*, sv_animcmd::*, *},
     lib::lua_const::*
@@ -7,78 +7,91 @@ use smash::{
 use smash_script::*;
 use smashline::*;
 use crate::{
-    vars::*
+    vars::*,
+    gameplay::*,
+    commonfuncs::*
 };
 
-// pub static mut GO_SAUCE : [f32; 8] = [0.0; 8];
-
-// #[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
-// fn dolly_frame(fighter: &mut L2CFighterCommon) {
-//     unsafe {
-//         if entry_id(fighter.module_accessor) < 8 {
-//
-//             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-//                 GO_SAUCE[entry_id(fighter.module_accessor)] = 0.0;
-//             }
-//
-//             if GO_SAUCE[entry_id(fighter.module_accessor)] >= 50.0 {
-//                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-//             }
-//             else {
-//                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-//             }
-//
-//             if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE01
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE02
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE03
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE04
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_SCENE05
-//             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_DOLLY_STATUS_KIND_FINAL_END {
-//                 if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-//                     GO_SAUCE[entry_id(fighter.module_accessor)] += AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) * 0.8;
-//                 }
-//                 if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-//                     GO_SAUCE[entry_id(fighter.module_accessor)] += AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) * 0.4;
-//                 }
-//                 if GO_SAUCE[entry_id(fighter.module_accessor)] > 100.0 {
-//                     GO_SAUCE[entry_id(fighter.module_accessor)] = 100.0;
-//                 }
-//             }
-//
-//             DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
-//             if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] {
-//                 GO_SAUCE[entry_id(fighter.module_accessor)] += (DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * 0.2;
-//                 if GO_SAUCE[entry_id(fighter.module_accessor)] > 100.0 {
-//                     GO_SAUCE[entry_id(fighter.module_accessor)] = 100.0;
-//                 }
-//             }
-//             DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
-//
-//             if smashball::is_training_mode(){
-//                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
-//                     if GO_SAUCE[entry_id(fighter.module_accessor)] > 50.0 {
-//                         GO_SAUCE[entry_id(fighter.module_accessor)] -= 50.0
-//                     }
-//                     else {
-//                         GO_SAUCE[entry_id(fighter.module_accessor)] = 0.0;
-//                     }
-//                 }
-//                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-//                     if GO_SAUCE[entry_id(fighter.module_accessor)] < 50.0 {
-//                         GO_SAUCE[entry_id(fighter.module_accessor)] += 50.0;
-//                     }
-//                     else {
-//                         GO_SAUCE[entry_id(fighter.module_accessor)] = 100.0;
-//                     }
-//                 }
-//             }
+// #[inline(always)]
+// pub unsafe fn dolly_fgc(fighter: &mut L2CFighterCommon) {
+//     let status = StatusModule::status_kind(fighter.module_accessor);
+//     let mut allowed_cancels : Vec<i32> = [].to_vec();
+//     set_hp(fighter, 90.0);
+//     if [
+//         *FIGHTER_STATUS_KIND_ATTACK
+//     ].contains(&status) {
+//         allowed_cancels = [
+//             *FIGHTER_STATUS_KIND_ATTACK_S3,
+//             *FIGHTER_STATUS_KIND_ATTACK_LW3,
+//             *FIGHTER_STATUS_KIND_ATTACK_HI3,
+//             *FIGHTER_STATUS_KIND_SPECIAL_N,
+//             *FIGHTER_STATUS_KIND_SPECIAL_S,
+//             *FIGHTER_STATUS_KIND_SPECIAL_LW,
+//             *FIGHTER_STATUS_KIND_SPECIAL_HI
+//         ].to_vec();
+//     }
+//     else if [
+//         *FIGHTER_STATUS_KIND_ATTACK_S3,
+//         *FIGHTER_STATUS_KIND_ATTACK_LW3,
+//         *FIGHTER_STATUS_KIND_ATTACK_HI3,
+//         *FIGHTER_STATUS_KIND_ATTACK_DASH,
+//         *FIGHTER_STATUS_KIND_ATTACK_AIR
+//     ].contains(&status) {
+//         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
+//             jump_cancel_check_hit(fighter, false);
+//         }
+//         else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+//             cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true);
+//         }
+//         allowed_cancels = [
+//             *FIGHTER_STATUS_KIND_ATTACK_S4,
+//             *FIGHTER_STATUS_KIND_ATTACK_HI4,
+//             *FIGHTER_STATUS_KIND_ATTACK_LW4,
+//             *FIGHTER_STATUS_KIND_SPECIAL_N,
+//             *FIGHTER_STATUS_KIND_SPECIAL_S,
+//             *FIGHTER_STATUS_KIND_SPECIAL_LW,
+//             *FIGHTER_STATUS_KIND_SPECIAL_HI
+//         ].to_vec();
+//         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n") {
+//             allowed_cancels.append(&mut [*FIGHTER_STATUS_KIND_ATTACK_AIR].to_vec());
 //         }
 //     }
+//     else if [
+//         *FIGHTER_STATUS_KIND_ATTACK_S4,
+//         *FIGHTER_STATUS_KIND_ATTACK_LW4,
+//         *FIGHTER_STATUS_KIND_ATTACK_HI4
+//     ].contains(&status) {
+//         if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
+//             jump_cancel_check_hit(fighter, false);
+//         }
+//         allowed_cancels = [
+//             *FIGHTER_STATUS_KIND_SPECIAL_N,
+//             *FIGHTER_STATUS_KIND_SPECIAL_S,
+//             *FIGHTER_STATUS_KIND_SPECIAL_LW,
+//             *FIGHTER_STATUS_KIND_SPECIAL_HI
+//         ].to_vec();
+//     }
+//     else if status == *FIGHTER_STATUS_KIND_SPECIAL_N {
+//         if FIREBALL_CANCEL[entry_id(fighter.module_accessor)] {
+//             jump_cancel_check_exception(fighter);
+//         }
+//     }
+//     cancel_system(fighter, status, allowed_cancels);
 // }
+
+#[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
+fn dolly_frame(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
+            if DTILT_CHAIN[entry_id(fighter.module_accessor)] == 0 {
+                chain_cancels(fighter, *FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3, true, &mut DTILT_CHAIN);
+            }
+        }
+        // if IS_FGC[entry_id(fighter.module_accessor)] {
+        //     dolly_fgc(fighter);
+        // }
+    }
+}
 
 #[acmd_script( agent = "dolly", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_ftilt(fighter: &mut L2CAgentBase) {
@@ -122,6 +135,10 @@ unsafe fn dolly_ftilt(fighter: &mut L2CAgentBase) {
 unsafe fn dolly_dtilt(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        if StatusModule::prev_status_kind(fighter.module_accessor, 0) != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
+            println!("buhbye chain");
+            DTILT_CHAIN[entry_id(fighter.module_accessor)] = 0;
+        }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
@@ -133,13 +150,9 @@ unsafe fn dolly_dtilt(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 3.0, 30, 40, 0, 50, 4.5, 0.0, 6.0, 2.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 4, 0, Hash40::new("top"), 3.0, 30, 40, 0, 50, 4.5, 0.0, 5.0, 7.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 5, 0, Hash40::new("top"), 3.0, 30, 40, 0, 50, 4.5, 0.0, 4.0, 12.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 0, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 1, 2.0, false);
-        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 2, 2.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 3, 2.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 4, 2.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 5, 2.0, false);
-        // AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 4, -7.0, false);
         AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     wait(fighter.lua_state_agent, 3.0);
@@ -152,6 +165,8 @@ unsafe fn dolly_dtilt(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+        println!("is cancel, buhbye");
+        DTILT_CHAIN[entry_id(fighter.module_accessor)] = 0;
     }
 }
 
@@ -1187,9 +1202,9 @@ unsafe fn dolly_wave_heavyground(weapon: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    // install_agent_frames!(
-    //     dolly_frame
-    // );
+    install_agent_frames!(
+        dolly_frame
+    );
     install_acmd_scripts!(
         dolly_ftilt,
         dolly_dtilt,

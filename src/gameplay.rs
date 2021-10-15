@@ -182,6 +182,22 @@ pub unsafe fn cancel_exceptions(agent: &mut L2CAgentBase, next_status: i32, cat1
     }
 }
 
+pub unsafe fn chain_cancels(agent: &mut L2CAgentBase, next_status: i32, cat1_compare: i32, on_hit: bool, flag: &mut [i32; 8]) {
+    let cat1 = ControlModule::get_command_flag_cat(agent.module_accessor, 0);
+
+    if !on_hit
+    || ((AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
+    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0) {
+        if (cat1 & cat1_compare) != 0 {
+            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, false);
+            flag[entry_id(agent.module_accessor)] += 1;
+            println!("flag increased");
+        }
+    }
+}
+
 pub unsafe fn set_hp(agent: &mut L2CAgentBase, hp: f32) {
     if DamageModule::damage(agent.module_accessor, 0) < hp
     && !smashball::is_training_mode() {

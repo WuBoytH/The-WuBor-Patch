@@ -172,6 +172,10 @@ pub static mut REVENGE : [i32; 8] = [0; 8];
 // Ridley
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 
+// Terry
+
+pub static mut DTILT_CHAIN : [i32; 8] = [0; 8];
+
 // Sephiroth
 // static mut CAN_WING : [bool; 8] = [true; 8];
 // pub static mut ONE_WING : [f32; 8] = [-1.0; 8];

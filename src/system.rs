@@ -1,17 +1,19 @@
 #![allow(unused_must_use)]
 
-use smash::hash40;
-use smash::phx::Vector3f;
-use smash::lib::lua_const::*;
-use smash::app::lua_bind::*;
-use smash::lua2cpp::{L2CFighterCommon/*, L2CFighterBase*/};
-// use smash_script::*;
+use smash::{
+    lua2cpp::L2CFighterCommon,
+    hash40,
+    phx::Vector3f,
+    app::{lua_bind::*/*, sv_animcmd::**/, *},
+    lib::{lua_const::*, L2CValue}
+};
+use smash_script::*;
 use smashline::*;
-use crate::commonfuncs::*;
-use smash::app::*;
-use smash::lib::L2CValue;
-use crate::globals::*;
-use crate::vars::*;
+use crate::{
+    vars::*,
+    globals::*,
+    commonfuncs::*
+};
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn common_status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -71,6 +73,88 @@ unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommo
 pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     call_original!(fighter)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
+pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let somebool = false;
+    if fighter.global_table[0x30].get_bool() == false {
+    }
+    else {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[0x30].get_ptr());
+        callable(fighter);
+    }
+    if somebool == false {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            if fighter.global_table[CMD_CAT1].get_i32() == *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP {
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP)
+                && ControlModule::is_enable_flick_jump(fighter.module_accessor) {
+                    let do_footstool;
+                    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {
+                        do_footstool = false;
+                    }
+                    else {
+                        let tread_speed_y = fighter.FL_sub_fighter_float_next_tread_speed_y().get_f32();
+                        let tread_jump_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("tread_jump_speed_limit"));
+                        if !(tread_jump_speed_limit <= tread_speed_y) {
+                            do_footstool = false;
+                        }
+                        else {
+                            fighter.clear_lua_stack();
+                            lua_args!(fighter, 0x21bfbd3f83u64);
+                            smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                            do_footstool = fighter.pop_lua_stack(1).get_bool();
+                        }
+                    }
+                    if do_footstool {
+                        fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), true.into());
+                        return true.into();
+                    }
+                }
+            }
+            if fighter.global_table[PAD_FLAG].get_i32() == *FIGHTER_PAD_FLAG_JUMP_TRIGGER
+            || [
+                *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI,
+                *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L,
+                *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R,
+                *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW
+            ].contains(&fighter.global_table[CMD_CAT2].get_i32()) /* this is the addition */ {
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_BUTTON) {
+                    let do_footstool;
+                    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME) != 0 {
+                        do_footstool = false;
+                    }
+                    else {
+                        let tread_speed_y = fighter.FL_sub_fighter_float_next_tread_speed_y().get_f32();
+                        let tread_jump_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("tread_jump_speed_limit"));
+                        if !(tread_jump_speed_limit <= tread_speed_y) {
+                            do_footstool = false;
+                        }
+                        else {
+                            fighter.clear_lua_stack();
+                            lua_args!(fighter, 0x21bfbd3f83u64);
+                            smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                            do_footstool = fighter.pop_lua_stack(1).get_bool();
+                        }
+                    }
+                    if do_footstool {
+                        fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), true.into());
+                        return true.into();
+                    }
+                }
+            }
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_NO_TRIGGER) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, 0x21bfbd3f83u64, true);
+                smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), false.into());
+                    return true.into();
+                }
+            }
+        }
+    }
+    false.into()
 }
 
 #[inline(always)]
@@ -377,7 +461,8 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            damage_air_main
+            damage_air_main,
+            sub_transition_group_check_air_tread_jump
         );
     }
 }

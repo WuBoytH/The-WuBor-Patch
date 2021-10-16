@@ -40,6 +40,14 @@ fn chrom_frame(fighter: &mut L2CFighterCommon) {
 unsafe fn chrom_dash(_fighter: &mut L2CAgentBase) {
 }
 
+#[acmd_script( agent = "chrom", script = "game_turndash", category = ACMD_GAME, low_priority )]
+unsafe fn chrom_turndash(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH);
+    }
+}
+
 #[acmd_script( agent = "chrom", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_jab(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
@@ -339,6 +347,7 @@ pub fn install() {
     );
     install_acmd_scripts!(
         chrom_dash,
+        chrom_turndash,
         chrom_jab,
         chrom_jabeff,
         chrom_jabsnd,

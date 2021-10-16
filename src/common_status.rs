@@ -10,7 +10,7 @@ use smash::{
 use smash_script::*;
 use smashline::*;
 use crate::{
-    vars::*,
+    // vars::*,
     table_const::*
 };
 

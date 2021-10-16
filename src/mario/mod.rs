@@ -9,8 +9,8 @@ use smash_script::*;
 use smashline::*;
 use crate::{
     vars::*,
-    globals::*,
-    commonfuncs::*,
+    table_const::*,
+    common_funcs::*,
     gameplay::*
 };
 

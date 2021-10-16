@@ -5,7 +5,7 @@ use smash::{
     // use smash::lib::lua_const::*
 };
 use smashline::*;
-use crate::commonfuncs::*;
+use crate::common_funcs::*;
 
 // Common
 pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };

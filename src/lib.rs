@@ -3,11 +3,12 @@
 #![feature(asm)]
 
 mod vars;
-mod hooks;
+mod function_hooks;
 mod gameplay;
-mod commonfuncs;
-mod globals;
-mod system;
+mod common_funcs;
+mod table_const;
+mod global_frames;
+mod common_status;
 mod daisy;
 mod samusd;
 mod lucina;
@@ -73,8 +74,9 @@ mod chrom;
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
     vars::install();
-    hooks::install();
-    system::install();
+    function_hooks::install();
+    global_frames::install();
+    common_status::install();
     daisy::install();
     samusd::install();
     lucina::install();

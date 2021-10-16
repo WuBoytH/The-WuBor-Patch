@@ -8,7 +8,7 @@ use smash::{
 use smash_script::*;
 use smashline::*;
 use crate::{
-    globals::*,
+    table_const::*,
     vars::*
 };
 

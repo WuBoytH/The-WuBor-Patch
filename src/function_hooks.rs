@@ -5,7 +5,7 @@ use smash::{
     lib::{lua_const::*, L2CValue, L2CAgent}
 };
 use crate::{
-    commonfuncs::*,
+    common_funcs::*,
     vars::*,
     lucina::shadow_id
 };

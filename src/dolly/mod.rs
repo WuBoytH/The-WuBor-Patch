@@ -9,7 +9,7 @@ use smashline::*;
 use crate::{
     vars::*,
     gameplay::*,
-    commonfuncs::*
+    common_funcs::*
 };
 
 // #[inline(always)]

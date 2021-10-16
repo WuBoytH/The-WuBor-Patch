@@ -8,7 +8,7 @@ use smash::{
 use smash_script::*;
 use smashline::*;
 use crate::{
-    commonfuncs::*,
+    common_funcs::*,
     vars::*,
     ganon::*
 };

@@ -6,7 +6,7 @@ use smash::{
 };
 use smash_script::*;
 use crate::{
-    commonfuncs::*,
+    common_funcs::*,
     vars::*
 };
 

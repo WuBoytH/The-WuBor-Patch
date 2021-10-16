@@ -7,7 +7,7 @@ use smash::{
 use smash_script::*;
 use smashline::*;
 use crate::{
-    commonfuncs::*,
+    common_funcs::*,
     vars::*
 };
 
@@ -64,6 +64,7 @@ pub fn install() {
     install_agent_frames!(
         rockman_frame
     );
+    
     install_acmd_scripts!(
         rockman_rockbuster_shoot
     );

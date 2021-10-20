@@ -70,6 +70,7 @@ mod szerosuit;
 mod demon;
 mod chrom;
 // mod captain;
+mod trail;
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
@@ -140,4 +141,5 @@ pub fn main() {
     demon::install();
     chrom::install();
     // captain::install();
+    trail::install();
 }

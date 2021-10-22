@@ -975,25 +975,20 @@ pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u
 // 	}
 // }
 
-#[skyline::hook(replace = sv_animcmd::PLAY_SE)]
-unsafe fn play_se_replace(lua_state: u64) {
-    let boma = sv_system::battle_object_module_accessor(lua_state);
-    let fighter_kind = utility::get_kind(boma);
+#[skyline::hook(offset = 0x4DB730)]
+unsafe fn play_se_replace(boma: u64, mut se: u64, arg3: u8, arg4: u32, arg5: i32, arg6: u8) -> u64 {
+    let module_accessor = &mut *(*((boma as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let fighter_kind = utility::get_kind(module_accessor);
     if fighter_kind == *FIGHTER_KIND_LUCINA
-    && shadow_id(boma) {
-        let mut l2c_agent = L2CAgent::new(lua_state);
-        let se = l2c_agent.pop_lua_stack(1); //sound effect
-        l2c_agent.clear_lua_stack();
-        let mut new_se = se.get_int();
+    && shadow_id(module_accessor) {
         for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+            if se == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
+                se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
                 break;
             }
         }
-        l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_se));
     }
-    original!()(lua_state);
+    original!()(boma, se, arg3, arg4, arg5, arg6)
 }
 
 #[skyline::hook(replace = sv_animcmd::PLAY_SEQUENCE)]

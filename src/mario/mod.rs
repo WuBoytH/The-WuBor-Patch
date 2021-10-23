@@ -406,7 +406,7 @@ unsafe fn mario_fsmasheff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 6, 5, 0, -39, 10, 1.2, true, *EF_FLIP_YZ);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 6, 3, 0, -39, 10, 1.2, true, *EF_FLIP_YZ);
         macros::LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
     }
     frame(fighter.lua_state_agent, 16.0);
@@ -454,7 +454,7 @@ unsafe fn mario_fsmashhieff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 6, 4, -24, -39, 0, 1.2, true, *EF_FLIP_YZ);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 8, 3, -24, -39, 30, 1.2, true, *EF_FLIP_YZ);
         macros::LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
     }
     frame(fighter.lua_state_agent, 16.0);
@@ -502,7 +502,7 @@ unsafe fn mario_fsmashlweff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 6, 4, 12, -39, 0, 1.2, true, *EF_FLIP_YZ);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc"), Hash40::new("sys_attack_arc"), Hash40::new("top"), 1, 6, 3, 12, -39, 0, 1.2, true, *EF_FLIP_YZ);
         macros::LAST_EFFECT_SET_COLOR(fighter, 0.196, 0.196, 0.216);
     }
     frame(fighter.lua_state_agent, 16.0);

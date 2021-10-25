@@ -12,7 +12,7 @@ use crate::{
 
 pub unsafe fn jump_cancel_check_hit(agent: &mut L2CAgentBase, jump_on_block: bool) {
     if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_SHIELD) && jump_on_block))
+    || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
     && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
     && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0
     && ((ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
@@ -66,7 +66,7 @@ pub unsafe fn dash_cancel_check(agent: &mut L2CAgentBase, dash_on_block: bool, r
         status = *FIGHTER_STATUS_KIND_DASH;
     }
     if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_SHIELD) && dash_on_block))
+    || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
     && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
     && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0
     && ControlModule::get_command_flag_cat(agent.module_accessor, 0) & cat != 0

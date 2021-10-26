@@ -36,7 +36,6 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-
 // #[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 // unsafe fn jack_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     jack_special_mot_helper(fighter, true.into(), hash40("special_s1").into(), hash40("special_air_s1").into());
@@ -73,7 +72,7 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 //             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
 //         }
 //         if !(da_bool.get_bool() == false) {
-//             MotionModule::change_motion(fighter.module_accessor, mot, 0.0, 1.0, false, 0.0, false, false);
+//             MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
 //             return;
 //         }
 //     }
@@ -82,11 +81,11 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 //         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
 //         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
 //         if !(da_bool.get_bool() == false) {
-//             MotionModule::change_motion(fighter.module_accessor, mot, 0.0, 1.0, false, 0.0, false, false);
+//             MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
 //             return;
 //         }
 //     }
-//     MotionModule::change_motion_inherit_frame(fighter.module_accessor, mot, -1.0, 1.0, 0.0, false, false);
+//     MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0, false, false);
 //     return
 // }
 
@@ -111,6 +110,9 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 // }
 
 // unsafe extern "C" fn jack_special_s_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s1") {
+//         fighter.sub_transition_group_check_air_cliff();
+//     }
 //     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
 //         if !MotionModule::is_end(fighter.module_accessor) {
 //             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL) {
@@ -135,6 +137,32 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 //                 return 0.into();
 //             }
 //             if StatusModule::is_situation_changed(fighter.module_accessor) {
+//                 if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
+//                     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+//                     && MotionModule::frame(fighter.module_accessor) >= 34.0 {
+//                         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+//                     }
+//                     else {
+//                         jack_special_mot_helper(fighter, false.into(), 0xae47766c9u64.into(), 0xe14250c5du64.into());
+//                     }
+//                 }
+//                 else {
+//                     jack_special_mot_helper(fighter, false.into(), 0xa7d7e3773u64.into(), 0xe8d2c5de7u64.into());
+//                 }
+//             }
+//         }
+//         else {
+//             if fighter.global_table[SITUATION_KIND] != *SITUATION_KIND_GROUND {
+//                 fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+//             }
+//             else {
+//                 fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+//             }
+//         }
+//     }
+//     else {
+//         if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false {
+//             if fighter.sub_air_check_fall_common().get_bool() == false {
 //             }
 //         }
 //     }

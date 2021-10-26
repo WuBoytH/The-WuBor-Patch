@@ -622,7 +622,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             hash40("landing_attack_air_frame_lw")
         ].contains(&param_type) {
             if AIR_WHIFF[entry_id(boma)] {
-                return ret + 3.0;
+                return ret + 4.0;
             }
         }
         if fighter_kind == *FIGHTER_KIND_MARIO {

@@ -3,13 +3,13 @@ use smash::{
     hash40,
     phx::Hash40,
     app::{lua_bind::*, sv_animcmd::*, *},
-    lib::{lua_const::*/*, L2CValue*/}
+    lib::{lua_const::*, L2CValue}
 };
 use smash_script::*;
 use smashline::*;
-// use crate::{
-//     table_const::*
-// };
+use crate::{
+    table_const::*
+};
 
 
 #[fighter_frame( agent = FIGHTER_KIND_JACK )]
@@ -19,6 +19,12 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
             hash40("special_s1"),
             hash40("special_air_s1")
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
+            if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_s1")
+            && fighter.global_table[PREV_SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND
+            && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+            && MotionModule::frame(fighter.module_accessor) >= 34.0 {
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, true);
+            }
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
             }
@@ -32,7 +38,7 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 
 
 // #[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// unsafe fn mario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// unsafe fn jack_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     jack_special_mot_helper(fighter, true.into(), hash40("special_s1").into(), hash40("special_air_s1").into());
 //     notify_event_msc_cmd!(fighter, 0x20cbc92683u64, 1, *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
 //     notify_event_msc_cmd!(fighter, 0x3a40337e2cu64, 1, *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
@@ -135,6 +141,21 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 //     0.into()
 // }
 
+#[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn jack_specials_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
+    ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
+    VisibilityModule::set_whole(fighter.module_accessor, true);
+    macros::AFTER_IMAGE_OFF(fighter, 0);
+    if [
+        *FIGHTER_STATUS_KIND_FALL_SPECIAL,
+        *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        WorkModule::set_float(fighter.module_accessor,  20.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+    }
+    0.into()
+}
+
 #[acmd_script( agent = "jack", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
     let mut attack = true;
@@ -158,12 +179,16 @@ unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     if attack {
         if macros::is_excute(fighter) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 20, 0, 100, 3.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
     }
     else {
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-        JostleModule::set_status(fighter.module_accessor, false);
+        if macros::is_excute(fighter) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+            JostleModule::set_status(fighter.module_accessor, false);
+        }
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
@@ -236,6 +261,7 @@ unsafe fn jack_sspecial1exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
         ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
         VisibilityModule::set_whole(fighter.module_accessor, true);
     }
@@ -253,6 +279,7 @@ unsafe fn jack_sspecial1air(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 20, 0, 70, 3.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     frame(fighter.lua_state_agent, 18.0);
@@ -265,14 +292,19 @@ unsafe fn jack_sspecial1air(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(fighter, 0.4, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    frame(fighter.lua_state_agent, 32.0);
+    frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL);
+    }
+    frame(fighter.lua_state_agent, 42.0);
+    if macros::is_excute(fighter) {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
     }
 }
 
@@ -313,6 +345,7 @@ unsafe fn jack_sspecial1airexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
         ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
         VisibilityModule::set_whole(fighter.module_accessor, true);
     }
@@ -353,6 +386,9 @@ unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_agent_frames!(
         jack_frame
+    );
+    install_status_scripts!(
+        jack_specials_end
     );
     install_acmd_scripts!(
         jack_sspecial1,

@@ -13,7 +13,6 @@ use crate::{
     vars::*
 };
 
-
 #[inline(always)]
 pub unsafe fn luigi_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);

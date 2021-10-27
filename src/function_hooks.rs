@@ -315,7 +315,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
-            if SHULK_SPECIAL_LW[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false { // Disable Vision if used Burst and not in Funny
+            if DISABLE_SPECIAL_LW[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false { // Disable Vision if used Burst and not in Funny
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
                     return false;
                 }

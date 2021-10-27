@@ -27,7 +27,9 @@ pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
 pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
+pub static mut DISABLE_SPECIAL_S : [bool; 8] = [false; 8];
 pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
+pub static mut DISABLE_SPECIAL_LW : [bool; 8] = [false; 8];
 pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
 pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
@@ -115,7 +117,6 @@ pub static mut IS_SD_CANCEL : [bool; 8] = [false; 8];
 pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
 
 // Shulk
-pub static mut SHULK_SPECIAL_LW : [bool; 8] = [false; 8];
 pub static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
 
 // Ryu and Ken
@@ -244,7 +245,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         FINISH_SIGN[id] = 0;
 
-        SHULK_SPECIAL_LW[id] = false;
+        DISABLE_SPECIAL_LW[id] = false;
         BURST_RECOVER[id] = 0.0;
 
         SPECIAL_S_START_SIT[id] = 0;

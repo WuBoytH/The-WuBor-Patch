@@ -21,6 +21,17 @@ use crate::{
 //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("appeal_lw"), false, -1.0);
 // }
 
+pub unsafe extern "C" fn yu_specialns_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if AIR_ACTION[entry_id(fighter.module_accessor)] {
+        return 0.into();
+    }
+    1.into()
+}
+
+pub unsafe extern "C" fn yu_speciallw_restrict(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    return 0.into();
+}
+
 #[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
@@ -520,7 +531,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        AIR_ACTION[entry_id(fighter.module_accessor)] = true;
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_loop"), 1.0, 1.0, false, 0.0, false, false);
     }
     else {
@@ -1044,6 +1054,13 @@ unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
         if HEROIC_GRAB[entry_id(fighter.module_accessor)] == false {
             macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP), WorkModule::get_int64(fighter.module_accessor,*FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO));
         }
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "game_specialairnstart" , category = ACMD_GAME, low_priority )]
+unsafe fn lucina_nspecialstart(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        AIR_ACTION[entry_id(fighter.module_accessor)] = true;
     }
 }
 
@@ -1811,6 +1828,7 @@ pub fn install() {
         lucina_fsmash,
         lucina_usmash,
         lucina_uthrow,
+        lucina_nspecialstart,
         lucina_nspecialloop,
         lucina_nspecialend,
         lucina_nspecialendmax,

@@ -161,7 +161,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-            CAN_TELEPORT[entry_id(fighter.module_accessor)] = true;
+            DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] = false;
         }
 
         // Stops Ganondorf's momentum during Dark Deception.
@@ -662,7 +662,7 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
         TELE_STOP[entry_id(fighter.module_accessor)] = true;
         OG_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);
         OG_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
-        CAN_TELEPORT[entry_id(fighter.module_accessor)] = false;
+        DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] = true;
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(fighter.module_accessor, false);

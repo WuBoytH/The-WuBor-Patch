@@ -14,6 +14,13 @@ use crate::{
     gameplay::*
 };
 
+pub unsafe extern "C" fn mario_speciallw_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 2 {
+        return 0.into();
+    }
+    1.into()
+}
+
 #[inline(always)]
 pub unsafe fn bonker_vis(module_accessor: *mut BattleObjectModuleAccessor) {
     if IS_BONKER[entry_id(module_accessor)] == 4 {

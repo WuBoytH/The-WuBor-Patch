@@ -27,6 +27,7 @@ pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
 pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
+pub static mut DISABLE_SPECIAL_N : [bool; 8] = [false; 8];
 pub static mut DISABLE_SPECIAL_S : [bool; 8] = [false; 8];
 pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
 pub static mut DISABLE_SPECIAL_LW : [bool; 8] = [false; 8];
@@ -97,7 +98,6 @@ pub static mut OG_Y : [f32; 8] = [0.0; 8];
 pub static mut TELE_X : [f32; 8] = [0.0; 8];
 pub static mut TELE_Y : [f32; 8] = [0.0; 8];
 pub static mut TELE_STOP : [bool; 8] = [false; 8];
-pub static mut CAN_TELEPORT : [bool; 8] = [true; 8];
 pub static mut FEINT : [bool; 8] = [false; 8];
 
 // Wario
@@ -236,6 +236,10 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         IS_DK[id] = false;
         SPECIAL_HITSTUN[id] = false;
         HIT_BY_SPECIAL_HITSTUN[id] = false;
+        DISABLE_SPECIAL_N[id] = false;
+        DISABLE_SPECIAL_S[id] = false;
+        DISABLE_SPECIAL_HI[id] = false;
+        DISABLE_SPECIAL_LW[id] = false;
 
         BOUNCE[id] = false;
 
@@ -245,7 +249,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         FINISH_SIGN[id] = 0;
 
-        DISABLE_SPECIAL_LW[id] = false;
         BURST_RECOVER[id] = 0.0;
 
         SPECIAL_S_START_SIT[id] = 0;

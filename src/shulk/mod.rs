@@ -40,12 +40,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
                     WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
                     WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_EFFECT_HANDLE);
                     DISABLE_SPECIAL_LW[entry_id(fighter.module_accessor)] = true;
-                    if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                        _TIME_COUNTER[entry_id(fighter.module_accessor)] = 600;
-                    }
-                    else {
-                        _TIME_COUNTER[entry_id(fighter.module_accessor)] = 3600;
-                    }
+                    _TIME_COUNTER[entry_id(fighter.module_accessor)] = 3600;
                     if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
                         let shulkpos = PostureModule::pos_x(fighter.module_accessor);
                         let opppos = PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor);

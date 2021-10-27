@@ -2,7 +2,7 @@ use smash::{
     lua2cpp::{L2CFighterCommon, L2CAgentBase},
     phx::{Hash40, Vector3f},
     app::{lua_bind::*, sv_animcmd::*, *},
-    lib::lua_const::*
+    lib::{lua_const::*, L2CValue}
 };
 use smash_script::*;
 use smashline::*;
@@ -11,6 +11,14 @@ use crate::{
     vars::*,
     gameplay::*
 };
+
+pub unsafe extern "C" fn lucario_specialhi_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MACH_VALIDITY)
+    || DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] {
+        return 0.into();
+    }
+    1.into()
+}
 
 #[inline(always)]
 pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {

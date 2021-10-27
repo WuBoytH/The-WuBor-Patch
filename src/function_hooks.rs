@@ -263,14 +263,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
 
-        if fighter_kind == *FIGHTER_KIND_MARIO {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                if SPECIAL_LW_TYPE[entry_id(boma)] == 2 {
-                    return false;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_ROCKMAN {
+        if fighter_kind == *FIGHTER_KIND_ROCKMAN {
             if IS_FUNNY[entry_id(boma)] {
                 if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
                 || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
@@ -281,36 +274,12 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         else if fighter_kind == *FIGHTER_KIND_LUCINA {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return false;
-            }
-            else if HEROIC_GRAB[entry_id(boma)]
+            if HEROIC_GRAB[entry_id(boma)]
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN {
                 return false;
-            }
-            else if AIR_ACTION[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false {
-                if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S { // Disable Lion's Leap and Heroic Bravery if used once unless in Funny
-                    return false;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_SHULK {
-            if DISABLE_SPECIAL_LW[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false { // Disable Vision if used Burst and not in Funny
-                if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                    return false;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_RICHTER
-        || fighter_kind == *FIGHTER_KIND_LUCARIO {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI {
-                if DISABLE_SPECIAL_HI[entry_id(boma)] {
-                    return false;
-                }
             }
         }
         else if fighter_kind == *FIGHTER_KIND_RYU {
@@ -322,17 +291,9 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             if BOUNCE[entry_id(boma)] {
                 return false;
             }
-            else if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
-                if CAN_TELEPORT[entry_id(boma)] == false {
-                    return false;
-                }
-            }
         }
         else if fighter_kind == *FIGHTER_KIND_KEN {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW {
-                return ret && !StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_SPECIAL_LW && QUICK_STEP_STATE[entry_id(boma)] != 2;
-            }
-            else if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
+            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
@@ -343,19 +304,6 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 if QUICK_STEP_STATE[entry_id(boma)] == 1 {
                     return false;
                 }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_GANON {
-            if CAN_TELEPORT[entry_id(boma)] == false
-            && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N {
-                return false;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_KAMUI {
-            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_SPECIAL_S
-            && !IS_FUNNY[entry_id(boma)]
-            && term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR {
-                return false;
             }
         }
     }

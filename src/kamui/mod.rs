@@ -1,5 +1,6 @@
 use smash::{
     lua2cpp::{L2CFighterCommon, L2CAgentBase},
+    hash40,
     phx::{Hash40, Vector3f},
     app::{lua_bind::*, sv_animcmd::*, *},
     lib::{lua_const::*, L2CValue}
@@ -65,6 +66,14 @@ use crate::{
 //         return false;
 //     }
 // }
+
+pub unsafe extern "C" fn kamui_escapeair_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_jump")
+    && !IS_FUNNY[entry_id(fighter.module_accessor)] {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+    }
+    0.into()
+}
 
 #[fighter_frame( agent = FIGHTER_KIND_KAMUI )]
 fn kamui_frame(fighter: &mut L2CFighterCommon) {
@@ -1801,7 +1810,7 @@ unsafe fn kamui_uair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_specialsjump", "game_specialairsjump"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if DRAGON_INSTALL[entry_id(fighter.module_accessor)] > 0.0 {

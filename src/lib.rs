@@ -9,6 +9,7 @@ mod common_funcs;
 mod table_const;
 mod global_frames;
 mod common_status;
+mod agent_inits;
 mod daisy;
 mod samusd;
 mod lucina;
@@ -78,6 +79,7 @@ pub fn main() {
     function_hooks::install();
     global_frames::install();
     common_status::install();
+    agent_inits::install();
     daisy::install();
     samusd::install();
     lucina::install();

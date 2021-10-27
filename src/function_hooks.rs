@@ -297,22 +297,6 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                     return false;
                 }
             }
-            else if MotionModule::motion_kind(boma) == hash40("attack_12") {
-                if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
-                    return false;
-                }
-            }
         }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             if DISABLE_SPECIAL_LW[entry_id(boma)] && IS_FUNNY[entry_id(boma)] == false { // Disable Vision if used Burst and not in Funny

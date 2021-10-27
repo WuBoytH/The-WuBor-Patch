@@ -467,60 +467,19 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)) {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
                 }
-                if QCB[entry_id(fighter.module_accessor)] != 3
-                && (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-                || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)) {
-                    CancelModule::enable_cancel(fighter.module_accessor);
+                else {
+                    let allowed_cancels = [
+                        *FIGHTER_STATUS_KIND_ATTACK_S3,
+                        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+                        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                        *FIGHTER_STATUS_KIND_SPECIAL_N,
+                        *FIGHTER_STATUS_KIND_SPECIAL_S,
+                        *FIGHTER_STATUS_KIND_SPECIAL_HI
+                    ].to_vec();
+                    cancel_system(fighter, *FIGHTER_STATUS_KIND_ATTACK, allowed_cancels);
                 }
             }
         }
-
-        // if IS_FGC[entry_id(fighter.module_accessor)] {
-        //     if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW == 0 {
-        //         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        //         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        //             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-        //                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 {
-        //                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), false.into());
-        //                 }
-        //             }
-        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
-        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        //                 && get_command_stick_direction(fighter.module_accessor, true) != 6) {
-        //                     CancelModule::enable_cancel(fighter.module_accessor);
-        //                 }
-        //             }
-        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
-        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        //                 && get_command_stick_direction(fighter.module_accessor, true) != 8) {
-        //                     CancelModule::enable_cancel(fighter.module_accessor);
-        //                 }
-        //             }
-        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b") {
-        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        //                 && get_command_stick_direction(fighter.module_accessor, true) != 4) {
-        //                     CancelModule::enable_cancel(fighter.module_accessor);
-        //                 }
-        //             }
-        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
-        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        //                 || (ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        //                 && get_command_stick_direction(fighter.module_accessor, true) != 2) {
-        //                     CancelModule::enable_cancel(fighter.module_accessor);
-        //                 }
-        //             }
-        //             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n") {
-        //                 if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        //                 || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-        //                     CancelModule::enable_cancel(fighter.module_accessor);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
 
         if HEROIC_GRAB[entry_id(fighter.module_accessor)] {
             if MotionModule::motion_kind(fighter.module_accessor) == hash40("catch_wait")

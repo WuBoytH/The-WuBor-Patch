@@ -236,7 +236,9 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 // if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
                 //     return false;
                 // }
-                if !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR)
+                if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
+                && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
+                && !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR)
                 && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
                     return false;
                 }

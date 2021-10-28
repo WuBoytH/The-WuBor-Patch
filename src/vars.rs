@@ -91,6 +91,9 @@ pub static mut LONG_JUMP_KIND : [i32; 8] = [0; 8];
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
 
+// Daisy
+pub static mut SPECIAL_THROW : [bool; 8] = [false; 8];
+
 // Ganondorf
 pub static mut TELEPORT : [i32; 8] = [0; 8];
 pub static mut OG_X : [f32; 8] = [0.0; 8];

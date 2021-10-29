@@ -448,7 +448,7 @@ unsafe fn daisy_itemlightthrowairf(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         if SPECIAL_THROW[entry_id(fighter.module_accessor)] {
-            ItemModule::throw_item(fighter.module_accessor, 345.0, 2.5, 1.0, 0, true, 0.0);
+            ItemModule::throw_item(fighter.module_accessor, 0.0, 2.5, 1.0, 0, true, 0.0);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
             let lr = PostureModule::lr(fighter.module_accessor);
             macros::SET_SPEED_EX(fighter, speed_x * lr, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

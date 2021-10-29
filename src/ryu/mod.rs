@@ -3,14 +3,15 @@ use smash::{
     hash40,
     phx::{Hash40, Vector3f, Vector2f},
     app::{lua_bind::*, sv_animcmd::*, *},
-    lib::lua_const::*
+    lib::{lua_const::*, L2CValue}
 };
 use smash_script::*;
 use smashline::*;
 use crate::{
     common_funcs::*,
     gameplay::*,
-    vars::*
+    vars::*,
+    common_status::fgc_dashback_main
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
@@ -286,6 +287,11 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ryu_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_main(fighter)
+}
+
 #[acmd_script( agent = "ryu", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn ryu_sspecialstart(fighter: &mut L2CAgentBase) {
     SPECIAL_S_START_SIT[entry_id(fighter.module_accessor)] = 0;
@@ -405,6 +411,9 @@ unsafe fn ryu_hadoken_shaku_end(weapon: &mut L2CAgentBase) {
 pub fn install() {
     install_agent_frames!(
         ryu_frame
+    );
+    install_status_scripts!(
+        ryu_dashback_main
     );
     install_acmd_scripts!(
         ryu_sspecialstart,

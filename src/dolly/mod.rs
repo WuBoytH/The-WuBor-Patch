@@ -2,14 +2,15 @@ use smash::{
     lua2cpp::{L2CFighterCommon, L2CAgentBase},
     phx::{Hash40, Vector3f},
     app::{lua_bind::*, sv_animcmd::*, *},
-    lib::lua_const::*
+    lib::{lua_const::*, L2CValue}
 };
 use smash_script::*;
 use smashline::*;
 use crate::{
     vars::*,
     gameplay::*,
-    common_funcs::*
+    common_funcs::*,
+    common_status::fgc_dashback_main
 };
 
 // #[inline(always)]
@@ -91,6 +92,11 @@ fn dolly_frame(fighter: &mut L2CFighterCommon) {
         //     dolly_fgc(fighter);
         // }
     }
+}
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn dolly_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_main(fighter)
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3", category = ACMD_GAME, low_priority )]
@@ -1202,6 +1208,9 @@ unsafe fn dolly_wave_heavyground(weapon: &mut L2CAgentBase) {
 pub fn install() {
     install_agent_frames!(
         dolly_frame
+    );
+    install_status_scripts!(
+        dolly_dashback_main
     );
     install_acmd_scripts!(
         dolly_ftilt,

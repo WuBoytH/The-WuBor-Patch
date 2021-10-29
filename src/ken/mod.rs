@@ -10,7 +10,8 @@ use smashline::*;
 use crate::{
     common_funcs::*,
     table_const::*,
-    vars::*
+    vars::*,
+    common_status::fgc_dashback_main
 };
 
 // Notes:
@@ -407,7 +408,7 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             V_GAUGE[entry_id(fighter.module_accessor)] = 0;
         }
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw_step_f"), 0.0, 1.0, false, 0.0, false, false);
-    }   
+    }
     fighter.sub_shift_status_main(L2CValue::Ptr(ken_speciallw_loop as *const () as _))
 }
 
@@ -450,6 +451,11 @@ unsafe extern "C" fn ken_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CVa
         }
     }
     L2CValue::I32(0)
+}
+
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ken_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_main(fighter)
 }
 
 // Motion Rate the Run Animation so that it moves at the right speed during Quick Step
@@ -1341,7 +1347,8 @@ pub fn install() {
     );
     install_status_scripts!(
         ken_speciallw_init,
-        ken_speciallw_main
+        ken_speciallw_main,
+        ken_dashback_main
     );
     install_acmd_scripts!(
         ken_run,

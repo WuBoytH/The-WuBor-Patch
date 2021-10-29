@@ -1,11 +1,19 @@
 use smash::{
-    lua2cpp::L2CAgentBase,
+    lua2cpp::{L2CFighterCommon, L2CAgentBase},
     phx::Hash40,
     app::{lua_bind::*, sv_animcmd::*/*, **/},
-    lib::lua_const::*
+    lib::{lua_const::*, L2CValue}
 };
 use smash_script::*;
 use smashline::*;
+use crate::{
+    common_status::fgc_dashback_main
+};
+
+#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn demon_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_main(fighter)
+}
 
 #[acmd_script( agent = "demon", script = "game_catchattack", category = ACMD_GAME, low_priority )]
 unsafe fn demon_pummel(fighter: &mut L2CAgentBase) {
@@ -21,6 +29,9 @@ unsafe fn demon_pummel(fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
+    install_status_scripts!(
+        demon_dashback_main
+    );
     install_acmd_scripts!(
         demon_pummel
     );

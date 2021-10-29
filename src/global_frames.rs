@@ -113,30 +113,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 }
             }
         }
-
-        // if entry_id(fighter.module_accessor) == 1 {
-        //     println!("status: {}", status);
-        //     let damage_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME);
-        //     // if damage_frame > 0 {
-        //         println!("FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME: {}", damage_frame);
-        //         // println!("REACTION: {}", DamageModule::reaction(fighter.module_accessor, 0) as f32);
-        //         println!("FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME));
-        //         println!("FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME: {}", WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME));
-        //     // }
-        // }
-
-        // Shielding... DURING DASH?????
-
-        if (status == *FIGHTER_STATUS_KIND_DASH
-        || status == *FIGHTER_STATUS_KIND_TURN_DASH
-        || status == *FIGHTER_RYU_STATUS_KIND_DASH_BACK
-        || status == *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK
-        || status == *FIGHTER_DEMON_STATUS_KIND_DASH_BACK)
-        && MotionModule::frame(fighter.module_accessor) < 5.0 {
-            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_GUARD_ON, true);
-            }
-        }
         
         // Platform Dropping while in shield.
 

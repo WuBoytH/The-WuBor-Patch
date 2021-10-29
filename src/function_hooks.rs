@@ -215,17 +215,17 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
         // Fighter-Specific Param Edits
-        if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE {
-            if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DASH
-            || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_TURN_DASH
-            || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_DASH_BACK
-            || StatusModule::status_kind(boma) == *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK
-            || StatusModule::status_kind(boma) == *FIGHTER_DEMON_STATUS_KIND_DASH_BACK {
-                return false;
-            }
-        }
+        // if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE {
+        //     if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DASH
+        //     || StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_TURN_DASH
+        //     || StatusModule::status_kind(boma) == *FIGHTER_RYU_STATUS_KIND_DASH_BACK
+        //     || StatusModule::status_kind(boma) == *FIGHTER_DOLLY_STATUS_KIND_DASH_BACK
+        //     || StatusModule::status_kind(boma) == *FIGHTER_DEMON_STATUS_KIND_DASH_BACK {
+        //         return false;
+        //     }
+        // }
 
-        else if [
+        if [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL,

@@ -37,6 +37,8 @@ pub const CMD_CAT4:                      i32 = 0x23;
 pub const CHECK_AIR_SPECIAL_PRE:         i32 = 0x26;
 pub const CHECK_GROUND_SPECIAL_PRE:      i32 = 0x27;
 pub const CHECK_GROUND_ATTACK_PRE:       i32 = 0x28;
+pub const DASH_COMMON_PRE:               i32 = 0x29;
+
 pub const CUSTOM_ROUTINE:                i32 = 0x2B;
 
 pub const CHECK_AIR_ITEM_THROW_PRE:      i32 = 0x2D;

@@ -48,7 +48,8 @@ pub unsafe extern "C" fn daisy_itemtoss_special(fighter: &mut L2CFighterCommon) 
 #[fighter_frame( agent = FIGHTER_KIND_DAISY )]
 fn daisy_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_AIR {
+        if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_AIR
+        || FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
             DISABLE_SPECIAL_S[entry_id(fighter.module_accessor)] = false;
         }
     }
@@ -275,7 +276,7 @@ unsafe fn daisy_dtilt(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 85, 80, 0, 70, 3.8, 0.0, 3.2, 6.5, Some(0.0), Some(2.8), Some(10.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 85, 60, 0, 70, 3.8, 0.0, 3.2, 6.5, Some(0.0), Some(2.8), Some(10.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_KICK);
         AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
     frame(fighter.lua_state_agent, 10.0);

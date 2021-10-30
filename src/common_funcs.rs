@@ -18,6 +18,7 @@ pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor,
     || WorkModule::is_flag(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
     || [
         *FIGHTER_STATUS_KIND_DAMAGE,
+        *FIGHTER_STATUS_KIND_DAMAGE_FALL,
         *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_START,
         *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_END,
         *FIGHTER_STATUS_KIND_DAMAGE_SLEEP_FALL,

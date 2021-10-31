@@ -49,7 +49,7 @@ pub unsafe extern "C" fn daisy_itemtoss_special(fighter: &mut L2CFighterCommon) 
 fn daisy_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_AIR
-        || FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
+        || is_damage_check(fighter.module_accessor, false) {
             DISABLE_SPECIAL_S[entry_id(fighter.module_accessor)] = false;
         }
     }

@@ -313,8 +313,8 @@ pub unsafe fn dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValu
             }
         }
     }
-    if fighter.global_table[ATTACK_S4_RESTRICT].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[ATTACK_S4_RESTRICT].get_ptr());
+    if fighter.global_table[ATTACK_S4_PRE].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[ATTACK_S4_PRE].get_ptr());
         if callable(fighter).get_bool() {
             return 1.into();
         }

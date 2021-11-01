@@ -18,7 +18,7 @@ use crate::{
 // vc_ken_special_l01 is "I hit my boiling point!"
 // vc_ken_special_l02 is "Shoryureppa"
 
-pub unsafe extern "C" fn ken_speciallw_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_SPECIAL_LW
     && QUICK_STEP_STATE[entry_id(fighter.module_accessor)] != 2 {
         return 1.into();

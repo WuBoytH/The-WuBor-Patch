@@ -13,7 +13,7 @@ use crate::{
     ganon::*
 };
 
-pub unsafe extern "C" fn kirby_specialn_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLAG_COPY) {
         return 1.into();
     }

@@ -21,14 +21,14 @@ use crate::{
 //     ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_LUCINA_GENERATE_ARTICLE_MASK, Hash40::new("appeal_lw"), false, -1.0);
 // }
 
-pub unsafe extern "C" fn yu_specialns_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AIR_ACTION[entry_id(fighter.module_accessor)] {
         return 0.into();
     }
     1.into()
 }
 
-pub unsafe extern "C" fn yu_speciallw_restrict(_fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn yu_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 

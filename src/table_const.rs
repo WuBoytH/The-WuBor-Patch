@@ -51,10 +51,10 @@ pub const CHECK_AIR_JUMP_AERIAL_POST:    i32 = 0x33;
 
 pub const CHECK_AIR_CLIFF_AIR_LASSO_PRE: i32 = 0x36;
 
-pub const SPECIAL_N_RESTRICT:            i32 = 0x38;
-pub const SPECIAL_S_RESTRICT:            i32 = 0x39;
-pub const SPECIAL_HI_RESTRICT:           i32 = 0x3A;
-pub const SPECIAL_LW_RESTRICT:           i32 = 0x3B;
+pub const SPECIAL_N_PRE:                 i32 = 0x38;
+pub const SPECIAL_S_PRE:                 i32 = 0x39;
+pub const SPECIAL_HI_PRE:                i32 = 0x3A;
+pub const SPECIAL_LW_PRE:                i32 = 0x3B;
 pub const CHECK_SPECIAL_COMMAND:         i32 = 0x3C;
 
 pub const CHECK_GROUND_GUARD_PRE:        i32 = 0x4F;
@@ -63,8 +63,9 @@ pub const CHECK_GROUND_CATCH_PRE:        i32 = 0x50;
 pub const CHECK_GROUND_JUMP_MIN_ATTACK:  i32 = 0x52;
 pub const CHECK_AIR_ITEM_THROW_POST:     i32 = 0x53;
 
-pub const ATTACK_3_RESTRICT:             i32 = 0x55;
-pub const ATTACK_N_RESTRICT:             i32 = 0x56;
-pub const ATTACK_S4_RESTRICT:            i32 = 0x57;
-pub const ATTACK_HI4_RESTRICT:           i32 = 0x58;
-pub const ATTACK_LW4_RESTRICT:           i32 = 0x59;
+pub const ATTACK_3_PRE:                  i32 = 0x55;
+pub const ATTACK_N_PRE:                  i32 = 0x56;
+pub const ATTACK_S4_PRE:                 i32 = 0x57;
+pub const ATTACK_HI4_PRE:                i32 = 0x58;
+pub const ATTACK_LW4_PRE:                i32 = 0x59;
+pub const SQUAT_COMMON_PRE:              i32 = 0x5A;

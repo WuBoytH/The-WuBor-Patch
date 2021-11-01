@@ -13,7 +13,7 @@ use crate::{
     table_const::*
 };
 
-// pub unsafe extern "C" fn daisy_speciallw_restrict(fighter: &mut L2CFighterCommon) -> L2CValue {
+// pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
 //         if ItemModule::is_have_item(fighter.module_accessor, 0) {
 //             return 0.into();
@@ -22,7 +22,7 @@ use crate::{
 //     1.into()
 // }
 
-pub unsafe extern "C" fn daisy_itemtoss_special(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PAD_FLAG].get_i32() == *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER {
         let stick_y = fighter.global_table[STICK_Y].get_f32();
         let special_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("special_stick_y"));

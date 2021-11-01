@@ -32,7 +32,10 @@ unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "snake", script = "game_attackshi3", category = ACMD_GAME, low_priority )]
 unsafe fn snake_utilt(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 5.0);
     frame(fighter.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 95, 82, 0, 65, 3.5, 0.0, 6.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 13.0, 95, 82, 0, 65, 2.5, 0.0, 4.0, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

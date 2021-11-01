@@ -38,9 +38,9 @@ pub const CHECK_AIR_SPECIAL_PRE:         i32 = 0x26;
 pub const CHECK_GROUND_SPECIAL_PRE:      i32 = 0x27;
 pub const CHECK_GROUND_ATTACK_PRE:       i32 = 0x28;
 pub const DASH_COMMON_PRE:               i32 = 0x29;
-
-pub const CUSTOM_ROUTINE:                i32 = 0x2B;
-
+pub const RUN_MAIN_PRE:                  i32 = 0x2A;
+pub const JUMP_SQUAT_MAIN_PRE:           i32 = 0x2B;
+pub const CHECK_AIR_LANDING_PRE:         i32 = 0x2C;
 pub const CHECK_AIR_ITEM_THROW_PRE:      i32 = 0x2D;
 pub const CHECK_AIR_ATTACK_PRE:          i32 = 0x2E;
 pub const CHECK_AIR_ESCAPE_PRE:          i32 = 0x2F;
@@ -48,14 +48,17 @@ pub const CHECK_AIR_TREAD_JUMP_PRE:      i32 = 0x30;
 pub const CHECK_AIR_WALL_JUMP_PRE:       i32 = 0x31;
 pub const CHECK_AIR_JUMP_PRE:            i32 = 0x32;
 pub const CHECK_AIR_JUMP_AERIAL_POST:    i32 = 0x33;
-
+pub const GUARD_CONT_PRE:                i32 = 0x34;
+pub const TURN_PRE:                      i32 = 0x35;
 pub const CHECK_AIR_CLIFF_AIR_LASSO_PRE: i32 = 0x36;
-
+pub const LANDING_UNIQ_CHECK_STRANS_PRE: i32 = 0x37;
 pub const SPECIAL_N_PRE:                 i32 = 0x38;
 pub const SPECIAL_S_PRE:                 i32 = 0x39;
 pub const SPECIAL_HI_PRE:                i32 = 0x3A;
 pub const SPECIAL_LW_PRE:                i32 = 0x3B;
 pub const CHECK_SPECIAL_COMMAND:         i32 = 0x3C;
+pub const WAZA_CUSTOMIZE_CONTROL:        i32 = 0x3D;
+pub const STATUS_END_CONTROL:            i32 = 0x3E;
 
 pub const CHECK_GROUND_GUARD_PRE:        i32 = 0x4F;
 pub const CHECK_GROUND_CATCH_PRE:        i32 = 0x50;

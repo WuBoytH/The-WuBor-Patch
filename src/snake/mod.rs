@@ -30,7 +30,7 @@ unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "snake", script = "game_attackshi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "snake", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn snake_utilt(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {

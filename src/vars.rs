@@ -291,6 +291,8 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         FUNNY_RIDLEY[id] = false;
 
+        DTILT_CHAIN[id] = 0;
+
         CALLBACK[id] = 0;
 
         AIR_ACTION[id] = false;

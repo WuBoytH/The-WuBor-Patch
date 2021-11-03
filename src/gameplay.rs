@@ -1,13 +1,15 @@
-use smash::{
-    lua2cpp::L2CAgentBase,
-    phx::Hash40,
-    app::{lua_bind::*, *},
-    lib::lua_const::*
-};
-use smash_script::*;
-use crate::{
-    common_funcs::*,
-    vars::*
+use {
+    smash::{
+        lua2cpp::L2CAgentBase,
+        phx::Hash40,
+        app::{lua_bind::*, *},
+        lib::lua_const::*
+    },
+    smash_script::*,
+    crate::{
+        common_funcs::*,
+        vars::*
+    }
 };
 
 pub unsafe fn jump_cancel_check_hit(agent: &mut L2CAgentBase, jump_on_block: bool) {

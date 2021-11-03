@@ -10,7 +10,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::table_const::*
+    crate::{
+        common_funcs::*,
+        vars::*,
+        table_const::*
+    }
 };
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -649,7 +653,9 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
 pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    if !IS_FGC[entry_id(fighter.module_accessor)] {
+        ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+    }
     call_original!(fighter)
 }
 

@@ -43,6 +43,7 @@ unsafe fn dolly_ftilt(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(fighter.module_accessor);
+        DTILT_CHAIN[entry_id(fighter.module_accessor)] = 0;
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {

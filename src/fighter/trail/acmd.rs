@@ -50,10 +50,6 @@ unsafe fn trail_dair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn trail_dairland(_fighter: &mut L2CAgentBase) {
-}
-
 #[acmd_script( agent = "trail", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn trail_dspecialattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
@@ -93,7 +89,6 @@ unsafe fn trail_dspecialattack(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         trail_dair,
-        trail_dairland,
         trail_dspecialattack
     );
 }

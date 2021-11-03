@@ -61,6 +61,7 @@ pub mod demon;
 pub mod chrom;
 // pub mod captain;
 pub mod trail;
+pub mod fox;
 
 pub fn install() {
     common::install();
@@ -126,4 +127,5 @@ pub fn install() {
     chrom::install();
     // captain::install();
     trail::install();
+    fox::install();
 }

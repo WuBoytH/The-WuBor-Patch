@@ -83,10 +83,7 @@ unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
-    frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 0.667);
-    frame(fighter.lua_state_agent, 25.0);
-    macros::FT_MOTION_RATE(fighter, 1);
+    macros::FT_MOTION_RATE(fighter, 1.0 / 17.0);
 }
 
 #[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]

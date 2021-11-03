@@ -261,7 +261,6 @@ unsafe fn dolly_bthrowexp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
-    let mut feint = false;
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -274,11 +273,11 @@ unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        feint = true;
+        FEINT[entry_id(fighter.module_accessor)] = true;
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
-        if feint == false {
+        if !FEINT[entry_id(fighter.module_accessor)] {
             MotionModule::set_rate(fighter.module_accessor, 1.0);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
@@ -290,7 +289,6 @@ unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly", script = "game_specialairn", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
-    let mut feint = false;
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -298,12 +296,12 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.75);
     frame(fighter.lua_state_agent, 12.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        feint = true;
+        FEINT[entry_id(fighter.module_accessor)] = true;
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         MotionModule::set_rate(fighter.module_accessor, 1.0);
-        if feint == false {
+        if !FEINT[entry_id(fighter.module_accessor)] {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
         else {

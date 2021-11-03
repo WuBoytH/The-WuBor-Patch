@@ -251,7 +251,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         SPECIAL_LW_TYPE[id] = 0; 
 
         IS_BONKER[id] = 0;
-        FIREBALL_CANCEL[id] = 0;
+        FIREBALL_CANCEL[id] = false;
         LONG_JUMP_LANDING[id] = false;
         BLJ[id] = false;
         BLJ_PREV[id] = false;
@@ -331,7 +331,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         SPENT_SP[id] = 0.0;
         METER_GAIN[id] = 0.0;
         METER_PENALTY[id] = 0.0;
-        ROMAN_MOVE[id] = false;
+        ROMAN_MOVE[id] = 0.0;
         IS_ROMAN_MOVE[id] = false;
         HEROIC_GRAB[id] = false;
         SP_FLASH[id] = 0;

@@ -9,9 +9,69 @@ use {
     smashline::*,
     crate::{
         common_funcs::*,
-        vars::*
+        vars::*,
+        gameplay::*
     }
 };
+
+#[inline(always)]
+pub unsafe fn toonlink_fgc(fighter: &mut L2CFighterCommon) {
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    let mut allowed_cancels : Vec<i32> = [].to_vec();
+    set_hp(fighter, 118.0);
+    if [
+        *FIGHTER_STATUS_KIND_ATTACK
+    ].contains(&status) {
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status) {
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
+            jump_cancel_check_hit(fighter, false);
+        }
+        else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true);
+        }
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4,
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4
+    ].contains(&status) {
+        if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
+            jump_cancel_check_hit(fighter, false);
+        }
+        allowed_cancels = [
+            *FIGHTER_STATUS_KIND_SPECIAL_N,
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_STATUS_KIND_SPECIAL_LW,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        ].to_vec();
+    }
+    cancel_system(fighter, status, allowed_cancels);
+}
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
@@ -58,6 +118,7 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
                 KineticModule::suspend_energy_all(fighter.module_accessor);
                 if MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
                 && MotionModule::frame(fighter.module_accessor) < 65.0 {
+                    HIT_FRAME[entry_id(fighter.module_accessor)] = 65.0;
                     MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 65.0, true, false, false);
                 }
                 else if MotionModule::frame(fighter.module_accessor) > 66.0 {
@@ -66,6 +127,10 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
                     MotionModule::set_rate(fighter.module_accessor, 0.4);
                 }
             }
+        }
+
+        if IS_FGC[entry_id(fighter.module_accessor)] {
+            toonlink_fgc(fighter);
         }
     }
 }

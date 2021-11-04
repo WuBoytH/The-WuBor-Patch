@@ -5,7 +5,7 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    smash_script::*,
+    // smash_script::*,
     smashline::*,
     crate::{
         common_funcs::*,
@@ -182,11 +182,6 @@ unsafe extern "C" fn lucina_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();
-    }
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        macros::SLOW_OPPONENT(fighter, 10.0, 20.0);
-        AttackModule::clear_all(fighter.module_accessor);
     }
     if IS_ROMAN_MOVE[entry_id(fighter.module_accessor)] {
         PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{

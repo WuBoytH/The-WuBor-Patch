@@ -92,6 +92,16 @@ move_type_again: bool) -> u64 {
                 OPPONENT_BOMA[a_entry_id] = 0;
             }
         }
+        if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
+            if StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                if IS_ROMAN_MOVE[a_entry_id] {
+                    SlowModule::set(defender_boma, 0, 50, 19, false, 0x50000000);
+                }
+                else {
+                    SlowModule::set(defender_boma, 0, 10, 20, false, 0x50000000);
+                }
+            }
+        }
     }
     if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if a_entry_id < 8

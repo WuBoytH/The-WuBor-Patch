@@ -3,7 +3,7 @@ use {
         lua2cpp::L2CAgentBase,
         phx::Hash40,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
     crate::{
@@ -125,45 +125,56 @@ pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cance
     && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0 {
         if level <= 4 {
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_N) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N, true);
+                return;
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_S) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S, true);
+                return;
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_HI)
             && DISABLE_SPECIAL_HI[entry_id(agent.module_accessor)] == false {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
+                return;
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+                return;
             }
         }
         if level <= 3 && StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_S4) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S4_START, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S4_START, true);
+                return;
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_HI4) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
+                return;
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_LW4) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, false);
+                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
+                return;
             }
         }
         if level <= 2 {
             if StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
                 if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_S3) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3, false);
+                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
+                    return;
                 }
                 if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_HI3) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI3, false);
+                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI3, true);
+                    return;
                 }
                 if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_LW3) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW3, false);
+                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW3, true);
+                    return;
                 }
             }
             else {
                 if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_AIR) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_AIR, false);
+                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
+                    return;
                 }
             }
         }
@@ -179,12 +190,12 @@ pub unsafe fn cancel_exceptions(agent: &mut L2CAgentBase, next_status: i32, cat1
     && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
     && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0) {
         if (cat1 & cat1_compare) != 0 {
-            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, false);
+            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, true);
         }
     }
 }
 
-pub unsafe fn chain_cancels(agent: &mut L2CAgentBase, next_status: i32, cat1_compare: i32, on_hit: bool, flag: &mut [i32; 8]) {
+pub unsafe fn chain_cancels(agent: &mut L2CAgentBase, next_status: i32, cat1_compare: i32, on_hit: bool, flag: &mut [i32; 8], max: i32) -> L2CValue {
     let cat1 = ControlModule::get_command_flag_cat(agent.module_accessor, 0);
 
     if !on_hit
@@ -192,11 +203,14 @@ pub unsafe fn chain_cancels(agent: &mut L2CAgentBase, next_status: i32, cat1_com
     || AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD))
     && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
     && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0) {
-        if (cat1 & cat1_compare) != 0 {
-            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, false);
+        if (cat1 & cat1_compare) != 0
+        && flag[entry_id(agent.module_accessor)] < max {
+            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, true);
             flag[entry_id(agent.module_accessor)] += 1;
+            return 1.into();
         }
     }
+    0.into()
 }
 
 pub unsafe fn set_hp(agent: &mut L2CAgentBase, hp: f32) {

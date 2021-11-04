@@ -185,10 +185,32 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 QCB[entry_id(fighter.module_accessor)] = 0;
             }
         }
-        else {
-            if dir != 4
-            && dir != 7 {
+        else if QCB[entry_id(fighter.module_accessor)] == 3 {
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+            || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                QCB[entry_id(fighter.module_accessor)] = 13;
+            }
+            else {
+                if dir != 4
+                && dir != 7
+                && dir != 5 {
+                    QCB[entry_id(fighter.module_accessor)] = 0;
+                }
+            }
+        }
+        else if QCB[entry_id(fighter.module_accessor)] > 3 {
+            QCB[entry_id(fighter.module_accessor)] -= 1;
+            if QCB[entry_id(fighter.module_accessor)] == 3 {
                 QCB[entry_id(fighter.module_accessor)] = 0;
+            }
+            else {
+                if dir != 4
+                && dir != 7
+                && dir != 5 {
+                    QCB[entry_id(fighter.module_accessor)] = 0;
+                }
             }
         }
 
@@ -201,7 +223,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             }
         }
         else if QCF[entry_id(fighter.module_accessor)] == 1 {
-            if dir == 1 {
+            if dir == 3 {
                 QCF[entry_id(fighter.module_accessor)] = 2;
             }
             else if dir != 6
@@ -220,10 +242,91 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 QCF[entry_id(fighter.module_accessor)] = 0;
             }
         }
-        else {
-            if dir != 6
-            && dir != 9 {
+        else if QCF[entry_id(fighter.module_accessor)] == 3 {
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+            || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                QCF[entry_id(fighter.module_accessor)] = 13;
+            }
+            else {
+                if dir != 6
+                && dir != 9
+                && dir != 5 {
+                    QCF[entry_id(fighter.module_accessor)] = 0;
+                }
+            }
+        }
+        else if QCF[entry_id(fighter.module_accessor)] > 3 {
+            QCF[entry_id(fighter.module_accessor)] -= 1;
+            if QCF[entry_id(fighter.module_accessor)] == 3 {
                 QCF[entry_id(fighter.module_accessor)] = 0;
+            }
+            else {
+                if dir != 6
+                && dir != 9
+                && dir != 5 {
+                    QCF[entry_id(fighter.module_accessor)] = 0;
+                }
+            }
+        }
+
+        // Shoryuken
+
+        if SRK[entry_id(fighter.module_accessor)] == 0 {
+            if dir == 6 {
+                SRK[entry_id(fighter.module_accessor)] = 1;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+            }
+        }
+        else if SRK[entry_id(fighter.module_accessor)] == 1 {
+            if dir == 2 {
+                SRK[entry_id(fighter.module_accessor)] = 2;
+            }
+            else if dir != 6
+            && dir != 3
+            && dir != 2 {
+                SRK[entry_id(fighter.module_accessor)] = 0;
+            }
+        }
+        else if SRK[entry_id(fighter.module_accessor)] == 2 {
+            if dir == 3 {
+                SRK[entry_id(fighter.module_accessor)] = 3;
+            }
+            else if dir != 6
+            && dir != 3
+            && dir != 2 {
+                SRK[entry_id(fighter.module_accessor)] = 0;
+            }
+        }
+        else if SRK[entry_id(fighter.module_accessor)] == 3 {
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+            || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+            || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                SRK[entry_id(fighter.module_accessor)] = 13;
+            }
+            else {
+                if dir != 6
+                && dir != 2
+                && dir != 3
+                && dir != 5 {
+                    SRK[entry_id(fighter.module_accessor)] = 0;
+                }
+            }
+        }
+        else if SRK[entry_id(fighter.module_accessor)] > 3 {
+            SRK[entry_id(fighter.module_accessor)] -= 1;
+            if SRK[entry_id(fighter.module_accessor)] == 3 {
+                SRK[entry_id(fighter.module_accessor)] = 0;
+            }
+            else {
+                if dir != 6
+                && dir != 2
+                && dir != 3
+                && dir != 5 {
+                    SRK[entry_id(fighter.module_accessor)] = 0;
+                }
             }
         }
 

@@ -65,6 +65,7 @@ pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 pub static mut INPUT_TIMER : [i32; 8] = [0; 8];
 pub static mut QCF : [i32; 8] = [0; 8];
 pub static mut QCB : [i32; 8] = [0; 8];
+pub static mut SRK : [i32; 8] = [0; 8];
 pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
@@ -77,6 +78,7 @@ pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
 pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
+pub static mut COMMAND : [bool; 8] = [false; 8];
 
 // Character Specific
 
@@ -237,6 +239,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         INPUT_TIMER[id] = 0;
         QCF[id] = 0;
         QCB[id] = 0;
+        SRK[id] = 0;
         IS_DK[id] = false;
         CANCEL[id] = false;
         HIT_FRAME[id] = 0.0;
@@ -248,7 +251,8 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         DISABLE_SPECIAL_HI[id] = false;
         DISABLE_SPECIAL_LW[id] = false;
         FGC_HITSTUN_MUL[id] = 1.2;
-        SPECIAL_LW_TYPE[id] = 0; 
+        SPECIAL_LW_TYPE[id] = 0;
+        COMMAND[id] = false;
 
         IS_BONKER[id] = 0;
         FIREBALL_CANCEL[id] = false;

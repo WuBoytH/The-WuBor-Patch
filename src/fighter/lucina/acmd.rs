@@ -475,24 +475,26 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     let mut dmg : f32;
     let kbg : i32;
-    frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 2.0/3.0);
-    frame(fighter.lua_state_agent, 15.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+    if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
-        macros::FT_MOTION_RATE(fighter, 0.2);
     }
     else {
         IS_EX[entry_id(fighter.module_accessor)] = false;
+    }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0/3.0);
+    frame(fighter.lua_state_agent, 15.0);
+    if IS_EX[entry_id(fighter.module_accessor)] {
+        macros::FT_MOTION_RATE(fighter, 0.2);
+    }
+    else {
         macros::FT_MOTION_RATE(fighter, 1.0);
     }
     frame(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
-    }
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
@@ -584,6 +586,16 @@ unsafe fn lucina_sspecial1exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
+    if COMMAND[entry_id(fighter.module_accessor)]
+    && spent_meter(fighter.module_accessor, false) {
+        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
+        IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
+    }
+    else {
+        IS_EX[entry_id(fighter.module_accessor)] = false;
+    }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
@@ -626,16 +638,16 @@ unsafe fn lucina_sspecial2lwair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 13.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
-        IS_EX[entry_id(fighter.module_accessor)] = true;
-        sp_diff_checker(fighter.module_accessor);
-    }
-    else {
-        IS_EX[entry_id(fighter.module_accessor)] = false;
-    }
+    // if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+    // && spent_meter(fighter.module_accessor, false) {
+    //     SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+    //     SP_FLASH[entry_id(fighter.module_accessor)] = 40;
+    //     IS_EX[entry_id(fighter.module_accessor)] = true;
+    //     sp_diff_checker(fighter.module_accessor);
+    // }
+    // else {
+    //     IS_EX[entry_id(fighter.module_accessor)] = false;
+    // }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         let dmg : f32;
@@ -683,18 +695,18 @@ unsafe fn lucina_sspecial2lwaireff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-        && spent_meter(fighter.module_accessor, false) {
-            SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-            SP_FLASH[entry_id(fighter.module_accessor)] = 40;
-            IS_EX[entry_id(fighter.module_accessor)] = true;
-            sp_diff_checker(fighter.module_accessor);
-        }
-        else {
-            IS_EX[entry_id(fighter.module_accessor)] = false;
-        }
-    }
+    // if macros::is_excute(fighter) {
+    //     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+    //     && spent_meter(fighter.module_accessor, false) {
+    //         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+    //         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
+    //         IS_EX[entry_id(fighter.module_accessor)] = true;
+    //         sp_diff_checker(fighter.module_accessor);
+    //     }
+    //     else {
+    //         IS_EX[entry_id(fighter.module_accessor)] = false;
+    //     }
+    // }
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         let dmg : f32;
@@ -823,27 +835,24 @@ unsafe fn lucina_sspecial2hiexp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
+    if COMMAND[entry_id(fighter.module_accessor)]
+    && spent_meter(fighter.module_accessor, false) {
+        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        SP_FLASH[entry_id(fighter.module_accessor)] = 60;
+        IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
+        full_invuln(fighter.module_accessor, true);
+    }
+    else {
+        IS_EX[entry_id(fighter.module_accessor)] = false;
         upper_invuln(fighter.module_accessor, true);
     }
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        SP_FLASH[entry_id(fighter.module_accessor)] = 60;
-        IS_EX[entry_id(fighter.module_accessor)] = true;
-        sp_diff_checker(fighter.module_accessor);
-    }
-    else {
-        IS_EX[entry_id(fighter.module_accessor)] = false;
-    }
+    frame(fighter.lua_state_agent, 5.0);
     if IS_EX[entry_id(fighter.module_accessor)] {
-        upper_invuln(fighter.module_accessor, false);
-        full_invuln(fighter.module_accessor, true);
-        frame(fighter.lua_state_agent, 5.0);
         macros::FT_MOTION_RATE(fighter, 6.0);
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 87, 100, 160, 0, 5.1, 0.0, 11.0, 10.0, Some(0.0), Some(7.0), Some(10.0), 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
@@ -854,6 +863,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         wait(fighter.lua_state_agent, 1.0);
         if macros::is_excute(fighter) {
             AttackModule::clear_all(fighter.module_accessor);
+            full_invuln(fighter.module_accessor, false);
         }
         wait(fighter.lua_state_agent, 1.0);
         if macros::is_excute(fighter) {
@@ -869,7 +879,6 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         }
         frame(fighter.lua_state_agent, 9.0);
         if macros::is_excute(fighter) {
-            full_invuln(fighter.module_accessor, false);
         }
         macros::FT_MOTION_RATE(fighter, 1.0);
         frame(fighter.lua_state_agent, 11.0);
@@ -881,6 +890,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         frame(fighter.lua_state_agent, 5.0);
         macros::FT_MOTION_RATE(fighter, 3.5);
         if macros::is_excute(fighter) {
+            upper_invuln(fighter.module_accessor, false);
             macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 10.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 79, 60, 0, 70, 4.0, 0.0, 8.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 10.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 79, 60, 0, 70, 4.0, 0.0, 8.0, 4.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_SPECIAL_HI_SET_LR);
@@ -888,7 +898,6 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         }
         frame(fighter.lua_state_agent, 6.0);
         if macros::is_excute(fighter) {
-            upper_invuln(fighter.module_accessor, false);
             macros::ATTACK(fighter, 0, 0, Hash40::new("sword1"), 7.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 79, 50, 0, 50, 5.0, 0.0, 0.0, 4.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             macros::ATTACK(fighter, 1, 0, Hash40::new("sword1"), 7.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 79, 50, 0, 50, 5.0, 0.0, 0.0, -1.5, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
@@ -908,20 +917,22 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 2.0);
-    frame(fighter.lua_state_agent, 3.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+    if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         SP_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
+        full_invuln(fighter.module_accessor, true);
     }
     else {
         IS_EX[entry_id(fighter.module_accessor)] = false;
+        upper_invuln(fighter.module_accessor, true);
     }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    frame(fighter.lua_state_agent, 3.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if IS_EX[entry_id(fighter.module_accessor)] {
         full_invuln(fighter.module_accessor, true);
         frame(fighter.lua_state_agent, 5.0);

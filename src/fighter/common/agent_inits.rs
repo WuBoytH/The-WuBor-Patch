@@ -20,7 +20,8 @@ use {
             lucario::agent_init::lucario_specialhi_pre,
             lucina::agent_init::{
                 yu_specialns_pre,
-                yu_speciallw_pre
+                yu_speciallw_pre,
+                yu_check_special_command
             }
         }
     }
@@ -84,6 +85,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
             fighter.global_table[SPECIAL_S_PRE].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
+            fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_LUCARIO {
             fighter.global_table[SPECIAL_HI_PRE].assign(&L2CValue::Ptr(lucario_specialhi_pre as *const () as _));

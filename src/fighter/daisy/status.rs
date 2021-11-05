@@ -14,6 +14,21 @@ use {
     }
 };
 
+#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn daisy_attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_AttackAir()
+}
+
+#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn daisy_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_attack_air_common(true.into());
+    fighter.sub_shift_status_main(L2CValue::Ptr(daisy_attack_air_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn daisy_attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_AttackAir_Main()
+}
+
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn daisy_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_landing_mot_frame"));
@@ -175,6 +190,8 @@ unsafe fn daisy_itemthrow_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
+        daisy_attackair_pre,
+        daisy_attackair_main,
         daisy_specialhi_main,
         daisy_fallspecial_main,
         // daisy_itemthrow_main,

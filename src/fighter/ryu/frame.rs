@@ -162,7 +162,10 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 if CAMERA[entry_id(fighter.module_accessor)] == false {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_exec"));
                     macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
-                    macros::SLOW_OPPONENT(fighter, 100.0, 32.0);
+                    // macros::SLOW_OPPONENT(fighter, 100.0, 32.0);
+                    if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
+                        SlowModule::set(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor, 0, 100, 32, false, 0x50000000);
+                    }
                     SlowModule::set_whole(fighter.module_accessor, 4, 0);
                     macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
                     RYU_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);

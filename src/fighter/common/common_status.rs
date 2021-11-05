@@ -640,7 +640,7 @@ pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
 pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cont;
-    if fighter.global_table[0x30].get_bool() == false {
+    if fighter.global_table[CHECK_AIR_TREAD_JUMP_PRE].get_bool() == false {
         cont = false;
     }
     else {
@@ -723,13 +723,30 @@ pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighter
     false.into()
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_special_command)]
+pub unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND) {
+        if fighter.global_table[CHECK_SPECIAL_COMMAND].get_bool() == false {
+            return false.into();
+        }
+        else {
+            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_COMMAND].get_ptr());
+            if callable(fighter).get_bool() {
+                return true.into();
+            }
+        }
+    // }
+    false.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             dash_common,
             dash_main_common,
             damage_air_main,
-            sub_transition_group_check_air_tread_jump
+            sub_transition_group_check_air_tread_jump,
+            sub_transition_group_check_special_command
         );
     }
 }

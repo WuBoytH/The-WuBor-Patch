@@ -33,7 +33,7 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
         }
     }
     if spent {
-        METER_PENALTY[entry_id(module_accessor)] = 600.0;
+        METER_PENALTY[entry_id(module_accessor)] = 360.0;
     }
     return spent;
 }

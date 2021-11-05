@@ -312,15 +312,12 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
                 if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
-                && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-                && get_command_stick_direction(fighter.module_accessor, true) == 6 {
+                && (ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0 {
                     StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), false.into());
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
                 }
-                if QCB[entry_id(fighter.module_accessor)] == 3
-                && (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-                || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)) {
-                    fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), false.into());
+                if QCB[entry_id(fighter.module_accessor)] > 3 {
+                    fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
                 }
                 else {
                     let allowed_cancels = [

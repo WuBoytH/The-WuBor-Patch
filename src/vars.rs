@@ -167,9 +167,6 @@ pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 // Corrin
 pub static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
 
-// Bayonetta
-pub static mut DASH : [bool; 8] = [false; 8];
-
 // Incineroar
 pub static mut REVENGE : [i32; 8] = [0; 8];
 
@@ -317,8 +314,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         DMG_RATIO[id] = 0.0;
 
         DRAGON_INSTALL[id] = 0.0;
-
-        DASH[id] = false;
 
         REVENGE[id] = 0;
 

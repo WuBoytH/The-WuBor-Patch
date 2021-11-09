@@ -403,6 +403,14 @@ unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kamui", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
+unsafe fn kamui_speciallw(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, false);
+    }
+}
+
 #[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
 unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -414,16 +422,6 @@ unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(fighter.module_accessor, false);
         ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, 0.5);
-    }
-    macros::FT_MOTION_RATE(fighter, 2.0);
-    frame(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, 1.0);
-    }
-    macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -474,6 +472,7 @@ pub fn install() {
         kamui_bair,
         kamui_uair,
         kamui_specialsjump,
+        kamui_speciallw,
         kamui_speciallwhit,
         kamui_waterdragon_speciallwhit
     );

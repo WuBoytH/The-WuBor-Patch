@@ -1,40 +1,12 @@
-use smash::{
-    lua2cpp::{/*L2CFighterBase, */L2CFighterCommon},
-    phx::Vector3f,
-    app::*
-    // use smash::lib::lua_const::*
+use {
+    smash::{
+        lua2cpp::L2CFighterCommon,
+        phx::Vector3f,
+        app::*,
+    },
+    smashline::*,
+    crate::common_funcs::*
 };
-use smashline::*;
-use crate::common_funcs::*;
-
-// Common
-pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
-
-// System Mechanics
-pub static mut AIR_WHIFF : [bool; 8] = [false; 8];
-pub static mut IS_FUNNY : [bool; 8] = [false; 8];
-pub static mut IS_FGC : [bool; 8] = [false; 8];
-pub static mut FGC_TRAINING : bool = false;
-pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
-pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
-pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
-pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
-pub static mut INPUT_TIMER : [i32; 8] = [0; 8];
-pub static mut QCF : [i32; 8] = [0; 8];
-pub static mut QCB : [i32; 8] = [0; 8];
-pub static mut IS_DK : [bool; 8] = [false; 8];
-pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
-pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
-pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
-pub static mut DISABLE_SPECIAL_N : [bool; 8] = [false; 8];
-pub static mut DISABLE_SPECIAL_S : [bool; 8] = [false; 8];
-pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
-pub static mut DISABLE_SPECIAL_LW : [bool; 8] = [false; 8];
-pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
-pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
-pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
-pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 
 // System Vars
 pub static mut INT_OFFSET : usize = 0x4E19D0;
@@ -77,6 +49,36 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 //     0xe8, 0x63, 0x05, 0x91,
 // ];
 
+// Common
+pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
+pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
+
+// System Mechanics
+pub static mut AIR_WHIFF : [bool; 8] = [false; 8];
+pub static mut IS_FUNNY : [bool; 8] = [false; 8];
+pub static mut IS_FGC : [bool; 8] = [false; 8];
+pub static mut FGC_TRAINING : bool = false;
+pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
+pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
+pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
+pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
+pub static mut INPUT_TIMER : [i32; 8] = [0; 8];
+pub static mut QCF : [i32; 8] = [0; 8];
+pub static mut QCB : [i32; 8] = [0; 8];
+pub static mut SRK : [i32; 8] = [0; 8];
+pub static mut IS_DK : [bool; 8] = [false; 8];
+pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
+pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
+pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
+pub static mut DISABLE_SPECIAL_N : [bool; 8] = [false; 8];
+pub static mut DISABLE_SPECIAL_S : [bool; 8] = [false; 8];
+pub static mut DISABLE_SPECIAL_HI : [bool; 8] = [false; 8];
+pub static mut DISABLE_SPECIAL_LW : [bool; 8] = [false; 8];
+pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
+pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
+pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
+pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
+pub static mut COMMAND : [bool; 8] = [false; 8];
 
 // Character Specific
 
@@ -164,8 +166,6 @@ pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 
 // Corrin
 pub static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
-// pub static mut SET_DRAGON_OFF : [bool; 8] = [true; 8];
-// pub static mut SPECIAL_DRAGON : [bool; 8] = [false; 8];
 
 // Bayonetta
 pub static mut DASH : [bool; 8] = [false; 8];
@@ -176,9 +176,12 @@ pub static mut REVENGE : [i32; 8] = [0; 8];
 // Ridley
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 
-// Terry
+// Joker
+// Also uses FEINT
 
+// Terry
 pub static mut DTILT_CHAIN : [i32; 8] = [0; 8];
+// Also uses FEINT
 
 // Sephiroth
 // static mut CAN_WING : [bool; 8] = [true; 8];
@@ -229,28 +232,57 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         if !FGC_TRAINING {
             IS_FGC[id] = false;
         }
+        COUNTER_HIT_STATE[id] = 0;
         OPPONENT_BOMA[id] = 0;
         DAMAGE_TAKEN[id] = 0.0;
         DAMAGE_TAKEN_PREV[id] = 0.0;
         INPUT_TIMER[id] = 0;
         QCF[id] = 0;
         QCB[id] = 0;
-        CANCEL[id] = false;
+        SRK[id] = 0;
         IS_DK[id] = false;
+        CANCEL[id] = false;
+        HIT_FRAME[id] = 0.0;
+        BOUNCE[id] = false;
         SPECIAL_HITSTUN[id] = false;
         HIT_BY_SPECIAL_HITSTUN[id] = false;
         DISABLE_SPECIAL_N[id] = false;
         DISABLE_SPECIAL_S[id] = false;
         DISABLE_SPECIAL_HI[id] = false;
         DISABLE_SPECIAL_LW[id] = false;
-
-        BOUNCE[id] = false;
+        FGC_HITSTUN_MUL[id] = 1.2;
+        SPECIAL_LW_TYPE[id] = 0;
+        COMMAND[id] = false;
 
         IS_BONKER[id] = 0;
+        FIREBALL_CANCEL[id] = false;
+        LONG_JUMP_LANDING[id] = false;
+        BLJ[id] = false;
+        BLJ_PREV[id] = false;
+        LONG_JUMP_KIND[id] = 0;
 
+        KAA[id] = false;
+
+        SPECIAL_THROW[id] = false;
+
+        TELEPORT[id] = 0;
+        OG_X[id] = 0.0;
+        OG_Y[id] = 0.0;
+        TELE_X[id] = 0.0;
+        TELE_Y[id] = 0.0;
         TELE_STOP[id] = false;
+        FEINT[id] = false;
 
         FINISH_SIGN[id] = 0;
+
+        FLASH_CANCEL[id] = false;
+
+        SPIN_SPEED[id] = 0.0;
+
+        IS_SPIRIT_BOMB[id] = false;
+        IS_SD_CANCEL[id] = false;
+
+        FUNNY_JUMPS[id] = 10;
 
         BURST_RECOVER[id] = 0.0;
 
@@ -280,14 +312,15 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         FLASH_MAX[id] = 0;
         FLASH_COUNTER[id] = 0;
         SHORYUREPPA[id] = 0;
+        TATSULOOPS[id] = [0; 3];
         DIFF_X[id] = 0.0;
         DMG_RATIO[id] = 0.0;
 
         DRAGON_INSTALL[id] = 0.0;
 
-        REVENGE[id] = 0;
+        DASH[id] = false;
 
-        DISABLE_SPECIAL_HI[id] = false;
+        REVENGE[id] = 0;
 
         FUNNY_RIDLEY[id] = false;
 
@@ -297,14 +330,23 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         AIR_ACTION[id] = false;
         SHADOW_FRENZY[id] = false;
+        CAN_ONE_MORE[id] = false;
+        IS_EX[id] = false;
+        SPENT_SP[id] = 0.0;
+        METER_GAIN[id] = 0.0;
+        METER_PENALTY[id] = 0.0;
+        ROMAN_MOVE[id] = 0.0;
+        IS_ROMAN_MOVE[id] = false;
+        HEROIC_GRAB[id] = false;
+        SP_FLASH[id] = 0;
+        START_SITUATION[id] = 0;
         _TIME_COUNTER[id] = 0;
         if !(smashball::is_training_mode() && TRAINING_TOOLS[id]) {
             SP_GAUGE[id] = 0.0;
+            SP_LEVEL[id] = 0;
             AWAKENING[id] = false;
             TRAINING_TOOLS[id] = false;
             SP_GAUGE_MAX[id] = 100.0;
-            DAMAGE_TAKEN[id] = 0.0;
-            DAMAGE_TAKEN_PREV[id] = 0.0;
         }
     }
 }

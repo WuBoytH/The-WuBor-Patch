@@ -56,8 +56,8 @@ unsafe fn kamui_jab3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         if di {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 180, 22, 0, 35, 5.0, 0.0, 9.0, 11.5, Some(0.0), Some(9.0), Some(11.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 180, 22, 0, 35, 4.2, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(10.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 180, 22, 0, 20, 5.0, 0.0, 9.0, 11.5, Some(0.0), Some(9.0), Some(11.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 180, 22, 0, 20, 4.2, 0.0, 9.0, 22.0, Some(0.0), Some(9.0), Some(10.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 2.0, false);
             AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 2.0, false);
         }
@@ -277,13 +277,13 @@ unsafe fn kamui_faireff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         if !hold {
-            macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 5, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+            macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 5, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
         }
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         if hold {
-            macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 5, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+            macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_kamui_sword1"), Hash40::new("tex_kamui_sword2"), 5, Hash40::new("haver"), 0.0, 0.1, 0.0, Hash40::new("haver"), -0.0, 15.0, 0.0, true, Hash40::new("kamui_sword_flare"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
         }
     }
     frame(fighter.lua_state_agent, 13.0);
@@ -403,6 +403,14 @@ unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "kamui", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
+unsafe fn kamui_speciallw(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, false);
+    }
+}
+
 #[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
 unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -414,16 +422,6 @@ unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(fighter.module_accessor, false);
         ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    frame(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, 0.5);
-    }
-    macros::FT_MOTION_RATE(fighter, 2.0);
-    frame(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, 1.0);
-    }
-    macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -474,6 +472,7 @@ pub fn install() {
         kamui_bair,
         kamui_uair,
         kamui_specialsjump,
+        kamui_speciallw,
         kamui_speciallwhit,
         kamui_waterdragon_speciallwhit
     );

@@ -5,7 +5,7 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    smash_script::*,
+    // smash_script::*,
     smashline::*,
     crate::{
         common_funcs::*,
@@ -24,25 +24,35 @@ unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     else {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_loop"), 1.0, 1.0, false, 0.0, false, false);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialnloop_loop as *const () as _))
-}
-
-unsafe extern "C" fn lucina_specialnloop_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+    if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
-        fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
         sp_diff_checker(fighter.module_accessor);
     }
-    else if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-        fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialnloop_loop as *const () as _))
+}
+
+unsafe extern "C" fn lucina_specialnloop_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+    && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        if IS_EX[entry_id(fighter.module_accessor)] {
+            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
+        }
     }
     else {
         if MotionModule::is_end(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
+            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+                if IS_EX[entry_id(fighter.module_accessor)] {
+                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
+                }
+                else {
+                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
+                }
             }
             else {
                 HEROIC_GRAB[entry_id(fighter.module_accessor)] = true;
@@ -172,11 +182,6 @@ unsafe extern "C" fn lucina_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();
-    }
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        macros::SLOW_OPPONENT(fighter, 10.0, 20.0);
-        AttackModule::clear_all(fighter.module_accessor);
     }
     if IS_ROMAN_MOVE[entry_id(fighter.module_accessor)] {
         PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{

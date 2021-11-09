@@ -6,7 +6,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::table_const::*
+    crate::{
+        common_funcs::*,
+        vars::*,
+        table_const::*
+    }
 };
 
 // #[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -144,6 +148,7 @@ use {
 
 #[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn jack_specials_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FEINT[entry_id(fighter.module_accessor)] = false;
     ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
     ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
     VisibilityModule::set_whole(fighter.module_accessor, true);

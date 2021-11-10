@@ -18,23 +18,26 @@ use {
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_loop"), 1.0, 1.0, false, 0.0, false, false);
-    }
-    else {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_loop"), 1.0, 1.0, false, 0.0, false, false);
-    }
-    if COMMAND[entry_id(fighter.module_accessor)]
-    && spent_meter(fighter.module_accessor, false) {
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_n_loop"),
+        1.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    if COMMAND[entry_id(fighter.module_accessor)] && spent_meter(fighter.module_accessor, false) {
         SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialnloop_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialnloop_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specialnloop_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_specialnloop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
     && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if IS_EX[entry_id(fighter.module_accessor)] {
@@ -66,55 +69,73 @@ unsafe extern "C" fn lucina_specialnloop_loop(fighter: &mut L2CFighterCommon) ->
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_NONE), true);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
         START_SITUATION[entry_id(fighter.module_accessor)] = *SITUATION_KIND_AIR;
         AIR_ACTION[entry_id(fighter.module_accessor)] = true;
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s1"), 1.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_air_s1"),
+            1.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        fighter.sub_shift_status_main(L2CValue::Ptr(lucina_raginglion_loop as *const () as _))
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         START_SITUATION[entry_id(fighter.module_accessor)] = *SITUATION_KIND_GROUND;
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s1"), 1.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_s1"),
+            1.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        fighter.sub_shift_status_main(L2CValue::Ptr(lucina_lightningflash_loop as *const () as _))
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specials_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specials_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if START_SITUATION[entry_id(fighter.module_accessor)] == *SITUATION_KIND_AIR
-    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-    }
-    else if START_SITUATION[entry_id(fighter.module_accessor)] == *SITUATION_KIND_GROUND
-    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
-    else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+    else {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            fighter.sub_wait_ground_check_common(L2CValue::I32(0));
+            fighter.sub_wait_ground_check_common(0.into());
         }
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
-    else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            fighter.sub_air_check_fall_common();
-        }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE) {
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
-            || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK_RAW) {
-                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2.into(), false.into());
-            }
-        }
-        if MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+    0.into()
+}
+
+unsafe extern "C" fn lucina_raginglion_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        fighter.sub_air_check_fall_common();
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE) {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
+        || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK_RAW) {
+            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2.into(), false.into());
         }
     }
-    L2CValue::I32(0)
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+    }
+    0.into()
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -122,16 +143,34 @@ unsafe fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK_RAW) {
         START_SITUATION[entry_id(fighter.module_accessor)] = 1;
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s2_lw"), 1.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_air_s2_lw"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }
     else {
         START_SITUATION[entry_id(fighter.module_accessor)] = 0;
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s2_hi"), 1.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_air_s2_hi"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }   
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specials2_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specials2_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specials2_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();
@@ -140,10 +179,28 @@ unsafe extern "C" fn lucina_specials2_loop(fighter: &mut L2CFighterCommon) -> L2
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             if START_SITUATION[entry_id(fighter.module_accessor)] == 0 {
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s2_hi"), 1.0, 1.0, false, 0.0, false, false);
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new("special_s2_hi"),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
+                );
             }
             if START_SITUATION[entry_id(fighter.module_accessor)] == 1 {
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s2_lw"), 1.0, 1.0, false, 0.0, false, false);
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new("special_s2_lw"),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
+                );
             }
         }
     }
@@ -170,15 +227,33 @@ unsafe extern "C" fn lucina_specials2_loop(fighter: &mut L2CFighterCommon) -> L2
 unsafe fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     IS_ROMAN_MOVE[entry_id(fighter.module_accessor)] = false;
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_lw"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }
     else {
-        MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw"), 0.0, 1.0, false, 0.0, false, false);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_air_lw"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }   
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_speciallw_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_speciallw_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();

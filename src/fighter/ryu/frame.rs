@@ -129,7 +129,6 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         if IS_FUNNY[entry_id(fighter.module_accessor)]
         || DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
-
             if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
             && (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK
             || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S3
@@ -144,10 +143,28 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
                 fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
                 if PostureModule::lr(fighter.module_accessor) == 1.0 {
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_hi_r"), 0.0, 1.0, false, 0.0, false, false);
+                    MotionModule::change_motion(
+                        fighter.module_accessor,
+                        Hash40::new("appeal_hi_r"),
+                        0.0,
+                        1.0,
+                        false,
+                        0.0,
+                        false,
+                        false
+                    );
                 }
                 else {
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_hi_l"), 0.0, 1.0, false, 0.0, false, false);
+                    MotionModule::change_motion(
+                        fighter.module_accessor,
+                        Hash40::new("appeal_hi_l"),
+                        0.0,
+                        1.0,
+                        false,
+                        0.0,
+                        false,
+                        false
+                    );
                 }
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             }
@@ -158,13 +175,20 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
                 DamageModule::set_damage_lock(fighter.module_accessor, true);
                 DamageModule::set_no_reaction_no_effect(fighter.module_accessor, true);
-                HitModule::set_hit_stop_mul(fighter.module_accessor, 0.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
+                HitModule::set_hit_stop_mul(fighter.module_accessor, 0.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8 }, 0.0);
                 if CAMERA[entry_id(fighter.module_accessor)] == false {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_exec"));
                     macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
                     // macros::SLOW_OPPONENT(fighter, 100.0, 32.0);
                     if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
-                        SlowModule::set(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor, 0, 100, 32, false, 0x50000000);
+                        SlowModule::set(
+                            OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor,
+                            0,
+                            100,
+                            32,
+                            false,
+                            0x50000000
+                        );
                     }
                     SlowModule::set_whole(fighter.module_accessor, 4, 0);
                     macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);

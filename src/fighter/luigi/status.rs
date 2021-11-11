@@ -30,27 +30,61 @@ unsafe extern "C" fn luigi_specialschargestop(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn luigi_specialscharge2(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_hold"), 1.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_air_s_hold"),
+                1.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST);
         }
         else {
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s_hold"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_air_s_hold"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
         }
-        WorkModule::set_int(fighter.module_accessor, fighter.sub_end_added_lines().get_i32(), *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
+        WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_GROUND, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_s_hold"), 1.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_s_hold"),
+                1.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST);
         }
         else {
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s_hold"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_s_hold"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
         }
         WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_AIR, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
     }

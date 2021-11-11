@@ -361,7 +361,7 @@ pub unsafe fn dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValu
         return 1.into();
     }
 
-    if fighter.global_table[CMD_CAT1].get_i32() == *FIGHTER_PAD_CMD_CAT1_FLAG_DASH && {
+    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 && {
         let frame = MotionModule::frame(fighter.module_accessor);
         let re_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32;
         re_dash_frame <= frame
@@ -574,7 +574,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
     }
     
-    if fighter.global_table[CMD_CAT1].get_i32() == *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH && {
+    if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 && {
         let frame = MotionModule::frame(fighter.module_accessor);
         let re_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("re_dash_frame")) as f32;
         re_dash_frame <= frame
@@ -649,7 +649,7 @@ pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighter
     }
     if cont == false {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-            if fighter.global_table[CMD_CAT1].get_i32() == *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP {
+            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0 {
                 if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP)
                 && ControlModule::is_enable_flick_jump(fighter.module_accessor) {
                     let do_footstool;
@@ -675,7 +675,7 @@ pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighter
                     }
                 }
             }
-            if fighter.global_table[PAD_FLAG].get_i32() == *FIGHTER_PAD_FLAG_JUMP_TRIGGER
+            if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_JUMP_TRIGGER != 0
             || [
                 *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI,
                 *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L,

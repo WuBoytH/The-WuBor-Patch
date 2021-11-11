@@ -54,6 +54,9 @@ pub unsafe fn toonlink_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_STATUS_KIND_SPECIAL_HI
         ].to_vec();
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
+            allowed_cancels.append(&mut [*FIGHTER_STATUS_KIND_ATTACK_AIR].to_vec());
+        }
     }
     else if [
         *FIGHTER_STATUS_KIND_ATTACK_S4,
@@ -119,7 +122,7 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
                 if MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
                 && MotionModule::frame(fighter.module_accessor) < 65.0 {
                     HIT_FRAME[entry_id(fighter.module_accessor)] = 65.0;
-                    MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 65.0, true, false, false);
+                    MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 65.0, true, true, false);
                 }
                 else if MotionModule::frame(fighter.module_accessor) > 66.0 {
                     KineticModule::resume_energy_all(fighter.module_accessor);

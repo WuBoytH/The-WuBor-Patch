@@ -11,7 +11,16 @@ use {
 
 #[status_script(agent = "purin", status = FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn purin_specialnhitend(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_hit_end"), 0.0, 1.0, false, 0.0, false, false);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_air_n_hit_end"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
     WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_PURIN_STATUS_SPECIAL_N_WORK_FLOAT_MOTION_RATE);
     fighter.sub_shift_status_main(L2CValue::Ptr(purin_specialnhitendmain as *const () as _))
 }

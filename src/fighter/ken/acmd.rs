@@ -20,6 +20,16 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
             macros::FT_MOTION_RATE(fighter, 0.7);
         }
     }
+    frame(fighter.lua_state_agent, 22.0);
+    if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            STEP_KICK[entry_id(fighter.module_accessor)] = true;
+        }
+    }
+    frame(fighter.lua_state_agent, 31.0);
+    if QUICK_STEP_STATE[entry_id(fighter.module_accessor)] == 1 {
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
 }
 
 // Make Quick Step (non-prox light f tilt) have step kick properties
@@ -57,6 +67,11 @@ unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
         HitModule::set_status_all(fighter.module_accessor, smash::app::HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     macros::FT_MOTION_RATE(fighter, 0.8);
+    frame(fighter.lua_state_agent, 26.0);
+    if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        QUICK_STEP_STATE[entry_id(fighter.module_accessor)] = 0;
+        CancelModule::enable_cancel(fighter.module_accessor);
+    }
 }
 
 // Nerfed damage on Inazuma Kick, but increased combo potential

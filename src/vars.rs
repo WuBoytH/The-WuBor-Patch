@@ -151,6 +151,7 @@ State list:
 2 = Cannot Quick Step
 1 = Used to show you're in the first 22 frames of Quick Step.
 */
+pub static mut STEP_KICK : [bool; 8] = [false; 8];
 pub static mut VS1_CANCEL : [bool; 8] = [false; 8];
 pub static mut V_SHIFT : [bool; 8] = [false; 8];
 pub static mut V_TRIGGER : [bool; 8] = [false; 8];
@@ -301,6 +302,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         SEC_SEN_DIREC[id] = 0;
 
         QUICK_STEP_STATE[id] = 0;
+        STEP_KICK[id] = false;
         VS1_CANCEL[id] = false;
         V_SHIFT[id] = false;
         V_TRIGGER[id] = false;

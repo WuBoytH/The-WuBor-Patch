@@ -5,11 +5,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    crate::{
-        common_funcs::*,
-        vars::*,
-        table_const::*
-    }
+    crate::table_const::*
 };
 
 pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -36,7 +32,6 @@ pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L
             }
         }
         if throw {
-            SPECIAL_THROW[entry_id(fighter.module_accessor)] = true;
             fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
             return 1.into();
         }

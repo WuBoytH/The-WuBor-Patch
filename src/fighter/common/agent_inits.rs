@@ -67,8 +67,8 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         else if fighter_kind == *FIGHTER_KIND_DAISY {
             fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&L2CValue::Bool(false));
-            // fighter.global_table[CHECK_GROUND_ATTACK_PRE].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));
-            // fighter.global_table[CHECK_AIR_ITEM_THROW_PRE].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));
+            fighter.global_table[CHECK_GROUND_ATTACK_PRE].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));
+            fighter.global_table[CHECK_AIR_ITEM_THROW_PRE].assign(&L2CValue::Bool(false));
             fighter.global_table[CHECK_AIR_JUMP_PRE].assign(&L2CValue::Bool(false));
             fighter.global_table[CHECK_AIR_JUMP_AERIAL_POST].assign(&L2CValue::Bool(false));
             fighter.global_table[SPECIAL_S_PRE].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));

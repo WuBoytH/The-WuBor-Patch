@@ -93,9 +93,6 @@ pub static mut LONG_JUMP_KIND : [i32; 8] = [0; 8];
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
 
-// Daisy
-pub static mut SPECIAL_THROW : [bool; 8] = [false; 8];
-
 // Ganondorf
 pub static mut TELEPORT : [i32; 8] = [0; 8];
 pub static mut OG_X : [f32; 8] = [0.0; 8];
@@ -260,8 +257,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         LONG_JUMP_KIND[id] = 0;
 
         KAA[id] = false;
-
-        SPECIAL_THROW[id] = false;
 
         TELEPORT[id] = 0;
         OG_X[id] = 0.0;

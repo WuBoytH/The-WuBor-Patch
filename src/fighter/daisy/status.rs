@@ -8,11 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*,
-        table_const::*
-    }
+    crate::table_const::*
 };
 
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -293,73 +289,6 @@ unsafe extern "C" fn daisy_fallspecial_main_loop_helper(fighter: &mut L2CFighter
     0.into()
 }
 
-// #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ITEM_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// unsafe fn daisy_itemthrow_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     let lr = PostureModule::lr(fighter.module_accessor);
-//     WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_STATUS_ITEM_THROW_WORK_FLOAT_LR);
-//     let mut throw_motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_MOTION_KIND);
-//     if throw_motion == 0 {
-//         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-//             fighter.ItemThrowLightMotionDecisionAir();
-//         }
-//         else {
-//             fighter.ItemThrowLightMotionDecision();
-//         }
-//     }
-//     throw_motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_MOTION_KIND);
-//     if ![
-//         0x13455c51bc,
-//         0x13213094b8,
-//         0x1434afb6dd,
-//         0x14e7e721de,
-//         0x13ce05517b,
-//         0x135066a91c,
-//         0x1579bbe8d8,
-//         0x128c67b93f,
-//         0x128b0a7d26,
-//         0x176265cf32,
-//         0x1706090a36,
-//         0x183e882164,
-//         0x18edc0b667,
-//         0x16b7b89d4e,
-//         0x16b0d55957,
-//         0x17e93ccff5,
-//         0x17775f3792
-//     ].contains(&throw_motion) {
-//         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-//             WorkModule::set_int64(fighter.module_accessor, 0x16b7b89d4e, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_MOTION_KIND);
-//             WorkModule::set_int64(fighter.module_accessor, 0x128c67b93f, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_MOTION_KIND_OPPOSITE);
-//         }
-//         else {
-//             WorkModule::set_int64(fighter.module_accessor, 0x128c67b93f, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_MOTION_KIND);
-//             WorkModule::set_int64(fighter.module_accessor, 0x16b7b89d4e, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_MOTION_KIND_OPPOSITE);
-//         }
-//     }
-//     ControlModule::clear_command(fighter.module_accessor, false);
-//     ControlModule::reset_flick_x(fighter.module_accessor);
-//     ControlModule::reset_flick_sub_x(fighter.module_accessor);
-//     fighter.global_table[FLICK_X].assign(&0xfe.into());
-//     ControlModule::reset_trigger(fighter.module_accessor);
-//     WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_NONE, *FIGHTER_STATUS_ITEM_THROW_WORK_INT_SITUATION);
-//     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ITEM_THROW_WORK_FLAG_LOOP_FIRST);
-//     fighter.status_ItemThrow_Loop();
-//     fighter.sub_shift_status_main(L2CValue::Ptr(daisy_itemthrow_main_loop as *const () as _))
-// }
-
-// unsafe extern "C" fn daisy_itemthrow_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     fighter.status_ItemThrow_Main()
-// }
-
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ITEM_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn daisy_itemthrow_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    SPECIAL_THROW[entry_id(fighter.module_accessor)] = false;
-    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ITEM_THROW_4);
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
-    }
-    0.into()
-}
-
 pub fn install() {
     install_status_scripts!(
         daisy_attackair_pre,
@@ -372,8 +301,6 @@ pub fn install() {
         daisy_uniqfloatstart_exec,
         daisy_uniqfloatstart_main,
         daisy_uniqfloatstart_end,
-        daisy_fallspecial_main,
-        // daisy_itemthrow_main,
-        daisy_itemthrow_end
+        daisy_fallspecial_main
     );
 }

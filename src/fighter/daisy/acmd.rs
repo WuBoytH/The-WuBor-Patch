@@ -364,42 +364,6 @@ unsafe fn daisy_dspecialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "daisy", script = "game_itemlightthrowairf", category = ACMD_GAME, low_priority )]
-// unsafe fn daisy_itemlightthrowairf(fighter: &mut L2CAgentBase) {
-//     let mut speed_x = 0.0;
-//     let mut speed_y = 0.0;
-//     if SPECIAL_THROW[entry_id(fighter.module_accessor)] {
-//         macros::FT_MOTION_RATE(fighter, 2.0);
-//     }
-//     frame(fighter.lua_state_agent, 1.0);
-//     if SPECIAL_THROW[entry_id(fighter.module_accessor)] {
-//         if macros::is_excute(fighter) {
-//             speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-//             speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-//             macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-//             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-//         }
-//     }
-//     frame(fighter.lua_state_agent, 6.0);
-//     macros::FT_MOTION_RATE(fighter, 1.0);
-//     if macros::is_excute(fighter) {
-//         if SPECIAL_THROW[entry_id(fighter.module_accessor)] {
-//             ItemModule::throw_item(fighter.module_accessor, 0.0, 2.5, 1.0, 0, true, 0.0);
-//             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-//             let lr = PostureModule::lr(fighter.module_accessor);
-//             macros::SET_SPEED_EX(fighter, speed_x * lr, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-//         }
-//     }
-//     frame(fighter.lua_state_agent, 8.0);
-//     if macros::is_excute(fighter) {
-//         if !SPECIAL_THROW[entry_id(fighter.module_accessor)] {
-//             fighter.clear_lua_stack();
-//             lua_args!(fighter, 12, 10, ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_ANGLE, ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_SPEED, ITEM_FIGHTER_VAR_FLOAT_ITEM_THROW_POWER);
-//             sv_animcmd::THROW_ITEM_OFFSET(fighter.lua_state_agent);
-//         }
-//     }
-// }
-
 pub fn install() {
     install_acmd_scripts!(
         daisy_jab2,
@@ -415,7 +379,6 @@ pub fn install() {
         daisy_sspecialhit,
         daisy_uspecialstart,
         daisy_uspecialairstart,
-        daisy_dspecialair,
-        // daisy_itemlightthrowairf
+        daisy_dspecialair
     );
 }

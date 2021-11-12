@@ -12,14 +12,14 @@ use {
     }
 };
 
-// pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-//         if ItemModule::is_have_item(fighter.module_accessor, 0) {
-//             return 0.into();
-//         }
-//     }
-//     1.into()
-// }
+pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if ItemModule::is_have_item(fighter.module_accessor, 0) {
+            return 0.into();
+        }
+    }
+    1.into()
+}
 
 pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PAD_FLAG].get_i32() == *FIGHTER_PAD_FLAG_SPECIAL_TRIGGER {

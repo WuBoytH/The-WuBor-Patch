@@ -73,29 +73,12 @@ unsafe extern "C" fn daisy_specialhi_main_loop(fighter: &mut L2CFighterCommon) -
 
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let situation;
-    let kinetic_type;
-    let correct;
-    let cliff_check;
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        situation = *SITUATION_KIND_AIR;
-        kinetic_type = *FIGHTER_KINETIC_TYPE_UNIQ;
-        correct = *GROUND_CORRECT_KIND_AIR;
-        cliff_check = *GROUND_CLIFF_CHECK_KIND_ALWAYS;
-    }
-    else {
-        situation = *SITUATION_KIND_GROUND;
-        kinetic_type = *FIGHTER_KINETIC_TYPE_GROUND_STOP;
-        correct = *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP;
-        cliff_check = *GROUND_CLIFF_CHECK_KIND_NONE;
-    }
-    START_SITUATION[entry_id(fighter.module_accessor)] = situation;
     StatusModule::init_settings(
         fighter.module_accessor,
-        SituationKind(situation),
-        kinetic_type,
-        correct as u32,
-        GroundCliffCheckKind(cliff_check),
+        SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_GROUND_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
@@ -119,15 +102,17 @@ unsafe fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn daisy_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        // println!("da ground");
         FighterSpecializer_Peach::special_lw_check_num_of_item(fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut FighterModuleAccessor);
         WorkModule::set_int64(fighter.module_accessor, *ITEM_KIND_NONE as i64, *FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND);
+        // println!("end init");
     }
     0.into()
 }
 
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn daisy_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // if START_SITUATION[entry_id(fighter.module_accessor)] == *SITUATION_KIND_GROUND {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_ITEM_NO_COUNT);
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -148,24 +133,15 @@ unsafe fn daisy_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_04 - 1
         );
         fighter.pop_lua_stack(1);
-        fighter.sub_shift_status_main(L2CValue::Ptr(daisy_speciallwground_main_loop as *const () as _))
-    // }
-    // else {
-    //     MotionModule::change_motion(
-    //         fighter.module_accessor,
-    //         Hash40::new("special_air_lw"),
-    //         0.0,
-    //         1.0,
-    //         false,
-    //         0.0,
-    //         false,
-    //         false
-    //     );
-    //     fighter.sub_shift_status_main(L2CValue::Ptr(daisy_speciallwair_main_loop as *const () as _))
-    // }
+        fighter.sub_shift_status_main(L2CValue::Ptr(daisy_speciallw_main_loop as *const () as _))
+    }
+    else {
+        fighter.change_status(FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START.into(), false.into());
+        return 1.into();
+    }
 }
 
-unsafe extern "C" fn daisy_speciallwground_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn daisy_speciallw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -192,48 +168,68 @@ unsafe extern "C" fn daisy_speciallwground_main_loop_helper(fighter: &mut L2CFig
     }
 }
 
-// unsafe extern "C" fn daisy_speciallwair_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     if fighter.sub_transition_group_check_air_cliff().get_bool() {
-//         return 1.into();
-//     }
-//     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-//         daisy_speciallwground_main_loop_helper(fighter);
-//     }
-//     else {
-//         if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false
-//         && fighter.sub_air_check_fall_common().get_bool() == false {
-//             daisy_speciallwground_main_loop_helper(fighter);
-//         }
-//     }
-//     0.into()
-// }
+#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+    0.into()
+}
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn daisy_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // if START_SITUATION[entry_id(fighter.module_accessor)] == *SITUATION_KIND_GROUND {
-        if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            if WorkModule::get_int(
-                fighter.module_accessor,
-                *FIGHTER_PEACH_STATUS_SPECIAL_LW_WORK_INT_UNIQ_ITEM_KIND
-            ) == *ITEM_KIND_NONE {
-                notify_event_msc_cmd!(fighter, 0x2508b59a2bu64, *FIGHTER_ITEM_HOLD_KIND_HAVE);
-            }
+#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("fuwafuwa_start"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    // println!("air shift main");
+    fighter.sub_shift_status_main(L2CValue::Ptr(daisy_uniqfloatstart_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn daisy_uniqfloatstart_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() == false {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
-        0.into()
-    // }
-    // else {
-    //     MotionModule::change_motion(
-    //         fighter.module_accessor,
-    //         Hash40::new("special_air_lw"),
-    //         0.0,
-    //         1.0,
-    //         false,
-    //         0.0,
-    //         false,
-    //         false
-    //     );
-    //     fighter.sub_shift_status_main(L2CValue::Ptr(daisy_speciallwair_main_loop as *const () as _))
-    // }
+    }
+    0.into()
+}
+
+#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn daisy_uniqfloatstart_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
+        if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
+            ArticleModule::remove(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+    0.into()
 }
 
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_FALL_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -362,7 +358,9 @@ pub fn install() {
         daisy_speciallw_pre,
         daisy_speciallw_init,
         daisy_speciallw_main,
-        daisy_speciallw_end,
+        daisy_uniqfloatstart_pre,
+        daisy_uniqfloatstart_main,
+        daisy_uniqfloatstart_end,
         daisy_fallspecial_main,
         // daisy_itemthrow_main,
         daisy_itemthrow_end

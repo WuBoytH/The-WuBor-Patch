@@ -171,7 +171,7 @@ unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
-        *FIGHTER_KINETIC_TYPE_MOTION_FALL,
+        *FIGHTER_KINETIC_TYPE_RESET,
         *GROUND_CORRECT_KIND_KEEP as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
@@ -192,7 +192,6 @@ unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
-    KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     0.into()
 }
 

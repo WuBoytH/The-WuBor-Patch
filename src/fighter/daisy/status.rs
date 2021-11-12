@@ -201,7 +201,7 @@ unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         fighter.clear_lua_stack();
         lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 2.45);
-        sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+        sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
         fighter.clear_lua_stack();
     }
     L2CValue::I32(0)

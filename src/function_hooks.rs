@@ -354,20 +354,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_DAISY {
-            if IS_FUNNY[entry_id(boma)] {
-                if param_hash == hash40("uniq_float_float_frame") { // Give Daisy Float back if Funny
-                    return 300;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_CLOUD { // Limit Shenanigans
-            if IS_FUNNY[entry_id(boma)] {
-                if param_hash == hash40("limit_break_clear_frame") {
-                    return 6000;
-                }
-            }
-        }
         else if fighter_kind == *FIGHTER_KIND_REFLET {
             if param_hash == hash40("grimoire_el_window_revival_time") {
                 return 480;

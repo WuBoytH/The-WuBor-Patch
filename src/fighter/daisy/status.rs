@@ -188,16 +188,17 @@ unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false,
         *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW as u64,
-        0,
+        *FIGHTER_STATUS_ATTR_CLEAR_MOTION_ENERGY as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
-    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     0.into()
 }
 
 #[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::set_float(fighter.module_accessor, 18.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("fuwafuwa_start"),

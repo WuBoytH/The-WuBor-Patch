@@ -41,7 +41,7 @@ unsafe fn chrom_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_1 as u32,
         0
     );
-    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     0.into()
 }
 

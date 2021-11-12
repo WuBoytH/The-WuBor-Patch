@@ -195,6 +195,15 @@ unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[status_script(agent = "mario", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 2.45);
+    sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+    fighter.clear_lua_stack();
+    L2CValue::I32(0)
+}
+
 #[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_float(fighter.module_accessor, 18.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
@@ -357,6 +366,7 @@ pub fn install() {
         daisy_speciallw_init,
         daisy_speciallw_main,
         daisy_uniqfloatstart_pre,
+        daisy_uniqfloatstart_exec,
         daisy_uniqfloatstart_main,
         daisy_uniqfloatstart_end,
         daisy_fallspecial_main,

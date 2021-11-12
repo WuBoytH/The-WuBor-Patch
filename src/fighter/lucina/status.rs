@@ -104,6 +104,11 @@ unsafe fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if COMMAND[entry_id(fighter.module_accessor)] {
+        ControlModule::reset_flick_sub_x(fighter.module_accessor);
+        ControlModule::reset_main_stick(fighter.module_accessor);
+        ControlModule::reset_turn_lr(fighter.module_accessor);
+    }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
@@ -120,6 +125,11 @@ unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn lucina_raginglion_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if COMMAND[entry_id(fighter.module_accessor)] {
+        ControlModule::reset_flick_sub_x(fighter.module_accessor);
+        ControlModule::reset_main_stick(fighter.module_accessor);
+        ControlModule::reset_turn_lr(fighter.module_accessor);
+    }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_air_check_fall_common();
     }

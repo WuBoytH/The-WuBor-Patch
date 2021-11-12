@@ -155,6 +155,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         else {
             QCF[entry_id(fighter.module_accessor)] = 0;
             QCB[entry_id(fighter.module_accessor)] = 0;
+            SRK[entry_id(fighter.module_accessor)] = 0;
         }
 
         // Quarter Circle Back

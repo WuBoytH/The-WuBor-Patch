@@ -39,7 +39,9 @@ pub unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon
     }
     if QCB[entry_id(fighter.module_accessor)] > 3 {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
-            ControlModule::reset_main_stick_x(fighter.module_accessor);
+            ControlModule::reset_flick_sub_x(fighter.module_accessor);
+            ControlModule::reset_main_stick(fighter.module_accessor);
+            ControlModule::reset_turn_lr(fighter.module_accessor);
             COMMAND[entry_id(fighter.module_accessor)] = true;
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
             return true.into();

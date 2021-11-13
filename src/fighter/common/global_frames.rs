@@ -114,28 +114,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 }
             }
         }
-
-        // Whifflag???
-
-        if status == *FIGHTER_STATUS_KIND_ATTACK_AIR
-        || (utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_BAYONETTA
-        && status == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F)
-        || (utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_TRAIL
-        && [
-            *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F,
-            *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F
-        ].contains(&status)) {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-                AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
-            }
-            else if AttackModule::is_attack(fighter.module_accessor, 0, false) {
-                AIR_WHIFF[entry_id(fighter.module_accessor)] = true;
-            }
-        }
-        else {
-            AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
-        }
         
         // Command Inputs
 

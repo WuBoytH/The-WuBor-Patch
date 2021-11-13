@@ -537,22 +537,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             }
         }
 
-        else if [
-            hash40("landing_attack_air_frame_n"),
-            hash40("landing_attack_air_frame_f"),
-            hash40("landing_attack_air_frame_b"),
-            hash40("landing_attack_air_frame_hi"),
-            hash40("landing_attack_air_frame_lw")
-        ].contains(&param_type) {
-            if AIR_WHIFF[entry_id(boma)] {
-                return ret + 4.0;
-            }
-        }
-        if fighter_kind == *FIGHTER_KIND_MARIO {
-            if param_hash == hash40("special_s_start_mul_spd_x") {
-                return 1.0;
-            }
-        }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             if IS_FUNNY[entry_id(boma)] {
                 if param_hash == hash40("active_time_jump") {

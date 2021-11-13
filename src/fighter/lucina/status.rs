@@ -15,6 +15,88 @@ use {
     super::helper::*
 };
 
+#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CHARGE_MAX);
+    lucina_specialn_mmot_helper(fighter);
+    if COMMAND[entry_id(fighter.module_accessor)] && spent_meter(fighter.module_accessor, false) {
+        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
+        IS_EX[entry_id(fighter.module_accessor)] = true;
+        sp_diff_checker(fighter.module_accessor);
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialn_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn lucina_specialn_mmot_helper(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_air_n_start"),
+                1.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
+        }
+        else {
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_air_n_start"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
+        }
+    }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_n_start"),
+                1.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
+        }
+        else {
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_n_start"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
+        }
+    }
+}
+
+unsafe extern "C" fn lucina_specialn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor)
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        lucina_specialn_mmot_helper(fighter);
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP.into(), false.into());
+    }
+    L2CValue::I32(0)
+}
+
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
@@ -28,12 +110,6 @@ unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false
     );
-    if COMMAND[entry_id(fighter.module_accessor)] && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
-        SP_FLASH[entry_id(fighter.module_accessor)] = 40;
-        IS_EX[entry_id(fighter.module_accessor)] = true;
-        sp_diff_checker(fighter.module_accessor);
-    }
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialnloop_main_loop as *const () as _))
 }
 
@@ -288,6 +364,7 @@ unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
 
 pub fn install() {
     install_status_scripts!(
+        lucina_specialn_main,
         lucina_specialnloop_main,
         lucina_specials_main,
         lucina_specials2_main,

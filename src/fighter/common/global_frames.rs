@@ -114,15 +114,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
                 }
             }
         }
-        
-        // Platform Dropping while in shield.
-
-        if (status == *FIGHTER_STATUS_KIND_GUARD
-        || status == *FIGHTER_STATUS_KIND_GUARD_ON)
-        && ControlModule::get_stick_y(fighter.module_accessor) < -0.8
-        && GroundModule::is_passable_ground(fighter.module_accessor) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_PASS, true);
-        }
 
         // Whifflag???
 

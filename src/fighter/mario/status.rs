@@ -9,7 +9,6 @@ use {
     smash_script::*,
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         table_const::*,
         gameplay::*
@@ -28,7 +27,7 @@ unsafe fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
         let air_accel_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y_stable"), 0);
         let air_accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
-        if !BOUNCE[entry_id(fighter.module_accessor)] {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP) {
             fighter.clear_lua_stack();
             lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
             sv_kinetic_energy::set_accel(fighter.lua_state_agent);
@@ -56,12 +55,11 @@ unsafe fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn mario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Special Lw Type: 0 for Long Jump, 1 for Ground Pound
     if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE {
-        BLJ_PREV[entry_id(fighter.module_accessor)] = false;
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
+        WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -75,8 +73,8 @@ unsafe fn mario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
     }
     else {
-        BLJ_PREV[entry_id(fighter.module_accessor)] = false;
-        SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 1;
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
+        WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -103,37 +101,37 @@ unsafe extern "C" fn mario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
 unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     macros::SA_SET(fighter, *SITUATION_KIND_AIR);
-    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
         ControlModule::clear_command(fighter.module_accessor, true);
-        BLJ[entry_id(fighter.module_accessor)] = false;
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_BLJ);
         let dir = get_command_stick_direction(fighter.module_accessor, true);
         let speed_x : f32;
         let speed_y : f32;
         if [6, 3, 9].contains(&dir) {
             speed_x = 1.7;
             speed_y = 1.6;
-            LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 2;
-            BLJ_PREV[entry_id(fighter.module_accessor)] = false;
+            WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_S, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
         }
         else if [4, 7, 1].contains(&dir) {
-            BLJ[entry_id(fighter.module_accessor)] = true;
-            if BLJ_PREV[entry_id(fighter.module_accessor)] {
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_BLJ);
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV) {
                 speed_x = -1.7;
                 speed_y = 0.0;
-                LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 3;
+                WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_B, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
             }
             else {
                 speed_x = 1.1;
                 speed_y = 1.4;
-                LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 1;
+                WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_W, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
             }
-            BLJ_PREV[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
         }
         else {
             speed_x = 1.4;
             speed_y = 1.4;
-            LONG_JUMP_KIND[entry_id(fighter.module_accessor)] = 0;
-            BLJ_PREV[entry_id(fighter.module_accessor)] = false;
+            WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_M, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
         }
         macros::SET_SPEED_EX(fighter, speed_x, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
@@ -142,7 +140,7 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let air_accel_mul : f32;
         if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
@@ -172,11 +170,9 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Special Lw Type: 0 for Long Jump, 1 for Ground Pound
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        LONG_JUMP_LANDING[entry_id(fighter.module_accessor)] = false;
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_light"),
@@ -205,7 +201,7 @@ unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn mario_longjump_jump_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if LONG_JUMP_LANDING[entry_id(fighter.module_accessor)]
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_LANDING)
     && fighter.sub_air_check_fall_common().get_bool() == false {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -219,7 +215,7 @@ unsafe extern "C" fn mario_groundpound_fall_main_loop(fighter: &mut L2CFighterCo
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_CATEGORY_MASK_ALL)
     && get_command_stick_direction(fighter.module_accessor, false) == 8 {
-        SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 2;
+        WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND_CANCEL, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND);
         fighter.change_status(FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE.into(), false.into());
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -230,8 +226,7 @@ unsafe extern "C" fn mario_groundpound_fall_main_loop(fighter: &mut L2CFighterCo
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // Special Lw Type: 0 for Long Jump, 1 for Ground Pound, 2 for Ground Pound Cancel
-    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 0 {
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -245,7 +240,7 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
         );
         fighter.sub_shift_status_main(L2CValue::Ptr(mario_speciallw_longjump_end_main_loop as *const () as _))
     }
-    else if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 1 {
+    else if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -293,7 +288,6 @@ unsafe extern "C" fn mario_speciallw_longjump_end_main_loop(fighter: &mut L2CFig
 
 unsafe extern "C" fn mario_groundpound_land_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();
     }
@@ -320,10 +314,13 @@ pub fn install() {
     install_status_scripts!(
         mario_specials_init,
         mario_specials_exec,
+        // mario_speciallw_pre,
         mario_speciallw_main,
+        // mario_speciallw_shoot_pre,
         mario_speciallw_shoot_init,
         mario_speciallw_shoot_exec,
         mario_speciallw_shoot_main,
+        // mario_speciallw_charge_pre,
         mario_speciallw_charge_main
     );
 }

@@ -83,12 +83,20 @@ pub static mut COMMAND : [bool; 8] = [false; 8];
 // Character Specific
 
 // Mario
-pub static mut IS_BONKER : [i32; 8] = [0; 8];
-pub static mut FIREBALL_CANCEL : [bool; 8] = [false; 8];
-pub static mut LONG_JUMP_LANDING : [bool; 8] = [false; 8];
-pub static mut BLJ : [bool; 8] = [false; 8];
-pub static mut BLJ_PREV : [bool; 8] = [false; 8];
-pub static mut LONG_JUMP_KIND : [i32; 8] = [0; 8];
+// pub static mut IS_BONKER : [i32; 8] = [0; 8];
+pub const FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL : i32 = 0x2100000E;
+pub const FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_LANDING : i32 = 0x2100000B;
+pub const FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_BLJ : i32 = 0x2100000C;
+pub const FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV : i32 = 0x200000E4;
+pub const FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND : i32 = 0x100000C0;
+pub const FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP : i32 = 0;
+pub const FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND : i32 = 1;
+pub const FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND_CANCEL : i32 = 2;
+pub const FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND : i32 = 0x11000005;
+pub const FIGHTER_MARIO_LONG_JUMP_W : i32 = 0;
+pub const FIGHTER_MARIO_LONG_JUMP_M : i32 = 1;
+pub const FIGHTER_MARIO_LONG_JUMP_S : i32 = 2;
+pub const FIGHTER_MARIO_LONG_JUMP_B : i32 = 3;
 
 // Falco
 pub static mut KAA : [bool; 8] = [false; 8];
@@ -243,13 +251,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         FGC_HITSTUN_MUL[id] = 1.2;
         SPECIAL_LW_TYPE[id] = 0;
         COMMAND[id] = false;
-
-        IS_BONKER[id] = 0;
-        FIREBALL_CANCEL[id] = false;
-        LONG_JUMP_LANDING[id] = false;
-        BLJ[id] = false;
-        BLJ_PREV[id] = false;
-        LONG_JUMP_KIND[id] = 0;
 
         KAA[id] = false;
 

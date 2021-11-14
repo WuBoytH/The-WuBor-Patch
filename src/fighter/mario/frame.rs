@@ -75,7 +75,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
         ].to_vec();
     }
     else if status == *FIGHTER_STATUS_KIND_SPECIAL_N {
-        if FIREBALL_CANCEL[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL) {
             jump_cancel_check_exception(fighter);
         }
     }
@@ -121,13 +121,12 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF {
-            BOUNCE[entry_id(fighter.module_accessor)] = false;
             if ![
                 *FIGHTER_STATUS_KIND_SPECIAL_LW,
                 *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT,
                 *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE
             ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
-                SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] = 0;
+                WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND);
             }
         }
 

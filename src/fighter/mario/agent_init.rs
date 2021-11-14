@@ -1,16 +1,14 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        app::lua_bind::WorkModule,
         lib::L2CValue
     },
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 pub unsafe extern "C" fn mario_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if SPECIAL_LW_TYPE[entry_id(fighter.module_accessor)] == 2 {
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND_CANCEL {
         return 0.into();
     }
     1.into()

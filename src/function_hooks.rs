@@ -187,7 +187,7 @@ move_type_again: bool) -> u64 {
     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
             let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-            FIREBALL_CANCEL[entry_id(oboma)] = true;
+            WorkModule::on_flag(oboma, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL);
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)

@@ -390,13 +390,12 @@ unsafe fn mario_dairsnd(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "mario", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe fn mario_dairlanding(_fighter: &mut L2CAgentBase) {
-
 }
 
 #[acmd_script( agent = "mario", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
 unsafe fn mario_nspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        FIREBALL_CANCEL[entry_id(fighter.module_accessor)] = false;
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL);
     }
     if !IS_FGC[entry_id(fighter.module_accessor)] {
         macros::FT_MOTION_RATE(fighter, 1.15);
@@ -405,18 +404,6 @@ unsafe fn mario_nspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_FIREBALL, false, -1);
     }
-    // frame(fighter.lua_state_agent, 15.0);
-    // if macros::is_excute(fighter) {
-    //     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-    //         notify_event_msc_cmd!(fighter, 0x2b94de0d96u64, *FIGHTER_LOG_ACTION_CATEGORY_ATTACK, *FIGHTER_LOG_ATTACK_KIND_SPECIAL_N, true);
-    //         if StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_GROUND {
-    //             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n"), 5.0, 1.0, false, 0.0, false, false);
-    //         }
-    //         else {
-    //             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n"), 5.0, 1.0, false, 0.0, false, false);
-    //         }
-    //     }
-    // }
 }
 
 #[acmd_script( agent = "mario", scripts = [ "game_specials", "game_specialairs" ], category = ACMD_GAME, low_priority )]
@@ -426,10 +413,10 @@ unsafe fn mario_sspecial(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        if !BOUNCE[entry_id(fighter.module_accessor)]
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP)
         && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
             macros::SET_SPEED_EX(fighter, 0.0, 1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            BOUNCE[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP);
         }
     }
     frame(fighter.lua_state_agent, 10.0);
@@ -546,27 +533,29 @@ unsafe fn mario_dspecialstartsnd(_fighter: &mut L2CAgentBase) {
 unsafe fn mario_dspecialjump(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        if LONG_JUMP_KIND[entry_id(fighter.module_accessor)] == 3 {
-            LONG_JUMP_LANDING[entry_id(fighter.module_accessor)] = true;
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND) == FIGHTER_MARIO_LONG_JUMP_B {
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_LANDING);
+            // LONG_JUMP_LANDING[entry_id(fighter.module_accessor)] = true;
         }
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        LONG_JUMP_LANDING[entry_id(fighter.module_accessor)] = true;
-        if LONG_JUMP_KIND[entry_id(fighter.module_accessor)] == 0
-        || LONG_JUMP_KIND[entry_id(fighter.module_accessor)] == 3 {
+        // LONG_JUMP_LANDING[entry_id(fighter.module_accessor)] = true;
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_LANDING);
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND) == FIGHTER_MARIO_LONG_JUMP_M
+        || WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND) == FIGHTER_MARIO_LONG_JUMP_B {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
-        if LONG_JUMP_KIND[entry_id(fighter.module_accessor)] == 1 {
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND) == FIGHTER_MARIO_LONG_JUMP_W {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        if LONG_JUMP_KIND[entry_id(fighter.module_accessor)] == 2 {
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND) == FIGHTER_MARIO_LONG_JUMP_S {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }

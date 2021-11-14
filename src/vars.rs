@@ -121,9 +121,6 @@ pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
 // Shulk
 pub static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
 
-// Ryu and Ken
-pub static mut SPECIAL_S_START_SIT : [i32; 8] = [0; 8];
-
 // Ryu
 pub static mut EX_FOCUS : [bool; 8] = [false; 8];
 pub static mut EX_FLASH : [bool; 8] = [false; 8];
@@ -157,8 +154,6 @@ pub static mut V_GAUGE : [i32; 8] = [0; 8];
 pub static mut FLASH_MAX : [i32; 8] = [0; 8];
 pub static mut FLASH_COUNTER : [i32; 8] = [0; 8];
 pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
-pub static mut TATSULOOPS : [[i32; 3]; 8] = [[0; 3]; 8];
-pub static mut CURR_LOOPS : [i32; 8] = [0; 8];
 pub static mut DIFF_X : [f32; 8] = [0.0; 8];
 pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
 
@@ -279,8 +274,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         BURST_RECOVER[id] = 0.0;
 
-        SPECIAL_S_START_SIT[id] = 0;
-
         EX_FOCUS[id] = false;
         EX_FLASH[id] = false;
         SECRET_SENSATION[id] = false;
@@ -306,7 +299,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         FLASH_MAX[id] = 0;
         FLASH_COUNTER[id] = 0;
         SHORYUREPPA[id] = 0;
-        TATSULOOPS[id] = [0; 3];
         DIFF_X[id] = 0.0;
         DMG_RATIO[id] = 0.0;
 

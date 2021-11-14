@@ -115,16 +115,6 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        // Tatsu in da air
-
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP {
-            if SPECIAL_S_START_SIT[entry_id(fighter.module_accessor)] == 1
-            && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-                fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END.into(), false.into());
-            }
-        }
-
         // Secret Sensation Code
 
         if IS_FUNNY[entry_id(fighter.module_accessor)]

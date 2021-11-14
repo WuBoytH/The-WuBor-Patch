@@ -354,28 +354,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_REFLET {
-            if param_hash == hash40("grimoire_el_window_revival_time") {
-                return 480;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_KEN {
-            if param_hash == hash40("loop_num_w")
-            || param_hash == hash40("air_loop_num_w") {
-                TATSULOOPS[entry_id(boma)][0] = 1;
-                return 1;
-            }
-            else if param_hash == hash40("loop_num_m")
-            || param_hash == hash40("air_loop_num_m") {
-                TATSULOOPS[entry_id(boma)][1] = 2;
-                return 2;
-            }
-            else if param_hash == hash40("loop_num_s")
-            || param_hash == hash40("air_loop_num_s") {
-                TATSULOOPS[entry_id(boma)][2] = 3;
-                return 3;
-            }
-        }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             if param_hash == hash40("circle_menu_release_after_interval_frame") {
                 let status_kind = StatusModule::status_kind(boma);

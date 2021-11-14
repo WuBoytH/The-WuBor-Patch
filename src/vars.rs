@@ -117,7 +117,7 @@ pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
 pub static mut FLASH_CANCEL : [bool; 8] = [false; 8];
 
 // Toon Link
-pub static mut SPIN_SPEED : [f32; 8] = [0.0; 8];
+pub const FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED : i32 = 0x1000008;
 
 // Lucario
 pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
@@ -265,8 +265,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         FINISH_SIGN[id] = 0;
 
         FLASH_CANCEL[id] = false;
-
-        SPIN_SPEED[id] = 0.0;
 
         IS_SPIRIT_BOMB[id] = false;
         IS_SD_CANCEL[id] = false;

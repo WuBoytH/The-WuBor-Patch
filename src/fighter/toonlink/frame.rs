@@ -80,36 +80,6 @@ pub unsafe fn toonlink_fgc(fighter: &mut L2CFighterCommon) {
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
-        // Toon Link can now move during his grounded Spin Attack.
-
-        if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("special_hi")
-        && WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME) >= WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32 {
-            if MotionModule::frame(fighter.module_accessor) > 46.0 {
-                macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            }
-            else if MotionModule::frame(fighter.module_accessor) > 6.0 {
-                let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
-                SPIN_SPEED[entry_id(fighter.module_accessor)] += 0.1 * stickx;
-                if IS_FUNNY[entry_id(fighter.module_accessor)]
-                && SPIN_SPEED[entry_id(fighter.module_accessor)] > 3.0 {
-                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
-                }
-                else if SPIN_SPEED[entry_id(fighter.module_accessor)] > 2.0 {
-                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 2.0;
-                }
-                let speed = SPIN_SPEED[entry_id(fighter.module_accessor)];
-                macros::SET_SPEED_EX(fighter, speed, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            }
-            else {
-                if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 3.0;
-                }
-                else {
-                    SPIN_SPEED[entry_id(fighter.module_accessor)] = 2.0;
-                }
-            }
-        }
-
         // Down Air Bounce
 
         if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("attack_air_lw"){

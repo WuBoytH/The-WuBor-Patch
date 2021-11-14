@@ -9,6 +9,7 @@ use {
     smash_script::*,
     smashline::*,
     crate::{
+        common_funcs::*,
         vars::*,
         table_const::*,
         gameplay::*

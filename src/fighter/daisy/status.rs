@@ -123,7 +123,7 @@ unsafe fn daisy_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter,
             0x20cbc92683u64,
             1,
-            *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND,
+            FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND,
             *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_04 - 1
         );
         fighter.pop_lua_stack(1);
@@ -196,7 +196,7 @@ unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
     if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_FALL {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 2.45);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 2.45);
         sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
         fighter.clear_lua_stack();
     }

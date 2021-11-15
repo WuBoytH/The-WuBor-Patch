@@ -31,24 +31,24 @@ unsafe fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
         let air_accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP) {
             fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
             sv_kinetic_energy::set_accel(fighter.lua_state_agent);
             fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * 0.5);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * 0.5);
             sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
             fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_accel_y_stable);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_accel_y_stable);
             sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
         }
         else {
             fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y / 1.5);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y / 1.5);
             sv_kinetic_energy::set_accel(fighter.lua_state_agent);
             fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * 0.2);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * 0.2);
             sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
             fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_accel_y_stable / 2.0);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_accel_y_stable / 2.0);
             sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
         }
     }
@@ -154,10 +154,10 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0) * air_accel_mul;
         let air_accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
         fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
         sv_kinetic_energy::set_accel(fighter.lua_state_agent);
         fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * long_jump_air_accel_x_mul);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * long_jump_air_accel_x_mul);
         sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
     }
     else {

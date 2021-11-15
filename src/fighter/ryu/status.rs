@@ -52,7 +52,7 @@ unsafe fn ryu_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         eff = 0x14bbba25e3;
     }
     fighter.clear_lua_stack();
-    lua_args!(fighter, *MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
+    lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
     sv_module_access::effect(fighter.lua_state_agent);
     let spineffect = fighter.pop_lua_stack(1).get_u32();
     WorkModule::set_int(fighter.module_accessor, spineffect as i32, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_EFFECT_HANDLE);
@@ -96,13 +96,13 @@ unsafe extern "C" fn ryu_specialsloop_main_loop(fighter: &mut L2CFighterCommon) 
             if start_sit != *SITUATION_KIND_GROUND {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
                 fighter.clear_lua_stack();
-                lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
                 sv_kinetic_energy::set_accel(fighter.lua_state_agent);
                 fighter.clear_lua_stack();
-                lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
                 sv_kinetic_energy::set_brake(fighter.lua_state_agent);
                 fighter.clear_lua_stack();
-                lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
                 sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
             }
         }

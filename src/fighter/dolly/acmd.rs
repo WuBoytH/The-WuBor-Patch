@@ -149,7 +149,7 @@ unsafe fn dolly_fthrowsnd(fighter: &mut L2CAgentBase) {
 unsafe fn dolly_fthrowexp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        lua_args!(fighter, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
         FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
 	    slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -235,7 +235,7 @@ unsafe fn dolly_bthrowsnd(fighter: &mut L2CAgentBase) {
 unsafe fn dolly_bthrowexp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, *CAMERA_QUAKE_KIND_NONE);
+        lua_args!(fighter, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
         FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
 	    slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }

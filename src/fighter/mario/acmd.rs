@@ -12,7 +12,10 @@ use {
         common_funcs::*,
         vars::*
     },
-    super::helper::*
+    super::{
+        helper::*,
+        vl::*
+    }
 };
 
 #[acmd_script( agent = "mario", script = "game_attacks4", category = ACMD_GAME, low_priority )]
@@ -295,7 +298,6 @@ unsafe fn mario_fairland(fighter: &mut L2CAgentBase) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, Hash40::new("start"), false, -1.0);
-        // ArticleModule::set_pos(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, Vector3f{x: -3.0, y: 0.0, z: 0.0});
     }
 }
 
@@ -415,7 +417,7 @@ unsafe fn mario_sspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP)
         && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
-            macros::SET_SPEED_EX(fighter, 0.0, 1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            macros::SET_SPEED_EX(fighter, 0.0, spin_hop_speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP);
         }
     }

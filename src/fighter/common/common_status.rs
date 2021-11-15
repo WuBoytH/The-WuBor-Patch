@@ -949,7 +949,7 @@ pub unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue
     let mut motion_rate = 1.0;
     if 0.0 < guard_off_cancel_frame as f32
     && 0.0 < anim_cancel_frame {
-        motion_rate = guard_off_cancel_frame as f32 / anim_cancel_frame;
+        motion_rate = anim_cancel_frame / guard_off_cancel_frame as f32;
     }
     let guard_off_enable_shield_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_enable_shield_frame"));
     let disable_guard_escape_frame = guard_off_cancel_frame + guard_off_enable_shield_frame;

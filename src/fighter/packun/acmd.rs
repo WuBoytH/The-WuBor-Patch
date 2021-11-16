@@ -12,7 +12,7 @@ use {
 #[acmd_script( agent = "packun", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn plant_fair(fighter: &mut L2CAgentBase) {
 
-    frame(fighter.lua_state_agent, 13.0);
+    frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -97,8 +97,8 @@ unsafe fn plant_dair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        plant_fair
-        plant_uair
+        plant_fair,
+        plant_uair,
         plant_dair
     );
 }

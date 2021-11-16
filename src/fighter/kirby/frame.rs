@@ -10,8 +10,7 @@ use {
     smashline::*,
     crate::{
         common_funcs::*,
-        vars::*,
-        fighter::ganon::helper::*
+        vars::*
     }
 };
 
@@ -52,28 +51,11 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
             BOUNCE[entry_id(fighter.module_accessor)] = false;
         }
 
-        // Teleport Handler
-
-        if TELEPORT[entry_id(fighter.module_accessor)] == 1 {
-            deception_init(fighter.module_accessor);
-        }
-        if TELEPORT[entry_id(fighter.module_accessor)] == 3 {
-            macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 6.0, -2.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-            deception_feint_handler(fighter.module_accessor);
-        }
-
         // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
             DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] = false;
-        }
-
-        // Stops Ganondorf's momentum during Dark Deception.
-        // Necessary because transitioning from Ground to Air re-enables his momentum.
-
-        if TELE_STOP[entry_id(fighter.module_accessor)] {
-            KineticModule::unable_energy_all(fighter.module_accessor);
         }
     }
 }

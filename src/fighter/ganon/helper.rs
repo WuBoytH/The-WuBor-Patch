@@ -1,91 +1,111 @@
-use smash::{
-    phx::Vector2f,
-    app::{lua_bind::*, *},
-    lib::lua_const::*
-};
-use crate::{
-    common_funcs::*,
-    vars::*
+use {
+    smash::{
+        lua2cpp::L2CFighterCommon,
+        phx::{Hash40, Vector2f},
+        app::{lua_bind::*, *},
+        lib::lua_const::*
+    },
+    smash_script::*,
+    crate::{
+        common_funcs::*,
+        vars::*,
+        table_const::*
+    },
 };
 
 #[inline(always)]
-pub unsafe fn deception_init(module_accessor: *mut BattleObjectModuleAccessor) {
-    let dir = get_command_stick_direction(module_accessor, false);
+pub unsafe fn deception_init(fighter: &mut L2CFighterCommon) {
+    let dir = get_command_stick_direction(fighter.module_accessor, false);
+    let tele_x;
+    let tele_y;
     if dir == 5 {
-        TELE_X[entry_id(module_accessor)] = 40.0 * PostureModule::lr(module_accessor);
+        tele_x = 40.0 * PostureModule::lr(fighter.module_accessor);
     }
-    if dir == 4 {
-        TELE_X[entry_id(module_accessor)] = -40.0;
+    else if dir == 4 {
+        tele_x = -40.0;
     }
     else if dir == 6 {
-        TELE_X[entry_id(module_accessor)] = 40.0;
+        tele_x = 40.0;
     }
     else if dir == 3 || dir == 9 {
-        TELE_X[entry_id(module_accessor)] = 35.0;
+        tele_x = 35.0;
     }
     else if dir == 1 || dir == 7 {
-        TELE_X[entry_id(module_accessor)] = -35.0;
+        tele_x = -35.0;
     }
     else if dir == 2 {
-        if StatusModule::situation_kind(module_accessor) == *SITUATION_KIND_GROUND {
-            TELE_X[entry_id(module_accessor)] = 40.0 * PostureModule::lr(module_accessor);
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            tele_x = 40.0 * PostureModule::lr(fighter.module_accessor);
         }
         else {
-            TELE_X[entry_id(module_accessor)] = 0.0;
+            tele_x = 0.0;
         }
     }
-    else if dir == 8 {
-        TELE_X[entry_id(module_accessor)] = 0.0;
+    else {
+        tele_x = 0.0;
     }
-    if dir == 5
-    || dir == 4
-    || dir == 6 {
-        TELE_Y[entry_id(module_accessor)] = 0.0;
+    if dir == 8 {
+        tele_y = 40.0;
     }
     else if dir == 1 || dir == 3 {
-        if StatusModule::situation_kind(module_accessor) == *SITUATION_KIND_GROUND {
-            TELE_Y[entry_id(module_accessor)] = 0.0;
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            tele_y = 0.0;
         }
         else {
-            TELE_Y[entry_id(module_accessor)] = -30.0;
+            tele_y = -30.0;
         }
     }
     else if dir == 2 {
-        if StatusModule::situation_kind(module_accessor) == *SITUATION_KIND_GROUND {
-            TELE_Y[entry_id(module_accessor)] = 0.0;
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            tele_y = 0.0;
         }
         else {
-            TELE_Y[entry_id(module_accessor)] = -40.0;
+            tele_y = -40.0;
         }
     }
     else if dir == 7
     || dir == 9 {
-        TELE_Y[entry_id(module_accessor)] = 30.0;
+        tele_y = 30.0;
     }
-    else if dir == 8 {
-        TELE_Y[entry_id(module_accessor)] = 40.0;
+    else {
+        tele_y = 0.0;
     }
-    if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        FEINT[entry_id(module_accessor)] = true;
+    WorkModule::set_float(fighter.module_accessor, tele_x, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_X);
+    WorkModule::set_float(fighter.module_accessor, tele_y, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y);
+    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_FEINT);
     }
 }
 
 #[inline(always)]
-pub unsafe fn deception_feint_handler(module_accessor: *mut BattleObjectModuleAccessor) {
-    if FEINT[entry_id(module_accessor)] {
-        if TELE_Y[entry_id(module_accessor)] != 0.0 {
-            StatusModule::set_situation_kind(module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-            GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+pub unsafe fn deception_feint_handler(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY {
+        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 6.0, -2.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+    }
+    else {
+        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+    }
+    let tele_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y);
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_FEINT) {
+        let ogx = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X);
+        let ogy = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_Y);
+        GroundModule::set_passable_check(fighter.module_accessor, true);
+        PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: ogx, y: ogy});
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND) {
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         }
-        let ogx = OG_X[entry_id(module_accessor)];
-        let ogy = OG_Y[entry_id(module_accessor)];
-        GroundModule::set_passable_check(module_accessor, true);
-        PostureModule::set_pos_2d(module_accessor, &Vector2f {x: ogx, y: ogy});
-        if TELE_Y[entry_id(module_accessor)] == 0.0 {
-            GroundModule::correct(module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        else {
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         }
     }
-    OG_X[entry_id(module_accessor)] = 0.0;
-    OG_Y[entry_id(module_accessor)] = 0.0;
-    TELEPORT[entry_id(module_accessor)] += 1;
+    else {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND)
+        && tele_y == 0.0 {
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        }
+        else {
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        }
+    }
+    WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_END, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
 }

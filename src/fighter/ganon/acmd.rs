@@ -399,69 +399,56 @@ unsafe fn ganon_dair(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        TELEPORT[entry_id(fighter.module_accessor)] = 1;
-        FEINT[entry_id(fighter.module_accessor)] = false;
+        WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_INIT, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
     }
     macros::FT_MOTION_RATE(fighter, 0.2);
     frame(fighter.lua_state_agent, 25.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
-        TELE_STOP[entry_id(fighter.module_accessor)] = true;
-        OG_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);
-        OG_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND);
+        }
+        macros::SA_SET(fighter, *SITUATION_KIND_AIR);
+        let og_x = PostureModule::pos_x(fighter.module_accessor);
+        let og_y = PostureModule::pos_y(fighter.module_accessor);
+        WorkModule::set_float(fighter.module_accessor, og_x, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X);
+        WorkModule::set_float(fighter.module_accessor, og_y, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_Y);
         DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] = true;
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(fighter.module_accessor, false);
         if IS_FUNNY[entry_id(fighter.module_accessor)] {
             GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
         }
+        else {
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        }
     }
     frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
-        TELEPORT[entry_id(fighter.module_accessor)] = 2;
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-            if TELE_Y[entry_id(fighter.module_accessor)] != 0.0 {
-                StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-            }
-            else {
-                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-            }
-        }
-        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: TELE_X[entry_id(fighter.module_accessor)], y: TELE_Y[entry_id(fighter.module_accessor)]});
+        WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_MOVE, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
+        // TELEPORT[entry_id(fighter.module_accessor)] = 2;
+        let tele_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_X);
+        let tele_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y);
+        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: tele_x, y: tele_y});
     }
     frame(fighter.lua_state_agent, 50.0);
     if macros::is_excute(fighter) {
-        TELEPORT[entry_id(fighter.module_accessor)] = 3;
+        WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_CHECK_FEINT, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
     }
     frame(fighter.lua_state_agent, 60.0);
     if macros::is_excute(fighter) {
-        TELEPORT[entry_id(fighter.module_accessor)] = 0;
-        TELE_STOP[entry_id(fighter.module_accessor)] = false;
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 64.0);
     macros::FT_MOTION_RATE(fighter, 5.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
         JostleModule::set_status(fighter.module_accessor, true);
         CancelModule::enable_cancel(fighter.module_accessor);
-    }
-    frame(fighter.lua_state_agent, 65.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, true);
-        }
-        else {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WAIT, true);
-        }
     }
 }
 

@@ -103,13 +103,19 @@ pub const FIGHTER_MARIO_LONG_JUMP_B : i32 = 3;
 pub static mut KAA : [bool; 8] = [false; 8];
 
 // Ganondorf
-pub static mut TELEPORT : [i32; 8] = [0; 8];
-pub static mut OG_X : [f32; 8] = [0.0; 8];
-pub static mut OG_Y : [f32; 8] = [0.0; 8];
-pub static mut TELE_X : [f32; 8] = [0.0; 8];
-pub static mut TELE_Y : [f32; 8] = [0.0; 8];
-pub static mut TELE_STOP : [bool; 8] = [false; 8];
-pub static mut FEINT : [bool; 8] = [false; 8];
+pub const FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP : i32 = 0x11000008;
+pub const FIGHTER_GANON_TELEPORT_STEP_INIT : i32 = 1;
+pub const FIGHTER_GANON_TELEPORT_STEP_MOVE : i32 = 2;
+pub const FIGHTER_GANON_TELEPORT_STEP_CHECK_FEINT : i32 = 3;
+pub const FIGHTER_GANON_TELEPORT_STEP_END : i32 = 4;
+
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_FEINT : i32 = 0x21000012;
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP : i32 = 0x21000013;
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X : i32 = 0x1000008;
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_Y : i32 = 0x1000009;
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_X : i32 = 0x100000A;
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y : i32 = 0x100000B;
+pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND : i32 = 0x21000014;
 
 // Wario
 pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
@@ -176,11 +182,11 @@ pub static mut REVENGE : [i32; 8] = [0; 8];
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 
 // Joker
-// Also uses FEINT
+pub const FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT : i32 = 0x21000010;
 
 // Terry
 pub static mut DTILT_CHAIN : [i32; 8] = [0; 8];
-// Also uses FEINT
+pub const FIGHTER_DOLLY_STATUS_WORK_ID_FLAG_SPECIAL_N_FEINT : i32 = 0x21000010;
 
 // Sephiroth
 // static mut CAN_WING : [bool; 8] = [true; 8];
@@ -254,14 +260,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         COMMAND[id] = false;
 
         KAA[id] = false;
-
-        TELEPORT[id] = 0;
-        OG_X[id] = 0.0;
-        OG_Y[id] = 0.0;
-        TELE_X[id] = 0.0;
-        TELE_Y[id] = 0.0;
-        TELE_STOP[id] = false;
-        FEINT[id] = false;
 
         FINISH_SIGN[id] = 0;
 

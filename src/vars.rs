@@ -79,6 +79,7 @@ pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 pub static mut COMMAND : [bool; 8] = [false; 8];
+pub const FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME : i32 = 0x100000ED;
 
 // Character Specific
 

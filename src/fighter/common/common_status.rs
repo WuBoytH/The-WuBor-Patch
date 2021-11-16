@@ -654,8 +654,9 @@ pub unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2C
     let guard_off_disable_shield_recovery = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_disable_shield_recovery"));
     WorkModule::set_int(fighter.module_accessor, guard_off_disable_shield_recovery, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME);
     // Additions
+    let guard_hold_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
-    && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+    && guard_hold_frame >= 5 {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
         let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
@@ -1044,6 +1045,27 @@ pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_ground_guard)]
+pub unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if fighter.global_table[CHECK_GROUND_GUARD_PRE].get_bool() {
+            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_GUARD_PRE].get_ptr());
+            if callable(fighter).get_bool() {
+                return true.into();
+            }
+        }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
+            if fighter.sub_check_command_guard().get_bool() {
+                let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
+                WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+                return true.into();
+            }
+        }
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
 pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cont;
@@ -1163,6 +1185,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_attackair_main_common,
             sub_landing_attack_air_init,
             damage_air_main,
+            sub_transition_group_check_ground_guard,
             sub_transition_group_check_air_tread_jump,
             sub_transition_group_check_special_command
         );

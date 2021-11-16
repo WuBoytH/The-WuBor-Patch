@@ -100,7 +100,7 @@ pub const FIGHTER_MARIO_LONG_JUMP_S : i32 = 2;
 pub const FIGHTER_MARIO_LONG_JUMP_B : i32 = 3;
 
 // Falco
-pub static mut KAA : [bool; 8] = [false; 8];
+pub const FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA : i32 = 0x200000E5;
 
 // Ganondorf
 pub const FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP : i32 = 0x11000008;
@@ -108,7 +108,6 @@ pub const FIGHTER_GANON_TELEPORT_STEP_INIT : i32 = 1;
 pub const FIGHTER_GANON_TELEPORT_STEP_MOVE : i32 = 2;
 pub const FIGHTER_GANON_TELEPORT_STEP_CHECK_FEINT : i32 = 3;
 pub const FIGHTER_GANON_TELEPORT_STEP_END : i32 = 4;
-
 pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_FEINT : i32 = 0x21000012;
 pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP : i32 = 0x21000013;
 pub const FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X : i32 = 0x1000008;
@@ -185,7 +184,7 @@ pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 pub const FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT : i32 = 0x21000010;
 
 // Terry
-pub static mut DTILT_CHAIN : [i32; 8] = [0; 8];
+pub const FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT : i32 = 0x100000CD;
 pub const FIGHTER_DOLLY_STATUS_WORK_ID_FLAG_SPECIAL_N_FEINT : i32 = 0x21000010;
 
 // Sephiroth
@@ -259,8 +258,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         SPECIAL_LW_TYPE[id] = 0;
         COMMAND[id] = false;
 
-        KAA[id] = false;
-
         FINISH_SIGN[id] = 0;
 
         FLASH_CANCEL[id] = false;
@@ -305,8 +302,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         REVENGE[id] = 0;
 
         FUNNY_RIDLEY[id] = false;
-
-        DTILT_CHAIN[id] = 0;
 
         CALLBACK[id] = 0;
 

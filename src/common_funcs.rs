@@ -168,3 +168,7 @@ pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModu
         }
     }
 }
+
+pub unsafe fn reset_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
+    WorkModule::set_int(module_accessor, 0, flag)
+}

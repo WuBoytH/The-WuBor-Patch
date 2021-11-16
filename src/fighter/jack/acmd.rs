@@ -7,10 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[acmd_script( agent = "jack", script = "game_specials1", category = ACMD_GAME, low_priority )]
@@ -23,7 +20,7 @@ unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if macros::is_excute(fighter) {
-            FEINT[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT);
         }
         macros::FT_MOTION_RATE(fighter, 5.0);
     }
@@ -31,7 +28,7 @@ unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
         macros::FT_MOTION_RATE(fighter, 1.0);
     }
     frame(fighter.lua_state_agent, 13.0);
-    if !FEINT[entry_id(fighter.module_accessor)] {
+    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
         macros::FT_MOTION_RATE(fighter, 1.0);
         if macros::is_excute(fighter) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
@@ -48,7 +45,7 @@ unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
-        if !FEINT[entry_id(fighter.module_accessor)] {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
             AttackModule::clear_all(fighter.module_accessor);
         }
         else {
@@ -67,20 +64,20 @@ unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
 unsafe fn jack_sspecial1eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        if !FEINT[entry_id(fighter.module_accessor)] {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
             macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, false, Hash40::new("none"), Hash40::new("none"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
         }
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        if FEINT[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
         }
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
-        if !FEINT[entry_id(fighter.module_accessor)] {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
             macros::AFTER_IMAGE_OFF(fighter, 0);
         }
     }

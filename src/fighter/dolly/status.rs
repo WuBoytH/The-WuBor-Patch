@@ -42,7 +42,7 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
                 *FIGHTER_STATUS_KIND_ATTACK_LW3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3,
                 true,
-                &mut DTILT_CHAIN,
+                FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT,
                 1
             ).get_bool() == false {
                 fighter.status_AttackLw3_Main();
@@ -56,15 +56,9 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_attacklw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-        DTILT_CHAIN[entry_id(fighter.module_accessor)] = 0;
+        reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
     }
     fighter.status_end_AttackLw3()
-}
-
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    FEINT[entry_id(fighter.module_accessor)] = false;
-    0.into()
 }
 
 unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -200,7 +194,6 @@ pub fn install() {
     install_status_scripts!(
         dolly_dashback_main,
         dolly_attacklw3_main,
-        dolly_attacklw3_end,
-        dolly_specialn_end
+        dolly_attacklw3_end
     );
 }

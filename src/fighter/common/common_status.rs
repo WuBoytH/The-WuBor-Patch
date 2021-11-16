@@ -253,6 +253,8 @@ pub unsafe fn dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValu
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+        let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
+        WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
         return 1.into();
     }
@@ -501,6 +503,8 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     // new
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+        let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
+        WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
         return 1.into();
     }
@@ -655,8 +659,10 @@ pub unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2C
     WorkModule::set_int(fighter.module_accessor, guard_off_disable_shield_recovery, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME);
     // Additions
     let guard_hold_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
+    println!("Guard Hold Frame: {}", guard_hold_frame);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
-    && guard_hold_frame >= 5 {
+    && (guard_hold_frame >= 5
+    || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
         let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;

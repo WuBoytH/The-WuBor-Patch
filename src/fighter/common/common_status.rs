@@ -914,7 +914,6 @@ unsafe extern "C" fn sub_status_end_guard_on_common_thing(fighter: &mut L2CFight
     }
 }
 
-// FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]
 pub unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
     // Original, except we're using NONE OF IT HAHAHAHAHHAHA

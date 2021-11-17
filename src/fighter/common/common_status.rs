@@ -659,7 +659,7 @@ pub unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2C
     WorkModule::set_int(fighter.module_accessor, guard_off_disable_shield_recovery, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME);
     // Additions
     let guard_hold_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
-    println!("Guard Hold Frame: {}", guard_hold_frame);
+    // println!("Guard Hold Frame: {}", guard_hold_frame);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && (guard_hold_frame >= 5
     || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {

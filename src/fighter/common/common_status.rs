@@ -68,7 +68,7 @@ unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommo
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DashCommon)]
-pub unsafe fn dash_common(fighter: &mut L2CFighterCommon) {
+pub unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
@@ -145,7 +145,7 @@ pub unsafe fn dash_common(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Dash_Main_common)]
-pub unsafe fn dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValue) -> L2CValue {
+pub unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValue) -> L2CValue {
     if fighter.global_table[DASH_COMMON_PRE].get_bool() != false && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_COMMON_PRE].get_ptr());
         callable(fighter).get_bool()
@@ -651,6 +651,52 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat_common)]
+pub unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    let stick_jump_command_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
+    if stick_jump_command_life == 0
+    || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_BUTTON);
+        if ControlModule::is_jump_mini_button(fighter.module_accessor) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+        }
+    }
+    WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
+    if param_1.get_bool() {
+        PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+    }
+    ControlModule::reset_flick_y(fighter.module_accessor);
+    ControlModule::reset_flick_sub_y(fighter.module_accessor);
+    fighter.global_table[FLICK_Y].assign(&0xfe.into());
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
+    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
+    if !IS_FGC[entry_id(fighter.module_accessor)] {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ABNORMAL_MINIJUMP_SLOWWALK) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK) {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
+    }
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]
 pub unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFighterCommon) {
     // Original
@@ -1043,7 +1089,7 @@ pub unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
-pub unsafe fn damage_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn status_damageair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !IS_FGC[entry_id(fighter.module_accessor)] {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     }
@@ -1176,8 +1222,9 @@ pub unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighte
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            dash_common,
-            dash_main_common,
+            status_dashcommon,
+            status_dash_main_common,
+            status_jumpsquat_common,
             sub_ftstatusuniqprocessguardon_initstatus_common,
             sub_guard_cont_pre,
             sub_guard_on_uniq,
@@ -1189,7 +1236,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_attack_air_common,
             status_attackair_main_common,
             sub_landing_attack_air_init,
-            damage_air_main,
+            status_damageair_main,
             sub_transition_group_check_ground_guard,
             sub_transition_group_check_air_tread_jump,
             sub_transition_group_check_special_command

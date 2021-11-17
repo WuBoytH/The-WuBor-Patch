@@ -87,6 +87,12 @@ unsafe extern "C" fn kirby_ganon_specialn_main_loop(fighter: &mut L2CFighterComm
         }
         return 1.into();
     }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
     0.into()
 }
 

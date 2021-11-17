@@ -102,6 +102,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         else if fighter_kind == *FIGHTER_KIND_RICHTER {
             fighter.global_table[SPECIAL_HI_PRE].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));
         }
+        // else if fighter_kind == *FIGHTER_KIND_RYU {
+        //     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
+        // }
     }
 }
 

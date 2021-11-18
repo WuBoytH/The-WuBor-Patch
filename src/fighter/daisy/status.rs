@@ -81,7 +81,8 @@ unsafe fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
         0
     );
-    FighterStatusModuleImpl::set_fighter_status_data(fighter.module_accessor,
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
         false,
         *FIGHTER_TREADED_KIND_NO_REAC,
         false,

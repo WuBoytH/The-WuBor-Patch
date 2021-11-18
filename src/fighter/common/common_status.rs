@@ -18,15 +18,15 @@ use {
 };
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn common_status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe fn status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_DamageFall_common();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) {
         KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 1.0, y: 0.0, z: 0.0});
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_damagefall_main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(status_damagefall_main as *const () as _))
 }
 
-unsafe extern "C" fn common_status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() == true
     || fighter.check_damage_fall_transition().get_bool() == true {
         return 0.into();
@@ -758,6 +758,39 @@ pub unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_TreadJump)]
+pub unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
+    || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+    || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
+    || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R)
+    || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_TREAD_FLAG_BUTTON);
+        ControlModule::reset_trigger(fighter.module_accessor);
+    }
+    else {
+        ControlModule::reset_flick_y(fighter.module_accessor);
+    }
+    WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_TREAD_JUMP_COUNT);
+    let tread_jump_disable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("tread_jump_disable_frame"));
+    WorkModule::set_int(fighter.module_accessor, tread_jump_disable_frame, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME);
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_TREAD, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
+    fighter.sub_tread_jump_unique_process_init_inner();
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_tread_jump_uniq_check();
+    }
+    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_tread_jump_uniq_check as *const () as _));
+    let mut tread_attack_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("tread_attack_frame"));
+    if MotionModule::is_flag_start_1_frame(fighter.module_accessor) {
+        tread_attack_frame -= 1;
+    }
+    WorkModule::set_float(fighter.module_accessor, tread_attack_frame as f32, *FIGHTER_STATUS_TREAD_WORK_FLOAT_ATTACK_FRAME);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
+    WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
+    fighter.sub_shift_status_main(L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_status_TreadJump_Main as *const () as _))
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]
 pub unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFighterCommon) {
     // Original
@@ -1113,6 +1146,95 @@ pub unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue
     L2CValue::new_num(motion_rate)
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_uniq_chk_button)]
+pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+    if param_1.get_bool() == false {
+        fighter.attack_uniq_chk_command(param_3.clone());
+        if fighter.global_table[CMD_CAT1].get_i32() & param_1.get_i32() != 0
+        && fighter.global_table[CMD_CAT1].get_i32() & (
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4
+        ) == 0 {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+            }
+        }
+        let button = param_2.get_i32();
+        if !ControlModule::check_button_on(fighter.module_accessor, button) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
+        }
+        else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
+        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
+        && fighter.global_table[CMD_CAT1].get_i32() & (
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 |
+            *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH
+        ) == 0 {
+            if !AttackModule::is_infliction_status(fighter.module_accessor, 0x7f) {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART) {
+                    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON) {
+                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART);
+                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART_ATTACK);
+                        ComboModule::reset(fighter.module_accessor);
+                    }
+                }
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO) {
+                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+                    if ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
+                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO_TRIGGER);
+                    }
+                }
+            }
+            else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
+            }
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART_COMBO) {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO) {
+                let combo_count = ComboModule::count(fighter.module_accessor) as i32;
+                let attack_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_max"), 0);
+                if combo_count != attack_combo_max {
+                    return;
+                }
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART);
+                ComboModule::reset(fighter.module_accessor);
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO) {
+                    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO_TRIGGER) {
+                        return;
+                    }
+                    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART_ATTACK);
+                }
+            }
+        }
+    }
+    else {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
+            let something = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0);
+            if something & 1 == 0 {
+                return;
+            }
+        }
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+    }
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_uniq_chk_command)]
+pub unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if cat1 & param_1.get_i32() != 0
+    && cat1 & (
+        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
+        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
+        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4
+    ) == 0 {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE);
+    }
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_common)]
 pub unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
@@ -1325,6 +1447,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_dash_main_common,
             status_jumpsquat_common,
             status_jumpsquat_main,
+            status_treadjump,
             sub_ftstatusuniqprocessguardon_initstatus_common,
             sub_guard_cont_pre,
             sub_guard_on_uniq,
@@ -1334,6 +1457,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_ftstatusuniqprocessguardoff_initstatus,
             sub_status_guard_on_common,
             status_guardoff_common,
+            attack_combo_uniq_chk_button,
+            attack_uniq_chk_command,
             sub_attack_air_common,
             status_attackair_main_common,
             sub_landing_attack_air_init,
@@ -1348,6 +1473,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
     install_status_scripts!(
-        common_status_damagefall
+        status_damagefall
     );
 }

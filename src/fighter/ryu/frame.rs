@@ -11,6 +11,7 @@ use {
     crate::{
         common_funcs::*,
         vars::*,
+        table_const::*,
         gameplay::*
     }
 };
@@ -119,42 +120,26 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         if IS_FUNNY[entry_id(fighter.module_accessor)]
         || DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
-            if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
-            && (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S3
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI3
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_S4
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW4
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI4
-            || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_DASH)
+            if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+            && [
+                *FIGHTER_STATUS_KIND_ATTACK,
+                *FIGHTER_STATUS_KIND_ATTACK_S3,
+                *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                *FIGHTER_STATUS_KIND_ATTACK_LW3,
+                *FIGHTER_STATUS_KIND_ATTACK_S4,
+                *FIGHTER_STATUS_KIND_ATTACK_LW4,
+                *FIGHTER_STATUS_KIND_ATTACK_HI4,
+                *FIGHTER_STATUS_KIND_ATTACK_DASH
+            ].contains(&StatusModule::status_kind(fighter.module_accessor))
             && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-                fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
-                if PostureModule::lr(fighter.module_accessor) == 1.0 {
-                    MotionModule::change_motion(
-                        fighter.module_accessor,
-                        Hash40::new("appeal_hi_r"),
-                        0.0,
-                        1.0,
-                        false,
-                        0.0,
-                        false,
-                        false
-                    );
-                }
-                else {
-                    MotionModule::change_motion(
-                        fighter.module_accessor,
-                        Hash40::new("appeal_hi_l"),
-                        0.0,
-                        1.0,
-                        false,
-                        0.0,
-                        false,
-                        false
-                    );
+            || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0 {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, 0x1daca540be as u64);
+                sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                if fighter.pop_lua_stack(1).get_bool() {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
+                    fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
                 }
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             }

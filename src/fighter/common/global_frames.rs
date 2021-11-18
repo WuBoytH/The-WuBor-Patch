@@ -118,7 +118,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         // Command Inputs
 
         let dir = get_command_stick_direction(fighter.module_accessor, true);
-        if INPUT_TIMER[entry_id(fighter.module_accessor)] <= 10 {
+        if INPUT_TIMER[entry_id(fighter.module_accessor)] <= 3 {
             INPUT_TIMER[entry_id(fighter.module_accessor)] += 1;
         }
         else {
@@ -138,16 +138,19 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         else if QCB[entry_id(fighter.module_accessor)] == 1 {
             if dir == 1 {
                 QCB[entry_id(fighter.module_accessor)] = 2;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
             else if dir != 4
             && dir != 1
             && dir != 2 {
                 QCB[entry_id(fighter.module_accessor)] = 0;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
         }
         else if QCB[entry_id(fighter.module_accessor)] == 2 {
             if dir == 4 {
                 QCB[entry_id(fighter.module_accessor)] = 3;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
             else if dir != 4
             && dir != 1
@@ -195,6 +198,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         else if QCF[entry_id(fighter.module_accessor)] == 1 {
             if dir == 3 {
                 QCF[entry_id(fighter.module_accessor)] = 2;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
             else if dir != 6
             && dir != 3
@@ -205,6 +209,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         else if QCF[entry_id(fighter.module_accessor)] == 2 {
             if dir == 6 {
                 QCF[entry_id(fighter.module_accessor)] = 3;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
             else if dir != 6
             && dir != 3
@@ -252,6 +257,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         else if SRK[entry_id(fighter.module_accessor)] == 1 {
             if dir == 2 {
                 SRK[entry_id(fighter.module_accessor)] = 2;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
             else if dir != 6
             && dir != 3
@@ -262,6 +268,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         else if SRK[entry_id(fighter.module_accessor)] == 2 {
             if dir == 3 {
                 SRK[entry_id(fighter.module_accessor)] = 3;
+                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
             }
             else if dir != 6
             && dir != 3

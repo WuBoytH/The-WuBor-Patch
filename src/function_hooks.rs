@@ -482,7 +482,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         else if param_hash == hash40("escape_air_slide_hit_xlu_frame")
         || param_hash == hash40("escape_air_slide_penalty_hit_xlu_frame") {
             if IS_FGC[entry_id(boma)] {
-                // println!("Escape Air Slide XLU Is Hit: {}", is_damage_check(boma, true));
                 if is_damage_check(boma, true)
                 || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
                     return 1.0;
@@ -496,7 +495,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         else if param_hash == hash40("escape_air_slide_hit_normal_frame")
         || param_hash == hash40("escape_air_slide_penalty_hit_normal_frame") {
             if IS_FGC[entry_id(boma)] {
-                // println!("Escape Air Slide NORMAL Is Hit: {}", is_damage_check(boma, true));
                 if is_damage_check(boma, true)
                 || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
                     return 20.0;
@@ -1007,43 +1005,6 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
     }
     original!()(lua_state);
 }
-
-// #[skyline::hook(replace = MotionModule::change_motion)]
-// unsafe fn change_motion_replace(module_accessor: *mut BattleObjectModuleAccessor, 
-//     motion_kind: Hash40,
-//     frame: f32,
-//     rate: f32,
-//     unk1: bool,
-//     unk2: f32,
-//     unk3: bool,
-//     unk4: bool) -> u64 {
-//     let fighter_kind = utility::get_kind(&mut *module_accessor);
-//     if fighter_kind == *FIGHTER_KIND_FOX {
-//         if motion_kind.hash == hash40("special_n_loop") {
-//             println!("change hi");
-//             println!("frame: {}", frame);
-//             println!("rate: {}", rate);
-//             println!("unk1: {}", unk1);
-//             println!("unk2: {}", unk2);
-//             println!("unk3: {}", unk3);
-//             println!("unk4: {}", unk4);
-//         }
-//     }
-//     original!()(module_accessor, motion_kind, frame, rate, unk1, unk2, unk3, unk4)
-// }
-
-// #[skyline::hook(replace = ArticleModule::have)]
-// unsafe fn have_replace(boma: &mut BattleObjectModuleAccessor, article: i32, mut bone: u64, target: ArticleOperationTarget, unk1: u32, unk2: bool) -> u64 {
-//     if article == *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP {
-//         println!("Bone: {}", bone);
-//         println!("unk1: {}", unk1);
-//         println!("unk2: {}", unk2);
-//         if bone != hash40("haver") {
-//             bone = hash40("haver");
-//         }
-//     }
-//     original!()(boma, article, bone, target, unk1, unk2)
-// }
 
 pub fn install() {
     unsafe{

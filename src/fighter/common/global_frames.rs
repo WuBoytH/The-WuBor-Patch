@@ -361,18 +361,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     }
 }
 
-// Use this for general per-frame weapon-level hooks
-// #[weapon_frame_callback]
-// pub fn once_per_weapon_frame(fighter_base : &mut L2CFighterBase) {
-//    unsafe {
-//        let module_accessor = smash::app::sv_system::battle_object_module_accessor(fighter_base.lua_state_agent);
-//        let frame = smash::app::lua_bind::MotionModule::frame(module_accessor) as i32;
-//        if frame % 10 == 0 {
-//            println!("[Weapon Hook] Frame : {}", frame);
-//        }
-//    }
-// }
-
 pub fn install() {
     install_agent_frame_callbacks!(
         global_fighter_frame,

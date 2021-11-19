@@ -1146,16 +1146,37 @@ pub unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue
     L2CValue::new_num(motion_rate)
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk_button)]
+pub unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+    if param_1.get_bool() == false {
+        if ControlModule::check_button_on(fighter.module_accessor, param_2.get_i32())
+        && only_jabs(fighter) {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART) {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART_ATTACK);
+            }
+        }
+        fighter.attack_uniq_chk_command(param_3.clone());
+    }
+    else {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
+            let countdown = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0);
+            if countdown & 1 == 0 {
+                return;
+            }
+        }
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+    }
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_uniq_chk_button)]
 pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         fighter.attack_uniq_chk_command(param_3.clone());
         if fighter.global_table[CMD_CAT1].get_i32() & param_1.get_i32() != 0
-        && fighter.global_table[CMD_CAT1].get_i32() & (
-            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
-            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
-            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4
-        ) == 0 {
+        && only_jabs(fighter) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
             }
@@ -1164,14 +1185,7 @@ pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param
         if !ControlModule::check_button_on(fighter.module_accessor, button) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
         }
-        else if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
-        && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
-        && fighter.global_table[CMD_CAT1].get_i32() & (
-            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
-            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
-            *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 |
-            *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH
-        ) == 0 {
+        else if only_jabs(fighter) {
             if !AttackModule::is_infliction_status(fighter.module_accessor, 0x7f) {
                 if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART) {
                     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON) {
@@ -1226,13 +1240,21 @@ pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param
 pub unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & param_1.get_i32() != 0
-    && cat1 & (
-        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
-        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
-        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4
-    ) == 0 {
+    && only_jabs(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE);
     }
+}
+
+#[inline(always)]
+pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
+    return !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
+    && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
+    && fighter.global_table[CMD_CAT1].get_i32() & (
+        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
+        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
+        *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 |
+        *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH
+    ) == 0;
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_common)]
@@ -1457,6 +1479,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_ftstatusuniqprocessguardoff_initstatus,
             sub_status_guard_on_common,
             status_guardoff_common,
+            // sub_status_attackcombocommon_button,
+            attack_combo_none_uniq_chk_button,
             attack_combo_uniq_chk_button,
             attack_uniq_chk_command,
             sub_attack_air_common,

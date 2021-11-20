@@ -10,7 +10,7 @@ use {
     smashline::*,
     crate::table_const::*,
     super::helper::*,
-    super::super::common::common_status::fgc_dashback_main
+    super::super::common::common_status::dash::fgc_dashback_main
 };
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

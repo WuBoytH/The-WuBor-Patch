@@ -10,8 +10,8 @@ use {
     smashline::*,
     crate::table_const::*,
     super::super::common::common_status::{
-        fgc_dashback_main,
-        only_jabs
+        dash::fgc_dashback_main,
+        attack::only_jabs
     }
 };
 

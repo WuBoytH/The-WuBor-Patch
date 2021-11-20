@@ -8,9 +8,7 @@ use {
     },
     smashline::*,
     crate::table_const::*,
-    super::super::common::common_status::{
-        only_jabs
-    }
+    super::super::common::common_status::attack::only_jabs
 };
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

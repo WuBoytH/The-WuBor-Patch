@@ -14,7 +14,7 @@ use {
         table_const::*
     },
     super::super::{
-        common::common_status::fgc_dashback_main,
+        common::common_status::dash::fgc_dashback_main,
         ryu::helper::*
     }
 };

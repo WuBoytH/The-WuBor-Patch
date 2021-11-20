@@ -12,7 +12,7 @@ use {
         gameplay::*,
         table_const::*
     },
-    super::super::common::common_status::fgc_dashback_main
+    super::super::common::common_status::dash::fgc_dashback_main
 };
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -36,6 +36,9 @@ unsafe extern "C" fn dolly_attacklw3_main_stop(fighter: &mut L2CFighterCommon, p
 }
 
 unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
+    }
     if dolly_hit_cancel(fighter).get_bool() == false {
         if dolly_attack_start_cancel(fighter).get_bool() == false {
             if chain_cancels(fighter,

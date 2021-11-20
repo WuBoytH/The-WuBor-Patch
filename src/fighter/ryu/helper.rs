@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     crate::table_const::*,
-    super::super::common::common_status::only_jabs
+    super::super::common::common_status::attack::only_jabs
 };
 
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue {

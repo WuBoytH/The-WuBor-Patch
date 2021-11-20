@@ -60,6 +60,11 @@ pub const CHECK_SPECIAL_COMMAND:         i32 = 0x3C;
 pub const WAZA_CUSTOMIZE_CONTROL:        i32 = 0x3D;
 pub const STATUS_END_CONTROL:            i32 = 0x3E;
 
+pub const THROW_F_STATUS_KIND:           i32 = 0x45;
+pub const THROW_B_STATUS_KIND:           i32 = 0x46;
+pub const THROW_HI_STATUS_KIND:          i32 = 0x47;
+pub const THROW_LW_STATUS_KIND:          i32 = 0x48;
+
 pub const FALL_PRE:                      i32 = 0x4E; // Not sure if this is the best name for this one
 pub const CHECK_GROUND_GUARD_PRE:        i32 = 0x4F;
 pub const CHECK_GROUND_CATCH_PRE:        i32 = 0x50;

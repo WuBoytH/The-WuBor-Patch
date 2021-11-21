@@ -39,7 +39,7 @@ pub unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, 
 pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         fighter.attack_uniq_chk_command(param_3.clone());
-        if fighter.global_table[CMD_CAT1].get_i32() & param_1.get_i32() != 0
+        if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
         && only_jabs(fighter) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
@@ -49,7 +49,7 @@ pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param
         if !ControlModule::check_button_on(fighter.module_accessor, button) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON);
         }
-        else if only_jabs(fighter) {
+        else {
             if !AttackModule::is_infliction_status(fighter.module_accessor, 0x7f) {
                 if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART) {
                     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RELEASE_BUTTON) {
@@ -60,12 +60,14 @@ pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param
                 }
                 if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO) {
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
-                    if ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
+                    if ControlModule::check_button_on_trriger(fighter.module_accessor, button)
+                    && only_jabs(fighter) {
                         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO_TRIGGER);
                     }
                 }
             }
-            else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+            else if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
+            && only_jabs(fighter) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
             }
         }

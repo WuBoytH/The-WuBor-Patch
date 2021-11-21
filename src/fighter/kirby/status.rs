@@ -34,7 +34,7 @@ unsafe extern "C" fn kirby_attacklw3_main_stop(fighter: &mut L2CFighterCommon) -
                 GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
                 // macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 31.0 / 10.0, false, 0.0, false, false);
+                MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 31.0 / 20.0, false, 0.0, false, false);
                 macros::SET_SPEED_EX(fighter, -1.0, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE);
             }

@@ -149,7 +149,7 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             air_accel_mul = 1.0;
         }
         else {
-            air_accel_mul = long_jump_back_air_accel_y_mul;
+            air_accel_mul = long_jump_air_accel_y_mul;
         }
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0) * air_accel_mul;
         let air_accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);

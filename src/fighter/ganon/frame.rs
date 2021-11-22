@@ -1,11 +1,9 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        // phx::Hash40,
         app::lua_bind::*,
         lib::lua_const::*
     },
-    // smash_script::*,
     smashline::*,
     crate::{
         common_funcs::*,
@@ -62,11 +60,12 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         
-        // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge (or if Funny Mode is enabled).
+        // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge.
 
-        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
-        || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-            DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] = false;
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N)
+        && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
+        || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND) {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N);
         }
 
         if IS_FGC[entry_id(fighter.module_accessor)] {

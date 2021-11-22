@@ -1,11 +1,11 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        app::lua_bind::WorkModule,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         table_const::*,
         fighter::{
@@ -28,28 +28,28 @@ use {
 };
 
 unsafe extern "C" fn specialn_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N) {
         return 0.into();
     }
     1.into()
 }
 
 unsafe extern "C" fn specials_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if DISABLE_SPECIAL_S[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S) {
         return 0.into();
     }
     1.into()
 }
 
 unsafe extern "C" fn specialhi_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
         return 0.into();
     }
     1.into()
 }
 
 unsafe extern "C" fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if DISABLE_SPECIAL_LW[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW) {
         return 0.into();
     }
     1.into()

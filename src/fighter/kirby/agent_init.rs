@@ -5,7 +5,6 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     crate::{
-        common_funcs::*,
         vars::*
     }
 };
@@ -26,7 +25,7 @@ pub unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L
             }
         }
         if copy_kind == *FIGHTER_KIND_GANON {
-            if DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N) {
                 return 0.into();
             }
             else {

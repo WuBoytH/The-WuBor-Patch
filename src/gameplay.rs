@@ -133,7 +133,7 @@ pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cance
                 return;
             }
             if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_HI)
-            && DISABLE_SPECIAL_HI[entry_id(agent.module_accessor)] == false {
+            && !WorkModule::is_flag(agent.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
                 StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
                 return;
             }

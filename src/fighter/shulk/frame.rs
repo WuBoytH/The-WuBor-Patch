@@ -20,7 +20,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         // Reset Vars
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-            DISABLE_SPECIAL_LW[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW);
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
         }
 
@@ -34,7 +34,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 
         if StopModule::is_damage(fighter.module_accessor)
         && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-        && DISABLE_SPECIAL_LW[entry_id(fighter.module_accessor)] == false {
+        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW) {
             DamageModule::add_damage(fighter.module_accessor, BURST_RECOVER[entry_id(fighter.module_accessor)] * -0.5, 0);
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
@@ -56,7 +56,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
             EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_sp_flash"), Hash40::new("head"), &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, 1.0, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, false, 0, 0, 0);
             KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_RESET);
             KineticModule::unable_energy_all(fighter.module_accessor);
-            DISABLE_SPECIAL_LW[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW);
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = 3600;
         }
 
@@ -73,7 +73,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
             }
         }
         else{
-            DISABLE_SPECIAL_LW[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW);
         }
     }
 }

@@ -6,7 +6,8 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*
+    smashline::*,
+    crate::vars::*
 };
 
 #[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
@@ -93,15 +94,12 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
     }
     frame(fighter.lua_state_agent, 32.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_HI_FLAG_MOVE);
     }
-    // frame(fighter.lua_state_agent, 47.0);
-    // if macros::is_excute(fighter) {
-    //     StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);
-    // }
 }
 
 pub fn install() {

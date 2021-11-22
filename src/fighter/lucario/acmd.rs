@@ -259,7 +259,7 @@ unsafe fn lucario_uspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_uspecialair(fighter: &mut L2CAgentBase) {
     if IS_FGC[entry_id(fighter.module_accessor)] {
-        DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = true;
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
         IS_SD_CANCEL[entry_id(fighter.module_accessor)] = false;
         macros::FT_MOTION_RATE(fighter, 0.5);
     }

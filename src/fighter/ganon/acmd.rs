@@ -414,7 +414,7 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
         let og_y = PostureModule::pos_y(fighter.module_accessor);
         WorkModule::set_float(fighter.module_accessor, og_x, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X);
         WorkModule::set_float(fighter.module_accessor, og_y, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_Y);
-        DISABLE_SPECIAL_N[entry_id(fighter.module_accessor)] = true;
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
@@ -429,7 +429,6 @@ unsafe fn ganon_nspecial(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
         WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_MOVE, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
-        // TELEPORT[entry_id(fighter.module_accessor)] = 2;
         let tele_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_X);
         let tele_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y);
         PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: tele_x, y: tele_y});

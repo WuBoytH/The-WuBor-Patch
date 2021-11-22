@@ -17,9 +17,10 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
     let mut allowed_cancels : Vec<i32> = [].to_vec();
     set_hp(fighter, 116.0);
-    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-    || is_damage_check(fighter.module_accessor, false) {
-        DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI)
+    && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
+    || is_damage_check(fighter.module_accessor, false)) {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
     }
     if [
         *FIGHTER_STATUS_KIND_ATTACK
@@ -71,7 +72,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
         IS_SD_CANCEL[entry_id(fighter.module_accessor)] = true;
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
     }
-    if DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] == false {
+    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
         allowed_cancels.append(&mut [*FIGHTER_STATUS_KIND_SPECIAL_HI].to_vec());
     }
     cancel_system(fighter, status, allowed_cancels);
@@ -81,7 +82,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
 fn lucario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-            DISABLE_SPECIAL_HI[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
         }
         if IS_FGC[entry_id(fighter.module_accessor)] {
             lucario_fgc(fighter);

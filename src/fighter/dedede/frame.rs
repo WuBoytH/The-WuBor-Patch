@@ -7,10 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]
@@ -27,7 +24,7 @@ fn dedede_frame(fighter: &mut L2CFighterCommon) {
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             let dedespeedy = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed : f32;
-            if IS_FUNNY[entry_id(fighter.module_accessor)] {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
                 speed = 3.6;
             }
             else {

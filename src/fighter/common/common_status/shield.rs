@@ -10,7 +10,6 @@ use {
     },
     smash_script::*,
     crate::{
-        common_funcs::*,
         vars::*,
         table_const::*
     }
@@ -124,7 +123,7 @@ pub unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValu
         }
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SHIELD_LOCK) {
             let shield_dec1 : f32;
-            if !IS_FGC[entry_id(fighter.module_accessor)] {
+            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
                 shield_dec1 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_dec1"));
             }
             else {

@@ -8,10 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[acmd_script( agent = "diddy", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
@@ -75,7 +72,7 @@ unsafe fn diddy_usmash(fighter: &mut L2CAgentBase) {
 unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
     let rng : i32;
     let randitem : i32;
-    if IS_FUNNY[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
         rng = sv_math::rand(hash40("fighter"), 100);
         match rng {
             21..=45 => randitem = *ITEM_KIND_SENSORBOMB,

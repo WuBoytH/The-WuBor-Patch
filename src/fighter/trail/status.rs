@@ -6,13 +6,8 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    // smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*,
-        // table_const::*
-    }
+    crate::vars::*
 };
 
 #[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
@@ -76,7 +71,7 @@ unsafe fn trail_landingattackair_init(fighter: &mut L2CFighterCommon) -> L2CValu
     }
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, landing_param_type, landing_param);
     landing_lag *= motion_rate;
-    if AIR_WHIFF[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF) {
         landing_lag += 4.0;
     }
     if landing_lag != 0.0 {

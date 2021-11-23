@@ -6,15 +6,12 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]
 pub unsafe fn status_damageair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !IS_FGC[entry_id(fighter.module_accessor)] {
+    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     }
     call_original!(fighter)

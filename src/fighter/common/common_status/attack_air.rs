@@ -8,7 +8,6 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     crate::{
-        common_funcs::*,
         vars::*,
         table_const::*
     }
@@ -16,7 +15,8 @@ use {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_common)]
 pub unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+    // AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
     ControlModule::reset_trigger(fighter.module_accessor);
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
@@ -37,10 +37,12 @@ pub unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2C
 pub unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+        // AIR_WHIFF[entry_id(fighter.module_accessor)] = false;
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
     }
     else if AttackModule::is_attack(fighter.module_accessor, 0, false) {
-        AIR_WHIFF[entry_id(fighter.module_accessor)] = true;
+        // AIR_WHIFF[entry_id(fighter.module_accessor)] = true;
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
     }
     if fighter.attack_air_common_strans().get_bool() == false {
         if CancelModule::is_enable_cancel(fighter.module_accessor) == false {
@@ -68,7 +70,7 @@ pub unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2
 pub unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, param_2.get_int(), 0) + param_3.get_f32();
-    if AIR_WHIFF[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF) {
         landing_lag += 4.0;
     }
     let mut motion_rate = 1.0;

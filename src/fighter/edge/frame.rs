@@ -49,7 +49,7 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
         }
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH {
             if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-            || IS_FUNNY[entry_id(fighter.module_accessor)] {
+            || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
                 CANCEL[entry_id(fighter.module_accessor)] = true;
             }
         }

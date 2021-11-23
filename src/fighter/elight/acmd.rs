@@ -8,10 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
@@ -75,7 +72,7 @@ unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 10.0);
     let angle : u64;
-    if IS_FGC[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         angle = 361;
     }
     else {

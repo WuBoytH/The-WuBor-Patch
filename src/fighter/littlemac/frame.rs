@@ -14,7 +14,7 @@ use {
 #[fighter_frame( agent = FIGHTER_KIND_LITTLEMAC )]
 fn littlemac_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) == 2
             && FUNNY_JUMPS[entry_id(fighter.module_accessor)] > 0 {
                 WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);

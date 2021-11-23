@@ -4,36 +4,33 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
     if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) > 0.0 {
-        if SHADOW_FRENZY[entry_id(module_accessor)] {
+        if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             if onemore {
-                SPENT_SP[entry_id(module_accessor)] = 12.5;
+                WorkModule::set_float(module_accessor, 12.5, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
                 spent = true;
-                SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
+                WorkModule::set_int(module_accessor, 600, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
             }
             else {
-                SPENT_SP[entry_id(module_accessor)] = 6.25;
+                WorkModule::set_float(module_accessor, 6.25, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
                 spent = true;
-                SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
+                WorkModule::set_int(module_accessor, 600, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
             }
         }
         else if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0 {
-            SPENT_SP[entry_id(module_accessor)] = 25.0;
+            WorkModule::set_float(module_accessor, 25.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
             spent = true;
-            SP_GAUGE_TIMER[entry_id(module_accessor)] = 300;
+            WorkModule::set_int(module_accessor, 300, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
         }
     }
     if spent {
-        METER_PENALTY[entry_id(module_accessor)] = 360.0;
+        WorkModule::set_float(module_accessor, 360.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY);
     }
     return spent;
 }
@@ -87,7 +84,7 @@ pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) 
     let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
     EffectModule::set_rate(module_accessor, onemoreeff, 2.0);
     EffectModule::set_rate(module_accessor, onemoreeff2, 2.0);
-    if SHADOW_FRENZY[entry_id(module_accessor)] {
+    if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
         EffectModule::set_rgb(module_accessor, onemoreeff, 0.6, 0.0, 1.0);
         EffectModule::set_rgb(module_accessor, onemoreeff2, 0.6, 0.0, 1.0);
     }
@@ -101,8 +98,8 @@ pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) 
 pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor, remove: bool) {
     EffectModule::kill_kind(module_accessor, Hash40::new("sys_starrod_bullet"), false, true);
     if !remove {
-        let mut level = SP_LEVEL[entry_id(module_accessor)];
-        if SHADOW_FRENZY[entry_id(module_accessor)] {
+        let mut level = WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
+        if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             level += 1;
         }
         while level > 0 {
@@ -124,25 +121,27 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
 #[inline(always)]
 pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
     if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) < 25.0 {
-        SP_LEVEL[entry_id(module_accessor)] = 0;
+        WorkModule::set_int(module_accessor, 0, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
     }
     else {
-        while SP_LEVEL[entry_id(module_accessor)] < 6 {
-            if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0
-            && SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0 > WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) {
+        while WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) < 6 {
+            if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) as f32 * 25.0
+            && WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) as f32 * 25.0 > WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) {
                 break;
             }
-            SP_LEVEL[entry_id(module_accessor)] += 1;
+            WorkModule::inc_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
         }
     }
-    if SHADOW_FRENZY[entry_id(module_accessor)] {
-        SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
+    if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+        WorkModule::set_int(module_accessor, 600, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
     else {
-        SP_GAUGE_TIMER[entry_id(module_accessor)] = 300;
+        WorkModule::set_int(module_accessor, 300, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
-    SP_LEVEL[entry_id(module_accessor)] = (WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) / 25.0) as i32;
-    if SP_LEVEL[entry_id(module_accessor)] == 0 && !SHADOW_FRENZY[entry_id(module_accessor)] {
+    let level = (WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) / 25.0) as i32;
+    WorkModule::set_int(module_accessor, level, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
+    if WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) == 0
+    && !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
         sp_gauge_handler(module_accessor, true);
     }
     else {
@@ -157,8 +156,9 @@ pub unsafe fn add_sp(module_accessor: *mut BattleObjectModuleAccessor, amount: f
     if sp_gauge < 0.0 {
         sp_gauge = 0.0;
     }
-    if sp_gauge > SP_GAUGE_MAX[entry_id(module_accessor)] {
-        sp_gauge = SP_GAUGE_MAX[entry_id(module_accessor)];
+    let sp_gauge_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+    if sp_gauge > sp_gauge_max {
+        sp_gauge = sp_gauge_max;
     }
     WorkModule::set_float(module_accessor, sp_gauge, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
 }

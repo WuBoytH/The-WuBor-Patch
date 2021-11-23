@@ -8,10 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[acmd_script( agent = "eflame", script = "game_attacks3", category = ACMD_GAME, low_priority )]
@@ -34,7 +31,7 @@ unsafe fn eflame_ftilt(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     let bkb : i32;
-    if IS_FGC[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         bkb = 40;
     }
     else {

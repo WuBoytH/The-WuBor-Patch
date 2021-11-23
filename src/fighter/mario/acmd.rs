@@ -8,10 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    },
+    crate::vars::*,
     super::{
         helper::*,
         vl::*
@@ -167,7 +164,7 @@ unsafe fn mario_nair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 5.0, 361, 90, 0, 45, 4.0, 0.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
             macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 5.0, 361, 90, 0, 45, 4.0, 0.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         }
@@ -178,7 +175,7 @@ unsafe fn mario_nair(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        if !IS_FGC[entry_id(fighter.module_accessor)] {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 5.0, 361, 90, 0, 13, 4.0, 0.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
             macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 5.0, 361, 90, 0, 13, 4.0, 0.8, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         }
@@ -401,7 +398,7 @@ unsafe fn mario_nspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL);
     }
-    if !IS_FGC[entry_id(fighter.module_accessor)] {
+    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         macros::FT_MOTION_RATE(fighter, 1.15);
     }
     frame(fighter.lua_state_agent, 14.0);
@@ -673,7 +670,9 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     let angle : u64;
     let bkb : i32;
     let kbg : i32;
-    if IS_FGC[entry_id(weapon.module_accessor)] {
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let oboma = sv_battle_object::module_accessor(otarget_id);
+    if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         angle = 80;
         bkb = 90;
         kbg = 0;
@@ -689,7 +688,7 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     }
     frame(weapon.lua_state_agent, 5.0);
     if macros::is_excute(weapon) {
-        if !IS_FGC[entry_id(weapon.module_accessor)] {
+        if !WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 5.0, 361, 15, 0, 28, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_FIREBALL, *ATTACK_REGION_NONE);
         }
     }

@@ -15,7 +15,7 @@ use {
 #[fighter_frame( agent = FIGHTER_KIND_RIDLEY )]
 fn ridley_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             FUNNY_RIDLEY[entry_id(fighter.module_accessor)] = true;
         }
         else if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_n_shoot")

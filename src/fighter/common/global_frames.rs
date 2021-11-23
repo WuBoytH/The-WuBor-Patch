@@ -52,15 +52,15 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         // The code to set up Funny Mode.
 
         if ItemModule::is_attach_item(fighter.module_accessor, ItemKind(*ITEM_KIND_USAGIHAT))
-        && IS_FUNNY[entry_id(fighter.module_accessor)] == false {
-            IS_FUNNY[entry_id(fighter.module_accessor)] = true;
+        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY);
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
         }
-        if (status == *FIGHTER_STATUS_KIND_DEAD || sv_information::is_ready_go() == false)
-        && IS_FUNNY[entry_id(fighter.module_accessor)] {
-            IS_FUNNY[entry_id(fighter.module_accessor)] = false;
+        if status == *FIGHTER_STATUS_KIND_DEAD
+        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY);
         }
 
         // The code to set up FGC Mode.
@@ -85,17 +85,17 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         }
         if FighterUtil::is_hp_mode(fighter.module_accessor)
         && !smashball::is_training_mode() {
-            IS_FGC[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC);
             FGC_TRAINING = false;
         }
         else if FGC_TRAINING {
-            IS_FGC[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC);
         }
         else {
-            IS_FGC[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
         }
 
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             global_fgc(fighter);
         }
 

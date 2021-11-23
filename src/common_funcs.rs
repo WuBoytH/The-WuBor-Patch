@@ -170,5 +170,16 @@ pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModu
 }
 
 pub unsafe fn reset_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
-    WorkModule::set_int(module_accessor, 0, flag)
+    WorkModule::set_int(module_accessor, 0, flag);
+}
+
+// pub unsafe fn reset_f32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
+//     WorkModule::set_float(module_accessor, 0.0, flag);
+// }
+
+pub unsafe fn count_down(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
+    let slow_rate = SlowModule::rate(module_accessor);
+    let global_slow_rate = sv_information::slow_rate();
+    let counter = WorkModule::get_float(module_accessor, flag) - (amount * slow_rate * global_slow_rate);
+    WorkModule::set_float(module_accessor, counter, flag);
 }

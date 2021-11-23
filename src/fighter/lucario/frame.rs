@@ -69,7 +69,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     else if status == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
     && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
-        IS_SD_CANCEL[entry_id(fighter.module_accessor)] = true;
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
     }
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
@@ -84,7 +84,7 @@ fn lucario_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
         }
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             lucario_fgc(fighter);
         }
     }

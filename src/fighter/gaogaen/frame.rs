@@ -22,7 +22,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
         && MotionModule::frame(fighter.module_accessor) > 19.0
         && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        || IS_FUNNY[entry_id(fighter.module_accessor)])
+        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
         && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
         }

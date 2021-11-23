@@ -65,7 +65,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         && CANCEL[entry_id(fighter.module_accessor)] {
             EX_FLASH[entry_id(fighter.module_accessor)] = true;
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
-            if !IS_FUNNY[entry_id(fighter.module_accessor)] {
+            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
                 SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = 1200;
                 EX_FOCUS[entry_id(fighter.module_accessor)] = true;
             }
@@ -118,7 +118,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         // Secret Sensation Code
 
-        if IS_FUNNY[entry_id(fighter.module_accessor)]
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)
         || DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
             if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
             && [

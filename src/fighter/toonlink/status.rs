@@ -9,7 +9,6 @@ use {
     smash_script::*,
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         table_const::*
     },
@@ -19,7 +18,7 @@ use {
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn toonlink_specialhiend_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spin : f32;
-    if IS_FUNNY[entry_id(fighter.module_accessor)] {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
         spin = rslash_charge_max_speed_funny;
     }
     else {
@@ -43,7 +42,7 @@ unsafe extern "C" fn toonlink_specialhiend_stop_or_something(fighter: &mut L2CFi
             let mut spin = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
             let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
             spin += rslash_charge_max_accel * stickx;
-            if IS_FUNNY[entry_id(fighter.module_accessor)]
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)
             && spin > rslash_charge_max_speed_funny {
                 spin = rslash_charge_max_speed_funny;
             }

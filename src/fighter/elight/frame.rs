@@ -9,7 +9,8 @@ use {
     crate::{
         common_funcs::*,
         vars::*,
-        gameplay::*
+        gameplay::*,
+        table_const::*
     }
 };
 
@@ -80,8 +81,8 @@ pub unsafe fn elight_fgc(fighter: &mut L2CFighterCommon) {
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
 fn elight_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
-            if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_ELIGHT_STATUS_KIND_FINAL_READY
@@ -106,7 +107,7 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
             MotionModule::set_frame(fighter.module_accessor, 25.0, false);
         }
 
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             elight_fgc(fighter);
         }
     }

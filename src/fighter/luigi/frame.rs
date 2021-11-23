@@ -31,7 +31,7 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_drop")
         && (CANCEL[entry_id(fighter.module_accessor)]
-        || IS_FUNNY[entry_id(fighter.module_accessor)]) {
+        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
 
@@ -47,7 +47,7 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
             EffectModule::kill_kind(fighter.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
         }
 
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             luigi_fgc(fighter);
         }
     }

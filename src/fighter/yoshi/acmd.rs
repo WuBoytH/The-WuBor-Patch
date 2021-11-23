@@ -7,10 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[acmd_script( agent = "yoshi", script = "game_attacks3", category = ACMD_GAME, low_priority )]
@@ -19,7 +16,7 @@ unsafe fn yoshi_ftilt(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let mut angle1 : u64 = 88;
         let mut angle2 : u64 = 85;
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             angle1 = 28;
             angle2 = 28;
         }
@@ -39,7 +36,7 @@ unsafe fn yoshi_ftilthi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let mut angle1 : u64 = 88;
         let mut angle2 : u64 = 85;
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             angle1 = 28;
             angle2 = 28;
         }
@@ -60,7 +57,7 @@ unsafe fn yoshi_ftiltlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let mut angle1 : u64 = 88;
         let mut angle2 : u64 = 85;
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             angle1 = 28;
             angle2 = 28;
         }
@@ -100,7 +97,7 @@ unsafe fn yoshi_dtilt(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         let mut angle : u64 = 28;
-        if IS_FUNNY[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             angle = 85;
         }
         macros::ATTACK(fighter, 0, 0, Hash40::new("tail1"), 4.5, angle, 30, 0, 67, 3.5, 1.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_SLAP, *ATTACK_REGION_TAIL);
@@ -155,7 +152,9 @@ unsafe fn yoshi_sspecialloop(fighter: &mut L2CAgentBase) {
 unsafe fn yoshi_tamago_throwed(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         let mut angle : u64 = 70;
-        if IS_FUNNY[entry_id(weapon.module_accessor)] {
+        let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let oboma = sv_battle_object::module_accessor(otarget_id);
+        if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             angle = 130;
         }
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 6.0, angle, 50, 0, 60, 6.5, 0.0, 1.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_YOSHI_EGG_HIT, *ATTACK_REGION_OBJECT);
@@ -166,7 +165,9 @@ unsafe fn yoshi_tamago_throwed(weapon: &mut L2CAgentBase) {
 unsafe fn yoshi_tamago_burst(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         let mut angle : u64 = 70;
-        if IS_FUNNY[entry_id(weapon.module_accessor)] {
+        let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let oboma = sv_battle_object::module_accessor(otarget_id);
+        if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             angle = 130;
         }
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 6.0, angle, 50, 0, 60, 6.5, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_YOSHI_EGG_HIT, *ATTACK_REGION_OBJECT);

@@ -105,7 +105,7 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             samusd_fgc(fighter);
         }
     }

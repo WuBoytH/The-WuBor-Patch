@@ -87,7 +87,7 @@ fn richter_frame(fighter: &mut L2CFighterCommon) {
         || is_damage_check(fighter.module_accessor, false)) {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
         }
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             richter_fgc(fighter);
         }
     }

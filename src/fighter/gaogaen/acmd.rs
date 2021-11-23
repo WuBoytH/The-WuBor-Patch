@@ -513,7 +513,8 @@ unsafe fn gaogaen_sspeciallariat(fighter: &mut L2CAgentBase) {
     if REVENGE[entry_id(fighter.module_accessor)] > 0 {
         let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(fighter.module_accessor, 0));
         let mut hitlag = 1.0 + 0.5 * DamageModule::damage(fighter.module_accessor, 0);
-        if dmg > 36.0 && IS_FUNNY[entry_id(fighter.module_accessor)] == false {
+        if dmg > 36.0
+        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
             dmg = 36.0;
             hitlag = 2.0;
         }

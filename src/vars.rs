@@ -54,10 +54,6 @@ pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
 
 // System Mechanics
-pub static mut AIR_WHIFF : [bool; 8] = [false; 8];
-pub static mut IS_FUNNY : [bool; 8] = [false; 8];
-pub static mut IS_FGC : [bool; 8] = [false; 8];
-pub static mut FGC_TRAINING : bool = false;
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
 pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
@@ -73,11 +69,14 @@ pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N : i32 = 0x20000116;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S : i32 = 0x20000117;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI : i32 = 0x20000118;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW : i32 = 0x20000119;
+pub const FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF : i32 = 0x2000011A;
+pub const FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY : i32 = 0x2000011B;
+pub const FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC : i32 = 0x2000011C;
+pub static mut FGC_TRAINING : bool = false;
 pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
 pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
-pub static mut COMMAND : [bool; 8] = [false; 8];
 pub const FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME : i32 = 0x100000ED;
 pub const FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID : i32 = 0x100000EE;
 
@@ -129,8 +128,8 @@ pub static mut FLASH_CANCEL : [bool; 8] = [false; 8];
 pub const FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED : i32 = 0x1000008;
 
 // Lucario
-pub static mut IS_SPIRIT_BOMB : [bool; 8] = [false; 8];
-pub static mut IS_SD_CANCEL : [bool; 8] = [false; 8];
+pub const FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SPIRIT_BOMB : i32 = 0x200000E5;
+pub const FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL : i32 = 0x200000E6;
 
 // Little Mac
 pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
@@ -200,25 +199,25 @@ pub const FIGHTER_DOLLY_STATUS_WORK_ID_FLAG_SPECIAL_N_FEINT : i32 = 0x21000010;
 pub static mut CALLBACK : [i32; 8] = [0; 8];
 
 // Yu Narukami
-pub static mut AIR_ACTION : [bool; 8] = [false; 8];
-pub static mut SHADOW_FRENZY : [bool; 8] = [false; 8];
-pub static mut AWAKENING : [bool; 8] = [false; 8];
-pub static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
-pub static mut TRAINING_TOOLS : [bool; 8] = [false; 8];
-pub static mut IS_EX : [bool; 8] = [false; 8];
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S : i32 = 0x200000E2;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_AWAKENING : i32 = 0x200000E3;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY : i32 = 0x200000E4;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE : i32 = 0x200000E5;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_IS_EX : i32 = 0x200000E6;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT : i32 = 0x200000E7;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB : i32 = 0x200000E8;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND : i32 = 0x200000E9;
+// pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_TRAINING_TOOLS : i32 = 0x200000EA;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE : i32 = 0x4C;
-pub static mut SP_LEVEL : [i32; 8] = [0; 8];
-pub static mut SP_GAUGE_TIMER : [i32; 8] = [0; 8];
-pub static mut SPENT_SP : [f32; 8] = [0.0; 8];
-pub static mut SP_GAUGE_MAX : [f32; 8] = [100.0; 8];
-pub static mut METER_GAIN : [f32; 8] = [0.0; 8];
-pub static mut METER_PENALTY : [f32; 8] = [0.0; 8];
-pub static mut ROMAN_MOVE : [f32; 8] = [0.0; 8];
-pub static mut ROMAN_ON_HIT : [bool; 8] = [false; 8];
-pub static mut IS_ROMAN_MOVE : [bool; 8] = [false; 8];
-pub static mut HEROIC_GRAB : [bool; 8] = [false; 8];
-pub static mut SP_FLASH : [i32; 8] = [0; 8];
-pub static mut START_SITUATION : [i32; 8] = [0; 8];
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP : i32 = 0x4D;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX : i32 = 0x4E;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY : i32 = 0x4F;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE : i32 = 0x50;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL : i32 = 0x100000C0;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER : i32 = 0x100000C1;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER : i32 = 0x100000C2;
+pub const FIGHTER_YU_STATUS_SPECIAL_HI_WORK_INT_START_SITUATION : i32 = 0x1100000A;
+pub const FIGHTER_YU_SPECIAL_LW_FLAG_ROMAN_MOVE : i32 = 0x21000015;
 pub const SP_1 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -6.0};
 pub const SP_2 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -2.0};
 pub const SP_3 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 2.0};
@@ -233,13 +232,8 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         let id = entry_id(boma);
         // let kind = utility::get_kind(boma);
 
-        AIR_WHIFF[id] = false;
-        IS_FUNNY[id] = false;
         if !smashball::is_training_mode() {
             FGC_TRAINING = false;
-        }
-        if !FGC_TRAINING {
-            IS_FGC[id] = false;
         }
         COUNTER_HIT_STATE[id] = 0;
         INPUT_TIMER[id] = 0;
@@ -254,14 +248,10 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         HIT_BY_SPECIAL_HITSTUN[id] = false;
         FGC_HITSTUN_MUL[id] = 1.2;
         SPECIAL_LW_TYPE[id] = 0;
-        COMMAND[id] = false;
 
         FINISH_SIGN[id] = 0;
 
         FLASH_CANCEL[id] = false;
-
-        IS_SPIRIT_BOMB[id] = false;
-        IS_SD_CANCEL[id] = false;
 
         FUNNY_JUMPS[id] = 10;
 
@@ -301,25 +291,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
 
         CALLBACK[id] = 0;
 
-        AIR_ACTION[id] = false;
-        SHADOW_FRENZY[id] = false;
-        CAN_ONE_MORE[id] = false;
-        IS_EX[id] = false;
-        SPENT_SP[id] = 0.0;
-        METER_GAIN[id] = 0.0;
-        METER_PENALTY[id] = 0.0;
-        ROMAN_MOVE[id] = 0.0;
-        IS_ROMAN_MOVE[id] = false;
-        HEROIC_GRAB[id] = false;
-        SP_FLASH[id] = 0;
-        START_SITUATION[id] = 0;
         _TIME_COUNTER[id] = 0;
-        if !(smashball::is_training_mode() && TRAINING_TOOLS[id]) {
-            SP_LEVEL[id] = 0;
-            AWAKENING[id] = false;
-            TRAINING_TOOLS[id] = false;
-            SP_GAUGE_MAX[id] = 100.0;
-        }
     }
 }
 

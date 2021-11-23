@@ -6,7 +6,6 @@ use {
     },
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         gameplay::*
     }
@@ -68,7 +67,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N);
         }
 
-        if IS_FGC[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             ganon_fgc(fighter);
         }
     }

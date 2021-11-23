@@ -104,16 +104,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             HIT_FRAME[entry_id(fighter.module_accessor)] = MotionModule::frame(fighter.module_accessor);
         }
-
-        // Remove an OPPONENT_BOMA if the opponent is dead.
-
-        if entry_id(fighter.module_accessor) < 8 {
-            if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
-                if StatusModule::status_kind(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) == *FIGHTER_STATUS_KIND_DEAD {
-                    OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
-                }
-            }
-        }
         
         // Command Inputs
 

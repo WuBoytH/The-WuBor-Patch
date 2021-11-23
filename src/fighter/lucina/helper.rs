@@ -13,7 +13,7 @@ use {
 #[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
-    if SP_GAUGE[entry_id(module_accessor)] > 0.0 {
+    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) > 0.0 {
         if SHADOW_FRENZY[entry_id(module_accessor)] {
             if onemore {
                 SPENT_SP[entry_id(module_accessor)] = 12.5;
@@ -26,7 +26,7 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
                 SP_GAUGE_TIMER[entry_id(module_accessor)] = 600;
             }
         }
-        else if SP_GAUGE[entry_id(module_accessor)] >= 25.0 {
+        else if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0 {
             SPENT_SP[entry_id(module_accessor)] = 25.0;
             spent = true;
             SP_GAUGE_TIMER[entry_id(module_accessor)] = 300;
@@ -123,13 +123,13 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
 
 #[inline(always)]
 pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
-    if SP_GAUGE[entry_id(module_accessor)] < 25.0 {
+    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) < 25.0 {
         SP_LEVEL[entry_id(module_accessor)] = 0;
     }
     else {
         while SP_LEVEL[entry_id(module_accessor)] < 6 {
-            if SP_GAUGE[entry_id(module_accessor)] >= SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0
-            && SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0 > SP_GAUGE[entry_id(module_accessor)] {
+            if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0
+            && SP_LEVEL[entry_id(module_accessor)] as f32 * 25.0 > WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) {
                 break;
             }
             SP_LEVEL[entry_id(module_accessor)] += 1;
@@ -141,11 +141,24 @@ pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) 
     else {
         SP_GAUGE_TIMER[entry_id(module_accessor)] = 300;
     }
-    SP_LEVEL[entry_id(module_accessor)] = (SP_GAUGE[entry_id(module_accessor)] / 25.0) as i32;
+    SP_LEVEL[entry_id(module_accessor)] = (WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) / 25.0) as i32;
     if SP_LEVEL[entry_id(module_accessor)] == 0 && !SHADOW_FRENZY[entry_id(module_accessor)] {
         sp_gauge_handler(module_accessor, true);
     }
     else {
         sp_gauge_handler(module_accessor, false);
     }
+}
+
+#[inline(always)]
+pub unsafe fn add_sp(module_accessor: *mut BattleObjectModuleAccessor, amount: f32) {
+    let mut sp_gauge = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+    sp_gauge += amount;
+    if sp_gauge < 0.0 {
+        sp_gauge = 0.0;
+    }
+    if sp_gauge > SP_GAUGE_MAX[entry_id(module_accessor)] {
+        sp_gauge = SP_GAUGE_MAX[entry_id(module_accessor)];
+    }
+    WorkModule::set_float(module_accessor, sp_gauge, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
 }

@@ -59,7 +59,6 @@ pub static mut IS_FUNNY : [bool; 8] = [false; 8];
 pub static mut IS_FGC : [bool; 8] = [false; 8];
 pub static mut FGC_TRAINING : bool = false;
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
-pub static mut OPPONENT_BOMA : [u64; 8] = [0; 8];
 pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
 pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
 pub static mut INPUT_TIMER : [i32; 8] = [0; 8];
@@ -80,6 +79,7 @@ pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 pub static mut COMMAND : [bool; 8] = [false; 8];
 pub const FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME : i32 = 0x100000ED;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID : i32 = 0x100000EE;
 
 // Character Specific
 
@@ -136,7 +136,9 @@ pub static mut IS_SD_CANCEL : [bool; 8] = [false; 8];
 pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
 
 // Shulk
-pub static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
+pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE : i32 = 0x53;
+pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER : i32 = 0x54;
+// pub static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
 
 // Ryu
 pub static mut EX_FOCUS : [bool; 8] = [false; 8];
@@ -204,7 +206,7 @@ pub static mut AWAKENING : [bool; 8] = [false; 8];
 pub static mut CAN_ONE_MORE : [bool; 8] = [false; 8];
 pub static mut TRAINING_TOOLS : [bool; 8] = [false; 8];
 pub static mut IS_EX : [bool; 8] = [false; 8];
-pub static mut SP_GAUGE : [f32; 8] = [0.0; 8];
+pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE : i32 = 0x4C;
 pub static mut SP_LEVEL : [i32; 8] = [0; 8];
 pub static mut SP_GAUGE_TIMER : [i32; 8] = [0; 8];
 pub static mut SPENT_SP : [f32; 8] = [0.0; 8];
@@ -240,9 +242,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
             IS_FGC[id] = false;
         }
         COUNTER_HIT_STATE[id] = 0;
-        OPPONENT_BOMA[id] = 0;
-        DAMAGE_TAKEN[id] = 0.0;
-        DAMAGE_TAKEN_PREV[id] = 0.0;
         INPUT_TIMER[id] = 0;
         QCF[id] = 0;
         QCB[id] = 0;
@@ -265,8 +264,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         IS_SD_CANCEL[id] = false;
 
         FUNNY_JUMPS[id] = 10;
-
-        BURST_RECOVER[id] = 0.0;
 
         EX_FOCUS[id] = false;
         EX_FLASH[id] = false;
@@ -318,7 +315,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         START_SITUATION[id] = 0;
         _TIME_COUNTER[id] = 0;
         if !(smashball::is_training_mode() && TRAINING_TOOLS[id]) {
-            SP_GAUGE[id] = 0.0;
             SP_LEVEL[id] = 0;
             AWAKENING[id] = false;
             TRAINING_TOOLS[id] = false;

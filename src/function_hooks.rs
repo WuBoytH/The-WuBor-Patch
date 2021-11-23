@@ -65,10 +65,10 @@ move_type_again: bool) -> u64 {
         if attacker_fighter_kind == *FIGHTER_KIND_KEN {
             if d_entry_id < 8
             && utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                OPPONENT_BOMA[a_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+                WorkModule::set_int64(attacker_boma, defender_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
             else {
-                OPPONENT_BOMA[a_entry_id] = 0;
+                WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
             if MotionModule::motion_kind(attacker_boma) != hash40("special_lw")
             && V_TRIGGER[a_entry_id] == false {
@@ -89,7 +89,7 @@ move_type_again: bool) -> u64 {
                 }
             }
             else {
-                OPPONENT_BOMA[a_entry_id] = 0;
+                WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
@@ -112,7 +112,7 @@ move_type_again: bool) -> u64 {
             if SEC_SEN_STATE[d_entry_id] {
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
                 || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                    OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
+                    WorkModule::set_int64(defender_boma, attacker_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
                     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -120,16 +120,17 @@ move_type_again: bool) -> u64 {
                     }
                 }
                 else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                    let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+                    let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                    let oboma = sv_battle_object::module_accessor(otarget_id);
                     if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                         OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                         OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
-                        OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+                        WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                     }
                     else {
                         OPPONENT_X[d_entry_id] = PostureModule::pos_x(oboma);
                         OPPONENT_Y[d_entry_id] = PostureModule::pos_y(oboma);
-                        OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut BattleObjectModuleAccessor) as u64;
+                        WorkModule::set_int64(defender_boma, otarget_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                         if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                             JostleModule::set_status(&mut *oboma, false);
                         }
@@ -138,7 +139,7 @@ move_type_again: bool) -> u64 {
                 else {
                     OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
                     OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
-                    OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+                    WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                 }
                 SECRET_SENSATION[d_entry_id] = true;
             }
@@ -168,19 +169,20 @@ move_type_again: bool) -> u64 {
         else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                OPPONENT_BOMA[d_entry_id] = (&mut *attacker_boma as *mut BattleObjectModuleAccessor) as u64;
+                WorkModule::set_int64(defender_boma, attacker_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
             else if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+                let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let oboma = sv_battle_object::module_accessor(otarget_id);
                 if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+                    WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                 }
                 else {
-                    OPPONENT_BOMA[d_entry_id] = (&mut *oboma as *mut BattleObjectModuleAccessor) as u64;
+                    WorkModule::set_int64(defender_boma, otarget_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                 }
             }
             else {
-                OPPONENT_BOMA[d_entry_id] = (&mut *defender_boma as *mut BattleObjectModuleAccessor) as u64;
+                WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
         }
     }

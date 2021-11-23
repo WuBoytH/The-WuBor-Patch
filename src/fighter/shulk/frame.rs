@@ -26,31 +26,35 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 
         // Damage Check
 
-        DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
-        if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] {
-            BURST_RECOVER[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)];
+        let damage = DamageModule::damage(fighter.module_accessor, 0);
+        if damage > WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE) {
+            let burst_recover = damage - WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE);
+            WorkModule::set_float(fighter.module_accessor, burst_recover, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
         }
-        DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
+        WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE);
 
         if StopModule::is_damage(fighter.module_accessor)
         && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
         && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW) {
-            DamageModule::add_damage(fighter.module_accessor, BURST_RECOVER[entry_id(fighter.module_accessor)] * -0.5, 0);
+            let burst_recover = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
+            DamageModule::add_damage(fighter.module_accessor, burst_recover * -0.5, 0);
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE_SELECT);
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_DEFAULT, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_EFFECT_HANDLE);
-            if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
+            let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+            if sv_battle_object::is_active(target_id) {
+                let target_boma = sv_battle_object::module_accessor(target_id);
                 let shulkpos = PostureModule::pos_x(fighter.module_accessor);
-                let opppos = PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor);
+                let opppos = PostureModule::pos_x(target_boma);
                 if shulkpos > opppos && PostureModule::lr(fighter.module_accessor) == 1.0 {
                     PostureModule::reverse_lr(fighter.module_accessor);
                 }
                 else if shulkpos < opppos && PostureModule::lr(fighter.module_accessor) == -1.0 {
                     PostureModule::reverse_lr(fighter.module_accessor);
                 }
-                OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
+                WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
             macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
             EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_sp_flash"), Hash40::new("head"), &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, 1.0, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, false, 0, 0, 0);

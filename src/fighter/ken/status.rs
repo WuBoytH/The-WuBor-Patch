@@ -365,8 +365,10 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         SlowModule::set_whole(fighter.module_accessor, 6, 0);
         macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
         macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
-        if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
-            DIFF_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) - PostureModule::pos_x(fighter.module_accessor);
+        let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+        if sv_battle_object::is_active(target_id) {
+            let target_boma = sv_battle_object::module_accessor(target_id);
+            DIFF_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(target_boma) - PostureModule::pos_x(fighter.module_accessor);
             if (DIFF_X[entry_id(fighter.module_accessor)] > 0.0 && PostureModule::lr(fighter.module_accessor) < 0.0)
             || (DIFF_X[entry_id(fighter.module_accessor)] < 0.0 && PostureModule::lr(fighter.module_accessor) > 0.0) {
                 PostureModule::reverse_lr(fighter.module_accessor);
@@ -379,7 +381,7 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             else {
                 DIFF_X[entry_id(fighter.module_accessor)] = 0.0;
             }
-            OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
+            WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
         }
         else {
             DIFF_X[entry_id(fighter.module_accessor)] = 0.0;

@@ -21,7 +21,8 @@ unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CHARGE_MAX);
     lucina_specialn_mmot_helper(fighter);
     if COMMAND[entry_id(fighter.module_accessor)] && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        let spent = -SPENT_SP[entry_id(fighter.module_accessor)];
+        add_sp(fighter.module_accessor, spent);
         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);

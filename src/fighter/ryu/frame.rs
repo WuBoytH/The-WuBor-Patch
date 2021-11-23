@@ -35,7 +35,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = -1;
             SECRET_SENSATION[entry_id(fighter.module_accessor)] = false;
             SEC_SEN_STATE[entry_id(fighter.module_accessor)] = false;
-            OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
+            // OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
         }
 
         // EX Focus Attack Check
@@ -156,10 +156,11 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
                         macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
                     }
-                    // macros::SLOW_OPPONENT(fighter, 100.0, 32.0);
-                    if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
+                    let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+                    if sv_battle_object::is_active(target_id) {
+                        let target_boma = sv_battle_object::module_accessor(target_id);
                         SlowModule::set(
-                            OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor,
+                            target_boma,
                             0,
                             100,
                             32,
@@ -173,27 +174,24 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     RYU_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
                     if RYU_X[entry_id(fighter.module_accessor)] == OPPONENT_X[entry_id(fighter.module_accessor)] {
                         OPPONENT_DIRECTION[entry_id(fighter.module_accessor)] = 12.0 * PostureModule::lr(fighter.module_accessor);
-                        SEC_SEN_DIREC[entry_id(fighter.module_accessor)] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F;
                     }
                     else if RYU_X[entry_id(fighter.module_accessor)] < OPPONENT_X[entry_id(fighter.module_accessor)] {
                         OPPONENT_DIRECTION[entry_id(fighter.module_accessor)] = 12.0;
                         if PostureModule::lr(fighter.module_accessor) == -1.0 {
                             PostureModule::reverse_lr(fighter.module_accessor);
                         }
-                        SEC_SEN_DIREC[entry_id(fighter.module_accessor)] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F;
                     }
                     else {
                         OPPONENT_DIRECTION[entry_id(fighter.module_accessor)] = -12.0;
                         if PostureModule::lr(fighter.module_accessor) == 1.0 {
                             PostureModule::reverse_lr(fighter.module_accessor);
                         }
-                        SEC_SEN_DIREC[entry_id(fighter.module_accessor)] = *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F;
                     }
-                    if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
-                        if (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() <= 12.0
-                        && StatusModule::situation_kind(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
-                            VERT_EXTRA[entry_id(fighter.module_accessor)] = 0.0;
-                        }
+                    if sv_battle_object::is_active(target_id) && {
+                        let target_boma = sv_battle_object::module_accessor(target_id);
+                        (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() <= 12.0
+                        && StatusModule::situation_kind(target_boma) == *SITUATION_KIND_GROUND } {
+                        VERT_EXTRA[entry_id(fighter.module_accessor)] = 0.0;
                     }
                     else {
                         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
@@ -208,15 +206,17 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     CAMERA[entry_id(fighter.module_accessor)] = true;
                 }
                 if SEC_SEN_TIMER[entry_id(fighter.module_accessor)] >= 0.0 {
-                    if OPPONENT_BOMA[entry_id(fighter.module_accessor)] != 0 {
+                    let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+                    if sv_battle_object::is_active(target_id) {
+                        let target_boma = sv_battle_object::module_accessor(target_id);
                         if (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() <= 12.0
-                        && StatusModule::situation_kind(OPPONENT_BOMA[entry_id(fighter.module_accessor)] as *mut BattleObjectModuleAccessor) == *SITUATION_KIND_GROUND {
+                        && StatusModule::situation_kind(target_boma) == *SITUATION_KIND_GROUND {
                             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                         }
                     }
-                    if StatusModule::status_kind(fighter.module_accessor) != SEC_SEN_DIREC[entry_id(fighter.module_accessor)] {
+                    if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
                         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-                        StatusModule::change_status_request_from_script(fighter.module_accessor, SEC_SEN_DIREC[entry_id(fighter.module_accessor)], true);
+                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, true);
                     }
                     if (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() > 12.0 {
                         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
@@ -244,7 +244,6 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     SlowModule::clear_whole(fighter.module_accessor);
                     JostleModule::set_status(fighter.module_accessor, true);
                     SEC_SEN_TIMER[entry_id(fighter.module_accessor)] = -0.6;
-                    OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
                 }
             }
             else if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r")

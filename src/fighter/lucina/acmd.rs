@@ -477,7 +477,8 @@ unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
     let kbg : i32;
     if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        let spent = -SPENT_SP[entry_id(fighter.module_accessor)];
+        add_sp(fighter.module_accessor, spent);
         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
@@ -588,7 +589,8 @@ unsafe fn lucina_sspecial1exp(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        let spent = -SPENT_SP[entry_id(fighter.module_accessor)];
+        add_sp(fighter.module_accessor, spent);
         SP_FLASH[entry_id(fighter.module_accessor)] = 40;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
@@ -837,7 +839,8 @@ unsafe fn lucina_sspecial2hiexp(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        let spent = -SPENT_SP[entry_id(fighter.module_accessor)];
+        add_sp(fighter.module_accessor, spent);
         SP_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
@@ -919,7 +922,8 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     if COMMAND[entry_id(fighter.module_accessor)]
     && spent_meter(fighter.module_accessor, false) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        let spent = -SPENT_SP[entry_id(fighter.module_accessor)];
+        add_sp(fighter.module_accessor, spent);
         SP_FLASH[entry_id(fighter.module_accessor)] = 60;
         IS_EX[entry_id(fighter.module_accessor)] = true;
         sp_diff_checker(fighter.module_accessor);
@@ -1003,7 +1007,8 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_dspecial(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        SP_GAUGE[entry_id(fighter.module_accessor)] -= SPENT_SP[entry_id(fighter.module_accessor)];
+        let spent = -SPENT_SP[entry_id(fighter.module_accessor)];
+        add_sp(fighter.module_accessor, spent);
         JostleModule::set_status(fighter.module_accessor, false);
         KineticModule::unable_energy_all(fighter.module_accessor);
         if ROMAN_ON_HIT[entry_id(fighter.module_accessor)] {

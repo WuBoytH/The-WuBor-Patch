@@ -31,7 +31,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             V_TRIGGER[entry_id(fighter.module_accessor)] = false;
             VT1_CANCEL[entry_id(fighter.module_accessor)] = false;
             SHORYUREPPA[entry_id(fighter.module_accessor)] = 0;
-            OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
+            WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
         }
 
         // V Gauge Building (only for blocked moves and getting hit)

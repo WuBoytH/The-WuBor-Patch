@@ -28,13 +28,14 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             SP_GAUGE_TIMER[entry_id(fighter.module_accessor)] = 0;
             if shadow_id(fighter.module_accessor) {
                 if SHADOW_FRENZY[entry_id(fighter.module_accessor)] {
-                    SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE[entry_id(fighter.module_accessor)] / 2.0;
+                    let sp_gauge = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+                    WorkModule::set_float(fighter.module_accessor, sp_gauge / 2.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
                     SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
                 }
             }
             else {
                 SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 100.0;
-                SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
+                WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
                 AWAKENING[entry_id(fighter.module_accessor)] = false;
             }
         }
@@ -44,12 +45,13 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Meter Controller
 
-        DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
-        if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]
+        let damage = DamageModule::damage(fighter.module_accessor, 0);
+        if damage > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]
         && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false {
-            SP_GAUGE[entry_id(fighter.module_accessor)] += (DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * (1.0/6.0);
+            let add = (damage - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * (1.0/6.0);
+            add_sp(fighter.module_accessor, add);
         }
-        DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
+        DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = damage;
 
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false {
@@ -60,25 +62,21 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 IS_EX[entry_id(fighter.module_accessor)] = false;
             }
             if IS_EX[entry_id(fighter.module_accessor)] == false {
-                METER_GAIN[entry_id(fighter.module_accessor)] = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false);
+                let mut meter_gain = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false);
                 if shadow_id(fighter.module_accessor) == false {
-                    METER_GAIN[entry_id(fighter.module_accessor)] *= 0.75;
+                    meter_gain *= 0.75;
                 }
                 if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                    METER_GAIN[entry_id(fighter.module_accessor)] *= 3.0;
+                    meter_gain *= 3.0;
                 }
                 if METER_PENALTY[entry_id(fighter.module_accessor)] > 0.0 {
-                    METER_GAIN[entry_id(fighter.module_accessor)] *= 0.1;
+                    meter_gain *= 0.1;
                 }
-                SP_GAUGE[entry_id(fighter.module_accessor)] += METER_GAIN[entry_id(fighter.module_accessor)];
+                add_sp(fighter.module_accessor, meter_gain);
             }
         }
 
-        if SP_GAUGE[entry_id(fighter.module_accessor)] > SP_GAUGE_MAX[entry_id(fighter.module_accessor)] {
-            SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE_MAX[entry_id(fighter.module_accessor)];
-        }
-
-        if SP_GAUGE[entry_id(fighter.module_accessor)] >= 25.0
+        if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0
         || SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
             if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
                 sp_glow_handler(fighter.module_accessor);
@@ -89,22 +87,12 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         // Training Mode Tools
 
-        if smashball::is_training_mode(){
+        if smashball::is_training_mode() {
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
-                if SP_GAUGE[entry_id(fighter.module_accessor)] > 25.0 {
-                    SP_GAUGE[entry_id(fighter.module_accessor)] -= 25.0
-                }
-                else {
-                    SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
-                }
+                add_sp(fighter.module_accessor, -25.0);
             }
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-                if SP_GAUGE[entry_id(fighter.module_accessor)] < SP_GAUGE_MAX[entry_id(fighter.module_accessor)] - 25.0 {
-                    SP_GAUGE[entry_id(fighter.module_accessor)] += 25.0
-                }
-                else {
-                    SP_GAUGE[entry_id(fighter.module_accessor)] = SP_GAUGE_MAX[entry_id(fighter.module_accessor)];
-                }
+                add_sp(fighter.module_accessor, 25.0);
             }
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
                 if TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
@@ -124,7 +112,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if SP_LEVEL[entry_id(fighter.module_accessor)] != (SP_GAUGE[entry_id(fighter.module_accessor)] / 25.0) as i32 {
+        if SP_LEVEL[entry_id(fighter.module_accessor)] != (WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) / 25.0) as i32 {
             sp_diff_checker(fighter.module_accessor);
         }
 
@@ -147,10 +135,10 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if SHADOW_FRENZY[entry_id(fighter.module_accessor)] == true {
                 if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
                     if IS_FUNNY[entry_id(fighter.module_accessor)] {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] -= 1.0/64.0;
+                        add_sp(fighter.module_accessor, -1.0/64.0);
                     }
                     else {
-                        SP_GAUGE[entry_id(fighter.module_accessor)] -= 1.0/16.0;
+                        add_sp(fighter.module_accessor, -1.0/16.0);
                     }
                 }
             }
@@ -181,15 +169,15 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 && sv_information::is_ready_go() {
                     DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
                     SP_GAUGE_MAX[entry_id(fighter.module_accessor)] = 150.0;
-                    SP_GAUGE[entry_id(fighter.module_accessor)] += 50.0;
+                    add_sp(fighter.module_accessor, 50.0);
                     AWAKENING[entry_id(fighter.module_accessor)] = true;
                     macros::FT_START_CUTIN(fighter);
                 }
             }
         }
 
-        if SP_GAUGE[entry_id(fighter.module_accessor)] <= 0.0{
-            SP_GAUGE[entry_id(fighter.module_accessor)] = 0.0;
+        if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) <= 0.0 {
+            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
             SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
         }
 
@@ -216,7 +204,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
                 else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
-                && SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0
+                && WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 100.0
                 && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false
                 && shadow_id(fighter.module_accessor) {
                     fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
@@ -253,7 +241,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         }
                     }
                     else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
-                    && SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0
+                    && WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 100.0
                     && SHADOW_FRENZY[entry_id(fighter.module_accessor)] == false
                     && shadow_id(fighter.module_accessor) {
                         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
@@ -298,11 +286,11 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         // Shadow Frenzy Check
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_l") || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r") {
-            if SP_GAUGE[entry_id(fighter.module_accessor)] == 100.0 && shadow_id(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+            if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 100.0 && shadow_id(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                 SHADOW_FRENZY[entry_id(fighter.module_accessor)] = true;
             }
         }
-        else if SP_GAUGE[entry_id(fighter.module_accessor)] == 0.0 {
+        else if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 0.0 {
             SHADOW_FRENZY[entry_id(fighter.module_accessor)] = false;
         }
 

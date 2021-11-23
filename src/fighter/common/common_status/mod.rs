@@ -3,6 +3,7 @@ mod jump_squat;
 mod tread_jump;
 mod shield;
 pub mod attack;
+// mod attack_3_common;
 mod attack_air;
 mod catch;
 mod damage_air;
@@ -15,6 +16,7 @@ pub fn install() {
     tread_jump::install();
     shield::install();
     attack::install();
+    // attack_3_common::install();
     attack_air::install();
     catch::install();
     damage_air::install();

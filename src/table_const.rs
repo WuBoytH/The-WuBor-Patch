@@ -3,7 +3,7 @@
 
 pub const FIGHTER_KIND:                   i32 = 0x2;
 pub const OBJECT_ID:                      i32 = 0x3;
-
+pub const FIGHTER:                        i32 = 0x4;
 pub const MODULE_ACCESSOR:                i32 = 0x5;
 
 pub const INIT_STATUS_FUNC:               i32 = 0x7;

@@ -22,7 +22,8 @@ use {
                 yu_specialns_pre,
                 yu_speciallw_pre,
                 yu_check_special_command
-            }
+            },
+            trail::agent_init::trail_guard_cont_pre
         }
     }
 };
@@ -106,6 +107,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         // else if fighter_kind == *FIGHTER_KIND_RYU {
         //     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
         // }
+        else if fighter_kind == *FIGHTER_KIND_TRAIL {
+            fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
+        }
     }
 }
 

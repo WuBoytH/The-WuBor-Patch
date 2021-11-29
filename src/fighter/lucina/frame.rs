@@ -46,12 +46,13 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         // Meter Controller
 
         let damage = DamageModule::damage(fighter.module_accessor, 0);
-        if damage > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]
+        let damage_prev = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
+        if damage > damage_prev
         && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-            let add = (damage - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) * (1.0/6.0);
+            let add = (damage - damage_prev) * (1.0/6.0);
             add_sp(fighter.module_accessor, add);
         }
-        DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = damage;
+        WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
@@ -306,7 +307,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
                 }
-                if QCB[entry_id(fighter.module_accessor)] > 3 {
+                if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP) > 3 {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
                 }
                 else {

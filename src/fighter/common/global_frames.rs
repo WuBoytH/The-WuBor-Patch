@@ -10,7 +10,8 @@ use {
     crate::{
         common_funcs::*,
         vars::*
-    }
+    },
+    super::common_param::*
 };
 
 #[inline(always)]
@@ -108,191 +109,191 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         // Command Inputs
 
         let dir = get_command_stick_direction(fighter.module_accessor, true);
-        if INPUT_TIMER[entry_id(fighter.module_accessor)] <= 3 {
-            INPUT_TIMER[entry_id(fighter.module_accessor)] += 1;
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER) <= command_input_life {
+            WorkModule::inc_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER);
         }
         else {
-            QCF[entry_id(fighter.module_accessor)] = 0;
-            QCB[entry_id(fighter.module_accessor)] = 0;
-            SRK[entry_id(fighter.module_accessor)] = 0;
+            reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
+            reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
+            reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
         }
+
+        let qcb = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
+        let qcf = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
+        let srk = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
 
         // Quarter Circle Back
 
-        if QCB[entry_id(fighter.module_accessor)] == 0 {
+        if qcb == 0 {
             if dir == 2 {
-                QCB[entry_id(fighter.module_accessor)] = 1;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
         }
-        else if QCB[entry_id(fighter.module_accessor)] == 1 {
+        else if qcb == 1 {
             if dir == 1 {
-                QCB[entry_id(fighter.module_accessor)] = 2;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
             else if dir != 4
             && dir != 1
             && dir != 2 {
-                QCB[entry_id(fighter.module_accessor)] = 0;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
         }
-        else if QCB[entry_id(fighter.module_accessor)] == 2 {
+        else if qcb == 2 {
             if dir == 4 {
-                QCB[entry_id(fighter.module_accessor)] = 3;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
             else if dir != 4
             && dir != 1
             && dir != 7 {
-                QCB[entry_id(fighter.module_accessor)] = 0;
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
         }
-        else if QCB[entry_id(fighter.module_accessor)] == 3 {
+        else if qcb == 3 {
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
             || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                QCB[entry_id(fighter.module_accessor)] = 13;
+                WorkModule::set_int(fighter.module_accessor, 13, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
             else {
                 if dir != 4
                 && dir != 7
                 && dir != 5 {
-                    QCB[entry_id(fighter.module_accessor)] = 0;
+                    reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
                 }
             }
         }
-        else if QCB[entry_id(fighter.module_accessor)] > 3 {
-            QCB[entry_id(fighter.module_accessor)] -= 1;
-            if QCB[entry_id(fighter.module_accessor)] == 3 {
-                QCB[entry_id(fighter.module_accessor)] = 0;
+        else if qcb > 3 {
+            WorkModule::dec_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
+            if qcb == 3 {
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
             }
             else {
                 if dir != 4
                 && dir != 7
                 && dir != 5 {
-                    QCB[entry_id(fighter.module_accessor)] = 0;
+                    reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
                 }
             }
         }
 
         // Quarter Circle Forward
 
-        if QCF[entry_id(fighter.module_accessor)] == 0 {
+        if qcf == 0 {
             if dir == 2 {
-                QCF[entry_id(fighter.module_accessor)] = 1;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
         }
-        else if QCF[entry_id(fighter.module_accessor)] == 1 {
+        else if qcf == 1 {
             if dir == 3 {
-                QCF[entry_id(fighter.module_accessor)] = 2;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
             else if dir != 6
             && dir != 3
             && dir != 2 {
-                QCF[entry_id(fighter.module_accessor)] = 0;
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
         }
-        else if QCF[entry_id(fighter.module_accessor)] == 2 {
+        else if qcf == 2 {
             if dir == 6 {
-                QCF[entry_id(fighter.module_accessor)] = 3;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
             else if dir != 6
             && dir != 3
             && dir != 9 {
-                QCF[entry_id(fighter.module_accessor)] = 0;
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
         }
-        else if QCF[entry_id(fighter.module_accessor)] == 3 {
+        else if qcf == 3 {
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
             || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                QCF[entry_id(fighter.module_accessor)] = 13;
+                WorkModule::set_int(fighter.module_accessor, 13, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
             else {
                 if dir != 6
                 && dir != 9
                 && dir != 5 {
-                    QCF[entry_id(fighter.module_accessor)] = 0;
+                    reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
                 }
             }
         }
-        else if QCF[entry_id(fighter.module_accessor)] > 3 {
-            QCF[entry_id(fighter.module_accessor)] -= 1;
-            if QCF[entry_id(fighter.module_accessor)] == 3 {
-                QCF[entry_id(fighter.module_accessor)] = 0;
+        else if qcf > 3 {
+            WorkModule::dec_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
+            if qcf == 3 {
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
             }
             else {
                 if dir != 6
                 && dir != 9
                 && dir != 5 {
-                    QCF[entry_id(fighter.module_accessor)] = 0;
+                    reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
                 }
             }
         }
 
         // Shoryuken
 
-        if SRK[entry_id(fighter.module_accessor)] == 0 {
-            if dir == 6 {
-                SRK[entry_id(fighter.module_accessor)] = 1;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+        if srk == 0 {
+            if dir == 6
+            || dir == 9
+            || dir == 3 {
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
         }
-        else if SRK[entry_id(fighter.module_accessor)] == 1 {
-            if dir == 2 {
-                SRK[entry_id(fighter.module_accessor)] = 2;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+        else if srk == 1 {
+            if dir == 2
+            || dir == 1 {
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
             else if dir != 6
             && dir != 3
-            && dir != 2 {
-                SRK[entry_id(fighter.module_accessor)] = 0;
+            && dir != 2
+            && dir != 5 {
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
         }
-        else if SRK[entry_id(fighter.module_accessor)] == 2 {
-            if dir == 3 {
-                SRK[entry_id(fighter.module_accessor)] = 3;
-                INPUT_TIMER[entry_id(fighter.module_accessor)] = 0;
+        else if srk == 2 {
+            if dir == 3
+            || dir == 6 {
+                inc_command(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
-            else if dir != 6
-            && dir != 3
-            && dir != 2 {
-                SRK[entry_id(fighter.module_accessor)] = 0;
+            else if dir != 3
+            && dir != 2
+            && dir != 1 {
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
         }
-        else if SRK[entry_id(fighter.module_accessor)] == 3 {
+        else if srk == 3 {
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
             || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-                SRK[entry_id(fighter.module_accessor)] = 13;
+                WorkModule::set_int(fighter.module_accessor, 13, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
             else {
                 if dir != 6
                 && dir != 2
                 && dir != 3
-                && dir != 5 {
-                    SRK[entry_id(fighter.module_accessor)] = 0;
+                && dir != 5
+                && dir != 9 {
+                    reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
                 }
             }
         }
-        else if SRK[entry_id(fighter.module_accessor)] > 3 {
-            SRK[entry_id(fighter.module_accessor)] -= 1;
-            if SRK[entry_id(fighter.module_accessor)] == 3 {
-                SRK[entry_id(fighter.module_accessor)] = 0;
+        else if srk > 3 {
+            WorkModule::dec_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
+            if srk == 3 {
+                reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
             }
             else {
                 if dir != 6
                 && dir != 2
                 && dir != 3
                 && dir != 5 {
-                    SRK[entry_id(fighter.module_accessor)] = 0;
+                    reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
                 }
             }
         }

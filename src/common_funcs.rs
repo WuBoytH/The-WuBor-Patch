@@ -1,6 +1,9 @@
-use smash::{
-    app::{lua_bind::*, *},
-    lib::lua_const::*
+use {
+    smash::{
+        app::{lua_bind::*, *},
+        lib::lua_const::*
+    },
+    crate::vars::*
 };
 
 pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor, is_prev : bool) -> bool {
@@ -133,12 +136,15 @@ pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModu
             stick_x *= -1.0;
         }
     }
+    // println!("Player {} Stick Dir: {}", WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID), ControlModule::get_stick_dir(module_accessor));
+    // println!("Player {} Stick Angle: {}", WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID), ControlModule::get_stick_angle(module_accessor));
+    // let stick_angle = ControlModule::get_stick_angle(module_accessor);
 
     if stick_x >= 0.4 {
-        if ControlModule::get_stick_y(module_accessor) <= -0.4 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.25 {
             return 3;
         }
-        else if ControlModule::get_stick_y(module_accessor) >= 0.4 {
+        else if ControlModule::get_stick_y(module_accessor) >= 0.25 {
             return 9;
         }
         else {
@@ -146,10 +152,10 @@ pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModu
         }
     }
     else if stick_x <= -0.4 {
-        if ControlModule::get_stick_y(module_accessor) <= -0.4 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.25 {
             return 1;
         }
-        else if ControlModule::get_stick_y(module_accessor) >= 0.4 {
+        else if ControlModule::get_stick_y(module_accessor) >= 0.25 {
             return 7;
         }
         else {
@@ -157,10 +163,10 @@ pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModu
         }
     }
     else {
-        if ControlModule::get_stick_y(module_accessor) <= -0.4 {
+        if ControlModule::get_stick_y(module_accessor) <= -0.25 {
             return 2;
         }
-        else if ControlModule::get_stick_y(module_accessor) >= 0.4 {
+        else if ControlModule::get_stick_y(module_accessor) >= 0.25 {
             return 8;
         }
         else {
@@ -182,4 +188,10 @@ pub unsafe fn count_down(module_accessor: *mut BattleObjectModuleAccessor, flag:
     let global_slow_rate = sv_information::slow_rate();
     let counter = WorkModule::get_float(module_accessor, flag) - (amount * slow_rate * global_slow_rate);
     WorkModule::set_float(module_accessor, counter, flag);
+}
+
+
+pub unsafe fn inc_command(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
+    WorkModule::inc_int(module_accessor, flag);
+    WorkModule::set_int(module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER);
 }

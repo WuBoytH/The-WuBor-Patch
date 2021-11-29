@@ -54,15 +54,16 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        DAMAGE_TAKEN[entry_id(fighter.module_accessor)] = DamageModule::damage(fighter.module_accessor, 0);
-        if DAMAGE_TAKEN[entry_id(fighter.module_accessor)] > DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]
+        let damage = DamageModule::damage(fighter.module_accessor, 0);
+        let damage_prev = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
+        if damage > damage_prev
         && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_step_b") {
-            V_GAUGE[entry_id(fighter.module_accessor)] += (DAMAGE_TAKEN[entry_id(fighter.module_accessor)] - DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)]) as i32 * 2;
+            V_GAUGE[entry_id(fighter.module_accessor)] += (damage - damage_prev) as i32 * 2;
             if V_GAUGE[entry_id(fighter.module_accessor)] > 900 {
                 V_GAUGE[entry_id(fighter.module_accessor)] = 900;
             }
         }
-        DAMAGE_TAKEN_PREV[entry_id(fighter.module_accessor)] = DAMAGE_TAKEN[entry_id(fighter.module_accessor)];
+        WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
         // V-Gauge Effects
 

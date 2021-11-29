@@ -55,12 +55,6 @@ pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
 
 // System Mechanics
 pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
-pub static mut DAMAGE_TAKEN : [f32; 8] = [0.0; 8];
-pub static mut DAMAGE_TAKEN_PREV : [f32; 8] = [0.0; 8];
-pub static mut INPUT_TIMER : [i32; 8] = [0; 8];
-pub static mut QCF : [i32; 8] = [0; 8];
-pub static mut QCB : [i32; 8] = [0; 8];
-pub static mut SRK : [i32; 8] = [0; 8];
 pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
@@ -79,6 +73,11 @@ pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
 pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
 pub const FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME : i32 = 0x100000ED;
 pub const FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID : i32 = 0x100000EE;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER : i32 = 0x100000EF;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP : i32 = 0x100000F0;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP : i32 = 0x100000F1;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP : i32 = 0x100000F2;
+pub const FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV : i32 = 0x5F;
 
 // Character Specific
 
@@ -236,10 +235,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
             FGC_TRAINING = false;
         }
         COUNTER_HIT_STATE[id] = 0;
-        INPUT_TIMER[id] = 0;
-        QCF[id] = 0;
-        QCB[id] = 0;
-        SRK[id] = 0;
         IS_DK[id] = false;
         CANCEL[id] = false;
         HIT_FRAME[id] = 0.0;

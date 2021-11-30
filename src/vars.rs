@@ -119,10 +119,6 @@ pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND : i32 = 0x2100
 
 // Wario
 pub const FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN : i32 = 0x100000C4;
-// pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
-
-// Wolf
-pub static mut FLASH_CANCEL : [bool; 8] = [false; 8];
 
 // Toon Link
 pub const FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED : i32 = 0x1000008;
@@ -137,7 +133,6 @@ pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
 // Shulk
 pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE : i32 = 0x53;
 pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER : i32 = 0x54;
-// pub static mut BURST_RECOVER: [f32; 8] = [0.0; 8];
 
 // Ryu
 pub static mut EX_FOCUS : [bool; 8] = [false; 8];
@@ -244,10 +239,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         HIT_BY_SPECIAL_HITSTUN[id] = false;
         FGC_HITSTUN_MUL[id] = 1.2;
         SPECIAL_LW_TYPE[id] = 0;
-
-        // FINISH_SIGN[id] = 0;
-
-        FLASH_CANCEL[id] = false;
 
         FUNNY_JUMPS[id] = 10;
 

@@ -8,7 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     crate::{
-        common_funcs::*,
+        // common_funcs::*,
         vars::*
     }
 };
@@ -27,25 +27,25 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-            FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
-        }
+        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
+        //     WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
+        // }
 
         // Wario can now move during his back throw.
 
-        if (MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_l")
-        || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_r"))
-        && MotionModule::frame(fighter.module_accessor) == 10.0 {
-            FINISH_SIGN[entry_id(fighter.module_accessor)] += 1;
-            if FINISH_SIGN[entry_id(fighter.module_accessor)] > 15 {
-                FINISH_SIGN[entry_id(fighter.module_accessor)] = 15;
-            }
-        }
+        // if (MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_l")
+        // || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_r"))
+        // && MotionModule::frame(fighter.module_accessor) == 10.0 {
+        //     WorkModule::inc_int(fighter.module_accessor, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
+            // if FINISH_SIGN[entry_id(fighter.module_accessor)] > 15 {
+            //     FINISH_SIGN[entry_id(fighter.module_accessor)] = 15;
+            // }
+        // }
 
-        if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-        && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-            FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
-        }
+        // if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+        // && StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        //     FINISH_SIGN[entry_id(fighter.module_accessor)] = 0;
+        // }
     }
 }
 

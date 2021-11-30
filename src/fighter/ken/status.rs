@@ -60,7 +60,7 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     }
     if ComboModule::count(fighter.module_accessor) == 1 {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let current_frame = fighter.global_table[CURRENT_FRAME].get_f32();
+            let current_frame = fighter.global_table[MOTION_FRAME].get_f32();
             let attack_start_cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame"));
             if current_frame < attack_start_cancel_frame {
                 if ryu_kara_cancel(fighter).get_bool() {

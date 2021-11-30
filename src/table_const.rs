@@ -7,14 +7,14 @@ pub const FIGHTER:                        i32 = 0x4;
 pub const MODULE_ACCESSOR:                i32 = 0x5;
 
 pub const INIT_STATUS_FUNC:               i32 = 0x7;
-pub const IS_STOPPING:                    i32 = 0x8;
+pub const IN_HITLAG:                      i32 = 0x8;
 pub const STATUS_KIND_INTERRUPT:          i32 = 0x9;
 pub const PREV_STATUS_KIND:               i32 = 0xA;
 pub const STATUS_KIND:                    i32 = 0xB;
 pub const STATUS_COUNT:                   i32 = 0xC;
 
-pub const CURRENT_FRAME:                  i32 = 0xE;
-pub const CURRENT_FRAME2:                 i32 = 0xF;
+pub const MOTION_FRAME:                   i32 = 0xE;
+pub const MOTION_FRAME_NO_INTERP:         i32 = 0xF;
 
 pub const SUB_STATUS3:                    i32 = 0x13;
 pub const SUB_STATUS2:                    i32 = 0x14;

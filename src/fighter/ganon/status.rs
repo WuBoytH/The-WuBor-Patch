@@ -105,7 +105,7 @@ unsafe fn ganon_sspecialaircatch_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn ganon_specialairscatch_mainloop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut val = 0;
-    if fighter.global_table[CURRENT_FRAME].get_f32() == 1.0 {
+    if fighter.global_table[MOTION_FRAME].get_f32() == 1.0 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_catch"), 1.0, 1.0, false, 0.0, false, false);
         fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -114,7 +114,7 @@ unsafe extern "C" fn ganon_specialairscatch_mainloop(fighter: &mut L2CFighterCom
         sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         fighter.clear_lua_stack();
     }
-    if fighter.global_table[CURRENT_FRAME].get_f32() >= 1.0 {
+    if fighter.global_table[MOTION_FRAME].get_f32() >= 1.0 {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
         }

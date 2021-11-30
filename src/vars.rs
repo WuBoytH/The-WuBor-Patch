@@ -118,7 +118,8 @@ pub const FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y : i32 = 0x10000
 pub const FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND : i32 = 0x21000014;
 
 // Wario
-pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
+pub const FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN : i32 = 0x100000C4;
+// pub static mut FINISH_SIGN : [i32; 8] = [0; 8];
 
 // Wolf
 pub static mut FLASH_CANCEL : [bool; 8] = [false; 8];
@@ -244,7 +245,7 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         FGC_HITSTUN_MUL[id] = 1.2;
         SPECIAL_LW_TYPE[id] = 0;
 
-        FINISH_SIGN[id] = 0;
+        // FINISH_SIGN[id] = 0;
 
         FLASH_CANCEL[id] = false;
 

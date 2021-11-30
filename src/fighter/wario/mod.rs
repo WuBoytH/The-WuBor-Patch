@@ -1,7 +1,9 @@
 mod acmd;
-mod frame;
+// mod frame;
+mod status;
 
 pub fn install() {
     acmd::install();
-    frame::install();
+    // frame::install();
+    status::install();
 }

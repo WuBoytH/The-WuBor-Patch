@@ -6,7 +6,8 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*
+    smashline::*,
+    crate::vars::*
 };
 
 #[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
@@ -78,11 +79,20 @@ unsafe fn wario_dspecialfly(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "wario", scripts = ["game_appeallwl", "game_appeallwr"], category = ACMD_GAME, low_priority )]
+unsafe fn wario_dappeal(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        WorkModule::inc_int(fighter.module_accessor, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         wario_dspecials,
         wario_dspecialm,
         wario_dspeciall,
-        wario_dspecialfly
+        wario_dspecialfly,
+        wario_dappeal
     );
 }

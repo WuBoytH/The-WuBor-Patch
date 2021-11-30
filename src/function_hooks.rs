@@ -593,17 +593,17 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
         else if fighter_kind == *FIGHTER_KIND_WARIO {
             if param_hash == hash40("gass_middle_time") {
-                if FINISH_SIGN[entry_id(boma)] > 0 {
+                if WorkModule::get_int(boma, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN) > 0 {
                     return 1.0;
                 }
             }
             else if param_hash == hash40("gass_large_time") {
-                if FINISH_SIGN[entry_id(boma)] > 8 {
+                if WorkModule::get_int(boma, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN) > 6 {
                     return 1.0;
                 }
             }
             else if param_hash == hash40("gass_max_time") {
-                if FINISH_SIGN[entry_id(boma)] >= 15 {
+                if WorkModule::get_int(boma, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN) >= 14 {
                     return 1.0;
                 }
             }

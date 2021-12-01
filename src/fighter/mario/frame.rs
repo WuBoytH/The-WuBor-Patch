@@ -48,7 +48,9 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
             jump_cancel = 1;
         }
         else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true);
+            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+                return;
+            }
         }
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,

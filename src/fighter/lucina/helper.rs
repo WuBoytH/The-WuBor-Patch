@@ -36,6 +36,26 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
 }
 
 #[inline(always)]
+pub unsafe fn spent_meter_super(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    let mut spent = false;
+    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) > 0.0 {
+        if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+            WorkModule::set_float(module_accessor, 25.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+            spent = true;
+        }
+        else if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 50.0 {
+            WorkModule::set_float(module_accessor, 50.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+            spent = true;
+        }
+    }
+    if spent {
+        WorkModule::set_int(module_accessor, 300, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
+        WorkModule::set_float(module_accessor, 360.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY);
+    }
+    return spent;
+}
+
+#[inline(always)]
 pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_status_joint(module_accessor, Hash40::new("waist"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);

@@ -37,10 +37,19 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
         ].to_vec();
     }
     else if [
+        *FIGHTER_STATUS_KIND_ATTACK_DASH
+    ].contains(&status) {
+        if MotionModule::frame(fighter.module_accessor) < 16.0 {
+            if fighter.global_table[0x20].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
+            && spent_meter(fighter.module_accessor, false) {
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_ATTACK_DASH_BIG_GAMBLE);
+            }
+        }
+    }
+    else if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_HI3
@@ -83,7 +92,7 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-
+        
         // Reset Vars
         
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {

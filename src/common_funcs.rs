@@ -2,8 +2,7 @@ use {
     smash::{
         app::{lua_bind::*, *},
         lib::lua_const::*
-    },
-    crate::vars::*
+    }
 };
 
 pub unsafe fn is_damage_check(module_accessor : *mut BattleObjectModuleAccessor, is_prev : bool) -> bool {
@@ -190,8 +189,7 @@ pub unsafe fn count_down(module_accessor: *mut BattleObjectModuleAccessor, flag:
     WorkModule::set_float(module_accessor, counter, flag);
 }
 
-
-pub unsafe fn inc_command(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
+pub unsafe fn inc_command(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, timer_flag: i32) {
     WorkModule::inc_int(module_accessor, flag);
-    WorkModule::set_int(module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER);
+    WorkModule::set_int(module_accessor, 0, timer_flag);
 }

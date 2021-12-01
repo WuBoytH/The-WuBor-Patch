@@ -102,8 +102,15 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         // Checks what frame you hit the opponent.
 
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+        if WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0
+        && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0 {
+            count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
+        }
+
+        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
             HIT_FRAME[entry_id(fighter.module_accessor)] = MotionModule::frame(fighter.module_accessor);
+            WorkModule::set_float(fighter.module_accessor, 10.0, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         }
         
         // Command Inputs

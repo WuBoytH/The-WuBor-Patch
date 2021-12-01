@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::L2CAgentBase,
+        lua2cpp::L2CFighterCommon,
         phx::Hash40,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
@@ -8,52 +8,42 @@ use {
     smash_script::*,
     crate::{
         common_funcs::*,
-        vars::*
+        vars::*,
+        table_const::*,
+        cancels::*
     }
 };
 
-pub unsafe fn jump_cancel_check_hit(agent: &mut L2CAgentBase, jump_on_block: bool) {
-    if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0
-    && ((ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
-    && ControlModule::is_enable_flick_jump(agent.module_accessor))
-    || ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0) {
-        if StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
-            StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
-        else if WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-            StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
+pub unsafe fn jump_cancel_check_hit(fighter: &mut L2CFighterCommon, jump_on_block: bool) -> L2CValue {
+    if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
+    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+    && WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0 {
+        let sit = fighter.global_table[SITUATION_KIND].get_i32();
+        jump_cancel_common(fighter, sit.into())
+    }
+    else {
+        false.into()
+    }
+}
+
+pub unsafe fn jump_cancel_check_exception(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let sit = fighter.global_table[SITUATION_KIND].get_i32();
+    jump_cancel_common(fighter, sit.into())
+}
+
+pub unsafe fn wall_jump_check(fighter: &mut L2CFighterCommon) {
+    if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32)
+    || GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
+        if (ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
+        && ControlModule::is_enable_flick_jump(fighter.module_accessor))
+        || ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
         }
     }
 }
 
-pub unsafe fn jump_cancel_check_exception(agent: &mut L2CAgentBase) {
-    if (ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
-    && ControlModule::is_enable_flick_jump(agent.module_accessor))
-    || ControlModule::get_command_flag_cat(agent.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
-        if StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
-            StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
-        else if WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) < WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX) {
-            StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_JUMP_AERIAL, true);
-        }
-    }
-}
-
-pub unsafe fn wall_jump_check(module_accessor: *mut BattleObjectModuleAccessor) {
-    if GroundModule::is_wall_touch_line(module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32)
-    || GroundModule::is_wall_touch_line(module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
-        if (ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
-        && ControlModule::is_enable_flick_jump(module_accessor))
-        || ControlModule::get_command_flag_cat(module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0 {
-            StatusModule::change_status_request_from_script(module_accessor, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
-        }
-    }
-}
-
-pub unsafe fn dash_cancel_check(agent: &mut L2CAgentBase, dash_on_block: bool, reverse: bool) {
+pub unsafe fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: bool, reverse: bool) -> L2CValue {
     let dir;
     let cat;
     let status;
@@ -67,156 +57,96 @@ pub unsafe fn dash_cancel_check(agent: &mut L2CAgentBase, dash_on_block: bool, r
         cat = *FIGHTER_PAD_CMD_CAT1_FLAG_DASH;
         status = *FIGHTER_STATUS_KIND_DASH;
     }
-    if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0
-    && ControlModule::get_command_flag_cat(agent.module_accessor, 0) & cat != 0
-    && get_command_stick_direction(agent.module_accessor, true) == dir {
-        StatusModule::change_status_request_from_script(agent.module_accessor, status, true);
+    if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
+    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+    && MotionModule::frame(fighter.module_accessor) <= HIT_FRAME[entry_id(fighter.module_accessor)] + 11.0
+    && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
+    && get_command_stick_direction(fighter.module_accessor, true) == dir {
+        StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
+        return true.into();
     }
+    false.into()
 }
 
-pub unsafe fn critical_zoom(agent: &mut L2CAgentBase, rate : u8, frames : f32, zoom : f32) {
-    if !SoundModule::is_playing(agent.module_accessor, Hash40::new("se_common_finishhit")) {
-        macros::EFFECT(agent, Hash40::new("sys_bg_criticalhit"),Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+pub unsafe fn critical_zoom(fighter: &mut L2CFighterCommon, rate : u8, frames : f32, zoom : f32) {
+    if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
+        macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"),Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         if rate != 0 {
-            SlowModule::set_whole(agent.module_accessor, rate, 0);
+            SlowModule::set_whole(fighter.module_accessor, rate, 0);
         }
-        if FighterUtil::get_opponent_fighter_num(agent.module_accessor, true) < 2 {
-            macros:: CAM_ZOOM_IN_arg5(agent, frames, 0.0, zoom, 0.0, 0.0);
+        if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
+            macros:: CAM_ZOOM_IN_arg5(fighter, frames, 0.0, zoom, 0.0, 0.0);
         }
-        macros::PLAY_SE(agent, Hash40::new("se_common_criticalhit"));
+        macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
     }
 }
 
-pub unsafe fn cancel_system(agent: &mut L2CAgentBase, status: i32, allowed_cancels: Vec<i32>) {
-    let cat1 = ControlModule::get_command_flag_cat(agent.module_accessor, 0);
-    let level : i32;
-    if [
-        *FIGHTER_STATUS_KIND_ATTACK,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR,
-        *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
-    ].contains(&status) {
-        level = 1;
-    }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_DASH
-    ].contains(&status) {
-        level = 2;
-    }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4
-    ].contains(&status) {
-        level = 3;
-    }
-    else {
-        level = 4;
-    }
-
-    if (AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0 {
-        if level <= 4 {
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_N) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_N, true);
-                return;
-            }
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_S) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_S, true);
-                return;
-            }
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_HI)
-            && !WorkModule::is_flag(agent.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
-                return;
-            }
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_SPECIAL_LW) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-                return;
-            }
+pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) {
+    if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+    && WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0 {
+        if jump_cancel != 0
+        && jump_cancel_check_hit(fighter, jump_cancel == 2).get_bool() {
+            return;
         }
-        if level <= 3 && StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_S4) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S4_START, true);
-                return;
-            }
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_HI4) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI4_START, true);
-                return;
-            }
-            if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_LW4) {
-                StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, true);
-                return;
-            }
+        let sit = fighter.global_table[SITUATION_KIND].get_i32();
+        if special_cancels.is_empty() == false
+        && special_cancel_common(fighter, sit.into(), special_cancels).get_bool() {
+            return;
         }
-        if level <= 2 {
-            if StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
-                if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_S3) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
-                    return;
-                }
-                if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_HI3) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_HI3, true);
-                    return;
-                }
-                if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_LW3) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_LW3, true);
-                    return;
-                }
-            }
-            else {
-                if (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N) != 0 && allowed_cancels.contains(&*FIGHTER_STATUS_KIND_ATTACK_AIR) {
-                    StatusModule::change_status_request_from_script(agent.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_AIR, true);
-                    return;
-                }
-            }
+        if aerial_cancel
+        && sit == *SITUATION_KIND_AIR
+        && aerial_cancel_common(fighter).get_bool() {
+            return;
+        }
+        if normal_cancels.is_empty() == false
+        && sit == *SITUATION_KIND_GROUND
+        && normal_cancel_common(fighter, normal_cancels).get_bool() {
+            return;
         }
     }
 }
 
-pub unsafe fn cancel_exceptions(agent: &mut L2CAgentBase, next_status: i32, cat1_compare: i32, on_hit: bool) {
-    let cat1 = ControlModule::get_command_flag_cat(agent.module_accessor, 0);
+pub unsafe fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool) -> L2CValue {
+    let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
 
     if !on_hit
-    || ((AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0) {
+    || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+    && MotionModule::frame(fighter.module_accessor) <= HIT_FRAME[entry_id(fighter.module_accessor)] + 11.0) {
         if (cat1 & cat1_compare) != 0 {
-            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, true);
+            StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, true);
+            return true.into();
         }
     }
+    false.into()
 }
 
-pub unsafe fn chain_cancels(agent: &mut L2CAgentBase, next_status: i32, cat1_compare: i32, on_hit: bool, counter: i32, max: i32) -> L2CValue {
-    let cat1 = ControlModule::get_command_flag_cat(agent.module_accessor, 0);
+pub unsafe fn chain_cancels(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool, counter: i32, max: i32) -> L2CValue {
+    let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
 
     if !on_hit
-    || ((AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(agent.module_accessor) > HIT_FRAME[entry_id(agent.module_accessor)] + 1.0
-    && MotionModule::frame(agent.module_accessor) <= HIT_FRAME[entry_id(agent.module_accessor)] + 11.0) {
+    || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+    && MotionModule::frame(fighter.module_accessor) <= HIT_FRAME[entry_id(fighter.module_accessor)] + 11.0) {
         if (cat1 & cat1_compare) != 0
-        && WorkModule::get_int(agent.module_accessor, counter) < max {
-            StatusModule::change_status_request_from_script(agent.module_accessor, next_status, true);
-            WorkModule::inc_int(agent.module_accessor, counter);
+        && WorkModule::get_int(fighter.module_accessor, counter) < max {
+            StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, true);
+            WorkModule::inc_int(fighter.module_accessor, counter);
             return 1.into();
         }
     }
     0.into()
 }
 
-pub unsafe fn set_hp(agent: &mut L2CAgentBase, hp: f32) {
-    if DamageModule::damage(agent.module_accessor, 0) < hp
+pub unsafe fn set_hp(fighter: &mut L2CFighterCommon, hp: f32) {
+    if DamageModule::damage(fighter.module_accessor, 0) < hp
     && !smashball::is_training_mode() {
-        let dmg = hp - DamageModule::damage(agent.module_accessor, 0);
-        DamageModule::add_damage(agent.module_accessor, dmg, 0);
+        let dmg = hp - DamageModule::damage(fighter.module_accessor, 0);
+        DamageModule::add_damage(fighter.module_accessor, dmg, 0);
     }
 }

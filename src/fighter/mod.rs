@@ -28,6 +28,7 @@ pub mod gamewatch;
 pub mod donkey;
 pub mod richter;
 pub mod eflame;
+pub mod element;
 pub mod elight;
 pub mod falco;
 pub mod purin;

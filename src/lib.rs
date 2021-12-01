@@ -6,6 +6,7 @@ mod vars;
 mod function_hooks;
 mod fighter;
 mod gameplay;
+mod cancels;
 mod common_funcs;
 mod table_const;
 

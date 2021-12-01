@@ -28,7 +28,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon
 }
 
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommon, mot1: L2CValue, mot2: L2CValue) {
-    ryu_attack_main_uniq_chk3(fighter);
+    ryu_attack_reset(fighter);
     fighter.attack_mtrans_pre_process();
     if !StatusModule::is_changing(fighter.module_accessor) {
         if ComboModule::count(fighter.module_accessor) == 1 {
@@ -50,7 +50,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
     }
 }
 
-unsafe extern "C" fn ryu_attack_main_uniq_chk3(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_attack_reset(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_RYU_STATUS_ATTACK_INT_FRAME);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK);
@@ -181,7 +181,7 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
     if situation.get_i32() != *SITUATION_KIND_GROUND {
-        val = fighter.sub_transition_group_check_air_cliff().get_bool();
+        val = fighter.sub_transition_group_check_air_special().get_bool();
     }
     else {
         val = fighter.sub_transition_group_check_ground_special().get_bool();

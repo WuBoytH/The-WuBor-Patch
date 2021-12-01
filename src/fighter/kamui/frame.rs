@@ -32,7 +32,7 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
                 DRAGON_INSTALL[entry_id(fighter.module_accessor)] += 2.0;
             }
             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-                wall_jump_check(fighter.module_accessor);
+                wall_jump_check(fighter);
             }
         }
 

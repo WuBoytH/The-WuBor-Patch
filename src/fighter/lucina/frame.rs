@@ -311,15 +311,18 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
                 }
                 else {
-                    let allowed_cancels = [
-                        *FIGHTER_STATUS_KIND_ATTACK_S3,
-                        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-                        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-                        *FIGHTER_STATUS_KIND_SPECIAL_N,
-                        *FIGHTER_STATUS_KIND_SPECIAL_S,
-                        *FIGHTER_STATUS_KIND_SPECIAL_HI
+                    let special_cancels = [
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
                     ].to_vec();
-                    cancel_system(fighter, *FIGHTER_STATUS_KIND_ATTACK, allowed_cancels);
+                    let normal_cancels = [
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3
+                    ].to_vec();
+                    cancel_system(fighter, normal_cancels, special_cancels, false, 0);
                 }
             }
         }

@@ -11,20 +11,23 @@ use {
 #[inline(always)]
 pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    let mut allowed_cancels : Vec<i32> = [].to_vec();
+    let mut special_cancels : Vec<i32> = [].to_vec();
+    let mut normal_cancels : Vec<i32> = [].to_vec();
     if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3
     ].contains(&status) {
-        allowed_cancels = [
-            *FIGHTER_STATUS_KIND_ATTACK_S4,
-            *FIGHTER_STATUS_KIND_ATTACK_HI4,
-            *FIGHTER_STATUS_KIND_ATTACK_LW4,
-            *FIGHTER_STATUS_KIND_SPECIAL_HI
+        special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+        ].to_vec();
+        normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
         ].to_vec();
     }
-    cancel_system(fighter, status, allowed_cancels);
+    cancel_system(fighter, normal_cancels, special_cancels, false, 0);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_CHROM )]

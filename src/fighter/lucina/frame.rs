@@ -44,7 +44,10 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_HI3
-        || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
+        || [
+            hash40("attack_air_n"),
+            hash40("attack_air_hi")
+        ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             jump_cancel = 1;
         }
         else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {

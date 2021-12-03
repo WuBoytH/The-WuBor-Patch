@@ -889,7 +889,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         wait(fighter.lua_state_agent, 4.0);
         if macros::is_excute(fighter) {
             AttackModule::clear_all(fighter.module_accessor);
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 79, 50, 0, 115, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 40, 80, 0, 70, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         frame(fighter.lua_state_agent, 24.0);
         if macros::is_excute(fighter) {
@@ -1035,7 +1035,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         wait(fighter.lua_state_agent, 4.0);
         if macros::is_excute(fighter) {
             AttackModule::clear_all(fighter.module_accessor);
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 79, 50, 0, 115, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 40, 80, 0, 70, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(21.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         }
         frame(fighter.lua_state_agent, 24.0);
         if macros::is_excute(fighter) {

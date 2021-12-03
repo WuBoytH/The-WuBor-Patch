@@ -136,9 +136,6 @@ pub const FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED : i32 = 0x
 pub const FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SPIRIT_BOMB : i32 = 0x200000E5;
 pub const FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL : i32 = 0x200000E6;
 
-// Little Mac
-pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
-
 // Shulk
 pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER : i32 = 0x53;
 
@@ -186,9 +183,6 @@ pub const FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL_TIMER : i32 = 0x4D
 
 // Incineroar
 pub const FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE : i32 = 0x100000C6;
-
-// Ridley
-pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
 
 // Joker
 pub const FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT : i32 = 0x21000010;
@@ -249,10 +243,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         CANCEL[id] = false;
         HIT_FRAME[id] = 0.0;
         BOUNCE[id] = false;
-
-        FUNNY_JUMPS[id] = 10;
-
-        FUNNY_RIDLEY[id] = false;
 
         CALLBACK[id] = 0;
 

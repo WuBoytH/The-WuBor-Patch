@@ -346,9 +346,9 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
             }
         }
         
-        if fighter_kind == *FIGHTER_KIND_RIDLEY { // Funny Ridley
-            if FUNNY_RIDLEY[entry_id(boma)] {
-                if param_hash == hash40("max_charge_frame") {// Funny Plasma Breath
+        if fighter_kind == *FIGHTER_KIND_RIDLEY {
+            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+                if param_hash == hash40("max_charge_frame") {
                     return 300;
                 }
                 else if param_hash == hash40("max_fire_num") {

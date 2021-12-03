@@ -124,6 +124,12 @@ unsafe extern "C" fn wario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
                 }
             }
         }
+        if level == *FIGHTER_WARIO_GASS_LEVEL_L {
+            if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+                WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR);
+            }
+        }
         if !StatusModule::is_changing(fighter.module_accessor) {
             if StatusModule::is_situation_changed(fighter.module_accessor) {
                 wario_speciallw_helper(fighter);

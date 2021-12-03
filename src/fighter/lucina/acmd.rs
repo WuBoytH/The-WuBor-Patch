@@ -130,9 +130,6 @@ unsafe fn lucina_dtilt(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_ATTACK_DASH_BIG_GAMBLE);
-    }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 1.0, 0, 40, 10, 40, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 0.8, 0.2, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, -0.7, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
@@ -148,7 +145,9 @@ unsafe fn lucina_dashattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_ATTACK_DASH_BIG_GAMBLE) {
+        if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
+        && spent_meter(fighter.module_accessor, false) {
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_ATTACK_DASH_BIG_GAMBLE);
             macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.0 * DMG_RATIO[entry_id(fighter.module_accessor)], 0, 40, 10, 40, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
         }
         else {

@@ -27,11 +27,11 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         // Damage Check
 
         let damage = DamageModule::damage(fighter.module_accessor, 0);
-        if damage > WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE) {
-            let burst_recover = damage - WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE);
+        if damage > WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV) {
+            let burst_recover = damage - WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
             WorkModule::set_float(fighter.module_accessor, burst_recover, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
         }
-        WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE);
+        WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
         if StopModule::is_damage(fighter.module_accessor)
         && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)

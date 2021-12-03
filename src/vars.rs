@@ -54,11 +54,9 @@ pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 pub static mut _TIME_COUNTER : [i32; 8] = [0; 8];
 
 // System Mechanics
-pub static mut COUNTER_HIT_STATE : [i32; 8] = [0; 8];
 pub static mut IS_DK : [bool; 8] = [false; 8];
 pub static mut CANCEL : [bool; 8] = [false; 8]; // Multi-purpose Cancel
 pub static mut BOUNCE : [bool; 8] = [false; 8]; // Multi-purpose Bounce
-pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N : i32 = 0x20000116;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S : i32 = 0x20000117;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI : i32 = 0x20000118;
@@ -66,20 +64,23 @@ pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW : i32 = 0x20000119;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF : i32 = 0x2000011A;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY : i32 = 0x2000011B;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC : i32 = 0x2000011C;
+pub const FIGHTER_INSTANCE_WORK_ID_FLAG_SPECIAL_HITSTUN : i32 = 0x2000011D;
+pub const FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN : i32 = 0x2000011E;
 pub static mut FGC_TRAINING : bool = false;
-pub static mut FGC_HITSTUN_MUL : [f32; 8] = [1.2; 8];
-pub static mut SPECIAL_HITSTUN : [bool; 8] = [false; 8];
-pub static mut HIT_BY_SPECIAL_HITSTUN : [bool; 8] = [false; 8];
-pub static mut SPECIAL_LW_TYPE : [i32; 8] = [0; 8];
+
 pub const FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME : i32 = 0x100000ED;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID : i32 = 0x100000EE;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER : i32 = 0x100000EF;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP : i32 = 0x100000F0;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP : i32 = 0x100000F1;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP : i32 = 0x100000F2;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_SUPER_COMMAND_INPUT_TIMER : i32 = 0x100000F3;
-pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP : i32 = 0x100000F4;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE : i32 = 0x100000EE;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID : i32 = 0x100000EF;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER : i32 = 0x100000F0;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP : i32 = 0x100000F1;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP : i32 = 0x100000F2;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP : i32 = 0x100000F3;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_SUPER_COMMAND_INPUT_TIMER : i32 = 0x100000F4;
+pub const FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP : i32 = 0x100000F5;
+
+pub static mut HIT_FRAME : [f32; 8] = [0.0; 8];
 pub const FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV : i32 = 0x5F;
+pub const FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL : i32 = 0x60;
 
 pub const FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER : i32 = 0x1000026;
 pub const FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL : i32 = 0x2100002B;
@@ -139,50 +140,52 @@ pub const FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL : i32 = 0x2
 pub static mut FUNNY_JUMPS : [i32; 8] = [10; 8];
 
 // Shulk
-pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_PREV_DAMAGE : i32 = 0x53;
-pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER : i32 = 0x54;
+pub const FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER : i32 = 0x53;
 
 // Ryu
-pub static mut EX_FOCUS : [bool; 8] = [false; 8];
-pub static mut EX_FLASH : [bool; 8] = [false; 8];
-pub static mut SECRET_SENSATION : [bool; 8] = [false; 8];
-pub static mut CAMERA : [bool; 8] = [false; 8];
-pub static mut OPPONENT_X : [f32; 8] = [0.0; 8];
-pub static mut OPPONENT_Y : [f32; 8] = [0.0; 8];
-pub static mut RYU_X : [f32; 8] = [0.0; 8];
-pub static mut RYU_Y : [f32; 8] = [0.0; 8];
-pub static mut SPECIAL_LW_TIMER : [i16; 8] = [-1; 8];
-pub static mut SEC_SEN_TIMER : [f32; 8] = [-0.6; 8];
-pub static mut OPPONENT_DIRECTION : [f32; 8] = [12.0; 8];
-pub static mut VERT_EXTRA : [f32; 8] = [12.0; 8];
-pub static mut SEC_SEN_STATE : [bool; 8] = [false; 8];
-pub static mut SEC_SEN_DIREC : [i32; 8] = [0; 8];
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS : i32 = 0x200000EC;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH : i32 = 0x200000ED;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE : i32 = 0x200000EE;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION : i32 = 0x200000EF;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA : i32 = 0x200000F0;
+
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_X : i32 = 0x50;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_Y : i32 = 0x51;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X : i32 = 0x52;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_Y : i32 = 0x53;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER : i32 = 0x54;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER : i32 = 0x55;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_OPPONENT_DIREC : i32 = 0x56;
+pub const FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_VERT_EXTRA : i32 = 0x57;
 
 // Ken
-pub static mut QUICK_STEP_STATE : [i32; 8] = [0; 8];
-/*
-State list:
-0 = Can Quick Step
-2 = Cannot Quick Step
-1 = Used to show you're in the first 22 frames of Quick Step.
-*/
-pub static mut STEP_KICK : [bool; 8] = [false; 8];
-pub static mut VS1_CANCEL : [bool; 8] = [false; 8];
-pub static mut V_SHIFT : [bool; 8] = [false; 8];
-pub static mut V_TRIGGER : [bool; 8] = [false; 8];
-pub static mut VT1_CANCEL : [bool; 8] = [false; 8];
-pub static mut V_GAUGE : [i32; 8] = [0; 8];
-pub static mut FLASH_MAX : [i32; 8] = [0; 8];
-pub static mut FLASH_COUNTER : [i32; 8] = [0; 8];
-pub static mut SHORYUREPPA : [i32; 8] = [0; 8];
-pub static mut DIFF_X : [f32; 8] = [0.0; 8];
-pub static mut DMG_RATIO : [f32; 8] = [0.8; 8];
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE : i32 = 0x100000CA;
+pub const FIGHTER_KEN_SPECIAL_LW_TYPE_QUICK_STEP : i32 = 0;
+pub const FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH : i32 = 1;
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE : i32 = 0x100000CB;
+pub const FIGHTER_KEN_QUICK_STEP_STATE_ENABLE : i32 = 0;
+pub const FIGHTER_KEN_QUICK_STEP_STATE_RUN : i32 = 1;
+pub const FIGHTER_KEN_QUICK_STEP_STATE_DISABLE : i32 = 2;
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX : i32 = 0x100000CC;
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_COUNTER : i32 = 0x100000CD;
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA : i32 = 0x100000CE;
+
+pub const FIGHTER_KEN_STATUS_SPECIAL_LW_FLAG_STEP_KICK : i32 = 0x21000017;
+pub const FIGHTER_KEN_STATUS_ATTACK_FLAG_VS1_CANCEL : i32 = 0x21000018;
+pub const FIGHTER_KEN_STATUS_ATTACK_FLAG_VT1_CANCEL : i32 = 0x21000019;
+pub const FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT : i32 = 0x2100001A;
+
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER : i32 = 0x200000EC;
+
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE : i32 = 0x50;
+pub const FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X : i32 = 0x51;
 
 // Corrin
-pub static mut DRAGON_INSTALL : [f32; 8] = [0.0; 8];
+pub const FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL : i32 = 0x4C;
+pub const FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL_TIMER : i32 = 0x4D;
 
 // Incineroar
-pub static mut REVENGE : [i32; 8] = [0; 8];
+pub const FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE : i32 = 0x100000C6;
 
 // Ridley
 pub static mut FUNNY_RIDLEY : [bool; 8] = [false; 8];
@@ -210,16 +213,20 @@ pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT : i32 = 0x200000E7;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB : i32 = 0x200000E8;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND : i32 = 0x200000E9;
 // pub const FIGHTER_YU_INSTANCE_WORK_ID_FLAG_TRAINING_TOOLS : i32 = 0x200000EA;
+
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE : i32 = 0x4C;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP : i32 = 0x4D;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX : i32 = 0x4E;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY : i32 = 0x4F;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE : i32 = 0x50;
+
 pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL : i32 = 0x100000C0;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER : i32 = 0x100000C1;
 pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER : i32 = 0x100000C2;
+pub const FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_GLOW_TIMER : i32 = 0x100000C3;
+
 pub const FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE : i32 = 0x21000015;
-pub const FIGHTER_YU_STATUS_ATTACK_DASH_BIG_GAMBLE : i32 = 0x21000016;
+pub const FIGHTER_YU_STATUS_ATTACK_DASH_FLAG_BIG_GAMBLE : i32 = 0x21000016;
 pub const FIGHTER_YU_STATUS_FLAG_IS_EX : i32 = 0x21000017;
 pub const SP_1 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -6.0};
 pub const SP_2 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -2.0};
@@ -238,49 +245,12 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         if !smashball::is_training_mode() {
             FGC_TRAINING = false;
         }
-        COUNTER_HIT_STATE[id] = 0;
         IS_DK[id] = false;
         CANCEL[id] = false;
         HIT_FRAME[id] = 0.0;
         BOUNCE[id] = false;
-        SPECIAL_HITSTUN[id] = false;
-        HIT_BY_SPECIAL_HITSTUN[id] = false;
-        FGC_HITSTUN_MUL[id] = 1.2;
-        SPECIAL_LW_TYPE[id] = 0;
 
         FUNNY_JUMPS[id] = 10;
-
-        EX_FOCUS[id] = false;
-        EX_FLASH[id] = false;
-        SECRET_SENSATION[id] = false;
-        CAMERA[id] = false;
-        OPPONENT_X[id] = 0.0;
-        OPPONENT_Y[id] = 0.0;
-        RYU_X[id] = 0.0;
-        RYU_Y[id] = 0.0;
-        SPECIAL_LW_TIMER[id] = -1;
-        SEC_SEN_TIMER[id] = -0.6;
-        OPPONENT_DIRECTION[id] = 0.0;
-        VERT_EXTRA[id] = 0.0;
-        SEC_SEN_STATE[id] = false;
-        SEC_SEN_DIREC[id] = 0;
-
-        QUICK_STEP_STATE[id] = 0;
-        STEP_KICK[id] = false;
-        VS1_CANCEL[id] = false;
-        V_SHIFT[id] = false;
-        V_TRIGGER[id] = false;
-        VT1_CANCEL[id] = false;
-        V_GAUGE[id] = 0;
-        FLASH_MAX[id] = 0;
-        FLASH_COUNTER[id] = 0;
-        SHORYUREPPA[id] = 0;
-        DIFF_X[id] = 0.0;
-        DMG_RATIO[id] = 0.0;
-
-        DRAGON_INSTALL[id] = 0.0;
-
-        REVENGE[id] = 0;
 
         FUNNY_RIDLEY[id] = false;
 

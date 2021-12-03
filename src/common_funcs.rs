@@ -182,6 +182,16 @@ pub unsafe fn reset_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: 
 //     WorkModule::set_float(module_accessor, 0.0, flag);
 // }
 
+// pub unsafe fn add_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: i32) {
+//     let counter = WorkModule::get_int(module_accessor, flag) + amount;
+//     WorkModule::set_int(module_accessor, counter, flag);
+// }
+
+pub unsafe fn add_f32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
+    let counter = WorkModule::get_float(module_accessor, flag) + amount;
+    WorkModule::set_float(module_accessor, counter, flag);
+}
+
 pub unsafe fn count_down(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
     let slow_rate = SlowModule::rate(module_accessor);
     let global_slow_rate = sv_information::slow_rate();

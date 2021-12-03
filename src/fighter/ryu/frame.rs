@@ -29,17 +29,17 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         // Reset Vars
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
-            EX_FOCUS[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
             CANCEL[entry_id(fighter.module_accessor)] = false;
-            EX_FLASH[entry_id(fighter.module_accessor)] = false;
-            SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = -1;
-            SECRET_SENSATION[entry_id(fighter.module_accessor)] = false;
-            SEC_SEN_STATE[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
+            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
             // OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
         }
 
         // EX Focus Attack Check
-        if EX_FOCUS[entry_id(fighter.module_accessor)] == false {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS) {
             if (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_n")
             && MotionModule::frame(fighter.module_accessor) > 13.0)
             || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_start") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s")
@@ -63,31 +63,30 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW
         && CANCEL[entry_id(fighter.module_accessor)] {
-            EX_FLASH[entry_id(fighter.module_accessor)] = true;
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
             _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
             if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = 1200;
-                EX_FOCUS[entry_id(fighter.module_accessor)] = true;
+                WorkModule::set_float(fighter.module_accessor, 1200.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
             }
             CANCEL[entry_id(fighter.module_accessor)] = false;
         }
 
-        if SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] > 0 {
-            SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] - 1;
-        }
-        else if SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] == 0 {
-            SPECIAL_LW_TIMER[entry_id(fighter.module_accessor)] = -1;
-            let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-            let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-            let focuseff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-            EffectModule::set_rgb(fighter.module_accessor, focuseff, 0.0, 0.0, 0.0);
-            EX_FOCUS[entry_id(fighter.module_accessor)] = false;
+        if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER) > 0.0 {
+            count_down(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER, 1.0);
+            if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER) <= 0.0 {
+                let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                let focuseff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                EffectModule::set_rgb(fighter.module_accessor, focuseff, 0.0, 0.0, 0.0);
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
+            }
         }
 
         // EX Flash
 
-        if EX_FLASH[entry_id(fighter.module_accessor)] {
-            if SEC_SEN_STATE[entry_id(fighter.module_accessor)] {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH) {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
                 if _TIME_COUNTER[entry_id(fighter.module_accessor)] < 0 {
                     _TIME_COUNTER[entry_id(fighter.module_accessor)] = 8;
                 }
@@ -106,7 +105,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 }
                 else if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
                     macros::COL_NORMAL(fighter);
-                    EX_FLASH[entry_id(fighter.module_accessor)] = false;
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
                     _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
                 }
                 else {
@@ -144,14 +143,14 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             }
 
-            if SECRET_SENSATION[entry_id(fighter.module_accessor)] {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION) {
                 StopModule::end_stop(fighter.module_accessor);
                 JostleModule::set_status(fighter.module_accessor, false);
                 HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
                 DamageModule::set_damage_lock(fighter.module_accessor, true);
                 DamageModule::set_no_reaction_no_effect(fighter.module_accessor, true);
                 HitModule::set_hit_stop_mul(fighter.module_accessor, 0.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8 }, 0.0);
-                if CAMERA[entry_id(fighter.module_accessor)] == false {
+                if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA) {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_exec"));
                     if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
                         macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
@@ -170,46 +169,54 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     }
                     SlowModule::set_whole(fighter.module_accessor, 4, 0);
                     macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
-                    RYU_X[entry_id(fighter.module_accessor)] = PostureModule::pos_x(fighter.module_accessor);
-                    RYU_Y[entry_id(fighter.module_accessor)] = PostureModule::pos_y(fighter.module_accessor);
-                    if RYU_X[entry_id(fighter.module_accessor)] == OPPONENT_X[entry_id(fighter.module_accessor)] {
-                        OPPONENT_DIRECTION[entry_id(fighter.module_accessor)] = 12.0 * PostureModule::lr(fighter.module_accessor);
+                    let ryu_x = PostureModule::pos_x(fighter.module_accessor);
+                    let mut ryu_y = PostureModule::pos_y(fighter.module_accessor);
+                    if ryu_x == WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X) {
+                        let opp_direc = 12.0 * PostureModule::lr(fighter.module_accessor);
+                        WorkModule::set_float(fighter.module_accessor, opp_direc, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_OPPONENT_DIREC);
                     }
-                    else if RYU_X[entry_id(fighter.module_accessor)] < OPPONENT_X[entry_id(fighter.module_accessor)] {
-                        OPPONENT_DIRECTION[entry_id(fighter.module_accessor)] = 12.0;
+                    else if ryu_x < WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X) {
+                        WorkModule::set_float(fighter.module_accessor, 12.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_OPPONENT_DIREC);
                         if PostureModule::lr(fighter.module_accessor) == -1.0 {
                             PostureModule::reverse_lr(fighter.module_accessor);
                         }
                     }
                     else {
-                        OPPONENT_DIRECTION[entry_id(fighter.module_accessor)] = -12.0;
+                        WorkModule::set_float(fighter.module_accessor, -12.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_OPPONENT_DIREC);
                         if PostureModule::lr(fighter.module_accessor) == 1.0 {
                             PostureModule::reverse_lr(fighter.module_accessor);
                         }
                     }
                     if sv_battle_object::is_active(target_id) && {
                         let target_boma = sv_battle_object::module_accessor(target_id);
-                        (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() <= 12.0
-                        && StatusModule::situation_kind(target_boma) == *SITUATION_KIND_GROUND } {
-                        VERT_EXTRA[entry_id(fighter.module_accessor)] = 0.0;
+                        (ryu_y - WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_Y)).abs() <= 12.0
+                        && StatusModule::situation_kind(target_boma) == *SITUATION_KIND_GROUND }
+                    {
+                        WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_VERT_EXTRA);
                     }
                     else {
                         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
                         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-                        VERT_EXTRA[entry_id(fighter.module_accessor)] = 12.0;
-                        RYU_Y[entry_id(fighter.module_accessor)] += 2.0;
+                        WorkModule::set_float(fighter.module_accessor, 12.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_VERT_EXTRA);
+                        ryu_y += 2.0;
                         PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                             x: 0.0,
                             y: 2.0
                         });
                     }
-                    CAMERA[entry_id(fighter.module_accessor)] = true;
+                    WorkModule::set_float(fighter.module_accessor, ryu_x, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_X);
+                    WorkModule::set_float(fighter.module_accessor, ryu_y, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_Y);
+                    WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA);
                 }
-                if SEC_SEN_TIMER[entry_id(fighter.module_accessor)] >= 0.0 {
+                if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER) >= 0.0 {
                     let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+                    let ryu_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_X);
+                    let ryu_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_Y);
+                    let target_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X);
+                    let target_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_Y);
                     if sv_battle_object::is_active(target_id) {
                         let target_boma = sv_battle_object::module_accessor(target_id);
-                        if (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() <= 12.0
+                        if (ryu_y - target_y).abs() <= 12.0
                         && StatusModule::situation_kind(target_boma) == *SITUATION_KIND_GROUND {
                             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                         }
@@ -218,18 +225,21 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
                         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, true);
                     }
-                    if (RYU_Y[entry_id(fighter.module_accessor)] - OPPONENT_Y[entry_id(fighter.module_accessor)]).abs() > 12.0 {
+                    if (ryu_y - target_y).abs() > 12.0 {
                         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
                     }
+                    let sec_sen_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER);
+                    let opp_direc = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_OPPONENT_DIREC);
+                    let vert_extra = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_VERT_EXTRA);
                     PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f{
-                        x: (((OPPONENT_X[entry_id(fighter.module_accessor)] + OPPONENT_DIRECTION[entry_id(fighter.module_accessor)]) * SEC_SEN_TIMER[entry_id(fighter.module_accessor)]) + RYU_X[entry_id(fighter.module_accessor)] * (1.0 - SEC_SEN_TIMER[entry_id(fighter.module_accessor)])),
-                        y: (((OPPONENT_Y[entry_id(fighter.module_accessor)] + VERT_EXTRA[entry_id(fighter.module_accessor)]) * SEC_SEN_TIMER[entry_id(fighter.module_accessor)]) + RYU_Y[entry_id(fighter.module_accessor)] * (1.0 - SEC_SEN_TIMER[entry_id(fighter.module_accessor)]))
+                        x: (((target_x + opp_direc) * sec_sen_timer) + ryu_x * (1.0 - sec_sen_timer)),
+                        y: (((target_y + vert_extra) * sec_sen_timer) + ryu_y * (1.0 - sec_sen_timer))
                     });
                 }
-                SEC_SEN_TIMER[entry_id(fighter.module_accessor)] += 0.08;
-                if SEC_SEN_TIMER[entry_id(fighter.module_accessor)] > 1.0 {
-                    SECRET_SENSATION[entry_id(fighter.module_accessor)] = false;
-                    CAMERA[entry_id(fighter.module_accessor)] = false;
+                add_f32(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER, 0.08);
+                if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER) > 1.0 {
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA);
                     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
                     macros::SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -243,15 +253,15 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
                     SlowModule::clear_whole(fighter.module_accessor);
                     JostleModule::set_status(fighter.module_accessor, true);
-                    SEC_SEN_TIMER[entry_id(fighter.module_accessor)] = -0.6;
+                    WorkModule::set_float(fighter.module_accessor, -0.6, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER);
                 }
             }
             else if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r")
             || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_l") {
                 if MotionModule::frame(fighter.module_accessor) == 4.0 {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_aura"));
-                    SEC_SEN_STATE[entry_id(fighter.module_accessor)] = true;
-                    EX_FLASH[entry_id(fighter.module_accessor)] = true;
+                    WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
+                    WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
                     _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
                     macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -271,22 +281,22 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     macros::BURN_COLOR_NORMAL(fighter);
                     smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
                     DamageModule::set_damage_lock(fighter.module_accessor, false);
-                    EX_FLASH[entry_id(fighter.module_accessor)] = false;
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
                     macros::COL_NORMAL(fighter);
-                    SEC_SEN_STATE[entry_id(fighter.module_accessor)] = false;
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
                     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
                 }
             }
-            else if SECRET_SENSATION[entry_id(fighter.module_accessor)] == false
-            && SEC_SEN_STATE[entry_id(fighter.module_accessor)] {
+            else if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION)
+            && WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
                 DamageModule::set_damage_lock(fighter.module_accessor, false);
                 DamageModule::set_no_reaction_no_effect(fighter.module_accessor, false);
                 HitModule::set_hit_stop_mul(fighter.module_accessor, 1.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
-                EX_FLASH[entry_id(fighter.module_accessor)] = false;
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
                 macros::COL_NORMAL(fighter);
                 macros::EFFECT_OFF_KIND(fighter, Hash40::new("ryu_savingattack_aura"), false, true);
                 macros::BURN_COLOR_NORMAL(fighter);
-                SEC_SEN_STATE[entry_id(fighter.module_accessor)] = false;
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
                 HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
             }
         }

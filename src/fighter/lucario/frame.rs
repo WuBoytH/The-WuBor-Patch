@@ -81,7 +81,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
     }
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
-        special_cancels.append(&mut [*FIGHTER_STATUS_KIND_SPECIAL_HI].to_vec());
+        special_cancels.append(&mut [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
     }
     cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
 }

@@ -19,7 +19,7 @@ pub unsafe fn luigi_fgc(fighter: &mut L2CFighterCommon) {
     // let mut allowed_cancels : Vec<i32> = [].to_vec();
     // set_hp(fighter, 105.0);
     if ![*FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END].contains(&status) {
-        SPECIAL_HITSTUN[entry_id(fighter.module_accessor)] = false;
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SPECIAL_HITSTUN);
     }
 }
 

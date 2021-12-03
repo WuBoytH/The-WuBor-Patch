@@ -7,7 +7,8 @@ use {
     crate::{
         common_funcs::*,
         vars::*,
-        fighter::lucina::helper::shadow_id
+        fighter::lucina::helper::shadow_id,
+        fighter::ken::helper::add_vgauge
     },
     skyline::hooks::{
         getRegionAddress,
@@ -59,37 +60,32 @@ move_type_again: bool) -> u64 {
     let attacker_fighter_kind = sv_battle_object::kind(attacker_object_id);
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
     let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
-    let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    // let d_entry_id = WorkModule::get_int(defender_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
 
     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if attacker_fighter_kind == *FIGHTER_KIND_KEN {
-            if d_entry_id < 8
-            && utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+            if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                 WorkModule::set_int64(attacker_boma, defender_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
             else {
                 WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
             if MotionModule::motion_kind(attacker_boma) != hash40("special_lw")
-            && V_TRIGGER[a_entry_id] == false {
+            && !WorkModule::is_flag(attacker_boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
                 if MotionModule::motion_kind(attacker_boma) == hash40("attack_s3_s_w")
                 && StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                    V_GAUGE[a_entry_id] += 100;
+                    add_vgauge(attacker_boma, 100.0);
                 }
-                else if d_entry_id < 8 {
-                    if COUNTER_HIT_STATE[d_entry_id] == 1 {
-                        V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 6;
+                else if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                    if WorkModule::get_int(defender_boma, FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE) == 1 {
+                        let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 6.0;
+                        add_vgauge(attacker_boma, amount);
                     }
                 }
                 else {
-                    V_GAUGE[a_entry_id] += AttackModule::get_power(attacker_boma, 0, false, 1.0, false) as i32 * 4;
+                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 4.0;
+                    add_vgauge(attacker_boma, amount);
                 }
-                if V_GAUGE[a_entry_id] > 900 {
-                    V_GAUGE[a_entry_id] = 900;
-                }
-            }
-            else {
-                WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
@@ -105,16 +101,18 @@ move_type_again: bool) -> u64 {
     }
     if utility::get_category(&mut *defender_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if a_entry_id < 8
-        && SPECIAL_HITSTUN[a_entry_id] {
-            HIT_BY_SPECIAL_HITSTUN[d_entry_id] = true;
+        && WorkModule::is_flag(attacker_boma, FIGHTER_INSTANCE_WORK_ID_FLAG_SPECIAL_HITSTUN) {
+            WorkModule::on_flag(defender_boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN);
         }
         if defender_fighter_kind == *FIGHTER_KIND_RYU {
-            if SEC_SEN_STATE[d_entry_id] {
+            if WorkModule::is_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
+                let target_x;
+                let target_y;
                 if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
                 || utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_ENEMY {
                     WorkModule::set_int64(defender_boma, attacker_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
-                    OPPONENT_X[d_entry_id] = PostureModule::pos_x(attacker_boma);
-                    OPPONENT_Y[d_entry_id] = PostureModule::pos_y(attacker_boma);
+                    target_x = PostureModule::pos_x(attacker_boma);
+                    target_y = PostureModule::pos_y(attacker_boma);
                     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                         JostleModule::set_status(&mut *attacker_boma, false);
                     }
@@ -123,13 +121,13 @@ move_type_again: bool) -> u64 {
                     let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
                     let oboma = sv_battle_object::module_accessor(otarget_id);
                     if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                        OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
-                        OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
+                        target_x = PostureModule::pos_x(defender_boma);
+                        target_y = PostureModule::pos_y(defender_boma);
                         WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                     }
                     else {
-                        OPPONENT_X[d_entry_id] = PostureModule::pos_x(oboma);
-                        OPPONENT_Y[d_entry_id] = PostureModule::pos_y(oboma);
+                        target_x = PostureModule::pos_x(oboma);
+                        target_y = PostureModule::pos_y(oboma);
                         WorkModule::set_int64(defender_boma, otarget_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                         if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                             JostleModule::set_status(&mut *oboma, false);
@@ -137,24 +135,26 @@ move_type_again: bool) -> u64 {
                     }
                 }
                 else {
-                    OPPONENT_X[d_entry_id] = PostureModule::pos_x(defender_boma);
-                    OPPONENT_Y[d_entry_id] = PostureModule::pos_y(defender_boma);
+                    target_x = PostureModule::pos_x(defender_boma);
+                    target_y = PostureModule::pos_y(defender_boma);
                     WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
                 }
-                SECRET_SENSATION[d_entry_id] = true;
+                WorkModule::set_float(defender_boma, target_x, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X);
+                WorkModule::set_float(defender_boma, target_y, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_Y);
+                WorkModule::on_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
             }
         }
         else if defender_fighter_kind == *FIGHTER_KIND_KEN {
             if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
             && MotionModule::frame(defender_boma) <= 8.75 {
-                V_SHIFT[d_entry_id] = true;
+                WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
             }
         }
         else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
             if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
             || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
-            && REVENGE[d_entry_id] == 1 {
-                REVENGE[d_entry_id] = 2;
+            && WorkModule::get_int(defender_boma, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 1 {
+                WorkModule::set_int(defender_boma, 2, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
                 if PostureModule::pos_x(defender_boma) < PostureModule::pos_x(attacker_boma)
                 && PostureModule::lr(defender_boma) == 1.0 {
                     PostureModule::reverse_lr(defender_boma);
@@ -290,12 +290,12 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         else if fighter_kind == *FIGHTER_KIND_RYU {
-            if CAMERA[entry_id(boma)] {
+            if WorkModule::is_flag(boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA) {
                 return false;
             }
         }
         else if fighter_kind == *FIGHTER_KIND_KIRBY {
-            if BOUNCE[entry_id(boma)] {
+            if WorkModule::is_flag(boma, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE) {
                 return false;
             }
         }
@@ -308,7 +308,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START
             || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
-                if QUICK_STEP_STATE[entry_id(boma)] == 1 {
+                if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
                     return false;
                 }
             }
@@ -573,13 +573,13 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 }
             }
             else if param_hash == hash40("speed_x_mul_s") {
-                if SHORYUREPPA[entry_id(boma)] == 1 {
+                if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.15;
                 }
             }
             else if param_hash == hash40("speed_y_mul_s") {
-                if V_TRIGGER[entry_id(boma)]
-                && SHORYUREPPA[entry_id(boma)] == 1 {
+                if WorkModule::is_flag(boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER)
+                && WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.1;
                 }
             }
@@ -668,17 +668,23 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
         else if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             if param_hash == hash40("speed_max") {
-                if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
+                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let oboma = sv_battle_object::module_accessor(otarget_id);
+                if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
                     return 1.2;
                 }
             }
             else if param_hash == hash40("life_max") {
-                if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
+                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let oboma = sv_battle_object::module_accessor(otarget_id);
+                if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
                     return 150.0;
                 }
             }
             else if param_hash == hash40("scale_max") {
-                if DRAGON_INSTALL[entry_id(boma)] > 0.0 {
+                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let oboma = sv_battle_object::module_accessor(otarget_id);
+                if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
                     return 1.7;
                 }
             }
@@ -750,29 +756,11 @@ pub unsafe fn get_int_replace(boma: &mut BattleObjectModuleAccessor, term: i32) 
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if term == *FIGHTER_STATUS_DAMAGE_WORK_INT_ESCAPE_DISABLE_FRAME {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-            && !HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] {
-                ret = (ret as f32 / FGC_HITSTUN_MUL[entry_id(boma)]) as i32;
-                // if FGC_HITSTUN_MUL[entry_id(boma)] > 0.5 {
-                //     FGC_HITSTUN_MUL[entry_id(boma)] -= 0.05;
-                // }
-                // HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] = false;
+            && !WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN) {
+                let hitstun_mul = WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
+                ret = (ret as f32 / hitstun_mul) as i32;
             }
         }
-        // else if term == *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME {
-        //     if IS_FGC[entry_id(boma)] {
-        //         ret = 1;
-        //     }
-        // }
-        // else if term == *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME {
-        //     if IS_FGC[entry_id(boma)] {
-        //         if is_damage_check(boma, true) {
-        //             ret = 30;
-        //         }
-        //         else {
-        //             ret = 2;
-        //         }
-        //     }
-        // }
     }
     ret
 }
@@ -782,12 +770,12 @@ pub unsafe fn set_float_replace(boma: &mut BattleObjectModuleAccessor, mut val: 
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if term == *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-            && !HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] {
-                val = val * FGC_HITSTUN_MUL[entry_id(boma)];
-                if FGC_HITSTUN_MUL[entry_id(boma)] > 0.5 {
-                    FGC_HITSTUN_MUL[entry_id(boma)] -= 0.05;
+            && !WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN) {
+                val = val * WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
+                if WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL) > 0.5 {
+                    add_f32(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL, -0.05);
                 }
-                HIT_BY_SPECIAL_HITSTUN[entry_id(boma)] = false;
+                WorkModule::off_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN);
             }
         }
     }

@@ -28,16 +28,16 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {
-            REVENGE[entry_id(fighter.module_accessor)] = 0;
+            reset_i32(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        && REVENGE[entry_id(fighter.module_accessor)] > 0
-        && REVENGE[entry_id(fighter.module_accessor)] < 3
+        && WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) > 0
+        && WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) < 3
         && AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) >= 20.0 {
             critical_zoom(fighter, 0, 2.0, 1.5);
-            REVENGE[entry_id(fighter.module_accessor)] = 3;
+            WorkModule::set_int(fighter.module_accessor, 3, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
         }
     }
 }

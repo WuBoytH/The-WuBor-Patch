@@ -19,7 +19,9 @@ pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
     if !is_damage_check(fighter.module_accessor, false) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-        FGC_HITSTUN_MUL[entry_id(fighter.module_accessor)] = 1.2;
+        if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL) != 1.2 {
+            WorkModule::set_float(fighter.module_accessor, 1.2, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
+        }
     }
     else  {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
@@ -159,10 +161,10 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_S3,
             *FIGHTER_METAKNIGHT_STATUS_KIND_ATTACK_LW3,
         ].contains(&status) {
-            COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 1;
+            WorkModule::set_int(fighter.module_accessor, 1, FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE);
         }
         else {
-            COUNTER_HIT_STATE[entry_id(fighter.module_accessor)] = 0;
+            WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE);
         }
 
         global_command_inputs(fighter);
@@ -171,7 +173,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
 pub fn install() {
     install_agent_frame_callbacks!(
-        global_fighter_frame,
-        // once_per_weapon_frame
+        global_fighter_frame
     );
 }

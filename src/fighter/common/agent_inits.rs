@@ -104,9 +104,10 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         else if fighter_kind == *FIGHTER_KIND_RICHTER {
             fighter.global_table[SPECIAL_HI_PRE].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));
         }
-        // else if fighter_kind == *FIGHTER_KIND_RYU {
+        else if fighter_kind == *FIGHTER_KIND_RYU {
+            WorkModule::set_float(fighter.module_accessor, -0.6, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER);
         //     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
-        // }
+        }
         else if fighter_kind == *FIGHTER_KIND_TRAIL {
             fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
         }

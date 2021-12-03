@@ -87,7 +87,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 0;
+            WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_GLOW_TIMER);
             WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
             if shadow_id(fighter.module_accessor) {
                 if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
@@ -136,11 +136,11 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
+            if WorkModule::get_int(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_GLOW_TIMER) == 0 {
                 sp_glow_handler(fighter.module_accessor);
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 4;
+                WorkModule::set_int(fighter.module_accessor, 4, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_GLOW_TIMER);
             }
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+            WorkModule::dec_int(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_GLOW_TIMER);
         }
 
         // Training Mode Tools
@@ -193,7 +193,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 
         if shadow_id(fighter.module_accessor) == true {
             DamageModule::set_damage_mul(fighter.module_accessor, 0.92);
-            DMG_RATIO[entry_id(fighter.module_accessor)] = 0.8;
             if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
                 // if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
                     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
@@ -222,7 +221,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             }
         }
         else {
-            DMG_RATIO[entry_id(fighter.module_accessor)] = 1.0;
             if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
                 if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_AWAKENING)
                 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND

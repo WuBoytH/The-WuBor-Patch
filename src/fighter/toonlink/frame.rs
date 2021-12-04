@@ -8,7 +8,6 @@ use {
     smash_script::*,
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         gameplay::*
     }
@@ -98,19 +97,18 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 
         if MotionModule::motion_kind(fighter.module_accessor) == smash::hash40("attack_air_lw"){
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                BOUNCE[entry_id(fighter.module_accessor)] = true;
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_ATTACK_AIR_LW_FLAG_BOUNCE);
             }
-            if BOUNCE[entry_id(fighter.module_accessor)] {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_ATTACK_AIR_LW_FLAG_BOUNCE) {
                 macros::SET_SPEED_EX(fighter, 0.0, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 KineticModule::suspend_energy_all(fighter.module_accessor);
-                if MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
+                if MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0
                 && MotionModule::frame(fighter.module_accessor) < 65.0 {
-                    HIT_FRAME[entry_id(fighter.module_accessor)] = 65.0;
                     MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 65.0, true, true, false);
                 }
                 else if MotionModule::frame(fighter.module_accessor) > 66.0 {
                     KineticModule::resume_energy_all(fighter.module_accessor);
-                    BOUNCE[entry_id(fighter.module_accessor)] = false;
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_ATTACK_AIR_LW_FLAG_BOUNCE);
                     MotionModule::set_rate(fighter.module_accessor, 0.4);
                 }
             }

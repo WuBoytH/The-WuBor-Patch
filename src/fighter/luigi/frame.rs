@@ -7,10 +7,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[inline(always)]
@@ -30,7 +27,7 @@ fn luigi_frame(fighter: &mut L2CFighterCommon) {
         // What allows Luigi to cancel Super Jump Punch if he lands the sweetspot.
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_drop")
-        && (CANCEL[entry_id(fighter.module_accessor)]
+        && (WorkModule::is_flag(fighter.module_accessor, FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL)
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }

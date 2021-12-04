@@ -8,10 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[acmd_script( agent = "samusd", script = "game_attack11", category = ACMD_GAME, low_priority )]
@@ -720,15 +717,13 @@ unsafe fn samusd_dspecial(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 33.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
-    if BOUNCE[entry_id(fighter.module_accessor)] == false {
-        if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 45, 30, 0, 70, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-            macros::SET_SPEED_EX(fighter, 0, -3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-        }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 45, 30, 0, 70, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        macros::SET_SPEED_EX(fighter, 0, -3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
     frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
@@ -755,15 +750,13 @@ unsafe fn samusd_dspecialair(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 33.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
-    if BOUNCE[entry_id(fighter.module_accessor)] == false {
-        if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-            macros::SET_SPEED_EX(fighter, 0, -3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-        }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 45, 30, 0, 80, 5.0, 0.0, 3.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        macros::SET_SPEED_EX(fighter, 0, -3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
     }
     frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
@@ -819,39 +812,22 @@ unsafe fn samusd_supermissile_ready(_weapon: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samusd_jab1,
-        samusd_jab2,
-        samusd_jab2effect,
-        samusd_jab2ex,
-        samusd_jab2sound,
-        samusd_dashattack,
-        samusd_dashattackeff,
-        samusd_ftilt,
-        samusd_ftilthi,
-        samusd_ftiltlw,
-        samusd_utilt,
-        samusd_utilteffect,
-        samusd_utiltsound,
-        samusd_dtilt,
+        samusd_jab2, samusd_jab2effect, samusd_jab2ex, samusd_jab2sound,
+        samusd_dashattack, samusd_dashattackeff,
+        samusd_ftilt, samusd_ftilthi, samusd_ftiltlw,
+        samusd_utilt, samusd_utilteffect,
+        samusd_utiltsound, samusd_dtilt,
         samusd_usmash,
         samusd_dsmash,
-        samusd_nair,
-        samusd_naireff,
-        samusd_fair,
-        samusd_faireff,
-        samusd_fairsnd,
-        samusd_fairexp,
+        samusd_nair, samusd_naireff,
+        samusd_fair, samusd_faireff, samusd_fairsnd, samusd_fairexp,
         samusd_bair,
-        samusd_uair,
-        samusd_uaireffect,
+        samusd_uair, samusd_uaireffect,
         samusd_dair,
-        samusd_special,
-        samusd_specialair,
-        samusd_sspecial,
-        samusd_sspecialair,
+        samusd_special, samusd_specialair,
+        samusd_sspecial, samusd_sspecialair,
         samusd_uspecial,
-        samusd_dspecial,
-        samusd_dspecialair,
-        samusd_dspecialeff,
+        samusd_dspecial, samusd_dspecialair, samusd_dspecialeff,
         samusd_cshot_shoot,
         samusd_missile_homing,
         samusd_missile_hburst,

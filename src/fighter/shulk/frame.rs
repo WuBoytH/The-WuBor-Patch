@@ -21,7 +21,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW);
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
+            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
         }
 
         // Damage Check
@@ -61,15 +61,15 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
             KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_RESET);
             KineticModule::unable_energy_all(fighter.module_accessor);
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW);
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = 3600;
+            WorkModule::set_float(fighter.module_accessor, 3600.0, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
         }
 
         // Special Lw Check
-
-        if _TIME_COUNTER[entry_id(fighter.module_accessor)] > 0 {
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = _TIME_COUNTER[entry_id(fighter.module_accessor)] - 1;
-            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
+        let mut burst_cooldown = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
+        if burst_cooldown > 0.0 {
+            count_down(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN, 1.0);
+            burst_cooldown = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
+            if burst_cooldown <= 0.0 {
                 let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                 let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
                 let countereff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;

@@ -5,10 +5,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*
-    }
+    crate::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_EDGE )]
@@ -45,18 +42,18 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
         // Cancel Frames
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            CANCEL[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL);
         }
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH {
             if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                CANCEL[entry_id(fighter.module_accessor)] = true;
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL);
             }
         }
         if (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING)
-        && CANCEL[entry_id(fighter.module_accessor)] == true {
+        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }

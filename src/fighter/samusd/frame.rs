@@ -3,13 +3,12 @@ use {
         lua2cpp::{L2CFighterCommon, L2CFighterBase},
         hash40,
         phx::Vector3f,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         gameplay::*
     }
@@ -78,19 +77,13 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]
 fn samusd_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-            BOUNCE[entry_id(fighter.module_accessor)] = false;
-        }
-        if sv_information::is_ready_go() == false {
-            BOUNCE[entry_id(fighter.module_accessor)] = false;
-        }
     
         // Morph Ball Drop Bounce
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw")
         || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw") {
             if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-            && BOUNCE[entry_id(fighter.module_accessor)] == false {
+            && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE) {
                 MotionModule::set_frame_sync_anim_cmd(
                     fighter.module_accessor,
                     44.0,
@@ -104,13 +97,13 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
                 KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
-                BOUNCE[entry_id(fighter.module_accessor)] = true;
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE);
             }
         }
         else {
-            if BOUNCE[entry_id(fighter.module_accessor)] {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE) {
                 KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
-                BOUNCE[entry_id(fighter.module_accessor)] = false;
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE);
             }
         }
 

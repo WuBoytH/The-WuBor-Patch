@@ -38,12 +38,25 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if CANCEL[entry_id(fighter.module_accessor)] == true && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
-            CANCEL[entry_id(fighter.module_accessor)] = false;
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL)
+        && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
             MotionModule::set_frame(fighter.module_accessor, 25.0, false);
         }
 
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+            if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD {
+                if MotionModule::frame(fighter.module_accessor) >= 11.0
+                && MotionModule::frame(fighter.module_accessor) < 32.0 {
+                    if ControlModule::check_button_on(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL) {
+                        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END, true);
+                        WorkModule::on_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
+                    }
+                }
+                else {
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
+                }
+            }
             element_fgc(fighter);
         }
     }

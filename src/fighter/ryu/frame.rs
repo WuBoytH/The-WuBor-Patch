@@ -30,7 +30,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH || sv_information::is_ready_go() == false {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
-            CANCEL[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
             WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
@@ -46,30 +46,30 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
             || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_command")
             && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-            && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND)
-            && CANCEL[entry_id(fighter.module_accessor)] == false {
-                CANCEL[entry_id(fighter.module_accessor)] = true;
+            && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND) {
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS);
             }
-            else if CANCEL[entry_id(fighter.module_accessor)]
+            else if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS)
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                CANCEL[entry_id(fighter.module_accessor)] = false;
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS);
             }
         }
 
         if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-        && CANCEL[entry_id(fighter.module_accessor)] {
+        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS)
+        && !StopModule::is_stop(fighter.module_accessor) {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW
-        && CANCEL[entry_id(fighter.module_accessor)] {
+        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
+            WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
             if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
                 WorkModule::set_float(fighter.module_accessor, 1200.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
             }
-            CANCEL[entry_id(fighter.module_accessor)] = false;
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS);
         }
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER) > 0.0 {
@@ -86,31 +86,33 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         // EX Flash
 
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH) {
+            let mut flash_timer = WorkModule::get_int(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
             if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
-                if _TIME_COUNTER[entry_id(fighter.module_accessor)] < 0 {
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] = 8;
+                if flash_timer == 0 {
+                    WorkModule::set_int(fighter.module_accessor, 8, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
+                    flash_timer = 8;
                 }
-                if _TIME_COUNTER[entry_id(fighter.module_accessor)] <= 4 {
+                if flash_timer <= 4 {
                     macros::COL_NORMAL(fighter);
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+                    WorkModule::dec_int(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
                 }
-                if _TIME_COUNTER[entry_id(fighter.module_accessor)] > 4 {
+                if flash_timer > 4 {
                     macros::FLASH(fighter, 0, 0.55, 1, 1.0);
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+                    WorkModule::dec_int(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
                 }
             }
             else {
-                if _TIME_COUNTER[entry_id(fighter.module_accessor)] < 0 {
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] = 12;
+                if flash_timer == 0 {
+                    WorkModule::set_int(fighter.module_accessor, 13, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
                 }
-                else if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 0 {
+                else if flash_timer == 1 {
                     macros::COL_NORMAL(fighter);
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+                    WorkModule::dec_int(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
                 }
                 else {
                     macros::FLASH(fighter, 1, 1, 0.0, 0.75);
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+                    WorkModule::dec_int(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
                 }
             }
         }
@@ -132,7 +134,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             ].contains(&StatusModule::status_kind(fighter.module_accessor))
             && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-            && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0 {
+            && MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0 {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, 0x1daca540be as u64);
                 sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
@@ -262,7 +264,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                     macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_aura"));
                     WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
                     WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
-                    _TIME_COUNTER[entry_id(fighter.module_accessor)] = -1;
+                    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
                     macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);

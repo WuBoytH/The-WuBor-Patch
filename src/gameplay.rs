@@ -15,10 +15,12 @@ use {
 };
 
 pub unsafe fn jump_cancel_check_hit(fighter: &mut L2CFighterCommon, jump_on_block: bool) -> L2CValue {
+    let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
-    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
-    && WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0 {
+    && MotionModule::frame(fighter.module_accessor) > hit_frame + 1.0
+    && cancel_timer > 0.0 {
         let sit = fighter.global_table[SITUATION_KIND].get_i32();
         jump_cancel_common(fighter, sit.into())
     }
@@ -47,6 +49,8 @@ pub unsafe fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: b
     let dir;
     let cat;
     let status;
+    let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if reverse {
         dir = 4;
         cat = *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH;
@@ -59,8 +63,8 @@ pub unsafe fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: b
     }
     if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
-    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
-    && MotionModule::frame(fighter.module_accessor) <= HIT_FRAME[entry_id(fighter.module_accessor)] + 11.0
+    && MotionModule::frame(fighter.module_accessor) > hit_frame + 1.0
+    && cancel_timer > 0.0
     && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
     && get_command_stick_direction(fighter.module_accessor, true) == dir {
         StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
@@ -83,10 +87,12 @@ pub unsafe fn critical_zoom(fighter: &mut L2CFighterCommon, rate : u8, frames : 
 }
 
 pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) {
+    let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
-    && WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0 {
+    && MotionModule::frame(fighter.module_accessor) > hit_frame + 1.0
+    && cancel_timer > 0.0 {
         if jump_cancel != 0
         && jump_cancel_check_hit(fighter, jump_cancel == 2).get_bool() {
             return;
@@ -111,12 +117,13 @@ pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<
 
 pub unsafe fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool) -> L2CValue {
     let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
-
+    let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if !on_hit
     || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
-    && MotionModule::frame(fighter.module_accessor) <= HIT_FRAME[entry_id(fighter.module_accessor)] + 11.0) {
+    && MotionModule::frame(fighter.module_accessor) > hit_frame + 1.0
+    && cancel_timer > 0.0) {
         if (cat1 & cat1_compare) != 0 {
             StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, true);
             return true.into();
@@ -127,12 +134,13 @@ pub unsafe fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32
 
 pub unsafe fn chain_cancels(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool, counter: i32, max: i32) -> L2CValue {
     let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
-
+    let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if !on_hit
     || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-    && MotionModule::frame(fighter.module_accessor) > HIT_FRAME[entry_id(fighter.module_accessor)] + 1.0
-    && MotionModule::frame(fighter.module_accessor) <= HIT_FRAME[entry_id(fighter.module_accessor)] + 11.0) {
+    && MotionModule::frame(fighter.module_accessor) > hit_frame + 1.0
+    && cancel_timer > 0.0) {
         if (cat1 & cat1_compare) != 0
         && WorkModule::get_int(fighter.module_accessor, counter) < max {
             StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, true);

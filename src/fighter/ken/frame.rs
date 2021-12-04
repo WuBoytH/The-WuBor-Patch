@@ -170,16 +170,17 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-            if _TIME_COUNTER[entry_id(fighter.module_accessor)] < 0 {
-                _TIME_COUNTER[entry_id(fighter.module_accessor)] = 32;
-            }
-            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 32 {
+            let v_trigger_eff_timer = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER);
+            if v_trigger_eff_timer == 32 {
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_flame"), smash::phx::Hash40::new("footl"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 90.0, y: 0.0, z: 0.0}, 0.2, true, 0, 0, 0, 0, 0, true, true);
             }
-            if _TIME_COUNTER[entry_id(fighter.module_accessor)] == 16 {
+            if v_trigger_eff_timer == 16 {
                 EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_flame"), smash::phx::Hash40::new("footr"), &Vector3f{x: 0.0, y: 0.0, z: 0.0}, &Vector3f{x: 90.0, y: 0.0, z: 0.0}, 0.2, true, 0, 0, 0, 0, 0, true, true);
             }
-            _TIME_COUNTER[entry_id(fighter.module_accessor)] -= 1;
+            WorkModule::dec_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER);
+            if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER) <= 0 {
+                WorkModule::set_int(fighter.module_accessor, 32, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER);
+            }
         }
 
         // V Shift

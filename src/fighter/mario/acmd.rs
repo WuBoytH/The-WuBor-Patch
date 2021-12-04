@@ -287,7 +287,7 @@ unsafe fn mario_fairexp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0x50000000);
     }
 }
 
@@ -408,6 +408,18 @@ unsafe fn mario_dairsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("vc_mario_002"));
         macros::PLAY_SE(fighter, Hash40::new("se_mario_attackair_l01"));
     } 
+}
+
+#[acmd_script( agent = "mario", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_dairexp(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackss"), 5);
+    }
+    frame(fighter.lua_state_agent, 35.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 5);
+    }
 }
 
 #[acmd_script( agent = "mario", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
@@ -590,6 +602,13 @@ unsafe fn mario_dspecialjumpsnd(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", script = "expression_speciallwlight", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_dspecialjumpexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_jump"), 0, false, 0x50000000);
+    }
+}
+
 #[acmd_script( agent = "mario", script = "sound_speciallwhold", category = ACMD_SOUND, low_priority )]
 unsafe fn mario_dspeciallandsnd(_fighter: &mut L2CAgentBase) {
 }
@@ -598,6 +617,13 @@ unsafe fn mario_dspeciallandsnd(_fighter: &mut L2CAgentBase) {
 unsafe fn mario_dspeciallandeff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "mario", script = "expression_speciallwhold", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_dspeciallandexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, 0x50000000);
     }
 }
 
@@ -635,7 +661,7 @@ unsafe fn mario_dspecialpoundexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0x50000000);
     }
 }
 
@@ -677,7 +703,7 @@ unsafe fn mario_dspecialpoundlandeff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "expression_specialairlwhold", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn mario_dspecialpoundlandexp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, 0x50000000);
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
     }
     frame(fighter.lua_state_agent, 25.0);
@@ -737,46 +763,25 @@ unsafe fn mario_pump_lighteff(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_fsmash,
-        mario_fsmasheff,
-        mario_fsmashsnd,
-        mario_fsmashhi,
-        mario_fsmashhieff,
-        mario_fsmashhisnd,
-        mario_fsmashlw,
-        mario_fsmashlweff,
-        mario_fsmashlwsnd,
+        mario_fsmash, mario_fsmasheff, mario_fsmashsnd,
+        mario_fsmashhi, mario_fsmashhieff, mario_fsmashhisnd,
+        mario_fsmashlw, mario_fsmashlweff, mario_fsmashlwsnd,
         mario_nair,
-        mario_fair,
-        mario_faireff,
-        mario_fairexp,
+        mario_fair, mario_faireff, mario_fairexp,
         mario_fairland,
         mario_uair,
-        mario_dair,
-        mario_daireff,
-        mario_dairsnd,
+        mario_dair, mario_daireff, mario_dairsnd, mario_dairexp,
         mario_dairlanding,
         mario_nspecial,
-        mario_sspecial,
-        mario_sspecialeff,
-        mario_sspecialaireff,
+        mario_sspecial, mario_sspecialeff, mario_sspecialaireff,
         mario_uspecial,
         mario_dspecialstartsnd,
-        mario_dspecialjump,
-        mario_dspecialjumpsnd,
-        mario_dspeciallandsnd,
-        mario_dspeciallandeff,
-        mario_dspecialairstart,
-        mario_dspecialairstartsnd,
-        mario_dspecialpound,
-        mario_dspecialpoundsnd,
-        mario_dspecialpoundexp,
-        mario_dspecialcancel,
-        mario_dspecialcancelsnd,
-        mario_dspecialpoundland,
-        mario_dspecialpoundlandsnd,
-        mario_dspecialpoundlandeff,
-        mario_dspecialpoundlandexp,
+        mario_dspecialjump, mario_dspecialjumpsnd, mario_dspecialjumpexp,
+        mario_dspeciallandsnd, mario_dspeciallandeff, mario_dspeciallandexp,
+        mario_dspecialairstart, mario_dspecialairstartsnd,
+        mario_dspecialpound, mario_dspecialpoundsnd, mario_dspecialpoundexp,
+        mario_dspecialcancel, mario_dspecialcancelsnd,
+        mario_dspecialpoundland, mario_dspecialpoundlandsnd, mario_dspecialpoundlandeff, mario_dspecialpoundlandexp,
         mario_fireball_regular,
         mario_pump_starteff,
         mario_pump_lighteff

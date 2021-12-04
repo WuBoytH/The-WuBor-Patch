@@ -74,7 +74,7 @@ unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
@@ -478,7 +478,7 @@ unsafe fn samusd_fairexp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack11"), 0);
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_explosion"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 50.0);
     if macros::is_excute(fighter) {
@@ -529,6 +529,21 @@ unsafe fn samusd_uaireffect(fighter: &mut L2CAgentBase) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
         macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
         macros::BURN_COLOR_NORMAL(fighter);
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samusd_uairexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 8);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm_l"), 0, false, 0x50000000);
     }
 }
 
@@ -796,11 +811,11 @@ unsafe fn samusd_missile_hburst(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 30, 25, 0, 45, 15.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
         // AttackModule::enable_safe_pos(weapon.module_accessor);
-        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0);
+        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0x50000000);
     }
     wait(weapon.lua_state_agent, 1.0);
     if macros::is_excute(weapon) {
-        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0);
+        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0x50000000);
         notify_event_msc_cmd!(weapon, 0x199c462b5du64);
     }
 }
@@ -815,7 +830,7 @@ pub fn install() {
         samusd_jab2, samusd_jab2effect, samusd_jab2ex, samusd_jab2sound,
         samusd_dashattack, samusd_dashattackeff,
         samusd_ftilt, samusd_ftilthi, samusd_ftiltlw,
-        samusd_utilt, samusd_utilteffect,
+        samusd_utilt, samusd_utilteffect, samusd_uairexp,
         samusd_utiltsound, samusd_dtilt,
         samusd_usmash,
         samusd_dsmash,

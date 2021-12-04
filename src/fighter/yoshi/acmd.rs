@@ -171,7 +171,7 @@ unsafe fn yoshi_tamago_burst(weapon: &mut L2CAgentBase) {
             angle = 130;
         }
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 6.0, angle, 50, 0, 60, 6.5, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_YOSHI_EGG_HIT, *ATTACK_REGION_OBJECT);
-        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0);
+        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_explosion"), 0, false, 0x50000000);
     }
     wait(weapon.lua_state_agent, 3.0);
     if macros::is_excute(weapon) {

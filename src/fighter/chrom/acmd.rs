@@ -82,7 +82,7 @@ unsafe fn chrom_jabexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 4, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 4, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -161,11 +161,11 @@ unsafe fn chrom_utiltexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -231,7 +231,7 @@ unsafe fn chrom_fsmashexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
@@ -314,7 +314,7 @@ unsafe fn chrom_dairexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {

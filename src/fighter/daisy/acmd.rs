@@ -177,7 +177,7 @@ unsafe fn daisy_dairsnd(fighter: &mut L2CAgentBase) {
 unsafe fn daisy_dairexp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 5, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 5, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
@@ -185,7 +185,7 @@ unsafe fn daisy_dairexp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
@@ -386,7 +386,7 @@ unsafe fn daisy_dspecialairsnd(fighter: &mut L2CAgentBase) {
 unsafe fn daisy_dspecialairexp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 0, false, 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

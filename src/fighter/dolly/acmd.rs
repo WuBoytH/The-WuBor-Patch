@@ -158,7 +158,7 @@ unsafe fn dolly_fthrowexp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
-    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, 0);
+    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 49.0);
     if macros::is_excute(fighter) {
@@ -244,7 +244,7 @@ unsafe fn dolly_bthrowexp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
-    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, 0);
+    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, 0x50000000);
     }
     frame(fighter.lua_state_agent, 49.0);
     if macros::is_excute(fighter) {

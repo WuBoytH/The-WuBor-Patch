@@ -10,7 +10,7 @@ use {
 };
 
 #[status_script(agent = "purin", status = FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn purin_specialnhitend(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn purin_specialn_hit_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_n_hit_end"),
@@ -22,10 +22,10 @@ unsafe fn purin_specialnhitend(fighter: &mut L2CFighterCommon) -> L2CValue {
         false
     );
     WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_PURIN_STATUS_SPECIAL_N_WORK_FLOAT_MOTION_RATE);
-    fighter.sub_shift_status_main(L2CValue::Ptr(purin_specialnhitendmain as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(purin_specialn_hit_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn purin_specialnhitendmain(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn purin_specialn_hit_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_air_check_fall_common();
     }
@@ -34,11 +34,11 @@ unsafe extern "C" fn purin_specialnhitendmain(fighter: &mut L2CFighterCommon) ->
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
-        purin_specialnhitend
+        purin_specialn_hit_end_main
     );
 }

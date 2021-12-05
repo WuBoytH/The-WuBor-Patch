@@ -97,14 +97,14 @@ unsafe extern "C" fn ganon_specialn_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ganon_sspecialaircatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn ganon_specials_air_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     MotionModule::set_rate(fighter.module_accessor, 0.0);
-    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specialairscatch_mainloop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_s_air_catch_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ganon_specialairscatch_mainloop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut val = 0;
+unsafe extern "C" fn ganon_special_s_air_catch_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut ret = 0;
     if fighter.global_table[MOTION_FRAME].get_f32() == 1.0 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_catch"), 1.0, 1.0, false, 0.0, false, false);
         fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
@@ -118,32 +118,54 @@ unsafe extern "C" fn ganon_specialairscatch_mainloop(fighter: &mut L2CFighterCom
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END.into(), false.into());
         }
-        val = 1;
+        ret = 1;
     }
-    L2CValue::I32(val)
+    L2CValue::I32(ret)
 }
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ganon_sspecialairend_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), *FIGHTER_KINETIC_TYPE_UNIQ, *GROUND_CORRECT_KIND_GROUND as u32, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE), false, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT, *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT, 1);
-    FighterStatusModuleImpl::set_fighter_status_data(fighter.module_accessor, false, *FIGHTER_TREADED_KIND_NO_REAC, false, true, false, *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64, 0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32, 0);
-    L2CValue::I32(0)
+unsafe fn ganon_sspecial_air_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_GROUND as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        false,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        1
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        true,
+        false,
+        *WEAPON_MARIO_PUMP_WATER_STATUS_KIND_REGULAR as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_S as u32,
+        0
+    );
+    0.into()
 }
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ganon_sspecialairend_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn ganon_sspecial_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
-    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specialairsend_mainloop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specials_air_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ganon_specialairsend_mainloop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_AERIAL.into(), false.into());
         }
     }
-    L2CValue::I32(1)
+    1.into()
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -156,11 +178,11 @@ pub unsafe fn common_status_catchedairganon_main(fighter: &mut L2CFighterCommon)
         FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new("catched_ganon"), *BODY_TYPE_MOTION_GIRL);
     }
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("catched_ganon"), 1.0, 1.0, false, 0.0, false, false);
-    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairganon_mainloop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairganon_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn common_status_catchedairganon_mainloop(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    L2CValue::I32(0)
+unsafe extern "C" fn common_status_catchedairganon_main_loop(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
 }
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -174,22 +196,22 @@ pub unsafe fn common_status_catchedairendganon_main(fighter: &mut L2CFighterComm
         FighterMotionModuleImpl::add_body_type_hash(fighter.module_accessor, Hash40::new_raw(throw_motion), *BODY_TYPE_MOTION_GIRL);
     }
     MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(throw_motion), 1.0, 1.0, false, 0.0, false, false);
-    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairendganon_mainloop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairendganon_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn common_status_catchedairendganon_mainloop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn common_status_catchedairendganon_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
         ganon_specialn_main,
-        ganon_sspecialaircatch_main,
-        ganon_sspecialairend_pre,
-        ganon_sspecialairend_main,
+        ganon_specials_air_catch_main,
+        ganon_sspecial_air_end_pre,
+        ganon_sspecial_air_end_main,
         common_status_catchedairganon_main,
         common_status_catchedairendganon_main
     );

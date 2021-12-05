@@ -18,6 +18,11 @@ use {
     }
 };
 
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ken_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_main(fighter)
+}
+
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ken_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
@@ -334,7 +339,7 @@ unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
         sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -480,7 +485,7 @@ unsafe extern "C" fn ken_quickstep_loop(fighter: &mut L2CFighterCommon) -> L2CVa
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 unsafe extern "C" fn ken_heatrush_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -496,21 +501,16 @@ unsafe extern "C" fn ken_heatrush_loop(fighter: &mut L2CFighterCommon) -> L2CVal
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
-    L2CValue::I32(0)
-}
-
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fgc_dashback_main(fighter)
+    0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
+        ken_dashback_main,
         ken_attack_main,
         ken_specialsloop_main,
         ken_speciallw_pre,
         ken_speciallw_init,
-        ken_speciallw_main,
-        ken_dashback_main
+        ken_speciallw_main
     );
 }

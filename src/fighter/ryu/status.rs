@@ -141,7 +141,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn ryu_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     if start_sit != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
@@ -187,10 +187,10 @@ unsafe fn ryu_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         let alpha = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_wind_alpha")) * 0.01;
         EffectModule::set_alpha(fighter.module_accessor, spineffect, alpha);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specialsloop_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specials_loop_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ryu_specialsloop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_specials_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -322,7 +322,7 @@ pub fn install() {
     install_status_scripts!(
         ryu_dashback_main,
         ryu_attack_main,
-        ryu_specialsloop_main,
+        ryu_specials_loop_main,
         // ryu_wait_pre,
         // ryu_wait_main,
         // ryu_squatwait_main,

@@ -14,7 +14,7 @@ use {
 };
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn donkey_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn donkey_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
     if !barrel_check() {
@@ -28,10 +28,10 @@ unsafe fn donkey_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
     else {
         fighter.sub_change_motion_by_situation(L2CValue::Hash40(Hash40::new("special_s")), L2CValue::Hash40(Hash40::new("special_air_s")), L2CValue::Bool(false));
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(donkey_specialsmain as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(donkey_specials_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn donkey_specialsmain(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_r")
     && MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_l") {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
@@ -78,6 +78,6 @@ pub unsafe fn barrel_check() -> bool {
 
 pub fn install() {
     install_status_scripts!(
-        donkey_specials
+        donkey_specials_main
     );
 }

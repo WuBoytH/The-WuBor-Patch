@@ -10,7 +10,7 @@ use {
 };
 
 #[status_script(agent = "kamui", status = FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn kamui_speciallwhit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn kamui_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -38,14 +38,14 @@ unsafe fn kamui_speciallwhit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "kamui", status = FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kamui_speciallwhit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn kamui_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
-    kamui_speciallwmotion(fighter);
-    kamui_speciallwdragonmotion(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(kamui_speciallwhit_main_loop as *const () as _))
+    kamui_speciallw_hit_mot(fighter);
+    kamui_speciallw_hit_dragon_mot(fighter);
+    fighter.sub_shift_status_main(L2CValue::Ptr(kamui_speciallw_hit_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn kamui_speciallwmotion(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn kamui_speciallw_hit_mot(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT) {
@@ -103,7 +103,7 @@ unsafe extern "C" fn kamui_speciallwmotion(fighter: &mut L2CFighterCommon) {
     return
 }
 
-unsafe extern "C" fn kamui_speciallwdragonmotion(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn kamui_speciallw_hit_dragon_mot(fighter: &mut L2CFighterCommon) {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -151,17 +151,17 @@ unsafe extern "C" fn kamui_speciallwdragonmotion(fighter: &mut L2CFighterCommon)
     return
 }
 
-unsafe extern "C" fn kamui_speciallwhit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut val = 0;
+unsafe extern "C" fn kamui_speciallw_hit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut ret = 0;
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(L2CValue::I32(0x80)).get_bool() == true
         && fighter.sub_air_check_fall_common().get_bool() == true {
-            val = 1;
+            ret = 1;
         }
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        kamui_speciallwmotion(fighter);
-        kamui_speciallwdragonmotion(fighter);
+        kamui_speciallw_hit_mot(fighter);
+        kamui_speciallw_hit_dragon_mot(fighter);
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -171,11 +171,11 @@ unsafe extern "C" fn kamui_speciallwhit_main_loop(fighter: &mut L2CFighterCommon
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
-    L2CValue::I32(val)
+    ret.into()
 }
 
 #[status_script(agent = "kamui", status = FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn kamui_speciallwhit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn kamui_speciallw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
             ArticleModule::remove_exist(
@@ -186,13 +186,13 @@ unsafe fn kamui_speciallwhit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
             VisibilityModule::set_whole(fighter.module_accessor, true);
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
-        kamui_speciallwhit_pre,
-        kamui_speciallwhit_main,
-        kamui_speciallwhit_end
+        kamui_speciallw_hit_pre,
+        kamui_speciallw_hit_main,
+        kamui_speciallw_hit_end
     );
 }

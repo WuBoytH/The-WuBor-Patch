@@ -144,23 +144,23 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
 }
 
 pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let val;
+    let ret;
     let final_cancel = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     if situation.get_i32() != *SITUATION_KIND_GROUND {
-        val = fighter.sub_transition_group_check_air_special().get_bool();
+        ret = fighter.sub_transition_group_check_air_special().get_bool();
     }
     else {
-        val = fighter.sub_transition_group_check_ground_special().get_bool();
+        ret = fighter.sub_transition_group_check_ground_special().get_bool();
     }
     if !final_cancel {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     }
-    val.into()
+    ret.into()
 }
 
 pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let val;
+    let ret;
     let special_n = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     let special_s = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
     let special_hi = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
@@ -180,10 +180,10 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
     if situation.get_i32() != *SITUATION_KIND_GROUND {
-        val = fighter.sub_transition_group_check_air_special().get_bool();
+        ret = fighter.sub_transition_group_check_air_special().get_bool();
     }
     else {
-        val = fighter.sub_transition_group_check_ground_special().get_bool();
+        ret = fighter.sub_transition_group_check_ground_special().get_bool();
     }
     if !special_n {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
@@ -212,11 +212,11 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     if !attack_command1 {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
     }
-    val.into()
+    ret.into()
 }
 
 pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let val;
+    let ret;
     let special_n_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
     let special_n2_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
     let special_s_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
@@ -227,7 +227,7 @@ pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CV
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
-    val = fighter.sub_transition_group_check_special_command().get_bool();
+    ret = fighter.sub_transition_group_check_special_command().get_bool();
     if !special_n_command {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
     }
@@ -243,7 +243,7 @@ pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CV
     if !attack_command1 {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
     }
-    val.into()
+    ret.into()
 }
 
 // pub unsafe extern "C" fn ryu_idkwhatthisis(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {

@@ -11,7 +11,7 @@ use {
 };
 
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn pitb_specialncharge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn pitb_specialn_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_DIR_S) {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
         WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION_AIR);
@@ -24,16 +24,16 @@ unsafe fn pitb_specialncharge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::set_int64(fighter.module_accessor, 0x684068652, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION);
         WorkModule::set_int64(fighter.module_accessor, 0xa23431885, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_BOW_MOTION_AIR);
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(pitb_specialncharge_charge as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(pitb_specialncharge_loop as *const () as _))
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(pitb_specialn_charge_charge as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(pitb_specialn_charge_loop as *const () as _))
 }
 
-unsafe extern "C" fn pitb_specialncharge_charge(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pitb_specialn_charge_charge(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_CHARGE);
     0.into()
 }
 
-unsafe extern "C" fn pitb_specialncharge_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pitb_specialn_charge_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_PIT_SPECIAL_AIR_N);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -197,7 +197,7 @@ unsafe extern "C" fn pitb_specialncharge_loop(fighter: &mut L2CFighterCommon) ->
 // }
 
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn pitb_specialnshoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn pitb_specialn_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     pitb_specialn_endremove(fighter)
 }
 
@@ -216,8 +216,8 @@ unsafe extern "C" fn pitb_specialn_endremove(fighter: &mut L2CFighterCommon) -> 
 
 pub fn install() {
     install_status_scripts!(
-        pitb_specialncharge_main,
+        pitb_specialn_charge_main,
         // pitb_specialnturn_main,
-        pitb_specialnshoot_end
+        pitb_specialn_shoot_end
     );
 }

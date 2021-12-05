@@ -158,7 +158,7 @@ unsafe fn wario_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "wario", status = FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn wario_speciallwlanding_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn wario_speciallw_landing_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
     0.into()
 }
@@ -169,6 +169,6 @@ pub fn install() {
         wario_throw_exec,
         wario_speciallw_main,
         wario_speciallw_end,
-        wario_speciallwlanding_end
+        wario_speciallw_landing_end
     );
 }

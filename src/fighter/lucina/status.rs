@@ -19,7 +19,7 @@ use {
 unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CHARGE_MAX);
-    lucina_specialn_mmot_helper(fighter);
+    lucina_specialn_mot_helper(fighter);
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
@@ -31,7 +31,7 @@ unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialn_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specialn_mmot_helper(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_specialn_mot_helper(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {
@@ -91,16 +91,16 @@ unsafe extern "C" fn lucina_specialn_mmot_helper(fighter: &mut L2CFighterCommon)
 unsafe extern "C" fn lucina_specialn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
-        lucina_specialn_mmot_helper(fighter);
+        lucina_specialn_mot_helper(fighter);
     }
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP.into(), false.into());
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn lucina_specialn_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -112,10 +112,10 @@ unsafe fn lucina_specialnloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialnloop_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialn_loop_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specialnloop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_specialn_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
     && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
@@ -141,7 +141,7 @@ unsafe extern "C" fn lucina_specialnloop_main_loop(fighter: &mut L2CFighterCommo
             }
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -261,7 +261,7 @@ unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) 
             }
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -491,13 +491,13 @@ unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
         lucina_specialn_main,
-        lucina_specialnloop_main,
+        lucina_specialn_loop_main,
         lucina_specials_pre,
         lucina_specials_main,
         lucina_specials2_main,

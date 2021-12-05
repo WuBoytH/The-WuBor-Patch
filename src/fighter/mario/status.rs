@@ -19,7 +19,7 @@ use {
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn mario_specials_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
@@ -52,7 +52,7 @@ unsafe fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -137,7 +137,7 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
         }
         macros::SET_SPEED_EX(fighter, speed_x, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
@@ -166,7 +166,7 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         lua_bind::FighterKineticEnergyGravity::set_speed(gravity as *mut smash::app::FighterKineticEnergyGravity, -ground_pound_fall_speed);
         lua_bind::FighterKineticEnergyGravity::set_accel(gravity as *mut smash::app::FighterKineticEnergyGravity, 0.0);
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -184,7 +184,7 @@ unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue
             false,
             false
         );
-        fighter.sub_shift_status_main(L2CValue::Ptr(mario_longjump_jump_main_loop as *const () as _))
+        fighter.sub_shift_status_main(L2CValue::Ptr(mario_speciallw_longjump_jump_main_loop as *const () as _))
     }
     else {
         MotionModule::change_motion(
@@ -197,11 +197,11 @@ unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue
             false,
             false
         );
-        fighter.sub_shift_status_main(L2CValue::Ptr(mario_groundpound_fall_main_loop as *const () as _))
+        fighter.sub_shift_status_main(L2CValue::Ptr(mario_speciallw_groundpound_fall_main_loop as *const () as _))
     }
 }
 
-unsafe extern "C" fn mario_longjump_jump_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_longjump_jump_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_LANDING)
     && fighter.sub_air_check_fall_common().get_bool() == false {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
@@ -212,7 +212,7 @@ unsafe extern "C" fn mario_longjump_jump_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-unsafe extern "C" fn mario_groundpound_fall_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_groundpound_fall_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_CATEGORY_MASK_ALL)
     && get_command_stick_direction(fighter.module_accessor, false) == 8 {
@@ -228,7 +228,6 @@ unsafe extern "C" fn mario_groundpound_fall_main_loop(fighter: &mut L2CFighterCo
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
-        // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_hold"),
@@ -253,7 +252,7 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
             false,
             false
         );
-        fighter.sub_shift_status_main(L2CValue::Ptr(mario_groundpound_land_main_loop as *const () as _))
+        fighter.sub_shift_status_main(L2CValue::Ptr(mario_speciallw_groundpound_land_main_loop as *const () as _))
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
@@ -268,7 +267,7 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
             false,
             false
         );
-        fighter.sub_shift_status_main(L2CValue::Ptr(mario_groundpound_cancel_main_loop as *const () as _))
+        fighter.sub_shift_status_main(L2CValue::Ptr(mario_speciallw_groundpound_cancel_main_loop as *const () as _))
     }
 }
 
@@ -289,7 +288,7 @@ unsafe extern "C" fn mario_speciallw_longjump_end_main_loop(fighter: &mut L2CFig
     0.into()
 }
 
-unsafe extern "C" fn mario_groundpound_land_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_groundpound_land_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();
@@ -303,7 +302,7 @@ unsafe extern "C" fn mario_groundpound_land_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-unsafe extern "C" fn mario_groundpound_cancel_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_groundpound_cancel_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
     }

@@ -46,7 +46,7 @@ unsafe fn samusd_jab2(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn samusd_jab2effect(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_jab2eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new("samusd_gbeam_flash_01"), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
@@ -61,7 +61,7 @@ unsafe fn samusd_jab2effect(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_jab2exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_hide_gun") as i64);
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -84,7 +84,7 @@ unsafe fn samusd_jab2ex(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
-unsafe fn samusd_jab2sound(fighter: &mut L2CAgentBase) {
+unsafe fn samusd_jab2snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_smash_s01"));
@@ -827,7 +827,7 @@ unsafe fn samusd_supermissile_ready(_weapon: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samusd_jab1,
-        samusd_jab2, samusd_jab2effect, samusd_jab2ex, samusd_jab2sound,
+        samusd_jab2, samusd_jab2eff, samusd_jab2exp, samusd_jab2snd,
         samusd_dashattack, samusd_dashattackeff,
         samusd_ftilt, samusd_ftilthi, samusd_ftiltlw,
         samusd_utilt, samusd_utilteffect, samusd_uairexp,

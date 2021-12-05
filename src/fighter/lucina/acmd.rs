@@ -825,7 +825,7 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
         add_sp(fighter.module_accessor, -spent);
-        WorkModule::set_int(fighter.module_accessor, 60, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
+        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);
         full_invuln(fighter.module_accessor, true);
@@ -897,6 +897,10 @@ unsafe fn lucina_uspecial(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             AttackModule::clear_all(fighter.module_accessor);
         }
+    }
+    frame(fighter.lua_state_agent, 36.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_KINETIC_CHANGE);
     }
 }
 
@@ -980,7 +984,7 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
         add_sp(fighter.module_accessor, -spent);
-        WorkModule::set_int(fighter.module_accessor, 60, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
+        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);
         full_invuln(fighter.module_accessor, true);
@@ -1057,6 +1061,10 @@ unsafe fn lucina_uspecialair(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             AttackModule::clear_all(fighter.module_accessor);
         }
+    }
+    frame(fighter.lua_state_agent, 36.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_KINETIC_CHANGE);
     }
 }
 

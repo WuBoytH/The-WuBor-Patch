@@ -153,7 +153,6 @@ pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, si
     else {
         val = fighter.sub_transition_group_check_ground_special().get_bool();
     }
-    println!("final? {}", val);
     if !final_cancel {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     }

@@ -100,12 +100,6 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE);
             }
         }
-        else {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE) {
-                KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.25,z: 0.0});
-                WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE);
-            }
-        }
 
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             samusd_fgc(fighter);

@@ -2,7 +2,8 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        app::lua_bind::*,
+        phx::Hash40,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
@@ -141,6 +142,91 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
         }
     }
     0.into()
+}
+
+pub unsafe extern "C" fn ryu_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_specials_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specials_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn ryu_specials_substatus(fighter: &mut L2CFighterCommon, param_2: L2CValue) -> L2CValue {
+    if param_2.get_bool() {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
+    }
+    0.into()
+}
+
+unsafe extern "C" fn ryu_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                return 1.into();
+            }
+            else {
+                ryu_specials_mot_helper(fighter);
+            }
+        }
+    }
+    else {
+        ryu_specials_mot_helper(fighter);
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP.into(), false.into());
+    }
+    0.into()
+}
+
+unsafe extern "C" fn ryu_specials_mot_helper(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if StatusModule::is_changing(fighter.module_accessor) {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_air_s_start"),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        if StatusModule::is_changing(fighter.module_accessor) {
+            return;
+        }
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"));
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
+        sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+        let air_max_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"));
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, air_max_speed_y);
+        sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+    }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        if StatusModule::is_changing(fighter.module_accessor) {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_s_start"),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        if StatusModule::is_changing(fighter.module_accessor) {
+            return;
+        }
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+        sv_kinetic_energy::set_brake(fighter.lua_state_agent);
+    }
 }
 
 pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {

@@ -145,6 +145,12 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ken_specials_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specials_main(fighter);
+    0.into()
+}
+
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ken_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
@@ -508,6 +514,7 @@ pub fn install() {
     install_status_scripts!(
         ken_dashback_main,
         ken_attack_main,
+        ken_specials_command,
         ken_specialsloop_main,
         ken_speciallw_pre,
         ken_speciallw_init,

@@ -49,6 +49,11 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             jump_cancel = 1;
         }
+        else if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
+                jump_cancel = 1;
+            }
+        }
         else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
             if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
                 return;

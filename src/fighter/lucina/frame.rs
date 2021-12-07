@@ -28,7 +28,8 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
         normal_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
@@ -45,6 +46,7 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_HI3
         || [
             hash40("attack_air_n"),
+            hash40("attack_air_b"),
             hash40("attack_air_hi")
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             jump_cancel = 1;
@@ -54,15 +56,11 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
                 jump_cancel = 1;
             }
         }
-        else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
-                return;
-            }
-        }
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
         normal_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
@@ -78,7 +76,19 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX,
+        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI
+    ].contains(&status) {
+        special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
     }
     cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);

@@ -15,8 +15,8 @@ unsafe fn palutena_ftilt(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 17.0);
-    macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
     if macros::is_excute(fighter) {
+        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
         macros::ATTACK(fighter, 0, 0, Hash40::new("stick"), 3.0, 361, 100, 16, 0, 4.1, -0.5, 5.5, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, true, 1, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         macros::ATTACK(fighter, 1, 0, Hash40::new("stick"), 3.0, 361, 100, 16, 0, 4.1, -0.5, -4.5, 0.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, true, 1, 0.0, 6, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
         AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);

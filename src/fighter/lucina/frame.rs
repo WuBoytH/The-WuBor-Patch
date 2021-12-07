@@ -40,27 +40,39 @@ pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
     else if [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR
+        *FIGHTER_STATUS_KIND_ATTACK_HI3
     ].contains(&status) {
-        if status == *FIGHTER_STATUS_KIND_ATTACK_HI3
-        || [
-            hash40("attack_air_n"),
-            hash40("attack_air_b"),
-            hash40("attack_air_hi")
-        ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
+        if status == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
             jump_cancel = 1;
-        }
-        else if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
-                jump_cancel = 1;
-            }
         }
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
+        ].to_vec();
+        normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status)
+    && MotionModule::motion_kind(fighter.module_accessor) != hash40("attack_air_lw") {
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
+                jump_cancel = 1;
+            }
+        }
+        else {
+            jump_cancel = 1;
+        }
+        special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
         ].to_vec();
         normal_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,

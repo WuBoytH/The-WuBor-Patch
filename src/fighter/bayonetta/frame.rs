@@ -55,16 +55,6 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
             ].to_vec();
         }
         else if [
-            hash40("attack_100_end"),
-            hash40("special_s_hold_end")
-        ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-                if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F, false).get_bool() {
-                    return;
-                }
-            }
-        }
-        else if [
             *FIGHTER_STATUS_KIND_ATTACK_S3,
             *FIGHTER_STATUS_KIND_ATTACK_LW3,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -74,13 +64,6 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
         ].contains(&status) {
             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
                 jump_cancel = 1;
-            }
-            else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-                if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-                    if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F, false).get_bool() {
-                        return;
-                    }
-                }
             }
             special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,

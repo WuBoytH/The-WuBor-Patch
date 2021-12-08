@@ -847,12 +847,9 @@ unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
-        KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
-    macros::FT_MOTION_RATE(fighter, 5.0/35.0);
-    frame(fighter.lua_state_agent, 52.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);

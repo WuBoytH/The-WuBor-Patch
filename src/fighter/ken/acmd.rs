@@ -103,7 +103,7 @@ unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME, low_priority )]
 unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
         DamageModule::set_damage_lock(fighter.module_accessor, true);
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
@@ -115,7 +115,7 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
         DamageModule::set_damage_lock(fighter.module_accessor, false);
     }
 }

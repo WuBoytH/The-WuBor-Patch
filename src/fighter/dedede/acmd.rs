@@ -168,7 +168,7 @@ unsafe fn dedede_dair(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME, low_priority )]
 unsafe fn dedede_dspecialmax(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 14);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 14);
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -181,7 +181,7 @@ unsafe fn dedede_dspecialmax(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
-        smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0);
+        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 0);
     }
 }
 

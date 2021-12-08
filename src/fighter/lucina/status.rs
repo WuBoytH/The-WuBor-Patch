@@ -326,6 +326,12 @@ unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) 
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let turn = if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND) {
+        *FIGHTER_STATUS_ATTR_START_TURN as u32
+    }
+    else {
+        0
+    };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -346,7 +352,7 @@ unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false,
         *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI as u64,
-        *FIGHTER_STATUS_ATTR_START_TURN as u32,
+        turn,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );

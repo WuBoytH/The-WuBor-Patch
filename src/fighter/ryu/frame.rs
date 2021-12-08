@@ -275,13 +275,13 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                 }
                 if MotionModule::frame(fighter.module_accessor) <= 30.0
                 && MotionModule::frame(fighter.module_accessor) >= 4.0 {
-                    smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+                    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
                     DamageModule::set_damage_lock(fighter.module_accessor, true);
                 }
                 else {
                     macros::EFFECT_OFF_KIND(fighter, Hash40::new("ryu_savingattack_aura"), false, true);
                     macros::BURN_COLOR_NORMAL(fighter);
-                    smash_script::damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+                    damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
                     DamageModule::set_damage_lock(fighter.module_accessor, false);
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
                     macros::COL_NORMAL(fighter);

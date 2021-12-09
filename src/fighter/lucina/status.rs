@@ -220,6 +220,7 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
         }
     }
     else {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         let ground_brake = sv_fighter_util::get_default_fighter_param_ground_brake(fighter.lua_state_agent);
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ground_brake, 0.0);

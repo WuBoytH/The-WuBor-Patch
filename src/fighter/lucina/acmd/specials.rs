@@ -288,12 +288,12 @@ unsafe fn lucina_sspecial2hiair(fighter: &mut L2CAgentBase) {
             dmg = 16.0;
             kbg = 90;
             velx = 3.0;
-            vely = -3.0;
+            vely = -2.4;
         }
         else {
             dmg = 11.0;
             kbg = 70;
-            velx = 2.1;
+            velx = 2.5;
             vely = -2.1;
         }
         if shadow_id(fighter.module_accessor) {

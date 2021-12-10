@@ -20,6 +20,83 @@ unsafe fn dolly_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn dolly_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_Escape_common();
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ESCAPE_ATTACK);
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_escape_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn dolly_escape_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 0.into();
+        }
+    }
+    else {
+        let normal_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+        && normal_frame == 1 {
+            let cat = fighter.global_table[CMD_CAT1].get_i32();
+            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB);
+                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+                return 0.into();
+            }
+            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB);
+                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+                return 0.into();
+            }
+        }
+        let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
+        if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
+            let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
+            if is_catch as i32 & 1 != 0 {
+                if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+                    return 0.into();
+                }
+            }
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+        if MotionModule::is_end(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+                return 0.into();
+            }
+        }
+    }
+    else {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 0.into();
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ESCAPE_WORK_FLAG_ATTACK) {
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+            if fighter.global_table[CMD_CAT4].get_i32() & (
+                *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_R_COMMAND | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL_COMMAND |
+                *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND | *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_R_COMMAND
+            ) == 0 {
+                if FighterControlModuleImpl::special_command_236236_step(fighter.module_accessor) & 0xff < 6 {
+                    if FighterControlModuleImpl::special_command_214214_step(fighter.module_accessor) & 0xff < 6 {
+                        if FighterControlModuleImpl::special_command_21416_step(fighter.module_accessor) & 0xff < 5 {
+                            if FighterControlModuleImpl::special_command_23634_step(fighter.module_accessor) & 0xff < 5 {
+                                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ESCAPE_ATTACK);
+                                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI3.into(), true.into());
+                                return 0.into();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fighter.sub_escape_check_rumble();
+    0.into()
+}
+
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -192,6 +269,7 @@ unsafe extern "C" fn dolly_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CVal
 pub fn install() {
     install_status_scripts!(
         dolly_dashback_main,
+        dolly_escape_main,
         dolly_attacklw3_main,
         dolly_attacklw3_end
     );

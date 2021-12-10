@@ -10,7 +10,7 @@ use {
     },
     smash_script::*,
     crate::{
-        // vars::*,
+        vars::*,
         table_const::*
     }
 };
@@ -157,6 +157,9 @@ pub unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2C
     }
     let escape_penalty_max_count = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("escape_penalty_max_count"));
     let mut part1 = used_escape / escape_penalty_max_count as f32;
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB) {
+        part1 = 1.0;
+    }
     if part1 >= 0.0 {
         if 1.0 < part1 {
             part1 = 1.0;
@@ -165,9 +168,16 @@ pub unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2C
     else {
         part1 = 0.0;
     }
-    let part2 = penalty_motion_rate * used_escape;
-    let part3 = part2 + 1.0;
-    let final_motion_rate = 1.0 / part3;
+    let final_motion_rate;
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB) {
+        final_motion_rate = 1.0 / (penalty_motion_rate * escape_penalty_max_count as f32 + 1.0);
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB);
+    }
+    else {
+        let part2 = penalty_motion_rate * used_escape;
+        let part3 = part2 + 1.0;
+        final_motion_rate = 1.0 / part3;
+    }
     WorkModule::set_float(fighter.module_accessor, final_motion_rate, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
     let xlu_interp = fighter.lerp(hit_xlu_frame.into(), penalty_hit_xlu_frame.into(), part1.into()).get_f32();
     let normal_interp = fighter.lerp(hit_normal_frame.into(), penalty_hit_normal_frame.into(), part1.into()).get_f32();
@@ -190,10 +200,61 @@ pub unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2C
     FighterWorkModuleImpl::calc_escape_air_slide_param(fighter.module_accessor, part1);
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Escape_Main)]
+pub unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 0.into();
+        }
+    }
+    else {
+        let normal_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+        && normal_frame == 1 {
+            let cat = fighter.global_table[CMD_CAT1].get_i32();
+            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB);
+                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+                return 0.into();
+            }
+            if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_CANCEL_ESCAPE_TO_ESCAPE_FB);
+                fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+                return 0.into();
+            }
+        }
+        let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
+        if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
+            let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
+            if is_catch as i32 & 1 != 0 {
+                if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+                    return 0.into();
+                }
+            }
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+        if MotionModule::is_end(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+                return 0.into();
+            }
+        }
+        fighter.sub_escape_check_rumble();
+    }
+    else {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+    }
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_escape_uniq_process_common_initstatus_common
+            sub_escape_uniq_process_common_initstatus_common,
+            status_escape_main
         );
     }
 }

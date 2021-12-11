@@ -6,7 +6,6 @@ use {
     },
     smashline::*,
     crate::{
-        common_funcs::*,
         vars::*,
         gameplay::*
     }
@@ -20,15 +19,11 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
-        && MotionModule::frame(fighter.module_accessor) > 19.0
+        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL)
         && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
-        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP) {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_JUMP_SQUAT, true);
-        }
-
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {
-            reset_i32(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+        && MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0 {
+            jump_cancel_check_exception(fighter);
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT

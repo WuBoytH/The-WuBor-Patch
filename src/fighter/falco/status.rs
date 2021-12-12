@@ -14,7 +14,7 @@ use {
 
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn falco_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.status_Appeal_Common();
+    let ret = fighter.status_Appeal();
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_l")
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_r") {
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
@@ -22,9 +22,7 @@ unsafe fn falco_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     else {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
     }
-    let func = fighter.shift(L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_status_Appeal_Main as *const () as _));
-    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(func.get_ptr());
-    callable(fighter)
+    ret
 }
 
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]

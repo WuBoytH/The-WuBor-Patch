@@ -17,6 +17,54 @@ use {
     super::vl::*
 };
 
+#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_S4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn mario_attacks4_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_end_AttackXX4Start();
+    mario_remove_hammer(fighter);
+    0.into()
+}
+
+#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn mario_attacks4_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, MA_MSC_CMD_PHYSICS_STOP_CHARGE);
+    sv_module_access::physics(fighter.lua_state_agent);
+    mario_remove_hammer(fighter);
+    0.into()
+}
+
+#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_S4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn mario_attacks4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    mario_remove_hammer(fighter);
+    0.into()
+}
+
+#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn mario_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    mario_remove_hammer(fighter);
+    0.into()
+}
+
+#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn mario_landingattackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_landing_cancel_damage_face();
+    mario_remove_hammer(fighter);
+    0.into()
+}
+
+unsafe extern "C" fn mario_remove_hammer(fighter: &mut L2CFighterCommon) {
+    if ![
+        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+        *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
+    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP) {
+            ArticleModule::remove(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        }
+    }
+}
+
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn mario_specials_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
@@ -314,6 +362,11 @@ unsafe extern "C" fn mario_speciallw_groundpound_cancel_main_loop(fighter: &mut 
 
 pub fn install() {
     install_status_scripts!(
+        mario_attacks4_start_end,
+        mario_attacks4_hold_end,
+        mario_attacks4_end,
+        mario_attackair_end,
+        mario_landingattackair_end,
         mario_specials_init,
         mario_specials_exec,
         mario_speciallw_main,

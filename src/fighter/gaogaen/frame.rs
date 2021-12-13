@@ -7,6 +7,7 @@ use {
     smashline::*,
     crate::{
         vars::*,
+        table_const::*,
         gameplay::*
     }
 };
@@ -22,7 +23,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL)
         && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
-        && MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0 {
+        && !fighter.global_table[IN_HITLAG].get_bool() {
             jump_cancel_check_exception(fighter);
         }
 

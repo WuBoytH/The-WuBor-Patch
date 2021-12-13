@@ -9,7 +9,8 @@ use {
     smashline::*,
     crate::{
         common_funcs::*,
-        vars::*
+        vars::*,
+        table_const::*
     },
     super::command_inputs::*
 };
@@ -105,14 +106,12 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
         // Checks what frame you hit the opponent.
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0
-        && MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0 {
+        && !fighter.global_table[IN_HITLAG].get_bool() {
             count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
         }
 
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            let frame = MotionModule::frame(fighter.module_accessor);
-            WorkModule::set_float(fighter.module_accessor, frame, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
             WorkModule::set_float(fighter.module_accessor, 10.0, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         }
 

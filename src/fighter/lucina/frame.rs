@@ -2,7 +2,7 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::{Hash40/*, Vector3f*/},
+        phx::Hash40,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
@@ -10,101 +10,10 @@ use {
     smashline::*,
     crate::{
         common_funcs::*,
-        vars::*,
-        gameplay::*
+        vars::*
     },
     super::helper::*
 };
-
-#[inline(always)]
-pub unsafe fn lucina_fgc(fighter: &mut L2CFighterCommon) {
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    let mut special_cancels : Vec<i32> = [].to_vec();
-    let mut normal_cancels : Vec<i32> = [].to_vec();
-    let mut jump_cancel = 0;
-    if [
-        *FIGHTER_STATUS_KIND_ATTACK
-    ].contains(&status) {
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
-        ].to_vec();
-        normal_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3
-        ].to_vec();
-    }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_S3,
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3
-    ].contains(&status) {
-        if status == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
-            jump_cancel = 1;
-        }
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
-        ].to_vec();
-        normal_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-        ].to_vec();
-    }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_AIR
-    ].contains(&status)
-    && MotionModule::motion_kind(fighter.module_accessor) != hash40("attack_air_lw") {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_f") {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
-                jump_cancel = 1;
-            }
-        }
-        else {
-            jump_cancel = 1;
-        }
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
-        ].to_vec();
-        normal_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-        ].to_vec();
-    }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4
-    ].contains(&status) {
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
-        ].to_vec();
-    }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_DASH,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2,
-        *FIGHTER_STATUS_KIND_SPECIAL_HI
-    ].contains(&status) {
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
-        ].to_vec();
-    }
-    cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
-}
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
@@ -406,8 +315,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_THROW {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB);
         }
-
-        lucina_fgc(fighter);
     }
 }
 

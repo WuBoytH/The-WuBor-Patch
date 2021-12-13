@@ -35,7 +35,6 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
-            // OPPONENT_BOMA[entry_id(fighter.module_accessor)] = 0;
         }
 
         // EX Focus Attack Check
@@ -57,7 +56,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS)
-        && !StopModule::is_stop(fighter.module_accessor) {
+        && !fighter.global_table[IN_HITLAG].get_bool() {
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
         }
 
@@ -134,7 +133,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             ].contains(&StatusModule::status_kind(fighter.module_accessor))
             && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-            && MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0 {
+            && !fighter.global_table[IN_HITLAG].get_bool() {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, 0x1daca540be as u64);
                 sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);

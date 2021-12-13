@@ -27,7 +27,8 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
             return;
         }
     }
-    if [hash40("attack_s3_s2"),
+    if [
+        hash40("attack_s3_s2"),
         hash40("attack_s3_s3")
     ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
         jump_cancel = 1;
@@ -89,8 +90,8 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
             ].to_vec();
         }
-        cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
     }
+    cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_BAYONETTA )]

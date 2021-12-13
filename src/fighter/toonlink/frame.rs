@@ -9,6 +9,7 @@ use {
     smashline::*,
     crate::{
         vars::*,
+        table_const::*,
         gameplay::*
     }
 };
@@ -102,7 +103,7 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
             if WorkModule::is_flag(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_ATTACK_AIR_LW_FLAG_BOUNCE) {
                 macros::SET_SPEED_EX(fighter, 0.0, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 KineticModule::suspend_energy_all(fighter.module_accessor);
-                if MotionModule::frame(fighter.module_accessor) > WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME) + 1.0
+                if !fighter.global_table[IN_HITLAG].get_bool()
                 && MotionModule::frame(fighter.module_accessor) < 65.0 {
                     MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 65.0, true, true, false);
                 }

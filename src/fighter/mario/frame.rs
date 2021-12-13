@@ -3,7 +3,7 @@ use {
         lua2cpp::L2CFighterCommon,
         hash40,
         phx::Hash40,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::lua_const::*
     },
     smash_script::*,
@@ -93,6 +93,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
 #[fighter_frame( agent = FIGHTER_KIND_MARIO )]
 fn mario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
+        
         // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_DEAD {
         //     IS_BONKER[entry_id(fighter.module_accessor)] = 0;
         // }
@@ -102,19 +103,6 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
                 macros::PLAY_SE(fighter, Hash40::new("se_mario_attackair_l02"));
                 let speedx = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(fighter.module_accessor);
                 macros::SET_SPEED_EX(fighter, speedx, 0.75, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            }
-        }
-
-        if [
-            hash40("attack_air_f"),
-            hash40("landing_air_f"),
-            hash40("attack_s4_s"),
-            hash40("attack_s4_hi"),
-            hash40("attack_s4_lw"),
-            hash40("attack_s4_hold")
-        ].contains(&MotionModule::motion_kind(fighter.module_accessor)) == false {
-            if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP) {
-                ArticleModule::remove(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
             }
         }
 

@@ -65,8 +65,6 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        
-        // Give Ganondorf back Dark Deception if he is on the ground or grabbing ledge.
 
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N)
         && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF

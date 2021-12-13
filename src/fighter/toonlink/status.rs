@@ -326,18 +326,6 @@ unsafe extern "C" fn toonlink_boomerang_fly_main_fastshift(weapon: &mut L2CWeapo
                 return 1.into();
             }
         }
-        // if AttackModule::is_infliction(weapon.module_accessor, 0x7f) {
-        //     WorkModule::on_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_INFLICTION);
-        // }
-        // if WorkModule::is_flag(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_FLAG_INFLICTION) {
-        //     if !StopModule::is_stop(weapon.module_accessor) {
-        //         let is_penetration = WorkModule::get_param_int(weapon.module_accessor, hash40("param_boomerang"), hash40("is_penetration"));
-        //         if is_penetration == 0 {
-        //             weapon.change_status(WN_LINK_BOOMERANG_STATUS_KIND_TURN.into(), false.into());
-        //             return 1.into();
-        //         }
-        //     }
-        // }
     }
     else {
         weapon.change_status(WN_LINK_BOOMERANG_STATUS_KIND_HOP.into(), false.into());

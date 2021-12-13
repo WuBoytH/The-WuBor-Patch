@@ -12,7 +12,6 @@ use {
 };
 
 pub unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    // if AIR_ACTION[entry_id(fighter.module_accessor)] {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S) {
         return 0.into();
     }

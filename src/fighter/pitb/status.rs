@@ -150,52 +150,6 @@ unsafe extern "C" fn pitb_specialn_charge_loop(fighter: &mut L2CFighterCommon) -
     L2CValue::I32(0)
 }
 
-// #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-// unsafe fn pitb_specialnturn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     PostureModule::reverse_lr(fighter.module_accessor);
-//     fighter.sub_shift_status_main(L2CValue::Ptr(pitb_specialnturn_loop as *const () as _))
-// }
-
-// unsafe extern "C" fn pitb_specialnturn_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     if StatusModule::is_situation_changed(fighter.module_accessor)
-//     || !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST) {
-//         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-//             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_PIT_SPECIAL_AIR_N);
-//             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-//             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST) {
-//                 MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_n_s_to_s"), 0.0, 1.0, false, 0.0, false, false);
-//                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0xa728bc2ca), false, -1.0);
-//                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST);
-//             }
-//             else {
-//                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_n_s_to_s"), -1.0, 1.0, 0.0, false, false);
-//                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0xa728bc2ca), true, -1.0);
-//             }
-//             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
-//             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-//         }
-//         else {
-//             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-//             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-//             if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST) {
-//                 MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_n_s_to_s"), 0.0, 1.0, false, 0.0, false, false);
-//                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0x6d5ce5c1d), false, -1.0);
-//                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_SHOOT_FLAG_FIRST);
-//             }
-//             else {
-//                 MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_n_s_to_s"), -1.0, 1.0, 0.0, false, false);
-//                 ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOW, Hash40::new_raw(0x6d5ce5c1d), true, -1.0);
-//             }
-//             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-//             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
-//         }
-//     }
-//     if MotionModule::is_end(fighter.module_accessor) {
-//         fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), false.into());
-//     }
-//     L2CValue::I32(0)
-// }
-
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn pitb_specialn_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     pitb_specialn_endremove(fighter)
@@ -217,7 +171,6 @@ unsafe extern "C" fn pitb_specialn_endremove(fighter: &mut L2CFighterCommon) -> 
 pub fn install() {
     install_status_scripts!(
         pitb_specialn_charge_main,
-        // pitb_specialnturn_main,
         pitb_specialn_shoot_end
     );
 }

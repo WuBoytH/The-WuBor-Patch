@@ -12,8 +12,6 @@ use {
     }
 };
 
-// Turn this into a status check instead
-
 #[fighter_frame( agent = FIGHTER_KIND_FALCO )]
 fn falco_frame(fighter: &mut L2CFighterCommon) {
     unsafe {

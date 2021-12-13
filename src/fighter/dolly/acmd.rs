@@ -137,10 +137,6 @@ unsafe fn dolly_fthrowsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
     	macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_attack_s"));
     }
-    // frame(fighter.lua_state_agent, 20.0);
-    // if macros::is_excute(fighter) {
-    //     macros::PLAY_SE(fighter, Hash40::new("se_dolly_hit_kick_m"));
-    // }
 }
 
 #[acmd_script( agent = "dolly", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
@@ -223,10 +219,6 @@ unsafe fn dolly_bthrowsnd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
     	macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_attack_s"));
     }
-    // frame(fighter.lua_state_agent, 20.0);
-    // if macros::is_excute(fighter) {
-    //     macros::PLAY_SE(fighter, Hash40::new("se_dolly_hit_kick_m"));
-    // }
 }
 
 #[acmd_script( agent = "dolly", script = "expression_throwb", category = ACMD_EXPRESSION, low_priority )]
@@ -1066,18 +1058,6 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "dolly", script = "game_superspecial", category = ACMD_GAME, low_priority )]
-// unsafe fn dolly_geezah(fighter: &mut L2CAgentBase) {
-//     GO_SAUCE[entry_id(fighter.module_accessor)] -= 50.0;
-//     original!(fighter);
-// }
-
-// #[acmd_script( agent = "dolly", script = "game_superspecial2start", category = ACMD_GAME, low_priority )]
-// unsafe fn dolly_bustah(fighter: &mut L2CAgentBase) {
-//     GO_SAUCE[entry_id(fighter.module_accessor)] -= 50.0;
-//     original!(fighter);
-// }
-
 #[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_wave_lightground(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
@@ -1135,8 +1115,6 @@ pub fn install() {
         dolly_dspecialair,
         dolly_uspecialair,
         dolly_uspecialaircomm,
-        // dolly_geezah,
-        // dolly_bustah,
         dolly_wave_lightground,
         dolly_wave_heavyground
     );

@@ -27,10 +27,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_ENABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
-            // WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VS1_CANCEL);
-            // V_SHIFT[entry_id(fighter.module_accessor)] = false;
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER);
-            // VT1_CANCEL[entry_id(fighter.module_accessor)] = false;
             WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA);
             WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
         }
@@ -121,9 +118,6 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VS1_CANCEL);
             }
         }
-        // else {
-        //     VS1_CANCEL[entry_id(fighter.module_accessor)] = false;
-        // }
 
         if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
         && WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
@@ -142,9 +136,6 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
         && MotionModule::frame(fighter.module_accessor) >= 13.0) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VT1_CANCEL);
         }
-        // else {
-        //     VT1_CANCEL[entry_id(fighter.module_accessor)] = false;
-        // }
         
         if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
             if ((WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VT1_CANCEL)

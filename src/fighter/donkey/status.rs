@@ -62,8 +62,6 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 pub unsafe fn barrel_check() -> bool {
-    // let item_manager = *(ITEM_MANAGER as *mut *mut smash::app::ItemManager);
-    // let entry_id = entry_id(module_accessor) as u32;
     let mut dks = 0;
     for i in 0..IS_DK.len() {
         if IS_DK[i] {

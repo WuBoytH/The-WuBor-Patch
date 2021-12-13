@@ -26,10 +26,6 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
             }
         }
-
-        // if IS_FGC[entry_id(fighter.module_accessor)] {
-        //     jack_fgc(fighter);
-        // }
     }
 }
 

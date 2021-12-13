@@ -34,13 +34,9 @@ unsafe fn lucas_usmash(fighter: &mut L2CAgentBase) {
     execute(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-        // macros::WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
         macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
     frame(fighter.lua_state_agent, 8.0);
-    // if macros::is_excute(fighter) {
-    //     macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
-    // }
     macros::FT_MOTION_RATE(fighter, 0.6);
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {

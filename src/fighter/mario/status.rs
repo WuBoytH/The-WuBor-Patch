@@ -152,7 +152,6 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
-        ControlModule::clear_command(fighter.module_accessor, true);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_BLJ);
         let dir = get_command_stick_direction(fighter.module_accessor, true);
         let speed_x : f32;

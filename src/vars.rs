@@ -8,15 +8,11 @@ use {
     crate::common_funcs::*
 };
 
-// System Vars
+// System
 pub static mut INT_OFFSET : usize = 0x4E19D0;
 // pub static mut INT64_OFFSET : usize = 0x4E19F0;
 pub static mut FLOAT_OFFSET : usize = 0x4E19D0;
 pub static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
-// pub static mut MUSIC_OFFSET: usize = 0x3451f30; // default = 8.1.0 offset
-// pub static mut MUSIC_PARAM1: *mut u64 = 0 as *mut u64;
-// pub static mut MUSIC_PARAM2: i64 = 0;
-// pub static mut NUS3AUDIO_HASH: *mut u64 = 0 as *mut u64;
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 pub static mut FIGHTER_MANAGER: usize = 0;
 pub static mut ITEM_MANAGER: usize = 0;
@@ -43,11 +39,6 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
     0xfd, 0xc3, 0x02, 0x91,
     0xfb, 0x03, 0x00, 0xaa
 ];
-// pub static MUSIC_SEARCH_CODE: &[u8] = &[
-//     0xfc, 0x6f, 0xba, 0xa9, 0xfa, 0x67, 0x01, 0xa9, 0xf8, 0x5f, 0x02, 0xa9, 0xf6, 0x57, 0x03, 0xa9,
-//     0xf4, 0x4f, 0x04, 0xa9, 0xfd, 0x7b, 0x05, 0xa9, 0xfd, 0x43, 0x01, 0x91, 0xff, 0xc3, 0x1b, 0xd1,
-//     0xe8, 0x63, 0x05, 0x91,
-// ];
 
 // Common
 pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
@@ -108,7 +99,7 @@ pub const FIGHTER_MARIO_LONG_JUMP_B : i32 = 3;
 pub const FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL : i32 = 0x200000E8;
 
 // Kirby
-pub const FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE : i32 = 0x2100000B;
+pub const FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE : i32 = 0x2100000D;
 
 // Dark Samus
 pub const FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE : i32 = 0x21000012;
@@ -246,7 +237,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let boma = &mut *fighter.module_accessor;
         let id = entry_id(boma);
-        // let kind = utility::get_kind(boma);
 
         if !smashball::is_training_mode() {
             FGC_TRAINING = false;

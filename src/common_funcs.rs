@@ -135,10 +135,7 @@ pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModu
             stick_x *= -1.0;
         }
     }
-    // println!("Player {} Stick Dir: {}", WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID), ControlModule::get_stick_dir(module_accessor));
-    // println!("Player {} Stick Angle: {}", WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID), ControlModule::get_stick_angle(module_accessor));
-    // let stick_angle = ControlModule::get_stick_angle(module_accessor);
-
+    
     if stick_x >= 0.4 {
         if ControlModule::get_stick_y(module_accessor) <= -0.25 {
             return 3;

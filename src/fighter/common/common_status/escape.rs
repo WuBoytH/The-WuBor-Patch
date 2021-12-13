@@ -250,6 +250,40 @@ pub unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+// #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_setup_escape_air_slide_common)]
+// pub unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
+//     let stickx = param_1.get_f32();
+//     let sticky = param_2.get_f32();
+//     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+//         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+//         let normalize = sv_math::vec2_normalize(stickx, sticky);
+//         let mut dirx = normalize.x;
+//         let mut diry = normalize.y;
+//         WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+//         WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+//         let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
+//         let slide_speed_x = escape_air_slide_speed * dirx;
+//         let slide_speed_y = escape_air_slide_speed * diry;
+//         fighter.clear_lua_stack();
+//         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, ENERGY_STOP_RESET_TYPE_FREE, slide_speed_x, slide_speed_y, 0.0, 0.0, 0.0);
+//         sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+//         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+//         fighter.clear_lua_stack();
+//         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
+//         sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+//         fighter.clear_lua_stack();
+//         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, -1.0, -1.0);
+//         sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
+//         let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+//         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, boma);
+//         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
+//         let escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame"));
+//         let escape_air_slide_u_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_u_stiff_frame"));
+//         dirx = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+//         diry = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+//     }
+// }
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(

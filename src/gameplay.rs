@@ -18,6 +18,7 @@ pub unsafe fn jump_cancel_check_hit(fighter: &mut L2CFighterCommon, jump_on_bloc
     let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
+    && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IN_HITLAG].get_bool()
     && cancel_timer > 0.0 {
         let sit = fighter.global_table[SITUATION_KIND].get_i32();
@@ -61,6 +62,7 @@ pub unsafe fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: b
     }
     if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
+    && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IN_HITLAG].get_bool()
     && cancel_timer > 0.0
     && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
@@ -88,6 +90,7 @@ pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<
     let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
     if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+    && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IN_HITLAG].get_bool()
     && cancel_timer > 0.0 {
         if jump_cancel != 0
@@ -118,6 +121,7 @@ pub unsafe fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32
     if !on_hit
     || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+    && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IN_HITLAG].get_bool()
     && cancel_timer > 0.0) {
         if (cat1 & cat1_compare) != 0 {

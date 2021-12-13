@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::{L2CFighterCommon, *},
+        lua2cpp::L2CFighterCommon,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -37,17 +37,8 @@ unsafe fn chrom_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_RUN_BRAKE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn chrom_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_status_RunBrake();
-    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN);
-    WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
-    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_RunBrake_Main as *const () as _))
-}
-
 pub fn install() {
     install_status_scripts!(
-        chrom_attack_pre,
-        chrom_runbrake_main
+        chrom_attack_pre
     );
 }

@@ -227,7 +227,7 @@ unsafe fn bayonetta_uair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_CHECK_END);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_ATTACK_AIR_FLAG_CHECK_HOLD);
     }
     frame(fighter.lua_state_agent, 28.0);
     if macros::is_excute(fighter) {

@@ -7,7 +7,8 @@ use {
     smashline::*,
     crate::{
         vars::*,
-        table_const::*
+        table_const::*,
+        gameplay::*
     }
 };
 

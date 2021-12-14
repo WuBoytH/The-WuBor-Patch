@@ -347,24 +347,12 @@ pub fn install() {
     install_acmd_scripts!(
         chrom_dash,
         chrom_turndash,
-        chrom_jab,
-        chrom_jabeff,
-        chrom_jabsnd,
-        chrom_jabexp,
+        chrom_jab, chrom_jabeff, chrom_jabsnd, chrom_jabexp,
         chrom_ftilt,
         chrom_dtilt,
-        chrom_fsmash,
-        chrom_fsmasheff,
-        chrom_fsmashsnd,
-        chrom_fsmashexp,
-        chrom_usmash,
-        chrom_usmasheff,
-        chrom_usmashsnd,
-        chrom_usmashexp,
+        chrom_fsmash, chrom_fsmasheff, chrom_fsmashsnd, chrom_fsmashexp,
+        chrom_usmash, chrom_usmasheff, chrom_usmashsnd, chrom_usmashexp,
         chrom_fair,
-        chrom_dair,
-        chrom_daireff,
-        chrom_dairsnd,
-        chrom_dairexp
+        chrom_dair, chrom_daireff, chrom_dairsnd, chrom_dairexp
     );
 }

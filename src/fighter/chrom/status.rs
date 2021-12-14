@@ -37,8 +37,15 @@ unsafe fn chrom_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn chrom_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3);
+    1.into()
+}
+
 pub fn install() {
     install_status_scripts!(
-        chrom_attack_pre
+        chrom_attack_pre,
+        chrom_attackdash_pre
     );
 }

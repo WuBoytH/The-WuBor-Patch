@@ -14,6 +14,7 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
     if [
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3

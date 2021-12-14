@@ -11,20 +11,13 @@ use {
     crate::{
         common_funcs::*,
         vars::*,
-        table_const::*,
-        gameplay::*
+        table_const::*
     }
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_RYU )]
 fn ryu_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-
-        // Jump Cancel Heavy Up-Tilt
-
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
-            jump_cancel_check_hit(fighter, false);
-        }
 
         // Reset Vars
 

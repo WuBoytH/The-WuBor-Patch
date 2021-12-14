@@ -15,7 +15,6 @@ unsafe fn ryu_utiltheavy(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -25,6 +24,7 @@ unsafe fn ryu_utiltheavy(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
         macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {

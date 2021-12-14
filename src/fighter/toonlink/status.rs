@@ -25,6 +25,7 @@ unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValu
         spin = rslash_charge_max_speed;
     }
     WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
+    WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED_MAX);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(toonlink_specialhi_end_substatus as *const () as _));
@@ -41,13 +42,10 @@ unsafe extern "C" fn toonlink_specialhi_end_substatus(fighter: &mut L2CFighterCo
         else if MotionModule::frame(fighter.module_accessor) > 6.0 {
             let mut spin = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
             let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
+            let spin_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED_MAX);
             spin += rslash_charge_max_accel * stickx;
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)
-            && spin > rslash_charge_max_speed_funny {
-                spin = rslash_charge_max_speed_funny;
-            }
-            else if spin > rslash_charge_max_speed {
-                spin = rslash_charge_max_speed;
+            if spin > spin_max {
+                spin = spin_max;
             }
             WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
             macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

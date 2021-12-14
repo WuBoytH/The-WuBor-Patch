@@ -159,7 +159,8 @@ unsafe extern "C" fn ryu_specials_substatus(fighter: &mut L2CFighterCommon, para
 unsafe extern "C" fn ryu_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
                 WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
                 return 1.into();
@@ -226,6 +227,103 @@ unsafe extern "C" fn ryu_specials_mot_helper(fighter: &mut L2CFighterCommon) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
         sv_kinetic_energy::set_brake(fighter.lua_state_agent);
+    }
+}
+
+pub unsafe extern "C" fn ryu_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mot;
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            mot = Hash40::new("special_air_hi_command");
+        }
+        else {
+            mot = Hash40::new("special_air_hi");
+        }
+    }
+    else {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            mot = Hash40::new("special_hi_command");
+        }
+        else {
+            mot = Hash40::new("special_hi");
+        }
+    }
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    ItemModule::set_change_status_event(fighter.module_accessor, false);
+    if !StopModule::is_stop(fighter.module_accessor) {
+        ryu_specialhi_substatus(fighter, false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_specialhi_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specialhi_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn ryu_specialhi_substatus(fighter: &mut L2CFighterCommon, param_2: L2CValue) -> L2CValue {
+    if !param_2.get_bool() {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
+            let stickx = fighter.global_table[STICK_X].get_f32().abs();
+            let lr_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("lr_stick_x"));
+            if lr_stick_x < stickx {
+                PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
+                PostureModule::update_rot_y_lr(fighter.module_accessor);
+            }
+        }
+    }
+    else {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
+    }
+    0.into()
+}
+
+unsafe extern "C" fn ryu_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            ryu_specialhi_mot_helper(fighter);
+        }
+    }
+    else {
+        ryu_specialhi_mot_helper(fighter);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
+        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP.into(), false.into());
+    }
+    0.into()
+}
+
+unsafe extern "C" fn ryu_specialhi_mot_helper(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if StatusModule::is_changing(fighter.module_accessor) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
+            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+            let start_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("start_accel_y"));
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -start_accel_y);
+            sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+        }
+    }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+        if StatusModule::is_changing(fighter.module_accessor) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
+            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+        }
     }
 }
 

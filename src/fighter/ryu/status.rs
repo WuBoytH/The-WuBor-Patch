@@ -8,7 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::table_const::*,
+    crate::{
+        vars::*,
+        gameplay::*,
+        table_const::*
+    },
     super::helper::*,
     super::super::common::common_status::dash::fgc_dashback_main
 };
@@ -137,6 +141,20 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), false.into());
     }
+    0.into()
+}
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
+        jump_cancel_check_hit(fighter, false);
+    }
+    0.into()
+}
+
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ryu_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specials_main(fighter);
     0.into()
 }
 
@@ -279,6 +297,18 @@ unsafe extern "C" fn ryu_specials_loop_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ryu_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specialhi_main(fighter);
+    0.into()
+}
+
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ryu_specialhi_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specialhi_main(fighter);
+    0.into()
+}
+
 // #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 // unsafe fn ryu_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_pre_Wait()
@@ -328,8 +358,12 @@ pub fn install() {
     install_status_scripts!(
         ryu_dashback_main,
         ryu_attack_main,
+        ryu_attackhi3_exec,
+        ryu_specials,
         ryu_specials_command,
         ryu_specials_loop_main,
+        ryu_specialhi,
+        ryu_specialhi_command,
         // ryu_wait_pre,
         // ryu_wait_main,
         // ryu_squatwait_main,

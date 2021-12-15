@@ -187,7 +187,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
             && MotionModule::motion_kind(fighter.module_accessor) != hash40("catch_attack")
-            && (MotionModule::motion_kind(fighter.module_accessor) != hash40("special_hi")
+            && (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI
             || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
             }

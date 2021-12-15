@@ -21,12 +21,30 @@ unsafe fn lucina_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
-        lucina_tilt_cancels_substatus2(fighter);
+        lucina_jab_cancels_substatus2(fighter);
     }
     fighter.global_table[SUB_STATUS3].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_check_attack_mtrans as *const () as _));
-    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(lucina_tilt_cancels_substatus2 as *const () as _));
+    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(lucina_jab_cancels_substatus2 as *const () as _));
     fighter.sub_status_AttackComboCommon();
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_Attack_Main as *const () as _))
+}
+
+unsafe extern "C" fn lucina_jab_cancels_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !fighter.global_table[IN_HITLAG].get_bool() {
+        let special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
+        ].to_vec();
+        let normal_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        ].to_vec();
+        cancel_system(fighter, normal_cancels, special_cancels, false, 0);
+    }
+    0.into()
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

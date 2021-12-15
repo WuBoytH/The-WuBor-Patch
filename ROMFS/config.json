@@ -1,0 +1,28 @@
+{
+	"new-dir-files": {
+		"fighter/dolly/c00": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c01": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c02": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c03": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c04": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c05": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c06": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		],
+		"fighter/dolly/c07": [
+			"fighter/dolly/motion/body/c00/c02attacklw32.nuanmb"
+		]
+	}
+}

@@ -1,10 +1,12 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
-        app::lua_bind::*,
+        phx::Hash40,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    smash_script::*,
     smashline::*,
     crate::{
         common_funcs::*,
@@ -100,12 +102,93 @@ unsafe extern "C" fn dolly_escape_main_loop(fighter: &mut L2CFighterCommon) -> L
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
-    fighter.status_AttackLw3_common();
+    dolly_attacklw3_common(fighter);
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attacklw3_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn dolly_attacklw3_common(fighter: &mut L2CFighterCommon) {
+    let cont = dolly_attacklw3_common_helper(fighter);
+    let mot;
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT) == 0 {
+        mot = Hash40::new("attack_lw3");
+    }
+    else {
+        mot = Hash40::new("attack_lw3_2");
+    }
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    WorkModule::set_int64(fighter.module_accessor, hash40("attack_lw3") as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if cont {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
+            let jump_mini_attack_enable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("jump_mini_attack_enable_frame"));
+            WorkModule::set_int(fighter.module_accessor, jump_mini_attack_enable_frame + 1, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+        }
+    }
+    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME) != 0 {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
+            let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+            if 0 < attack_kind {
+                FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+                WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+            }
+        }
+    }
+    else {
+        let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+        if 0 < attack_kind {
+            FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+            WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+        }
+    }
+    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
+    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
+    let fb_kind = ControlModule::get_attack_lw3_fb_kind(fighter.module_accessor);
+    if fb_kind == *FIGHTER_COMMAND_ATTACK3_KIND_B {
+        PostureModule::reverse_lr(fighter.module_accessor);
+        PostureModule::update_rot_y_lr(fighter.module_accessor);
+        let lr = PostureModule::lr(fighter.module_accessor);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, lr);
+        sv_kinetic_energy::set_chara_dir(fighter.lua_state_agent);
+    }
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_attack3_uniq_check(false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_sub_attack3_uniq_check as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attacklw3_main_loop as *const () as _))
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_attack3_uniq_check as *const () as _));
+}
+
+unsafe extern "C" fn dolly_attacklw3_common_helper(fighter: &mut L2CFighterCommon) -> bool {
+    let status_interrupt = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
+    let status_prev = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    if status_interrupt != status_prev {
+        if status_prev == *FIGHTER_STATUS_KIND_ESCAPE {
+            if status_interrupt != status_prev {
+                if FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true) {
+                    return true;
+                }
+            }
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        if status_interrupt != status_prev {
+            if FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true) {
+                return true;
+            }
+        }
+    }
+    false
 }
 
 unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {

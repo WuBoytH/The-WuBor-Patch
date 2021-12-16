@@ -124,121 +124,6 @@ unsafe fn lucina_nspecialendmax(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_sspecial1(fighter: &mut L2CAgentBase) {
-    let mut dmg : f32;
-    let kbg : i32;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND) {
-        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
-        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
-        sp_diff_checker(fighter.module_accessor);
-    }
-    else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
-    }
-    frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 2.0/3.0);
-    frame(fighter.lua_state_agent, 15.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
-        macros::FT_MOTION_RATE(fighter, 0.2);
-    }
-    else {
-        macros::FT_MOTION_RATE(fighter, 1.0);
-    }
-    frame(fighter.lua_state_agent, 20.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 23.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.5, 367, 140, 50, 0, 5.0, 0.0, 7.0, 7.0, Some(0.0), Some(7.0), Some(1.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.5, 367, 140, 50, 0, 5.0, 0.0, 7.0, 7.0, Some(0.0), Some(7.0), Some(-5.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-    }
-    frame(fighter.lua_state_agent, 44.0);
-    if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
-            dmg = 13.0;
-            kbg = 45;
-        }
-        else {
-            dmg = 9.0;
-            kbg = 66;
-        }
-        if shadow_id(fighter.module_accessor) {
-            dmg *= 0.8;
-        }
-        AttackModule::clear_all(fighter.module_accessor);
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), dmg, 45, kbg, 0, 60, 2.5, 0.0, 8.5, -5.0, Some(0.0), Some(8.5), Some(20.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), dmg, 45, kbg, 0, 60, 2.5, 0.0, 8.5, 25.0, Some(0.0), Some(8.5), Some(27.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-    }
-    frame(fighter.lua_state_agent, 47.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
-}
-
-#[acmd_script( agent = "lucina", script = "effect_specials1", category = ACMD_EFFECT, low_priority )]
-unsafe fn lucina_sspecial1eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(fighter.lua_state_agent, 22.0);
-    if macros::is_excute(fighter) {
-        macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(fighter.lua_state_agent, 42.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 11.0, 12, 0, 0, 0, 1.2, true);
-        macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 9.5, 6, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
-        macros::LAST_EFFECT_SET_COLOR(fighter, 0.264, 0.47, 1.3);
-        macros::LAST_EFFECT_SET_RATE(fighter, 0.7);
-    }
-    frame(fighter.lua_state_agent, 44.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
-	    macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
-    }
-    frame(fighter.lua_state_agent, 46.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 18, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(fighter.lua_state_agent, 51.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_purple"), false, true);
-    }
-}
-
-#[acmd_script( agent = "lucina", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
-unsafe fn lucina_sspecial1snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_lucina_jump02"));
-    }
-    frame(fighter.lua_state_agent, 44.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("vc_lucina_special_n01"));
-        macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_n04"));
-    }
-}
-
-#[acmd_script( agent = "lucina", script = "expression_specials1", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucina_sspecial1exp(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-    }
-    frame(fighter.lua_state_agent, 42.0);
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit11"), 0, false, 0x50000000);
-    }
-    frame(fighter.lua_state_agent, 44.0);
-    if macros::is_excute(fighter) {
-        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 0);
-    }
-}
-
 #[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_sspecial1air(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
@@ -792,15 +677,130 @@ unsafe fn lucina_dspecialhit(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucina", script = "game_specials1", category = ACMD_GAME, low_priority )]
+unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
+    let mut dmg : f32;
+    let kbg : i32;
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND) {
+        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+        add_sp(fighter.module_accessor, -spent);
+        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+        sp_diff_checker(fighter.module_accessor);
+    }
+    else {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+    }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0/3.0);
+    frame(fighter.lua_state_agent, 15.0);
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        macros::FT_MOTION_RATE(fighter, 0.2);
+    }
+    else {
+        macros::FT_MOTION_RATE(fighter, 1.0);
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 23.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.5, 367, 140, 50, 0, 5.0, 0.0, 7.0, 7.0, Some(0.0), Some(7.0), Some(1.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 0.5, 367, 140, 50, 0, 5.0, 0.0, 7.0, 7.0, Some(0.0), Some(7.0), Some(-5.0), 0.4, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+    frame(fighter.lua_state_agent, 44.0);
+    if macros::is_excute(fighter) {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+            dmg = 13.0;
+            kbg = 45;
+        }
+        else {
+            dmg = 9.0;
+            kbg = 66;
+        }
+        if shadow_id(fighter.module_accessor) {
+            dmg *= 0.8;
+        }
+        AttackModule::clear_all(fighter.module_accessor);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), dmg, 45, kbg, 0, 60, 2.5, 0.0, 8.5, -5.0, Some(0.0), Some(8.5), Some(20.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), dmg, 45, kbg, 0, 60, 2.5, 0.0, 8.5, 25.0, Some(0.0), Some(8.5), Some(27.0), 1.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+    }
+    frame(fighter.lua_state_agent, 47.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "effect_specials1", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucina_lightningflasheff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(fighter.lua_state_agent, 22.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(fighter.lua_state_agent, 42.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_breaker_sting"), Hash40::new("top"), -0.0, 11.0, 12, 0, 0, 0, 1.2, true);
+        macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -0.0, 9.5, 6, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_COLOR(fighter, 0.264, 0.47, 1.3);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.7);
+    }
+    frame(fighter.lua_state_agent, 44.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_sp_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
+	    macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(fighter.lua_state_agent, 46.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 18, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(fighter.lua_state_agent, 51.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucina_sword_purple"), false, true);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
+unsafe fn lucina_lightningflashsnd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_lucina_jump02"));
+    }
+    frame(fighter.lua_state_agent, 44.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_lucina_special_n01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_n04"));
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "expression_specials1", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn lucina_lightningflashexp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 42.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit11"), 0, false, 0x50000000);
+    }
+    frame(fighter.lua_state_agent, 44.0);
+    if macros::is_excute(fighter) {
+        macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_L);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_piercel"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         lucina_nspecialstart, lucina_nspecialloop, lucina_nspecialend, lucina_nspecialendmax,
-        lucina_sspecial1, lucina_sspecial1eff, lucina_sspecial1snd, lucina_sspecial1exp,
         lucina_sspecial1air, lucina_sspecial1aireff,
         lucina_sspecial2hiair, lucina_sspecial2hiaireff, lucina_sspecial2hiairsnd,
         lucina_sspecial2hi, lucina_sspecial2hieff, lucina_sspecial2hisnd, lucina_sspecial2hiexp,
         lucina_uspecial, lucina_uspecialeff, lucina_uspecialsnd, lucina_uspecialexp,
         lucina_uspecialair, lucina_uspecialaireff, lucina_uspecialairsnd, lucina_uspecialairexp,
-        lucina_dspecial, lucina_dspecialeff, lucina_dspecialsnd, lucina_dspecialhit
+        lucina_dspecial, lucina_dspecialeff, lucina_dspecialsnd, lucina_dspecialhit,
+        lucina_lightningflash, lucina_lightningflasheff, lucina_lightningflashsnd, lucina_lightningflashexp
     );
 }

@@ -131,12 +131,16 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             DamageModule::set_damage_mul(fighter.module_accessor, 0.92);
             if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
                 // if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
+                    let amount : f32;
                     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                        add_sp(fighter.module_accessor, -1.0/64.0);
+                        // add_sp(fighter.module_accessor, -1.0/64.0);
+                        amount = 1.0 / 64.0;
                     }
                     else {
-                        add_sp(fighter.module_accessor, -1.0/16.0);
+                        // add_sp(fighter.module_accessor, -1.0/16.0);
+                        amount = 1.0 / 16.0;
                     }
+                    count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE, amount);
                 // }
             }
             if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_missfoot01")) {
@@ -245,9 +249,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
             }
-            else if (!is_damage_check(fighter.module_accessor, false)
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI)
-            || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+            else if !is_damage_check(fighter.module_accessor, false)
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                     if spent_meter(fighter.module_accessor, true) {
                         WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);

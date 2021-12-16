@@ -15,8 +15,68 @@ use {
     }
 };
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_Dash)]
+unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_DashCommon();
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_DASH,
+        *GROUND_CORRECT_KIND_GROUND as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        true,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        true,
+        false,
+        false,
+        0,
+        (*FIGHTER_STATUS_ATTR_ENABLE_ROCKETBELT_EJECT | *FIGHTER_STATUS_ATTR_INTO_DOOR) as u32,
+        0,
+        0
+    );
+    0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_TurnDash)]
+unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_DashCommon();
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        true,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        true,
+        false,
+        false,
+        0,
+        (*FIGHTER_STATUS_ATTR_ENABLE_ROCKETBELT_EJECT | *FIGHTER_STATUS_ATTR_INTO_DOOR) as u32,
+        0,
+        0
+    );
+    0.into()
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DashCommon)]
-pub unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
+unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
@@ -93,7 +153,7 @@ pub unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Dash_Main_common)]
-pub unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValue) -> L2CValue {
+unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValue) -> L2CValue {
     if fighter.global_table[DASH_COMMON_PRE].get_bool() != false && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_COMMON_PRE].get_ptr());
         callable(fighter).get_bool()
@@ -371,6 +431,35 @@ pub unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : 
     }
 }
 
+pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_pre_DashCommon();
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_DASH_BACK,
+        *GROUND_CORRECT_KIND_GROUND as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        true,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        true,
+        false,
+        false,
+        0,
+        (*FIGHTER_STATUS_ATTR_ENABLE_ROCKETBELT_EJECT | *FIGHTER_STATUS_ATTR_INTO_DOOR) as u32,
+        0,
+        0
+    );
+    0.into()
+}
+
 pub unsafe fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash_b"), 0.0, 1.0, false, 0.0, false, false);
     fighter.status_DashCommon();
@@ -601,6 +690,8 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_dash,
+            status_pre_turndash,
             status_dashcommon,
             status_dash_main_common
         );

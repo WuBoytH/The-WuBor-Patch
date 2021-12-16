@@ -15,7 +15,7 @@ use {
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_ground_guard)]
-pub unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if fighter.global_table[CHECK_GROUND_GUARD_PRE].get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_GUARD_PRE].get_ptr());
@@ -36,7 +36,7 @@ pub unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCo
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_special_command)]
-pub unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND) {
         if fighter.global_table[CHECK_SPECIAL_COMMAND].get_bool() == false {
             return false.into();
@@ -52,7 +52,7 @@ pub unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighte
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
-pub unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cont;
     if fighter.global_table[CHECK_AIR_TREAD_JUMP_PRE].get_bool() == false {
         cont = false;

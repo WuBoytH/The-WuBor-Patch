@@ -14,8 +14,13 @@ use {
         table_const::*
     },
     super::helper::*,
-    super::super::common::common_status::dash::fgc_dashback_main
+    super::super::common::common_status::dash::*
 };
+
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn ryu_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_pre(fighter)
+}
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ryu_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -356,6 +361,7 @@ unsafe fn ryu_specialhi_command(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
+        ryu_dashback_pre,
         ryu_dashback_main,
         ryu_attack_main,
         ryu_attackhi3_exec,

@@ -11,7 +11,7 @@ use {
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk_button)]
-pub unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         if ControlModule::check_button_on(fighter.module_accessor, param_2.get_i32())
         && only_jabs(fighter) {
@@ -36,7 +36,7 @@ pub unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, 
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_uniq_chk_button)]
-pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         fighter.attack_uniq_chk_command(param_3.clone());
         if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
@@ -103,7 +103,7 @@ pub unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_uniq_chk_command)]
-pub unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & param_1.get_i32() != 0
     && only_jabs(fighter) {

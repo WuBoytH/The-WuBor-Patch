@@ -11,7 +11,7 @@ use {
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat_common)]
-pub unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let stick_jump_command_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     if stick_jump_command_life == 0
     || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {
@@ -58,7 +58,7 @@ pub unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat_Main)]
-pub unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[JUMP_SQUAT_MAIN_PRE].get_bool() != false && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[JUMP_SQUAT_MAIN_PRE].get_ptr());
         callable(fighter).get_bool()
@@ -116,7 +116,7 @@ pub unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_jump_squat_uniq_check_sub_mini_attack)]
-pub unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterCommon) {
+unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP) {
         return;
     }

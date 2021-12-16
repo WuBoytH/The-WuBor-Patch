@@ -102,7 +102,9 @@ pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
         || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::set_int(fighter.module_accessor, 16, flag);
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                WorkModule::set_int(fighter.module_accessor, 16, flag);
+            }
         }
         else {
             if dir != 6
@@ -164,7 +166,9 @@ pub unsafe fn qcf(fighter: &mut L2CFighterCommon) {
         || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::set_int(fighter.module_accessor, 13, flag);
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                WorkModule::set_int(fighter.module_accessor, 13, flag);
+            }
         }
         else {
             if dir != 6
@@ -228,7 +232,9 @@ pub unsafe fn qcb(fighter: &mut L2CFighterCommon) {
         || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::set_int(fighter.module_accessor, 13, flag);
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                WorkModule::set_int(fighter.module_accessor, 13, flag);
+            }
         }
         else {
             if dir != 4
@@ -296,7 +302,9 @@ pub unsafe fn srk(fighter: &mut L2CFighterCommon) {
         || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
         || ControlModule::check_button_on_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::set_int(fighter.module_accessor, 13, flag);
+            if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                WorkModule::set_int(fighter.module_accessor, 13, flag);
+            }
         }
         else {
             if dir != 6

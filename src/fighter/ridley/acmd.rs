@@ -70,7 +70,7 @@ unsafe fn ridley_dair(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 69.0);
     if macros::is_excute(fighter) {
-        smash_script::notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 

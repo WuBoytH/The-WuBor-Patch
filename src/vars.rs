@@ -232,6 +232,9 @@ pub const SP_4 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 6.0};
 pub const SP_5 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: -2.0};
 pub const SP_6 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: 2.0};
 
+// Chrom
+pub const FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC : i32 = 0x21000015;
+
 #[fighter_reset]
 fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {

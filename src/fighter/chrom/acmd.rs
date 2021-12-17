@@ -6,7 +6,8 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*
+    smashline::*,
+    crate::vars::*
 };
 
 #[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME, low_priority )]
@@ -343,6 +344,17 @@ unsafe fn chrom_dairexp(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "chrom", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+unsafe fn chrom_dspecial(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 21.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 52, 85, 0, 65, 4.4, 0.0, 6.5, 12.5, Some(0.0), Some(6.5), Some(6.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 52, 85, 0, 65, 4.4, 0.0, 6.5, 18.5, Some(0.0), Some(6.5), Some(6.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
+        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         chrom_dash,
@@ -353,6 +365,7 @@ pub fn install() {
         chrom_fsmash, chrom_fsmasheff, chrom_fsmashsnd, chrom_fsmashexp,
         chrom_usmash, chrom_usmasheff, chrom_usmashsnd, chrom_usmashexp,
         chrom_fair,
-        chrom_dair, chrom_daireff, chrom_dairsnd, chrom_dairexp
+        chrom_dair, chrom_daireff, chrom_dairsnd, chrom_dairexp,
+        chrom_dspecial
     );
 }

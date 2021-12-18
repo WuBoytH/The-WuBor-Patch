@@ -23,7 +23,7 @@ unsafe fn cloud_grab(fighter: &mut L2CAgentBase) {
     macros::game_CaptureCutCommon(fighter);
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        smash_script::grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_CATCH_FLAG_CATCH_WAIT);
         GrabModule::set_rebound(fighter.module_accessor, false);
     }

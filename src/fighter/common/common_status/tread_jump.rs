@@ -11,7 +11,7 @@ use {
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_TreadJump)]
-pub unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)

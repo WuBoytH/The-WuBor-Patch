@@ -224,7 +224,7 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        smash_script::grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
+        grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);
         GrabModule::set_rebound(fighter.module_accessor, false);
     }
     frame(fighter.lua_state_agent, 24.0);
@@ -339,7 +339,7 @@ unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
     }
     wait(weapon.lua_state_agent, 8.0);
     if macros::is_excute(weapon) {
-        smash_script::notify_event_msc_cmd!(weapon, 0x199c462b5du64);
+        notify_event_msc_cmd!(weapon, 0x199c462b5du64);
     }
 }
 

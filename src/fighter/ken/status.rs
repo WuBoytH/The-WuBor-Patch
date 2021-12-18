@@ -13,10 +13,15 @@ use {
         table_const::*
     },
     super::super::{
-        common::common_status::dash::fgc_dashback_main,
+        common::common_status::dash::*,
         ryu::helper::*
     }
 };
+
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn ken_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_pre(fighter)
+}
 
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ken_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -512,6 +517,7 @@ unsafe extern "C" fn ken_heatrush_loop(fighter: &mut L2CFighterCommon) -> L2CVal
 
 pub fn install() {
     install_status_scripts!(
+        ken_dashback_pre,
         ken_dashback_main,
         ken_attack_main,
         ken_specials_command,

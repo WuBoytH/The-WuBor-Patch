@@ -10,10 +10,15 @@ use {
     smashline::*,
     crate::table_const::*,
     super::super::common::common_status::{
-        dash::fgc_dashback_main,
+        dash::*,
         attack::only_jabs
     }
 };
+
+#[status_script(agent = "demon", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn demon_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fgc_dashback_pre(fighter)
+}
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn demon_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -220,6 +225,7 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
 
 pub fn install() {
     install_status_scripts!(
+        demon_dashback_pre,
         demon_dashback_main,
         demon_attack_main,
         demon_attackcombo_main

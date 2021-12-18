@@ -5,6 +5,7 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    smash_script::*,
     smashline::*,
     crate::{
         vars::*,
@@ -110,7 +111,7 @@ unsafe extern "C" fn ganon_special_s_air_catch_main_loop(fighter: &mut L2CFighte
         fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         fighter.clear_lua_stack();
-        smash_script::lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0x8cdc1683 as u64, 0.0);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0x8cdc1683 as u64, 0.0);
         sv_kinetic_energy::set_speed(fighter.lua_state_agent);
         fighter.clear_lua_stack();
     }

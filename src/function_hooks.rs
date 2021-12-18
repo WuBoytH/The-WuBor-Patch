@@ -653,18 +653,6 @@ fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
 }
 
-#[skyline::hook(replace = GroundModule::correct)]
-pub unsafe fn correct_hook(boma: &mut BattleObjectModuleAccessor, mut param_2: u64) -> u64{
-
-    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        let status_kind = StatusModule::status_kind(boma);
-        if [*FIGHTER_STATUS_KIND_ESCAPE_AIR, *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_RUN_BRAKE, *FIGHTER_STATUS_KIND_TURN_DASH, *FIGHTER_STATUS_KIND_DASH].contains(&status_kind) {
-            param_2 = *GROUND_CORRECT_KIND_GROUND as u64;
-        }
-    }
-    original!()(boma, param_2)
-}
-
 #[skyline::hook(replace = sv_animcmd::PLAY_SE)]
 unsafe fn play_se_replace(lua_state: u64) {
     let boma = sv_system::battle_object_module_accessor(lua_state);
@@ -841,7 +829,6 @@ pub fn install() {
         is_enable_transition_term_replace,
         get_param_float_replace,
         get_param_int_replace,
-        correct_hook,
         get_int_replace,
         set_float_replace,
         get_int64_replace,

@@ -17,9 +17,9 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_HI3
     ].contains(&status) {
         special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
         ].to_vec();
         normal_cancels = [

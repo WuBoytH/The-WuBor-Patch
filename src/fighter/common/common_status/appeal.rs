@@ -13,7 +13,7 @@ unsafe fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CV
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_RUN_STOP,
+        *FIGHTER_KINETIC_TYPE_MOTION,
         *GROUND_CORRECT_KIND_GROUND as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,

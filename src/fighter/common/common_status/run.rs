@@ -42,7 +42,7 @@ unsafe fn status_pre_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_MOTION,
+        *FIGHTER_KINETIC_TYPE_RUN_STOP,
         *GROUND_CORRECT_KIND_GROUND as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,

@@ -58,10 +58,10 @@ unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: 
                         ComboModule::reset(fighter.module_accessor);
                     }
                 }
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO) {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO)
+                && only_jabs(fighter) {
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_CONNECT_COMBO);
-                    if ControlModule::check_button_on_trriger(fighter.module_accessor, button)
-                    && only_jabs(fighter) {
+                    if ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
                         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_NO_HIT_COMBO_TRIGGER);
                     }
                 }

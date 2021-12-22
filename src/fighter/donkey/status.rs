@@ -62,13 +62,7 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 pub unsafe fn barrel_check() -> bool {
-    let mut dks = 0;
-    for i in 0..IS_DK.len() {
-        if IS_DK[i] {
-            dks += 1;
-        }
-    }
-    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= 1 * dks {
+    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= 1 * DK_COUNT {
         return false;
     }
     return true;

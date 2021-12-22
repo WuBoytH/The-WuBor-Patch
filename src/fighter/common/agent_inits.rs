@@ -63,6 +63,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind == *FIGHTER_KIND_MARIO {
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(mario_speciallw_pre as *const () as _));
         }
+        else if fighter_kind == *FIGHTER_KIND_DONKEY {
+            DK_COUNT += 1;
+        }
         else if fighter_kind == *FIGHTER_KIND_KIRBY {
             fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
         }

@@ -612,7 +612,7 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(fighter) {
-            KineticModule::add_speed(fighter.module_accessor, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
+            KineticModule::add_speed(fighter.module_accessor, &ZERO_VECTOR);
         }
     }
     else {
@@ -742,7 +742,7 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(fighter) {
-            KineticModule::add_speed(fighter.module_accessor, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
+            KineticModule::add_speed(fighter.module_accessor, &ZERO_VECTOR);
         }
     }
     else {
@@ -754,7 +754,7 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(fighter) {
-            KineticModule::add_speed(fighter.module_accessor, &Vector3f { x: 0.0, y: 0.0, z: 0.0 });
+            KineticModule::add_speed(fighter.module_accessor, &ZERO_VECTOR);
         }
     }
     else {

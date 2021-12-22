@@ -4,8 +4,7 @@ use {
         phx::Vector3f,
         app::*,
     },
-    smashline::*,
-    crate::common_funcs::*
+    smashline::*
 };
 
 // System
@@ -14,10 +13,6 @@ pub static mut INT_OFFSET : usize = 0x4E19D0;
 pub static mut FLOAT_OFFSET : usize = 0x4E19D0;
 pub static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
 pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
-pub static mut FIGHTER_MANAGER: usize = 0;
-pub static mut ITEM_MANAGER: usize = 0;
-pub static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
-pub static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];
 pub static INT_SEARCH_CODE: &[u8] = &[
     0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x11, 0x40, 0xf9,
 ];
@@ -44,7 +39,6 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
 
 // System Mechanics
-pub static mut IS_DK : [bool; 8] = [false; 8];
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N : i32 = 0x20000116;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S : i32 = 0x20000117;
 pub const FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI : i32 = 0x20000118;
@@ -93,6 +87,9 @@ pub const FIGHTER_MARIO_LONG_JUMP_W : i32 = 0;
 pub const FIGHTER_MARIO_LONG_JUMP_M : i32 = 1;
 pub const FIGHTER_MARIO_LONG_JUMP_S : i32 = 2;
 pub const FIGHTER_MARIO_LONG_JUMP_B : i32 = 3;
+
+// Donkey Kong
+pub static mut DK_COUNT : u64 = 0;
 
 // Luigi
 pub const FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL : i32 = 0x200000E8;
@@ -231,17 +228,16 @@ pub const SP_3 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 2.0};
 pub const SP_4 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 6.0};
 pub const SP_5 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: -2.0};
 pub const SP_6 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: 2.0};
+pub static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
+pub static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];
 
 #[fighter_reset]
-fn fighter_reset(fighter: &mut L2CFighterCommon) {
+fn fighter_reset(_fighter: &mut L2CFighterCommon) {
     unsafe {
-        let boma = &mut *fighter.module_accessor;
-        let id = entry_id(boma);
-
+        DK_COUNT = 0;
         if !smashball::is_training_mode() {
             FGC_TRAINING = false;
         }
-        IS_DK[id] = false;
     }
 }
 

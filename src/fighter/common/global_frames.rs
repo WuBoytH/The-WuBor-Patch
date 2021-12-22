@@ -49,10 +49,6 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
         let status = StatusModule::status_kind(fighter.module_accessor);
 
-        if utility::get_kind(&mut *fighter.module_accessor) == *FIGHTER_KIND_DONKEY {
-            IS_DK[entry_id(fighter.module_accessor)] = true;
-        }
-
         // The code to set up Funny Mode.
 
         if ItemModule::is_attach_item(fighter.module_accessor, ItemKind(*ITEM_KIND_USAGIHAT))

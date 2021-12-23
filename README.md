@@ -4,7 +4,7 @@ A mod for Super Smash Bros. Ultimate that brings character overhauls and mechani
 
 ## Dependencies
 
-* [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab the latest version! Extract this to the root of your SD card.
+* [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab AT LEAST 3.0.0 Beta 2.4! Extract this to the root of your SD card.
 * [smashline_hook](https://github.com/blu-dev/smashline_hook/releases/latest) - Download libsmashline_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
 * [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/v0.2.0) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
 

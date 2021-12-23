@@ -1,6 +1,6 @@
 # The WuBor Patch
 
-A mod for Super Smash Bros. Ultimate that brings character overhauls and mechanics changes to various characters. [You can find a full changelog for the current release here.](https://docs.google.com/document/d/1u5f0MtgnxnCk4AjPcRgNuthglm8eJZSRpk1V1N4eRU0/edit?usp=sharing)
+A mod for Super Smash Bros. Ultimate that brings character overhauls and mechanics changes to various characters. [You can find a full changelog for the current release here.](https://docs.google.com/document/d/16tu3cYEb80jNR3KSFWPoJ-9iOijlIIT75GK4U1d0EvY/edit?usp=sharing)
 
 ## Dependencies
 

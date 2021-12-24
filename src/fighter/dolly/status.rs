@@ -200,8 +200,8 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
     }
-    if dolly_hit_cancel(fighter).get_bool() == false {
-        if dolly_attack_start_cancel(fighter).get_bool() == false {
+    if dolly_hit_cancel(fighter).get_i32() == 0 {
+        if dolly_attack_start_cancel(fighter).get_i32() == 0 {
             if chain_cancels(fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_LW3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3,

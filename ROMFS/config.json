@@ -1,5 +1,13 @@
 {
 	"new-dir-files": {
+		"fighter/shulk/cmn/effect": [
+			"effect/fighter/shulk/trail/tex_shulk_swordgreen1.nutexb",
+			"effect/fighter/shulk/trail/tex_shulk_swordgreen2.nutexb",
+			"effect/fighter/shulk/trail/tex_shulk_swordpurple1.nutexb",
+			"effect/fighter/shulk/trail/tex_shulk_swordpurple2.nutexb",
+			"effect/fighter/shulk/trail/tex_shulk_swordred3.nutexb",
+			"effect/fighter/shulk/trail/tex_shulk_swordred4.nutexb"
+		],
 		"fighter/dolly/c00": [
 			"fighter/dolly/motion/body/c00/c01attacks3hi.nuanmb",
 			"fighter/dolly/motion/body/c00/c01attacks3lw.nuanmb",

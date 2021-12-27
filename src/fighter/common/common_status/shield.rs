@@ -4,7 +4,7 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::Hash40,
+        phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -12,7 +12,8 @@ use {
     crate::{
         vars::*,
         table_const::*
-    }
+    },
+    super::super::common_param::*
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]
@@ -77,7 +78,7 @@ unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont_pre)]
 unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
+    // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_RUN {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
@@ -86,8 +87,8 @@ unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
         WorkModule::set_int(fighter.module_accessor, catch_dash_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_CATCH_FRAME);
     }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
+    // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+    // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
@@ -160,8 +161,10 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
     let check_guard_hold = fighter.check_guard_hold().get_bool();
-    if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
-        return true.into();
+    if check_guard_hold == false {
+        if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
+            return true.into();
+        }
     }
     if check_guard_hold == false
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD)
@@ -232,7 +235,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
         return true.into();
     }
-    if fighter.check_guard_attack_special_hi(check_guard_hold.into()).get_bool() == false {
+    // if fighter.check_guard_attack_special_hi(check_guard_hold.into()).get_bool() == false {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME) == 0 {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
             && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
@@ -241,17 +244,22 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
                 return true.into();
             }
-        }
-        if check_guard_hold == false {
-            if fighter.sub_transition_group_check_ground_jump().get_bool() {
-                return true.into();
+            if check_guard_hold == false {
+                if fighter.sub_transition_group_check_ground_jump().get_bool() {
+                    return true.into();
+                }
             }
         }
+        // if check_guard_hold == false {
+        //     if fighter.sub_transition_group_check_ground_jump().get_bool() {
+        //         return true.into();
+        //     }
+        // }
         return false.into();
-    }
-    else {
-        return true.into();
-    }
+    // }
+    // else {
+    //     return true.into();
+    // }
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_end_guard_on_common)]
@@ -287,27 +295,37 @@ unsafe extern "C" fn sub_status_end_guard_on_common_thing(fighter: &mut L2CFight
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
 unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
     let shield_power = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER);
+    // println!("shield power: {}", shield_power);
     let shield_setoff_mul_status = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_SETOFF_MUL);
+    // println!("shield_setoff_mul_status: {}", shield_setoff_mul_status);
     let mut shield_stiff_frame = shield_power * shield_setoff_mul_status;
+    // println!("shield_stiff_frame: {}", shield_stiff_frame);
     shield_stiff_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_mul"));
+    // println!("shield_stiff_frame * shield_setoff_mul: {}", shield_stiff_frame);
     let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         shield_stiff_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("just_shield_setoff_mul"));
+        // println!("now with just shield mul: {}", shield_stiff_frame);
     }
     shield_stiff_frame += WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_add"));
+    // println!("plus 3.0 for good measure: {}", shield_stiff_frame);
     let shield_stiff_frame_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_frame_max"));
     if shield_stiff_frame_max < shield_stiff_frame {
         shield_stiff_frame = shield_stiff_frame_max;
     }
+    // println!("final shield_stiff_frame: {}", shield_stiff_frame as i32);
     if object_id != 0x50000000 {
         capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
         fighter.pop_lua_stack(1);
         let mut invalid_capture_frame = shield_stiff_frame;
+        // println!("invalid_capture_frame: {}", invalid_capture_frame);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
             invalid_capture_frame += WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame")) as f32;
+            // println!("invalid_capture_frame with cancel frame: {}", invalid_capture_frame);
         }
         // invalid_capture_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_ignore_capture_rate"));
         invalid_capture_frame += 5.0;
+        // println!("invalid_capture_frame: {}", invalid_capture_frame);
         WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_GUARD_INVALID_CAPTURE_FRAME);
     }
     WorkModule::set_int(fighter.module_accessor, shield_stiff_frame as i32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME);
@@ -413,6 +431,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     }
     let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
     setoff_speed *= shield_lr;
+    // println!("setoff_speed: {}", setoff_speed);
     fighter.clear_lua_stack();
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE, setoff_speed, 0.0, 0.0, 0.0, 0.0);
     sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
@@ -481,24 +500,40 @@ unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCo
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_GuardOff_Common)]
 unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     // Original Parry stuff
     // let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
     // let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
     // let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
     // WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
-    let guard_off_cancel_frame;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)
-    || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-        guard_off_cancel_frame = 5;
-    }
-    else {
-        guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
-    }
+    let guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
     WorkModule::set_int(fighter.module_accessor, guard_off_cancel_frame, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
+    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME);
     let anim_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("guard_off"), true) as f32;
     let mut motion_rate = 1.0;
     if 0.0 < guard_off_cancel_frame as f32
@@ -509,12 +544,110 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     let disable_guard_escape_frame = guard_off_cancel_frame + guard_off_enable_shield_frame;
     WorkModule::set_int(fighter.module_accessor, disable_guard_escape_frame, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME);
     WorkModule::set_int(fighter.module_accessor, disable_guard_escape_frame, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_ESCAPE_FRAME);
-    // I don't think we need this since we're moving Parry to GUARD_ON instead
-    // if !StopModule::is_stop(fighter.module_accessor) {
-    //     fighter.sub_guard_off_uniq(false.into());
-    // }
-    // fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_guard_off_uniq as *const () as _));
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_guard_off_uniq(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_guard_off_uniq as *const () as _));
     L2CValue::new_num(motion_rate)
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_off_uniq)]
+unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if param_1.get_bool() {
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
+            WorkModule::inc_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME);
+            if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) == guard_off_attack_cancel_frame {
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
+            }
+        }
+        if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) > 0 {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
+            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) == 0 {
+                CancelModule::enable_cancel(fighter.module_accessor);
+            }
+        }
+    }
+    0.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
+unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL) {
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() == false {
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD) {
+                    let mut cont = ItemModule::is_have_item(fighter.module_accessor, 0);
+                    if cont {
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
+                        sv_module_access::item(fighter.lua_state_agent);
+                        cont = fighter.pop_lua_stack(1).get_bool();
+                        if !cont {
+                            fighter.clear_lua_stack();
+                            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
+                            sv_module_access::item(fighter.lua_state_agent);
+                            cont = fighter.pop_lua_stack(1).get_bool();
+                            if cont {
+                                cont = ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0;
+                            }
+                        }
+                        if cont {
+                            fighter.clear_lua_stack();
+                            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
+                            sv_module_access::item(fighter.lua_state_agent);
+                            cont = fighter.pop_lua_stack(1).get_bool();
+                            if !cont {
+                                if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+                                    if fighter.global_table[CMD_CAT3].get_i32() & (
+                                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
+                                    ) != 0 {
+                                        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+                                        return true.into();
+                                    }
+                                }
+                            }
+                            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                                if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0 {
+                                    if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+                                        if fighter.global_table[CMD_CAT3].get_i32() & (
+                                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
+                                        ) != 0 {
+                                            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+                                            return true.into();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if fighter.sub_transition_group_check_ground_item().get_bool() == false
+                && fighter.sub_transition_group_check_ground_special().get_bool() == false
+                && fighter.sub_transition_group_check_ground_attack().get_bool() == false {
+                    return false.into();
+                }
+            }
+        }
+        return false.into();
+    }
+    else {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false {
+            return false.into();
+        }
+    }
+    true.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_GuardOff)]
+unsafe fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: 1.0, y: 1.0, z: 1.0});
+    WorkModule::unable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
+    }
+    0.into()
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -529,7 +662,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_guarddamage_main,
             sub_ftstatusuniqprocessguardoff_initstatus,
             sub_status_guard_on_common,
-            status_guardoff_common
+            status_guardoff_common,
+            sub_guard_off_uniq,
+            sub_status_guard_off_main_common_cancel,
+            status_end_guardoff
         );
     }
 }

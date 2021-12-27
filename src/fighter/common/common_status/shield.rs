@@ -514,6 +514,7 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
@@ -624,6 +625,7 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
                     }
                 }
                 if fighter.sub_transition_group_check_ground_item().get_bool() == false
+                && fighter.sub_transition_group_check_ground_catch().get_bool() == false
                 && fighter.sub_transition_group_check_ground_special().get_bool() == false
                 && fighter.sub_transition_group_check_ground_attack().get_bool() == false {
                     return false.into();
@@ -636,6 +638,14 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false {
             return false.into();
         }
+    }
+    true.into()
+}
+
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_guard_off_main_common_control)]
+unsafe fn sub_status_guard_off_main_common_control(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_ground_jump().get_bool() == false {
+        return false.into();
     }
     true.into()
 }
@@ -665,6 +675,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_guardoff_common,
             sub_guard_off_uniq,
             sub_status_guard_off_main_common_cancel,
+            sub_status_guard_off_main_common_control,
             status_end_guardoff
         );
     }

@@ -27,6 +27,11 @@ unsafe fn dolly_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn dolly_guardoff_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_GuardOff()
+}
+
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Escape_common();
@@ -358,6 +363,7 @@ pub fn install() {
     install_status_scripts!(
         dolly_dashback_pre,
         dolly_dashback_main,
+        dolly_guardoff_main,
         dolly_escape_main,
         dolly_attacklw3_main,
         dolly_attacklw3_end

@@ -284,6 +284,146 @@ unsafe extern "C" fn sub_status_end_guard_on_common_thing(fighter: &mut L2CFight
     }
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
+unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
+    let shield_power = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER);
+    let shield_setoff_mul_status = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_SETOFF_MUL);
+    let mut shield_stiff_frame = shield_power * shield_setoff_mul_status;
+    shield_stiff_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_mul"));
+    let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        shield_stiff_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("just_shield_setoff_mul"));
+    }
+    shield_stiff_frame += WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_add"));
+    let shield_stiff_frame_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_frame_max"));
+    if shield_stiff_frame_max < shield_stiff_frame {
+        shield_stiff_frame = shield_stiff_frame_max;
+    }
+    if object_id != 0x50000000 {
+        capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
+        fighter.pop_lua_stack(1);
+        let mut invalid_capture_frame = shield_stiff_frame;
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+            invalid_capture_frame += WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame")) as f32;
+        }
+        // invalid_capture_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_ignore_capture_rate"));
+        invalid_capture_frame += 5.0;
+        WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_GUARD_INVALID_CAPTURE_FRAME);
+    }
+    WorkModule::set_int(fighter.module_accessor, shield_stiff_frame as i32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME);
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        let shield_setoff_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_setoff_catch_frame"));
+        if shield_setoff_catch_frame > 0 {
+            WorkModule::set_int(fighter.module_accessor, shield_setoff_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME);
+        }
+    }
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        fighter.clear_lua_stack();
+        let mot = hash40("guard_damage");
+        lua_args!(fighter, mot);
+        let motion_rate = sv_fighter_util::get_guard_damage_motion_rate(fighter.lua_state_agent, Hash40::new_raw(mot));
+        let weight = MotionModule::weight(fighter.module_accessor);
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new_raw(mot),
+            0.0,
+            motion_rate,
+            false,
+            0.0,
+            false,
+            false
+        );
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_IGNORE_2ND_MOTION) {
+            MotionModule::add_motion_2nd(
+                fighter.module_accessor,
+                Hash40::new("guard"),
+                0.0,
+                1.0,
+                false,
+                1.0
+            );
+            MotionModule::set_rate_2nd(fighter.module_accessor, 0.0);
+            MotionModule::set_weight(fighter.module_accessor, weight, true);
+            let prev_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_PREV_X);
+            let prev_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLOAT_PREV_Y);
+            fighter.FighterStatusGuard__set_guard_blend_motion_angle(prev_x.into(), prev_y.into());
+        }
+    }
+    else {
+        let mut cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("just_shield_off"), true);
+        if cancel_frame == 0.0 {
+            cancel_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("just_shield_off"));
+        }
+        let motion_rate = cancel_frame / shield_stiff_frame;
+        let just_shield_motion = WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("just_shield_motion"));
+        if just_shield_motion == 0 {
+            let frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("just_shield_off"));
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("just_shield_off"),
+                frame,
+                motion_rate,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        else {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("just_shield_off"),
+                0.0,
+                motion_rate,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        MotionAnimcmdModule::call_script_single(fighter.module_accessor, *FIGHTER_ANIMCMD_EXPRESSION, Hash40::new_raw(0x1a29f56bfb), -1);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_SHEILD_COUNT);
+        if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() == false {
+            CancelModule::enable_cancel(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_DISABLE_HIT_STOP_DELAY_STICK);
+        }
+        else {
+            ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
+            ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(*SHIELD_TYPE_JUST_SHIELD), *FIGHTER_SHIELD_KIND_GUARD, 0);
+            let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+            if FighterUtil::is_valid_just_shield_reflector(boma) {
+                ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NORMAL), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+            }
+        }
+    }
+    else {
+        ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
+        ControlModule::clear_command(fighter.module_accessor, false);
+    }
+    let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
+    let mut setoff_speed = shield_setoff_speed_mul * shield_stiff_frame;
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        setoff_speed *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("just_shield_speed_rate"));
+    }
+    let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
+    if shield_setoff_speed_max < setoff_speed {
+        setoff_speed = shield_setoff_speed_max;
+    }
+    let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
+    setoff_speed *= shield_lr;
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE, setoff_speed, 0.0, 0.0, 0.0, 0.0);
+    sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+    let mut hit_stop_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_HIT_STOP_FRAME);
+    hit_stop_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x2434ca61df);
+    WorkModule::set_int(fighter.module_accessor, hit_stop_frame as i32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME);
+    let hit_stop_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64);
+    ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_GuardDamage_Main)]
 unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_guard_damage_main_common_air().get_bool() {
@@ -385,6 +525,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_guard_on_uniq,
             sub_guard_cont,
             sub_status_end_guard_on_common,
+            sub_ftstatusuniqprocessguarddamage_initstatus_inner,
             status_guarddamage_main,
             sub_ftstatusuniqprocessguardoff_initstatus,
             sub_status_guard_on_common,

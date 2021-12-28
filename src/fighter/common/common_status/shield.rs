@@ -324,7 +324,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
             // println!("invalid_capture_frame with cancel frame: {}", invalid_capture_frame);
         }
         // invalid_capture_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_ignore_capture_rate"));
-        invalid_capture_frame += 5.0;
+        invalid_capture_frame += guard_off_invalid_capture_frame_add;
         // println!("invalid_capture_frame: {}", invalid_capture_frame);
         WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_GUARD_INVALID_CAPTURE_FRAME);
     }

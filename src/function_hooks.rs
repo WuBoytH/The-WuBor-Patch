@@ -263,14 +263,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         
-        if param_hash == hash40("escape_air_slide_back_end_frame") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if !is_damage_check(boma, true) {
-                    return 0;
-                }
-            }
-        }
-        
         if fighter_kind == *FIGHTER_KIND_RIDLEY {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
                 if param_hash == hash40("max_charge_frame") {

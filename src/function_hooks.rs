@@ -446,43 +446,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             }
         }
 
-        else if fighter_kind == *FIGHTER_KIND_SHULK {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("active_time_jump") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_speed") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_shield") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_buster") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_smash") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("unavailable_time_jump") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_speed") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_shield") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_buster") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_smash") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("shield_endure_mul") {
-                    return 100.0;
-                }
-            }
-        }
         else if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("air_max_speed_y") {
                 if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {

@@ -535,7 +535,6 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
     let guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
     WorkModule::set_int(fighter.module_accessor, guard_off_cancel_frame, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
-    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME);
     let anim_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("guard_off"), true) as f32;
     let mut motion_rate = 1.0;
     if 0.0 < guard_off_cancel_frame as f32
@@ -556,16 +555,14 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_off_uniq)]
 unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
-            WorkModule::inc_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME);
-            if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) == guard_off_attack_cancel_frame {
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
-            }
-        }
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) > 0 {
             WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
             if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) == 0 {
                 CancelModule::enable_cancel(fighter.module_accessor);
+            }
+            let guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
+            if guard_off_cancel_frame - WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) == guard_off_attack_cancel_frame {
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
             }
         }
     }

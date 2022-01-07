@@ -96,6 +96,9 @@ pub const FIGHTER_MARIO_LONG_JUMP_B : i32 = 3;
 // Donkey Kong
 pub static mut DK_COUNT : u64 = 0;
 
+// Samus
+pub static mut FIGHTER_SAMUS_INSTANCE_WORK_ID_FLAG_BEAM_RAPID : i32 = 0x200000E8;
+
 // Luigi
 pub const FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL : i32 = 0x200000E8;
 

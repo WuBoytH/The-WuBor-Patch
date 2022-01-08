@@ -23,6 +23,7 @@ use {
                 yu_speciallw_pre,
                 yu_check_special_command
             },
+            samusd::agent_init::samusd_specialn_pre,
             trail::agent_init::trail_guard_cont_pre
         }
     }
@@ -65,6 +66,10 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         else if fighter_kind == *FIGHTER_KIND_DONKEY {
             DK_COUNT += 1;
+        }
+        else if fighter_kind == *FIGHTER_KIND_SAMUSD {
+            WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID, FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
+            fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(samusd_specialn_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_KIRBY {
             fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));

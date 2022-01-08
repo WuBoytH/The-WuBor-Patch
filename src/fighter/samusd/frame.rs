@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::{L2CFighterCommon, L2CFighterBase},
+        lua2cpp::L2CFighterCommon,
         hash40,
         phx::Vector3f,
         app::lua_bind::*,
@@ -107,19 +107,19 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[weapon_frame( agent = WEAPON_KIND_SAMUSD_CSHOT )]
-fn samusd_cshot_frame(weapon: &mut L2CFighterBase) {
-    unsafe {
-        if MotionModule::motion_kind(weapon.module_accessor) == smash::hash40("shoot") {
-            let slowdownvec : Vector3f = Vector3f{x: 0.9,y: 0.0,z: 0.0};
-            KineticModule::mul_speed(weapon.module_accessor, &slowdownvec, *WEAPON_KINETIC_TYPE_NONE);
-        }
-    }
-}
+// #[weapon_frame( agent = WEAPON_KIND_SAMUSD_CSHOT )]
+// fn samusd_cshot_frame(weapon: &mut L2CFighterBase) {
+//     unsafe {
+//         if MotionModule::motion_kind(weapon.module_accessor) == smash::hash40("shoot") {
+//             let slowdownvec : Vector3f = Vector3f{x: 0.9,y: 0.0,z: 0.0};
+//             KineticModule::mul_speed(weapon.module_accessor, &slowdownvec, *WEAPON_KINETIC_TYPE_NONE);
+//         }
+//     }
+// }
 
 pub fn install() {
     install_agent_frames!(
         samusd_frame,
-        samusd_cshot_frame
+        // samusd_cshot_frame
     );
 }

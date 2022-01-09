@@ -242,6 +242,9 @@ pub const SP_6 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: 2.0};
 pub static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
 pub static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];
 
+// Chrom
+pub const FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC : i32 = 0x21000015;
+
 #[fighter_reset]
 fn fighter_reset(_fighter: &mut L2CFighterCommon) {
     unsafe {

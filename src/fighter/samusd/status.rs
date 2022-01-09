@@ -187,8 +187,8 @@ unsafe extern "C" fn samusd_specialn_hold_main_loop(fighter: &mut L2CFighterComm
                     else {
                         int_to_set = *FIGHTER_SAMUS_SPECIAL_N_CANCEL_TYPE_NONE;
                     }
+                    next_status = *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_JUMP_CANCEL;
                 }
-                next_status = *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_JUMP_CANCEL;
             }
         }
         else if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP_BUTTON != 0
@@ -201,8 +201,8 @@ unsafe extern "C" fn samusd_specialn_hold_main_loop(fighter: &mut L2CFighterComm
                 else {
                     int_to_set = *FIGHTER_SAMUS_SPECIAL_N_CANCEL_TYPE_NONE;
                 }
+                next_status = *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_JUMP_CANCEL;
             }
-            next_status = *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_JUMP_CANCEL;
         }
         if next_status != 0 {
             WorkModule::set_int(fighter.module_accessor, int_to_set, *FIGHTER_SAMUS_STATUS_SPECIAL_N_WORK_INT_CANCEL_TYPE);

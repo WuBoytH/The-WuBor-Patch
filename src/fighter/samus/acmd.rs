@@ -7,7 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    crate::vars::*,
+    super::vl::*
 };
 
 #[acmd_script( agent = "samus", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME, low_priority )]
@@ -170,7 +171,13 @@ unsafe fn samus_uspecial(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samus_cshot", script = "game_shoot", category = ACMD_GAME )]
 unsafe fn samus_cshot_shoot(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 3.0, 361, 0, 60, 79, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
+        let angle = WorkModule::get_float(weapon.module_accessor, WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_ANGLE);
+        if angle == -cshot_angle {
+            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 3.0, 361, 0, 20, 50, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
+        }
+        else {
+            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 3.0, 361, 0, 60, 69, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
+        }
     }
     wait(weapon.lua_state_agent, 4.0);
     if macros::is_excute(weapon) {

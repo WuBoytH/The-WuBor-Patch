@@ -87,6 +87,7 @@ unsafe fn samus_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
             angle = -cshot_angle;
         }
     }
+    WorkModule::set_float(weapon.module_accessor, angle, WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_ANGLE);
     let speed = WorkModule::get_param_float(weapon.module_accessor, hash40("param_cshot"), hash40("min_speed"));
     let speed_x = angle.to_radians().cos() * speed * lr;
     let speed_y = angle.to_radians().sin() * speed;

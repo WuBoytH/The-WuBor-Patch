@@ -91,15 +91,19 @@ unsafe fn chrom_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false
     );
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH);
     fighter.sub_shift_status_main(L2CValue::Ptr(chrom_speciallw_loop as *const () as _))
 }
 
 unsafe extern "C" fn chrom_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    println!("Can grab ledge? {}", WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH));
-    if fighter.sub_transition_group_check_air_cliff_force().get_bool() {
-        return 1.into();
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH) {
+            if GroundModule::can_entry_cliff(fighter.module_accessor) == 1 {
+                fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE.into(), false.into());
+            }
+        }
     }
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+    else {
         fighter.change_status(FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
     }
     0.into()

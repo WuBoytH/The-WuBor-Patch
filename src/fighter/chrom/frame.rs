@@ -20,12 +20,22 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     ].contains(&status) {
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
         ].to_vec();
         normal_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+        ].to_vec();
+    }
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status) {
+        special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
         ].to_vec();
     }
     cancel_system(fighter, normal_cancels, special_cancels, false, 0);

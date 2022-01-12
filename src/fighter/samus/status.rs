@@ -43,6 +43,68 @@ unsafe fn samus_attacks3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+// #[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// unsafe fn samus_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+//     WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP);
+//     WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_INC_STEP);
+//     WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
+//     fighter.clear_lua_stack();
+//     let mot1 = sv_fighter_util::get_attack_hi3_motion(fighter.lua_state_agent);
+//     fighter.status_AttackHi3_Common(mot1.into(), Hash40::new("attack_hi3").into());
+//     if !StopModule::is_stop(fighter.module_accessor) {
+//         fighter.sub_attack3_uniq_check(false.into());
+//     }
+//     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_attack3_uniq_check as *const () as _));
+//     fighter.sub_shift_status_main(L2CValue::Ptr(samus_attackhi3_main_loop as *const () as _))
+// }
+
+// unsafe extern "C" fn samus_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.status_AttackHi3_Main();
+//     if StatusModule::is_changing(fighter.module_accessor) {
+//         return 0.into();
+//     }
+//     let combo_count = WorkModule::get_int(fighter.module_accessor, FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_ATTACK_HI_3_COMBO) + 1;
+//     if combo_count >= 3 {
+//         return 0.into();
+//     }
+//     if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+//         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+//             if !StatusModule::is_changing(fighter.module_accessor) {
+//                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_INC_STEP);
+//             }
+//         }
+//     }
+//     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP) {
+//         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_INC_STEP) {
+//             WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_INC_STEP);
+//             WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP);
+//             WorkModule::inc_int(fighter.module_accessor, FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_ATTACK_HI_3_COMBO);
+//             let combo_count = WorkModule::get_int(fighter.module_accessor, FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_ATTACK_HI_3_COMBO) + 1;
+//             let mot;
+//             match combo_count {
+//                 2 => mot = Hash40::new("attack_hi3_2"),
+//                 3 => mot = Hash40::new("attack_hi3_3"),
+//                 _ => mot = Hash40::new("attack_hi3")
+//             }
+//             let rate = MotionModule::rate(fighter.module_accessor);
+//             MotionModule::change_motion(
+//                 fighter.module_accessor,
+//                 mot,
+//                 0.0,
+//                 rate,
+//                 false,
+//                 0.0,
+//                 false,
+//                 false
+//             );
+//             fighter.clear_lua_stack();
+//             sv_kinetic_energy::set_motion_energy_update_flag(fighter.lua_state_agent);
+//         }
+//     }
+//     0.into()
+// }
+
 #[status_script(agent = "samus_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn samus_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_cshot"), hash40("life"));
@@ -154,6 +216,7 @@ pub fn install() {
     install_status_scripts!(
         samus_attacks3_main,
         samus_attacks3_end,
+        // samus_attackhi3_main,
         samus_cshot_shoot_init
     );
 }

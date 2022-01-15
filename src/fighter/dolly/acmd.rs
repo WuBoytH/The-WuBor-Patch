@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "dolly", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 0.0);
     if macros::is_excute(fighter) {
         MotionModule::set_rate(fighter.module_accessor, 1.3);
@@ -49,7 +49,7 @@ unsafe fn dolly_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_ftilthi(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 0.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -82,7 +82,7 @@ unsafe fn dolly_ftilthi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_ftilthieff(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3hi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
@@ -97,7 +97,7 @@ unsafe fn dolly_ftilthieff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_attacks3hi", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_ftilthisnd(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3hi_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_dolly_attackhard_s01"));
@@ -109,7 +109,7 @@ unsafe fn dolly_ftilthisnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_attacks3hi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_ftilthiexp(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3hi_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -128,7 +128,7 @@ unsafe fn dolly_ftilthiexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_ftiltlw(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 0.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -165,7 +165,7 @@ unsafe fn dolly_ftiltlw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_ftiltlweff(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3lw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("dolly_attack_arc"), Hash40::new("dolly_attack_arc"), Hash40::new("top"), 0, 4, 1.5, -5.3, -51.7, 42.2, 0.4, true, *EF_FLIP_YZ, 1);
@@ -179,7 +179,7 @@ unsafe fn dolly_ftiltlweff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_attacks3lw", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_ftiltlwsnd(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3lw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_dolly_attackhard_s01"));
@@ -191,7 +191,7 @@ unsafe fn dolly_ftiltlwsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_attacks3lw", category = ACMD_EXPRESSION )]
-unsafe fn dolly_ftiltlwexp(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacks3lw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -214,7 +214,7 @@ unsafe fn dolly_ftiltlwexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -241,7 +241,7 @@ unsafe fn dolly_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacklw32", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_dtilt2(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacklw32(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -265,7 +265,7 @@ unsafe fn dolly_dtilt2(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacklw32", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_dtilt2eff(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacklw32_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false)
@@ -277,7 +277,7 @@ unsafe fn dolly_dtilt2eff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_attacklw32", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_dtilt2snd(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacklw32_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_dolly_attackhard_l01"));
@@ -290,7 +290,7 @@ unsafe fn dolly_dtilt2snd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_attacklw32", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_dtilt2exp(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_attacklw32_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 2);
     }
@@ -309,7 +309,7 @@ unsafe fn dolly_dtilt2exp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_fthrow(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 330, 15, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -332,7 +332,7 @@ unsafe fn dolly_fthrow(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_throwf", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_fthroweff(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
@@ -350,7 +350,7 @@ unsafe fn dolly_fthroweff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_throwf", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_fthrowsnd(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwf_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_01"));
@@ -363,7 +363,7 @@ unsafe fn dolly_fthrowsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_fthrowexp(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwf_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
@@ -390,7 +390,7 @@ unsafe fn dolly_fthrowexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_bthrow(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 330, 15, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -414,7 +414,7 @@ unsafe fn dolly_bthrow(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_throwb", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_bthroweff(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwb_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 1, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
@@ -432,7 +432,7 @@ unsafe fn dolly_bthroweff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_throwb", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_bthrowsnd(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwb_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_01"));
@@ -445,7 +445,7 @@ unsafe fn dolly_bthrowsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_throwb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_bthrowexp(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_throwb_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
@@ -472,7 +472,7 @@ unsafe fn dolly_bthrowexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -500,7 +500,7 @@ unsafe fn dolly_nspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairn", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -524,7 +524,7 @@ unsafe fn dolly_nspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialsfattack", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_fspecial(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialsfattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 0.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -589,12 +589,12 @@ unsafe fn dolly_fspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", scripts = [ "game_specialsbstart", "game_specialairsbstart" ], category = ACMD_GAME, low_priority )]
-unsafe fn dolly_bspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialsbstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 17.0 / 11.0);
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialsbattackw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_bspecialweak(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialsbattackw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -661,7 +661,7 @@ unsafe fn dolly_bspecialweak(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialsbattack", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_bspecialstrong(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialsbattack(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -723,7 +723,7 @@ unsafe fn dolly_bspecialstrong(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 0.0);
     if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(fighter) {
@@ -953,7 +953,7 @@ unsafe fn dolly_dspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairhi1", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
@@ -1075,7 +1075,7 @@ unsafe fn dolly_uspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairhicommand", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
+unsafe fn dolly_specialairhicommand(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
@@ -1282,7 +1282,7 @@ unsafe fn dolly_uspecialaircomm(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_lightground(weapon: &mut L2CAgentBase) {
+unsafe fn dolly_wave_normalw(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 8.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
@@ -1300,7 +1300,7 @@ unsafe fn dolly_wave_lightground(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_heavyground(weapon: &mut L2CAgentBase) {
+unsafe fn dolly_wave_normal(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 9.0, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
@@ -1319,23 +1319,23 @@ unsafe fn dolly_wave_heavyground(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        dolly_ftilt,
-        dolly_ftilthi, dolly_ftilthieff, dolly_ftilthisnd, dolly_ftilthiexp,
-        dolly_ftiltlw, dolly_ftiltlweff, dolly_ftiltlwsnd, dolly_ftiltlwexp,
-        dolly_dtilt,
-        dolly_dtilt2, dolly_dtilt2eff, dolly_dtilt2snd, dolly_dtilt2exp,
-        dolly_fthrow, dolly_fthroweff, dolly_fthrowsnd, dolly_fthrowexp,
-        dolly_bthrow, dolly_bthroweff, dolly_bthrowsnd, dolly_bthrowexp,
-        dolly_nspecial,
-        dolly_nspecialair,
-        dolly_fspecial,
-        dolly_bspecialstart,
-        dolly_bspecialweak,
-        dolly_bspecialstrong,
-        dolly_dspecialair,
-        dolly_uspecialair,
-        dolly_uspecialaircomm,
-        dolly_wave_lightground,
-        dolly_wave_heavyground
+        dolly_attacks3,
+        dolly_attacks3hi, dolly_attacks3hi_eff, dolly_attacks3hi_snd, dolly_attacks3hi_exp,
+        dolly_attacks3lw, dolly_attacks3lw_eff, dolly_attacks3lw_snd, dolly_attacks3lw_exp,
+        dolly_attacklw3,
+        dolly_attacklw32, dolly_attacklw32_eff, dolly_attacklw32_snd, dolly_attacklw32_exp,
+        dolly_throwf, dolly_throwf_eff, dolly_throwf_snd, dolly_throwf_exp,
+        dolly_throwb, dolly_throwb_eff, dolly_throwb_snd, dolly_throwb_exp,
+        dolly_specialn,
+        dolly_specialairn,
+        dolly_specialsfattack,
+        dolly_specialsbstart,
+        dolly_specialsbattackw,
+        dolly_specialsbattack,
+        dolly_specialairlw,
+        dolly_specialairhi,
+        dolly_specialairhicommand,
+        dolly_wave_normalw,
+        dolly_wave_normal
     );
 }

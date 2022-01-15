@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "tantan", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn tantan_usmash(fighter: &mut L2CAgentBase) {
+unsafe fn tantan_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -63,7 +63,7 @@ unsafe fn tantan_beam_bigshoot(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        tantan_usmash,
+        tantan_attackhi4,
         tantan_beam_bigshoot
     );
 }

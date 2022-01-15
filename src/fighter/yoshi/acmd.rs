@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "yoshi", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         let mut angle1 : u64 = 88;
@@ -31,7 +31,7 @@ unsafe fn yoshi_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_ftilthi(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         let mut angle1 : u64 = 88;
@@ -52,7 +52,7 @@ unsafe fn yoshi_ftilthi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_ftiltlw(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         let mut angle1 : u64 = 88;
@@ -73,7 +73,7 @@ unsafe fn yoshi_ftiltlw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.9);
     frame(fighter.lua_state_agent, 7.0);
@@ -91,7 +91,7 @@ unsafe fn yoshi_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.1);
     frame(fighter.lua_state_agent, 7.0);
@@ -113,7 +113,7 @@ unsafe fn yoshi_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_dsmash(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -141,7 +141,7 @@ unsafe fn yoshi_dsmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "yoshi", script = "game_specialsloop", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_sspecialloop(fighter: &mut L2CAgentBase) {
+unsafe fn yoshi_specialsloop(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 50, 0, 43, 5.5, 0.0, 5.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 32, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         JostleModule::set_status(fighter.module_accessor, false);
@@ -181,13 +181,13 @@ unsafe fn yoshi_tamago_burst(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        yoshi_ftilt,
-        yoshi_ftilthi,
-        yoshi_ftiltlw,
-        yoshi_utilt,
-        yoshi_dtilt,
-        yoshi_dsmash,
-        yoshi_sspecialloop,
+        yoshi_attacks3,
+        yoshi_attacks3hi,
+        yoshi_attacks3lw,
+        yoshi_attackhi3,
+        yoshi_attacklw3,
+        yoshi_attacklw4,
+        yoshi_specialsloop,
         yoshi_tamago_throwed,
         yoshi_tamago_burst
     );

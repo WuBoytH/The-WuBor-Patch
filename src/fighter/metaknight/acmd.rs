@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "metaknight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("footl"), 7.0, 62, 100, 0, 65, 5.0, 0.0, -1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -24,7 +24,7 @@ unsafe fn metaknight_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 95, 90, 0, 60, 5.5, 0.0, 25.2, 0.9, Some(0.0), Some(20.5), Some(1.4), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -46,7 +46,7 @@ unsafe fn metaknight_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -67,7 +67,7 @@ unsafe fn metaknight_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_fair(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -110,7 +110,7 @@ unsafe fn metaknight_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_uair(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -136,7 +136,7 @@ unsafe fn metaknight_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_dair(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -162,7 +162,7 @@ unsafe fn metaknight_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_nspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_specialnstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     frame(fighter.lua_state_agent, 11.0);
@@ -170,7 +170,7 @@ unsafe fn metaknight_nspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", scripts = ["effect_specialnstart", "effect_specialairnstart"], category = ACMD_EFFECT, low_priority )]
-unsafe fn metaknight_nspecialstarteff(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_specialnstart_eff(fighter: &mut L2CAgentBase) {
     WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_N_SPIN_WORK_INT_EFFECT_START_FRAME);
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -179,7 +179,7 @@ unsafe fn metaknight_nspecialstarteff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "metaknight", script = "game_specialnspin", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_nspecialspin(fighter: &mut L2CAgentBase) {
+unsafe fn metaknight_specialnspin(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 55, 44, 0, 90, 9.0, 0.0, 8.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         macros::ATTACK(fighter, 1, 1, Hash40::new("top"), 0.0, 180, 100, 0, 30, 15.0, 0.0, 10.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_ITEM, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -193,14 +193,14 @@ unsafe fn metaknight_nspecialspin(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        metaknight_dashattack,
-        metaknight_utilt,
-        metaknight_dtilt,
-        metaknight_fair,
-        metaknight_uair,
-        metaknight_dair,
-        metaknight_nspecialstart,
-        metaknight_nspecialstarteff,
-        metaknight_nspecialspin
+        metaknight_attackdash,
+        metaknight_attackhi3,
+        metaknight_attacklw3,
+        metaknight_attackairf,
+        metaknight_attackairhi,
+        metaknight_attackairlw,
+        metaknight_specialnstart,
+        metaknight_specialnstart_eff,
+        metaknight_specialnspin
     );
 }

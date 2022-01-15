@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "lucas", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 84, 45, 0, 20, 2.8, 0.0, 3.5, 4.5, Some(0.0), Some(3.6), Some(4.7), 0.7, 0.4, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -25,7 +25,7 @@ unsafe fn lucas_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_usmash(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
@@ -98,7 +98,7 @@ unsafe fn lucas_usmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_dthrow(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 80, 40, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -117,7 +117,7 @@ unsafe fn lucas_dthrow(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -148,7 +148,7 @@ unsafe fn lucas_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_fair(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -173,7 +173,7 @@ unsafe fn lucas_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_bair(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -211,7 +211,7 @@ unsafe fn lucas_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_uair(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -237,7 +237,7 @@ unsafe fn lucas_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucas", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_dair(fighter: &mut L2CAgentBase) {
+unsafe fn lucas_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -297,14 +297,14 @@ unsafe fn lucas_pkfire_pillar(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucas_dtilt,
-        lucas_usmash,
-        lucas_dthrow,
-        lucas_nair,
-        lucas_fair,
-        lucas_bair,
-        lucas_uair,
-        lucas_dair,
+        lucas_attacklw3,
+        lucas_attackhi4,
+        lucas_throwlw,
+        lucas_attackairn,
+        lucas_attackairf,
+        lucas_attackairb,
+        lucas_attackairhi,
+        lucas_attackairlw,
         lucas_speciallwend,
         lucas_pkfire_pillar
     );

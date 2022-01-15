@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "kirby", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
@@ -28,7 +28,7 @@ unsafe fn kirby_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_dtilteff(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_attacklw3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 2, 2, 0, 0, 0, 0.8, true);
@@ -46,7 +46,7 @@ unsafe fn kirby_dtilteff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.375);
     frame(fighter.lua_state_agent, 9.0);
@@ -68,7 +68,7 @@ unsafe fn kirby_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_specialsstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
@@ -79,7 +79,7 @@ unsafe fn kirby_sspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_specialairsstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
     }
@@ -87,7 +87,7 @@ unsafe fn kirby_sspecialstartair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairs", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_sspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_specialairs(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 19.0, 50, 78, 0, 60, 5.4, 0.0, 4.3, 11.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HAMMER);
@@ -114,7 +114,7 @@ unsafe fn kirby_sspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairss", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_sspecialairs(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_specialairss(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 19.0, 50, 78, 0, 60, 5.4, 0.0, 4.3, 11.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HAMMER);
@@ -141,7 +141,7 @@ unsafe fn kirby_sspecialairs(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, Hash40::new("special_hi"), false, 0.0);
@@ -153,7 +153,7 @@ unsafe fn kirby_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", scripts = ["effect_ganonspecialn", "effect_ganonspecialairn"], category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_ganonspecialeff(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_ganonspecialn_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("ganon_majinken_start"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
         WorkModule::set_flag(fighter.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
@@ -183,7 +183,7 @@ unsafe fn kirby_ganonspecialeff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kirby", scripts = ["sound_ganonspecialn", "sound_ganonspecialairn"], category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_ganonspecialsnd(fighter: &mut L2CAgentBase) {
+unsafe fn kirby_ganonspecialn_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ganon_special_n01"));
@@ -211,15 +211,14 @@ unsafe fn kirby_ganonspecialsnd(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kirby_dtilt,
-        kirby_dtilteff,
-        kirby_uair,
-        kirby_sspecialstart,
-        kirby_sspecialstartair,
-        kirby_sspecialair,
-        kirby_sspecialairs,
-        kirby_uspecial,
-        kirby_ganonspecialeff,
-        kirby_ganonspecialsnd
+        kirby_attacklw3, kirby_attacklw3_eff,
+        kirby_attackairhi,
+        kirby_specialsstart,
+        kirby_specialairsstart,
+        kirby_specialairs,
+        kirby_specialairss,
+        kirby_specialhi,
+        kirby_ganonspecialn_eff,
+        kirby_ganonspecialn_snd
     );
 }

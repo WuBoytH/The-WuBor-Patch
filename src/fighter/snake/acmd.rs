@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "snake", script = "game_attacks3s2", category = ACMD_GAME, low_priority )]
-unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {
+unsafe fn snake_attacks3s2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -33,7 +33,7 @@ unsafe fn snake_ftilt2(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn snake_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn snake_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 95, 82, 0, 65, 3.5, 0.0, 6.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -65,7 +65,7 @@ unsafe fn snake_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn snake_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn snake_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 62, 0, 60, 5.0, 0.0, 2.3, 16.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -93,7 +93,7 @@ unsafe fn snake_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn snake_nair(fighter: &mut L2CAgentBase) {
+unsafe fn snake_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -140,7 +140,7 @@ unsafe fn snake_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn snake_bair(fighter: &mut L2CAgentBase) {
+unsafe fn snake_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if StatusModule::prev_status_kind(fighter.module_accessor, 0) == *FIGHTER_STATUS_KIND_PASS {
         if macros::is_excute(fighter) {
@@ -177,7 +177,7 @@ unsafe fn snake_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn snake_dair(fighter: &mut L2CAgentBase) {
+unsafe fn snake_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -234,17 +234,17 @@ unsafe fn snake_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
-unsafe fn snake_cypher(_fighter: &mut L2CAgentBase) {
+unsafe fn snake_cypher_detach(_fighter: &mut L2CAgentBase) {
 }
 
 pub fn install() {
     install_acmd_scripts!(
-        snake_ftilt2,
-        snake_utilt,
-        snake_dtilt,
-        snake_nair,
-        snake_bair,
-        snake_dair,
-        snake_cypher
+        snake_attacks3s2,
+        snake_attackhi3,
+        snake_attacklw3,
+        snake_attackairn,
+        snake_attackairb,
+        snake_attackairlw,
+        snake_cypher_detach
     );
 }

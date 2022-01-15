@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "rockman_rockbuster", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn rockman_rockbuster_shoot(weapon: &mut L2CAgentBase) {
+unsafe fn rockman_rockbuster_regular(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
         let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -42,6 +42,6 @@ unsafe fn rockman_rockbuster_shoot(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_rockbuster_shoot
+        rockman_rockbuster_regular
     );
 }

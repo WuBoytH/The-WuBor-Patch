@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "miifighter", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
-unsafe fn miifighter_uspecial3(fighter: &mut L2CAgentBase) {
+unsafe fn miifighter_specialhi3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
     }
@@ -81,6 +81,6 @@ unsafe fn miifighter_uspecial3(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        miifighter_uspecial3
+        miifighter_specialhi3
     );
 }

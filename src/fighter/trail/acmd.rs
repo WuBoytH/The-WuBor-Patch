@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "trail", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn trail_dair(fighter: &mut L2CAgentBase) {
+unsafe fn trail_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -51,7 +51,7 @@ unsafe fn trail_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "trail", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn trail_dspecialattack(fighter: &mut L2CAgentBase) {
+unsafe fn trail_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_TRAIL_STATUS_SPECIAL_LW_FLOAT_ATTACK_POWER);
@@ -88,7 +88,7 @@ unsafe fn trail_dspecialattack(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        trail_dair,
-        trail_dspecialattack
+        trail_attackairlw,
+        trail_speciallw
     );
 }

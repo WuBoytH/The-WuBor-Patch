@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "gamewatch", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn gamewatch_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn gamewatch_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.25);
     frame(fighter.lua_state_agent, 5.0);
@@ -54,6 +54,6 @@ unsafe fn gamewatch_uspecial(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        gamewatch_uspecial
+        gamewatch_specialhi
     );
 }

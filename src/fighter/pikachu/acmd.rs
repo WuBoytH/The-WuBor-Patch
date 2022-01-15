@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "pikachu", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn pikachu_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("tail1"), 5.0, 107, 120, 0, 45, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_SLAP, *ATTACK_REGION_TAIL);
@@ -24,7 +24,7 @@ unsafe fn pikachu_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_nair(fighter: &mut L2CAgentBase) {
+unsafe fn pikachu_attackairn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -56,7 +56,7 @@ unsafe fn pikachu_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_uair(fighter: &mut L2CAgentBase) {
+unsafe fn pikachu_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -82,8 +82,8 @@ unsafe fn pikachu_uair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pikachu_utilt,
-        pikachu_nair,
-        pikachu_uair
+        pikachu_attackhi3,
+        pikachu_attackairn,
+        pikachu_attackairhi
     );
 }

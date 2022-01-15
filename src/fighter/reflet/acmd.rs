@@ -9,7 +9,7 @@ use {
 };
 
 #[acmd_script( agent = "reflet", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME, low_priority )]
-unsafe fn reflet_uspecial1(fighter: &mut L2CAgentBase) {
+unsafe fn reflet_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_REFLET_GENERATE_ARTICLE_ELWIND, false, 0);
@@ -23,6 +23,6 @@ unsafe fn reflet_uspecial1(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        reflet_uspecial1
+        reflet_specialhi
     );
 }

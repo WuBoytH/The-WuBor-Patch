@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 7.0, 95, 122, 0, 30, 3.5, 0.0, 9.0, -1.2, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -28,7 +28,7 @@ unsafe fn miisword_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_usmash(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 2.0/3.0);
     frame(fighter.lua_state_agent, 9.0);
@@ -83,7 +83,7 @@ unsafe fn miisword_usmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_nair(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0/3.0);
     frame(fighter.lua_state_agent, 6.0);
@@ -108,7 +108,7 @@ unsafe fn miisword_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_bair(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -138,7 +138,7 @@ unsafe fn miisword_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_uair(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 2.0/3.0);
     frame(fighter.lua_state_agent, 9.0);
@@ -163,7 +163,7 @@ unsafe fn miisword_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_uspecial3(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_specialhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 14.0, 45, 60, 0, 90, 4.0, 1.0, 1.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -195,7 +195,7 @@ unsafe fn miisword_uspecial3(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialairhi3", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_uspecial3air(fighter: &mut L2CAgentBase) {
+unsafe fn miisword_specialairhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 367, 100, 115, 0, 6.0, 0.0, 9.0, 7.0, Some(0.0), Some(6.0), Some(14.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -295,12 +295,12 @@ unsafe fn miisword_uspecial3air(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        miisword_utilt,
-        miisword_usmash,
-        miisword_nair,
-        miisword_bair,
-        miisword_uair,
-        miisword_uspecial3,
-        miisword_uspecial3air
+        miisword_attackhi3,
+        miisword_attackhi4,
+        miisword_attackairn,
+        miisword_attackairb,
+        miisword_attackairhi,
+        miisword_specialhi3,
+        miisword_specialairhi3
     );
 }

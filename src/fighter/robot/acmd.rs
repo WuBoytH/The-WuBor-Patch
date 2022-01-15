@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "robot", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn robot_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn robot_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 77, 0, 48, 2.5, 0.0, 9.0, 0.9, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -25,7 +25,7 @@ unsafe fn robot_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "robot", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn robot_ftilthi(fighter: &mut L2CAgentBase) {
+unsafe fn robot_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 77, 0, 48, 2.5, 0.0, 9.0, 0.9, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -41,7 +41,7 @@ unsafe fn robot_ftilthi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "robot", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn robot_ftiltlw(fighter: &mut L2CAgentBase) {
+unsafe fn robot_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 361, 77, 0, 48, 2.5, 0.0, 9.0, 0.9, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -57,7 +57,7 @@ unsafe fn robot_ftiltlw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "robot", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn robot_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn robot_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 3.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -73,7 +73,7 @@ unsafe fn robot_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "robot", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn robot_fair(fighter: &mut L2CAgentBase) {
+unsafe fn robot_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -103,7 +103,7 @@ unsafe fn robot_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "robot", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn robot_uair(fighter: &mut L2CAgentBase) {
+unsafe fn robot_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -159,7 +159,7 @@ unsafe fn robot_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "robot", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
-unsafe fn robot_sspecialendair(fighter: &mut L2CAgentBase) {
+unsafe fn robot_specialairsend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 45, 180, 0, 30, 6.0, 0.0, 9.0, -4.5, Some(0.0), Some(10.0), Some(14.0), 2.4, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -173,12 +173,12 @@ unsafe fn robot_sspecialendair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        robot_ftilt,
-        robot_ftilthi,
-        robot_ftiltlw,
-        robot_dtilt,
-        robot_fair,
-        robot_uair,
-        robot_sspecialendair
+        robot_attacks3,
+        robot_attacks3hi,
+        robot_attacks3lw,
+        robot_attacklw3,
+        robot_attackairf,
+        robot_attackairhi,
+        robot_specialairsend
     );
 }

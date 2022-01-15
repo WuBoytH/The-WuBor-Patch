@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
+unsafe fn lucina_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB) {
             macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 60, 40, 20, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -41,6 +41,6 @@ unsafe fn lucina_uthrow(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_uthrow
+        lucina_throwhi
     );
 }

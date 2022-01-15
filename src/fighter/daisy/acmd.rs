@@ -14,7 +14,7 @@ use {
 };
 
 #[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_jab2(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attack12(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), 3.0, 88, 70, 0, 50, 3.0, 2.5, 0.0, 0.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DAISY_BINTA, *ATTACK_REGION_PUNCH);
@@ -28,7 +28,7 @@ unsafe fn daisy_jab2(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 7.0, 35, 90, 0, 60, 4.0, 0.0, 1.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -51,7 +51,7 @@ unsafe fn daisy_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 92, 84, 0, 65, 5.0, 0.0, 13.0, 2.0, Some(0.0), Some(13.0), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
@@ -64,7 +64,7 @@ unsafe fn daisy_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 1.0, 4.0);
@@ -87,7 +87,7 @@ unsafe fn daisy_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_nair(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -112,7 +112,7 @@ unsafe fn daisy_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_dair(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -139,7 +139,7 @@ unsafe fn daisy_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn daisy_daireff(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6, -2, 70, 0, 0, 0.7, true, *EF_FLIP_YZ);
@@ -157,7 +157,7 @@ unsafe fn daisy_daireff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn daisy_dairsnd(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_daisy_rnd_attack"));
@@ -174,7 +174,7 @@ unsafe fn daisy_dairsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn daisy_dairexp(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_attackairlw_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 5, false, 0x50000000);
@@ -194,7 +194,7 @@ unsafe fn daisy_dairexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_sspecialjump(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialsjump(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S);
         JostleModule::set_status(fighter.module_accessor, false);
@@ -211,7 +211,7 @@ unsafe fn daisy_sspecialjump(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialshitend", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_sspecialhit(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialshitend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 110, 42, 0, 60, 7.7, 0.0, 5.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
     }
@@ -222,7 +222,7 @@ unsafe fn daisy_sspecialhit(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_uspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialhistart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -280,7 +280,7 @@ unsafe fn daisy_uspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialairhistart", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_uspecialairstart(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialairhistart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -338,7 +338,7 @@ unsafe fn daisy_uspecialairstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_fuwafuwastart", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_dspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -365,7 +365,7 @@ unsafe fn daisy_dspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "effect_fuwafuwastart", category = ACMD_EFFECT, low_priority )]
-unsafe fn daisy_dspecialaireff(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("daisy_bomber_jamp"), Hash40::new("top"), 0, 12, -6, 0, 0, 0, 0.8, true);
@@ -374,7 +374,7 @@ unsafe fn daisy_dspecialaireff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "sound_fuwafuwastart", category = ACMD_SOUND, low_priority )]
-unsafe fn daisy_dspecialairsnd(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_daisy_attack05"));
@@ -383,7 +383,7 @@ unsafe fn daisy_dspecialairsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "expression_fuwafuwastart", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn daisy_dspecialairexp(fighter: &mut L2CAgentBase) {
+unsafe fn daisy_specialairlw_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 0, false, 0x50000000);
@@ -396,22 +396,16 @@ unsafe fn daisy_dspecialairexp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        daisy_jab2,
-        daisy_ftilt,
-        daisy_utilt,
-        daisy_dtilt,
-        daisy_nair,
-        daisy_dair,
-        daisy_daireff,
-        daisy_dairsnd,
-        daisy_dairexp,
-        daisy_sspecialjump,
-        daisy_sspecialhit,
-        daisy_uspecialstart,
-        daisy_uspecialairstart,
-        daisy_dspecialair,
-        daisy_dspecialaireff,
-        daisy_dspecialairsnd,
-        daisy_dspecialairexp
+        daisy_attack12,
+        daisy_attacks3,
+        daisy_attackhi3,
+        daisy_attacklw3,
+        daisy_attackairn,
+        daisy_attackairlw, daisy_attackairlw_eff, daisy_attackairlw_snd, daisy_attackairlw_exp,
+        daisy_specialsjump,
+        daisy_specialshitend,
+        daisy_specialhistart,
+        daisy_specialairhistart,
+        daisy_specialairlw, daisy_specialairlw_eff, daisy_specialairlw_snd, daisy_specialairlw_exp
     );
 }

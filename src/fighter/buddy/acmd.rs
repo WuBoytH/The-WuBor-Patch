@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_s"), false, -1.0);
@@ -42,7 +42,7 @@ unsafe fn buddy_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_ftilthi(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attacks3hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_hi"), false, -1.0);
@@ -73,7 +73,7 @@ unsafe fn buddy_ftilthi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_ftiltlw(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attacks3lw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_lw"), false, -1.0);
@@ -104,7 +104,7 @@ unsafe fn buddy_ftiltlw(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attackhi3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
         macros::HIT_NO(fighter, 13, *HIT_STATUS_NORMAL);
@@ -145,7 +145,7 @@ unsafe fn buddy_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 32, 74, 0, 64, 3.6, 0.0, 3.6, 4.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -159,7 +159,7 @@ unsafe fn buddy_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 46, 72, 0, 58, 5.2, 0.0, 5.8, 3.6, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -171,7 +171,7 @@ unsafe fn buddy_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -192,7 +192,7 @@ unsafe fn buddy_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -226,7 +226,7 @@ unsafe fn buddy_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_dair(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -270,7 +270,7 @@ unsafe fn buddy_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "buddy", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_dairland(fighter: &mut L2CAgentBase) {
+unsafe fn buddy_landingairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 41, 142, 0, 44, 4.0, 0.0, 4.0, -8.0, Some(0.0), Some(4.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
@@ -283,15 +283,15 @@ unsafe fn buddy_dairland(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        buddy_ftilt,
-        buddy_ftilthi,
-        buddy_ftiltlw,
-        buddy_utilt,
-        buddy_dtilt,
-        buddy_dashattack,
-        buddy_nair,
-        buddy_uair,
-        buddy_dair,
-        buddy_dairland
+        buddy_attacks3,
+        buddy_attacks3hi,
+        buddy_attacks3lw,
+        buddy_attackhi3,
+        buddy_attacklw3,
+        buddy_attackdash,
+        buddy_attackairn,
+        buddy_attackairhi,
+        buddy_attackairlw,
+        buddy_landingairlw
     );
 }

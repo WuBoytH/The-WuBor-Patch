@@ -12,7 +12,7 @@ use {
 };
 
 #[acmd_script( agent = "samus", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME, low_priority )]
-unsafe fn samus_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_CSHOT, false, -1);
@@ -29,7 +29,7 @@ unsafe fn samus_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
-unsafe fn samus_ftilteff(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attacks3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("samus_cshot_shot"), Hash40::new("top"), 6, 6, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -52,7 +52,7 @@ unsafe fn samus_ftilteff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
-unsafe fn samus_ftilthieff(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attacks3hi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("samus_cshot_shot"), Hash40::new("top"), 6, 10, 0, -15, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -75,7 +75,7 @@ unsafe fn samus_ftilthieff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
-unsafe fn samus_ftiltlweff(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attacks3lw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("samus_cshot_shot"), Hash40::new("top"), 6, 5, 0, 15, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -98,12 +98,12 @@ unsafe fn samus_ftiltlweff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", scripts = [ "sound_attacks3", "sound_attacks3hi", "sound_attacks3lw" ], category = ACMD_SOUND, low_priority )]
-unsafe fn samus_ftiltsnd(_fighter: &mut L2CAgentBase) {
+unsafe fn samus_attacks3_snd(_fighter: &mut L2CAgentBase) {
     
 }
 
 #[acmd_script( agent = "samus", scripts = [ "expression_attacks3", "expression_attacks3hi", "expression_attacks3lw" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samus_ftiltexp(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attacks3_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -114,7 +114,7 @@ unsafe fn samus_ftiltexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "game_attackhi3" , category = ACMD_GAME, low_priority )]
-unsafe fn samus_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 366, 0, 70, 100, 6.0, 0.0, 20.0, 9.0, None, None, None, 0.8, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -145,7 +145,7 @@ unsafe fn samus_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "effect_attackhi3" , category = ACMD_EFFECT, low_priority )]
-unsafe fn samus_utilteff(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attackhi3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("samus_atk_bomb"), Hash40::new("top"), 0.0, 21.0, 10.0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -165,7 +165,7 @@ unsafe fn samus_utilteff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "sound_attackhi3" , category = ACMD_SOUND, low_priority )]
-unsafe fn samus_utiltsnd(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attackhi3_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samus_smash_h01"));
@@ -181,7 +181,7 @@ unsafe fn samus_utiltsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "expression_attackhi3" , category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samus_utiltexp(fighter: &mut L2CAgentBase) {
+unsafe fn samus_attackhi3_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -203,7 +203,7 @@ unsafe fn samus_utiltexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn samus_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn samus_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -279,9 +279,9 @@ unsafe fn samus_cshot_shoot(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        samus_ftilt, samus_ftilteff, samus_ftilthieff, samus_ftiltlweff, samus_ftiltsnd, samus_ftiltexp,
-        samus_utilt, samus_utilteff, samus_utiltsnd, samus_utiltexp,
-        samus_uspecial,
+        samus_attacks3, samus_attacks3_eff, samus_attacks3hi_eff, samus_attacks3lw_eff, samus_attacks3_snd, samus_attacks3_exp,
+        samus_attackhi3, samus_attackhi3_eff, samus_attackhi3_snd, samus_attackhi3_exp,
+        samus_specialhi,
         samus_cshot_shoot
     );
 }

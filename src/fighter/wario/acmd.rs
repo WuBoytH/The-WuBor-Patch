@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_dspecials(fighter: &mut L2CAgentBase) {
+unsafe fn wario_speciallwsr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
@@ -24,7 +24,7 @@ unsafe fn wario_dspecials(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "wario", scripts = ["game_speciallwmr", "game_specialairlwmr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_dspecialm(fighter: &mut L2CAgentBase) {
+unsafe fn wario_speciallwmr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 85, 50, 0, 90, 10.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_NONE);
@@ -44,7 +44,7 @@ unsafe fn wario_dspecialm(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_dspeciall(fighter: &mut L2CAgentBase) {
+unsafe fn wario_speciallwlr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.6);
     frame(fighter.lua_state_agent, 5.0);
@@ -60,7 +60,7 @@ unsafe fn wario_dspeciall(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_dspecialfly(fighter: &mut L2CAgentBase) {
+unsafe fn wario_speciallwflyr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -95,10 +95,10 @@ unsafe fn wario_appeal(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        wario_dspecials,
-        wario_dspecialm,
-        wario_dspeciall,
-        wario_dspecialfly,
+        wario_speciallwsr,
+        wario_speciallwmr,
+        wario_speciallwlr,
+        wario_speciallwflyr,
         wario_appeal
     );
 }

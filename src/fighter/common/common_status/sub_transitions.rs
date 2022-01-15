@@ -73,11 +73,11 @@ pub unsafe fn check_enabled_aerials(fighter: &mut L2CFighterCommon) -> bool {
     let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
     let aerial_flag;
     match attack_air_kind {
-        1 => aerial_flag = 0b00001,
-        2 => aerial_flag = 0b00010,
-        3 => aerial_flag = 0b00100,
-        4 => aerial_flag = 0b01000,
-        5 => aerial_flag = 0b10000,
+        1 => aerial_flag = ATTACK_AIR_N_MASK,
+        2 => aerial_flag = ATTACK_AIR_F_MASK,
+        3 => aerial_flag = ATTACK_AIR_B_MASK,
+        4 => aerial_flag = ATTACK_AIR_HI_MASK,
+        5 => aerial_flag = ATTACK_AIR_LW_MASK,
         _ => aerial_flag = 0b00000
     }
     mask & aerial_flag != 0

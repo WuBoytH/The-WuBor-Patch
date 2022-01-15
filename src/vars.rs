@@ -75,6 +75,12 @@ pub const FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS : i32 = 0x11000026;
 // Set int like so: WorkModule::set_int(fighter.module_accessor, 0b11111, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
 // Bitmask is 0bXXXXX, where each X represents an aerial. 0b(LW)(HI)(B)(F)(N)
 
+pub const ATTACK_AIR_N_MASK : i32 = 0b00001;
+pub const ATTACK_AIR_F_MASK : i32 = 0b00010;
+pub const ATTACK_AIR_B_MASK : i32 = 0b00100;
+pub const ATTACK_AIR_HI_MASK : i32 = 0b01000;
+pub const ATTACK_AIR_LW_MASK : i32 = 0b10000;
+
 pub const FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL : i32 = 0x2100002B;
 // pub const FIGHTER_STATUS_WORK_ID_FLAG_DASH_CANCEL : i32 = 0x2100002C;
 // pub const FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL : i32 = 0x2100002D;

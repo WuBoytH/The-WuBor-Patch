@@ -111,11 +111,33 @@ unsafe extern "C" fn lucina_tilt_cancels_substatus2(fighter: &mut L2CFighterComm
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());
+    lucina_attackair_set_cancels(fighter);
     if !StopModule::is_stop(fighter.module_accessor) {
         lucina_attackair_substatus2(fighter);
     }
     fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(lucina_attackair_substatus2 as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
+}
+
+unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon) {
+    let mot = MotionModule::motion_kind(fighter.module_accessor);
+    let flags;
+    if mot == hash40("attack_air_n") {
+        flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+    }
+    else if mot == hash40("attack_air_f") {
+        flags = ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+    }
+    else if mot == hash40("attack_air_b") {
+        flags = ATTACK_AIR_N_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+    }
+    else if mot == hash40("attack_air_hi") {
+        flags = ATTACK_AIR_B_MASK + ATTACK_AIR_LW_MASK;
+    }
+    else {
+        flags = 0b00000;
+    }
+    WorkModule::set_int(fighter.module_accessor, flags, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
 }
 
 unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -139,7 +161,7 @@ unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon)
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
             ].to_vec();
         }
-        cancel_system(fighter, [].to_vec(), special_cancels, false, jump_cancel);
+        cancel_system(fighter, [].to_vec(), special_cancels, true, jump_cancel);
     }
     0.into()
 }

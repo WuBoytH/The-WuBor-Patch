@@ -8,9 +8,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        vars::*,
-        gameplay::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     }
 };
 
@@ -21,7 +21,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
     let mut normal_cancels : Vec<i32> = [].to_vec();
     let mut aerial_cancel = false;
     let mut jump_cancel = 0;
-    set_hp(fighter, 105.0);
+    MiscModule::set_hp(fighter, 105.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {
@@ -48,7 +48,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
             jump_cancel = 1;
         }
         else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
                 return;
             }
         }
@@ -73,7 +73,7 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_HI4
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-            jump_cancel_check_hit(fighter, false);
+            FGCModule::jump_cancel_check_hit(fighter, false);
         }
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
@@ -84,10 +84,10 @@ pub unsafe fn mario_fgc(fighter: &mut L2CFighterCommon) {
     }
     else if status == *FIGHTER_STATUS_KIND_SPECIAL_N {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL) {
-            jump_cancel_check_exception(fighter);
+            FGCModule::jump_cancel_check_exception(fighter);
         }
     }
-    cancel_system(fighter, normal_cancels, special_cancels, aerial_cancel, jump_cancel);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, aerial_cancel, jump_cancel);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_MARIO )]

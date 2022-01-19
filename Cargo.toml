@@ -24,6 +24,7 @@ smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "develo
 arcropolis-api = { git = "https://github.com/Raytwo/arcropolis_api" }
 smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
 prc-rs = "1.3"
+wubor_utils = { path = "wubor_utils" }
 
 [profile.dev]
 panic = "abort"

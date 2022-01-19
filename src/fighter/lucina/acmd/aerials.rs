@@ -7,8 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*,
-    super::super::helper::*
+    super::super::helper::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME, low_priority )]

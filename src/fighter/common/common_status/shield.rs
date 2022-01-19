@@ -9,11 +9,11 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    crate::{
+    super::super::common_param::*,
+    wubor_utils::{
         vars::*,
         table_const::*
-    },
-    super::super::common_param::*
+    }
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]

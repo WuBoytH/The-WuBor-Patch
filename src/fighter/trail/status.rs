@@ -7,7 +7,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]

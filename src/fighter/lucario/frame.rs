@@ -5,10 +5,9 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*,
-        gameplay::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     }
 };
 
@@ -18,10 +17,10 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
     let mut jump_cancel = 0;
-    set_hp(fighter, 116.0);
+    MiscModule::set_hp(fighter, 116.0);
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI)
     && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-    || is_damage_check(fighter.module_accessor, false)) {
+    || MiscModule::is_damage_check(fighter.module_accessor, false)) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
     }
     if [
@@ -45,7 +44,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
                 return;
             }
         }
@@ -83,7 +82,7 @@ pub unsafe fn lucario_fgc(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
         special_cancels.append(&mut [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCARIO )]

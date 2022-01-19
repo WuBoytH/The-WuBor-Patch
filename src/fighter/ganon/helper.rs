@@ -6,16 +6,16 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
-    },
+    }
 };
 
 #[inline(always)]
 pub unsafe fn deception_init(fighter: &mut L2CFighterCommon) {
-    let dir = get_command_stick_direction(fighter.module_accessor, false);
+    let dir = FGCModule::get_command_stick_direction(fighter.module_accessor, false);
     let tele_x;
     let tele_y;
     if dir == 5 {

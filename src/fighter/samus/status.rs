@@ -8,12 +8,12 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
+    super::vl::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
-        gameplay::*,
         table_const::*
-    },
-    super::vl::*
+    }
 };
 
 #[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -29,7 +29,7 @@ unsafe fn samus_attacks3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn samus_attacks3_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.global_table[IN_HITLAG].get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUS_INSTANCE_WORK_ID_FLAG_BEAM_RAPID) {
-            cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, false);
+            FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_S3, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, false);
         }
     }
     0.into()

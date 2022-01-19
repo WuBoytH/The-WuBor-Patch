@@ -8,11 +8,13 @@ use {
     smash_script::*,
     smashline::*,
     crate::{
-        vars::*,
-        table_const::*,
         fighter::ganon::helper::*
     },
-    super::vl::*
+    super::vl::*,
+    wubor_utils::{
+        vars::*,
+        table_const::*
+    }
 };
 
 #[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

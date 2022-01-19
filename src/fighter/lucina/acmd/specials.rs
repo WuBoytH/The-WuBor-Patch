@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::super::helper::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*
-    },
-    super::super::helper::*
+    }
 };
 
 #[acmd_script( agent = "lucina", script = "game_specialairnstart" , category = ACMD_GAME, low_priority )]
@@ -595,7 +595,7 @@ unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
-        let dir = get_command_stick_direction(fighter.module_accessor, false);
+        let dir = FGCModule::get_command_stick_direction(fighter.module_accessor, false);
         if dir == 5
         || dir == 8
         || dir == 2 {

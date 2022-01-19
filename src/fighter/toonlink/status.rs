@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
+    super::vl::*,
+    wubor_utils::{
         vars::*,
         table_const::*
-    },
-    super::vl::*
+    }
 };
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

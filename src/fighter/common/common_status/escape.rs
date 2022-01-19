@@ -9,8 +9,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
     }
@@ -299,7 +299,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_START_FRAME);
         let escape_air_slide_back_end_frame;
         if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-        && !is_damage_check(boma, true) {
+        && !MiscModule::is_damage_check(boma, true) {
             escape_air_slide_back_end_frame = 0;
         }
         else {

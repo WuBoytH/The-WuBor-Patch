@@ -5,7 +5,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::gameplay::*
+    wubor_utils::wua_bind::*
 };
 
 #[inline(always)]
@@ -38,7 +38,7 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
         ].to_vec();
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, 0);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_CHROM )]

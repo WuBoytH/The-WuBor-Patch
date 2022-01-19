@@ -5,7 +5,7 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    crate::gameplay::*
+    wubor_utils::wua_bind::*
 };
 
 #[inline(always)]
@@ -14,7 +14,7 @@ pub unsafe fn element_fgc(fighter: &mut L2CFighterCommon) {
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
     let mut jump_cancel = 0;
-    set_hp(fighter, 112.0);
+    MiscModule::set_hp(fighter, 112.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status) {
@@ -31,7 +31,7 @@ pub unsafe fn element_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
                 return;
             }
         }
@@ -63,5 +63,5 @@ pub unsafe fn element_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
         ].to_vec();
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
 }

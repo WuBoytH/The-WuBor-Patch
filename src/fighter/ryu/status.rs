@@ -8,13 +8,13 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        vars::*,
-        gameplay::*,
-        table_const::*
-    },
     super::helper::*,
-    super::super::common::common_status::dash::*
+    super::super::common::common_status::dash::*,
+    wubor_utils::{
+        wua_bind::*,
+        vars::*,
+        table_const::*
+    }
 };
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -152,7 +152,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
-        jump_cancel_check_hit(fighter, false);
+        FGCModule::jump_cancel_check_hit(fighter, false);
     }
     0.into()
 }

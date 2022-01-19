@@ -5,10 +5,10 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
-        table_const::*,
-        gameplay::*
+        table_const::*
     }
 };
 
@@ -25,7 +25,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IN_HITLAG].get_bool() {
-            jump_cancel_check_exception(fighter);
+            FGCModule::jump_cancel_check_exception(fighter);
         }
 
         // Give Kirby back Dark Deception if he is on the ground or grabbing ledge.

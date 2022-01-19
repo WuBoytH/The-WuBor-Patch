@@ -8,9 +8,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        vars::*,
-        gameplay::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     }
 };
 
@@ -20,7 +20,7 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
     let mut jump_cancel = 0;
-    set_hp(fighter, 110.0);
+    MiscModule::set_hp(fighter, 110.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH
@@ -62,16 +62,16 @@ pub unsafe fn samusd_fgc(fighter: &mut L2CFighterCommon) {
         jump_cancel = 1;
     }
     else if status == *FIGHTER_STATUS_KIND_ATTACK_S4 {
-        if dash_cancel_check(fighter, false, false).get_bool() {
+        if FGCModule::dash_cancel_check(fighter, false, false).get_bool() {
             return;
         }
     }
     else if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-        if dash_cancel_check(fighter, false, true).get_bool() {
+        if FGCModule::dash_cancel_check(fighter, false, true).get_bool() {
             return;
         }
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]

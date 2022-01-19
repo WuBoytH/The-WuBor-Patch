@@ -6,7 +6,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 #[status_script(agent = "purin", status = FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

@@ -7,10 +7,8 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    crate::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::vars::*,
+    wubor_utils::table_const::*
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_uniq_process_init)]

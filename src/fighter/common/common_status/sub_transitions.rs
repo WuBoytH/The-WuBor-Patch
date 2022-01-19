@@ -8,7 +8,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    crate::{
+    wubor_utils::{
         vars::*,
         table_const::*
     }
@@ -69,7 +69,8 @@ unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) 
 
 #[inline(always)]
 pub unsafe fn check_enabled_aerials(fighter: &mut L2CFighterCommon) -> bool {
-    let mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+    let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+    let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
     let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
     let aerial_flag;
     match attack_air_kind {
@@ -80,7 +81,7 @@ pub unsafe fn check_enabled_aerials(fighter: &mut L2CFighterCommon) -> bool {
         5 => aerial_flag = ATTACK_AIR_LW_MASK,
         _ => aerial_flag = 0b00000
     }
-    mask & aerial_flag != 0
+    enabled_mask & aerial_flag != 0 && used_mask & aerial_flag == 0
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_transition_group_check_air_tread_jump)]

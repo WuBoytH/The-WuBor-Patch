@@ -5,9 +5,9 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        vars::*,
-        gameplay::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     }
 };
 
@@ -16,7 +16,7 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
-    set_hp(fighter, 70.0);
+    MiscModule::set_hp(fighter, 70.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH
@@ -43,7 +43,7 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
                 return;
             }
         }
@@ -59,7 +59,7 @@ pub unsafe fn ganon_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
         ].to_vec();
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, 0);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]

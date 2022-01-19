@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::helper::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*
-    },
-    super::helper::*
+    }
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
@@ -115,7 +115,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY) > 0.0 {
-            count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY, 1.0);
+            WarkModule::count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY, 1.0);
         }
 
         if WorkModule::get_int(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER) > 0 {
@@ -140,7 +140,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                         // add_sp(fighter.module_accessor, -1.0/16.0);
                         amount = 1.0 / 16.0;
                     }
-                    count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE, amount);
+                    WarkModule::count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE, amount);
                 // }
             }
             if SoundModule::is_playing(fighter.module_accessor, Hash40::new("vc_lucina_missfoot01")) {
@@ -164,7 +164,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
                 if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_AWAKENING)
                 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-                && (!is_damage_check(fighter.module_accessor, false)
+                && (!MiscModule::is_damage_check(fighter.module_accessor, false)
                 || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
                 && sv_information::is_ready_go() {
                     DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
@@ -249,7 +249,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                     }
                 }
             }
-            else if !is_damage_check(fighter.module_accessor, false)
+            else if !MiscModule::is_damage_check(fighter.module_accessor, false)
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI {
                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                     if spent_meter(fighter.module_accessor, true) {

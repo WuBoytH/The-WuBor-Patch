@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME, low_priority )]

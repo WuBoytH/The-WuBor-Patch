@@ -8,7 +8,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    crate::{
+    wubor_utils::{
         vars::*,
         table_const::*
     }

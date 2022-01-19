@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

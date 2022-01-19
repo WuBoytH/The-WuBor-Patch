@@ -6,10 +6,9 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
-        vars::*,
-        gameplay::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     }
 };
 
@@ -20,7 +19,7 @@ pub unsafe fn richter_fgc(fighter: &mut L2CFighterCommon) {
     let mut normal_cancels : Vec<i32> = [].to_vec();
     let mut aerial_cancel = false;
     let mut jump_cancel = 0;
-    set_hp(fighter, 102.0);
+    MiscModule::set_hp(fighter, 102.0);
     if [
         *FIGHTER_STATUS_KIND_ATTACK
     ].contains(&status)
@@ -46,7 +45,7 @@ pub unsafe fn richter_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
                 return;
             }
         }
@@ -84,7 +83,7 @@ pub unsafe fn richter_fgc(fighter: &mut L2CFighterCommon) {
     && MotionModule::frame(fighter.module_accessor) > 22.0 {
         jump_cancel = 1;
     }
-    cancel_system(fighter, normal_cancels, special_cancels, aerial_cancel, jump_cancel);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, aerial_cancel, jump_cancel);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_RICHTER )]
@@ -93,7 +92,7 @@ fn richter_frame(fighter: &mut L2CFighterCommon) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI)
         && (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-        || is_damage_check(fighter.module_accessor, false)) {
+        || MiscModule::is_damage_check(fighter.module_accessor, false)) {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
         }
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {

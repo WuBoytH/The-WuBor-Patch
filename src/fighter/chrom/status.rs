@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
+    super::vl::*,
+    wubor_utils::{
         vars::*,
         table_const::*
-    },
-    super::vl::*
+    }
 };
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

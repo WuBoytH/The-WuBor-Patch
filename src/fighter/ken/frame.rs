@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::helper::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*
-    },
-    super::helper::*
+    }
 };
 
 // Notes:
@@ -142,7 +142,7 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
             && WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) == 900.0)
             || (WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VS1_CANCEL)
             && WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_ENABLE))
-            && !is_damage_check(fighter.module_accessor, false) {
+            && !MiscModule::is_damage_check(fighter.module_accessor, false) {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
             }
         }

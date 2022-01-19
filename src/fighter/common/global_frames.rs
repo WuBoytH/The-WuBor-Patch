@@ -7,18 +7,18 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::command_inputs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
-    },
-    super::command_inputs::*
+    }
 };
 
 #[inline(always)]
 pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    if !is_damage_check(fighter.module_accessor, false) {
+    if !MiscModule::is_damage_check(fighter.module_accessor, false) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL) != 1.2 {
             WorkModule::set_float(fighter.module_accessor, 1.2, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
@@ -30,7 +30,7 @@ pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
     if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
             let frame : f32;
-            if !is_damage_check(fighter.module_accessor, true) {
+            if !MiscModule::is_damage_check(fighter.module_accessor, true) {
                 frame = 7.0;
             }
             else {
@@ -103,7 +103,7 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0
         && !fighter.global_table[IN_HITLAG].get_bool() {
-            count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
+            WarkModule::count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
         }
 
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)

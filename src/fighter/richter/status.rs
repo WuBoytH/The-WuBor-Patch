@@ -7,8 +7,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
     }

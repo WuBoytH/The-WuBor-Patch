@@ -2,7 +2,7 @@ use {
     smash::{
         app::{lua_bind::*, *}
     },
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[inline(always)]

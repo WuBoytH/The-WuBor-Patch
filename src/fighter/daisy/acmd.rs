@@ -7,10 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        vars::*,
-    },
-    super::vl::*
+    super::vl::*,
+    wubor_utils::vars::*,
 };
 
 #[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME, low_priority )]

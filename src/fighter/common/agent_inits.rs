@@ -6,8 +6,6 @@ use {
     },
     smashline::*,
     crate::{
-        vars::*,
-        table_const::*,
         fighter::{
             mario::agent_init::mario_speciallw_pre,
             daisy::agent_init::{
@@ -26,6 +24,10 @@ use {
             samusd::agent_init::samusd_specialn_pre,
             trail::agent_init::trail_guard_cont_pre
         }
+    },
+    wubor_utils::{
+        vars::*,
+        table_const::*
     }
 };
 

@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::super::helper::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*
-    },
-    super::super::helper::*
+    }
 };
 
 // #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]

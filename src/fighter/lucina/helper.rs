@@ -4,7 +4,7 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[inline(always)]

@@ -6,9 +6,9 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        vars::*,
-        gameplay::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     }
 };
 
@@ -23,7 +23,7 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_HOLD_END
     ].contains(&status)
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_100_end") {
-        if dash_cancel_check(fighter, false, false).get_bool() {
+        if FGCModule::dash_cancel_check(fighter, false, false).get_bool() {
             return;
         }
     }
@@ -39,7 +39,7 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
         ].to_vec();
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-        set_hp(fighter, 132.0);
+        MiscModule::set_hp(fighter, 132.0);
         if [
             *FIGHTER_STATUS_KIND_ATTACK
         ].contains(&status) {
@@ -91,7 +91,7 @@ pub unsafe fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
             ].to_vec();
         }
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
 }
 
 #[fighter_frame( agent = FIGHTER_KIND_BAYONETTA )]

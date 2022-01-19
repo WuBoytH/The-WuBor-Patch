@@ -8,13 +8,13 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        vars::*,
-        table_const::*
-    },
     super::super::{
         common::common_status::dash::*,
         ryu::helper::*
+    },
+    wubor_utils::{
+        vars::*,
+        table_const::*
     }
 };
 

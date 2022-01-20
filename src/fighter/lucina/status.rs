@@ -121,40 +121,28 @@ unsafe fn lucina_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon) {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
-    let mut used_aerials = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
     let flags;
     if mot == hash40("attack_air_n") {
         flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-        if used_aerials & ATTACK_AIR_N_MASK == 0 {
-            used_aerials += ATTACK_AIR_N_MASK;
-        }
+        FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
     }
     else if mot == hash40("attack_air_f") {
-        flags = ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-        if used_aerials & ATTACK_AIR_F_MASK == 0 {
-            used_aerials += ATTACK_AIR_F_MASK;
-        }
+        flags = ATTACK_AIR_N_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+        FGCModule::disable_aerial(fighter, ATTACK_AIR_F_MASK);
     }
     else if mot == hash40("attack_air_b") {
-        flags = ATTACK_AIR_N_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-        if used_aerials & ATTACK_AIR_B_MASK == 0 {
-            used_aerials += ATTACK_AIR_B_MASK;
-        }
+        flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+        FGCModule::disable_aerial(fighter, ATTACK_AIR_B_MASK);
     }
     else if mot == hash40("attack_air_hi") {
         flags = ATTACK_AIR_B_MASK + ATTACK_AIR_LW_MASK;
-        if used_aerials & ATTACK_AIR_HI_MASK == 0 {
-            used_aerials += ATTACK_AIR_HI_MASK;
-        }
+        FGCModule::disable_aerial(fighter, ATTACK_AIR_HI_MASK);
     }
     else {
         flags = 0b00000;
-        if used_aerials & ATTACK_AIR_LW_MASK == 0 {
-            used_aerials += ATTACK_AIR_LW_MASK;
-        }
+        FGCModule::disable_aerial(fighter, ATTACK_AIR_LW_MASK);
     }
     WorkModule::set_int(fighter.module_accessor, flags, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
-    WorkModule::set_int(fighter.module_accessor, used_aerials, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
 }
 
 unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -182,7 +170,9 @@ unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon)
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn lucina_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+    }
     fighter.status_end_AttackAir()
 }
 

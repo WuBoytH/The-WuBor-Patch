@@ -16,43 +16,38 @@ use {
 #[allow(non_snake_case)]
 pub mod WarkModule {
     use super::*;
-    #[export_name = "WarkModule__reset_i32"]
-    pub unsafe extern "Rust" fn reset_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
+
+    pub unsafe fn reset_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
         WorkModule::set_int(module_accessor, 0, flag);
     }
-    
-    #[export_name = "WarkModule__reset_f32"]
-    pub unsafe extern "Rust" fn reset_f32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
+
+    pub unsafe fn reset_f32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32) {
         WorkModule::set_float(module_accessor, 0.0, flag);
     }
-    
-    #[export_name = "WarkModule__add_i32"]
-    pub unsafe extern "Rust" fn add_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: i32) {
+
+    pub unsafe fn add_i32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: i32) {
         let counter = WorkModule::get_int(module_accessor, flag) + amount;
         WorkModule::set_int(module_accessor, counter, flag);
     }
-    
-    #[export_name = "WarkModule__add_f32"]
-    pub unsafe extern "Rust" fn add_f32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
+
+    pub unsafe fn add_f32(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
         let counter = WorkModule::get_float(module_accessor, flag) + amount;
         WorkModule::set_float(module_accessor, counter, flag);
     }
-    
-    #[export_name = "WarkModule__count_down"]
-    pub unsafe extern "Rust" fn count_down(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
+
+    pub unsafe fn count_down(module_accessor: *mut BattleObjectModuleAccessor, flag: i32, amount: f32) {
         let slow_rate = SlowModule::rate(module_accessor);
         let global_slow_rate = sv_information::slow_rate();
         let counter = WorkModule::get_float(module_accessor, flag) - (amount * slow_rate * global_slow_rate);
         WorkModule::set_float(module_accessor, counter, flag);
     }
-
 }
 
 #[allow(non_snake_case)]
 pub mod FGCModule {
     use super::*;
-    #[export_name = "FGCModule__jump_cancel_check_hit"]
-    pub unsafe extern "Rust" fn jump_cancel_check_hit(fighter: &mut L2CFighterCommon, jump_on_block: bool) -> L2CValue {
+
+    pub unsafe fn jump_cancel_check_hit(fighter: &mut L2CFighterCommon, jump_on_block: bool) -> L2CValue {
         let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
@@ -67,14 +62,12 @@ pub mod FGCModule {
         }
     }
 
-    #[export_name = "FGCModule__jump_cancel_check_exception"]
-    pub unsafe extern "Rust" fn jump_cancel_check_exception(fighter: &mut L2CFighterCommon) -> L2CValue {
+    pub unsafe fn jump_cancel_check_exception(fighter: &mut L2CFighterCommon) -> L2CValue {
         let sit = fighter.global_table[SITUATION_KIND].get_i32();
         jump_cancel_common(fighter, sit.into())
     }
 
-    #[export_name = "FGCModule__dash_cancel_check"]
-    pub unsafe extern "Rust" fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: bool, reverse: bool) -> L2CValue {
+    pub unsafe fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: bool, reverse: bool) -> L2CValue {
         let dir;
         let cat;
         let status;
@@ -101,9 +94,8 @@ pub mod FGCModule {
         }
         false.into()
     }
-    
-    #[export_name = "FGCModule__cancel_exceptions"]
-    pub unsafe extern "Rust" fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool) -> L2CValue {
+
+    pub unsafe fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool) -> L2CValue {
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
         let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if !on_hit
@@ -120,8 +112,7 @@ pub mod FGCModule {
         false.into()
     }
 
-    #[export_name = "FGCModule__chain_cancels"]
-    pub unsafe extern "Rust" fn chain_cancels(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool, counter: i32, max: i32) -> L2CValue {
+    pub unsafe fn chain_cancels(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool, counter: i32, max: i32) -> L2CValue {
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
         let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if !on_hit
@@ -139,8 +130,7 @@ pub mod FGCModule {
         0.into()
     }
 
-    #[export_name = "FGCModule__cancel_system"]
-    pub unsafe extern "Rust" fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) {
+    pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) {
         let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
@@ -169,8 +159,7 @@ pub mod FGCModule {
         }
     }
 
-    #[export_name = "FGCModule__get_command_stick_direction"]
-    pub unsafe extern "Rust" fn get_command_stick_direction(module_accessor: *mut BattleObjectModuleAccessor, command: bool) -> i32 {
+    pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModuleAccessor, command: bool) -> i32 {
         let status_kind = StatusModule::status_kind(module_accessor);
         let mut stick_x = ControlModule::get_stick_x(module_accessor);
         if command {
@@ -214,21 +203,81 @@ pub mod FGCModule {
             }
         }
     }
-    
-    #[export_name = "FGCModule__inc_command"]
-    pub unsafe extern "Rust" fn inc_command(fighter: &mut L2CFighterCommon, flag: i32, timer_flag: i32) {
+
+    pub unsafe fn inc_command(fighter: &mut L2CFighterCommon, flag: i32, timer_flag: i32) {
         WorkModule::inc_int(fighter.module_accessor, flag);
         WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
     }
     
+    pub unsafe fn disable_ground_normal(fighter: &mut L2CFighterCommon, ground_normal_flag: i32) {
+        let mut used_ground_normals = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+        if used_ground_normals & ground_normal_flag == 0 {
+            used_ground_normals += ground_normal_flag;
+        }
+        WorkModule::set_int(fighter.module_accessor, used_ground_normals, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+    }
+
+    pub unsafe fn set_used_ground_normal_transition_terms(fighter: &mut L2CFighterCommon) {
+        let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+        if used_mask & ATTACK_N_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT);
+        }
+        if used_mask & ATTACK_S3_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_3);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S3);
+        }
+        if used_mask & ATTACK_HI3_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
+        }
+        if used_mask & ATTACK_LW3_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
+        }
+        if used_mask & ATTACK_S4_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4);
+        }
+        if used_mask & ATTACK_HI4_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+        }
+        if used_mask & ATTACK_LW4_MASK != 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
+        }
+    }
+
+    pub unsafe fn disable_aerial(fighter: &mut L2CFighterCommon, aerial_flag: i32) {
+        let mut used_aerials = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+        if used_aerials & aerial_flag == 0 {
+            used_aerials += aerial_flag;
+        }
+        WorkModule::set_int(fighter.module_accessor, used_aerials, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+    }
+
+    pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {
+        let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+        let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+        let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
+        let aerial_flag;
+        match attack_air_kind {
+            1 => aerial_flag = ATTACK_AIR_N_MASK,
+            2 => aerial_flag = ATTACK_AIR_F_MASK,
+            3 => aerial_flag = ATTACK_AIR_B_MASK,
+            4 => aerial_flag = ATTACK_AIR_HI_MASK,
+            5 => aerial_flag = ATTACK_AIR_LW_MASK,
+            _ => aerial_flag = 0b00000
+        }
+        enabled_mask & aerial_flag != 0 && used_mask & aerial_flag == 0
+    }
 }
 
 #[allow(non_snake_case)]
 pub mod MiscModule {
     use super::*;
 
-    #[export_name = "MiscModule__is_damage_check"]
-    pub unsafe extern "Rust" fn is_damage_check(module_accessor: *mut BattleObjectModuleAccessor, is_prev: bool) -> bool {
+    pub unsafe fn is_damage_check(module_accessor: *mut BattleObjectModuleAccessor, is_prev: bool) -> bool {
         let status : i32;
         let ret : bool;
         if is_prev {
@@ -336,8 +385,7 @@ pub mod MiscModule {
         ret
     }
 
-    #[export_name = "MiscModule__wall_jump_check"]
-    pub unsafe extern "Rust" fn wall_jump_check(fighter: &mut L2CFighterCommon) {
+    pub unsafe fn wall_jump_check(fighter: &mut L2CFighterCommon) {
         if GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_RIGHT_SIDE as u32)
         || GroundModule::is_wall_touch_line(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT_SIDE as u32) {
             if (ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_JUMP != 0
@@ -348,8 +396,7 @@ pub mod MiscModule {
         }
     }
 
-    #[export_name = "MiscModule__critical_zoom"]
-    pub unsafe extern "Rust" fn critical_zoom(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
+    pub unsafe fn critical_zoom(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
         if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
             macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
             if rate != 0 {
@@ -362,13 +409,11 @@ pub mod MiscModule {
         }
     }
 
-    #[export_name = "MiscModule__set_hp"]
-    pub unsafe extern "Rust" fn set_hp(fighter: &mut L2CFighterCommon, hp: f32) {
+    pub unsafe fn set_hp(fighter: &mut L2CFighterCommon, hp: f32) {
         if DamageModule::damage(fighter.module_accessor, 0) < hp
         && !smashball::is_training_mode() {
             let dmg = hp - DamageModule::damage(fighter.module_accessor, 0);
             DamageModule::add_damage(fighter.module_accessor, dmg, 0);
         }
     }
-
 }

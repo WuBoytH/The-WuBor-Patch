@@ -210,11 +210,13 @@ pub mod FGCModule {
     }
     
     pub unsafe fn disable_ground_normal(fighter: &mut L2CFighterCommon, ground_normal_flag: i32) {
-        let mut used_ground_normals = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
-        if used_ground_normals & ground_normal_flag == 0 {
-            used_ground_normals += ground_normal_flag;
+        if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+            let mut used_ground_normals = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+            if used_ground_normals & ground_normal_flag == 0 {
+                used_ground_normals += ground_normal_flag;
+            }
+            WorkModule::set_int(fighter.module_accessor, used_ground_normals, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
         }
-        WorkModule::set_int(fighter.module_accessor, used_ground_normals, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
     }
 
     pub unsafe fn set_used_ground_normal_transition_terms(fighter: &mut L2CFighterCommon) {
@@ -249,11 +251,13 @@ pub mod FGCModule {
     }
 
     pub unsafe fn disable_aerial(fighter: &mut L2CFighterCommon, aerial_flag: i32) {
-        let mut used_aerials = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
-        if used_aerials & aerial_flag == 0 {
-            used_aerials += aerial_flag;
+        if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+            let mut used_aerials = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+            if used_aerials & aerial_flag == 0 {
+                used_aerials += aerial_flag;
+            }
+            WorkModule::set_int(fighter.module_accessor, used_aerials, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
         }
-        WorkModule::set_int(fighter.module_accessor, used_aerials, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
     }
 
     pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {

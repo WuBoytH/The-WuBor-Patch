@@ -209,11 +209,11 @@ pub mod FGCModule {
         WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
     }
     
-    pub unsafe fn disable_ground_normal(fighter: &mut L2CFighterCommon, ground_normal_flag: i32) {
+    pub unsafe fn disable_ground_normal(fighter: &mut L2CFighterCommon, ground_normal_mask: i32) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let mut used_ground_normals = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
-            if used_ground_normals & ground_normal_flag == 0 {
-                used_ground_normals += ground_normal_flag;
+            if used_ground_normals & ground_normal_mask == 0 {
+                used_ground_normals += ground_normal_mask;
             }
             WorkModule::set_int(fighter.module_accessor, used_ground_normals, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
         }
@@ -250,11 +250,11 @@ pub mod FGCModule {
         }
     }
 
-    pub unsafe fn disable_aerial(fighter: &mut L2CFighterCommon, aerial_flag: i32) {
+    pub unsafe fn disable_aerial(fighter: &mut L2CFighterCommon, aerial_mask: i32) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let mut used_aerials = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
-            if used_aerials & aerial_flag == 0 {
-                used_aerials += aerial_flag;
+            if used_aerials & aerial_mask == 0 {
+                used_aerials += aerial_mask;
             }
             WorkModule::set_int(fighter.module_accessor, used_aerials, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
         }

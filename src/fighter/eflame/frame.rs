@@ -5,7 +5,6 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    super::super::element::helper::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -40,10 +39,6 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             && MiscModule::is_damage_check(fighter.module_accessor, false) == false {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
-        }
-
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-            element_fgc(fighter);
         }
     }
 }

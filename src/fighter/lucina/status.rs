@@ -168,14 +168,6 @@ unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn lucina_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
-    }
-    fighter.status_end_AttackAir()
-}
-
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
@@ -797,18 +789,11 @@ pub fn install() {
         lucina_attackhi3_main,
         lucina_attacklw3_main,
         lucina_attackair_main,
-        lucina_attackair_end,
-        lucina_specialn_main,
-        lucina_specialn_loop_main,
-        lucina_specialn_end_main,
-        lucina_specials_pre,
-        lucina_specials_main,
+        lucina_specialn_main, lucina_specialn_loop_main, lucina_specialn_end_main,
+        lucina_specials_pre, lucina_specials_main,
         lucina_specials2_main,
-        lucina_specials4_pre,
-        lucina_specials4_main,
-        lucina_specialhi_pre,
-        lucina_specialhi_exec,
-        lucina_specialhi_main,
+        lucina_specials4_pre, lucina_specials4_main,
+        lucina_specialhi_pre, lucina_specialhi_exec, lucina_specialhi_main,
         lucina_speciallw_main
     );
 }

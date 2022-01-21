@@ -194,7 +194,8 @@ unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommo
                 }
             }
         }
-        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        && only_jabs(fighter) {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING) {
                 fighter.clear_lua_stack();
                 lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
@@ -213,16 +214,14 @@ unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommo
                     return true.into();
                 }
             }
-            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100)
-            && only_jabs(fighter) {
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100) {
                 let attack_100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_type"), 0);
                 if attack_100_type == *FIGHTER_COMBO_TYPE_UNIQ_DANCE {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_100.into(), true.into());
                     return true.into();
                 }
             }
-            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK)
-            && only_jabs(fighter) {
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK) {
                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), true.into());
                 return true.into();
             }

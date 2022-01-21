@@ -4,12 +4,10 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    smashline::*,
     wubor_utils::wua_bind::*
 };
 
-#[inline(always)]
-pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
@@ -39,17 +37,4 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
         ].to_vec();
     }
     FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
-}
-
-#[fighter_frame( agent = FIGHTER_KIND_CHROM )]
-fn chrom_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        chrom_fgc(fighter);
-    }
-}
-
-pub fn install() {
-    install_agent_frames!(
-        chrom_frame
-    );
 }

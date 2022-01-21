@@ -63,7 +63,7 @@ unsafe fn samusd_attack12_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samusd_attack12_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_hide_gun") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, Hash40::new_raw(0x03dbd0dc6a), false, 0.0);
@@ -79,7 +79,7 @@ unsafe fn samusd_attack12_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-	    VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_normal") as i64);
+	    VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
     }
 }
 
@@ -727,7 +727,7 @@ unsafe fn samusd_speciallw(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 0, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
     }
     frame(fighter.lua_state_agent, 33.0);
@@ -743,7 +743,7 @@ unsafe fn samusd_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
-        VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_normal") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
     }
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
@@ -760,7 +760,7 @@ unsafe fn samusd_specialairlw(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 0, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-        VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_sphere") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_sphere") as i64);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MV);
     }
     frame(fighter.lua_state_agent, 33.0);
@@ -776,7 +776,7 @@ unsafe fn samusd_specialairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
-        VisibilityModule::set_int64(fighter.module_accessor, smash::hash40("body") as i64, smash::hash40("body_normal") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
     }
     macros::FT_MOTION_RATE(fighter, 0.6);
 }

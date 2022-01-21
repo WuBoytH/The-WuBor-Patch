@@ -6,7 +6,6 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    super::super::element::helper::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -57,7 +56,6 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
                 }
             }
-            element_fgc(fighter);
         }
     }
 }

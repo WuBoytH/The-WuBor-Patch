@@ -5,7 +5,7 @@ use {
         lua2cpp::L2CFighterCommon,
         phx::Hash40,
         app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
+        lib::{lua_const::*, L2CAgent, L2CValue}
     },
     wubor_utils::vars::*,
     wubor_utils::table_const::*
@@ -66,6 +66,14 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
     true.into()
 }
 
+#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_bind_address_call_status_end_AttackAir)]
+unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+    }
+    0.into()
+}
+
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_attack_air_init)]
 unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
@@ -96,6 +104,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_attack_air_uniq_process_init,
             sub_attack_air_common,
             status_attackair_main_common,
+            status_end_attackair,
             sub_landing_attack_air_init
         );
     }

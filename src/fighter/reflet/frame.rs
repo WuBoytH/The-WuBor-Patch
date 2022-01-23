@@ -5,7 +5,8 @@ use {
         app::{lua_bind::*, smashball},
         lib::lua_const::*
     },
-    smashline::*
+    smashline::*,
+    wubor_utils::table_const::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_REFLET )]
@@ -25,8 +26,7 @@ fn reflet_frame(fighter: &mut L2CFighterCommon) {
         if (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi")
         || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_hi"))
         && MotionModule::frame(fighter.module_accessor) >= 12.0 && MotionModule::frame(fighter.module_accessor) < 46.0 {
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            if fighter.global_table[PAD_FLAG].get_i32() & (*FIGHTER_PAD_FLAG_SPECIAL_TRIGGER | *FIGHTER_PAD_FLAG_ATTACK_TRIGGER) != 0 {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
             }
         }

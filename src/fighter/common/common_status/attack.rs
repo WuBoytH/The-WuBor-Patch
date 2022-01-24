@@ -143,14 +143,14 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
         }
     }
     let attack100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack100_type"), 0);
-    if attack100_type != *FIGHTER_ATTACK100_TYPE_NONE
-    && only_jabs(fighter) {
+    if attack100_type != *FIGHTER_ATTACK100_TYPE_NONE {
         if AttackModule::is_infliction_status(fighter.module_accessor, 0x7f) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100) {
-                if ControlModule::check_button_on(fighter.module_accessor, param_1.get_i32()) {
+                if ControlModule::check_button_on(fighter.module_accessor, param_1.get_i32())
+                && only_jabs(fighter) {
                     let combo = ComboModule::count(fighter.module_accessor) as i32;
                     let attack_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_max"), 0);
-                    if attack_combo_max <= combo {
+                    if combo <= attack_combo_max {
                         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_100.into(), true.into());
@@ -163,9 +163,9 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_100) {
-                let combo = ComboModule::count(fighter.module_accessor) as i32;
+                let attack_100_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
                 let attack_100_enable_cnt = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_100_enable_cnt"), 0);
-                if attack_100_enable_cnt <= combo {
+                if attack_100_enable_cnt <= attack_100_count {
                     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_100.into(), true.into());

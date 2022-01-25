@@ -11,11 +11,6 @@ use {
     wubor_utils::table_const::*
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_uniq_process_init)]
-unsafe fn sub_attack_air_uniq_process_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_common)]
 unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
@@ -101,7 +96,6 @@ unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            sub_attack_air_uniq_process_init,
             sub_attack_air_common,
             status_attackair_main_common,
             status_end_attackair,

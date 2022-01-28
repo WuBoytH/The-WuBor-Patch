@@ -115,23 +115,24 @@ unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CVa
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_check_100_count_button)]
 unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let button = param_1.get_i32();
-    // if fighter.global_table[IN_HITLAG].get_bool() {
     if only_jabs(fighter) {
-        if !ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
-            if !ControlModule::check_button_on_release(fighter.module_accessor, button) {
-                return;
+        if fighter.global_table[IN_HITLAG].get_bool() {
+            if !ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
+                if !ControlModule::check_button_on_release(fighter.module_accessor, button) {
+                    return;
+                }
             }
+            WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
         }
-        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
+        else {
+            if !ControlModule::check_button_trigger(fighter.module_accessor, button) {
+                if !ControlModule::check_button_release(fighter.module_accessor, button) {
+                    return;
+                }
+            }
+            WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
+        }
     }
-    // else {
-    //     if !ControlModule::check_button_on_trriger(fighter.module_accessor, button) {
-    //         if !ControlModule::check_button_on_release(fighter.module_accessor, button) {
-    //             return;
-    //         }
-    //     }
-    //     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_100_COUNT);
-    // }
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Attack_Main_button)]
@@ -150,7 +151,7 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
                 && only_jabs(fighter) {
                     let combo = ComboModule::count(fighter.module_accessor) as i32;
                     let attack_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_max"), 0);
-                    if combo <= attack_combo_max {
+                    if attack_combo_max <= combo {
                         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
                             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_100.into(), true.into());

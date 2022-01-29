@@ -194,12 +194,12 @@ unsafe fn samusd_attacks3lw(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 78, 110, 0, 50, 4.0, 0.0, 13.0, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 78, 110, 0, 50, 4.0, 0.0, 13.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
     }
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 78, 110, 0, 50, 5.0, 0.0, 19.0, 5.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 78, 110, 0, 50, 5.0, 0.0, 21.0, 7.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
         AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_HIGH), false);
     }
     frame(fighter.lua_state_agent, 12.0);
@@ -224,9 +224,18 @@ unsafe fn samusd_attackhi3_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 2.0, true);
         macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
     }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_cshot_bullet_sub_a"), Hash40::new("handl"), 7, 0, 0, 0, 0, 0, 0.6, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+    }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 3, 16, -1, 1.7, -0, 135, 1.0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 3, 16, -1, 1.7, -0, 135, 1.3, true);
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_cshot_bullet_sub_a"), false, true);
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
@@ -241,6 +250,15 @@ unsafe fn samusd_attackhi3_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_attackhard_h01"));
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samusd_attackhi3_exp(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashm"), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0x50000000);
     }
 }
 
@@ -829,14 +847,14 @@ pub fn install() {
         samusd_attack12, samusd_attack12_eff, samusd_attack12_exp, samusd_attack12_snd,
         samusd_attackdash, samusd_attackdash_eff,
         samusd_attacks3, samusd_attacks3hi, samusd_attacks3lw,
-        samusd_attackhi3, samusd_attackhi3_eff, samusd_attackairhi_exp, samusd_attackhi3_snd,
+        samusd_attackhi3, samusd_attackhi3_eff, samusd_attackhi3_snd, samusd_attackhi3_exp,
         samusd_attacklw3,
         samusd_attackhi4,
         samusd_attacklw4,
         samusd_attackairn, samusd_attackairn_eff,
         samusd_attackairf, samusd_attackairf_eff, samusd_attackairf_snd, samusd_attackairf_exp,
         samusd_attackairb,
-        samusd_attackairhi, samusd_attackairhi_eff,
+        samusd_attackairhi, samusd_attackairhi_eff, samusd_attackairhi_exp,
         samusd_attackairlw,
         samusd_special, samusd_specialair,
         samusd_specials, samusd_specialairs,

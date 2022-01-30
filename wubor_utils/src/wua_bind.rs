@@ -261,10 +261,7 @@ pub mod FGCModule {
     }
 
     pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {
-        let status = fighter.global_table[STATUS_KIND].get_i32();
-        let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
-        let attack_air = status == *FIGHTER_STATUS_KIND_ATTACK_AIR;
-        if attack_air
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL)
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
             let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);

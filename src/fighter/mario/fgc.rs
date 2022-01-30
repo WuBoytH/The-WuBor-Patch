@@ -63,6 +63,7 @@ pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n") {
                 WorkModule::set_int(fighter.module_accessor, 0b11110, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
                 aerial_cancel = true;
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL);
             }
         }
         else if [

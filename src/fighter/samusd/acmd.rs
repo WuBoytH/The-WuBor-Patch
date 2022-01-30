@@ -618,13 +618,13 @@ unsafe fn samusd_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialnstart", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_nspecialstart(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
-    frame(fighter.lua_state_agent, Frame=14);
+    frame(fighter.lua_state_agent, 14.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        ArticleModule::generate_article_enable(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_CSHOT);
+        ArticleModule::generate_article_enable(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_CSHOT, false, -1);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_N_FLAG_BULLET_DISP);
     }
 }
@@ -867,7 +867,7 @@ pub fn install() {
         samusd_attackairb,
         samusd_attackairhi, samusd_attackairhi_eff, samusd_attackairhi_exp,
         samusd_attackairlw,
-        samusd_nspecialstart,
+        samusd_specialnstart,
         samusd_special, samusd_specialair,
         samusd_specials, samusd_specialairs,
         samusd_specialhi,

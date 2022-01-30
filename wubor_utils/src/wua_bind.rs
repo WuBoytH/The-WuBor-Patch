@@ -264,18 +264,6 @@ pub mod FGCModule {
         let status = fighter.global_table[STATUS_KIND].get_i32();
         let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
         let attack_air = status == *FIGHTER_STATUS_KIND_ATTACK_AIR;
-        // let bayo_attack_air = fighter_kind == *FIGHTER_KIND_BAYONETTA && status == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F;
-        // let trail_attack_air = fighter_kind == *FIGHTER_KIND_TRAIL
-        //     && ([*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F].contains(&status));
-        // println!("attack air? {}", attack_air);
-        // println!("bayo and attack air? {}, {}",
-        //     fighter_kind == *FIGHTER_KIND_BAYONETTA,
-        //     status == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
-        // );
-        // println!("trail and attack air? {}, {}",
-        //     fighter_kind == *FIGHTER_KIND_TRAIL,
-        //     [*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F].contains(&status)
-        // );
         if attack_air
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);

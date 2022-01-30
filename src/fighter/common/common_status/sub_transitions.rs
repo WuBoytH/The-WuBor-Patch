@@ -248,8 +248,7 @@ unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) 
             }
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR) {
                 let mut aerial_ok = true;
-                if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_AIR
-                && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+                if !CancelModule::is_enable_cancel(fighter.module_accessor) {
                     aerial_ok = FGCModule::check_enabled_aerial(fighter);
                 }
                 if aerial_ok {

@@ -261,19 +261,38 @@ pub mod FGCModule {
     }
 
     pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {
-        let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
-        let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
-        let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
-        let aerial_flag;
-        match attack_air_kind {
-            1 => aerial_flag = ATTACK_AIR_N_MASK,
-            2 => aerial_flag = ATTACK_AIR_F_MASK,
-            3 => aerial_flag = ATTACK_AIR_B_MASK,
-            4 => aerial_flag = ATTACK_AIR_HI_MASK,
-            5 => aerial_flag = ATTACK_AIR_LW_MASK,
-            _ => aerial_flag = 0b00000
+        let status = fighter.global_table[STATUS_KIND].get_i32();
+        let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+        let attack_air = status == *FIGHTER_STATUS_KIND_ATTACK_AIR;
+        // let bayo_attack_air = fighter_kind == *FIGHTER_KIND_BAYONETTA && status == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F;
+        // let trail_attack_air = fighter_kind == *FIGHTER_KIND_TRAIL
+        //     && ([*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F].contains(&status));
+        // println!("attack air? {}", attack_air);
+        // println!("bayo and attack air? {}, {}",
+        //     fighter_kind == *FIGHTER_KIND_BAYONETTA,
+        //     status == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
+        // );
+        // println!("trail and attack air? {}, {}",
+        //     fighter_kind == *FIGHTER_KIND_TRAIL,
+        //     [*FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F].contains(&status)
+        // );
+        if attack_air
+        && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+            let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+            let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+            let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
+            let aerial_flag;
+            match attack_air_kind {
+                1 => aerial_flag = ATTACK_AIR_N_MASK,
+                2 => aerial_flag = ATTACK_AIR_F_MASK,
+                3 => aerial_flag = ATTACK_AIR_B_MASK,
+                4 => aerial_flag = ATTACK_AIR_HI_MASK,
+                5 => aerial_flag = ATTACK_AIR_LW_MASK,
+                _ => aerial_flag = 0b00000
+            }
+            return enabled_mask & aerial_flag != 0 && used_mask & aerial_flag == 0;
         }
-        enabled_mask & aerial_flag != 0 && used_mask & aerial_flag == 0
+        true
     }
 }
 

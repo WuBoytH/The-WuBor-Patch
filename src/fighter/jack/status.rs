@@ -6,7 +6,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 // #[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

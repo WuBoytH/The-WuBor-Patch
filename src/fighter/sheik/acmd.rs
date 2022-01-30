@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "sheik", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn sheik_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.5, 5.0);
@@ -29,7 +29,7 @@ unsafe fn sheik_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "sheik", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn sheik_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 3.0, 0, 80, 30, 0, 3.5, 4.0, -0.3, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -58,7 +58,7 @@ unsafe fn sheik_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "sheik", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn sheik_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 4.5, 110, 100, 0, 37, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -73,7 +73,7 @@ unsafe fn sheik_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "sheik", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_nair(fighter: &mut L2CAgentBase) {
+unsafe fn sheik_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -95,7 +95,7 @@ unsafe fn sheik_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "sheik", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_fair(fighter: &mut L2CAgentBase) {
+unsafe fn sheik_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -124,10 +124,10 @@ unsafe fn sheik_fair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        sheik_ftilt,
-        sheik_utilt,
-        sheik_dtilt,
-        sheik_nair,
-        sheik_fair
+        sheik_attacks3,
+        sheik_attackhi3,
+        sheik_attacklw3,
+        sheik_attackairn,
+        sheik_attackairf
     );
 }

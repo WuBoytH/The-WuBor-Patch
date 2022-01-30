@@ -7,7 +7,10 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    crate::table_const::*
+    wubor_utils::{
+        vars::*,
+        table_const::*
+    }
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_JumpSquat_common)]
@@ -48,7 +51,14 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK) {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RESERVE_JUMP_MINI_ATTACK)
+    || [
+        *FIGHTER_STATUS_KIND_GUARD_ON,
+        *FIGHTER_STATUS_KIND_GUARD
+    ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32())
+    || (fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_OFF
+    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL)) {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);

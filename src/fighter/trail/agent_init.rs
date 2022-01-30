@@ -4,7 +4,7 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 pub unsafe extern "C" fn trail_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

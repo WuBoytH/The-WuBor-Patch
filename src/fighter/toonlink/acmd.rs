@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_attackdash(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.7);
     frame(fighter.lua_state_agent, 8.0);
     macros::FT_MOTION_RATE(fighter, 1.1);
@@ -30,7 +30,7 @@ unsafe fn toonlink_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_dthrow(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 150, 70, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -55,7 +55,7 @@ unsafe fn toonlink_dthrow(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_nair(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -89,7 +89,7 @@ unsafe fn toonlink_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_uair(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -123,7 +123,7 @@ unsafe fn toonlink_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_dair(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(fighter, 0, 1.6, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -164,7 +164,7 @@ unsafe fn toonlink_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn toonlink_daireff(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, -8, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
@@ -187,7 +187,7 @@ unsafe fn toonlink_daireff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_nspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_specialnstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOW, false, 0);
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOWARROW, false, 0);
@@ -201,7 +201,7 @@ unsafe fn toonlink_nspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn toonlink_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_WORK_ID_FLAG_BOMB_GENERATE_LINKBOMB);
@@ -242,14 +242,13 @@ unsafe fn toonlink_boomerang_turn(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        toonlink_dashattack,
-        toonlink_dthrow,
-        toonlink_nair,
-        toonlink_uair,
-        toonlink_dair,
-        toonlink_daireff,
-        toonlink_nspecialstart,
-        toonlink_dspecial,
+        toonlink_attackdash,
+        toonlink_throwlw,
+        toonlink_attackairn,
+        toonlink_attackairhi,
+        toonlink_attackairlw, toonlink_attackairlw_eff,
+        toonlink_specialnstart,
+        toonlink_speciallw,
         toonlink_bowarrow_fly,
         toonlink_boomerang_fly,
         toonlink_boomerang_turn

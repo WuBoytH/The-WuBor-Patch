@@ -5,12 +5,11 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
-    },
-    super::super::element::helper::*
+    }
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]
@@ -37,13 +36,9 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE01
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE02
             && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_END
-            && is_damage_check(fighter.module_accessor, false) == false {
+            && MiscModule::is_damage_check(fighter.module_accessor, false) == false {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
-        }
-
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-            element_fgc(fighter);
         }
     }
 }

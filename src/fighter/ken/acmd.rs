@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
@@ -32,7 +32,7 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
 // Make Quick Step (non-prox light f tilt) have step kick properties
 
 #[acmd_script( agent = "ken", script = "game_attacks3w", category = ACMD_GAME, low_priority )]
-unsafe fn ken_ftiltwnp(fighter: &mut L2CAgentBase) {
+unsafe fn ken_attacks3w(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_DISABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
@@ -101,7 +101,7 @@ unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
 // V Shift start-up.
 
 #[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME, low_priority )]
-unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
+unsafe fn ken_speciallwstepb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
         DamageModule::set_damage_lock(fighter.module_accessor, true);
@@ -123,7 +123,7 @@ unsafe fn ken_dspecialstepb(fighter: &mut L2CAgentBase) {
 // V-Shift Break - Shadow-Thunder Kick
 
 #[acmd_script( agent = "ken", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn ken_speciallw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
@@ -151,8 +151,29 @@ unsafe fn ken_dspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+unsafe fn ken_speciallw_eff(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 1.5, true);
+        
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+        macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_attack_line"), Hash40::new("ryu_attack_line"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
+        macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(fighter.lua_state_agent, 18.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, true);
+    }
+}
+
 #[acmd_script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
-unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
+unsafe fn ken_speciallw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_smash_s01"));
@@ -165,7 +186,7 @@ unsafe fn ken_dspecialsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
+unsafe fn ken_speciallw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -190,29 +211,8 @@ unsafe fn ken_dspecialxp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn ken_dspecialeff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 1.5, true);
-        
-    }
-    frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
-        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_attack_line"), Hash40::new("ryu_attack_line"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
-        macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(fighter.lua_state_agent, 18.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, true);
-    }
-}
-
 #[acmd_script( agent = "ken", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialsstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
@@ -240,7 +240,7 @@ unsafe fn ken_sspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_specials", category = ACMD_GAME, low_priority )]
-unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
@@ -312,7 +312,7 @@ unsafe fn ken_sspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn ken_sspecialstartair(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialairsstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
@@ -349,7 +349,7 @@ unsafe fn ken_sspecialstartair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_specialairs", category = ACMD_GAME, low_priority )]
-unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
@@ -419,7 +419,7 @@ unsafe fn ken_sspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
@@ -475,7 +475,7 @@ unsafe fn ken_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_specialhicommand", category = ACMD_GAME, low_priority )]
-unsafe fn ken_uspecialcommand(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
@@ -562,7 +562,7 @@ unsafe fn ken_uspecialcommand(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "sound_specialhicommand", category = ACMD_SOUND, low_priority )]
-unsafe fn ken_uspecialcommandsnd(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialhicommand_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_command_success"));
@@ -596,7 +596,7 @@ unsafe fn ken_uspecialcommandsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME, low_priority )]
-unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
         property = "collision_attr_fire";
@@ -650,7 +650,7 @@ unsafe fn ken_uspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME, low_priority )]
-unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
+unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     let special_lw_type = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE);
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -755,7 +755,7 @@ unsafe fn ken_dspecialstepf(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
-unsafe fn ken_dspecialstepfair(fighter: &mut L2CAgentBase) {
+unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     let special_lw_type = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE);
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -863,7 +863,7 @@ unsafe fn ken_dspecialstepfair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME, low_priority )]
-unsafe fn ken_hadokenw(weapon: &mut L2CAgentBase) {
+unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -883,7 +883,7 @@ unsafe fn ken_hadokenw(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken_hadoken", script = "game_movem", category = ACMD_GAME, low_priority )]
-unsafe fn ken_hadokenm(weapon: &mut L2CAgentBase) {
+unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -903,7 +903,7 @@ unsafe fn ken_hadokenm(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ken_hadoken", script = "game_moves", category = ACMD_GAME, low_priority )]
-unsafe fn ken_hadokens(weapon: &mut L2CAgentBase) {
+unsafe fn ken_hadoken_moves(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -925,25 +925,21 @@ unsafe fn ken_hadokens(weapon: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ken_run,
-        ken_ftiltwnp,
+        ken_attacks3w,
         ken_attackcommand3,
-        ken_dspecialstepb,
-        ken_dspecial,
-        ken_dspecialsnd,
-        ken_dspecialxp,
-        ken_dspecialeff,
-        ken_sspecialstart,
-        ken_sspecial,
-        ken_sspecialstartair,
-        ken_sspecialair,
-        ken_uspecial,
-        ken_uspecialcommand,
-        ken_uspecialcommandsnd,
-        ken_uspecialair,
-        ken_dspecialstepf,
-        ken_dspecialstepfair,
-        ken_hadokenw,
-        ken_hadokenm,
-        ken_hadokens
+        ken_speciallwstepb,
+        ken_speciallw, ken_speciallw_eff, ken_speciallw_snd, ken_speciallw_exp,
+        ken_specialsstart,
+        ken_specials,
+        ken_specialairsstart,
+        ken_specialairs,
+        ken_specialhi,
+        ken_specialhicommand, ken_specialhicommand_snd,
+        ken_specialhiair,
+        ken_speciallwstepf,
+        ken_specialairlwstepf,
+        ken_hadoken_movew,
+        ken_hadoken_movem,
+        ken_hadoken_moves
     );
 }

@@ -5,8 +5,8 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*
     }
 };
@@ -16,7 +16,7 @@ fn daisy_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S)
         && (StatusModule::situation_kind(fighter.module_accessor) != *SITUATION_KIND_AIR
-        || is_damage_check(fighter.module_accessor, false)) {
+        || MiscModule::is_damage_check(fighter.module_accessor, false)) {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_S);
         }
     }

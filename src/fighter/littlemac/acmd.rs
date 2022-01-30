@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME )]
-unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
+unsafe fn littlemac_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -36,7 +36,7 @@ unsafe fn littlemac_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME )]
-unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
+unsafe fn littlemac_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -58,7 +58,7 @@ unsafe fn littlemac_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME )]
-unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
+unsafe fn littlemac_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -80,7 +80,7 @@ unsafe fn littlemac_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
+unsafe fn littlemac_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -106,7 +106,7 @@ unsafe fn littlemac_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
+unsafe fn littlemac_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -128,7 +128,7 @@ unsafe fn littlemac_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "littlemac", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_uspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn littlemac_specialhistart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -145,11 +145,11 @@ unsafe fn littlemac_uspecialstart(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        littlemac_nair,
-        littlemac_fair,
-        littlemac_uair,
-        littlemac_bair,
-        littlemac_dair,
-        littlemac_uspecialstart
+        littlemac_attackairn,
+        littlemac_attackairf,
+        littlemac_attackairb,
+        littlemac_attackairhi,
+        littlemac_attackairlw,
+        littlemac_specialhistart
     );
 }

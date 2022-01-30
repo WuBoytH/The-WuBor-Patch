@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "duckhunt", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
@@ -30,7 +30,7 @@ unsafe fn duckhunt_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 60, 60, 0, 50, 3.5, 0.0, 2.0, 13.0, Some(0.0), Some(2.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
@@ -44,7 +44,7 @@ unsafe fn duckhunt_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_fsmash(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -66,7 +66,7 @@ unsafe fn duckhunt_fsmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_nair(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -93,7 +93,7 @@ unsafe fn duckhunt_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_fair(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -121,7 +121,7 @@ unsafe fn duckhunt_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_uair(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -157,7 +157,7 @@ unsafe fn duckhunt_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_dair(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -186,7 +186,7 @@ unsafe fn duckhunt_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "duckhunt", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn duckhunt_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 39.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_REQUEST_SPECIAL_HI_CANCEL);
@@ -207,14 +207,14 @@ unsafe fn duckhunt_clay_fly(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        duckhunt_utilt,
-        duckhunt_dtilt,
-        duckhunt_fsmash,
-        duckhunt_nair,
-        duckhunt_fair,
-        duckhunt_uair,
-        duckhunt_dair,
-        duckhunt_uspecial,
+        duckhunt_attackhi3,
+        duckhunt_attacklw3,
+        duckhunt_attacks4,
+        duckhunt_attackairn,
+        duckhunt_attackairf,
+        duckhunt_attackairhi,
+        duckhunt_attackairlw,
+        duckhunt_specialhi,
         duckhunt_clay_fly
     );
 }

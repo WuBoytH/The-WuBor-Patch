@@ -4,9 +4,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    crate::{
-        vars::*
-    }
+    wubor_utils::vars::*
 };
 
 pub unsafe extern "C" fn lucario_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

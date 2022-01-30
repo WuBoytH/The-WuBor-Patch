@@ -9,7 +9,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 #[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

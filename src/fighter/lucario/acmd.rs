@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_attack13(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 9.0);
@@ -27,7 +27,7 @@ unsafe fn lucario_jab3(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 4.0, 5.0);
@@ -62,7 +62,7 @@ unsafe fn lucario_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 6.0, 96, 120, 0, 45, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
@@ -76,7 +76,7 @@ unsafe fn lucario_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     frame(fighter.lua_state_agent, 6.0);
@@ -93,7 +93,7 @@ unsafe fn lucario_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 70, 30, 0, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -113,7 +113,7 @@ unsafe fn lucario_dthrow(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -151,7 +151,7 @@ unsafe fn lucario_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 3.0, 3.0, 8.0, 2.0);
     }
@@ -192,7 +192,7 @@ unsafe fn lucario_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
-unsafe fn lucario_nspecialshoot(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialnshoot(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SPIRIT_BOMB);
@@ -208,7 +208,7 @@ unsafe fn lucario_nspecialshoot(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 2.0, 5.0);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -236,7 +236,7 @@ unsafe fn lucario_sspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialhi(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
         macros::FT_MOTION_RATE(fighter, 0.5);
@@ -248,7 +248,7 @@ unsafe fn lucario_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_uspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialairhi(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
@@ -265,7 +265,7 @@ unsafe fn lucario_uspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specialhimove", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_uspecialmove(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialhimove(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 55, 100, 30, 60, 12.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
@@ -274,7 +274,7 @@ unsafe fn lucario_uspecialmove(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specialairhimove", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_uspecialairmove(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialairhimove(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("hip"), 5.0, 55, 100, 30, 60, 12.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 0.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
@@ -283,7 +283,7 @@ unsafe fn lucario_uspecialairmove(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specialhiend", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_uspecialend(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialhiend(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
@@ -303,7 +303,7 @@ unsafe fn lucario_uspecialend(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_specialairhiend", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_uspecialairend(fighter: &mut L2CAgentBase) {
+unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
@@ -327,7 +327,7 @@ unsafe fn lucario_uspecialairend(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
+unsafe fn lucario_qigong_shoot(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 11.0, 43, 58, 0, 48, 5.6, 0.0, 0.0, 4.0, Some(0.0), Some(0.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 5.0, 43, 58, 0, 48, 3.0, 0.0, 0.0, 2.0, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
@@ -345,21 +345,21 @@ unsafe fn lucario_qigong(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucario_jab3,
-        lucario_dashattack,
-        lucario_utilt,
-        lucario_dtilt,
-        lucario_nair,
-        lucario_dthrow,
-        lucario_dair,
-        lucario_nspecialshoot,
-        lucario_sspecial,
-        lucario_uspecial,
-        lucario_uspecialair,
-        lucario_uspecialmove,
-        lucario_uspecialairmove,
-        lucario_uspecialend,
-        lucario_uspecialairend,
-        lucario_qigong
+        lucario_attack13,
+        lucario_attackdash,
+        lucario_attackhi3,
+        lucario_attacklw3,
+        lucario_attackairn,
+        lucario_throwlw,
+        lucario_attackairlw,
+        lucario_specialnshoot,
+        lucario_specials,
+        lucario_specialhi,
+        lucario_specialairhi,
+        lucario_specialhimove,
+        lucario_specialairhimove,
+        lucario_specialhiend,
+        lucario_specialairhiend,
+        lucario_qigong_shoot
     );
 }

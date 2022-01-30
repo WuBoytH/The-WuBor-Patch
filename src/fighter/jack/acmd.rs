@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "jack", script = "game_specials1", category = ACMD_GAME, low_priority )]
-unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 14.0 / 9.0);
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -61,7 +61,7 @@ unsafe fn jack_sspecial1(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "effect_specials1", category = ACMD_EFFECT, low_priority )]
-unsafe fn jack_sspecial1eff(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specials1_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
@@ -91,7 +91,7 @@ unsafe fn jack_sspecial1eff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
-unsafe fn jack_sspecial1snd(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specials1_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_jack_attackhard_l01"));
@@ -103,7 +103,7 @@ unsafe fn jack_sspecial1snd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "expression_specials1", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn jack_sspecial1exp(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specials1_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
@@ -121,7 +121,7 @@ unsafe fn jack_sspecial1exp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
-unsafe fn jack_sspecial1air(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specialairs1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 14.0 / 9.0);
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -161,7 +161,7 @@ unsafe fn jack_sspecial1air(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "effect_specialairs1", category = ACMD_EFFECT, low_priority )]
-unsafe fn jack_sspecial1aireff(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specialairs1_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
@@ -174,7 +174,7 @@ unsafe fn jack_sspecial1aireff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "sound_specialairs1", category = ACMD_SOUND, low_priority )]
-unsafe fn jack_sspecial1airsnd(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specialairs1_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_jack_attackhard_l01"));
@@ -186,7 +186,7 @@ unsafe fn jack_sspecial1airsnd(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "expression_specialairs1", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn jack_sspecial1airexp(fighter: &mut L2CAgentBase) {
+unsafe fn jack_specialairs1_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
@@ -204,7 +204,7 @@ unsafe fn jack_sspecial1airexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn jack_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -222,7 +222,7 @@ unsafe fn jack_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME, low_priority )]
-unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
+unsafe fn jack_speciallwcounter(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 361, 51, 0, 80, 11.0, 0.0, 15.0, 4.0, Some(0.0), Some(15.0), Some(19.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
@@ -237,15 +237,9 @@ unsafe fn jack_dspecialcounter(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        jack_sspecial1,
-        jack_sspecial1eff,
-        jack_sspecial1snd,
-        jack_sspecial1exp,
-        jack_sspecial1air,
-        jack_sspecial1aireff,
-        jack_sspecial1airsnd,
-        jack_sspecial1airexp,
-        jack_dspecial,
-        jack_dspecialcounter
+        jack_specials1, jack_specials1_eff, jack_specials1_snd, jack_specials1_exp,
+        jack_specialairs1, jack_specialairs1_eff, jack_specialairs1_snd, jack_specialairs1_exp,
+        jack_speciallw,
+        jack_speciallwcounter
     );
 }

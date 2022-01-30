@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "edge", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn edge_bair(fighter: &mut L2CAgentBase) {
+unsafe fn edge_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 6.0);
@@ -36,6 +36,6 @@ unsafe fn edge_bair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        edge_bair
+        edge_attackairb
     );
 }

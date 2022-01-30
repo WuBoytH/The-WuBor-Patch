@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
+    wubor_utils::{
         vars::*,
         table_const::*
     }

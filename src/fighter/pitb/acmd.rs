@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "pitb", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 361, 100, 0, 45, 3.5, 0.0, 7.5, 14.0, Some(0.0), Some(7.5), Some(3.2), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
@@ -24,7 +24,7 @@ unsafe fn pitb_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 28, 70, 0, 46, 2.5, 0.0, 3.0, 16.0, Some(0.0), Some(5.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PALUTENA);
@@ -38,7 +38,7 @@ unsafe fn pitb_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_dthrow(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_throwlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::FT_LEAVE_NEAR_OTTOTTO(fighter, -3, 3);
@@ -64,7 +64,7 @@ unsafe fn pitb_dthrow(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_nair(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -85,7 +85,7 @@ unsafe fn pitb_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_fair(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -115,7 +115,7 @@ unsafe fn pitb_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_dair(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -142,7 +142,7 @@ unsafe fn pitb_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
-unsafe fn pitb_nspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, false, 0);
@@ -151,7 +151,7 @@ unsafe fn pitb_nspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["expression_specialnstart", "expression_specialairnstart"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pitb_nspecialstartexp(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnstart_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -162,7 +162,7 @@ unsafe fn pitb_nspecialstartexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["effect_specialnholds", "effect_specialnholdhi"], category = ACMD_EFFECT, low_priority )]
-unsafe fn pitb_nspecialholdeff(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnhold_eff(fighter: &mut L2CAgentBase) {
     for _ in 0..10 {
         if macros::is_excute(fighter) {
             macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 1, 15, 0, 4, 0, 0, 0, false);
@@ -172,11 +172,11 @@ unsafe fn pitb_nspecialholdeff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["effect_specialnstos", "effect_specialairnstos", "effect_specialairnholds", "effect_specialairnholdhi", "effect_specialnstos", "effect_specialairnstos", "effect_specialnstohi", "effect_specialairnstohi", "effect_specialnhitos", "effect_specialairnhitos"], category = ACMD_EFFECT, low_priority )]
-unsafe fn pitb_nspecialholdsaireff(_fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialairnhold_eff(_fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["game_specialnfires", "game_specialairnfires", "game_specialnfirehi", "game_specialairnfirehi"], category = ACMD_GAME, low_priority )]
-unsafe fn pitb_nspecialfires(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnfire(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         ArticleModule::set_visibility_whole(fighter.module_accessor, *FIGHTER_PITB_GENERATE_ARTICLE_BOWARROW, true, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -185,7 +185,7 @@ unsafe fn pitb_nspecialfires(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "effect_specialnfirehi", category = ACMD_EFFECT, low_priority )]
-unsafe fn pitb_nspecialfirehieff(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnfirehi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -198,7 +198,7 @@ unsafe fn pitb_nspecialfirehieff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "effect_specialairnfirehi", category = ACMD_EFFECT, low_priority )]
-unsafe fn pitb_nspecialairfirehieff(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnairfirehi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -210,7 +210,7 @@ unsafe fn pitb_nspecialairfirehieff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["expression_specialnfires", "expression_specialairnfires", "expression_specialnfirehi", "expression_specialairnfirehi"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pitb_nspecialfiresexp(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialnfires_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -242,7 +242,7 @@ unsafe fn pitb_nspecialfiresexp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_specialsend", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_sspecialend(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialsend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
@@ -258,7 +258,7 @@ unsafe fn pitb_sspecialend(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_sspecialendair(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialairsend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
     }
@@ -280,7 +280,7 @@ unsafe fn pitb_sspecialendair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", scripts = ["game_specialhistart", "game_specialairhistart"], category = ACMD_GAME, low_priority )]
-unsafe fn pitb_uspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialhistart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 2.0/3.0);
     frame(fighter.lua_state_agent, 12.0);
@@ -288,7 +288,7 @@ unsafe fn pitb_uspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
         macros::ATTACK(fighter, 0, 1, Hash40::new("rot"), 1.4, 100, 100, 150, 0, 4.0, 0.0, 0.0, 6.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
@@ -317,7 +317,7 @@ unsafe fn pitb_uspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pitb", script = "game_specialairhiend", category = ACMD_GAME, low_priority )]
-unsafe fn pitb_uspecialend(fighter: &mut L2CAgentBase) {
+unsafe fn pitb_specialhiend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
@@ -339,25 +339,24 @@ unsafe fn pitb_dspecialhold(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pitb_ftilt,
-        pitb_dtilt,
-        pitb_dthrow,
-        pitb_nair,
-        pitb_fair,
-        pitb_dair,
-        pitb_nspecialstart,
-        pitb_nspecialstartexp,
-        pitb_nspecialholdeff,
-        pitb_nspecialholdsaireff,
-        pitb_nspecialfires,
-        pitb_nspecialfirehieff,
-        pitb_nspecialairfirehieff,
-        pitb_nspecialfiresexp,
-        pitb_sspecialend,
-        pitb_sspecialendair,
-        pitb_uspecialstart,
-        pitb_uspecial,
-        pitb_uspecialend,
+        pitb_attacks3,
+        pitb_attacklw3,
+        pitb_throwlw,
+        pitb_attackairn,
+        pitb_attackairf,
+        pitb_attackairlw,
+        pitb_specialnstart, pitb_specialnstart_exp,
+        pitb_specialnhold_eff,
+        pitb_specialairnhold_eff,
+        pitb_specialnfire,
+        pitb_specialnfirehi_eff,
+        pitb_specialnairfirehi_eff,
+        pitb_specialnfires_exp,
+        pitb_specialsend,
+        pitb_specialairsend,
+        pitb_specialhistart,
+        pitb_specialhi,
+        pitb_specialhiend,
         pitb_dspecialhold
     );
 }

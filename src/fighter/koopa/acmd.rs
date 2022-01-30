@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn koopa_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 10.0);
@@ -33,6 +33,6 @@ unsafe fn koopa_dashattack(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        koopa_dashattack
+        koopa_attackdash
     );
 }

@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "zelda", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.5, 80, 125, 0, 15, 2.6, 0.0, 2.0, 2.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_KICK);
@@ -25,7 +25,7 @@ unsafe fn zelda_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 50, 70, 0, 85, 5.2, 0.0, 9.0, 13.6, Some(0.0), Some(9.0), Some(7.8), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
@@ -41,7 +41,7 @@ unsafe fn zelda_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_dsmash(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -69,7 +69,7 @@ unsafe fn zelda_dsmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_nair(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -107,7 +107,7 @@ unsafe fn zelda_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_fair(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.625);
     frame(fighter.lua_state_agent, 4.0);
@@ -138,7 +138,7 @@ unsafe fn zelda_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_bair(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -167,7 +167,7 @@ unsafe fn zelda_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_dair(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -193,7 +193,7 @@ unsafe fn zelda_dair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
-unsafe fn zelda_sspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 12.0);
@@ -205,7 +205,7 @@ unsafe fn zelda_sspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
-unsafe fn zelda_sspecialend(fighter: &mut L2CAgentBase) {
+unsafe fn zelda_specialsend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 13.0);
@@ -218,14 +218,14 @@ unsafe fn zelda_sspecialend(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        zelda_dtilt,
-        zelda_dashattack,
-        zelda_dsmash,
-        zelda_nair,
-        zelda_fair,
-        zelda_bair,
-        zelda_dair,
-        zelda_sspecialstart,
-        zelda_sspecialend
+        zelda_attacklw3,
+        zelda_attackdash,
+        zelda_attacklw4,
+        zelda_attackairn,
+        zelda_attackairf,
+        zelda_attackairb,
+        zelda_attackairlw,
+        zelda_specialsstart,
+        zelda_specialsend
     );
 }

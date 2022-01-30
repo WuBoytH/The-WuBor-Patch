@@ -6,7 +6,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DamageAir_Main)]

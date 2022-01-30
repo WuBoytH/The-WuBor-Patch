@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "diddy", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn diddy_usmash(fighter: &mut L2CAgentBase) {
+unsafe fn diddy_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -69,7 +69,7 @@ unsafe fn diddy_usmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "diddy", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn diddy_speciallw(fighter: &mut L2CAgentBase) {
     let rng : i32;
     let randitem : i32;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
@@ -130,7 +130,7 @@ unsafe fn diddy_dspecial(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        diddy_usmash,
-        diddy_dspecial
+        diddy_attackhi4,
+        diddy_speciallw
     );
 }

@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "ryu", script = "game_attackhi3s", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_utiltheavy(fighter: &mut L2CAgentBase) {
+unsafe fn ryu_attackhi3s(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -54,7 +54,7 @@ unsafe fn ryu_utiltheavy(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_sspecialstart(fighter: &mut L2CAgentBase) {
+unsafe fn ryu_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 1.0, 3.5, 8.5, 8.5);
@@ -76,7 +76,7 @@ unsafe fn ryu_sspecialstart(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_sspecialstartair(fighter: &mut L2CAgentBase) {
+unsafe fn ryu_specialairsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 1.0, 3.5, 8.5, 8.5);
@@ -159,7 +159,7 @@ unsafe fn ryu_sspecialair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu_hadoken", script = "game_movew", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadokenw(weapon: &mut L2CAgentBase) {
+unsafe fn ryu_hadoken_movew(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 7.0, 0, 10, 0, 68, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 7.0, 0, 10, 0, 68, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
@@ -176,7 +176,7 @@ unsafe fn ryu_hadokenw(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu_hadoken", script = "game_movem", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadokenm(weapon: &mut L2CAgentBase) {
+unsafe fn ryu_hadoken_movem(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 7.5, 0, 10, 0, 68, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 7.5, 0, 10, 0, 68, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
@@ -193,7 +193,7 @@ unsafe fn ryu_hadokenm(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu_hadoken", script = "game_moves", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadokens(weapon: &mut L2CAgentBase) {
+unsafe fn ryu_hadoken_moves(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 0, 10, 0, 68, 3.5, 0.0, 0.5, -0.5, Some(0.0), Some(-5.2), Some(-0.5), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 8.0, 0, 10, 0, 68, 2.8, 0.0, 0.0, 0.0, Some(0.0), Some(0.0), Some(-2.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
@@ -210,7 +210,7 @@ unsafe fn ryu_hadokens(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu_hadoken", scripts = ["game_movespw_last", "game_movespm_last", "game_movesps_last"], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadoken_shaku_end(weapon: &mut L2CAgentBase) {
+unsafe fn ryu_hadoken_movesp_last(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         AttackModule::clear_all(weapon.module_accessor);
     }
@@ -223,13 +223,13 @@ unsafe fn ryu_hadoken_shaku_end(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ryu_utiltheavy,
-        ryu_sspecialstart,
-        ryu_sspecialstartair,
+        ryu_attackhi3s,
+        ryu_specialsstart,
+        ryu_specialairsstart,
         ryu_sspecialair,
-        ryu_hadokenw,
-        ryu_hadokenm,
-        ryu_hadokens,
-        ryu_hadoken_shaku_end
+        ryu_hadoken_movew,
+        ryu_hadoken_movem,
+        ryu_hadoken_moves,
+        ryu_hadoken_movesp_last
     );
 }

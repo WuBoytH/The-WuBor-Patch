@@ -9,7 +9,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    crate::{
+    wubor_utils::{
         vars::*,
         table_const::*
     }

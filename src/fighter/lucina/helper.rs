@@ -4,7 +4,7 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[inline(always)]
@@ -89,8 +89,9 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
 
 #[inline(always)]
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
-    if WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 6
-    || WorkModule::get_int(module_accessor,*FIGHTER_INSTANCE_WORK_ID_INT_COLOR) == 7 {
+    let color = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+    if color == 6
+    || color == 7 {
         return true;
     }
     else {

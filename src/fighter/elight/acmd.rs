@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn elight_dashattack(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 9.0);
@@ -55,7 +55,7 @@ unsafe fn elight_dashattack(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 5.0);
@@ -112,7 +112,7 @@ unsafe fn elight_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 5.0);
@@ -191,7 +191,7 @@ unsafe fn elight_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -235,7 +235,7 @@ unsafe fn elight_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn elight_fsmash(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(fighter) {
@@ -300,7 +300,7 @@ unsafe fn elight_fsmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -364,7 +364,7 @@ unsafe fn elight_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 6.0);
@@ -429,7 +429,7 @@ unsafe fn elight_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -492,7 +492,7 @@ unsafe fn elight_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
+unsafe fn elight_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -570,14 +570,14 @@ unsafe fn elight_dair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        elight_dashattack,
-        elight_ftilt,
-        elight_utilt,
-        elight_dtilt,
-        elight_fsmash,
-        elight_fair,
-        elight_bair,
-        elight_uair,
-        elight_dair
+        elight_attackdash,
+        elight_attacks3,
+        elight_attackhi3,
+        elight_attacklw3,
+        elight_attacks4,
+        elight_attackairf,
+        elight_attackairb,
+        elight_attackairhi,
+        elight_attackairlw
     );
 }

@@ -8,13 +8,12 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::vl::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
-        table_const::*,
-        gameplay::*
-    },
-    super::vl::*
+        table_const::*
+    }
 };
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_S4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
@@ -153,7 +152,7 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
     macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND) == FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_BLJ);
-        let dir = get_command_stick_direction(fighter.module_accessor, true);
+        let dir = FGCModule::get_command_stick_direction(fighter.module_accessor, true);
         let speed_x : f32;
         let speed_y : f32;
         if [6, 3, 9].contains(&dir) {
@@ -262,7 +261,7 @@ unsafe extern "C" fn mario_speciallw_longjump_jump_main_loop(fighter: &mut L2CFi
 unsafe extern "C" fn mario_speciallw_groundpound_fall_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
     if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_CATEGORY_MASK_ALL)
-    && get_command_stick_direction(fighter.module_accessor, false) == 8 {
+    && FGCModule::get_command_stick_direction(fighter.module_accessor, false) == 8 {
         WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_SPECIAL_LW_KIND_GROUND_POUND_CANCEL, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND);
         fighter.change_status(FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE.into(), false.into());
     }
@@ -323,7 +322,7 @@ unsafe extern "C" fn mario_speciallw_longjump_end_main_loop(fighter: &mut L2CFig
         fighter.sub_wait_ground_check_common(L2CValue::I32(0));
         fighter.sub_air_check_fall_common();
     }
-    if cancel_exceptions(fighter, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW, false).get_bool() {
+    if FGCModule::cancel_exceptions(fighter, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW, false).get_bool() {
         return 1.into();
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {

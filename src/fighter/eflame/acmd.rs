@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "eflame", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -75,7 +75,7 @@ unsafe fn eflame_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -157,7 +157,7 @@ unsafe fn eflame_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_fsmash(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -236,7 +236,7 @@ unsafe fn eflame_fsmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_fair(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -308,7 +308,7 @@ unsafe fn eflame_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_bair(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -374,7 +374,7 @@ unsafe fn eflame_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_uair(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -434,7 +434,7 @@ unsafe fn eflame_uair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_dair(fighter: &mut L2CAgentBase) {
+unsafe fn eflame_attackairlw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.333);
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -507,12 +507,12 @@ unsafe fn eflame_dair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        eflame_ftilt,
-        eflame_utilt,
-        eflame_fsmash,
-        eflame_fair,
-        eflame_bair,
-        eflame_uair,
-        eflame_dair
+        eflame_attacks3,
+        eflame_attackhi3,
+        eflame_attacks4,
+        eflame_attackairf,
+        eflame_attackairb,
+        eflame_attackairhi,
+        eflame_attackairlw
     );
 }

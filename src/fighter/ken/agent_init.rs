@@ -4,7 +4,7 @@ use {
         app::lua_bind::WorkModule,
         lib::{lua_const::*, L2CValue}
     },
-    crate::{
+    wubor_utils::{
         vars::*,
         table_const::*
     }

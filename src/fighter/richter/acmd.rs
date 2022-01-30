@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_nspecial(fighter: &mut L2CAgentBase) {
+unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.3);
     if macros::is_excute(fighter){
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
@@ -24,7 +24,7 @@ unsafe fn richter_nspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_sspecial(fighter: &mut L2CAgentBase) {
+unsafe fn richter_specials1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.56);
     if macros::is_excute(fighter){
@@ -46,7 +46,7 @@ unsafe fn richter_sspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn richter_speciallw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.3);
     if macros::is_excute(fighter){
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
@@ -59,7 +59,7 @@ unsafe fn richter_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_STATUS_KIND_END);
@@ -104,9 +104,9 @@ unsafe fn richter_uspecial(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        richter_nspecial,
-        richter_sspecial,
-        richter_dspecial,
-        richter_uspecial
+        richter_specialn,
+        richter_specials1,
+        richter_speciallw,
+        richter_specialhi
     );
 }

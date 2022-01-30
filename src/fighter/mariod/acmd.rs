@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "mariod", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn mariod_uspecial(fighter: &mut L2CAgentBase) {
+unsafe fn mariod_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 3.0);
@@ -36,6 +36,6 @@ unsafe fn mariod_uspecial(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mariod_uspecial
+        mariod_specialhi
     );
 }

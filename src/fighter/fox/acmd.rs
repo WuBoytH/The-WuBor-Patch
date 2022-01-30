@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "fox", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn fox_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn fox_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 7.0, 361, 80, 0, 40, 3.4, 4.6, -0.7, 0.0,Some(-3.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -23,7 +23,7 @@ unsafe fn fox_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "fox", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn fox_ftilthi(fighter: &mut L2CAgentBase) {
+unsafe fn fox_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 7.0, 361, 80, 0, 40, 3.4, 4.6, -0.7, 0.0,Some(-3.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -37,7 +37,7 @@ unsafe fn fox_ftilthi(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "fox", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn fox_ftiltlw(fighter: &mut L2CAgentBase) {
+unsafe fn fox_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 7.0, 361, 80, 0, 40, 3.4, 4.6, -0.7, 0.0,Some(-3.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -52,8 +52,8 @@ unsafe fn fox_ftiltlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        fox_ftilt,
-        fox_ftilthi,
-        fox_ftiltlw
+        fox_attacks3,
+        fox_attacks3hi,
+        fox_attacks3lw
     );
 }

@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "wolf", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn wolf_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn wolf_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("legr"), 9.0, 80, 115, 0, 30, 4.5, -5.0, 5.4, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -28,7 +28,7 @@ unsafe fn wolf_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "wolf", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn wolf_nair(fighter: &mut L2CAgentBase) {
+unsafe fn wolf_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.55);
     frame(fighter.lua_state_agent, 4.0);
@@ -59,7 +59,7 @@ unsafe fn wolf_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "wolf", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn wolf_bair(fighter: &mut L2CAgentBase) {
+unsafe fn wolf_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -81,7 +81,7 @@ unsafe fn wolf_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "wolf", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
-unsafe fn wolf_sspecialend(fighter: &mut L2CAgentBase) {
+unsafe fn wolf_specialsend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_inflict_kind_status(fighter.module_accessor);
@@ -109,9 +109,9 @@ unsafe fn wolf_sspecialend(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        wolf_utilt,
-        wolf_nair,
-        wolf_bair,
-        wolf_sspecialend
+        wolf_attackhi3,
+        wolf_attackairn,
+        wolf_attackairb,
+        wolf_specialsend
     );
 }

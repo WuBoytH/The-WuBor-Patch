@@ -6,7 +6,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_GEKKOUGA )]

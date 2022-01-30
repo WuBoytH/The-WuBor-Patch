@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]

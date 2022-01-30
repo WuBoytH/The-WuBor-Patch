@@ -7,45 +7,20 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::{
+        command_inputs::*,
+        common_fgc::*
+    },
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
-    },
-    super::command_inputs::*
+    }
 };
-
-#[inline(always)]
-pub unsafe fn global_fgc(fighter: &mut L2CFighterCommon) {
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    if !is_damage_check(fighter.module_accessor, false) {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL) != 1.2 {
-            WorkModule::set_float(fighter.module_accessor, 1.2, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
-        }
-    }
-    else  {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-    }
-    if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-            let frame : f32;
-            if !is_damage_check(fighter.module_accessor, true) {
-                frame = 7.0;
-            }
-            else {
-                frame = 30.0;
-            }
-            if MotionModule::frame(fighter.module_accessor) >= frame {
-                CancelModule::enable_cancel(fighter.module_accessor);
-            }
-        }
-    }
-}
 
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
-fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
+fn common_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
         let status = StatusModule::status_kind(fighter.module_accessor);
 
@@ -95,15 +70,13 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
         }
 
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-            global_fgc(fighter);
-        }
+        common_fgc(fighter);
 
         // Checks what frame you hit the opponent.
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0
         && !fighter.global_table[IN_HITLAG].get_bool() {
-            count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
+            WarkModule::count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
         }
 
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -163,12 +136,17 @@ fn global_fighter_frame(fighter : &mut L2CFighterCommon) {
             WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE);
         }
 
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS) != 0b0000000
+        && CancelModule::is_enable_cancel(fighter.module_accessor) {
+            WorkModule::set_int(fighter.module_accessor, 0b0000000, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+        }
+
         global_command_inputs(fighter);
     }
 }
 
 pub fn install() {
     install_agent_frame_callbacks!(
-        global_fighter_frame
+        common_fighter_frame
     );
 }

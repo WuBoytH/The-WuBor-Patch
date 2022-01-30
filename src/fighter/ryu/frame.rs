@@ -8,8 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
         table_const::*
     }
@@ -66,7 +66,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER) > 0.0 {
-            count_down(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER, 1.0);
+            WarkModule::count_down(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER, 1.0);
             if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER) <= 0.0 {
                 let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                 let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
@@ -232,7 +232,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                         y: (((target_y + vert_extra) * sec_sen_timer) + ryu_y * (1.0 - sec_sen_timer))
                     });
                 }
-                add_f32(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER, 0.08);
+                WarkModule::add_f32(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER, 0.08);
                 if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER) > 1.0 {
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA);

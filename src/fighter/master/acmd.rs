@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn master_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 4.0);
@@ -38,7 +38,7 @@ unsafe fn master_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn master_attacklw3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("attack_lw3"), false, 0.0);
@@ -63,7 +63,7 @@ unsafe fn master_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn master_sword_dtilt(weapon: &mut L2CAgentBase) {
+unsafe fn master_sword_attacklw3(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         WorkModule::set_float(weapon.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
         WorkModule::set_float(weapon.module_accessor, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
@@ -83,7 +83,7 @@ unsafe fn master_sword_dtilt(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn master_usmash(fighter: &mut L2CAgentBase) {
+unsafe fn master_attackhi4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("attack_hi4"), false, 0.0);
@@ -136,7 +136,7 @@ unsafe fn master_usmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master_sword", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn master_sword_usmash(weapon: &mut L2CAgentBase) {
+unsafe fn master_sword_attackhi4(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         WorkModule::set_float(weapon.module_accessor, 10.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
         WorkModule::set_float(weapon.module_accessor, 0.5, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
@@ -164,7 +164,7 @@ unsafe fn master_sword_usmash(weapon: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn master_fair(fighter: &mut L2CAgentBase) {
+unsafe fn master_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }
@@ -200,7 +200,7 @@ unsafe fn master_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn master_speciallw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 3.0);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
@@ -250,7 +250,7 @@ unsafe fn master_dspecial(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn master_dspecialair(fighter: &mut L2CAgentBase) {
+unsafe fn master_specialairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 3.0);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
@@ -305,13 +305,13 @@ unsafe fn master_dspecialair(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        master_ftilt,
-        master_dtilt,
-        master_sword_dtilt,
-        master_usmash,
-        master_sword_usmash,
-        master_fair,
-        master_dspecial,
-        master_dspecialair
+        master_attacks3,
+        master_attacklw3,
+        master_sword_attacklw3,
+        master_attackhi4,
+        master_sword_attackhi4,
+        master_attackairf,
+        master_speciallw,
+        master_specialairlw
     );
 }

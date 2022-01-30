@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "koopajr", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn koopajr_nair(fighter: &mut L2CAgentBase) {
+unsafe fn koopajr_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -49,7 +49,7 @@ unsafe fn koopajr_nair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "koopajr", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn koopajr_dspecial(fighter: &mut L2CAgentBase) {
+unsafe fn koopajr_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article_enable(fighter.module_accessor, *FIGHTER_KOOPAJR_GENERATE_ARTICLE_MECHAKOOPA, false, 0);
@@ -58,7 +58,7 @@ unsafe fn koopajr_dspecial(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        koopajr_nair,
-        koopajr_dspecial
+        koopajr_attackairn,
+        koopajr_speciallw
     );
 }

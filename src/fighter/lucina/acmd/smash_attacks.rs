@@ -11,7 +11,7 @@ use {
 };
 
 #[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
+unsafe fn lucina_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -37,7 +37,7 @@ unsafe fn lucina_fsmash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
+unsafe fn lucina_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 5.0);
@@ -68,7 +68,7 @@ unsafe fn lucina_usmash(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_fsmash,
-        lucina_usmash
+        lucina_attacks4,
+        lucina_attackhi4
     );
 }

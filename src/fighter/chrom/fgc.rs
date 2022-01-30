@@ -4,12 +4,10 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    smashline::*,
-    crate::gameplay::*
+    wubor_utils::wua_bind::*
 };
 
-#[inline(always)]
-pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
@@ -20,7 +18,8 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     ].contains(&status) {
         special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
         ].to_vec();
         normal_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
@@ -28,18 +27,14 @@ pub unsafe fn chrom_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
         ].to_vec();
     }
-    cancel_system(fighter, normal_cancels, special_cancels, false, 0);
-}
-
-#[fighter_frame( agent = FIGHTER_KIND_CHROM )]
-fn chrom_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        chrom_fgc(fighter);
+    else if [
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ].contains(&status) {
+        special_cancels = [
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
+        ].to_vec();
     }
-}
-
-pub fn install() {
-    install_agent_frames!(
-        chrom_frame
-    );
+    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
 }

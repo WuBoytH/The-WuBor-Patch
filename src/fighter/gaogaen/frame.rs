@@ -5,10 +5,10 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    crate::{
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
-        table_const::*,
-        gameplay::*
+        table_const::*
     }
 };
 
@@ -25,7 +25,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IN_HITLAG].get_bool() {
-            jump_cancel_check_exception(fighter);
+            FGCModule::jump_cancel_check_exception(fighter);
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT
@@ -33,7 +33,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) > 0
         && WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) < 3
         && AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) >= 20.0 {
-            critical_zoom(fighter, 0, 2.0, 1.5);
+            MiscModule::critical_zoom(fighter, 0, 2.0, 1.5);
             WorkModule::set_int(fighter.module_accessor, 3, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
         }
     }

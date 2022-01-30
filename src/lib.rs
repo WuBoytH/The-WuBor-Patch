@@ -2,17 +2,37 @@
 #![feature(proc_macro_hygiene)]
 #![feature(asm)]
 
-mod vars;
+use skyline::libc::c_char;
+
+// mod api;
 mod function_hooks;
 mod fighter;
-mod gameplay;
-mod cancels;
-mod common_funcs;
-mod table_const;
+
+extern "C" {
+    fn change_version_string(arg: u64, string: *const c_char);
+}
+
+#[skyline::hook(replace = change_version_string)]
+fn change_version_string_hook(arg: u64, string: *const c_char) {
+    let original_str = unsafe { skyline::from_c_str(string) };
+    if original_str.contains("Ver.") {
+        let new_str = format!(
+            "{}, WuBor Patch Ver. {}\0",
+            original_str,
+            env!("CARGO_PKG_VERSION")
+        );
+
+        call_original!(arg, skyline::c_str(&new_str))
+    } else {
+        call_original!(arg, string)
+    }
+}
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
-    vars::install();
+    // api::install();
+    wubor_utils::vars::install();
     function_hooks::install();
     fighter::install();
+    skyline::install_hook!(change_version_string_hook);
 }

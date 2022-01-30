@@ -8,13 +8,12 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    super::super::common::common_status::dash::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*,
-        gameplay::*,
         table_const::*
-    },
-    super::super::common::common_status::dash::*
+    }
 };
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -25,6 +24,11 @@ unsafe fn dolly_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
+}
+
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_GUARD_OFF, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn dolly_guardoff_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_GuardOff()
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -198,11 +202,11 @@ unsafe extern "C" fn dolly_attacklw3_common_helper(fighter: &mut L2CFighterCommo
 
 unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
+        WarkModule::reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
     }
     if dolly_hit_cancel(fighter).get_i32() == 0 {
         if dolly_attack_start_cancel(fighter).get_i32() == 0 {
-            if chain_cancels(fighter,
+            if FGCModule::chain_cancels(fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_LW3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3,
                 true,
@@ -220,7 +224,7 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_attacklw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
-        reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
+        WarkModule::reset_i32(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
     }
     fighter.status_end_AttackLw3()
 }
@@ -358,6 +362,7 @@ pub fn install() {
     install_status_scripts!(
         dolly_dashback_pre,
         dolly_dashback_main,
+        dolly_guardoff_main,
         dolly_escape_main,
         dolly_attacklw3_main,
         dolly_attacklw3_end

@@ -7,8 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::{
-        common_funcs::*,
+    wubor_utils::{
+        wua_bind::*,
         vars::*
     }
 };
@@ -67,7 +67,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         // Special Lw Check
         let mut burst_cooldown = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
         if burst_cooldown > 0.0 {
-            count_down(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN, 1.0);
+            WarkModule::count_down(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN, 1.0);
             burst_cooldown = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
             if burst_cooldown <= 0.0 {
                 let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};

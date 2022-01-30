@@ -5,10 +5,12 @@ use {
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
     crate::{
-        common_funcs::*,
-        vars::*,
         fighter::lucina::helper::shadow_id,
         fighter::ken::helper::add_vgauge
+    },
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
     },
     skyline::hooks::{
         getRegionAddress,
@@ -207,7 +209,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON
         ].contains(&term) {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if is_damage_check(boma, false) {
+                if MiscModule::is_damage_check(boma, false) {
                     return false;
                 }
             }
@@ -262,14 +264,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
     let fighter_kind = utility::get_kind(boma);
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        
-        if param_hash == hash40("escape_air_slide_back_end_frame") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if !is_damage_check(boma, true) {
-                    return 0;
-                }
-            }
-        }
         
         if fighter_kind == *FIGHTER_KIND_RIDLEY {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
@@ -423,7 +417,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         else if param_hash == hash40("escape_air_slide_hit_xlu_frame")
         || param_hash == hash40("escape_air_slide_penalty_hit_xlu_frame") {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if is_damage_check(boma, true)
+                if MiscModule::is_damage_check(boma, true)
                 || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
                     return 1.0;
                 }
@@ -436,7 +430,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         else if param_hash == hash40("escape_air_slide_hit_normal_frame")
         || param_hash == hash40("escape_air_slide_penalty_hit_normal_frame") {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if is_damage_check(boma, true)
+                if MiscModule::is_damage_check(boma, true)
                 || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
                     return 20.0;
                 }
@@ -448,49 +442,12 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 
         else if param_hash == hash40("escape_air_slide_back_distance") {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if !is_damage_check(boma, true) {
+                if !MiscModule::is_damage_check(boma, true) {
                     return 0.0;
                 }
             }
         }
 
-        else if fighter_kind == *FIGHTER_KIND_SHULK {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("active_time_jump") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_speed") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_shield") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_buster") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("active_time_smash") {
-                    return 100.0;
-                }
-                else if param_hash == hash40("unavailable_time_jump") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_speed") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_shield") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_buster") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("unavailable_time_smash") {
-                    return 0.1;
-                }
-                else if param_hash == hash40("shield_endure_mul") {
-                    return 100.0;
-                }
-            }
-        }
         else if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("air_max_speed_y") {
                 if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
@@ -628,7 +585,7 @@ pub unsafe fn set_float_replace(boma: &mut BattleObjectModuleAccessor, mut val: 
             && !WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN) {
                 val = val * WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
                 if WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL) > 0.5 {
-                    add_f32(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL, -0.05);
+                    WarkModule::add_f32(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL, -0.05);
                 }
                 WorkModule::off_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN);
             }

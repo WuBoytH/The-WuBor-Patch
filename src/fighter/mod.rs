@@ -65,6 +65,7 @@ pub mod trail;
 pub mod fox;
 pub mod koopa;
 pub mod packun;
+pub mod link;
 
 pub fn install() {
     common::install();
@@ -133,4 +134,5 @@ pub fn install() {
     fox::install();
     koopa::install();
     packun::install();
+    link::install();
 }

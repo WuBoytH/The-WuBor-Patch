@@ -7,7 +7,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    crate::table_const::*
+    wubor_utils::table_const::*
 };
 
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

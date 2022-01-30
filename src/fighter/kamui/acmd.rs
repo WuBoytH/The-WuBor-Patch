@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    crate::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "kamui", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_jab2(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attack12(fighter: &mut L2CAgentBase) {
     let mut rehit = 0;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         rehit = 1;
@@ -45,7 +45,7 @@ unsafe fn kamui_jab2(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_jab3(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attack13(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -82,7 +82,7 @@ unsafe fn kamui_jab3(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_ftilt(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attacks3(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -116,7 +116,7 @@ unsafe fn kamui_ftilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_utilt(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attackhi3(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -162,7 +162,7 @@ unsafe fn kamui_utilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_dtilt(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attacklw3(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -194,7 +194,7 @@ unsafe fn kamui_dtilt(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_fair(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attackairf(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -261,7 +261,7 @@ unsafe fn kamui_fair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn kamui_faireff(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attackairf_eff(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -290,7 +290,7 @@ unsafe fn kamui_faireff(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_bair(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attackairb(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -324,7 +324,7 @@ unsafe fn kamui_bair(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_uair(fighter: &mut L2CAgentBase) {
+unsafe fn kamui_attackairhi(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -460,15 +460,15 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kamui_jab2,
-        kamui_jab3,
-        kamui_ftilt,
-        kamui_utilt,
-        kamui_dtilt,
-        kamui_fair,
-        kamui_faireff,
-        kamui_bair,
-        kamui_uair,
+        kamui_attack12,
+        kamui_attack13,
+        kamui_attacks3,
+        kamui_attackhi3,
+        kamui_attacklw3,
+        kamui_attackairf,
+        kamui_attackairf_eff,
+        kamui_attackairb,
+        kamui_attackairhi,
         kamui_specialsjump,
         kamui_speciallw,
         kamui_speciallwhit,

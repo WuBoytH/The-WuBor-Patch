@@ -10,7 +10,7 @@ use {
 };
 
 #[acmd_script( agent = "demon", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab3(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack13(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -34,7 +34,7 @@ unsafe fn demon_jab3(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attack14", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab4(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack14(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -57,7 +57,7 @@ unsafe fn demon_jab4(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attack15", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab5(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack15(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -82,7 +82,7 @@ unsafe fn demon_jab5(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attack16", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab6(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack16(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -118,7 +118,7 @@ unsafe fn demon_jab6(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attack17", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab7(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack17(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -141,7 +141,7 @@ unsafe fn demon_jab7(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attack18", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab8(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack18(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -166,7 +166,7 @@ unsafe fn demon_jab8(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attack19", category = ACMD_GAME, low_priority )]
-unsafe fn demon_jab9(fighter: &mut L2CAgentBase) {
+unsafe fn demon_attack19(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -202,13 +202,13 @@ unsafe fn demon_pummel(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        demon_jab3,
-        demon_jab4,
-        demon_jab5,
-        demon_jab6,
-        demon_jab7,
-        demon_jab8,
-        demon_jab9,
+        demon_attack13,
+        demon_attack14,
+        demon_attack15,
+        demon_attack16,
+        demon_attack17,
+        demon_attack18,
+        demon_attack19,
         demon_pummel
     );
 }

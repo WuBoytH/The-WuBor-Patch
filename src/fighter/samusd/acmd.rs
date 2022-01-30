@@ -451,7 +451,7 @@ unsafe fn samusd_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 36.0);
+    frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -615,6 +615,17 @@ unsafe fn samusd_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "samusd", script = "game_specialnstart", category = ACMD_GAME, low_priority )]
+unsafe fn samusd_nspecialstart(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    frame(fighter.lua_state_agent, Frame=14);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article_enable(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_CSHOT);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_N_FLAG_BULLET_DISP);
     }
 }
 
@@ -856,6 +867,7 @@ pub fn install() {
         samusd_attackairb,
         samusd_attackairhi, samusd_attackairhi_eff, samusd_attackairhi_exp,
         samusd_attackairlw,
+        samusd_nspecialstart,
         samusd_special, samusd_specialair,
         samusd_specials, samusd_specialairs,
         samusd_specialhi,

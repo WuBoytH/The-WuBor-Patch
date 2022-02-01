@@ -16,7 +16,7 @@ use {
 unsafe fn status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_DamageFall_common();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) {
-        KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 1.0, y: 0.0, z: 0.0});
+        KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 1.25, y: 0.0, z: 0.0});
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(status_damagefall_main as *const () as _))
 }

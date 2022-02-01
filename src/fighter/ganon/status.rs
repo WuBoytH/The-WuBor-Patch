@@ -156,15 +156,25 @@ unsafe fn ganon_sspecial_air_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecial_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
-    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+    fighter.clear_lua_stack();
+    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.4);
+    sv_kinetic_energy::set_speed_mul(fighter.lua_state_agent);
     fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specials_air_end_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into()
+        }
+    }
     if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_AIR {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_AERIAL.into(), false.into());
         }
+    }
+    else {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
     }
     1.into()
 }

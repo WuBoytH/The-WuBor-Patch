@@ -25,9 +25,7 @@ unsafe fn mario_attacks4_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn mario_attacks4_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.clear_lua_stack();
-    lua_args!(fighter, MA_MSC_CMD_PHYSICS_STOP_CHARGE);
-    sv_module_access::physics(fighter.lua_state_agent);
+    fighter.status_end_AttackS4Hold();
     mario_remove_hammer(fighter);
     0.into()
 }
@@ -46,7 +44,7 @@ unsafe fn mario_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn mario_landingattackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.sub_landing_cancel_damage_face();
+    fighter.status_end_LandingAttackAir();
     mario_remove_hammer(fighter);
     0.into()
 }

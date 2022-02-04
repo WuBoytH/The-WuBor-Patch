@@ -8,7 +8,10 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::table_const::*
+    wubor_utils::{
+        wua_bind::*,
+        table_const::*
+    }
 };
 
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
@@ -222,6 +225,40 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_end_Attack)]
+unsafe fn status_end_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FGCModule::reset_used_ground_normals(fighter, false);
+    let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if 0 < attack_kind {
+        FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    }
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_end_Attack100)]
+unsafe fn status_end_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FGCModule::reset_used_ground_normals(fighter, false);
+    let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if 0 < attack_kind {
+        FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    }
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_end_AttackDash)]
+unsafe fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FGCModule::reset_used_ground_normals(fighter, false);
+    let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if 0 < attack_kind {
+        FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    }
+    0.into()
+}
+
 #[inline(always)]
 pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
     return !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
@@ -241,7 +278,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             attack_combo_uniq_chk_button,
             attack_uniq_chk_command,
             check_100_count_button,
-            status_attack_main_button
+            status_attack_main_button,
+            status_end_attack,
+            status_end_attack100,
+            status_end_attackdash
         );
     }
 }

@@ -220,33 +220,59 @@ pub mod FGCModule {
     }
 
     pub unsafe fn set_used_ground_normal_transition_terms(fighter: &mut L2CFighterCommon) {
-        let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
-        if used_mask & ATTACK_N_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT);
+        if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+            let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+            if used_mask & ATTACK_N_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT);
+            }
+            if used_mask & ATTACK_S3_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_3);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S3);
+            }
+            if used_mask & ATTACK_HI3_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
+            }
+            if used_mask & ATTACK_LW3_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
+            }
+            if used_mask & ATTACK_S4_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4);
+            }
+            if used_mask & ATTACK_HI4_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+            }
+            if used_mask & ATTACK_LW4_MASK != 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
+            }
         }
-        if used_mask & ATTACK_S3_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_3);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S3);
-        }
-        if used_mask & ATTACK_HI3_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
-        }
-        if used_mask & ATTACK_LW3_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
-        }
-        if used_mask & ATTACK_S4_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4);
-        }
-        if used_mask & ATTACK_HI4_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
-        }
-        if used_mask & ATTACK_LW4_MASK != 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
+    }
+
+    pub unsafe fn reset_used_ground_normals(fighter: &mut L2CFighterCommon, ignore: bool) {
+        if ignore || (CancelModule::is_enable_cancel(fighter.module_accessor)
+        || MotionModule::is_end(fighter.module_accessor))
+        || ![
+            *FIGHTER_STATUS_KIND_ATTACK,
+            *FIGHTER_STATUS_KIND_ATTACK_100,
+            *FIGHTER_STATUS_KIND_ATTACK_DASH,
+            *FIGHTER_STATUS_KIND_ATTACK_S3,
+            *FIGHTER_STATUS_KIND_ATTACK_HI3,
+            *FIGHTER_STATUS_KIND_ATTACK_LW3,
+            *FIGHTER_STATUS_KIND_ATTACK_S4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD,
+            *FIGHTER_STATUS_KIND_ATTACK_S4,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4_HOLD,
+            *FIGHTER_STATUS_KIND_ATTACK_HI4,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
+            *FIGHTER_STATUS_KIND_ATTACK_LW4
+        ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+            WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
         }
     }
 
@@ -278,6 +304,10 @@ pub mod FGCModule {
             return enabled_mask & aerial_flag != 0 && used_mask & aerial_flag == 0;
         }
         true
+    }
+
+    pub unsafe fn reset_used_aerials(fighter: &mut L2CFighterCommon) {
+        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
     }
 }
 
@@ -383,7 +413,8 @@ pub mod MiscModule {
             *FIGHTER_STATUS_KIND_STABBED_DAMAGE,
             *FIGHTER_STATUS_KIND_STABBED_RIDLEY,
             *FIGHTER_STATUS_KIND_SWALLOWED,
-            *FIGHTER_STATUS_KIND_THROWN
+            *FIGHTER_STATUS_KIND_THROWN,
+            *FIGHTER_STATUS_KIND_TRAIL_REBOUND
         ].contains(&status) {
             ret = true;
         }

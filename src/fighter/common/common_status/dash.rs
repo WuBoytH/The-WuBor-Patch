@@ -2,7 +2,7 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
         app::{lua_bind::*, *},
@@ -15,7 +15,7 @@ use {
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_Dash)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Dash)]
 unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
@@ -45,7 +45,7 @@ unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_TurnDash)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
@@ -75,7 +75,7 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_DashCommon)]
+#[skyline::hook(replace = L2CFighterCommon_status_DashCommon)]
 unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
@@ -152,7 +152,7 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Dash_Main_common)]
+#[skyline::hook(replace = L2CFighterCommon_status_Dash_Main_common)]
 unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValue) -> L2CValue {
     if fighter.global_table[DASH_COMMON_PRE].get_bool() != false && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_COMMON_PRE].get_ptr());

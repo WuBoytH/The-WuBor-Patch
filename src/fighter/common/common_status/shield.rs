@@ -2,7 +2,7 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
@@ -16,7 +16,7 @@ use {
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]
 unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFighterCommon) {
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
@@ -43,7 +43,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     WorkModule::set_int(fighter.module_accessor, guard_off_disable_shield_recovery, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_SHIELD_RECOVERY_FRAME);
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_guard_on_common)]
+#[skyline::hook(replace = L2CFighterCommon_sub_status_guard_on_common)]
 unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
     let shield_min_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_min_frame"));
     WorkModule::set_int(fighter.module_accessor, shield_min_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
@@ -76,7 +76,7 @@ unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_guard_on_uniq as *const () as _));
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont_pre)]
+#[skyline::hook(replace = L2CFighterCommon_sub_guard_cont_pre)]
 unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
     // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
@@ -98,7 +98,7 @@ unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_on_uniq)]
+#[skyline::hook(replace = L2CFighterCommon_sub_guard_on_uniq)]
 unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() == false {
         fighter.FighterStatusGuard__landing_effect_control();
@@ -152,7 +152,7 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_cont)]
+#[skyline::hook(replace = L2CFighterCommon_sub_guard_cont)]
 unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[GUARD_CONT_PRE].get_bool() != false && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[GUARD_CONT_PRE].get_ptr());
@@ -262,7 +262,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     // }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_end_guard_on_common)]
+#[skyline::hook(replace = L2CFighterCommon_sub_status_end_guard_on_common)]
 unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_GUARD {
@@ -292,7 +292,7 @@ unsafe extern "C" fn sub_status_end_guard_on_common_thing(fighter: &mut L2CFight
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
 unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
     let shield_power = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER);
     // println!("shield power: {}", shield_power);
@@ -443,7 +443,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_GuardDamage_Main)]
+#[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_Main)]
 unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_guard_damage_main_common_air().get_bool() {
         return 0.into();
@@ -481,7 +481,7 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]
 unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
     // Original, except we're using NONE OF IT HAHAHAHAHHAHA
     // if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
@@ -497,7 +497,7 @@ unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCo
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_GuardOff_Common)]
+#[skyline::hook(replace = L2CFighterCommon_status_GuardOff_Common)]
 unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
@@ -553,7 +553,7 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     motion_rate.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_guard_off_uniq)]
+#[skyline::hook(replace = L2CFighterCommon_sub_guard_off_uniq)]
 unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
@@ -572,7 +572,7 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) 
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
+#[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL) {
@@ -643,7 +643,7 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
     true.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_status_guard_off_main_common_control)]
+#[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_control)]
 unsafe fn sub_status_guard_off_main_common_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_ground_jump().get_bool() == false {
         return false.into();
@@ -651,7 +651,7 @@ unsafe fn sub_status_guard_off_main_common_control(fighter: &mut L2CFighterCommo
     true.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_GuardOff)]
+#[skyline::hook(replace = L2CFighterCommon_status_end_GuardOff)]
 unsafe fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: 1.0, y: 1.0, z: 1.0});
     WorkModule::unable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);

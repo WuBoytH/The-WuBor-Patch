@@ -2,7 +2,7 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
         app::lua_bind::*,
@@ -11,7 +11,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk_button)]
+#[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
 unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         if ControlModule::check_button_on(fighter.module_accessor, param_2.get_i32())
@@ -36,7 +36,7 @@ unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, para
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_uniq_chk_button)]
+#[skyline::hook(replace = L2CFighterCommon_attack_combo_uniq_chk_button)]
 unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         fighter.attack_uniq_chk_command(param_3.clone());
@@ -103,7 +103,7 @@ unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: 
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_uniq_chk_command)]
+#[skyline::hook(replace = L2CFighterCommon_attack_uniq_chk_command)]
 unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & param_1.get_i32() != 0
@@ -112,7 +112,7 @@ unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CVa
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_check_100_count_button)]
+#[skyline::hook(replace = L2CFighterCommon_check_100_count_button)]
 unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let button = param_1.get_i32();
     if only_jabs(fighter) {
@@ -135,7 +135,7 @@ unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CVal
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Attack_Main_button)]
+#[skyline::hook(replace = L2CFighterCommon_status_Attack_Main_button)]
 unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     fighter.check_100_count_button(param_1.clone());
     if CancelModule::is_enable_cancel(fighter.module_accessor) {

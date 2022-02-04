@@ -2,13 +2,13 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_Appeal_common)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Appeal_common)]
 unsafe fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     StatusModule::init_settings(
         fighter.module_accessor,

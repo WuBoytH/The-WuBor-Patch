@@ -2,7 +2,7 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
@@ -16,7 +16,7 @@ use {
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_escape_uniq_process_common_initStatus_common)]
+#[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_common_initStatus_common)]
 unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
         fighter.clear_lua_stack();
@@ -201,7 +201,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
     FighterWorkModuleImpl::calc_escape_air_slide_param(fighter.module_accessor, part1);
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Escape_Main)]
+#[skyline::hook(replace = L2CFighterCommon_status_Escape_Main)]
 unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
@@ -251,7 +251,7 @@ unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_setup_escape_air_slide_common)]
+#[skyline::hook(replace = L2CFighterCommon_setup_escape_air_slide_common)]
 pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
     let stickx = param_1.get_f32();
     let sticky = param_2.get_f32();
@@ -325,7 +325,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_end_EscapeAir)]
+#[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
 unsafe fn status_escapeair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_FALL

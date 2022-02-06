@@ -13,9 +13,12 @@ use {
             },
             bayonetta::fgc::bayonetta_fgc,
             chrom::fgc::chrom_fgc,
-            daisy::agent_init::{
-                daisy_speciallw_pre,
-                daisy_itemtoss_pre
+            daisy::{
+                agent_init::{
+                    daisy_speciallw_pre,
+                    daisy_itemtoss_pre
+                },
+                fgc::daisy_fgc
             },
             element::fgc::element_fgc,
             ganon::fgc::ganon_fgc,
@@ -98,6 +101,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[CHECK_AIR_JUMP_AERIAL_POST].assign(&L2CValue::Bool(false));
             fighter.global_table[SPECIAL_S_PRE].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(daisy_speciallw_pre as *const () as _));
+            fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(daisy_fgc as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_PEACH {
             fighter.global_table[CHECK_GROUND_ATTACK_PRE].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));

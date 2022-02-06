@@ -552,22 +552,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     return ret;
 }
 
-#[skyline::hook(replace = WorkModule::get_int )]
-pub unsafe fn get_int_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> i32 {
-    let mut ret = original!()(boma, term);
-    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if StatusModule::status_kind(boma) - 0x48 < 7
-        && term == *FIGHTER_STATUS_DAMAGE_WORK_INT_ESCAPE_DISABLE_FRAME {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-            && !WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN) {
-                let hitstun_mul = WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
-                ret = (ret as f32 / hitstun_mul) as i32;
-            }
-        }
-    }
-    ret
-}
-
 #[skyline::hook(replace = WorkModule::set_float )]
 pub unsafe fn set_float_replace(boma: &mut BattleObjectModuleAccessor, mut val: f32, term: i32) {
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -780,7 +764,6 @@ pub fn install() {
         is_enable_transition_term_replace,
         get_param_float_replace,
         get_param_int_replace,
-        get_int_replace,
         set_float_replace,
         get_int64_replace,
         play_se_replace,

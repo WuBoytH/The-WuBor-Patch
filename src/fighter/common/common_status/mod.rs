@@ -10,6 +10,7 @@ mod attack_3;
 mod attack_4;
 mod attack_air;
 mod catch;
+mod damage;
 mod damage_air;
 mod damage_fall;
 mod landing;
@@ -29,6 +30,7 @@ pub fn install() {
     attack_4::install();
     attack_air::install();
     catch::install();
+    damage::install();
     damage_air::install();
     damage_fall::install();
     landing::install();

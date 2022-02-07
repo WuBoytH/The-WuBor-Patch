@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup PATH
-       run: export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin
+      run: export PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin
     - name: Attempt to build
       run: PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
 # uncomment the build step below to build on every change to master.

@@ -11,12 +11,10 @@ jobs:
     env:
       PLUGIN_NAME: The_WuBor_Patch
     runs-on: ubuntu-latest
+    container: 
+      image: jugeeya/cargo-skyline:2.1.0-dkp
     steps:
     - uses: actions/checkout@v2
-    - name: Install cargo-skyline
-      run: cargo install --git https://github.com/jam1garner/cargo-skyline
-    - name: Install rust-std-skyline-squashed
-      run: cd .. && git clone https://github.com/jam1garner/rust-std-skyline-squashed && cd -
     - name: Attempt to build
       run: cargo skyline build --release
 # uncomment the build step below to build on every change to master.

@@ -2,12 +2,17 @@ name: Rust Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   build:
-
+    env:
+      PLUGIN_NAME: The_WuBor_Patch
     runs-on: ubuntu-latest
-
+    container: 
+      image: jugeeya/cargo-skyline:2.1.0-dkp
     steps:
     - uses: actions/checkout@v2
     - name: Install cargo-skyline

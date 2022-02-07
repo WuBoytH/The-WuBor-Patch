@@ -45,11 +45,8 @@ unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
-            AttackModule::clear_all(fighter.module_accessor);
-        }
-        else {
-            macros::FT_MOTION_RATE(fighter, 0.75);
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
+            macros::FT_MOTION_RATE(fighter, 0.5);
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
             JostleModule::set_status(fighter.module_accessor, true);
         }
@@ -57,6 +54,12 @@ unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
+            AttackModule::clear_all(fighter.module_accessor);
+        }
     }
 }
 
@@ -134,13 +137,13 @@ unsafe fn jack_specialairs1(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 20, 0, 70, 3.0, 0.0, 6.5, 5.0, Some(0.0), Some(6.5), Some(0.0), 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    frame(fighter.lua_state_agent, 18.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
@@ -154,10 +157,7 @@ unsafe fn jack_specialairs1(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL);
     }
-    frame(fighter.lua_state_agent, 42.0);
-    if macros::is_excute(fighter) {
-        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
-    }
+    macros::FT_MOTION_RATE(fighter, 2.0);
 }
 
 #[acmd_script( agent = "jack", script = "effect_specialairs1", category = ACMD_EFFECT, low_priority )]

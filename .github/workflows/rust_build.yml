@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  Rust Build:
+  build:
     env:
       PLUGIN_NAME: The_WuBor_Patch
     runs-on: ubuntu-latest

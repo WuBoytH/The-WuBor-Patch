@@ -1,4 +1,7 @@
+#![allow(non_upper_case_globals)]
+
 use {
+    std::sync::Once,
     smash::{
         lua2cpp::L2CFighterCommon,
         phx::Vector3f,
@@ -12,7 +15,6 @@ pub static mut INT_OFFSET : usize = 0x4E19D0;
 // pub static mut INT64_OFFSET : usize = 0x4E19F0;
 pub static mut FLOAT_OFFSET : usize = 0x4E19D0;
 pub static mut NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET : usize = 0x675A20;
-pub static mut FIGHTER_CUTIN_MANAGER_ADDR: usize = 0;
 pub static INT_SEARCH_CODE: &[u8] = &[
     0x00, 0x1c, 0x40, 0xf9, 0x08, 0x00, 0x40, 0xf9, 0x03, 0x11, 0x40, 0xf9,
 ];
@@ -283,7 +285,56 @@ fn fighter_reset(_fighter: &mut L2CFighterCommon) {
     }
 }
 
+pub mod singletons {
+    // All credit for this to blujay, macros are very cool
+    use super::*;
+    use skyline::nn::ro::LookupSymbol;
+    
+    static INIT : Once = Once::new();
+
+    pub static mut FIGHTER_CUTIN_MANAGER : *const *mut smash::app::FighterCutInManager = 0 as _;
+
+    macro_rules! expose_singleton {
+        ($($public:ident, $private:ident)*) => {
+            $(
+                #[inline(always)]
+                #[allow(non_snake_case)]
+                pub fn $public() -> *mut $public {
+                    unsafe {
+                        *$private
+                    }
+                }
+            )*
+        }
+    }
+
+    macro_rules! assign_symbol {
+        ($id:ident, $e:expr) => {{
+            unsafe {
+                let mut sym = 0usize;
+                LookupSymbol(&mut sym as *mut usize, $e.as_ptr() as _);
+                assert!(sym != 0, "Failed to find symbol {}", $e);
+                $id = std::mem::transmute(sym)
+            }
+        }}
+    }
+
+    expose_singleton!(
+        FighterCutInManager, FIGHTER_CUTIN_MANAGER
+    );
+
+    pub fn init() {
+        INIT.call_once(|| {
+            assign_symbol!(
+                FIGHTER_CUTIN_MANAGER,
+                "_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E\0"
+            );
+        });
+    }
+}
+
 pub fn install() {
+    singletons::init();
     install_agent_resets!(
         fighter_reset
     );

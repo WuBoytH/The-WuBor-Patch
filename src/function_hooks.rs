@@ -18,12 +18,6 @@ use {
     }
 };
 
-macro_rules! c_str {
-    ($l:tt) => {
-        [$l.as_bytes(), "\u{0}".as_bytes()].concat().as_ptr();
-    };
-}
-
 #[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
 fighter_manager: &mut FighterManager,
@@ -767,7 +761,7 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 
 pub fn install() {
     unsafe{
-        skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
+        // skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
         // skyline::nn::ro::LookupSymbol(&mut ITEM_MANAGER, c_str!("_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E"));
         // skyline::nn::ro::LookupSymbol(&mut FIGHTER_MANAGER, c_str!("_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E"));
         let text_ptr = getRegionAddress(Region::Text) as *const u8;

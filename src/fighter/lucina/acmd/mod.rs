@@ -3,6 +3,7 @@ mod smash_attacks;
 mod aerials;
 mod specials;
 mod grabs;
+mod misc;
 
 pub fn install() {
     ground_normals::install();
@@ -10,4 +11,5 @@ pub fn install() {
     aerials::install();
     specials::install();
     grabs::install();
+    misc::install();
 }

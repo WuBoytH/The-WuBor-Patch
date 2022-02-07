@@ -317,9 +317,8 @@ unsafe fn dolly_throwf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         macros::CHECK_FINISH_CAMERA(fighter, 11.0, 1.0);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.2);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 10.0, y: 0.0, z: 0.0});
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.2);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 10.0, y: 0.0, z: 0.0});
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
@@ -399,9 +398,8 @@ unsafe fn dolly_throwb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::REVERSE_LR(fighter);
         macros::CHECK_FINISH_CAMERA(fighter, 11.0, 1.0);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.2);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, Vector3f{x: 10.0, y: 0.0, z: 0.0});
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.2);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), Vector3f{x: 10.0, y: 0.0, z: 0.0});
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {

@@ -665,9 +665,8 @@ unsafe fn gaogaen_specialsshoulder(fighter: &mut L2CAgentBase) {
         fighter.clear_lua_stack();
         lua_args!(fighter, 0.0, 0.0);
         sv_animcmd::CHECK_FINISH_CAMERA_IF_NOT_HP_MODE(fighter.lua_state_agent);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
@@ -711,9 +710,8 @@ unsafe fn gaogaen_specialairsshoulder(fighter: &mut L2CAgentBase) {
         fighter.clear_lua_stack();
         lua_args!(fighter, 0.0, 0.0);
         sv_animcmd::CHECK_FINISH_CAMERA_IF_NOT_HP_MODE(fighter.lua_state_agent);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
@@ -787,9 +785,8 @@ unsafe fn gaogaen_specialslariat(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("arml"), 16.0, 145, 36, 0, 88, 7.0, 0.0, 0.0, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_B, false, 2, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_PUNCH);
             macros::CHECK_FINISH_CAMERA(fighter, 0, 0);
-            let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-            lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-            lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, ZERO_VECTOR);
+            lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
+            lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
         }
         frame(fighter.lua_state_agent, 14.0);
         if macros::is_excute(fighter) {

@@ -44,9 +44,8 @@ unsafe fn toonlink_throwlw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6186);
     if macros::is_excute(fighter) {
         macros::CHECK_FINISH_CAMERA(fighter, -6, 4);
-        let fighter_cutin_manager = *(FIGHTER_CUTIN_MANAGER_ADDR as *mut *mut smash::app::FighterCutInManager);
-        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(fighter_cutin_manager, 1.5);
-        lua_bind::FighterCutInManager::set_throw_finish_offset(fighter_cutin_manager, ZERO_VECTOR);
+        lua_bind::FighterCutInManager::set_throw_finish_zoom_rate(singletons::FighterCutInManager(), 1.5);
+        lua_bind::FighterCutInManager::set_throw_finish_offset(singletons::FighterCutInManager(), ZERO_VECTOR);
     }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {

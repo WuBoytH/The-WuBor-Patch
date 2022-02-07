@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Attempt to build
-      run: cargo skyline build --release
+      run: PATH=$PATH:/usr/share/rust/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin cargo skyline build --release
 # uncomment the build step below to build on every change to master.
 #    - name: Update Release
 #      env:

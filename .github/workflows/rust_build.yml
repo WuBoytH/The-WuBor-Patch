@@ -34,3 +34,4 @@ jobs:
 #        body: Build of ${{env.PLUGIN_NAME}} from master.
 #        files: >
 #          ./target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
+# test

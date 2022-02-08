@@ -173,7 +173,7 @@ unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommo
             }
         }
         if fighter.global_table[ATTACK_N_PRE].get_bool() != false {
-            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[ATTACK_3_PRE].get_ptr());
+            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[ATTACK_N_PRE].get_ptr());
             if callable(fighter).get_bool() {
                 return true.into();
             }

@@ -48,10 +48,13 @@ pub unsafe extern "C" fn miifighter_fgc(fighter: &mut L2CFighterCommon) {
         || status == *FIGHTER_STATUS_KIND_ATTACK_LW4 {
             FGCModule::disable_ground_normal(fighter, ATTACK_LW4_MASK);
         }
+        else if status == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+            // nothing haha
+        }
         else {
             ground_normal = false;
             if status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-                jump_cancel = 1;
+                jump_cancel = 2;
                 aerial_cancel = true;
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL);
                 let mot = MotionModule::motion_kind(fighter.module_accessor);

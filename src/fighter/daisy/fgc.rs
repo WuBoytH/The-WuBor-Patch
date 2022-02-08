@@ -49,7 +49,7 @@ pub unsafe extern "C" fn daisy_fgc(fighter: &mut L2CFighterCommon) {
                 }
             }
             if status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-                jump_cancel = 1;
+                jump_cancel = 2;
             }
             special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,

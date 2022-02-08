@@ -160,7 +160,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
                             100,
                             32,
                             false,
-                            0x50000000
+                            *BATTLE_OBJECT_ID_INVALID as u32
                         );
                     }
                     SlowModule::set_whole(fighter.module_accessor, 4, 0);

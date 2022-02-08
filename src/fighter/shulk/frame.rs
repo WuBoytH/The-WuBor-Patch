@@ -5,7 +5,6 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    smash_script::*,
     smashline::*,
     wubor_utils::{
         wua_bind::*,
@@ -34,7 +33,8 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         }
         WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
-        if !MiscModule::is_illegal_status(fighter.module_accessor, false)
+        if !fighter.global_table[IN_HITLAG].get_bool()
+        && !MiscModule::is_illegal_status(fighter.module_accessor, false)
         && !MiscModule::is_illegal_status(fighter.module_accessor, true)
         && MiscModule::is_damage_check(fighter.module_accessor, false)
         && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_DAMAGE_FALL
@@ -58,9 +58,9 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
                 else if shulkpos < opppos && PostureModule::lr(fighter.module_accessor) == -1.0 {
                     PostureModule::reverse_lr(fighter.module_accessor);
                 }
+                SlowModule::set(target_boma, 0, 50, 60, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
             }
-            macros::SLOW_OPPONENT(fighter, 20.0, 60.0);
             EffectModule::req_on_joint(fighter.module_accessor, Hash40::new("sys_sp_flash"), Hash40::new("head"), &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, 1.0, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, &Vector3f { x: -3.0, y: 3.0, z: 0.0 }, false, 0, 0, 0);
             KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_RESET);
             KineticModule::unable_energy_all(fighter.module_accessor);

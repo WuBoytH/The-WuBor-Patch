@@ -9,7 +9,8 @@ use {
     smashline::*,
     wubor_utils::{
         wua_bind::*,
-        vars::*
+        vars::*,
+        table_const::*
     }
 };
 
@@ -33,8 +34,11 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         }
         WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
-        if StopModule::is_damage(fighter.module_accessor)
-        && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+        if !MiscModule::is_illegal_status(fighter.module_accessor, false)
+        && !MiscModule::is_illegal_status(fighter.module_accessor, true)
+        && MiscModule::is_damage_check(fighter.module_accessor, false)
+        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_DAMAGE_FALL
+        && fighter.global_table[CMD_CAT1].get_i32() == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
         && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW) {
             let burst_recover = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
             DamageModule::add_damage(fighter.module_accessor, burst_recover * -0.5, 0);

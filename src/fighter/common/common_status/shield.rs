@@ -314,7 +314,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
         shield_stiff_frame = shield_stiff_frame_max;
     }
     // println!("final shield_stiff_frame: {}", shield_stiff_frame as i32);
-    if object_id != 0x50000000 {
+    if object_id != *BATTLE_OBJECT_ID_INVALID {
         capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
         fighter.pop_lua_stack(1);
         let mut invalid_capture_frame = shield_stiff_frame;

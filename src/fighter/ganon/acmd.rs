@@ -108,7 +108,7 @@ unsafe fn ganon_attackhi3_snd(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_attackhi3_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0x50000000);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {

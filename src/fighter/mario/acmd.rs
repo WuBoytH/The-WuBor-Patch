@@ -276,7 +276,7 @@ unsafe fn mario_attackairf_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, 0x50000000);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -592,7 +592,7 @@ unsafe fn mario_longjump_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "expression_speciallwlight", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn mario_longjump_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_jump"), 0, false, 0x50000000);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -610,7 +610,7 @@ unsafe fn mario_longjumpland_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "expression_speciallwhold", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn mario_longjumpland_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, 0x50000000);
+    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -648,7 +648,7 @@ unsafe fn mario_groundpoundfall_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, 0x50000000);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
@@ -690,7 +690,7 @@ unsafe fn mario_groundpoundland_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "expression_specialairlwhold", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn mario_groundpoundland_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, 0x50000000);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
     }
     frame(fighter.lua_state_agent, 25.0);

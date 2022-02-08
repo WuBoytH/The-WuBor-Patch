@@ -61,10 +61,10 @@ move_type_again: bool) -> u64 {
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
             if StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                 if WorkModule::is_flag(attacker_boma, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE) {
-                    SlowModule::set(defender_boma, 0, 50, 19, false, 0x50000000);
+                    SlowModule::set(defender_boma, 0, 50, 19, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
                 else {
-                    SlowModule::set(defender_boma, 0, 10, 20, false, 0x50000000);
+                    SlowModule::set(defender_boma, 0, 10, 20, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
             }
         }

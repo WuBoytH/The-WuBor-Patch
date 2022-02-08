@@ -881,7 +881,7 @@ unsafe fn gaogaen_specialairhifall_2(fighter: &mut L2CAgentBase) {
 unsafe fn gaogaen_speciallwstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
-        WorkModule::set_int(fighter.module_accessor, 0x50000000 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
+        WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID as u32 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
     }
     frame(fighter.lua_state_agent, 8.0);

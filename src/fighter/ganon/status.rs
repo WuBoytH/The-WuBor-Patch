@@ -108,7 +108,7 @@ unsafe extern "C" fn ganon_special_s_air_catch_main_loop(fighter: &mut L2CFighte
     let mut ret = 0;
     if fighter.global_table[MOTION_FRAME].get_f32() == 1.0 {
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_catch"), 1.0, 1.0, false, 0.0, false, false);
-        fighter.set_situation(L2CValue::I32(*SITUATION_KIND_AIR));
+        fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0x8cdc1683 as u64, 0.0);
@@ -121,7 +121,7 @@ unsafe extern "C" fn ganon_special_s_air_catch_main_loop(fighter: &mut L2CFighte
         }
         ret = 1;
     }
-    L2CValue::I32(ret)
+    ret.into()
 }
 
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

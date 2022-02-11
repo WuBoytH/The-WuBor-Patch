@@ -147,7 +147,7 @@ unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
         sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
         fighter.clear_lua_stack();
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

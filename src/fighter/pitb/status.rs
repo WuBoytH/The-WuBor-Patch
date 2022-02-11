@@ -147,7 +147,7 @@ unsafe extern "C" fn pitb_specialn_charge_loop(fighter: &mut L2CFighterCommon) -
             fighter.change_status(FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT.into(), true.into());
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
@@ -165,7 +165,7 @@ unsafe extern "C" fn pitb_specialn_endremove(fighter: &mut L2CFighterCommon) -> 
         VisibilityModule::set_status_default_int64(fighter.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_PIT_GENERATE_ARTICLE_BOWARROW, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 pub fn install() {

@@ -94,11 +94,11 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_DAISY {
-            fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&L2CValue::Bool(false));
+            fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&false.into());
             fighter.global_table[CHECK_GROUND_ATTACK_PRE].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));
-            fighter.global_table[CHECK_AIR_ITEM_THROW_PRE].assign(&L2CValue::Bool(false));
-            fighter.global_table[CHECK_AIR_JUMP_PRE].assign(&L2CValue::Bool(false));
-            fighter.global_table[CHECK_AIR_JUMP_AERIAL_POST].assign(&L2CValue::Bool(false));
+            fighter.global_table[CHECK_AIR_ITEM_THROW_PRE].assign(&false.into());
+            fighter.global_table[CHECK_AIR_JUMP_PRE].assign(&false.into());
+            fighter.global_table[CHECK_AIR_JUMP_AERIAL_POST].assign(&false.into());
             fighter.global_table[SPECIAL_S_PRE].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(daisy_speciallw_pre as *const () as _));
             fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(daisy_fgc as *const () as _));
@@ -151,7 +151,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         else if fighter_kind == *FIGHTER_KIND_RYU {
             WorkModule::set_float(fighter.module_accessor, -0.6, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER);
-        //     fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
+        //     fighter.global_table[STATUS_END_CONTROL].assign(&false.into());
         }
         else if fighter_kind == *FIGHTER_KIND_EFLAME
         || fighter_kind == *FIGHTER_KIND_ELIGHT {

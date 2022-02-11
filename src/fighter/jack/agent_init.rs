@@ -15,7 +15,7 @@ unsafe fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe
     }
 
     let clone = fighter.global_table[WAZA_CUSTOMIZE_CONTROL].clone();
-    fighter.global_table["move_customizer_set"].assign(&L2CValue::Bool(true));
+    fighter.global_table["move_customizer_set"].assign(&true.into());
     fighter.global_table["move_customizer_original"].assign(&clone);
     fighter.global_table[WAZA_CUSTOMIZE_CONTROL].assign(&L2CValue::Ptr(customizer as *const () as _));
 }

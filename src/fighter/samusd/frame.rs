@@ -37,6 +37,12 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE);
             }
         }
+
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_N_FLOAT) {
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_N_FLOAT);
+            }
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::{L2CFighterCommon, L2CWeaponCommon},
+        lua2cpp::{L2CFighterCommon, L2CWeaponCommon, *},
         hash40,
         phx::Hash40,
         app::{lua_bind::*, *},
@@ -17,6 +17,35 @@ use {
 #[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn samusd_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Wait()
+}
+
+#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn samusd_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_ATTACK_AIR_FLAG_START_FLOAT);
+    fighter.sub_attack_air_common(true.into());
+    if !StopModule::is_stop(fighter.module_accessor) {
+        samusd_attackair_substatus2(fighter);
+    }
+    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(samusd_attackair_substatus2 as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
+}
+
+unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
+    && WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_ATTACK_AIR_FLAG_START_FLOAT) {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_N_FLOAT);
+        let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+        fighter.clear_lua_stack();
+        if sum_speed_y <= 0.0 {
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y / 2.0);
+        }
+        else {
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
+        }
+        sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+    }
+    0.into()
 }
 
 #[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -466,6 +495,7 @@ unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 pub fn install() {
     install_status_scripts!(
         samusd_wait_main,
+        samusd_attackair_main,
         samusd_specialn_hold_main,
         samusd_specialn_hold_exit,
         samusd_cshot_shoot_init,

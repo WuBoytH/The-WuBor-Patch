@@ -87,12 +87,15 @@ unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5 * ratio, 75, 40, 0, 90, 3.0, 0.0, 5.0, 17.0, Some(0.0), Some(9.0), Some(18.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.5 * ratio, 75, 40, 0, 90, 3.0, 0.0, 7.5, 8.5, Some(0.0), Some(11.5), Some(9.5), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 2.5 * ratio, 75, 40, 0, 90, 4.0, 0.0, 6.5, 12.5, Some(0.0), Some(10.5), Some(13.5), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    wait(fighter.lua_state_agent, 3.0);
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
+    }
+    wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }

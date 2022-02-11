@@ -8,7 +8,10 @@ use {
     },
     smashline::*,
     super::super::common::common_status::attack::only_jabs,
-    wubor_utils::table_const::*
+    wubor_utils::{
+        wua_bind::*,
+        table_const::*
+    }
 };
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -158,8 +161,29 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
+#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn bayonetta_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if status != *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
+    && status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        FGCModule::reset_used_aerials(fighter);
+    }
+    0.into()
+}
+
+#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn bayonetta_attackairf_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        FGCModule::reset_used_aerials(fighter);
+    }
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
-        bayonetta_attack_main
+        bayonetta_attack_main,
+        bayonetta_attackair_end,
+        bayonetta_attackairf_end
     );
 }

@@ -122,6 +122,7 @@ unsafe fn lucina_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon) {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     let flags;
+    WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL);
     if mot == hash40("attack_air_n") {
         flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
         FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
@@ -147,23 +148,22 @@ unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon
 
 unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.global_table[IN_HITLAG].get_bool() {
-        let mut special_cancels : Vec<i32> = [].to_vec();
-        let mut jump_cancel = 1;
         let mot = MotionModule::motion_kind(fighter.module_accessor);
         if mot != hash40("attack_air_lw") {
+            let mut jump_cancel = 2;
             if mot == hash40("attack_air_f") {
                 if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
                     jump_cancel = 0;
                 }
             }
-            special_cancels = [
+            let special_cancels : Vec<i32> = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
             ].to_vec();
+            FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, true, jump_cancel);
         }
-        FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, true, jump_cancel);
     }
     0.into()
 }
@@ -172,6 +172,7 @@ unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon)
 unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CHARGE_MAX);
+    WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
     lucina_specialn_mot_helper(fighter);
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
     && spent_meter(fighter.module_accessor, false) {
@@ -513,7 +514,7 @@ unsafe fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(L2CValue::I32(0));
+        fighter.sub_wait_ground_check_common(false.into());
         fighter.sub_air_check_fall_common();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
@@ -730,6 +731,7 @@ unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) 
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC);
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
@@ -755,21 +757,46 @@ unsafe fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             false
         );
     }
+    if !StopModule::is_stop(fighter.module_accessor) {
+        lucina_speciallw_substatus(fighter);
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucina_speciallw_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_speciallw_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn lucina_speciallw_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC) {
+        let dir = FGCModule::get_command_stick_direction(fighter, false);
+        if dir == 5
+        || dir == 8
+        || dir == 2 {
+            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
+        }
+        else if dir == 4
+        || dir == 7
+        || dir == 1 {
+            WorkModule::set_float(fighter.module_accessor, -2.0, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
+        }
+        else {
+            WorkModule::set_float(fighter.module_accessor, 2.0, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
+        }
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC);
+    }
+    0.into()
 }
 
 unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(L2CValue::I32(0));
+        fighter.sub_wait_ground_check_common(0.into());
         fighter.sub_air_check_fall_common();
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE) {
-        let move_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE);
+        let move_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
         PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
             x: move_x,
             y: 0.0
         });
-        WorkModule::set_float(fighter.module_accessor, move_x * 0.9, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE);
+        WorkModule::set_float(fighter.module_accessor, move_x * 0.9, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {

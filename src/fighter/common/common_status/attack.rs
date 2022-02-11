@@ -2,16 +2,19 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::table_const::*
+    wubor_utils::{
+        wua_bind::*,
+        table_const::*
+    }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk_button)]
+#[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
 unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         if ControlModule::check_button_on(fighter.module_accessor, param_2.get_i32())
@@ -36,7 +39,7 @@ unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, para
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_combo_uniq_chk_button)]
+#[skyline::hook(replace = L2CFighterCommon_attack_combo_uniq_chk_button)]
 unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
         fighter.attack_uniq_chk_command(param_3.clone());
@@ -103,7 +106,7 @@ unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: 
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_attack_uniq_chk_command)]
+#[skyline::hook(replace = L2CFighterCommon_attack_uniq_chk_command)]
 unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & param_1.get_i32() != 0
@@ -112,7 +115,7 @@ unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CVa
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_check_100_count_button)]
+#[skyline::hook(replace = L2CFighterCommon_check_100_count_button)]
 unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let button = param_1.get_i32();
     if only_jabs(fighter) {
@@ -135,7 +138,7 @@ unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CVal
     }
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_Attack_Main_button)]
+#[skyline::hook(replace = L2CFighterCommon_status_Attack_Main_button)]
 unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     fighter.check_100_count_button(param_1.clone());
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
@@ -222,6 +225,40 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_end_Attack)]
+unsafe fn status_end_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FGCModule::reset_used_ground_normals(fighter, false);
+    let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if 0 < attack_kind {
+        FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    }
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_end_Attack100)]
+unsafe fn status_end_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FGCModule::reset_used_ground_normals(fighter, false);
+    let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if 0 < attack_kind {
+        FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    }
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_LOG_ATTACK_SUB_KIND_NONE, *FIGHTER_INSTANCE_WORK_ID_INT_TRICK_SUB);
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_end_AttackDash)]
+unsafe fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    FGCModule::reset_used_ground_normals(fighter, false);
+    let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    if 0 < attack_kind {
+        FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    }
+    0.into()
+}
+
 #[inline(always)]
 pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
     return !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
@@ -241,7 +278,10 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             attack_combo_uniq_chk_button,
             attack_uniq_chk_command,
             check_100_count_button,
-            status_attack_main_button
+            status_attack_main_button,
+            status_end_attack,
+            status_end_attack100,
+            status_end_attackdash
         );
     }
 }

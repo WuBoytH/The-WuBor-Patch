@@ -8,18 +8,8 @@ use {
     smash_script::*,
     smashline::*,
     super::super::helper::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
+    wubor_utils::vars::*
 };
-
-#[acmd_script( agent = "lucina", script = "game_specialairnstart" , category = ACMD_GAME, low_priority )]
-unsafe fn lucina_specialairnstart(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
-    }
-}
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnloop", "game_specialairnloop" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_specialnloop(fighter: &mut L2CAgentBase) {
@@ -595,20 +585,7 @@ unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
-        let dir = FGCModule::get_command_stick_direction(fighter.module_accessor, false);
-        if dir == 5
-        || dir == 8
-        || dir == 2 {
-            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE);
-        }
-        else if dir == 4
-        || dir == 7
-        || dir == 1 {
-            WorkModule::set_float(fighter.module_accessor, -2.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE);
-        }
-        else {
-            WorkModule::set_float(fighter.module_accessor, 2.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_ROMAN_MOVE);
-        }
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC);
     }
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
@@ -794,7 +771,6 @@ unsafe fn lucina_lightningflash_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_specialairnstart,
         lucina_specialnloop,
         lucina_specialnend,
         lucina_specialnendmax,

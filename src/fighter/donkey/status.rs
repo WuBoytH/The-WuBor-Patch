@@ -26,7 +26,7 @@ unsafe fn donkey_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     else {
-        fighter.sub_change_motion_by_situation(L2CValue::Hash40(Hash40::new("special_s")), L2CValue::Hash40(Hash40::new("special_air_s")), L2CValue::Bool(false));
+        fighter.sub_change_motion_by_situation(L2CValue::Hash40(Hash40::new("special_s")), L2CValue::Hash40(Hash40::new("special_air_s")), false.into());
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(donkey_specials_main_loop as *const () as _))
 }
@@ -53,12 +53,12 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
         }
     }
     else if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(L2CValue::I32(112)).get_bool() == false
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false
         && fighter.sub_air_check_fall_common().get_bool() == false {
-            return L2CValue::I32(1);
+            return 1.into();
         }
     }
-    L2CValue::I32(0)
+    0.into()
 }
 
 pub unsafe fn barrel_check() -> bool {

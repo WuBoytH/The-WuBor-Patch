@@ -2,7 +2,7 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
@@ -10,7 +10,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_TreadJump)]
+#[skyline::hook(replace = L2CFighterCommon_status_TreadJump)]
 unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)

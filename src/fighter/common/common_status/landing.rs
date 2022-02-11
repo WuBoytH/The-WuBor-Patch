@@ -2,13 +2,13 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_Landing_param)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Landing_param)]
 unsafe fn status_pre_landing_param(fighter: &mut L2CFighterCommon, param_1: L2CValue,  param_2: L2CValue,  param_3: L2CValue,  param_4: L2CValue,  param_5: L2CValue) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,7 +37,7 @@ unsafe fn status_pre_landing_param(fighter: &mut L2CFighterCommon, param_1: L2CV
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_LandingLight_param)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_LandingLight_param)]
 unsafe fn status_pre_landinglight_param(fighter: &mut L2CFighterCommon, param_1: L2CValue,  param_2: L2CValue,  param_3: L2CValue,  param_4: L2CValue,  param_5: L2CValue) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -66,7 +66,7 @@ unsafe fn status_pre_landinglight_param(fighter: &mut L2CFighterCommon, param_1:
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_landing_fall_special_common)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_landing_fall_special_common)]
 unsafe fn status_pre_landing_fall_special_common(fighter: &mut L2CFighterCommon, param_1: L2CValue,  param_2: L2CValue,  param_3: L2CValue) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

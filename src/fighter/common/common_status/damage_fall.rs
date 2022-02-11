@@ -41,7 +41,7 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value")) <= fighter.global_table[STICK_X].get_f32().abs()
     && tech {
         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
-        return L2CValue::Bool(true);
+        return true.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE) {
         if FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {

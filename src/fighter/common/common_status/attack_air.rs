@@ -2,16 +2,19 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         phx::Hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CAgent, L2CValue}
     },
-    wubor_utils::vars::*,
-    wubor_utils::table_const::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*,
+        table_const::*
+    }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_attack_air_common)]
+#[skyline::hook(replace = L2CFighterCommon_sub_attack_air_common)]
 unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -30,7 +33,7 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
     ControlModule::reset_attack_air_kind(fighter.module_accessor);
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_AttackAir_Main_common)]
+#[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
 unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
@@ -61,15 +64,15 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
     true.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_bind_address_call_status_end_AttackAir)]
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackAir)]
 unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+        FGCModule::reset_used_aerials(fighter);
     }
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_landing_attack_air_init)]
+#[skyline::hook(replace = L2CFighterCommon_sub_landing_attack_air_init)]
 unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, param_2.get_int(), 0) + param_3.get_f32();

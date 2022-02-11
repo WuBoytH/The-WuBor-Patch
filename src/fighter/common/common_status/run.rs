@@ -2,13 +2,13 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_RunBrake)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_RunBrake)]
 unsafe fn status_pre_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,7 +37,7 @@ unsafe fn status_pre_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_status_pre_TurnRunBrake)]
+#[skyline::hook(replace = L2CFighterCommon_status_pre_TurnRunBrake)]
 unsafe fn status_pre_turnrunbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,

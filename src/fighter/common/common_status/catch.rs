@@ -2,7 +2,7 @@
 
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
         app::lua_bind::*,
@@ -14,7 +14,7 @@ use {
     }
 };
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_CatchCont)]
+#[skyline::hook(replace = L2CFighterCommon_CatchCont)]
 unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CMD_CAT2].get_i32() & (
         *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW |
@@ -29,7 +29,7 @@ unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
     call_original!(fighter)
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusCapture_set_invalid_capture)]
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusCapture_set_invalid_capture)]
 unsafe fn fighterstatuscapture_set_invalid_capture(fighter: &mut L2CFighterCommon) {
     let invalid_capture_frame;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {

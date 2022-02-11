@@ -34,7 +34,7 @@ unsafe fn kamui_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         0, *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
-    L2CValue::I32(0)
+    0.into()
 }
 
 #[status_script(agent = "kamui", status = FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -154,7 +154,7 @@ unsafe extern "C" fn kamui_speciallw_hit_dragon_mot(fighter: &mut L2CFighterComm
 unsafe extern "C" fn kamui_speciallw_hit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut ret = 0;
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(L2CValue::I32(0x80)).get_bool() == true
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() == true
         && fighter.sub_air_check_fall_common().get_bool() == true {
             ret = 1;
         }

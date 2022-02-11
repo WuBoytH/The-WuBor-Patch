@@ -88,7 +88,7 @@ pub mod FGCModule {
         && !fighter.global_table[IN_HITLAG].get_bool()
         && cancel_timer > 0.0
         && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
-        && get_command_stick_direction(fighter.module_accessor, true) == dir {
+        && get_command_stick_direction(fighter, true) == dir {
             StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
             return true.into();
         }
@@ -159,48 +159,48 @@ pub mod FGCModule {
         }
     }
 
-    pub unsafe fn get_command_stick_direction(module_accessor: *mut BattleObjectModuleAccessor, command: bool) -> i32 {
-        let status_kind = StatusModule::status_kind(module_accessor);
-        let mut stick_x = ControlModule::get_stick_x(module_accessor);
+    pub unsafe fn get_command_stick_direction(fighter: &mut L2CFighterCommon, command: bool) -> i32 {
+        let status_kind = StatusModule::status_kind(fighter.module_accessor);
+        let mut stick_x = fighter.global_table[STICK_X].get_f32();
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
         if command {
-            stick_x = stick_x * PostureModule::lr(module_accessor);
+            stick_x = stick_x * PostureModule::lr(fighter.module_accessor);
             if status_kind == *FIGHTER_STATUS_KIND_TURN_RUN {
                 stick_x *= -1.0;
             }
         }
-        
-        if stick_x >= 0.4 {
-            if ControlModule::get_stick_y(module_accessor) <= -0.25 {
-                return 3;
-            }
-            else if ControlModule::get_stick_y(module_accessor) >= 0.25 {
-                return 9;
-            }
-            else {
+        let length = sv_math::vec2_length(stick_x, stick_y);
+        if length < 0.25 {
+            return 5;
+        }
+        let normalize = sv_math::vec2_normalize(stick_x, stick_y);
+        let dirx = normalize.x;
+        let diry = normalize.y;
+        let arctangent = diry.atan2(dirx.abs());
+        let degrees = arctangent.to_degrees();
+        if degrees.abs() <= 15.0 {
+            if stick_x > 0.0 {
                 return 6;
             }
+            return 4;
         }
-        else if stick_x <= -0.4 {
-            if ControlModule::get_stick_y(module_accessor) <= -0.25 {
-                return 1;
-            }
-            else if ControlModule::get_stick_y(module_accessor) >= 0.25 {
-                return 7;
-            }
-            else {
-                return 4;
-            }
-        }
-        else {
-            if ControlModule::get_stick_y(module_accessor) <= -0.25 {
-                return 2;
-            }
-            else if ControlModule::get_stick_y(module_accessor) >= 0.25 {
+        else if 70.0 <= degrees.abs() {
+            if stick_y > 0.0 {
                 return 8;
             }
-            else {
-                return 5;
+            return 2;
+        }
+        else {
+            if stick_x > 0.0 {
+                if stick_y > 0.0 {
+                    return 9;
+                }
+                return 3;
             }
+            if stick_y > 0.0 {
+                return 7;
+            }
+            return 1;
         }
     }
 

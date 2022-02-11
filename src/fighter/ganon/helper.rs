@@ -15,7 +15,7 @@ use {
 
 #[inline(always)]
 pub unsafe fn deception_init(fighter: &mut L2CFighterCommon) {
-    let dir = FGCModule::get_command_stick_direction(fighter.module_accessor, false);
+    let dir = FGCModule::get_command_stick_direction(fighter, false);
     let tele_x;
     let tele_y;
     if dir == 5 {

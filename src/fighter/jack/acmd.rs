@@ -229,7 +229,7 @@ unsafe fn jack_speciallwcounter(fighter: &mut L2CAgentBase) {
         AttackModule::set_force_reaction(fighter.module_accessor, 0, true, false);
         AttackModule::set_force_reaction(fighter.module_accessor, 1, true, false);
     }
-    frame(fighter.lua_state_agent, 32.0);
+    frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }

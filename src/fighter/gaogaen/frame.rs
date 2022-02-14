@@ -36,6 +36,13 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
             MiscModule::critical_zoom(fighter, 0, 2.0, 1.5);
             WorkModule::set_int(fighter.module_accessor, 3, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
         }
+
+        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW
+        && !fighter.global_table[IN_HITLAG].get_bool() {
+            if WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 2 {
+                fighter.change_status(FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT.into(), true.into());
+            }
+        }
     }
 }
 

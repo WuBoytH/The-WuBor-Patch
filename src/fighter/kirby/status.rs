@@ -10,7 +10,7 @@ use {
     crate::{
         fighter::ganon::helper::*
     },
-    super::vl::*,
+    super::vl,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -45,7 +45,7 @@ unsafe extern "C" fn kirby_attacklw3_substatus(fighter: &mut L2CFighterCommon) -
         }
     }
     else {
-        if MotionModule::frame(fighter.module_accessor) >= slide_bounce_cancel_frame {
+        if MotionModule::frame(fighter.module_accessor) >= vl::param_special_lw::slide_bounce_cancel_frame {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
             CancelModule::enable_cancel(fighter.module_accessor);
         }

@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vl::*,
+    super::super::vl,
     wubor_utils::vars::*,
 };
 
@@ -167,7 +167,12 @@ unsafe fn daisy_specialairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        macros::SET_SPEED_EX(fighter, dive_speed_x, dive_speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        macros::SET_SPEED_EX(
+            fighter,
+            vl::param_special_lw::dive_speed_x,
+            vl::param_special_lw::dive_speed_y,
+            *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
+        );
         KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     frame(fighter.lua_state_agent, 17.0);

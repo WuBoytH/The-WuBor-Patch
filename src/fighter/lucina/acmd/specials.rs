@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::helper::*,
+    super::super::{helper::*, *},
     wubor_utils::vars::*
 };
 
@@ -157,14 +157,14 @@ unsafe fn lucina_specialairs2hi(fighter: &mut L2CAgentBase) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
             dmg = 16.0;
             kbg = 90;
-            velx = 3.0;
-            vely = -2.4;
+            velx = vl::param_special_s::dive_speed_x_ex;
+            vely = vl::param_special_s::dive_speed_y_ex;
         }
         else {
             dmg = 11.0;
             kbg = 70;
-            velx = 2.5;
-            vely = -2.1;
+            velx = vl::param_special_s::dive_speed_x;
+            vely = vl::param_special_s::dive_speed_y;
         }
         if shadow_id(fighter.module_accessor) {
             dmg *= 0.8;

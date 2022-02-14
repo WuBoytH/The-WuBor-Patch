@@ -121,22 +121,18 @@ unsafe fn lucina_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon) {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
-    let flags;
+    let mut flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
     WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL);
     if mot == hash40("attack_air_n") {
-        flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
         FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
     }
     else if mot == hash40("attack_air_f") {
-        flags = ATTACK_AIR_N_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
         FGCModule::disable_aerial(fighter, ATTACK_AIR_F_MASK);
     }
     else if mot == hash40("attack_air_b") {
-        flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
         FGCModule::disable_aerial(fighter, ATTACK_AIR_B_MASK);
     }
     else if mot == hash40("attack_air_hi") {
-        flags = ATTACK_AIR_B_MASK + ATTACK_AIR_LW_MASK;
         FGCModule::disable_aerial(fighter, ATTACK_AIR_HI_MASK);
     }
     else {

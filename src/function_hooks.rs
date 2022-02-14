@@ -64,7 +64,7 @@ move_type_again: bool) -> u64 {
                     SlowModule::set(defender_boma, 0, 50, 19, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
                 else {
-                    SlowModule::set(defender_boma, 0, 10, 20, false, *BATTLE_OBJECT_ID_INVALID as u32);
+                    SlowModule::set(defender_boma, 0, 50, 20, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
             }
         }

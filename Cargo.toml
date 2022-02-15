@@ -25,7 +25,7 @@ smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "develo
 # smash-sli = { git = "https://github.com/jam1garner/smash-sli" }
 # prc-rs = "1.3"
 # wubor_utils = { path = "../WuBor-Utils" }
-wubor_utils = { git = "https://github.com/WuBoytH/WuBor-Utils" }
+wubor_utils = { git = "https://github.com/WuBoytH/WuBor-Utils", branch = "main" }
 
 [profile.dev]
 panic = "abort"

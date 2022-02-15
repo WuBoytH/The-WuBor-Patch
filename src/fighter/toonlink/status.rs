@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vl::*,
+    super::vl,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -19,10 +19,10 @@ use {
 unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spin : f32;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-        spin = rslash_charge_max_speed_funny;
+        spin = vl::param_special_hi::rslash_charge_max_speed_funny;
     }
     else {
-        spin = rslash_charge_max_speed;
+        spin = vl::param_special_hi::rslash_charge_max_speed;
     }
     WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
     WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED_MAX);
@@ -43,7 +43,7 @@ unsafe extern "C" fn toonlink_specialhi_end_substatus(fighter: &mut L2CFighterCo
             let mut spin = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
             let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
             let spin_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED_MAX);
-            spin += rslash_charge_max_accel * stickx;
+            spin += vl::param_special_hi::rslash_charge_max_accel * stickx;
             if spin > spin_max {
                 spin = spin_max;
             }

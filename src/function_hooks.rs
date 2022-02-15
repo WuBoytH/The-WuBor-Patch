@@ -5,8 +5,11 @@ use {
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
     crate::{
-        fighter::lucina::helper::shadow_id,
-        fighter::ken::helper::add_vgauge
+        fighter::{
+            lucina::helper::shadow_id,
+            ken::helper::add_vgauge,
+            *
+        }
     },
     wubor_utils::{
         wua_bind::*,
@@ -61,11 +64,17 @@ move_type_again: bool) -> u64 {
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
             if StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                let slow_mul;
+                let frames;
                 if WorkModule::is_flag(attacker_boma, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE) {
-                    SlowModule::set(defender_boma, 0, 50, 19, false, *BATTLE_OBJECT_ID_INVALID as u32);
+                    slow_mul = lucina::vl::param_special_lw::onemore_slowdown_mul;
+                    frames = lucina::vl::param_special_lw::onemore_slowdown_frame;
+                    SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
                 else {
-                    SlowModule::set(defender_boma, 0, 50, 20, false, *BATTLE_OBJECT_ID_INVALID as u32);
+                    slow_mul = lucina::vl::param_special_lw::onemore_slowdown_mul_on_hit;
+                    frames = lucina::vl::param_special_lw::onemore_slowdown_frame_on_hit;
+                    SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
             }
         }
@@ -737,9 +746,6 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 
 pub fn install() {
     unsafe{
-        // skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
-        // skyline::nn::ro::LookupSymbol(&mut ITEM_MANAGER, c_str!("_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E"));
-        // skyline::nn::ro::LookupSymbol(&mut FIGHTER_MANAGER, c_str!("_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E"));
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
         let text_size = (getRegionAddress(Region::Rodata) as usize) - (text_ptr as usize);
         let text = std::slice::from_raw_parts(text_ptr, text_size);

@@ -74,11 +74,16 @@ unsafe fn shizue_bullet_shootb(weapon: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "shizue_clayrocket", script = "game_ready", category = ACMD_GAME, low_priority )]
+unsafe fn shizue_clayrocket_ready(_weapon: &mut L2CAgentBase) {
+}
+
 pub fn install() {
     install_acmd_scripts!(
         shizue_attacks3,
         shizue_attacklw3,
         shizue_bullet_shootf,
         shizue_bullet_shootb,
+        shizue_clayrocket_ready
     );
 }

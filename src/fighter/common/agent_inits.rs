@@ -37,6 +37,7 @@ use {
             miifighter::fgc::miifighter_fgc,
             richter::fgc::richter_fgc,
             samusd::fgc::samusd_fgc,
+            shizue::agent_init::shizue_special_lw_pre,
             toonlink::fgc::toonlink_fgc,
             trail::agent_init::trail_guard_cont_pre
         }
@@ -152,6 +153,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         else if fighter_kind == *FIGHTER_KIND_RYU {
             WorkModule::set_float(fighter.module_accessor, -0.6, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER);
         //     fighter.global_table[STATUS_END_CONTROL].assign(&false.into());
+        }
+        else if fighter_kind == *FIGHTER_KIND_SHIZUE {
+            fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(shizue_special_lw_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_EFLAME
         || fighter_kind == *FIGHTER_KIND_ELIGHT {

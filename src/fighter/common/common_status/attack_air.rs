@@ -25,7 +25,7 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.attack_air_uniq(false.into());
     }
-    let bind_address_call_attack_air_uniq = smash::lua2cpp::L2CFighterCommon_bind_address_call_attack_air_uniq;
+    let bind_address_call_attack_air_uniq = L2CFighterCommon_bind_address_call_attack_air_uniq;
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(bind_address_call_attack_air_uniq as *const () as _));
     if param_1.get_bool() == true {
         fighter.sub_attack_air_kind();

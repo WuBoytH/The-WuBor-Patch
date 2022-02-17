@@ -31,7 +31,7 @@ unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_tread_jump_uniq_check();
     }
-    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_tread_jump_uniq_check as *const () as _));
+    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_tread_jump_uniq_check as *const () as _));
     let mut tread_attack_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("tread_attack_frame"));
     if MotionModule::is_flag_start_1_frame(fighter.module_accessor) {
         tread_attack_frame -= 1;
@@ -40,7 +40,7 @@ unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
-    fighter.sub_shift_status_main(L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_status_TreadJump_Main as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TreadJump_Main as *const () as _))
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

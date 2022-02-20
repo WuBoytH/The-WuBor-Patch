@@ -29,7 +29,10 @@ pub unsafe extern "C" fn shizue_check_rocket_fire(fighter: &mut L2CFighterCommon
 
 pub unsafe extern "C" fn shizue_check_attack_cancel(fighter: &mut L2CFighterCommon) -> bool {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    if !(*FIGHTER_STATUS_KIND_WAIT..=*FIGHTER_STATUS_KIND_REBOUND_JUMP).contains(&status) {
+    if !(*FIGHTER_STATUS_KIND_WAIT..=*FIGHTER_STATUS_KIND_TURN_RUN_BRAKE).contains(&status)
+    && !(*FIGHTER_STATUS_KIND_JUMP..=*FIGHTER_STATUS_KIND_FALL_AERIAL).contains(&status)
+    && !(*FIGHTER_STATUS_KIND_SQUAT..=*FIGHTER_STATUS_KIND_SQUAT_RV).contains(&status)
+    && !(*FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT..=*FIGHTER_STATUS_KIND_REBOUND_JUMP).contains(&status) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
             return true;
         }

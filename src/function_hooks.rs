@@ -236,20 +236,6 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 return false;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_KEN {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
-                if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
-                    return false;
-                }
-            }
-        }
     }
     return ret;
 }

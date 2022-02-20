@@ -466,9 +466,24 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn ken_quickstep_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(false.into());
-        fighter.sub_air_check_fall_common();
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("run") {
+        if CancelModule::is_enable_cancel(fighter.module_accessor) {
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool()
+            || fighter.sub_transition_group_check_ground_item().get_bool()
+            || fighter.sub_transition_group_check_ground_catch().get_bool()
+            || fighter.sub_transition_group_check_ground_escape().get_bool()
+            || fighter.sub_transition_group_check_ground_guard().get_bool()
+            || fighter.sub_transition_group_check_ground_attack().get_bool()
+            || fighter.sub_transition_group_check_ground_jump().get_bool() {
+                return 0.into();
+            }
+        }
+    }
+    else if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 0.into();
+        }
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_SPECIAL_LW_FLAG_STEP_KICK) {
         MotionModule::change_motion(

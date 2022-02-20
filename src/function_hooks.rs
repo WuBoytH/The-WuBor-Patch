@@ -50,14 +50,8 @@ move_type_again: bool) -> u64 {
                 && StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                     add_vgauge(attacker_boma, 100.0);
                 }
-                else if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    if WorkModule::get_int(defender_boma, FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE) == 1 {
-                        let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 6.0;
-                        add_vgauge(attacker_boma, amount);
-                    }
-                }
                 else {
-                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 4.0;
+                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 5.0;
                     add_vgauge(attacker_boma, amount);
                 }
             }

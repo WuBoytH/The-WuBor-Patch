@@ -118,12 +118,12 @@ move_type_again: bool) -> u64 {
                 WorkModule::on_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
             }
         }
-        else if defender_fighter_kind == *FIGHTER_KIND_KEN {
-            if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
-            && MotionModule::frame(defender_boma) <= 8.75 {
-                WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
-            }
-        }
+        // else if defender_fighter_kind == *FIGHTER_KIND_KEN {
+        //     if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
+        //     && MotionModule::frame(defender_boma) <= 8.75 {
+        //         WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
+        //     }
+        // }
         else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
             if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
             || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))

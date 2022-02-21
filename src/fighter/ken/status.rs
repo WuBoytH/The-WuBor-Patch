@@ -183,12 +183,12 @@ unsafe fn ken_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             false
         );
     }
-    let eff : u64;
+    let eff;
     if !MotionModule::is_flip(fighter.module_accessor) {
-        eff = 0x1479305a4a;
+        eff = Hash40::new("ken_tatsumaki_wind_r");
     }
     else {
-        eff = 0x14833f6729;
+        eff = Hash40::new("ken_tatsumaki_wind_l");
     }
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);

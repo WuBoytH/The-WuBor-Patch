@@ -298,7 +298,7 @@ unsafe fn toonlink_boomerang_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue 
 unsafe extern "C" fn toonlink_boomerang_fly_substatus(weapon: &mut L2CWeaponCommon, param_3: L2CValue) -> L2CValue {
     if param_3.get_bool() {
         if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
-            notify_event_msc_cmd!(weapon, 0x18b78d41a0u64);
+            notify_event_msc_cmd!(weapon, Hash40::new_raw(0x18b78d41a0));
         }
         toonlink_boomerang_dec_life(weapon);
     }
@@ -309,7 +309,7 @@ unsafe extern "C" fn toonlink_boomerang_dec_life(weapon: &mut L2CWeaponCommon) {
     WorkModule::dec_int(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_INT_LIFE);
     let life = WorkModule::get_int(weapon.module_accessor, *WN_LINK_BOOMERANG_INSTANCE_WORK_ID_INT_LIFE);
     if life <= 0 {
-        notify_event_msc_cmd!(weapon, 0x199c462b5du64);
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
 }
 

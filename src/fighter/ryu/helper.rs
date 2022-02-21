@@ -44,7 +44,7 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk2(fighter: &mut L2CFighterCommo
         }
     }
     fighter.attack_mtrans_post_process();
-    notify_event_msc_cmd!(fighter, 0x265a5c1b6bu64, mot1.get_int(), mot2.get_int());
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x265a5c1b6b), mot1.get_int(), mot2.get_int());
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_BRANCH_FRAME_FIRST);
     if 1 < ComboModule::count(fighter.module_accessor) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_CHANGE_LOG);

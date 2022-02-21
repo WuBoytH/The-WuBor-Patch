@@ -14,8 +14,8 @@ use {
 #[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe fn jack_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     jack_special_mot_helper(fighter, true.into(), hash40("special_s1").into(), hash40("special_air_s1").into());
-    notify_event_msc_cmd!(fighter, 0x20cbc92683u64, 1, *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
-    notify_event_msc_cmd!(fighter, 0x3a40337e2cu64, 1, *FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
     jack_special_s_main_helper(fighter)
 }
 

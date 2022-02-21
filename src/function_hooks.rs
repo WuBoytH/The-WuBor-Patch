@@ -560,7 +560,7 @@ pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32
         if utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
         && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
             if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB) {
-                return 0x8a0abc72cu64;
+                return hash40("throw_hi");
             }
         }
     }

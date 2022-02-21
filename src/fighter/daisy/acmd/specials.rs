@@ -71,7 +71,7 @@ unsafe fn daisy_specialhistart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor, 0, false);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
@@ -129,7 +129,7 @@ unsafe fn daisy_specialairhistart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor, 0, false);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
@@ -183,7 +183,7 @@ unsafe fn daisy_specialairlw(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
 

@@ -109,7 +109,7 @@ unsafe fn ryu_specialairsstart(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe fn ryu_sspecialair(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
     }
     wait(fighter.lua_state_agent, 1.0);

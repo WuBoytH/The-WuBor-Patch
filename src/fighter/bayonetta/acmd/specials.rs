@@ -14,7 +14,7 @@ unsafe fn bayonetta_specialsholdend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 2, 0, 0, 0, false);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 2, 0, 0, 0, false);
         macros::ATTACK(fighter, 0, 0, Hash40::new("footr"), 8.0, 80, 8, 0, 60, 4.0, 0.0, 0.0, 0.0, Some(-8.0), Some(0.0), Some(0.0), 1.0, 1.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
     }
@@ -50,8 +50,8 @@ unsafe fn bayonetta_specialairsu(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 5, 0, 20, 0, false);
-        notify_event_msc_cmd!(fighter, 0x2b7cb92b79u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, false, false, true, 5);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 5, 0, 20, 0, false);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, false, false, true, 5);
     }
     frame(fighter.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -72,7 +72,7 @@ unsafe fn bayonetta_specialairsu(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {

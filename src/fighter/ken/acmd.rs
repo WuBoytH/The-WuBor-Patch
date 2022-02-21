@@ -257,7 +257,7 @@ unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -361,7 +361,7 @@ unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -465,7 +465,7 @@ unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
@@ -552,7 +552,7 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
@@ -643,7 +643,7 @@ unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
 }

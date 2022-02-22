@@ -92,53 +92,51 @@ unsafe extern "C" fn jack_special_s_main_loop(fighter: &mut L2CFighterCommon) ->
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
     }
-    if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if !MotionModule::is_end(fighter.module_accessor) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL) {
-                let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, sum_speed_y, 0.0, 0.0, 0.0);
-                sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_FALL_NORMAL);
-            }
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY) {
-                let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, sum_speed_x, 0.0, 0.0, 0.0, 0.0);
-                sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
-                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-                KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_CONTROL_ENERGY);
-            }
-            if StatusModule::is_changing(fighter.module_accessor) {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 0.into();
+        }
+    }
+    if !MotionModule::is_end(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL) {
+            let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, sum_speed_y, 0.0, 0.0, 0.0);
+            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_FALL_NORMAL);
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY) {
+            let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, sum_speed_x, 0.0, 0.0, 0.0, 0.0);
+            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_CONTROL_ENERGY);
+        }
+        if StatusModule::is_changing(fighter.module_accessor) {
+            return 0.into();
+        }
+        if StatusModule::is_situation_changed(fighter.module_accessor) {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+            && MotionModule::frame(fighter.module_accessor) >= 34.0 {
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
                 return 0.into();
             }
-            if StatusModule::is_situation_changed(fighter.module_accessor) {
-                if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-                && MotionModule::frame(fighter.module_accessor) >= 34.0 {
-                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-                    return 0.into();
-                }
-                else {
-                    jack_special_mot_helper(fighter, false.into(), hash40("special_s1").into(), hash40("special_air_s1").into());
-                }
-            }
-        }
-        else {
-            if fighter.global_table[SITUATION_KIND] != *SITUATION_KIND_GROUND {
-                fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-            }
             else {
-                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+                jack_special_mot_helper(fighter, false.into(), hash40("special_s1").into(), hash40("special_air_s1").into());
             }
         }
     }
     else {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
-        || fighter.sub_air_check_fall_common().get_bool() {
-            return 0.into();
+        if fighter.global_table[SITUATION_KIND] != *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
     0.into()

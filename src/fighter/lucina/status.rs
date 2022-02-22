@@ -35,6 +35,9 @@ unsafe extern "C" fn lucina_jab_cancels_substatus2(fighter: &mut L2CFighterCommo
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
         let normal_cancels = [
@@ -77,6 +80,9 @@ unsafe extern "C" fn lucina_attackhi3_cancel_substatus2(fighter: &mut L2CFighter
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
         let jump_cancel = 1;
@@ -101,6 +107,9 @@ unsafe extern "C" fn lucina_tilt_cancels_substatus2(fighter: &mut L2CFighterComm
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
         FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, false, 0);
@@ -152,10 +161,13 @@ unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon)
                     jump_cancel = 0;
                 }
             }
-            let special_cancels : Vec<i32> = [
+            let special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
             ].to_vec();
             FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, true, jump_cancel);
@@ -512,6 +524,9 @@ unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) 
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         fighter.sub_wait_ground_check_common(false.into());
         fighter.sub_air_check_fall_common();
+    }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() == true {
+        return 1.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

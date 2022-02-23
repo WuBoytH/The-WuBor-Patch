@@ -73,7 +73,7 @@ unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_guard_on_uniq(false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_guard_on_uniq as *const () as _));
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_guard_on_uniq as *const () as _));
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont_pre)]
@@ -145,8 +145,12 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
         }
         let catch_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_CATCH_FRAME);
         if catch_frame < 0 {
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
-            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_CATCH_FRAME);
+            let catch_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_CATCH_FRAME);
+            if catch_frame < 0 {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
+            }
         }
     }
     0.into()
@@ -265,30 +269,15 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = L2CFighterCommon_sub_status_end_guard_on_common)]
 unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
-    if status != *FIGHTER_STATUS_KIND_GUARD {
-        if status != *FIGHTER_STATUS_KIND_GUARD_DAMAGE
-        || (status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD)) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, 0xafae75f05u64, true, true);
-            sv_module_access::effect(fighter.lua_state_agent);
-            fighter.pop_lua_stack(1);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, 0x10da0b43c8u64, true, true);
-            sv_module_access::effect(fighter.lua_state_agent);
-            fighter.pop_lua_stack(1);
-        }
-        else {
-            sub_status_end_guard_on_common_thing(fighter, param_1);
-        }
+    if status != *FIGHTER_STATUS_KIND_GUARD
+    && (status != *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+    || (status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD))) {
+        effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0xafae75f05), true, true);
+        effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x10da0b43c8), true, true);
     }
-    else {
-        sub_status_end_guard_on_common_thing(fighter, param_1);
-    }
-}
-
-unsafe extern "C" fn sub_status_end_guard_on_common_thing(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    if param_1.get_bool() == false {
-        notify_event_msc_cmd!(fighter, 0x262a7a102du64);
+    else if param_1.get_bool() == false {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
     }
 }
 
@@ -443,6 +432,130 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_common)]
+unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    ControlModule::reset_flick_x(fighter.module_accessor);
+    ControlModule::reset_flick_sub_x(fighter.module_accessor);
+    fighter.global_table[STICK_X].assign(&0xFE.into());
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD);
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_IS_DONE_GUARD_DAMAGE_NUM) {
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_GUARD_DAMAGE_NUM);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_IS_DONE_GUARD_DAMAGE_NUM);
+        }
+        if param_1.get_bool() {
+            let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
+            let prev_shield_scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
+            let shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+            let shield_scale = fighter.FighterStatusGuard__calc_shield_scale(shield.into()).get_f32();
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new_raw(0x12c9377e3d),
+                Hash40::new("throw"),
+                &ZERO_VECTOR,
+                &ZERO_VECTOR,
+                0.1,
+                false,
+                *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+                0,
+                -1,
+                *EFFECT_FLIP_NONE,
+                1,
+                false,
+                true
+            );
+            let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+            let team_color = FighterUtil::get_team_color(boma);
+            let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("shield_effect_color"));
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+            let handle = EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new_raw(0x12be304eab),
+                Hash40::new("throw"),
+                &ZERO_VECTOR,
+                &ZERO_VECTOR,
+                0.1,
+                false,
+                *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+                0,
+                -1,
+                *EFFECT_FLIP_NONE,
+                1,
+                false,
+                true
+            );
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+            WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
+            let handle = EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new_raw(0x113434cb66),
+                Hash40::new("throw"),
+                &ZERO_VECTOR,
+                &ZERO_VECTOR,
+                1.0,
+                false,
+                *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+                0,
+                -1,
+                *EFFECT_FLIP_NONE,
+                1,
+                false,
+                true
+            );
+            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+            WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
+            if handle != 0 {
+                let diff = (shield_scale / prev_shield_scale) * 0.1;
+                EffectModule::set_scale(fighter.module_accessor, handle as u32, &Vector3f{x: diff, y: diff, z: diff});
+            }
+        }
+    }
+    else {
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_GUARD_FRAME);
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_ESCAPE_FRAME);
+        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        let just_shield_precede_extension = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("just_shield_precede_extension"));
+        ControlModule::set_command_life_extend(fighter.module_accessor, just_shield_precede_extension as u8);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_JUST_SHIELD);
+        let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+        FighterUtil::flash_eye_info(boma);
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL) {
+            ModelModule::enable_gold_eye(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
+        }
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("sys_just_shield"),
+            Hash40::new("throw"),
+            &ZERO_VECTOR,
+            &ZERO_VECTOR,
+            1.0,
+            &ZERO_VECTOR,
+            &ZERO_VECTOR,
+            false,
+            *EFFECT_SUB_ATTRIBUTE_NONE as u32,
+            *EFFECT_FLIP_NONE,
+            1
+        );
+        let shield_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
+        ColorBlendModule::set_last_attack_direction(fighter.module_accessor, &Vector3f{x: -shield_lr, y: 0.0, z: 0.0});
+        EffectModule::req_common(fighter.module_accessor, Hash40::new("just_shield"), 0.0);
+        if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON {
+            EffectModule::req_screen(fighter.module_accessor, Hash40::new("just_shield_screen"), false, false, false);
+        }
+        let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+        let se = FighterUtil::get_just_shield_se(fighter_kind);
+        SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0));
+    }
+    if !StopModule::is_stop(fighter.module_accessor) {
+        fighter.sub_GuardDamageUniq(false.into());
+    }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_GuardDamageUniq as *const () as _));
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_Main)]
 unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_guard_damage_main_common_air().get_bool() {
@@ -499,35 +612,41 @@ unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCo
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOff_Common)]
 unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
-    // Updated transition terms
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
+    let enabled_terms = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+        // Updated transition terms
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
+    ];
+    for val in enabled_terms.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *val);
+    }
     // Original Parry stuff
     // let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
     // let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
@@ -549,7 +668,7 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_guard_off_uniq(false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_bind_address_call_sub_guard_off_uniq as *const () as _));
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_guard_off_uniq as *const () as _));
     motion_rate.into()
 }
 
@@ -670,6 +789,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_guard_cont,
             sub_status_end_guard_on_common,
             sub_ftstatusuniqprocessguarddamage_initstatus_inner,
+            status_guarddamage_common,
             status_guarddamage_main,
             sub_ftstatusuniqprocessguardoff_initstatus,
             sub_status_guard_on_common,

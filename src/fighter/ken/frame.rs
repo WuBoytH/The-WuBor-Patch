@@ -176,50 +176,50 @@ fn ken_frame(fighter: &mut L2CFighterCommon) {
 
         // V Shift
 
-        if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD
-        && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        && WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) >= 300.0 {
-            let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
-            if stick_x * PostureModule::lr(fighter.module_accessor) < -0.5 {
-                add_vgauge(fighter.module_accessor, -300.0);
-                fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B.into(), false.into());
-            }
-        }
+        // if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD
+        // && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        // && WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) >= 300.0 {
+        //     let stick_x = ControlModule::get_stick_x(fighter.module_accessor);
+        //     if stick_x * PostureModule::lr(fighter.module_accessor) < -0.5 {
+        //         add_vgauge(fighter.module_accessor, -300.0);
+        //         fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B.into(), false.into());
+        //     }
+        // }
 
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw_step_b") {
-            if MotionModule::frame(fighter.module_accessor) <= 1.0
-            && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
-                macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
-            }
-            if MotionModule::frame(fighter.module_accessor) == 9.375 {
-                if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-                    add_vgauge(fighter.module_accessor, 150.0);
-                    SlowModule::set_whole(fighter.module_accessor, 5, 0);
-                    macros::SLOW_OPPONENT(fighter, 10.0, 2.0);
-                    macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
-                }
-            }
-            if MotionModule::frame(fighter.module_accessor) == 12.5 {
-                SlowModule::clear_whole(fighter.module_accessor);
-                if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-                && WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-                    MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
-                }
-                else if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-                    macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
-                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
-                }
-            }
-        }
+        // if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw_step_b") {
+        //     if MotionModule::frame(fighter.module_accessor) <= 1.0
+        //     && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+        //         macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+        //         macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+        //         macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+        //         macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+        //         macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        //         macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        //     }
+        //     if MotionModule::frame(fighter.module_accessor) == 9.375 {
+        //         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+        //             add_vgauge(fighter.module_accessor, 150.0);
+        //             SlowModule::set_whole(fighter.module_accessor, 5, 0);
+        //             macros::SLOW_OPPONENT(fighter, 10.0, 2.0);
+        //             macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+        //         }
+        //     }
+        //     if MotionModule::frame(fighter.module_accessor) == 12.5 {
+        //         SlowModule::clear_whole(fighter.module_accessor);
+        //         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+        //         && WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+        //             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_lw"), 0.0, 1.0, false, 0.0, false, false);
+        //         }
+        //         else if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+        //             macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+        //             WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
+        //         }
+        //     }
+        // }
         
-        if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_step_b") & hash40("special_lw") {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
-        }
+        // if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw_step_b") & hash40("special_lw") {
+        //     WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
+        // }
 
         // Training Mode Tools
 

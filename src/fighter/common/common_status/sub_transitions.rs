@@ -240,6 +240,9 @@ unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) 
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
+            if fighter.sub_transition_group_check_air_jump_attack().get_bool() {
+                return true.into();
+            }
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_AIR) {
                 if fighter.sub_is_item_shoot_air().get_bool() {
                     fighter.change_status(FIGHTER_STATUS_KIND_ITEM_SHOOT_AIR.into(), true.into());

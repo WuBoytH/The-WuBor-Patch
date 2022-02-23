@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vl::*,
+    super::vl,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -123,7 +123,12 @@ unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
         sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-        macros::SET_SPEED_EX(fighter, dive_speed_x, dive_speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        macros::SET_SPEED_EX(
+            fighter,
+            vl::param_special_lw::dive_speed_x,
+            vl::param_special_lw::dive_speed_y,
+            *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
+        );
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC);
     }

@@ -196,12 +196,12 @@ unsafe fn ryu_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             false
         );
     }
-    let eff : u64;
+    let eff;
     if !MotionModule::is_flip(fighter.module_accessor) {
-        eff = 0x1441b51880;
+        eff = Hash40::new("ryu_tatsumaki_wind_r");
     }
     else {
-        eff = 0x14bbba25e3;
+        eff = Hash40::new("ryu_tatsumaki_wind_l");
     }
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);

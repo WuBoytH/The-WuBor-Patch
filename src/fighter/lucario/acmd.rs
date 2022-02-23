@@ -338,7 +338,7 @@ unsafe fn lucario_qigong_shoot(weapon: &mut L2CAgentBase) {
     }
     wait(weapon.lua_state_agent, 8.0);
     if macros::is_excute(weapon) {
-        notify_event_msc_cmd!(weapon, 0x199c462b5du64);
+        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
 }
 

@@ -100,116 +100,115 @@ unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
 
 // V Shift start-up.
 
-#[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME, low_priority )]
-unsafe fn ken_speciallwstepb(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
-        DamageModule::set_damage_lock(fighter.module_accessor, true);
-    }
-    macros::FT_MOTION_RATE(fighter, 1.6);
-    frame(fighter.lua_state_agent, 8.75);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-        if macros::is_excute(fighter) {
-            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-        }
-    }
-    frame(fighter.lua_state_agent, 20.0);
-    if macros::is_excute(fighter) {
-        damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
-        DamageModule::set_damage_lock(fighter.module_accessor, false);
-    }
-}
+// #[acmd_script( agent = "ken", script = "game_speciallwstepb", category = ACMD_GAME, low_priority )]
+// unsafe fn ken_speciallwstepb(fighter: &mut L2CAgentBase) {
+//     if macros::is_excute(fighter) {
+//         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+//         DamageModule::set_damage_lock(fighter.module_accessor, true);
+//     }
+//     macros::FT_MOTION_RATE(fighter, 1.6);
+//     frame(fighter.lua_state_agent, 8.75);
+//     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+//         if macros::is_excute(fighter) {
+//             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+//         }
+//     }
+//     frame(fighter.lua_state_agent, 20.0);
+//     if macros::is_excute(fighter) {
+//         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+//         DamageModule::set_damage_lock(fighter.module_accessor, false);
+//     }
+// }
 
 // V-Shift Break - Shadow-Thunder Kick
 
-#[acmd_script( agent = "ken", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn ken_speciallw(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-            macros::SLOW_OPPONENT(fighter, 100.0, 18.0);
-        }
-    }
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 6.0, 30, 98, 100, 0, 3.2, -1.5, -1.0, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 6.0, 30, 98, 100, 0, 3.2, -6.2, -1.0, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 6.0, 30, 98, 100, 0, 3.9, 4.3, -1.7, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
-        AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 5.0, false);
-        AttackModule::set_add_reaction_frame(fighter.module_accessor, 2, 5.0, false);
-    }
-    wait(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
-            macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
-        }
-    }
-}
+// #[acmd_script( agent = "ken", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+// unsafe fn ken_speciallw(fighter: &mut L2CAgentBase) {
+//     if macros::is_excute(fighter) {
+//         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_INVINCIBLE), 0);
+//         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+//             macros::SLOW_OPPONENT(fighter, 100.0, 18.0);
+//         }
+//     }
+//     macros::FT_MOTION_RATE(fighter, 1.0);
+//     frame(fighter.lua_state_agent, 15.0);
+//     if macros::is_excute(fighter) {
+//         macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 6.0, 30, 98, 100, 0, 3.2, -1.5, -1.0, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+//         macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 6.0, 30, 98, 100, 0, 3.2, -6.2, -1.0, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+//         macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 6.0, 30, 98, 100, 0, 3.9, 4.3, -1.7, -1.0, None, None, None, 1.8, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
+//         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
+//         AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 5.0, false);
+//         AttackModule::set_add_reaction_frame(fighter.module_accessor, 2, 5.0, false);
+//     }
+//     wait(fighter.lua_state_agent, 3.0);
+//     if macros::is_excute(fighter) {
+//         AttackModule::clear_all(fighter.module_accessor);
+//         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+//         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT) {
+//             macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
+//             WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
+//         }
+//     }
+// }
 
-#[acmd_script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn ken_speciallw_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 1.5, true);
-        
-    }
-    frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
-        macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
-        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_attack_line"), Hash40::new("ryu_attack_line"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
-        macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(fighter.lua_state_agent, 18.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, true);
-    }
-}
+// #[acmd_script( agent = "ken", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+// unsafe fn ken_speciallw_eff(fighter: &mut L2CAgentBase) {
+//     if macros::is_excute(fighter) {
+//         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("kneel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+//         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_thunder"), Hash40::new("footl"), 0.5, 0, 0, 0, 0, 0, 1.5, true);
+//     }
+//     frame(fighter.lua_state_agent, 15.0);
+//     if macros::is_excute(fighter) {
+//         macros::EFFECT_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_YZ);
+//         macros::LAST_EFFECT_SET_COLOR(fighter, 0.0, 0.5, 1);
+//         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("ryu_attack_line"), Hash40::new("ryu_attack_line"), Hash40::new("top"), -2, 10, 1, -12, 0, 0, 0.7, true, *EF_FLIP_YZ);
+//         macros::EFFECT_ALPHA(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 12.5, 14, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 360, true, 0.5);
+//         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+//     }
+//     frame(fighter.lua_state_agent, 18.0);
+//     if macros::is_excute(fighter) {
+//         macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_thunder"), false, true);
+//     }
+// }
 
-#[acmd_script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
-unsafe fn ken_speciallw_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 9.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ken_smash_s01"));
-        macros::PLAY_SE(fighter, Hash40::new("vc_ken_attack09"));
-    }
-    frame(fighter.lua_state_agent, 38.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ken_step_left_m"));
-    }
-}
+// #[acmd_script( agent = "ken", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
+// unsafe fn ken_speciallw_snd(fighter: &mut L2CAgentBase) {
+//     frame(fighter.lua_state_agent, 9.0);
+//     if macros::is_excute(fighter) {
+//         macros::PLAY_SE(fighter, Hash40::new("se_ken_smash_s01"));
+//         macros::PLAY_SE(fighter, Hash40::new("vc_ken_attack09"));
+//     }
+//     frame(fighter.lua_state_agent, 38.0);
+//     if macros::is_excute(fighter) {
+//         macros::PLAY_SE(fighter, Hash40::new("se_ken_step_left_m"));
+//     }
+// }
 
-#[acmd_script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ken_speciallw_exp(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
-    }
-    frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
-        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
-    }
-    frame(fighter.lua_state_agent, 13.0);
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit1"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        macros::AREA_WIND_2ND_arg10(fighter, 0, 0.8, 180, 8, 0.8, -10, 7, 20, 14, 80);
-    }
-    frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack1"), 0);
-    }
-    frame(fighter.lua_state_agent, 28.0);
-    if macros::is_excute(fighter) {
-        AreaModule::erase_wind(fighter.module_accessor, 0);
-    }
-}
+// #[acmd_script( agent = "ken", script = "expression_speciallw", category = ACMD_EXPRESSION, low_priority )]
+// unsafe fn ken_speciallw_exp(fighter: &mut L2CAgentBase) {
+//     if macros::is_excute(fighter) {
+//         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+//         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+//     }
+//     frame(fighter.lua_state_agent, 7.0);
+//     if macros::is_excute(fighter) {
+//         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+//         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+//     }
+//     frame(fighter.lua_state_agent, 13.0);
+//     if macros::is_excute(fighter) {
+//         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit1"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+//         macros::AREA_WIND_2ND_arg10(fighter, 0, 0.8, 180, 8, 0.8, -10, 7, 20, 14, 80);
+//     }
+//     frame(fighter.lua_state_agent, 15.0);
+//     if macros::is_excute(fighter) {
+//         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attack1"), 0);
+//     }
+//     frame(fighter.lua_state_agent, 28.0);
+//     if macros::is_excute(fighter) {
+//         AreaModule::erase_wind(fighter.module_accessor, 0);
+//     }
+// }
 
 #[acmd_script( agent = "ken", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn ken_specialsstart(fighter: &mut L2CAgentBase) {
@@ -258,7 +257,7 @@ unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_W {
@@ -362,7 +361,7 @@ unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_XLU);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -466,7 +465,7 @@ unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
@@ -553,7 +552,7 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
@@ -644,7 +643,7 @@ unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
@@ -927,8 +926,8 @@ pub fn install() {
         ken_run,
         ken_attacks3w,
         ken_attackcommand3,
-        ken_speciallwstepb,
-        ken_speciallw, ken_speciallw_eff, ken_speciallw_snd, ken_speciallw_exp,
+        // ken_speciallwstepb,
+        // ken_speciallw, ken_speciallw_eff, ken_speciallw_snd, ken_speciallw_exp,
         ken_specialsstart,
         ken_specials,
         ken_specialairsstart,

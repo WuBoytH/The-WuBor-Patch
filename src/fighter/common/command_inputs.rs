@@ -13,20 +13,37 @@ use {
 
 #[inline(always)]
 pub unsafe fn global_command_inputs(fighter: &mut L2CFighterCommon) {
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER) <= command_input_life {
-        WorkModule::inc_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER);
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP) <= 3 {
+        FGCModule::check_command_inc(
+            fighter,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_TIMER,
+            command_input_window
+        );   
     }
-    else {
-        WarkModule::reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP);
-        WarkModule::reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP);
-        WarkModule::reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP);
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP) <= 3 {
+        FGCModule::check_command_inc(
+            fighter,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_TIMER,
+            command_input_window
+        );
     }
-
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_SUPER_COMMAND_INPUT_TIMER) <= super_command_input_life {
-        WorkModule::inc_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_SUPER_COMMAND_INPUT_TIMER);
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP) <= 3 {
+        FGCModule::check_command_inc(
+            fighter,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_TIMER,
+            command_input_window
+        );
     }
-    else {
-        WarkModule::reset_i32(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP);
+    if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP) <= 6 {
+        FGCModule::check_command_inc(
+            fighter,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP,
+            FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_TIMER,
+            super_command_input_window
+        );
     }
 
     dqcf(fighter);
@@ -39,17 +56,35 @@ pub unsafe fn global_command_inputs(fighter: &mut L2CFighterCommon) {
 pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP;
-    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_SUPER_COMMAND_INPUT_TIMER;
+    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_TIMER;
     let step = WorkModule::get_int(fighter.module_accessor, flag);
-
     if step == 0 {
-        if dir == 2 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+        if dir == 2
+        || dir == 1 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
     }
     else if step == 1 {
         if dir == 3 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
+        }
+        else if dir == 6
+        || dir == 9 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
+        }
+        else if dir != 1
+        && dir != 3
+        && dir != 2 {
+            WarkModule::reset_i32(fighter.module_accessor, flag);
+        }
+    }
+    else if step == 2 {
+        if dir == 6
+        || dir == 9 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
         else if dir != 6
         && dir != 3
@@ -57,23 +92,18 @@ pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
             WarkModule::reset_i32(fighter.module_accessor, flag);
         }
     }
-    else if step == 2 {
-        if dir == 6 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
-        }
-        else if dir != 6
-        && dir != 3
-        && dir != 9 {
-            WarkModule::reset_i32(fighter.module_accessor, flag);
-        }
-    }
     else if step == 3 {
-        if dir == 2 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+        if dir == 2
+        || dir == 1 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
+        }
+        else if dir == 3 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
         else if dir != 3
         && dir != 6
-        && dir != 1 {
+        && dir != 9 {
             WarkModule::reset_i32(fighter.module_accessor, flag);
         }
     }
@@ -81,19 +111,25 @@ pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
         if dir == 3 {
             FGCModule::inc_command(fighter, flag, timer_flag);
         }
-        else if dir != 6
+        else if dir == 3
+        || dir == 6
+        || dir == 9 {
+            FGCModule::inc_command(fighter, flag, timer_flag);
+        }
+        else if dir != 1
         && dir != 3
         && dir != 2 {
             WarkModule::reset_i32(fighter.module_accessor, flag);
         }
     }
     else if step == 5 {
-        if dir == 6 {
+        if dir == 6
+        || dir == 9 {
             FGCModule::inc_command(fighter, flag, timer_flag);
         }
         else if dir != 6
         && dir != 3
-        && dir != 9 {
+        && dir != 2 {
             WarkModule::reset_i32(fighter.module_accessor, flag);
         }
     }
@@ -109,7 +145,8 @@ pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
         else {
             if dir != 6
             && dir != 9
-            && dir != 5 {
+            && dir != 5
+            && dir != 3 {
                 WarkModule::reset_i32(fighter.module_accessor, flag);
             }
         }
@@ -133,17 +170,25 @@ pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
 pub unsafe fn qcf(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP;
-    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER;
+    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_TIMER;
     let step = WorkModule::get_int(fighter.module_accessor, flag);
 
     if step == 0 {
-        if dir == 2 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+        if dir == 2
+        || dir == 1 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
     }
     else if step == 1 {
         if dir == 3 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
+        }
+        else if dir == 6
+        || dir == 9 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
         }
         else if dir != 6
         && dir != 3
@@ -152,12 +197,13 @@ pub unsafe fn qcf(fighter: &mut L2CFighterCommon) {
         }
     }
     else if step == 2 {
-        if dir == 6 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+        if dir == 6
+        || dir == 9 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
         else if dir != 6
         && dir != 3
-        && dir != 9 {
+        && dir != 2 {
             WarkModule::reset_i32(fighter.module_accessor, flag);
         }
     }
@@ -199,17 +245,25 @@ pub unsafe fn qcf(fighter: &mut L2CFighterCommon) {
 pub unsafe fn qcb(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP;
-    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER;
+    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_TIMER;
     let step = WorkModule::get_int(fighter.module_accessor, flag);
 
     if step == 0 {
-        if dir == 2 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+        if dir == 2
+        || dir == 3 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
     }
     else if step == 1 {
         if dir == 1 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
+        }
+        else if dir == 4
+        || dir == 7 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
         }
         else if dir != 4
         && dir != 1
@@ -218,8 +272,9 @@ pub unsafe fn qcb(fighter: &mut L2CFighterCommon) {
         }
     }
     else if step == 2 {
-        if dir == 4 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+        if dir == 4
+        || dir == 7 {
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
         else if dir != 4
         && dir != 1
@@ -265,20 +320,21 @@ pub unsafe fn qcb(fighter: &mut L2CFighterCommon) {
 pub unsafe fn srk(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP;
-    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_COMMAND_INPUT_TIMER;
+    let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_TIMER;
     let step = WorkModule::get_int(fighter.module_accessor, flag);
 
     if step == 0 {
         if dir == 6
         || dir == 9
         || dir == 3 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
     }
     else if step == 1 {
         if dir == 2
         || dir == 1 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
+            WorkModule::set_int(fighter.module_accessor, 0, timer_flag);
         }
         else if dir != 6
         && dir != 3
@@ -289,7 +345,7 @@ pub unsafe fn srk(fighter: &mut L2CFighterCommon) {
     else if step == 2 {
         if dir == 3
         || dir == 6 {
-            FGCModule::inc_command(fighter, flag, timer_flag);
+            WorkModule::inc_int(fighter.module_accessor, flag);
         }
         else if dir != 3
         && dir != 2

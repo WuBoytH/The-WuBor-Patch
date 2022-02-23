@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vl::*,
+    super::vl,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -154,28 +154,28 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
         let speed_x : f32;
         let speed_y : f32;
         if [6, 3, 9].contains(&dir) {
-            speed_x = long_jump_speed_strong_x;
-            speed_y = long_jump_speed_strong_y;
+            speed_x = vl::param_special_lw::long_jump_speed_strong_x;
+            speed_y = vl::param_special_lw::long_jump_speed_strong_y;
             WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_S, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
         }
         else if [4, 7, 1].contains(&dir) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_LW_FLAG_BLJ);
             if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV) {
-                speed_x = -long_jump_speed_strong_x;
+                speed_x = -vl::param_special_lw::long_jump_speed_strong_x;
                 speed_y = 0.0;
                 WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_B, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
             }
             else {
-                speed_x = long_jump_speed_weak_x;
-                speed_y = long_jump_speed_weak_y;
+                speed_x = vl::param_special_lw::long_jump_speed_weak_x;
+                speed_y = vl::param_special_lw::long_jump_speed_weak_y;
                 WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_W, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
             }
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
         }
         else {
-            speed_x = long_jump_speed_mid_x;
-            speed_y = long_jump_speed_mid_y;
+            speed_x = vl::param_special_lw::long_jump_speed_mid_x;
+            speed_y = vl::param_special_lw::long_jump_speed_mid_y;
             WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_LONG_JUMP_M, FIGHTER_MARIO_STATUS_SPECIAL_LW_INT_LONG_JUMP_KIND);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_BLJ_PREV);
         }
@@ -193,7 +193,7 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
             air_accel_mul = 1.0;
         }
         else {
-            air_accel_mul = long_jump_air_accel_y_mul;
+            air_accel_mul = vl::param_special_lw::long_jump_air_accel_y_mul;
         }
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0) * air_accel_mul;
         let air_accel_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_x_mul"), 0);
@@ -201,13 +201,20 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
         sv_kinetic_energy::set_accel(fighter.lua_state_agent);
         fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, air_accel_x * long_jump_air_accel_x_mul);
+        lua_args!(
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            air_accel_x * vl::param_special_lw::long_jump_air_accel_x_mul
+        );
         sv_kinetic_energy::set_accel_x_mul(fighter.lua_state_agent);
     }
     else {
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        lua_bind::FighterKineticEnergyGravity::set_speed(gravity as *mut smash::app::FighterKineticEnergyGravity, -ground_pound_fall_speed);
+        lua_bind::FighterKineticEnergyGravity::set_speed(
+            gravity as *mut smash::app::FighterKineticEnergyGravity,
+            -vl::param_special_lw::ground_pound_fall_speed
+        );
         lua_bind::FighterKineticEnergyGravity::set_accel(gravity as *mut smash::app::FighterKineticEnergyGravity, 0.0);
     }
     0.into()

@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
         app::lua_bind::*,
@@ -31,7 +31,7 @@ unsafe fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
     }
-    fighter.global_table[SUB_STATUS3].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_check_attack_mtrans as *const () as _));
+    fighter.global_table[SUB_STATUS3].assign(&L2CValue::Ptr(L2CFighterCommon_check_attack_mtrans as *const () as _));
     fighter.sub_status_AttackComboCommon();
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_NONE, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ATTACK_WORK_INT_100_HIT_NEAR_COUNT_CLIFF_STOP);
@@ -128,7 +128,7 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
         if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO {
             let combo_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
             demon_attackcombo_main_mot_helper(fighter, (combo_count + 1).into());
-            notify_event_msc_cmd!(fighter, 0x2b94de0d96u64, FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
             return 0.into();
         }
     }

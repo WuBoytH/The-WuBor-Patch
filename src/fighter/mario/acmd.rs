@@ -10,7 +10,7 @@ use {
     smashline::*,
     super::{
         helper::*,
-        vl::*
+        vl
     },
     wubor_utils::vars::*,
 };
@@ -438,7 +438,12 @@ unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP)
         && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
-            macros::SET_SPEED_EX(fighter, 0.0, spin_hop_speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            macros::SET_SPEED_EX(
+                fighter,
+                0.0,
+                vl::param_special_s::spin_hop_speed_y,
+                *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
+            );
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_SPECIAL_S_HOP);
         }
     }
@@ -459,7 +464,7 @@ unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 28.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
@@ -528,7 +533,7 @@ unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 17.0);
     if sound == *COLLISION_SOUND_ATTR_COIN {

@@ -93,7 +93,7 @@ unsafe fn wolf_specialsend(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {

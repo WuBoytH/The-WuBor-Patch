@@ -13,7 +13,7 @@ use {
 unsafe fn bayonetta_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, true, false, 10, 3, 10, 5, true);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, true, false, 10, 3, 10, 5, true);
     }
     macros::FT_MOTION_RATE(fighter, 0.75);
     frame(fighter.lua_state_agent, 9.0);
@@ -46,12 +46,12 @@ unsafe fn bayonetta_attack11(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "bayonetta", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attack100end(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2bfb02b69au64, true);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2bfb02b69a), true);
         macros::CORRECT(fighter, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, true, false, false, 10, 3, 15, 5, true);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, true, false, false, 10, 3, 15, 5, true);
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -74,7 +74,7 @@ unsafe fn bayonetta_attack100end(fighter: &mut L2CAgentBase) {
     }
     // frame(fighter.lua_state_agent, 28.0);
     // macros::FT_START_ADJUST_MOTION_FRAME_arg1(fighter, 0.85 as u64);
-    frame(fighter.lua_state_agent, 29.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_MOTION_STOP);
@@ -86,7 +86,7 @@ unsafe fn bayonetta_attack100end(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_attacks33(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 10, 3, 10, 5, true);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 10, 3, 10, 5, true);
     }
     macros::FT_MOTION_RATE(fighter, 0.6);
     frame(fighter.lua_state_agent, 22.0);
@@ -111,9 +111,9 @@ unsafe fn bayonetta_attacks33(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, true, false, false, 10, 3, 15, 5, true);
-        notify_event_msc_cmd!(fighter, 0x2b7cb92b79u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 10);
-        notify_event_msc_cmd!(fighter, 0x2b7cb92b79u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, false, 10);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_LEG, true, false, false, 10, 3, 15, 5, true);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_LEG, true, false, false, 10);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, false, 10);
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 5.0, 6.5);
     }
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -142,7 +142,7 @@ unsafe fn bayonetta_attacklw3(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     // if macros::is_excute(fighter) {
-    //     notify_event_msc_cmd!(fighter, 0x2d51fcdb09u64, *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, true, true, false, 10, 3, 15, 5, true);
+    //     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), *FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, true, true, false, 10, 3, 15, 5, true);
     // }
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 18.0);

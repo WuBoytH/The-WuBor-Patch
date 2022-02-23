@@ -147,7 +147,7 @@ unsafe fn jack_specialairs1(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, 0x2127e37c07u64, *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         macros::SET_SPEED_EX(fighter, 0.4, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

@@ -4,33 +4,60 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
+    super::vl,
     wubor_utils::vars::*
 };
 
 #[inline(always)]
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
-    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) > 0.0 {
+    let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+    if sp > 0.0 {
         if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             if onemore {
-                WorkModule::set_float(module_accessor, 12.5, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+                WorkModule::set_float(
+                    module_accessor,
+                    vl::param_private::sp_onemore_shadow,
+                    FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP
+                );
                 spent = true;
-                WorkModule::set_int(module_accessor, 600, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
             }
             else {
-                WorkModule::set_float(module_accessor, 6.25, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+                WorkModule::set_float(
+                    module_accessor,
+                    vl::param_private::sp_ex_shadow,
+                    FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP
+                );
                 spent = true;
-                WorkModule::set_int(module_accessor, 600, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
+            }
+            if spent {
+                WorkModule::set_int(
+                    module_accessor,
+                    vl::param_private::sp_effect_timer_shadow,
+                    FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER
+                );
             }
         }
-        else if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0 {
-            WorkModule::set_float(module_accessor, 25.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+        else if sp >= vl::param_private::sp_single {
+            WorkModule::set_float(
+                module_accessor,
+                vl::param_private::sp_single, 
+                FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP
+            );
             spent = true;
-            WorkModule::set_int(module_accessor, 300, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
+            WorkModule::set_int(
+                module_accessor,
+                vl::param_private::sp_effect_timer,
+                FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER
+            );
         }
     }
     if spent {
-        WorkModule::set_float(module_accessor, 360.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY);
+        WorkModule::set_float(
+            module_accessor,
+            vl::param_private::sp_gain_penalty,
+            FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY
+        );
     }
     return spent;
 }
@@ -38,19 +65,41 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
 #[inline(always)]
 pub unsafe fn spent_meter_super(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let mut spent = false;
-    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) > 0.0 {
+    let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+    if sp > 0.0 {
         if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-            WorkModule::set_float(module_accessor, 25.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+            WorkModule::set_float(
+                module_accessor,
+                vl::param_private::sp_super_shadow,
+                FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP
+            );
+            WorkModule::set_int(
+                module_accessor,
+                vl::param_private::sp_effect_timer_shadow,
+                FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER
+            );
             spent = true;
         }
-        else if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 50.0 {
-            WorkModule::set_float(module_accessor, 50.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
+        else if sp >= vl::param_private::sp_super {
+            WorkModule::set_float(
+                module_accessor,
+                vl::param_private::sp_super,
+                FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP
+            );
+            WorkModule::set_int(
+                module_accessor,
+                vl::param_private::sp_effect_timer,
+                FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER
+            );
             spent = true;
         }
     }
     if spent {
-        WorkModule::set_int(module_accessor, 300, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
-        WorkModule::set_float(module_accessor, 360.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY);
+        WorkModule::set_float(
+            module_accessor,
+            vl::param_private::sp_gain_penalty,
+            FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY
+        );
     }
     return spent;
 }
@@ -141,25 +190,29 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
 
 #[inline(always)]
 pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
-    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) < 25.0 {
+    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) < vl::param_private::sp_single {
         WorkModule::set_int(module_accessor, 0, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
     }
     else {
-        while WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) < 6 {
-            if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) as f32 * 25.0
-            && WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) as f32 * 25.0 > WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) {
+        let mut level = WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
+        while level < 6 {
+            let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+            if sp >= level as f32 * vl::param_private::sp_single
+            && level as f32 * vl::param_private::sp_single > sp {
                 break;
             }
+            level += 1;
             WorkModule::inc_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
         }
     }
     if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-        WorkModule::set_int(module_accessor, 600, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
+        WorkModule::set_int(module_accessor, vl::param_private::sp_effect_timer_shadow, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
     else {
-        WorkModule::set_int(module_accessor, 300, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
+        WorkModule::set_int(module_accessor, vl::param_private::sp_effect_timer, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
-    let level = (WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) / 25.0) as i32;
+    let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+    let level = (sp / vl::param_private::sp_single) as i32;
     WorkModule::set_int(module_accessor, level, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
     if WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) == 0
     && !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {

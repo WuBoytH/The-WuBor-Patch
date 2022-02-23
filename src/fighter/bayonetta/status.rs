@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
         app::lua_bind::*,
@@ -21,14 +21,14 @@ unsafe fn bayonetta_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
     }
-    fighter.global_table[SUB_STATUS3].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_check_attack_mtrans as *const () as _));
+    fighter.global_table[SUB_STATUS3].assign(&L2CValue::Ptr(L2CFighterCommon_check_attack_mtrans as *const () as _));
     if combo_type != *FIGHTER_COMBO_TYPE_NONE {
         if combo_type != *FIGHTER_COMBO_TYPE_HIT {
             if combo_type == *FIGHTER_COMBO_TYPE_SUCCEED {
                 if !StopModule::is_stop(fighter.module_accessor) {
                     fighter.attack_combo_uniq_chk(false.into());
                 }
-                fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_attack_combo_uniq_chk as *const () as _));
+                fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_attack_combo_uniq_chk as *const () as _));
             }
         }
         else {
@@ -45,7 +45,7 @@ unsafe fn bayonetta_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         if !StopModule::is_stop(fighter.module_accessor) {
             fighter.attack_combo_none_uniq_chk(false.into());
         }
-        fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(smash::lua2cpp::L2CFighterCommon_attack_combo_none_uniq_chk as *const () as _));
+        fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_attack_combo_none_uniq_chk as *const () as _));
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(bayonetta_attack_main_loop as *const () as _))
 }

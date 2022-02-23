@@ -30,7 +30,7 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
     }
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
-    fighter.global_table[FLICK_Y].assign(&0xfe.into());
+    fighter.global_table[FLICK_Y].assign(&0xFE.into());
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);

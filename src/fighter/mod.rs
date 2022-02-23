@@ -66,6 +66,8 @@ pub mod fox;
 pub mod koopa;
 pub mod packun;
 pub mod link;
+pub mod murabito;
+pub mod shizue;
 
 pub fn install() {
     common::install();
@@ -135,4 +137,6 @@ pub fn install() {
     koopa::install();
     packun::install();
     link::install();
+    murabito::install();
+    shizue::install();
 }

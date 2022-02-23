@@ -5,8 +5,11 @@ use {
         lib::{lua_const::*, L2CValue, L2CAgent}
     },
     crate::{
-        fighter::lucina::helper::shadow_id,
-        fighter::ken::helper::add_vgauge
+        fighter::{
+            lucina::helper::shadow_id,
+            ken::helper::add_vgauge,
+            *
+        }
     },
     wubor_utils::{
         wua_bind::*,
@@ -47,25 +50,25 @@ move_type_again: bool) -> u64 {
                 && StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                     add_vgauge(attacker_boma, 100.0);
                 }
-                else if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    if WorkModule::get_int(defender_boma, FIGHTER_INSTANCE_WORK_ID_INT_COUNTER_HIT_STATE) == 1 {
-                        let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 6.0;
-                        add_vgauge(attacker_boma, amount);
-                    }
-                }
                 else {
-                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 4.0;
+                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 5.0;
                     add_vgauge(attacker_boma, amount);
                 }
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
             if StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                let slow_mul;
+                let frames;
                 if WorkModule::is_flag(attacker_boma, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE) {
-                    SlowModule::set(defender_boma, 0, 50, 19, false, *BATTLE_OBJECT_ID_INVALID as u32);
+                    slow_mul = lucina::vl::param_special_lw::onemore_slowdown_mul;
+                    frames = lucina::vl::param_special_lw::onemore_slowdown_frame;
+                    SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
                 else {
-                    SlowModule::set(defender_boma, 0, 10, 20, false, *BATTLE_OBJECT_ID_INVALID as u32);
+                    slow_mul = lucina::vl::param_special_lw::onemore_slowdown_mul_on_hit;
+                    frames = lucina::vl::param_special_lw::onemore_slowdown_frame_on_hit;
+                    SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
                 }
             }
         }
@@ -115,12 +118,12 @@ move_type_again: bool) -> u64 {
                 WorkModule::on_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
             }
         }
-        else if defender_fighter_kind == *FIGHTER_KIND_KEN {
-            if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
-            && MotionModule::frame(defender_boma) <= 8.75 {
-                WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
-            }
-        }
+        // else if defender_fighter_kind == *FIGHTER_KIND_KEN {
+        //     if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
+        //     && MotionModule::frame(defender_boma) <= 8.75 {
+        //         WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
+        //     }
+        // }
         else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
             if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
             || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
@@ -231,20 +234,6 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
         else if fighter_kind == *FIGHTER_KIND_RYU {
             if WorkModule::is_flag(boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA) {
                 return false;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_KEN {
-            if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_WALK
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START
-            || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT {
-                if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
-                    return false;
-                }
             }
         }
     }
@@ -571,7 +560,7 @@ pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32
         if utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
         && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
             if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB) {
-                return 0x8a0abc72cu64;
+                return hash40("throw_hi");
             }
         }
     }
@@ -737,9 +726,6 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 
 pub fn install() {
     unsafe{
-        // skyline::nn::ro::LookupSymbol(&mut FIGHTER_CUTIN_MANAGER_ADDR, c_str!("_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"));
-        // skyline::nn::ro::LookupSymbol(&mut ITEM_MANAGER, c_str!("_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E"));
-        // skyline::nn::ro::LookupSymbol(&mut FIGHTER_MANAGER, c_str!("_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E"));
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
         let text_size = (getRegionAddress(Region::Rodata) as usize) - (text_ptr as usize);
         let text = std::slice::from_raw_parts(text_ptr, text_size);

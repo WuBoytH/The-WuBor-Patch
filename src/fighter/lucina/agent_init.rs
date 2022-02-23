@@ -42,14 +42,14 @@ pub unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon
     if !ret
     && WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP) > 3
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND)
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S) {
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_N_PRE].clone()).get_bool() {
         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
         ret = true;
     }
     if !ret
     && WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP) > 3
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S) {
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_S_PRE].clone()).get_bool() {
         ControlModule::reset_flick_sub_x(fighter.module_accessor);
         ControlModule::reset_main_stick(fighter.module_accessor);
         ControlModule::reset_turn_lr(fighter.module_accessor);

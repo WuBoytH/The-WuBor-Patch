@@ -1,7 +1,5 @@
 #![allow(non_upper_case_globals)]
 
-// Yu Narukami Params
-
 pub mod param_private {
     pub const sp_single : f32 = 25.0;
     pub const sp_super : f32 = 50.0;

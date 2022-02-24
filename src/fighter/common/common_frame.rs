@@ -8,7 +8,7 @@ use {
     },
     smashline::*,
     super::{
-        command_inputs::*,
+        // command_inputs::*,
         common_fgc::*
     },
     wubor_utils::{
@@ -89,7 +89,7 @@ fn common_fighter_frame(fighter : &mut L2CFighterCommon) {
         //     WorkModule::set_int(fighter.module_accessor, 0b0000000, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
         // }
 
-        global_command_inputs(fighter);
+        // global_command_inputs(fighter);
     }
 }
 

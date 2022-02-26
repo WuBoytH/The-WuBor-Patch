@@ -1,7 +1,5 @@
 #![allow(non_upper_case_globals)]
 
-// Samus Params
-
-// param_special_hi
-
-pub const cshot_angle : f32 = 15.0;
+pub mod param_special_n {
+    pub const cshot_angle : f32 = 15.0;
+}

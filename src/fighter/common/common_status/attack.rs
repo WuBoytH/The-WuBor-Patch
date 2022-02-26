@@ -14,6 +14,8 @@ use {
     }
 };
 
+// The following five are reimplemented to make sure only Neutral Attack inputs
+// can trigger Jab followups.
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
 unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if param_1.get_bool() == false {
@@ -225,6 +227,7 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
     0.into()
 }
 
+// The following three are reimplemented for resetting ground normals.
 #[skyline::hook(replace = L2CFighterCommon_status_end_Attack)]
 unsafe fn status_end_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
@@ -259,6 +262,7 @@ unsafe fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+/// Checks if your attack input is strictly a Neutral Attack input.
 #[inline(always)]
 pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
     return !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)

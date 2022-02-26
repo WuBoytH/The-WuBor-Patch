@@ -87,7 +87,7 @@ unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
         WorkModule::set_int(fighter.module_accessor, catch_dash_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_CATCH_FRAME);
     }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH);
-    // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
     // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F);
@@ -239,7 +239,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
         return true.into();
     }
-    // if fighter.check_guard_attack_special_hi(check_guard_hold.into()).get_bool() == false {
+    if fighter.check_guard_attack_special_hi(check_guard_hold.into()).get_bool() == false {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME) == 0 {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH)
             && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
@@ -248,22 +248,17 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
                 return true.into();
             }
-            if check_guard_hold == false {
-                if fighter.sub_transition_group_check_ground_jump().get_bool() {
-                    return true.into();
-                }
+        }
+        if check_guard_hold == false {
+            if fighter.sub_transition_group_check_ground_jump().get_bool() {
+                return true.into();
             }
         }
-        // if check_guard_hold == false {
-        //     if fighter.sub_transition_group_check_ground_jump().get_bool() {
-        //         return true.into();
-        //     }
-        // }
         return false.into();
-    // }
-    // else {
-    //     return true.into();
-    // }
+    }
+    else {
+        return true.into();
+    }
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_end_guard_on_common)]

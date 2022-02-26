@@ -7,6 +7,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
+    super::vl,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -61,8 +62,11 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
+/// Checks how many barrels are on the screen.
+/// If there are more than (# of DKs in the match * # of barrels allowed per DK)
+/// existing at a time, DK will be unable to pull out a barrel.
 pub unsafe fn barrel_check() -> bool {
-    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= 1 * DK_COUNT {
+    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= vl::param_special_s::barrel_count as u64 * DK_COUNT {
         return false;
     }
     return true;

@@ -6,7 +6,6 @@ use skyline::libc::c_char;
 
 // mod api;
 mod function_hooks;
-// mod debug;
 mod fighter;
 
 extern "C" {
@@ -34,7 +33,6 @@ pub fn main() {
     // api::install();
     wubor_utils::vars::install();
     function_hooks::install();
-    // debug::install();
     fighter::install();
     skyline::install_hook!(change_version_string_hook);
 }

@@ -20,6 +20,7 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
         || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw") {
             if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
+            && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
             && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_SPECIAL_LW_FLAG_BOUNCE) {
                 MotionModule::set_frame_sync_anim_cmd(
                     fighter.module_accessor,
@@ -28,9 +29,9 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
                     true,
                     false
                 );
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
-                macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+                macros::SET_SPEED_EX(fighter, speed_x, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
                 KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.5,z: 0.0});

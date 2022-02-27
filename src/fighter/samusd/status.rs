@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    super::vl,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -38,20 +39,13 @@ unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon)
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
         fighter.clear_lua_stack();
         if sum_speed_y <= 0.0 {
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y / 2.0);
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y * vl::param_private::attack_air_n_gravity_mul);
         }
         else {
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
         }
         sv_kinetic_energy::set_accel(fighter.lua_state_agent);
     }
-    0.into()
-}
-
-#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn samusd_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    macros::STOP_SE(fighter, Hash40::new("se_samusd_special_n01"));
-    fighter.status_end_AttackAir();
     0.into()
 }
 
@@ -503,7 +497,6 @@ pub fn install() {
     install_status_scripts!(
         samusd_wait_main,
         samusd_attackair_main,
-        samusd_attackair_end,
         samusd_specialn_hold_main,
         samusd_specialn_hold_exit,
         samusd_cshot_shoot_init,

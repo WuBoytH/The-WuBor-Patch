@@ -79,7 +79,7 @@ unsafe fn samusd_attackairn_eff(fighter: &mut L2CAgentBase) {
 unsafe fn samusd_attackairn_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_n01"));
+        macros::PLAY_STATUS(fighter, Hash40::new("se_samusd_special_n01"));
     }
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {

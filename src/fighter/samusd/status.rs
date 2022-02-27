@@ -48,6 +48,13 @@ unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
+#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn samusd_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    macros::STOP_SE(fighter, Hash40::new("se_samusd_special_n01"));
+    fighter.status_end_AttackAir();
+    0.into()
+}
+
 #[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn samusd_specialn_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -496,6 +503,7 @@ pub fn install() {
     install_status_scripts!(
         samusd_wait_main,
         samusd_attackair_main,
+        samusd_attackair_end,
         samusd_specialn_hold_main,
         samusd_specialn_hold_exit,
         samusd_cshot_shoot_init,

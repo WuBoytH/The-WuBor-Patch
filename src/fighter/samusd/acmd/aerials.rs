@@ -16,9 +16,7 @@ unsafe fn samusd_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    macros::FT_MOTION_RATE(fighter, 4.0 / 3.0);
-    frame(fighter.lua_state_agent, 6.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 8.0);
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_N_FLOAT) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_ATTACK_AIR_FLAG_START_FLOAT);
@@ -41,7 +39,7 @@ unsafe fn samusd_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 54.0);
+    frame(fighter.lua_state_agent, 56.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -63,11 +61,11 @@ unsafe fn samusd_attackairn_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1.9, true);
         macros::BURN_COLOR(fighter, 0.26, 0.71, 1.5, 0.7);
     }
-    frame(fighter.lua_state_agent, 5.0);
+    frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_cshot_hold"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, true);
     }
-    frame(fighter.lua_state_agent, 34.0);
+    frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3.0, 0, 0, 0, 0, 0, 360, true);
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_cshot_hold"), false, true);
@@ -79,11 +77,11 @@ unsafe fn samusd_attackairn_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "samusd", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
 unsafe fn samusd_attackairn_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 6.0);
+    frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_n01"));
     }
-    frame(fighter.lua_state_agent, 33.0);
+    frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
         macros::STOP_SE(fighter, Hash40::new("se_samusd_special_n01"));
         macros::PLAY_SE(fighter, Hash40::new("se_samusd_special_n04"));
@@ -92,16 +90,16 @@ unsafe fn samusd_attackairn_snd(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "samusd", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samusd_attackairn_exp(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 6.0);
+    frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 8);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_elecattack"), 0, true, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(fighter.lua_state_agent, 33.0);
+    frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
-    frame(fighter.lua_state_agent, 34.0);
+    frame(fighter.lua_state_agent, 36.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 8);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);

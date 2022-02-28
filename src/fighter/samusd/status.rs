@@ -330,6 +330,114 @@ unsafe extern "C" fn samusd_get_max_charge_frame(fighter: &mut L2CFighterCommon)
     WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("cshot_charge_frame")).into()
 }
 
+#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn samusd_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_INSTANCE_WORK_ID_FLAG_ST_INIT);
+    StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_GROUND_LW);
+    1.into()
+}
+
+#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_GROUND_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn samusd_speciallw_ground_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    samusd_speciallw_helper(fighter);
+    samusd_speciallw_ground_mot_helper(fighter);
+    item!(fighter, MA_MSC_CMD_ITEM_SET_CHANGE_STATUS_EVENT, true);
+    slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, MA_MSC_CMD_SLOEP_SLOPE_KIND_LR);
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        fighter.set_situation(SITUATION_KIND_AIR.into());
+    }
+    else {
+        fighter.set_situation(SITUATION_KIND_GROUND.into());
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(samusd_speciallw_ground_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn samusd_speciallw_helper(fighter: &mut L2CFighterCommon) {
+    let body = WorkModule::get_int(fighter.module_accessor, *FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_SPECIAL_LW_BODY);
+    if body != 1 {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x298600da7a));
+    }
+    else {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2993ae42dd));
+    }
+}
+
+unsafe extern "C" fn samusd_speciallw_ground_mot_helper(fighter: &mut L2CFighterCommon) {
+    let mot;
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        mot = Hash40::new("special_air_lw");
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+    }
+    else {
+        mot = Hash40::new("special_lw");
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MOT_RESTART) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            mot,
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_LW_FLAG_MOT_RESTART);
+    }
+    else {
+        MotionModule::change_motion_inherit_frame(
+            fighter.module_accessor,
+            mot,
+            -1.0,
+            1.0,
+            0.0,
+            false,
+            false
+        );
+    }
+}
+
+unsafe extern "C" fn samusd_speciallw_ground_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if samusd_speciallwground_is_end_helper(fighter).get_i32() == 1 {
+        return 1.into();
+    }
+    // if StatusModule::is_situation_changed(fighter.module_accessor) {
+    //     println!("sit change hi");
+        if MotionModule::frame(fighter.module_accessor) >= 33.0 {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                WorkModule::set_float(fighter.module_accessor, vl::param_special_lw::landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                return 1.into();
+            }
+        }
+        else {
+            samusd_speciallw_ground_mot_helper(fighter);
+        }
+    // }
+    0.into()
+}
+
+unsafe extern "C" fn samusd_speciallwground_is_end_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if MotionModule::is_end(fighter.module_accessor) {
+        let sit = fighter.global_table[SITUATION_KIND].get_i32();
+        if sit == *SITUATION_KIND_AIR {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+        return 1.into();
+    }
+    0.into()
+}
+
 #[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
@@ -499,6 +607,8 @@ pub fn install() {
         samusd_attackair_main,
         samusd_specialn_hold_main,
         samusd_specialn_hold_exit,
+        samusd_speciallw_pre,
+        samusd_speciallw_ground_main,
         samusd_cshot_shoot_init,
         samusd_cshot_shoot_exec,
         samusd_cshot_shoot_end

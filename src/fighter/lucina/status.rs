@@ -284,22 +284,12 @@ unsafe fn lucina_specialn_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 unsafe extern "C" fn lucina_specialn_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
     && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
-            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
-        }
-        else {
-            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
-        }
+        fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
     }
     else {
         if MotionModule::is_end(fighter.module_accessor) {
             if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-                if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
-                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), false.into());
-                }
-                else {
-                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
-                }
+                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
             }
             else {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB);
@@ -355,8 +345,16 @@ unsafe extern "C" fn lucina_specialn_end_main_loop(fighter: &mut L2CFighterCommo
 }
 
 unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterCommon) {
-    let ground_mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
-    let air_mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
+    let ground_mot;
+    let air_mot;
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        ground_mot = Hash40::new("special_n_end_max");
+        air_mot = Hash40::new("special_air_n_end_max");
+    }
+    else {
+        ground_mot = Hash40::new("special_n_end");
+        air_mot = Hash40::new("special_air_n_end");
+    }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         let air_brake_x = sv_fighter_util::get_default_fighter_param_air_brake_x(fighter.lua_state_agent);
@@ -367,7 +365,7 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new_raw(air_mot),
+                air_mot,
                 0.0,
                 1.0,
                 false,
@@ -380,7 +378,7 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
         else {
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
-                Hash40::new_raw(air_mot),
+                air_mot,
                 -1.0,
                 1.0,
                 0.0,
@@ -399,7 +397,7 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT) {
             MotionModule::change_motion(
                 fighter.module_accessor,
-                Hash40::new_raw(ground_mot),
+                ground_mot,
                 0.0,
                 1.0,
                 false,
@@ -412,7 +410,7 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
         else {
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
-                Hash40::new_raw(ground_mot),
+                ground_mot,
                 -1.0,
                 1.0,
                 0.0,

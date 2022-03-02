@@ -124,7 +124,7 @@ unsafe fn samusd_attackairf(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 5.0);
     wait(fighter.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 42.0);
+    frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }

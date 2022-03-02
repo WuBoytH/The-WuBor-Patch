@@ -20,7 +20,7 @@ use {
                 },
                 fgc::daisy_fgc
             },
-            dolly::agent_init::dolly_check_special_command,
+            dolly::agent_init::*,
             element::fgc::element_fgc,
             ganon::fgc::ganon_fgc,
             kirby::agent_init::kirby_specialn_pre,
@@ -159,7 +159,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(shizue_special_lw_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_DOLLY {
+            fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
             fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
+            fighter.global_table[CHECK_GROUND_CATCH_PRE].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_EFLAME
         || fighter_kind == *FIGHTER_KIND_ELIGHT {

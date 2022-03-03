@@ -444,7 +444,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
-unsafe fn status_escapeair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_FALL
     || status == *FIGHTER_STATUS_KIND_LANDING {
@@ -498,7 +498,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_escape_main,
             setup_escape_air_slide_common,
             exec_escape_air_slide,
-            status_escapeair_end
+            status_end_escapeair
         );
     }
 }

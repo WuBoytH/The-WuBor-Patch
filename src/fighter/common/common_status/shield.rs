@@ -79,7 +79,7 @@ unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont_pre)]
 unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
     // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
-    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_RUN {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
@@ -187,7 +187,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
         }
     }
-    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_RUN
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN) && {
         let stick_x = fighter.global_table[STICK_X].get_f32();
@@ -230,7 +230,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
     }
-    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_RUN
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)

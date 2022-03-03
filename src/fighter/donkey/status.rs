@@ -27,7 +27,7 @@ unsafe fn donkey_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     else {
-        fighter.sub_change_motion_by_situation(L2CValue::Hash40(Hash40::new("special_s")), L2CValue::Hash40(Hash40::new("special_air_s")), false.into());
+        fighter.sub_change_motion_by_situation(Hash40::new("special_s").into(), Hash40::new("special_air_s").into(), false.into());
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(donkey_specials_main_loop as *const () as _))
 }

@@ -223,7 +223,7 @@ unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
         fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, speed_x * 0.5, 0.0, 0.0, 0.0, 0.0);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, speed_x * 0.3, 0.0, 0.0, 0.0, 0.0);
         sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {

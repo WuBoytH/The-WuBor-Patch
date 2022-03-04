@@ -55,6 +55,9 @@ unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
         macros::FT_MOTION_RATE(fighter, 1.5);
     }
+    else {
+        macros::FT_MOTION_RATE(fighter, 1.2);
+    }
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3", category = ACMD_GAME, low_priority )]

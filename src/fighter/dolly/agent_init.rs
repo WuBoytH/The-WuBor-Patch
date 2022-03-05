@@ -1,9 +1,11 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::Hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
+    smash_script::*,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -61,6 +63,36 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
         && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_S_PRE].clone()).get_bool() {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
             return true.into();
+        }
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+            if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                    return true.into();
+                }
+            }
+            if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                    return true.into();
+                }
+            }
+            if cat2 & (*FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R) != 0
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                    return true.into();
+                }
+            }
         }
         return false.into();
     }

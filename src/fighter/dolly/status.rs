@@ -217,13 +217,18 @@ unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND,
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND,
-        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND
+        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND,
+        *FIGHTER_STATUS_KIND_APPEAL
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        let mut mul = 0.3;
+        if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_APPEAL {
+            mul = 0.1;
+        }
         fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, speed_x * 0.3, 0.0, 0.0, 0.0, 0.0);
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, speed_x * mul, 0.0, 0.0, 0.0, 0.0);
         sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
@@ -755,6 +760,13 @@ unsafe fn dolly_superspecial2_blow_end(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn dolly_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
+    fighter.status_end_Appeal();
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
         dolly_dashback_pre, dolly_dashback_main,
@@ -782,6 +794,7 @@ pub fn install() {
         dolly_speciallw_attack_end,
         dolly_superspecial_end,
         dolly_superspecial2_end,
-        dolly_superspecial2_blow_end
+        dolly_superspecial2_blow_end,
+        dolly_appeal_end
     );
 }

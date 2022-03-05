@@ -49,9 +49,12 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW
     ];
-    let mut enableds = [false; 10];
+    let mut enableds = [false; 13];
     for x in 0..terms.len() {
         enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
     }

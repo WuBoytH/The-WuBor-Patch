@@ -128,13 +128,22 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
     }
-    // if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME) {
-    //     if !StopModule::is_stop(fighter.module_accessor) {
-    //         if fighter.sub_check_button_jump().get_bool() {
-                
-    //         }
-    //     }
-    // }
+    if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME)
+    && !StopModule::is_stop(fighter.module_accessor)
+    && fighter.sub_check_button_jump().get_bool() {
+        // let mot = MotionModule::motion_kind(fighter.module_accessor);
+        // let func = ryu_get_attack_cancel_function(fighter, mot.into()).get_u64();
+        // MotionAnimcmdModule::call_script_single(
+        //     fighter.module_accessor,
+        //     *FIGHTER_ANIMCMD_EXPRESSION,
+        //     Hash40::new_raw(func),
+        //     -1
+        // );
+        WorkModule::set_int64(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_CHANGE_LOG);
+        fighter.change_status_jump_mini_attack(true.into());
+        return 1.into();
+    }
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART) {
         if !MotionModule::is_end(fighter.module_accessor) {
             ryu_idkwhatthisis2(fighter);

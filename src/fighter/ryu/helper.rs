@@ -65,7 +65,7 @@ pub unsafe extern "C" fn ryu_attack_reset(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if param_1.get_bool() == false {
+    if param_1.get_bool() {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
             let count_down_int = WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0);
             if count_down_int & 1 != 0 {
@@ -430,12 +430,21 @@ pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CV
     ret.into()
 }
 
-// pub unsafe extern "C" fn ryu_idkwhatthisis(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-//     let cont = fighter.get_mini_jump_attack_data_cancel_function(param_1.clone()).get_bool();
-//     if fighter.get_mini_jump_attack_data_cancel_function(param_1.clone()).get_bool() == false {
+// pub unsafe extern "C" fn ryu_get_attack_cancel_function(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+//     let func = fighter.get_mini_jump_attack_data_cancel_function(param_1.clone());
+//     if func.get_bool() == false {
+//         println!("hi");
+//         let val = &*(((fighter as *const L2CFighterCommon as u64) + 0x1) as *const L2CValue);
+//         println!("val: {:?}", val);
+//         let table = val[0x10f40d7b92 as u64].clone();
+//         println!("table: {:?}", table);
+//         let value = table[param_1.clone()].clone();
+//         println!("value: {:?}", value);
+//         value
 //     }
 //     else {
-//         cont.into()
+//         println!("func: {:?}", func);
+//         func
 //     }
 // }
 

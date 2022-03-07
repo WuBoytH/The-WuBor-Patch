@@ -547,6 +547,65 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_GuardDamageUniq as *const () as _));
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_GuardDamageUniq)]
+unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if !param_1.get_bool() {
+        fighter.FighterStatusGuard__landing_effect_control();
+        return 0.into();
+    }
+    let mut min_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+    if 0 < min_frame {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+        min_frame -= 1;
+    }
+    if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) && min_frame <= 0 {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD);
+    }
+    let just_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) && 0 < just_frame {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
+        if just_frame - 1 == 0 {
+            ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
+            let type_of_guard = FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) as i32;
+            ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
+            ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
+        }
+    }
+    if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME, 0) == 0 {
+        return L2CValue::I32(0);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE) {
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINAL)  {
+                ModelModule::disable_gold_eye(fighter.module_accessor);
+            }
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
+        }
+        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+        //     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+        //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        // }
+        EffectModule::req_on_joint(
+            fighter.module_accessor,
+            Hash40::new("sys_windwave"),
+            Hash40::new("top"),
+            &ZERO_VECTOR,
+            &ZERO_VECTOR,
+            1.0,
+            &ZERO_VECTOR,
+            &ZERO_VECTOR,
+            false,
+            0,
+            0,
+            0
+        );
+    } else {
+        let disable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_damage_just_shield_disable_frame"));
+        WorkModule::set_int(fighter.module_accessor, disable_frame, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_JUST_SHIELD_FRAME);
+    }
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_Main)]
 unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_guard_damage_main_common_air().get_bool() {
@@ -563,6 +622,10 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
             }
             if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+                    HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+                    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+                }
                 if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
                     if is_hit {
                         StopModule::cancel_hit_stop(fighter.module_accessor);
@@ -775,6 +838,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_status_end_guard_on_common,
             sub_ftstatusuniqprocessguarddamage_initstatus_inner,
             status_guarddamage_common,
+            sub_guarddamageuniq,
             status_guarddamage_main,
             sub_ftstatusuniqprocessguardoff_initstatus,
             sub_status_guard_on_common,

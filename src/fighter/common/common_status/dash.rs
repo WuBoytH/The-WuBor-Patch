@@ -9,10 +9,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*
 };
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Dash)]
@@ -261,8 +258,6 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CV
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
-        WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
         return 1.into();
     }
@@ -540,8 +535,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     // new
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
-        WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
         fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
         return 1.into();
     }

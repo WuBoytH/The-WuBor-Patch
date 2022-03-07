@@ -21,11 +21,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
-    let guard_hold_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
-    // println!("Guard Hold Frame: {}", guard_hold_frame);
-    if FighterUtil::is_valid_just_shield(fighter.module_accessor)
-    && (guard_hold_frame >= 5
-    || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)) {
+    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
         let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
@@ -567,12 +563,6 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
             }
             if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0 {
-                    let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
-                    WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
-                    fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
-                    return 0.into();
-                }
                 if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
                     if is_hit {
                         StopModule::cancel_hit_stop(fighter.module_accessor);

@@ -10,7 +10,6 @@ use {
     smash_script::*,
     wubor_utils::{
         wua_bind::*,
-        vars::*,
         table_const::*
     },
     crate::fighter::common::common_status::attack::only_jabs
@@ -27,8 +26,6 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON) {
             if fighter.sub_check_command_guard().get_bool() {
-                let common_guard_hold = ControlModule::get_command_life(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY2, 0x18) as i32;
-                WorkModule::set_int(fighter.module_accessor, common_guard_hold, FIGHTER_INSTANCE_WORK_ID_INT_GUARD_HOLD_FRAME);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
                 return true.into();
             }

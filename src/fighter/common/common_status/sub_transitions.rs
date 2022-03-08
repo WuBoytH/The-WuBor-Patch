@@ -34,6 +34,37 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_catch)]
+unsafe fn sub_transition_group_check_ground_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[CHECK_GROUND_CATCH_PRE].get_bool() != false {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_CATCH_PRE].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        let invalid_catch_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CATCH_FRAME);
+        if invalid_catch_frame == 0 {
+            let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+            if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 {
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH) {
+                    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
+                        return true.into();
+                    }
+                    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_CATCH_TURN.into(), true.into());
+                        return true.into();
+                    }
+                    fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
+                    return true.into();
+                }
+            }
+        }
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_attack)]
 unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_GROUND_ATTACK_PRE].get_bool() != false {
@@ -340,6 +371,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             sub_transition_group_check_ground_guard,
+            sub_transition_group_check_ground_catch,
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_air_attack,
             sub_transition_group_check_air_tread_jump

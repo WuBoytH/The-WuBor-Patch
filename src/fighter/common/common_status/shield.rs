@@ -572,7 +572,7 @@ unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
         }
     }
     if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME, 0) == 0 {
-        return L2CValue::I32(0);
+        return 0.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE) {
@@ -599,7 +599,8 @@ unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
             0,
             0
         );
-    } else {
+    }
+    else {
         let disable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_damage_just_shield_disable_frame"));
         WorkModule::set_int(fighter.module_accessor, disable_frame, *FIGHTER_INSTANCE_WORK_ID_INT_DISABLE_JUST_SHIELD_FRAME);
     }
@@ -611,31 +612,29 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_guard_damage_main_common_air().get_bool() {
         return 0.into();
     }
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
-            // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() {
-            //     fighter.status_guard_damage_main_common();
-            //     return 0.into();
-            // }
-            let is_hit = StopModule::is_hit(fighter.module_accessor);
-            if is_hit {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        // if fighter.FighterStatusGuard__is_continue_just_shield_count().get_bool() {
+        //     fighter.status_guard_damage_main_common();
+        //     return 0.into();
+        // }
+        let is_hit = StopModule::is_hit(fighter.module_accessor);
+        if is_hit {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
+        }
+        if CancelModule::is_enable_cancel(fighter.module_accessor) {
+            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+                HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
             }
-            if CancelModule::is_enable_cancel(fighter.module_accessor) {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-                    HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-                    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
-                }
-                if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-                    if is_hit {
-                        StopModule::cancel_hit_stop(fighter.module_accessor);
-                        return 0.into();
-                    }
-                }
+            if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+            && is_hit {
+                StopModule::cancel_hit_stop(fighter.module_accessor);
+                return 0.into();
             }
-            if is_hit {
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
-            }
+        }
+        if is_hit {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
         }
     }
     fighter.status_guard_damage_main_common();
@@ -742,63 +741,56 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL) {
-            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() == false {
-                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD) {
-                    let mut cont = ItemModule::is_have_item(fighter.module_accessor, 0);
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL)
+        && fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() == false
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD) {
+            let mut cont = ItemModule::is_have_item(fighter.module_accessor, 0);
+            if cont {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
+                sv_module_access::item(fighter.lua_state_agent);
+                cont = fighter.pop_lua_stack(1).get_bool();
+                if !cont {
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
+                    sv_module_access::item(fighter.lua_state_agent);
+                    cont = fighter.pop_lua_stack(1).get_bool();
                     if cont {
-                        fighter.clear_lua_stack();
-                        lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
-                        sv_module_access::item(fighter.lua_state_agent);
-                        cont = fighter.pop_lua_stack(1).get_bool();
-                        if !cont {
-                            fighter.clear_lua_stack();
-                            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
-                            sv_module_access::item(fighter.lua_state_agent);
-                            cont = fighter.pop_lua_stack(1).get_bool();
-                            if cont {
-                                cont = ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0;
-                            }
-                        }
-                        if cont {
-                            fighter.clear_lua_stack();
-                            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
-                            sv_module_access::item(fighter.lua_state_agent);
-                            cont = fighter.pop_lua_stack(1).get_bool();
-                            if !cont {
-                                if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
-                                    if fighter.global_table[CMD_CAT3].get_i32() & (
-                                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
-                                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
-                                    ) != 0 {
-                                        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-                                        return true.into();
-                                    }
-                                }
-                            }
-                            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                                if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0 {
-                                    if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
-                                        if fighter.global_table[CMD_CAT3].get_i32() & (
-                                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
-                                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
-                                        ) != 0 {
-                                            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-                                            return true.into();
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        cont = ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0;
                     }
                 }
-                if fighter.sub_transition_group_check_ground_item().get_bool() == false
-                && fighter.sub_transition_group_check_ground_catch().get_bool() == false
-                && fighter.sub_transition_group_check_ground_special().get_bool() == false
-                && fighter.sub_transition_group_check_ground_attack().get_bool() == false {
-                    return false.into();
+                if cont {
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
+                    sv_module_access::item(fighter.lua_state_agent);
+                    cont = fighter.pop_lua_stack(1).get_bool();
+                    if !cont
+                    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+                    && fighter.global_table[CMD_CAT3].get_i32() & (
+                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
+                    ) != 0 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+                        return true.into();
+                    }
+                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+                    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0
+                    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+                    && fighter.global_table[CMD_CAT3].get_i32() & (
+                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
+                    ) != 0 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+                        return true.into();
+                    }
                 }
             }
+        }
+        if fighter.sub_transition_group_check_ground_item().get_bool() == false
+        && fighter.sub_transition_group_check_ground_catch().get_bool() == false
+        && fighter.sub_transition_group_check_ground_special().get_bool() == false
+        && fighter.sub_transition_group_check_ground_attack().get_bool() == false {
+            return false.into();
         }
         return false.into();
     }

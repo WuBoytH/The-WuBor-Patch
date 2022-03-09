@@ -104,16 +104,15 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                         return 0.into();
                     }
                 }
-                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U) {
-                    if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
-                    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                        fighter.clear_lua_stack();
-                        lua_args!(fighter, 0x1daca540be as u64);
-                        sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
-                        if fighter.pop_lua_stack(1).get_bool() {
-                            fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
-                            return 0.into();
-                        }
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
+                && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+                && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                    fighter.clear_lua_stack();
+                    lua_args!(fighter, 0x1daca540be as u64);
+                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                    if fighter.pop_lua_stack(1).get_bool() {
+                        fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                        return 0.into();
                     }
                 }
             }
@@ -152,11 +151,10 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     }
     else {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON) {
-            if 1.0 <= fighter.global_table[MOTION_FRAME].get_f32() {
-                FighterControlModuleImpl::reserve_on_attack_button(fighter.module_accessor);
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON);
-            }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON)
+        && 1.0 <= fighter.global_table[MOTION_FRAME].get_f32() {
+            FighterControlModuleImpl::reserve_on_attack_button(fighter.module_accessor);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON);
         }
     }
 }

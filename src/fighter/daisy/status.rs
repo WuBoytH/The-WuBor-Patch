@@ -167,20 +167,18 @@ unsafe fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn daisy_uniqfloatstart_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false {
-        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-        }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() == false
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
     }
     0.into()
 }
 
 #[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn daisy_uniqfloatstart_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL {
-        if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
-            ArticleModule::remove(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        }
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
+    && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
+        ArticleModule::remove(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
     0.into()
 }
@@ -188,7 +186,16 @@ unsafe fn daisy_uniqfloatstart_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_FALL_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn daisy_fallspecial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("fall_special"), 0.0, 1.0, false, 0.0, false, false);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("fall_special"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_fall_common_uniq(false.into());
     }
@@ -201,37 +208,35 @@ unsafe extern "C" fn daisy_fallspecial_main_2(fighter: &mut L2CFighterCommon, pa
 }
 
 unsafe extern "C" fn daisy_fallspecial_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false {
-        if fighter.sub_fall().get_bool() == false {
-            // let parasol_timer = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_SPECIAL_HI_WORK_INT_PARASOL_LIMIT_TIME_COUNTER);
-            // if !(0 < parasol_timer) {
-                return daisy_fallspecial_main_loop_helper(fighter);
-            // }
-            // let stick_y = fighter.global_table[STICK_Y].get_f32();
-            // let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-            // let special_hi_float;
-            // if jump_stick_y > stick_y {
-            //     special_hi_float = false;
-            // }
-            // else {
-            //     special_hi_float = ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR);
-            // }
-            // if !special_hi_float {
-            //     return daisy_fallspecial_main_loop_helper(fighter);
-            // }
-            // fighter.change_status(FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL.into(), true.into());
-            // return 1.into();
-        }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() == false
+    && fighter.sub_fall().get_bool() == false {
+        // let parasol_timer = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_SPECIAL_HI_WORK_INT_PARASOL_LIMIT_TIME_COUNTER);
+        // if !(0 < parasol_timer) {
+            return daisy_fallspecial_main_loop_helper(fighter);
+        // }
+        // let stick_y = fighter.global_table[STICK_Y].get_f32();
+        // let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
+        // let special_hi_float;
+        // if jump_stick_y > stick_y {
+        //     special_hi_float = false;
+        // }
+        // else {
+        //     special_hi_float = ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR);
+        // }
+        // if !special_hi_float {
+        //     return daisy_fallspecial_main_loop_helper(fighter);
+        // }
+        // fighter.change_status(FIGHTER_PEACH_STATUS_KIND_SPECIAL_HI_FALL.into(), true.into());
+        // return 1.into();
     }
     0.into()
 }
 
 unsafe extern "C" fn daisy_fallspecial_main_loop_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL) {
-        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-            return 1.into();
-        }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL)
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+        return 1.into();
     }
     0.into()
 }

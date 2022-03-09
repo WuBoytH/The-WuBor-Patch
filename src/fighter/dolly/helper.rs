@@ -22,16 +22,14 @@ pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2C
             situation = SITUATION_KIND_GROUND.into();
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-            if dolly_final_cancel(fighter, situation.clone()).get_bool() {
-                return 1.into();
-            }
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && dolly_final_cancel(fighter, situation.clone()).get_bool() {
+            return 1.into();
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL)
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-            if dolly_special_cancel(fighter, situation.clone()).get_bool() {
-                return 1.into();
-            }
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && dolly_special_cancel(fighter, situation.clone()).get_bool() {
+            return 1.into();
         }
     }
     0.into()

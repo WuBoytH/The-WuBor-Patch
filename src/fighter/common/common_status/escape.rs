@@ -229,19 +229,17 @@ unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         let enable_attack = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_ESCAPE_ATTACK);
         if enable_attack == *FIGHTER_ESCAPE_ATTACK_MODE_ENABLE {
             let is_catch = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
-            if is_catch as i32 & 1 != 0 {
-                if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-                    return 0.into();
-                }
+            if !is_catch
+            && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+                return 0.into();
             }
         }
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
-        if MotionModule::is_end(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-                return 0.into();
-            }
+        if MotionModule::is_end(fighter.module_accessor)
+        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            return 0.into();
         }
         fighter.sub_escape_check_rumble();
     }
@@ -286,12 +284,16 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         let arctangent = diry.atan2(dirx.abs());
         let stiff_lerp;
         if 0.0 > arctangent.to_degrees() {
-            stiff_lerp = fighter.lerp(escape_air_slide_stiff_frame.into(), escape_air_slide_d_stiff_frame.into(),
+            stiff_lerp = fighter.lerp(
+                escape_air_slide_stiff_frame.into(),
+                escape_air_slide_d_stiff_frame.into(),
                 (arctangent.to_degrees() / 90.0).into()
             );
         }
         else {
-            stiff_lerp = fighter.lerp(escape_air_slide_stiff_frame.into(), escape_air_slide_u_stiff_frame.into(),
+            stiff_lerp = fighter.lerp(
+                escape_air_slide_stiff_frame.into(),
+                escape_air_slide_u_stiff_frame.into(),
                 (arctangent.to_degrees() / 90.0).into()
             );
         }

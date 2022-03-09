@@ -137,14 +137,14 @@ pub unsafe extern "C" fn dolly_kara_cancel(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub struct SpecialCancelStats {
-    pub damage: f32,
+    pub dmg: f32,
     pub bkb: i32
 }
 
-pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut baseknockback: i32) -> SpecialCancelStats {
+pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
         dmg *= vl::param_private::special_cancel_damage_mul;
-        baseknockback = (baseknockback as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
+        bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
     }
-    SpecialCancelStats{damage: dmg, bkb: baseknockback}
+    SpecialCancelStats{dmg: dmg, bkb: bkb}
 }

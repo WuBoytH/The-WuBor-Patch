@@ -152,12 +152,10 @@ unsafe extern "C" fn kamui_speciallw_hit_dragon_mot(fighter: &mut L2CFighterComm
 }
 
 unsafe extern "C" fn kamui_speciallw_hit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mut ret = 0;
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool() == true
-        && fighter.sub_air_check_fall_common().get_bool() == true {
-            ret = 1;
-        }
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_wait_ground_check_common(false.into()).get_bool()
+    && fighter.sub_air_check_fall_common().get_bool() == true {
+        return 1.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         kamui_speciallw_hit_mot(fighter);
@@ -171,20 +169,19 @@ unsafe extern "C" fn kamui_speciallw_hit_main_loop(fighter: &mut L2CFighterCommo
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
-    ret.into()
+    0.into()
 }
 
 #[status_script(agent = "kamui", status = FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn kamui_speciallw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
-        if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
-            ArticleModule::remove_exist(
-                fighter.module_accessor,
-                *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON,
-                ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)
-            );
-            VisibilityModule::set_whole(fighter.module_accessor, true);
-        }
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER
+    && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
+        ArticleModule::remove_exist(
+            fighter.module_accessor,
+            *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON,
+            ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL)
+        );
+        VisibilityModule::set_whole(fighter.module_accessor, true);
     }
     0.into()
 }

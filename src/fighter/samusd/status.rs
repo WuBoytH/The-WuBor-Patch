@@ -427,31 +427,30 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_cshot"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-    if WorkModule::is_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_SWALLOWED) {
-        if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
-            effect!(
-                weapon,
-                MA_MSC_EFFECT_REQUEST_FOLLOW,
-                Hash40::new("samusd_cshot_bullet"),
-                Hash40::new("top"),
-                7.98004,
-                -0.50584,
-                -0.25092,
-                -91.2728,
-                -1.7974,
-                176.373,
-                1.0,
-                false,
-                0,
-                0,
-                0
-            );
-            weapon.clear_lua_stack();
-            lua_args!(weapon, MA_MSC_EFFECT_GET_LAST_HANDLE);
-            sv_module_access::effect(weapon.lua_state_agent);
-            let handle = weapon.pop_lua_stack(1).get_i32();
-            WorkModule::set_int(weapon.module_accessor, handle, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_EFH_BULLET);
-        }
+    if WorkModule::is_flag(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_FLAG_SWALLOWED)
+    && !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
+        effect!(
+            weapon,
+            MA_MSC_EFFECT_REQUEST_FOLLOW,
+            Hash40::new("samusd_cshot_bullet"),
+            Hash40::new("top"),
+            7.98004,
+            -0.50584,
+            -0.25092,
+            -91.2728,
+            -1.7974,
+            176.373,
+            1.0,
+            false,
+            0,
+            0,
+            0
+        );
+        weapon.clear_lua_stack();
+        lua_args!(weapon, MA_MSC_EFFECT_GET_LAST_HANDLE);
+        sv_module_access::effect(weapon.lua_state_agent);
+        let handle = weapon.pop_lua_stack(1).get_i32();
+        WorkModule::set_int(weapon.module_accessor, handle, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_EFH_BULLET);
     }
     let lr = WorkModule::get_float(weapon.module_accessor, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_SHOOT_LR);
     let charge = WorkModule::get_float(weapon.module_accessor, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_FLOAT_CHARGE);

@@ -123,17 +123,15 @@ unsafe extern "C" fn wario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
     let level = WorkModule::get_int(fighter.module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_LEVEL);
     if !MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            if level <= *FIGHTER_WARIO_GASS_LEVEL_L {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_LW_FLAG_LANDING_ENABLE) {
-                    fighter.change_status(FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING.into(), false.into());
-                    return 0.into();
-                }
+            if level <= *FIGHTER_WARIO_GASS_LEVEL_L
+            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_LW_FLAG_LANDING_ENABLE) {
+                fighter.change_status(FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING.into(), false.into());
+                return 0.into();
             }
         }
-        if !StatusModule::is_changing(fighter.module_accessor) {
-            if StatusModule::is_situation_changed(fighter.module_accessor) {
-                wario_speciallw_helper(fighter);
-            }
+        if !StatusModule::is_changing(fighter.module_accessor)
+        && StatusModule::is_situation_changed(fighter.module_accessor) {
+            wario_speciallw_helper(fighter);
         }
     }
     else {

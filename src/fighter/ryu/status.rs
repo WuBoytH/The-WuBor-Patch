@@ -51,36 +51,29 @@ unsafe fn ryu_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL) {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-                if ryu_final_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
-                    return 1.into();
-                }
-            }
-        }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL) {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-                if ryu_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
-                    return 1.into();
-                }
-            }
-        }
-    }
-    if ComboModule::count(fighter.module_accessor) == 1 {
-        if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let current_frame = fighter.global_table[MOTION_FRAME].get_f32();
-            let attack_start_cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame"));
-            if current_frame < attack_start_cancel_frame {
-                if ryu_kara_cancel(fighter).get_bool() {
-                    return 1.into();
-                }
-            }
-        }
-    }
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && ryu_final_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
             return 1.into();
         }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && ryu_hit_cancel(fighter, SITUATION_KIND_GROUND.into()).get_bool() {
+            return 1.into();
+        }
+    }
+    if ComboModule::count(fighter.module_accessor) == 1
+    && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        let current_frame = fighter.global_table[MOTION_FRAME].get_f32();
+        let attack_start_cancel_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame"));
+        if current_frame < attack_start_cancel_frame
+        && ryu_kara_cancel(fighter).get_bool() {
+            return 1.into();
+        }
+    }
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+        return 1.into();
     }
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [
@@ -88,31 +81,29 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         hash40("attack_11_s"),
         hash40("attack_11_near_s")
     ].contains(&mot) {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER) {
-                if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                    let stick_y = fighter.global_table[STICK_Y].get_f32();
-                    let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
-                    let cont;
-                    if !(stick_y < attack_hi3_stick_y) {
-                        cont = false;
-                    }
-                    else {
-                        let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
-                        if !(attack_lw3_stick_y < stick_y) {
-                            cont = false;
-                        }
-                        else {
-                            let stick_x = fighter.global_table[STICK_X].get_f32();
-                            let attack_s3_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_x"));
-                            cont = stick_x < attack_s3_stick_x;
-                        }
-                    }
-                    if cont {
-                        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), false.into());
-                        return 1.into();
-                    }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_BUTTON_TRIGGER)
+        && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+            let stick_y = fighter.global_table[STICK_Y].get_f32();
+            let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
+            let cont;
+            if !(stick_y < attack_hi3_stick_y) {
+                cont = false;
+            }
+            else {
+                let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
+                if !(attack_lw3_stick_y < stick_y) {
+                    cont = false;
                 }
+                else {
+                    let stick_x = fighter.global_table[STICK_X].get_f32();
+                    let attack_s3_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_x"));
+                    cont = stick_x < attack_s3_stick_x;
+                }
+            }
+            if cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), false.into());
+                return 1.into();
             }
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL) {

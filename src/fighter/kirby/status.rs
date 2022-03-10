@@ -30,18 +30,17 @@ unsafe fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn kirby_attacklw3_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE) {
         if !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool() {
-            if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-                macros::EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-                StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
-                GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-                MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 31.0 / 20.0, false, 0.0, false, false);
-                macros::SET_SPEED_EX(fighter, -1.0, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-                ControlModule::clear_command(fighter.module_accessor, true);
-                AttackModule::clear_all(fighter.module_accessor);
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE);
-            }
+        && !fighter.global_table[IN_HITLAG].get_bool()
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
+            macros::EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
+            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 31.0 / 20.0, false, 0.0, false, false);
+            macros::SET_SPEED_EX(fighter, -1.0, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+            ControlModule::clear_command(fighter.module_accessor, true);
+            AttackModule::clear_all(fighter.module_accessor);
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE);
         }
     }
     else {
@@ -58,10 +57,9 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
         return fighter.status_AttackLw3_Main();
     }
     else {
-        if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if fighter.sub_air_check_fall_common().get_bool() {
-                return 1.into();
-            }
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        && fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
         }
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

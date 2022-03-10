@@ -324,8 +324,10 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn mario_speciallw_longjump_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(false.into());
-        fighter.sub_air_check_fall_common();
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
     }
     if FGCModule::cancel_exceptions(fighter, *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW, false).get_bool() {
         return 1.into();
@@ -341,8 +343,10 @@ unsafe extern "C" fn mario_speciallw_longjump_end_main_loop(fighter: &mut L2CFig
 
 unsafe extern "C" fn mario_speciallw_groundpound_land_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(false.into());
-        fighter.sub_air_check_fall_common();
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

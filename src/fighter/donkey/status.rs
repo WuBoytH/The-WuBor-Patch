@@ -34,14 +34,13 @@ unsafe fn donkey_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_r")
-    && MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_l") {
-        if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s"), -1.0, 1.0, 0.0, false, false);
-            }
-            else if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), -1.0, 1.0, 0.0, false, false);
-            }
+    && MotionModule::motion_kind(fighter.module_accessor) != hash40("appeal_lw_l")
+    && StatusModule::is_situation_changed(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_s"), -1.0, 1.0, 0.0, false, false);
+        }
+        else {
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_s"), -1.0, 1.0, 0.0, false, false);
         }
     }
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));

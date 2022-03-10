@@ -477,10 +477,9 @@ unsafe fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_raginglion_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_air_check_fall_common().get_bool() {
-            return 1.into();
-        }
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_air_check_fall_common().get_bool() {
+        return 1.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_MOTION_CHANGE_ENABLE) {
         if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -520,8 +519,10 @@ unsafe fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(false.into());
-        fighter.sub_air_check_fall_common();
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
     }
     if fighter.sub_transition_group_check_air_cliff().get_bool() == true {
         return 1.into();
@@ -602,8 +603,9 @@ unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) 
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
     else {
-        if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            fighter.sub_wait_ground_check_common(0.into());
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 1.into();
         }
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
@@ -776,19 +778,12 @@ unsafe fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn lucina_speciallw_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC) {
         let dir = FGCModule::get_command_stick_direction(fighter, false);
-        if dir == 5
-        || dir == 8
-        || dir == 2 {
-            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
-        }
-        else if dir == 4
-        || dir == 7
-        || dir == 1 {
-            WorkModule::set_float(fighter.module_accessor, -2.0, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
-        }
-        else {
-            WorkModule::set_float(fighter.module_accessor, 2.0, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
-        }
+        let movement = match dir {
+            4 | 7 | 1 => -2.0,
+            6 | 9 | 3 => 2.0,
+            _ => 0.0
+        };
+        WorkModule::set_float(fighter.module_accessor, movement, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC);
     }
     0.into()
@@ -796,8 +791,10 @@ unsafe extern "C" fn lucina_speciallw_substatus(fighter: &mut L2CFighterCommon) 
 
 unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_wait_ground_check_common(0.into());
-        fighter.sub_air_check_fall_common();
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE) {
         let move_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_WORK_ID_FLOAT_ROMAN_MOVE);

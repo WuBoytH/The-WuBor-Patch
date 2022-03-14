@@ -140,89 +140,86 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
             }
         }
         else {
-            if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false {
-                if fighter.sub_air_check_fall_common().get_bool() == false {
-                    if toonlink_specialhi_end_situation_check(fighter).get_bool() {
-                        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-                            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST) {
-                                MotionModule::change_motion_inherit_frame(
-                                    fighter.module_accessor,
-                                    Hash40::new("special_hi"),
-                                    -1.0,
-                                    1.0,
-                                    0.0,
-                                    false,
-                                    false
-                                );
-                            }
-                            else {
-                                MotionModule::change_motion(
-                                    fighter.module_accessor,
-                                    Hash40::new("special_hi"),
-                                    0.0,
-                                    1.0,
-                                    false,
-                                    0.0,
-                                    false,
-                                    false
-                                );
-                                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
-                            }
-                            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
-                            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-                            return 0.into();
+            if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false
+            && fighter.sub_air_check_fall_common().get_bool() == false {
+                if toonlink_specialhi_end_situation_check(fighter).get_bool() {
+                    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
+                        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST) {
+                            MotionModule::change_motion_inherit_frame(
+                                fighter.module_accessor,
+                                Hash40::new("special_hi"),
+                                -1.0,
+                                1.0,
+                                0.0,
+                                false,
+                                false
+                            );
                         }
-                    }
-                    if toonlink_specialhi_end_situation_check(fighter).get_bool() {
-                        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-                            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI);
-                            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-                            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST) {
-                                MotionModule::change_motion_inherit_frame(
-                                    fighter.module_accessor,
-                                    Hash40::new("special_air_hi"),
-                                    -1.0,
-                                    1.0,
-                                    0.0,
-                                    false,
-                                    false
-                                );
-                            }
-                            else {
-                                MotionModule::change_motion(
-                                    fighter.module_accessor,
-                                    Hash40::new("special_air_hi"),
-                                    0.0,
-                                    1.0,
-                                    false,
-                                    0.0,
-                                    false,
-                                    false
-                                );
-                                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
-                            }
-                            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
-                            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-                            fighter.shift(L2CValue::Ptr(toonlink_specialhi_end_shift as *const () as _));
-                            return 0.into();
+                        else {
+                            MotionModule::change_motion(
+                                fighter.module_accessor,
+                                Hash40::new("special_hi"),
+                                0.0,
+                                1.0,
+                                false,
+                                0.0,
+                                false,
+                                false
+                            );
+                            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
                         }
-                        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-                        return 1.into();
+                        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
+                        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+                        return 0.into();
                     }
-                    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL) {
-                        if MotionModule::is_end(fighter.module_accessor) {
-                            fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
-                            return 1.into();
+                }
+                if toonlink_specialhi_end_situation_check(fighter).get_bool() {
+                    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+                        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI);
+                        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+                        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST) {
+                            MotionModule::change_motion_inherit_frame(
+                                fighter.module_accessor,
+                                Hash40::new("special_air_hi"),
+                                -1.0,
+                                1.0,
+                                0.0,
+                                false,
+                                false
+                            );
                         }
-                    }
-                    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT) {
-                        if MotionModule::is_end(fighter.module_accessor) {
-                            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-                            return 1.into();
+                        else {
+                            MotionModule::change_motion(
+                                fighter.module_accessor,
+                                Hash40::new("special_air_hi"),
+                                0.0,
+                                1.0,
+                                false,
+                                0.0,
+                                false,
+                                false
+                            );
+                            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
                         }
+                        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
+                        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
+                        fighter.shift(L2CValue::Ptr(toonlink_specialhi_end_shift as *const () as _));
+                        return 0.into();
                     }
+                    fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+                    return 1.into();
+                }
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL)
+                && MotionModule::is_end(fighter.module_accessor) {
+                    fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), false.into());
+                    return 1.into();
+                }
+                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT)
+                && MotionModule::is_end(fighter.module_accessor) {
+                    fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+                    return 1.into();
                 }
             }
         }
@@ -236,15 +233,13 @@ unsafe extern "C" fn toonlink_specialhi_end_situation_check(fighter: &mut L2CFig
         return 1.into();
     }
     else {
-        if fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            if fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-                return 1.into();
-            }
+        if fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+        && fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            return 1.into();
         }
-        if fighter.global_table[PREV_SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            if fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                return 1.into();
-            }
+        if fighter.global_table[PREV_SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND
+        && fighter.global_table[PREV_SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            return 1.into();
         }
     }
     0.into()
@@ -258,17 +253,15 @@ unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon
         }
     }
     else {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT) {
-            if MotionModule::is_end(fighter.module_accessor) {
-                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-                return 1.into();
-            }
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT)
+        && MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            return 1.into();
         }
-        if toonlink_specialhi_end_situation_check(fighter).get_bool() {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), true.into());
-                return 1.into();
-            }
+        if toonlink_specialhi_end_situation_check(fighter).get_bool()
+        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), true.into());
+            return 1.into();
         }
     }
     0.into()

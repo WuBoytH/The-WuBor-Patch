@@ -254,7 +254,7 @@ unsafe fn gaogaen_specialn(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
         macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+    if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY as u64 {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_START_ROTATION);
             macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
@@ -270,7 +270,7 @@ unsafe fn gaogaen_specialn(fighter: &mut L2CAgentBase) {
         AttackModule::set_size(fighter.module_accessor, 1, 0.1);
         AttackModule::set_size(fighter.module_accessor, 2, 0.1);
     }
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+    if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY as u64 {
         if macros::is_excute(fighter) {
             macros::HIT_RESET_ALL(fighter);
             AttackModule::set_target_category(fighter.module_accessor, 0, *COLLISION_CATEGORY_MASK_NO_IF as u32);
@@ -402,7 +402,7 @@ unsafe fn gaogaen_specialn(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(fighter.module_accessor);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_N_FLAG_END_ROTATION);
     }
-    if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+    if WorkModule::get_int64(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY as u64 {
         if macros::is_excute(fighter) {
             macros::HIT_RESET_ALL(fighter);
             AttackModule::clear_all(fighter.module_accessor);

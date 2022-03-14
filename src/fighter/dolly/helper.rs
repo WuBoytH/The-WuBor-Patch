@@ -22,16 +22,14 @@ pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2C
             situation = SITUATION_KIND_GROUND.into();
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-            if dolly_final_cancel(fighter, situation.clone()).get_bool() {
-                return 1.into();
-            }
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && dolly_final_cancel(fighter, situation.clone()).get_bool() {
+            return 1.into();
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL)
-        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
-            if dolly_special_cancel(fighter, situation.clone()).get_bool() {
-                return 1.into();
-            }
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
+        && dolly_special_cancel(fighter, situation.clone()).get_bool() {
+            return 1.into();
         }
     }
     0.into()
@@ -49,9 +47,12 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW
     ];
-    let mut enableds = [false; 10];
+    let mut enableds = [false; 13];
     for x in 0..terms.len() {
         enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
     }
@@ -136,14 +137,14 @@ pub unsafe extern "C" fn dolly_kara_cancel(fighter: &mut L2CFighterCommon) -> L2
 }
 
 pub struct SpecialCancelStats {
-    pub damage: f32,
+    pub dmg: f32,
     pub bkb: i32
 }
 
-pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut baseknockback: i32) -> SpecialCancelStats {
+pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
         dmg *= vl::param_private::special_cancel_damage_mul;
-        baseknockback = (baseknockback as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
+        bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
     }
-    SpecialCancelStats{damage: dmg, bkb: baseknockback}
+    SpecialCancelStats{dmg: dmg, bkb: bkb}
 }

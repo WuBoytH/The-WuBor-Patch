@@ -130,7 +130,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
             && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
             && !fighter.global_table[IN_HITLAG].get_bool() {
                 fighter.clear_lua_stack();
-                lua_args!(fighter, 0x1daca540be as u64);
+                lua_args!(fighter, Hash40::new_raw(0x1daca540be));
                 sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
                 if fighter.pop_lua_stack(1).get_bool() {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);

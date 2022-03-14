@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    super::vl,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -23,16 +24,24 @@ unsafe fn wario_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[IN_HITLAG].get_bool() == false {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_b") {
-            if MotionModule::frame(fighter.module_accessor) >= 10.0 && MotionModule::frame(fighter.module_accessor) < 57.0 {
-                let stickx = ControlModule::get_stick_x(fighter.module_accessor);
-                let lr = PostureModule::lr(fighter.module_accessor);
-                macros::SET_SPEED_EX(fighter, 1.1 * lr * stickx, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_b") {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_WARIO_STATUS_THROW_FLAG_MOVE) {
+            let mut spin = WorkModule::get_float(fighter.module_accessor, FIGHTER_WARIO_STATUS_THROW_FLOAT_SPIN_SPEED);
+            let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
+            spin += vl::param_private::throw_b_accel * stickx;
+            if spin.abs() > vl::param_private::throw_b_speed_max.abs() {
+                if spin < 0.0 {
+                    spin = -vl::param_private::throw_b_speed_max;
+                }
+                else {
+                    spin = vl::param_private::throw_b_speed_max;
+                }
             }
-            if MotionModule::frame(fighter.module_accessor) == 57.0 {
-                macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            }
+            WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_WARIO_STATUS_THROW_FLOAT_SPIN_SPEED);
+            macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        }
+        else {
+            macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }
     0.into()
@@ -114,17 +123,15 @@ unsafe extern "C" fn wario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
     let level = WorkModule::get_int(fighter.module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_LEVEL);
     if !MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            if level <= *FIGHTER_WARIO_GASS_LEVEL_L {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_LW_FLAG_LANDING_ENABLE) {
-                    fighter.change_status(FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING.into(), false.into());
-                    return 0.into();
-                }
+            if level <= *FIGHTER_WARIO_GASS_LEVEL_L
+            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_LW_FLAG_LANDING_ENABLE) {
+                fighter.change_status(FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING.into(), false.into());
+                return 0.into();
             }
         }
-        if !StatusModule::is_changing(fighter.module_accessor) {
-            if StatusModule::is_situation_changed(fighter.module_accessor) {
-                wario_speciallw_helper(fighter);
-            }
+        if !StatusModule::is_changing(fighter.module_accessor)
+        && StatusModule::is_situation_changed(fighter.module_accessor) {
+            wario_speciallw_helper(fighter);
         }
     }
     else {

@@ -187,11 +187,9 @@ unsafe extern "C" fn luigi_specialhi_drop_main_loop(fighter: &mut L2CFighterComm
         return 0.into();
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-            return 0.into();
-        }
-        if fighter.sub_air_check_fall_common().get_bool() {
-            return 0.into();
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
         }
     }
     if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL) {

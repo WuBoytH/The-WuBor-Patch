@@ -43,15 +43,12 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
         fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE_FB.into(), true.into());
         return true.into();
     }
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE) {
-        if FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
-            if FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) == false {
-                if tech {
-                    fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE.into(), true.into());
-                    return true.into();
-                }
-            }
-        }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE)
+    && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
+    && FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) == false
+    && tech {
+        fighter.change_status(FIGHTER_STATUS_KIND_PASSIVE.into(), true.into());
+        return true.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN)
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

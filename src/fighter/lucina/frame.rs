@@ -213,23 +213,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 }
             }
             else if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW {
-                let throwframe : f32;
-                if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_f") {
-                    throwframe = 18.0;
-                }
-                else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_b") {
-                    throwframe = 19.0;
-                }
-                else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_hi") {
-                    throwframe = 13.0;
-                }
-                else if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_lw") {
-                    throwframe = 20.0;
-                }
-                else{
-                    throwframe = 20.0;
-                }
-                if MotionModule::frame(fighter.module_accessor) > throwframe
+                if CatchModule::is_catch(fighter.module_accessor) == false
                 && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE) {
                     WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
                 }

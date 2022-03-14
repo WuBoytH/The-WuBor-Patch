@@ -40,23 +40,19 @@ unsafe fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let change_to = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
-    if change_to == *FIGHTER_STATUS_KIND_NONE {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
-            if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            && only_jabs(fighter) {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_FLASH_PUNCH) {
-                    fighter.change_status(FIGHTER_DEMON_STATUS_KIND_FLASH_PUNCH.into(), true.into());
-                    return 0.into();
-                }
-            }
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-            && only_jabs(fighter) {
-                if StatusModule::is_changing(fighter.module_accessor) == false {
-                    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_ENABLE_COMBO) {
-                        WorkModule::set_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
-                    }
-                }
-            }
+    if change_to == *FIGHTER_STATUS_KIND_NONE
+    && MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_12") {
+        if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        && only_jabs(fighter)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_FLASH_PUNCH) {
+            fighter.change_status(FIGHTER_DEMON_STATUS_KIND_FLASH_PUNCH.into(), true.into());
+            return 0.into();
+        }
+        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+        && only_jabs(fighter)
+        && StatusModule::is_changing(fighter.module_accessor) == false
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_ENABLE_COMBO) {
+            WorkModule::set_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
         }
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS) {
@@ -109,10 +105,9 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
     }
-    if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-            return 0.into();
-        }
+    if CancelModule::is_enable_cancel(fighter.module_accessor)
+    && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+        return 0.into();
     }
     let mut next_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
     if next_status != *FIGHTER_STATUS_KIND_NONE {
@@ -152,24 +147,20 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_first(fighter: &mut L2CF
     let combo_step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
     let mut status = next_status;
     if combo_step != 4 {
-        if combo_step != 6 {
-            if combo_step != 7 {
-                status = demon_attackcombo_main_loop_helper_second(fighter, status);
-            }
+        if combo_step == 6
+        || combo_step == 7 {
+            status = demon_attackcombo_main_loop_helper_second(fighter, status);
         }
     }
     else {
         status = demon_attackcombo_main_loop_helper_second(fighter, status);
     }
-    if status == *FIGHTER_STATUS_KIND_NONE {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
-        && only_jabs(fighter) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-                if !StatusModule::is_changing(fighter.module_accessor) {
-                    status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO;
-                }
-            }
-        }
+    if status == *FIGHTER_STATUS_KIND_NONE
+    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
+    && only_jabs(fighter)
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
+    && !StatusModule::is_changing(fighter.module_accessor) {
+        status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO;
     }
     WorkModule::set_int(fighter.module_accessor, status, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
     status
@@ -178,31 +169,23 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_first(fighter: &mut L2CF
 unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2CFighterCommon, next_status: i32) -> i32 {
     let mut status = next_status;
     if next_status != *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2 {
-        if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND == 0 {
-            if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623STRICT == 0 {
-                if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_323CATCH == 0 {
-                    if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623A == 0 {
-                        if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_6N6AB == 0 {
-                            status = *FIGHTER_STATUS_KIND_NONE;
-                        }
-                        else {
-                            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_1;
-                        }
-                    }
-                    else {
-                        status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2;
-                    }
-                }
-                else {
-                    status = *FIGHTER_DEMON_STATUS_KIND_CATCH_COMMAND;
-                }
-            }
-            else {
-                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2F;
-            }
+        if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2S;
+        }
+        else if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623STRICT != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2F;
+        }
+        else if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_323CATCH != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_CATCH_COMMAND;
+        }
+        else if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_623A != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2;
+        }
+        else if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_6N6AB != 0 {
+            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_1;
         }
         else {
-            status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2S;
+            status = *FIGHTER_STATUS_KIND_NONE;
         }
     }
     else {

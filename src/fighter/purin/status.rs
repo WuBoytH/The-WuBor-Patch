@@ -27,12 +27,13 @@ unsafe fn purin_specialn_hit_end_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn purin_specialn_hit_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        fighter.sub_air_check_fall_common();
-    }
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false {
-        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+        if fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
         }
+    }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() == false
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
     }
     0.into()
 }

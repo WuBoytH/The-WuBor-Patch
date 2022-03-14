@@ -14,7 +14,7 @@ use {
 
 #[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
 unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 2.0);
+    macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 14.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {

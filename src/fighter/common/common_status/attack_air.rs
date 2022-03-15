@@ -39,22 +39,28 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
     }
-    else if AttackModule::is_attack(fighter.module_accessor, 0, false) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
+    else {
+        let part_size = AttackModule::part_size(fighter.module_accessor) as i32;
+        for id in 0..part_size {
+            if AttackModule::is_attack(fighter.module_accessor, id, false) {
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
+                break;
+            }
+        }
     }
-    if fighter.attack_air_common_strans().get_bool() == false {
-        if CancelModule::is_enable_cancel(fighter.module_accessor) == false {
-            if MotionModule::is_end(fighter.module_accessor) == false {
+    if !fighter.attack_air_common_strans().get_bool() {
+        if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+            if !MotionModule::is_end(fighter.module_accessor) {
                 return false.into();
             }
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
         else {
-            if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false {
+            if !fighter.sub_wait_ground_check_common(false.into()).get_bool() {
                 if fighter.sub_air_check_fall_common().get_bool() {
                     return true.into();
                 }
-                if MotionModule::is_end(fighter.module_accessor) == false {
+                if !MotionModule::is_end(fighter.module_accessor) {
                     return false.into();
                 }
                 fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());

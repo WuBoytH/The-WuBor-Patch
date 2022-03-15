@@ -25,8 +25,7 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.attack_air_uniq(false.into());
     }
-    let bind_address_call_attack_air_uniq = L2CFighterCommon_bind_address_call_attack_air_uniq;
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(bind_address_call_attack_air_uniq as *const () as _));
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_attack_air_uniq as *const () as _));
     if param_1.get_bool() == true {
         fighter.sub_attack_air_kind();
     }
@@ -39,7 +38,7 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
     }
-    else {
+    else if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF) {
         let part_size = AttackModule::part_size(fighter.module_accessor) as i32;
         for id in 0..part_size {
             if AttackModule::is_attack(fighter.module_accessor, id, false) {

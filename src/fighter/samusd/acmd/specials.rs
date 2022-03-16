@@ -20,7 +20,6 @@ unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let cshot_id = WorkModule::get_int(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
         if sv_battle_object::is_active(cshot_id as u32) {
-            // return 0.into();
             let boma = sv_battle_object::module_accessor(cshot_id as u32);
             if utility::get_category(&mut *boma) == *BATTLE_OBJECT_CATEGORY_WEAPON
             && utility::get_kind(&mut *boma) == *WEAPON_KIND_SAMUSD_CSHOT {

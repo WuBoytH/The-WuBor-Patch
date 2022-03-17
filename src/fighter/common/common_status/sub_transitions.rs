@@ -205,8 +205,7 @@ unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommo
                 fighter.clear_lua_stack();
                 lua_args!(fighter, MA_MSC_CMD_ITEM_IS_GET_PICKABLE_ITEM);
                 sv_module_access::item(fighter.lua_state_agent);
-                if fighter.pop_lua_stack(1).get_bool()
-                && !ItemModule::is_have_item(fighter.module_accessor, 0) {
+                if fighter.pop_lua_stack(1).get_bool() {
                     fighter.change_status(FIGHTER_STATUS_KIND_ITEM_LIGHT_PICKUP.into(), true.into());
                     return true.into();
                 }

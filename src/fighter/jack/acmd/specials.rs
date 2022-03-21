@@ -18,6 +18,9 @@ unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
     frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT);
@@ -40,7 +43,6 @@ unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
-            JostleModule::set_status(fighter.module_accessor, false);
         }
     }
     frame(fighter.lua_state_agent, 18.0);
@@ -48,8 +50,8 @@ unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_JACK_STATUS_WORK_ID_FLAG_SPECIAL_S_FEINT) {
             macros::FT_MOTION_RATE(fighter, 0.5);
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-            JostleModule::set_status(fighter.module_accessor, true);
         }
+        JostleModule::set_status(fighter.module_accessor, true);
     }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {

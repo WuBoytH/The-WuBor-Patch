@@ -3,7 +3,7 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::{lua_const::*, L2CAgent, L2CValue}
     },
     smash_script::*,
@@ -18,9 +18,13 @@ unsafe fn status_end_attackxx4start(fighter: &mut L2CFighterCommon) {
     let restart_frame = MotionModule::frame(fighter.module_accessor);
     WorkModule::set_float(fighter.module_accessor, restart_frame, *FIGHTER_STATUS_ATTACK_WORK_FLOAT_SMASH_RESTART_FRAME);
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.0, 0.0);
-        sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            0.0,
+            0.0
+        );
     }
     attack_4_reset_ground_normals(fighter);
 }
@@ -91,9 +95,7 @@ unsafe fn attack_4_reset_ground_normals(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn attack_4_hold(fighter: &mut L2CFighterCommon) {
-    fighter.clear_lua_stack();
-    lua_args!(fighter, MA_MSC_CMD_PHYSICS_STOP_CHARGE);
-    sv_module_access::physics(fighter.lua_state_agent);
+    physics!(fighter, MA_MSC_CMD_PHYSICS_STOP_CHARGE);
     fighter.pop_lua_stack(1);
     attack_4_reset_ground_normals(fighter);
 }

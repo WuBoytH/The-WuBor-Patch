@@ -154,14 +154,27 @@ unsafe fn samus_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let speed_x = angle.to_radians().cos() * speed * lr;
     let speed_y = angle.to_radians().sin() * speed;
     weapon.clear_lua_stack();
-    lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, speed_x, speed_y);
-    sv_kinetic_energy::set_speed(weapon.lua_state_agent);
-    weapon.clear_lua_stack();
-    lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, -1.0, -1.0);
-    sv_kinetic_energy::set_stable_speed(weapon.lua_state_agent);
-    weapon.clear_lua_stack();
-    lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, 0.0, 0.0);
-    sv_kinetic_energy::set_accel(weapon.lua_state_agent);
+    sv_kinetic_energy!(
+        set_speed,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        speed_x,
+        speed_y
+    );
+    sv_kinetic_energy!(
+        set_stable_speed,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        -1.0,
+        -1.0
+    );
+    sv_kinetic_energy!(
+        set_accel,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        0.0,
+        0.0
+    );
     if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
         let scale = WorkModule::get_param_float(weapon.module_accessor, hash40("param_cshot"), hash40("min_scale"));
         effect!(

@@ -37,14 +37,19 @@ unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon)
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_N_FLOAT);
         let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-        fighter.clear_lua_stack();
+        let mul;
         if sum_speed_y <= 0.0 {
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y * vl::param_private::attack_air_n_gravity_mul);
+            mul = vl::param_private::attack_air_n_gravity_mul;
         }
         else {
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -air_accel_y);
+            mul = 1.0;
         }
-        sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y * mul
+        );
     }
     0.into()
 }
@@ -459,15 +464,27 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let speed = (max_speed - min_speed) * charge + min_speed;
     let speed_x = angle.to_radians().cos() * speed * lr;
     let speed_y = angle.to_radians().sin() * speed;
-    weapon.clear_lua_stack();
-    lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, speed_x, speed_y);
-    sv_kinetic_energy::set_speed(weapon.lua_state_agent);
-    weapon.clear_lua_stack();
-    lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, -1.0, -1.0);
-    sv_kinetic_energy::set_stable_speed(weapon.lua_state_agent);
-    weapon.clear_lua_stack();
-    lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, -0.15 * lr, 0.0);
-    sv_kinetic_energy::set_accel(weapon.lua_state_agent);
+    sv_kinetic_energy!(
+        set_speed,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        speed_x,
+        speed_y
+    );
+    sv_kinetic_energy!(
+        set_stable_speed,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        -1.0,
+        -1.0
+    );
+    sv_kinetic_energy!(
+        set_accel,
+        weapon,
+        WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+        -0.15 * lr,
+        0.0
+    );
     if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_ALL as u32) {
         let min_scale = WorkModule::get_param_float(weapon.module_accessor, hash40("param_cshot"), hash40("min_scale"));
         let max_scale = WorkModule::get_param_float(weapon.module_accessor, hash40("param_cshot"), hash40("max_scale"));
@@ -548,17 +565,27 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     lua_args!(weapon, WEAPON_KINETIC_TYPE_NORMAL);
     let speed_x = sv_kinetic_energy::get_speed_x(weapon.lua_state_agent);
     if speed_x.abs() < 0.21 {
-        weapon.clear_lua_stack();
+        let lr;
         if speed_x < 0.0 {
-            lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, -0.2, 0.0);
+            lr = -1.0;
         }
         else {
-            lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, 0.2, 0.0);
+            lr = 1.0;
         }
-        sv_kinetic_energy::set_speed(weapon.lua_state_agent);
-        weapon.clear_lua_stack();
-        lua_args!(weapon, WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL, 0.0, 0.0);
-        sv_kinetic_energy::set_accel(weapon.lua_state_agent);
+        sv_kinetic_energy!(
+            set_speed,
+            weapon,
+            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+            0.2 * lr,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_accel,
+            weapon,
+            WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
+            0.0,
+            0.0
+        );
     }
     0.into()
 }

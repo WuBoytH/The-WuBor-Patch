@@ -110,10 +110,6 @@ unsafe extern "C" fn ganon_special_s_air_catch_main_loop(fighter: &mut L2CFighte
         MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s_catch"), 1.0, 1.0, false, 0.0, false, false);
         fighter.set_situation(SITUATION_KIND_AIR.into());
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, 0x8cdc1683 as u64, 0.0);
-        sv_kinetic_energy::set_speed(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
     }
     if fighter.global_table[MOTION_FRAME].get_f32() >= 1.0 {
         if MotionModule::is_end(fighter.module_accessor) {
@@ -156,9 +152,12 @@ unsafe fn ganon_sspecial_air_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 #[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_sspecial_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 0.4);
-    sv_kinetic_energy::set_speed_mul(fighter.lua_state_agent);
+    sv_kinetic_energy!(
+        set_speed_mul,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        0.4
+    );
     fighter.sub_shift_status_main(L2CValue::Ptr(ganon_specials_air_end_main_loop as *const () as _))
 }
 

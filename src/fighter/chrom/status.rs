@@ -203,9 +203,17 @@ unsafe fn chrom_speciallw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_AIR_TRANS, 0.0, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         macros::SET_SPEED_EX(

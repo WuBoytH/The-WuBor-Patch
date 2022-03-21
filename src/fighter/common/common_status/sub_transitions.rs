@@ -4,6 +4,7 @@ use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
         hash40,
+        phx::Hash40,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -298,8 +299,8 @@ unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterComm
                 }
                 else {
                     fighter.clear_lua_stack();
-                    lua_args!(fighter, 0x21bfbd3f83u64);
-                    smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                    lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83));
+                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
                     do_footstool = fighter.pop_lua_stack(1).get_bool();
                 }
             }
@@ -328,8 +329,8 @@ unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterComm
                 }
                 else {
                     fighter.clear_lua_stack();
-                    lua_args!(fighter, 0x21bfbd3f83u64);
-                    smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                    lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83));
+                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
                     do_footstool = fighter.pop_lua_stack(1).get_bool();
                 }
             }
@@ -340,8 +341,8 @@ unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterComm
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TREAD_JUMP_NO_TRIGGER) {
             fighter.clear_lua_stack();
-            lua_args!(fighter, 0x21bfbd3f83u64, true);
-            smash::app::sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+            lua_args!(fighter, Hash40::new_raw(0x21bfbd3f83), true);
+            sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
             if fighter.pop_lua_stack(1).get_bool() {
                 fighter.change_status(FIGHTER_STATUS_KIND_TREAD_JUMP.into(), false.into());
                 return true.into();

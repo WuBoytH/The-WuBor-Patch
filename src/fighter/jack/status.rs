@@ -28,21 +28,38 @@ unsafe extern "C" fn jack_special_mot_helper(fighter: &mut L2CFighterCommon, da_
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_FALL_NORMAL) == false {
             let speed_max_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("speed_max_y"));
             let accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("accel_y"));
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -accel_y);
-            sv_kinetic_energy::set_accel(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_max_y);
-            sv_kinetic_energy::set_limit_speed(fighter.lua_state_agent);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_max_y);
-            sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                -accel_y
+            );
+            sv_kinetic_energy!(
+                set_limit_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                speed_max_y
+            );
+            sv_kinetic_energy!(
+                set_stable_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                speed_max_y
+            );
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_CONTROL_ENERGY) {
             let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, sum_speed_x, 0.0, 0.0, 0.0, 0.0);
-            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+                sum_speed_x,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            );
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
@@ -70,16 +87,23 @@ unsafe extern "C" fn jack_special_s_main_helper(fighter: &mut L2CFighterCommon) 
         lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
         let air_start_speed_mul_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_start_speed_mul_x"));
-        fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_STOP, speed_x * air_start_speed_mul_x, 0.0);
-        sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            speed_x * air_start_speed_mul_x,
+            0.0
+        );
         fighter.clear_lua_stack();
         lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
         let air_start_speed_mul_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_start_speed_mul_y"));
-        fighter.clear_lua_stack();
-        lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, speed_y * air_start_speed_mul_y);
-        sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            speed_y * air_start_speed_mul_y
+        );
     }
     WorkModule::set_float(fighter.module_accessor, 20.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     fighter.sub_shift_status_main(L2CValue::Ptr(jack_special_s_main_loop as *const () as _))
@@ -101,17 +125,33 @@ unsafe extern "C" fn jack_special_s_main_loop(fighter: &mut L2CFighterCommon) ->
     if !MotionModule::is_end(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL) {
             let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY, *ENERGY_GRAVITY_RESET_TYPE_GRAVITY, 0.0, sum_speed_y, 0.0, 0.0, 0.0);
-            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+                0.0,
+                sum_speed_y,
+                0.0,
+                0.0,
+                0.0
+            );
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_SET_FALL_NORMAL);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_FALL_NORMAL);
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY) {
             let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            fighter.clear_lua_stack();
-            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL, *ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST, sum_speed_x, 0.0, 0.0, 0.0, 0.0);
-            sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST,
+                sum_speed_x,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            );
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_ENABLE_CONTROL_ENERGY);

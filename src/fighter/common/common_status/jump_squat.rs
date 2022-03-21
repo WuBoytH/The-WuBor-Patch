@@ -3,7 +3,8 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
-        app::{lua_bind::*, *},
+        phx::Hash40,
+        app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
@@ -107,9 +108,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
                 && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
                 && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, 0x1daca540be as u64);
-                    sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1daca540be));
                     if fighter.pop_lua_stack(1).get_bool() {
                         fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
                         return 0.into();

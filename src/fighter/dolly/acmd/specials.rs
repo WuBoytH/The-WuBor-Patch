@@ -60,7 +60,7 @@ unsafe fn dolly_specialairn(fighter: &mut L2CAgentBase) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE);
         }
         else {
-            KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 0.0, y: 1.2, z: 0.0});
+            KineticModule::add_speed(fighter.module_accessor, &Vector3f {x: 0.0, y: vl::param_special_n::feint_speed_y_add, z: 0.0});
             MotionModule::set_rate(fighter.module_accessor, 1.5);
         }
     }

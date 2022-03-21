@@ -247,15 +247,27 @@ unsafe extern "C" fn ryu_specials_loop_main_loop(fighter: &mut L2CFighterCommon)
             let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
             if start_sit != *SITUATION_KIND_GROUND {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
-                sv_kinetic_energy::set_accel(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
-                sv_kinetic_energy::set_brake(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP, 0.0, 0.0);
-                sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+                sv_kinetic_energy!(
+                    set_accel,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_STOP,
+                    0.0,
+                    0.0
+                );
+                sv_kinetic_energy!(
+                    set_brake,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_STOP,
+                    0.0,
+                    0.0
+                );
+                sv_kinetic_energy!(
+                    set_stable_speed,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_STOP,
+                    0.0,
+                    0.0
+                );
             }
         }
     }

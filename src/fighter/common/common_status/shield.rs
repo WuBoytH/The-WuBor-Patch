@@ -412,9 +412,17 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
     setoff_speed *= shield_lr;
     // println!("setoff_speed: {}", setoff_speed);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE, ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE, setoff_speed, 0.0, 0.0, 0.0, 0.0);
-    sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
+        ENERGY_STOP_RESET_TYPE_GUARD_DAMAGE,
+        setoff_speed,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
     let mut hit_stop_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_HIT_STOP_FRAME);
     hit_stop_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x2434ca61df);

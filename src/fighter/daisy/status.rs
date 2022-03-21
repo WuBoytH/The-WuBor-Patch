@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    super::vl,
     wubor_utils::table_const::*
 };
 
@@ -142,9 +143,12 @@ unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_FALL {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, 2.45);
-        sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            vl::param_special_lw::limit_speed_y
+        );
         fighter.clear_lua_stack();
     }
     0.into()

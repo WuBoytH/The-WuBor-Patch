@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::helper::*,
+    super::{helper::*, vl},
     super::super::common::common_status::dash::*,
     wubor_utils::{
         wua_bind::*,
@@ -157,9 +157,12 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         false
     );
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, 1.2);
-        sv_kinetic_energy::set_speed_mul(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            set_speed_mul,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            vl::param_attack_dash::distance_mul_l
+        );
     }
     else {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
@@ -215,9 +218,17 @@ unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_APPEAL {
             mul = 0.1;
         }
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION, ENERGY_MOTION_RESET_TYPE_GROUND_TRANS, speed_x * mul, 0.0, 0.0, 0.0, 0.0);
-        sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
+            speed_x * mul,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        );
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
@@ -447,17 +458,26 @@ unsafe extern "C" fn dolly_specialn_main_loop(fighter: &mut L2CFighterCommon) ->
             if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
                 if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_SPECIAL_N_HOP_DONE) {
                     let hop_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("hop_speed_y"));
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, hop_speed_y);
-                    sv_kinetic_energy::set_speed(fighter.lua_state_agent);
+                    sv_kinetic_energy!(
+                        set_speed,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        hop_speed_y
+                    );
                     let gravity_accel = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("gravity_accel"));
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -gravity_accel);
-                    sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+                    sv_kinetic_energy!(
+                        set_accel,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        -gravity_accel
+                    );
                     let gravity_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("gravity_max"));
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, gravity_max);
-                    sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+                    sv_kinetic_energy!(
+                        set_stable_speed,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        gravity_max
+                    );
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_N_WORK_FLAG_GENERATE_DONE);
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_SPECIAL_N_HOP_DONE);
                 }
@@ -469,17 +489,31 @@ unsafe extern "C" fn dolly_specialn_main_loop(fighter: &mut L2CFighterCommon) ->
                 fighter.clear_lua_stack();
                 lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
                 let gravity = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, ENERGY_STOP_RESET_TYPE_AIR, 0.0, gravity, 0.0, 0.0, 0.0);
-                sv_kinetic_energy::reset_energy(fighter.lua_state_agent);
+                sv_kinetic_energy!(
+                    reset_energy,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    ENERGY_STOP_RESET_TYPE_AIR,
+                    0.0,
+                    gravity,
+                    0.0,
+                    0.0,
+                    0.0
+                );
                 let gravity_accel = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("gravity_accel"));
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, -gravity_accel);
-                sv_kinetic_energy::set_accel(fighter.lua_state_agent);
+                sv_kinetic_energy!(
+                    set_accel,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    -gravity_accel
+                );
                 let gravity_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("gravity_max"));
-                fighter.clear_lua_stack();
-                lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY, gravity_max);
-                sv_kinetic_energy::set_stable_speed(fighter.lua_state_agent);
+                sv_kinetic_energy!(
+                    set_stable_speed,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    gravity_max
+                );
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             }
             else {

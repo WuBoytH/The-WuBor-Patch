@@ -148,15 +148,24 @@ unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     fighter.clear_lua_stack();
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     let stable_speed_y = sv_kinetic_energy::get_stable_speed_y(fighter.lua_state_agent);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL, fall_max_x, stable_speed_y);
-    fighter.clear_lua_stack();
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        fall_max_x,
+        stable_speed_y
+    );
     let fall_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_x_mul"));
-    lua_args!(fighter, fall_x_mul);
-    sv_kinetic_energy::controller_set_accel_x_mul(fighter.lua_state_agent);
-    fighter.clear_lua_stack();
-    lua_args!(fighter, 0);
-    sv_kinetic_energy::controller_set_accel_x_add(fighter.lua_state_agent);
+    sv_kinetic_energy!(
+        controller_set_accel_x_mul,
+        fighter,
+        fall_x_mul
+    );
+    sv_kinetic_energy!(
+        controller_set_accel_x_add,
+        fighter,
+        0
+    );
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_fall_common_uniq(false.into());
     }

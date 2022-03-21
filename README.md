@@ -1,12 +1,12 @@
 # The WuBor Patch
 
-A mod for Super Smash Bros. Ultimate that brings character overhauls and mechanics changes to various characters. [You can find a full changelog for the current release here.](https://docs.google.com/document/d/16tu3cYEb80jNR3KSFWPoJ-9iOijlIIT75GK4U1d0EvY/edit?usp=sharing)
+A mod for Super Smash Bros. Ultimate that brings character overhauls and mechanics changes to various characters. [You can find a full changelog for the current release here.](https://docs.google.com/document/d/1t0nvUXDJA4nYl3URAfJ0BPBpUWSaeyBb6TJmhpSQajU)
 
 ## Dependencies
 
-* [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab AT LEAST 3.0.0 Beta 2.4! Extract this to the root of your SD card.
+* [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab AT LEAST release 3.1.0! Extract this to the root of your SD card.
 * [smashline_hook](https://github.com/blu-dev/smashline_hook/releases/latest) - Download libsmashline_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
-* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/v0.2.0) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
+* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/v0.3.0) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
 
 ### How to Install
 

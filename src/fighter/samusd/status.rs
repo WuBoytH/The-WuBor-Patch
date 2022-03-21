@@ -421,7 +421,6 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     if utility::get_kind(&mut *oboma)  == *FIGHTER_KIND_SAMUSD {
-        // WorkModule::on_flag(oboma, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_CSHOT_ACTIVE);
         WorkModule::set_int(oboma, weapon.global_table[OBJECT_ID].get_i32(), FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
     }
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_cshot"), hash40("life"));
@@ -569,7 +568,6 @@ unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     if utility::get_kind(&mut *oboma)  == *FIGHTER_KIND_SAMUSD {
-        // WorkModule::off_flag(oboma, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_CSHOT_ACTIVE);
         WorkModule::set_int(oboma, *BATTLE_OBJECT_ID_INVALID, FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
     }
     WorkModule::set_int(weapon.module_accessor, 0, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_EFH_BULLET);

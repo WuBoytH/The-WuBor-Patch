@@ -724,6 +724,39 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
     original!()(lua_state);
 }
 
+// #[skyline::hook(offset = 0x696700)]
+// pub unsafe extern "C" fn crit_zoom(
+//     module_accessor: *mut BattleObjectModuleAccessor,
+//     param_2: u64,
+//     param_3: u64,
+//     param_4: u64,
+//     param_5: u64,
+//     param_6: u64,
+//     param_7: u64,
+//     param_8: u64,
+//     param_9: u64
+// ) -> bool {
+//     println!("param_2: {}", param_2);
+//     println!("param_3: {}", param_3);
+//     println!("param_4: {}", param_4);
+//     println!("param_5: {}", param_5);
+//     println!("param_6: {}", param_6);
+//     println!("param_7: {}", param_7);
+//     println!("param_8: {}", param_8);
+//     println!("param_9: {}", param_9);
+//     original!()(
+//         module_accessor,
+//         param_2,
+//         param_3,
+//         param_4,
+//         param_5,
+//         param_6,
+//         param_7,
+//         param_8,
+//         param_9
+//     )
+// }
+
 pub fn install() {
     unsafe{
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
@@ -752,6 +785,7 @@ pub fn install() {
         play_status_replace,
         play_down_se_replace,
         play_se_remain_replace,
-        play_se_no_3d_replace
+        play_se_no_3d_replace,
+        // crit_zoom
     );
 }

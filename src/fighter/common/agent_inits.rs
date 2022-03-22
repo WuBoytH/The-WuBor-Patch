@@ -40,10 +40,7 @@ use {
             samusd::fgc::samusd_fgc,
             shizue::agent_init::shizue_special_lw_pre,
             toonlink::fgc::toonlink_fgc,
-            trail::{
-                agent_init::trail_guard_cont_pre,
-                fgc::trail_fgc
-            }
+            trail::agent_init::trail_guard_cont_pre
         }
     },
     wubor_utils::{
@@ -172,7 +169,6 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         else if fighter_kind == *FIGHTER_KIND_TRAIL {
             fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
-            fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(trail_fgc as *const () as _));
         }
     }
 }

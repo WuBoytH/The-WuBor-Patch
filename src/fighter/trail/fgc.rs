@@ -4,15 +4,11 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
+    wubor_utils::wua_bind::*
 };
 
 pub unsafe extern "C" fn trail_fgc(fighter: &mut L2CFighterCommon) {
     let status = StatusModule::status_kind(fighter.module_accessor);
-    let mot = MotionModule::motion_kind(fighter.module_accessor);
     let mut normal_cancels = [].to_vec();
     if status == *FIGHTER_STATUS_KIND_ATTACK
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {

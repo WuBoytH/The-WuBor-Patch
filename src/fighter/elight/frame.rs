@@ -6,28 +6,12 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
 fn elight_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_ELIGHT_STATUS_KIND_FINAL_READY
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_ELIGHT_STATUS_KIND_FINAL_SCENE01
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_ELIGHT_STATUS_KIND_FINAL_SCENE02
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_ELIGHT_STATUS_KIND_FINAL_END
-            && MiscModule::is_damage_check(fighter.module_accessor, false) == false {
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
-            }
-        }
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_hi_jump") {
             if PostureModule::lr(fighter.module_accessor) == 1.0 && ControlModule::get_stick_x(fighter.module_accessor) < -0.75 {
                 PostureModule::reverse_lr(fighter.module_accessor);

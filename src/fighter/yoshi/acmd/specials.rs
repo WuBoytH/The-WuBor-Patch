@@ -2,12 +2,11 @@ use {
     smash::{
         lua2cpp::L2CAgentBase,
         phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
+        app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
 #[acmd_script( agent = "yoshi", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
@@ -53,42 +52,9 @@ unsafe fn yoshi_specialsloop(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi_tamago", script = "game_throwed", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_tamago_throwed(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        let mut angle : u64 = 70;
-        let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let oboma = sv_battle_object::module_accessor(otarget_id);
-        if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            angle = 130;
-        }
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 6.0, angle, 50, 0, 60, 6.5, 0.0, 1.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_YOSHI_EGG_HIT, *ATTACK_REGION_OBJECT);
-    }
-}
-
-#[acmd_script( agent = "yoshi_tamago", script = "game_burst", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_tamago_burst(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        let mut angle : u64 = 70;
-        let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-        let oboma = sv_battle_object::module_accessor(otarget_id);
-        if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            angle = 130;
-        }
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 6.0, angle, 50, 0, 60, 6.5, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_YOSHI_EGG_HIT, *ATTACK_REGION_OBJECT);
-        ControlModule::set_rumble(weapon.module_accessor, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    wait(weapon.lua_state_agent, 3.0);
-    if macros::is_excute(weapon) {
-        AttackModule::clear_all(weapon.module_accessor);
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         yoshi_specialn,
-        yoshi_specialsloop,
-        yoshi_tamago_throwed,
-        yoshi_tamago_burst
+        yoshi_specialsloop
     );
 }

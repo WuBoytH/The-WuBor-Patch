@@ -5,11 +5,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::vars::*,
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]
@@ -25,19 +21,6 @@ fn eflame_frame(fighter: &mut L2CFighterCommon) {
             if ControlModule::check_button_trigger(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL)
             && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_EFLAME_SPECIAL_S_FLAG_ROTATE) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_EFLAME_SPECIAL_S_FLAG_ROTATE);
-            }
-        }
-
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_FINAL
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_READY
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE01
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_SCENE02
-            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_EFLAME_STATUS_KIND_FINAL_END
-            && MiscModule::is_damage_check(fighter.module_accessor, false) == false {
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
             }
         }
     }

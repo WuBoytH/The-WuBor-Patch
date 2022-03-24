@@ -273,15 +273,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
-        if [
-            hash40("damage_fly_correction_max")
-        ].contains(&param_type) {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 0.0;
-            }
-        }
-
-        else if param_hash == hash40("shield_damage_mul") {
+        if param_hash == hash40("shield_damage_mul") {
             if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
                 return 0.2;
             }
@@ -304,40 +296,8 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 return 1.0;
             }
         }
-
-        else if param_hash == hash40("escape_air_slide_hit_xlu_frame")
-        || param_hash == hash40("escape_air_slide_penalty_hit_xlu_frame") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if MiscModule::is_damage_check(boma, true)
-                || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
-                    return 1.0;
-                }
-                else {
-                    return 0.0;
-                }
-            }
-        }
-
-        else if param_hash == hash40("escape_air_slide_hit_normal_frame")
-        || param_hash == hash40("escape_air_slide_penalty_hit_normal_frame") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if MiscModule::is_damage_check(boma, true)
-                || WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
-                    return 20.0;
-                }
-                else {
-                    return 0.0;
-                }
-            }
-        }
-
         else if fighter_kind == *FIGHTER_KIND_KEN {
-            if param_hash == hash40("air_max_speed_y") {
-                if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-                    return 1.0;
-                }
-            }
-            else if param_hash == hash40("speed_x_mul_s") {
+            if param_hash == hash40("speed_x_mul_s") {
                 if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.15;
                 }
@@ -346,13 +306,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 if WorkModule::is_flag(boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER)
                 && WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.1;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_RYU {
-            if param_hash == hash40("air_max_speed_y") {
-                if WorkModule::is_flag(boma, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-                    return 1.0;
                 }
             }
         }

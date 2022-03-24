@@ -273,30 +273,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
-        if param_hash == hash40("shield_damage_mul") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 0.2;
-            }
-        }
-
-        else if param_hash == hash40("damage_fly_correction_max") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 0.0;
-            }
-        }
-
-        else if param_hash == hash40("damage_fly_length_mul_max") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 1.0;
-            }
-        }
-
-        else if param_hash == hash40("damage_fly_length_mul_min") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 1.0;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_KEN {
+        if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("speed_x_mul_s") {
                 if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.15;
@@ -335,7 +312,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA { // move to status scripts
+        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             if param_hash == hash40("speed_max") {
                 let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
                 let oboma = sv_battle_object::module_accessor(otarget_id);

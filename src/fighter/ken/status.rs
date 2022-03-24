@@ -150,14 +150,36 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn ken_specials_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specials_init_main(fighter)
+}
+
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ken_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specials_main(fighter);
+    0.into()
+}
+
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn ken_specials_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
+    ryu_specials_init_main(fighter)
+}
+
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ken_specials_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specials_main(fighter);
     0.into()
 }
 
+#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn ken_specials_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    ryu_specials_loop_init_main(fighter)
+}
+
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn ken_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     if start_sit != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
@@ -203,10 +225,10 @@ unsafe fn ken_specialsloop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         let alpha = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_wind_alpha")) * 0.01;
         EffectModule::set_alpha(fighter.module_accessor, spineffect, alpha);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(ken_specialsloop_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(ken_specials_loop_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn ken_specialsloop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_specials_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -577,8 +599,12 @@ pub fn install() {
         ken_dashback_pre,
         ken_dashback_main,
         ken_attack_main,
+        ken_specials_init,
+        ken_specials,
+        ken_specials_command_init,
         ken_specials_command,
-        ken_specialsloop_main,
+        ken_specials_loop_init,
+        ken_specials_loop_main,
         ken_speciallw_pre,
         ken_speciallw_init,
         ken_speciallw_main

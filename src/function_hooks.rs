@@ -212,17 +212,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
 
-        if fighter_kind == *FIGHTER_KIND_ROCKMAN {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_DASH
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
-                || term == *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_RUN_BRAKE {
-                    return false;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_LUCINA {
+        if fighter_kind == *FIGHTER_KIND_LUCINA {
             if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB)
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
@@ -248,17 +238,7 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         
-        if fighter_kind == *FIGHTER_KIND_RIDLEY {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("max_charge_frame") {
-                    return 300;
-                }
-                else if param_hash == hash40("max_fire_num") {
-                    return 40;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_SHULK {
+        if fighter_kind == *FIGHTER_KIND_SHULK {
             if param_hash == hash40("circle_menu_release_after_interval_frame") {
                 let status_kind = StatusModule::status_kind(boma);
                 if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE
@@ -278,78 +258,6 @@ pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param
                     else {
                         return (40.0 - hitstun) as i32;
                     }
-                }
-            }
-        }
-    }
-    else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-        if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
-            if param_hash == hash40("life") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::is_flag(oboma, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SPIRIT_BOMB) {
-                    return 6000;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_SAMUSD_CSHOT {
-            if param_hash == hash40("life") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                    return 6000;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_YOSHI_TAMAGO {
-            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let oboma = sv_battle_object::module_accessor(otarget_id);
-            if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("life") {
-                    return 6000;
-                }
-                else if param_hash == hash40("max_bound_num") {
-                    return 100;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_ROCKMAN_ROCKBUSTER {
-            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let oboma = sv_battle_object::module_accessor(otarget_id);
-            if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("life") {
-                    return 6000;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_ROCKMAN_CHARGESHOT {
-            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let oboma = sv_battle_object::module_accessor(otarget_id);
-            if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("life_min")
-                || param_hash == hash40("life_max") {
-                    return 6000;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_ROCKMAN_HARDKNUCKLE {
-            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let oboma = sv_battle_object::module_accessor(otarget_id);
-            if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("life") {
-                    return 60;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_ROCKMAN_CRASHBOMB {
-            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let oboma = sv_battle_object::module_accessor(otarget_id);
-            if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                if param_hash == hash40("life") {
-                    return 6000;
-                }
-                else if param_hash == hash40("is_penetration") {
-                    return 1;
                 }
             }
         }
@@ -474,16 +382,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-        if fighter_kind == *WEAPON_KIND_LUCARIO_AURABALL {
-            if param_hash == hash40("max_speed") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::is_flag(oboma, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SPIRIT_BOMB) {
-                    return 0.4;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
+        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA { // move to status scripts
             if param_hash == hash40("speed_max") {
                 let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
                 let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -503,31 +402,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 let oboma = sv_battle_object::module_accessor(otarget_id);
                 if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
                     return 1.7;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_ROCKMAN_ROCKBUSTER {
-            if param_hash == hash40("speed") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                    return 5.0;
-                }
-            }
-        }
-        else if fighter_kind == *WEAPON_KIND_ROCKMAN_CHARGESHOT {
-            if param_hash == hash40("speed_min") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                    return 5.5;
-                }
-            }
-            else if param_hash == hash40("speed_max") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::is_flag(oboma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                    return 5.5;
                 }
             }
         }

@@ -34,12 +34,7 @@ unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(fighter.module_accessor, false);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
-        }
-        else {
-            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        }
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
     frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {

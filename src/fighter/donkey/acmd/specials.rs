@@ -5,8 +5,7 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
 #[acmd_script( agent = "donkey", script = "game_specials", category = ACMD_GAME, low_priority )]
@@ -29,12 +28,8 @@ unsafe fn donkey_specialairs(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::have_item(fighter.module_accessor, ItemKind(*ITEM_KIND_BARREL), 0, 0, false, false);
         if ItemModule::get_have_item_kind(fighter.module_accessor, 0) == *ITEM_KIND_BARREL {
-            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)
-            && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
+            if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_KIND_SUPER_LIFT_FALL, true);
-            }
-            else {
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ITEM_HEAVY_PICKUP, true);
             }
         }
     }

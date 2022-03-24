@@ -22,21 +22,6 @@ use {
 #[fighter_frame_callback]
 fn common_fighter_frame(fighter : &mut L2CFighterCommon) {
     unsafe {
-        let status = StatusModule::status_kind(fighter.module_accessor);
-
-        // The code to set up Funny Mode.
-
-        if ItemModule::is_attach_item(fighter.module_accessor, ItemKind(*ITEM_KIND_USAGIHAT))
-        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY);
-        }
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP);
-        }
-        if status == *FIGHTER_STATUS_KIND_DEAD
-        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY);
-        }
 
         // The code to set up FGC Mode.
 

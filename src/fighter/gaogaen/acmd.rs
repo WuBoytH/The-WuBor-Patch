@@ -744,8 +744,7 @@ unsafe fn gaogaen_specialslariat(fighter: &mut L2CAgentBase) {
     if WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) > 0 {
         let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(fighter.module_accessor, 0));
         let mut hitlag = 1.0 + 0.5 * DamageModule::damage(fighter.module_accessor, 0);
-        if dmg > 36.0
-        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+        if dmg > 36.0 {
             dmg = 36.0;
             hitlag = 2.0;
         }

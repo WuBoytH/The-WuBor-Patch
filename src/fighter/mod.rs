@@ -48,7 +48,6 @@ pub mod sheik;
 pub mod yoshi;
 pub mod mario;
 pub mod duckhunt;
-pub mod rockman;
 pub mod kamui;
 pub mod samus;
 pub mod mariod;
@@ -119,7 +118,6 @@ pub fn install() {
     yoshi::install();
     mario::install();
     duckhunt::install();
-    rockman::install();
     kamui::install();
     samus::install();
     mariod::install();

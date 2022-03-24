@@ -60,9 +60,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
                 if shadow_id(fighter.module_accessor) == false {
                     meter_gain *= 0.75;
                 }
-                if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                    meter_gain *= 3.0;
-                }
                 if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY) > 0.0 {
                     meter_gain *= 0.1;
                 }
@@ -132,14 +129,8 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
                 // if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
                     let amount : f32;
-                    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                        // add_sp(fighter.module_accessor, -1.0/64.0);
-                        amount = 1.0 / 64.0;
-                    }
-                    else {
-                        // add_sp(fighter.module_accessor, -1.0/16.0);
-                        amount = 1.0 / 16.0;
-                    }
+                    // add_sp(fighter.module_accessor, -1.0/16.0);
+                    amount = 1.0 / 16.0;
                     WarkModule::count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE, amount);
                 // }
             }
@@ -164,8 +155,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
                 if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_AWAKENING)
                 && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
-                && (!MiscModule::is_damage_check(fighter.module_accessor, false)
-                || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
+                && !MiscModule::is_damage_check(fighter.module_accessor, false)
                 && sv_information::is_ready_go() {
                     DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
                     WorkModule::set_float(fighter.module_accessor, 150.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
@@ -191,8 +181,7 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
             if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
             && MotionModule::motion_kind(fighter.module_accessor) != hash40("catch_attack")
-            && (StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI
-            || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)) {
+            && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI{
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
             }
 

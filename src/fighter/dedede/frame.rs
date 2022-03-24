@@ -6,8 +6,7 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]
@@ -23,13 +22,7 @@ fn dedede_frame(fighter: &mut L2CFighterCommon) {
             hash40("special_lw_hold_max")
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             let dedespeedy = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            let speed : f32;
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                speed = 3.6;
-            }
-            else {
-                speed = 1.88;
-            }
+            let speed = 1.88;
             macros::SET_SPEED_EX(fighter, speed, dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }

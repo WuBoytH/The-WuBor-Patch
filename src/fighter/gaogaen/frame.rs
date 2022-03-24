@@ -21,8 +21,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
         && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL)
-        && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY))
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IN_HITLAG].get_bool() {
             FGCModule::jump_cancel_check_exception(fighter);

@@ -180,8 +180,7 @@ unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         false,
         false
     );
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL)
-    || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_LUIGI_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_CANCEL) {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(luigi_specialhi_drop_main_loop as *const () as _))

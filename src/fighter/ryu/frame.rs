@@ -58,10 +58,8 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
         && WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
             WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
-            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY) {
-                WorkModule::set_float(fighter.module_accessor, 1200.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
-            }
+            WorkModule::set_float(fighter.module_accessor, 1200.0, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_DISABLE_EX_FOCUS_TIMER);
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_EX_FOCUS);
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS);
         }
 
@@ -112,8 +110,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         // Secret Sensation Code
 
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FUNNY)
-        || DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
+        if DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
             if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
             && [
                 *FIGHTER_STATUS_KIND_ATTACK,

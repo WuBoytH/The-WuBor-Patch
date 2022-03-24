@@ -144,6 +144,108 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
     0.into()
 }
 
+pub unsafe extern "C" fn ryu_specials_init_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let sit = fighter.global_table[SITUATION_KIND].get_i32();
+    WorkModule::set_int(fighter.module_accessor, sit, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
+    let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
+    WorkModule::set_int(fighter.module_accessor, *FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    let sum_speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("speed_x_mul"));
+    let speed_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("speed_y_mul"));
+    let mut speed_x = sum_speed_x * speed_x_mul;
+    let mut speed_y = sum_speed_y * speed_y_mul;
+    let add_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("add_speed_x"));
+    let lr = PostureModule::lr(fighter.module_accessor);
+    speed_x += add_speed_x * lr;
+    let stop_type;
+    if sit != *SITUATION_KIND_GROUND {
+        let add_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("add_speed_y"));
+        speed_y += add_speed_y;
+        stop_type = ENERGY_STOP_RESET_TYPE_AIR;
+    }
+    else {
+        stop_type = ENERGY_STOP_RESET_TYPE_NONE;
+    }
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        stop_type,
+        speed_x,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    if sit == *SITUATION_KIND_GROUND {
+        let ground_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("ground_speed_limit"));
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ground_speed_limit,
+            0.0
+        );
+    }
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    if sit != *SITUATION_KIND_GROUND {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+            0.0,
+            speed_y, 
+            0.0,
+            0.0,
+            0.0
+        );
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"));
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y
+        );
+        let air_max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            1.0
+        }
+        else {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
+        };
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            air_max_speed_y
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    if command {
+        let command_power_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_power_mul"));
+        AttackModule::set_power_mul_status(fighter.module_accessor, command_power_mul);
+    }
+    let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, boma);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
+    0.into()
+}
+
 pub unsafe extern "C" fn ryu_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_specials_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_specials_main_loop as *const () as _))
@@ -244,6 +346,141 @@ unsafe extern "C" fn ryu_specials_mot_helper(fighter: &mut L2CFighterCommon) {
             0.0
         );
     }
+}
+
+pub unsafe extern "C" fn ryu_specials_loop_init_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let sit = fighter.global_table[SITUATION_KIND].get_i32();
+    WorkModule::set_int(fighter.module_accessor, sit, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
+    let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
+    let strength = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let loop_count_hash;
+    let speed_x_hash;
+    if sit != *SITUATION_KIND_GROUND {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        if strength == *FIGHTER_RYU_STRENGTH_W {
+            loop_count_hash = hash40("air_loop_num_w");
+            speed_x_hash = hash40("air_speed_x_w");
+        }
+        else if strength == *FIGHTER_RYU_STRENGTH_M {
+            loop_count_hash = hash40("air_loop_num_m");
+            speed_x_hash = hash40("air_speed_x_m");
+        }
+        else {
+            loop_count_hash = hash40("air_loop_num_s");
+            speed_x_hash = hash40("air_speed_x_s");
+        }
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
+    }
+    else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        if strength == *FIGHTER_RYU_STRENGTH_W {
+            loop_count_hash = hash40("loop_num_w");
+            speed_x_hash = hash40("speed_x_w");
+        }
+        else if strength == *FIGHTER_RYU_STRENGTH_M {
+            loop_count_hash = hash40("loop_num_m");
+            speed_x_hash = hash40("speed_x_m");
+        }
+        else {
+            loop_count_hash = hash40("loop_num_s");
+            speed_x_hash = hash40("speed_x_s");
+        }
+    }
+    let loops = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), loop_count_hash);
+    WorkModule::set_int(fighter.module_accessor, loops, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_LOOP_COUNT);
+    let speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), speed_x_hash);
+    let stop_type = if sit != *SITUATION_KIND_GROUND {
+        ENERGY_STOP_RESET_TYPE_AIR
+    }
+    else {
+        ENERGY_STOP_RESET_TYPE_NONE
+    };
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        stop_type,
+        speed_x * lr,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_accel,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_brake,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    sv_kinetic_energy!(
+        set_stable_speed,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_STOP,
+        0.0,
+        0.0
+    );
+    if sit == *SITUATION_KIND_GROUND {
+        let ground_speed_limit = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("ground_speed_limit"));
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ground_speed_limit,
+            0.0
+        );
+    }
+    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    if sit != *SITUATION_KIND_GROUND {
+        sv_kinetic_energy!(
+            reset_energy,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
+            0.0,
+            sum_speed_y, 
+            0.0,
+            0.0,
+            0.0
+        );
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_accel_y"));
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y
+        );
+        let air_max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            1.0
+        }
+        else {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
+        };
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            air_max_speed_y
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    }
+    if command {
+        let command_power_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("command_power_mul"));
+        AttackModule::set_power_mul_status(fighter.module_accessor, command_power_mul);
+    }
+    let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, boma);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
+    0.into()
 }
 
 pub unsafe extern "C" fn ryu_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {

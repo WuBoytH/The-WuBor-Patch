@@ -205,7 +205,12 @@ unsafe extern "C" fn ryu_specials_mot_helper(fighter: &mut L2CFighterCommon) {
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -air_accel_y
         );
-        let air_max_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"));
+        let air_max_speed_y = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+            1.0
+        }
+        else {
+            WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("air_max_speed_y"))
+        };
         sv_kinetic_energy!(
             set_limit_speed,
             fighter,

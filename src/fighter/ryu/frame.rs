@@ -110,7 +110,7 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 
         // Secret Sensation Code
 
-        if DamageModule::damage(fighter.module_accessor, 0) >= 200.0 {
+        if DamageModule::damage(fighter.module_accessor, 0) >= 180.0 {
             if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
             && [
                 *FIGHTER_STATUS_KIND_ATTACK,

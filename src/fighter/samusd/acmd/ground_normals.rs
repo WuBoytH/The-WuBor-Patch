@@ -79,7 +79,7 @@ unsafe fn samusd_attack12_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-	    VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
     }
 }
 
@@ -136,13 +136,13 @@ unsafe fn samusd_attackdash_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-	    macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_dash_attack"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_dash_attack"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1, true);
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
-	    macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
-	    macros::BURN_COLOR_NORMAL(fighter);
+        macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
+        macros::BURN_COLOR_NORMAL(fighter);
     }
 }
 

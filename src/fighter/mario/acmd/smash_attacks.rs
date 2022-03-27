@@ -53,7 +53,7 @@ unsafe fn mario_attacks4_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-	    macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
+        macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
     }
 }
 
@@ -101,7 +101,7 @@ unsafe fn mario_attacks4hi_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-	    macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
+        macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
     }
 }
 
@@ -149,7 +149,7 @@ unsafe fn mario_attacks4lw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-	    macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
+        macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
     }
 }
 

@@ -66,12 +66,12 @@ unsafe fn daisy_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6, -2, 70, 0, 0, 0.7, true, *EF_FLIP_YZ);
-	    macros::LAST_EFFECT_SET_RATE(fighter, 1.6);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.6);
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 10, -1.5, 80, 0, 0, 0.9, true, *EF_FLIP_YZ);
-	    macros::LAST_EFFECT_SET_RATE(fighter, 1.4);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.4);
     }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
@@ -84,7 +84,7 @@ unsafe fn daisy_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_daisy_rnd_attack"));
-	    macros::PLAY_SE(fighter, Hash40::new("se_daisy_wear01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_daisy_wear01"));
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

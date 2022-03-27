@@ -37,7 +37,7 @@ use {
 //     frame(fighter.lua_state_agent, 11.0);
 //     if macros::is_excute(fighter) {
 //         macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-//     	macros::FLASH(fighter, 1, 0.753, 1, 0.706);
+//         macros::FLASH(fighter, 1, 0.753, 1, 0.706);
 //     }
 //     frame(fighter.lua_state_agent, 12.0);
 //     if macros::is_excute(fighter) {
@@ -60,7 +60,7 @@ use {
 //     frame(fighter.lua_state_agent, 11.0);
 //     if macros::is_excute(fighter) {
 //         macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-//     	macros::FLASH(fighter, 1, 0.753, 1, 0.706);
+//         macros::FLASH(fighter, 1, 0.753, 1, 0.706);
 //     }
 //     frame(fighter.lua_state_agent, 12.0);
 //     if macros::is_excute(fighter) {
@@ -83,7 +83,7 @@ use {
 //     frame(fighter.lua_state_agent, 11.0);
 //     if macros::is_excute(fighter) {
 //         macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-//     	macros::FLASH(fighter, 1, 0.753, 1, 0.706);
+//         macros::FLASH(fighter, 1, 0.753, 1, 0.706);
 //     }
 //     frame(fighter.lua_state_agent, 12.0);
 //     if macros::is_excute(fighter) {

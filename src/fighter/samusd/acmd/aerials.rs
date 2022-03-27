@@ -70,8 +70,8 @@ unsafe fn samusd_attackairn_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3.0, 0, 0, 0, 0, 0, 360, true);
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_cshot_hold"), false, true);
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("samusd_win3_aura"), false, true);
-	    macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
-	    macros::BURN_COLOR_NORMAL(fighter);
+        macros::BURN_COLOR_FRAME(fighter, 20, 1, 1, 1, 0);
+        macros::BURN_COLOR_NORMAL(fighter);
     }
 }
 
@@ -136,9 +136,9 @@ unsafe fn samusd_attackairf_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let color = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) as i32;
         macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new("samusd_gbeam_flash_01"), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, color);
-	    macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-	    macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-	    macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_atk_bomb"), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.3, true);
+        macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_atk_bomb"), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.3, true);
     }
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {

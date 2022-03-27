@@ -85,7 +85,7 @@ unsafe fn ganon_attackhi3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 1, 0, 3.0, -90, 0, 0, 1.7, true, *EF_FLIP_YZ);
-	    macros::LAST_EFFECT_SET_RATE(fighter, 1);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 5, 1, -90, 0, 0, 1.2, true);
     }
     frame(fighter.lua_state_agent, 50.0);

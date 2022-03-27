@@ -29,9 +29,9 @@ unsafe fn chrom_speciallw_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_chrom_sword1"), Hash40::new("tex_chrom_sword2"), 8, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 12.4, true, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
-	    macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 7, -2, 0, 180, -90, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_spin_wind_s"), Hash40::new("top"), 0, 7, -2, 0, 180, -90, 1, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 2);
-	    macros::LAST_EFFECT_SET_ALPHA(fighter, 0.7);
+        macros::LAST_EFFECT_SET_ALPHA(fighter, 0.7);
     }
 }
 

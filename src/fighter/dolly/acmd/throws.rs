@@ -40,12 +40,12 @@ unsafe fn dolly_throwf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-	    macros::EFFECT(fighter, Hash40::new("dolly_throw_ground"), Hash40::new("top"), 4, 0, 1, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT(fighter, Hash40::new("dolly_throw_ground"), Hash40::new("top"), 4, 0, 1, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-    	macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
@@ -62,7 +62,7 @@ unsafe fn dolly_throwf_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
-    	macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_attack_s"));
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_attack_s"));
     }
 }
 
@@ -72,12 +72,12 @@ unsafe fn dolly_throwf_exp(fighter: &mut L2CAgentBase) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
         FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
-	    slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
-    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
@@ -124,12 +124,12 @@ unsafe fn dolly_throwb_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 1, 0, 180, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-	    macros::EFFECT(fighter, Hash40::new("dolly_throw_ground"), Hash40::new("top"), -4, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT(fighter, Hash40::new("dolly_throw_ground"), Hash40::new("top"), -4, 0, 1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
-    	macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
@@ -146,7 +146,7 @@ unsafe fn dolly_throwb_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_throw_02"));
-    	macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_attack_s"));
+    macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_attack_s"));
     }
 }
 
@@ -156,12 +156,12 @@ unsafe fn dolly_throwb_exp(fighter: &mut L2CAgentBase) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
         FT_ATTACK_ABS_CAMERA_QUAKE(fighter.lua_state_agent);
-	    slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
-    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_attackm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {

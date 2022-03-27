@@ -100,12 +100,12 @@ unsafe fn chrom_attackhi4_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("chrom_sword_blue"), Hash40::new("sword1"), -0.0, 0, 0, 0, 0, 0, 1, true);
-    	macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_b"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("chrom_mc_4hi"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
-    	EffectModule::set_disable_render_offset_last(fighter.module_accessor);
+        EffectModule::set_disable_render_offset_last(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
@@ -142,7 +142,7 @@ unsafe fn chrom_attackhi4_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
-	    slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 2);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_L, 2);
     }
     frame(fighter.lua_state_agent, 33.0);
     if macros::is_excute(fighter) {

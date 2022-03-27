@@ -212,7 +212,7 @@ unsafe fn mario_longjumpland_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "expression_speciallwhold", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn mario_longjumpland_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-    	ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

@@ -192,7 +192,7 @@ unsafe fn daisy_specialairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("daisy_bomber_jamp"), Hash40::new("top"), 0, 12, -6, 0, 0, 0, 0.8, true);
-	    EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
 }
 

@@ -221,7 +221,7 @@ unsafe fn dolly_attacks3lw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new("dolly_attack_arc"), Hash40::new("dolly_attack_arc"), Hash40::new("top"), 0, 4, 1.5, -5.3, -51.7, 42.2, 0.4, true, *EF_FLIP_YZ, 1);
-	    macros::LAST_EFFECT_SET_RATE(fighter, 1.4);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.4);
     }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {

@@ -86,8 +86,8 @@ unsafe fn captain_falconpunch_specialn_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("center"), 15.0, 361, 65, 0, 85, 5.0, 0.0, 0.0, 9.0, Some(0.0), Some(0.0), Some(-2.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("captain_fp_body_r"), Hash40::new("captain_fp_body_l"), Hash40::new("center"), 0, 0, -7, 0, 0, 0, 1, true, *EF_FLIP_XY);
-    	macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("captain_fp_wing_r"), Hash40::new("captain_fp_wing_r"), Hash40::new("wingr2"), -6, 0, -2, -10, -10, 0, 0.7, true, *EF_FLIP_YZ);
-	    macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("captain_fp_wing_l"), Hash40::new("captain_fp_wing_l"), Hash40::new("wingl2"), 6, 0, -2, -10, 10, 0, 0.7, true, *EF_FLIP_YZ);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("captain_fp_wing_r"), Hash40::new("captain_fp_wing_r"), Hash40::new("wingr2"), -6, 0, -2, -10, -10, 0, 0.7, true, *EF_FLIP_YZ);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("captain_fp_wing_l"), Hash40::new("captain_fp_wing_l"), Hash40::new("wingl2"), 6, 0, -2, -10, 10, 0, 0.7, true, *EF_FLIP_YZ);
     }
     macros::FT_MOTION_RATE(fighter, 1.2);
     frame(fighter.lua_state_agent, 12.0);
@@ -97,8 +97,8 @@ unsafe fn captain_falconpunch_specialn_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("captain_fp_body"), -1);
-    	macros::EFFECT_DETACH_KIND(fighter, Hash40::new("captain_fp_wing_r"), -1);
-	    macros::EFFECT_DETACH_KIND(fighter, Hash40::new("captain_fp_wing_l"), -1);
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("captain_fp_wing_r"), -1);
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("captain_fp_wing_l"), -1);
         AttackModule::clear_all(fighter.module_accessor);
     }
 }

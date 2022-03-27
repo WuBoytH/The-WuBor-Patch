@@ -170,12 +170,12 @@ unsafe fn toonlink_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("havel"), 0, -8, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-	    macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("toonlink_sword"), Hash40::new("sword1"), -0.03, 0.05, 0, 0, 0, -0.87, 1.01, true);
-	    macros::EFFECT_FOLLOW(fighter, Hash40::new("toonlink_sword_flare"), Hash40::new("sword1"), -0.03, 0.05, 0, 0, 0, -0.87, 1.01, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("toonlink_sword_flare"), Hash40::new("sword1"), -0.03, 0.05, 0, 0, 0, -0.87, 1.01, true);
     }
     frame(fighter.lua_state_agent, 15.0);
     for _ in 0..17 {

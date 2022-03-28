@@ -11,7 +11,10 @@ use {
                 agent_init::mario_speciallw_pre,
                 fgc::mario_fgc
             },
-            bayonetta::fgc::bayonetta_fgc,
+            bayonetta::{
+                agent_init::bayonetta_specials_pre,
+                fgc::bayonetta_fgc
+            },
             chrom::fgc::chrom_fgc,
             daisy::{
                 agent_init::{
@@ -145,6 +148,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table[CHECK_AIR_ESCAPE_PRE].assign(&L2CValue::Ptr(kamui_escapeair_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_BAYONETTA {
+            fighter.global_table[SPECIAL_S_PRE].assign(&L2CValue::Ptr(bayonetta_specials_pre as *const () as _));
             fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(bayonetta_fgc as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_RICHTER {

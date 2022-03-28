@@ -55,8 +55,6 @@ unsafe fn trail_attackairn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(trail_attackairn_substatus as *const () as _));
     trail_attackairn_reset(fighter, false.into());
-    let flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-    WorkModule::set_int(fighter.module_accessor, flags, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_TRAIL_INSTANCE_WORK_ID_INT_ATTACK_AIR_BUTTON_COUNT);
     if 2 <= count {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_TRAIL_STATUS_ATTACK_AIR_N_FLAG_CONNECT_COMBO);
@@ -155,9 +153,12 @@ unsafe extern "C" fn trail_attackairn_main_loop(fighter: &mut L2CFighterCommon) 
                 cont = false;
             }
             if cont {
-                if !only_jabs(fighter)
-                && aerial_cancel_common(fighter).get_bool() {
-                    return 1.into();
+                if !only_jabs(fighter) {
+                    let flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
+                    WorkModule::set_int(fighter.module_accessor, flags, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+                    if aerial_cancel_common(fighter).get_bool() {
+                        return 1.into();
+                    }
                 }
                 else {
                     trail_attackairn_reset(fighter, true.into());

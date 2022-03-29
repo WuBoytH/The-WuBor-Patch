@@ -25,8 +25,25 @@ unsafe fn edge_appeals(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "edge", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority )]
+unsafe fn edge_appeallw(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 40.0);
+    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+        if macros::is_excute(fighter) {
+            WorkModule::set_int(
+                fighter.module_accessor,
+                *CONTROL_PAD_BUTTON_APPEAL_LW,
+                FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON
+            );
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
+            MotionModule::set_rate(fighter.module_accessor, 0.0);
+        }
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
-        edge_appeals
+        edge_appeals,
+        edge_appeallw
     );
 }

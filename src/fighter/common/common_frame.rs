@@ -2,7 +2,7 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::Vector3f,
+        phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
@@ -55,7 +55,21 @@ unsafe fn taunt_holds(fighter : &mut L2CFighterCommon) {
     && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD) {
         let button = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON);
         if ControlModule::check_button_off(fighter.module_accessor, button) {
-            MotionModule::set_rate(fighter.module_accessor, 1.0);
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let mot = if lr < 0.0 {
+                WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L)
+            }
+            else {
+                WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
+            };
+            let restart_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME) as f32;
+            MotionModule::change_motion_force_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                restart_frame,
+                1.0,
+                0.0
+            );
             WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
         }
     }

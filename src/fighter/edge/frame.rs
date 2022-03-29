@@ -3,7 +3,7 @@ use {
         lua2cpp::L2CFighterCommon,
         hash40,
         phx::Hash40,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::lua_const::*
     },
     smashline::*,
@@ -32,6 +32,7 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
         }
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_s_loop") {
             if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+                GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
                 WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
                 MotionModule::change_motion(
                     fighter.module_accessor,

@@ -230,41 +230,6 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     return ret;
 }
 
-#[skyline::hook(offset = INT_OFFSET)]
-pub unsafe fn get_param_int_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> i32 {
-    let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let ret = original!()(module_accessor, param_type, param_hash);
-    let fighter_kind = utility::get_kind(boma);
-    
-    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        
-        if fighter_kind == *FIGHTER_KIND_SHULK {
-            if param_hash == hash40("circle_menu_release_after_interval_frame") {
-                let status_kind = StatusModule::status_kind(boma);
-                if (status_kind == *FIGHTER_STATUS_KIND_DAMAGE
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_AIR
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D
-                || status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FALL 
-                || status_kind == *FIGHTER_STATUS_KIND_TREAD_DAMAGE) && WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) == false {
-                    let hitstun = (WorkModule::get_int(boma, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME) - WorkModule::get_int(boma, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME)) as f32;
-                    if WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) + hitstun < 40.0 {
-                        return WorkModule::get_float(boma, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) as i32;
-                    }
-                    else {
-                        return (40.0 - hitstun) as i32;
-                    }
-                }
-            }
-        }
-    }
-    return ret;
-}
-
 #[skyline::hook(offset = FLOAT_OFFSET)]
 pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> f32 {
     let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
@@ -603,7 +568,6 @@ pub fn install() {
         notify_log_event_collision_hit_replace,
         is_enable_transition_term_replace,
         get_param_float_replace,
-        get_param_int_replace,
         set_float_replace,
         get_int64_replace,
         play_se_replace,

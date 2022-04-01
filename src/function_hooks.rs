@@ -11,6 +11,7 @@ use {
             *
         }
     },
+    std::ffi::CStr,
     wubor_utils::{
         wua_bind::*,
         vars::*
@@ -549,6 +550,15 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 //     )
 // }
 
+#[skyline::hook(offset = DEFINE_LUA_CONSTANT_OFFSET)]
+unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
+    let str = CStr::from_ptr(constant as _).to_str().unwrap();
+    if str.contains("FIGHTER_MARTH_STATUS_KIND_NUM") {
+        value += 0xD;
+    }
+    original!()(unk, constant, value)
+}
+
 pub fn install() {
     unsafe{
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
@@ -577,6 +587,7 @@ pub fn install() {
         play_down_se_replace,
         play_se_remain_replace,
         play_se_no_3d_replace,
-        // crit_zoom
+        // crit_zoom,
+        declare_const_hook
     );
 }

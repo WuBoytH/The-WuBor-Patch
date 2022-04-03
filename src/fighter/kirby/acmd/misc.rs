@@ -164,8 +164,19 @@ unsafe fn kirby_appealsloop_eff(fighter: &mut L2CAgentBase) {
 unsafe fn kirby_appealsloop_snd(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(fighter.lua_state_agent, 4.0);
+        let loops = WorkModule::get_int(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_INT_APPEAL_S_LOOP_COUNT);
+        let sound;
+        if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 + 20 {
+            sound = Hash40::new("se_common_swing_06");
+        }
+        else if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 {
+            sound = Hash40::new("se_common_swing_04");
+        }
+        else {
+            sound = Hash40::new("se_common_swing_02");
+        }
         if macros::is_excute(fighter) {
-            macros::PLAY_SE(fighter, Hash40::new("se_common_swing_02"));
+            macros::PLAY_SE(fighter, sound);
         }
         fighter.clear_lua_stack();
         wait_loop_sync_mot(fighter.lua_state_agent);
@@ -198,7 +209,7 @@ unsafe fn kirby_appealsloop_exp(fighter: &mut L2CAgentBase) {
             quake = -1;
             rbkind = Hash40::new("rbkind_nohits");
         }
-        if loops % 5 == 0
+        if loops % 4 == 0
         && quake != -1 {
             if macros::is_excute(fighter) {
                 macros::QUAKE(fighter, quake);

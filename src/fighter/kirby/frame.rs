@@ -41,7 +41,8 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         // Taunt Movement
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_s_loop") {
-            if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+            if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R)
+            && MotionModule::frame(fighter.module_accessor) > 5.0 {
                 let lr = PostureModule::lr(fighter.module_accessor);
                 let mot = if lr < 0.0 {
                     WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L)

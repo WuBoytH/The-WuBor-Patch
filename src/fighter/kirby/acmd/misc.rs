@@ -17,7 +17,7 @@ unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R)
     && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_FLAG_APPEAL_S_HOLD) {
         if macros::is_excute(fighter) {
-            WorkModule::set_int(fighter.module_accessor, 10, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME);
+            WorkModule::set_int(fighter.module_accessor, 9, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME);
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_FLAG_APPEAL_S_HOLD);
             MotionModule::change_motion(
                 fighter.module_accessor,

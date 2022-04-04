@@ -50,6 +50,8 @@ unsafe fn fgc_setup(fighter : &mut L2CFighterCommon) {
     }
 }
 
+/// Used specifically for taunts that we've made loop,
+/// but we want to break the loop early.
 unsafe fn taunt_holds(fighter : &mut L2CFighterCommon) {
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_APPEAL
     && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD) {

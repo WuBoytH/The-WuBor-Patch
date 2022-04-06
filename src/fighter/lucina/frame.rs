@@ -191,7 +191,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
             if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                 if spent_meter(fighter.module_accessor, true) {
                     WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);
-                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
                     sp_diff_checker(fighter.module_accessor);
                 }
             }
@@ -199,7 +199,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
             && WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 100.0
             && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY)
             && shadow_id(fighter.module_accessor) {
-                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
+                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, true);
             }
         }
@@ -212,7 +212,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
                 if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                     if spent_meter(fighter.module_accessor, true) {
                         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);
-                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
                         sp_diff_checker(fighter.module_accessor);
                     }
                 }
@@ -220,7 +220,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
                 && WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 100.0
                 && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY)
                 && shadow_id(fighter.module_accessor) {
-                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
+                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
                 }
             }
         }
@@ -230,7 +230,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
             if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                 if spent_meter(fighter.module_accessor, true) {
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);
-                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
                     sp_diff_checker(fighter.module_accessor);
                 }
             }

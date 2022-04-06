@@ -169,6 +169,19 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
+// #[skyline::hook(offset = 0x6310a0)]
+// unsafe fn fighter_handle_damage_hook(fighter: *mut BattleObject, arg: *const u8) {
+//     let module_accessor = (*fighter).module_accessor;
+//     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+//     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
+//     println!("damage_received: {}", damage_received);
+//     call_original!(fighter, arg);
+//     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
+//     println!("damage_received 2: {}", damage_received);
+//     let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
+//     println!("attacker ids: {}", attacker_ids);
+// }
+
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
     let fighter_kind = utility::get_kind(boma);
@@ -553,8 +566,95 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 #[skyline::hook(offset = DEFINE_LUA_CONSTANT_OFFSET)]
 unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     let str = CStr::from_ptr(constant as _).to_str().unwrap();
-    if str.contains("FIGHTER_MARTH_STATUS_KIND_NUM") {
+    if str.contains("FIGHTER_STATUS_GUARD_OFF_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_STATUS_APPEAL_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_STATUS_APPEAL_WORK_INT_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARIO_STATUS_SPECIAL_N_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARIO_STATUS_PUMP_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARTH_STATUS_KIND_NUM") {
         value += 0xD;
+    }
+    else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x8;
+    }
+    else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x4;
+    }
+    else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_WORK_FLOAT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_WARIO_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x6;
+    }
+    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TERM") {
+        value += 0x8;
+    }
+    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x6;
+    }
+    else if str.contains("FIGHTER_SHIZUE_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_DOLLY_STATUS_SPECIAL_N_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_EFLAME_STATUS_SPECIAL_S_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
     }
     original!()(unk, constant, value)
 }
@@ -576,6 +676,7 @@ pub fn install() {
     }
     skyline::install_hooks!(
         notify_log_event_collision_hit_replace,
+        // fighter_handle_damage_hook,
         is_enable_transition_term_replace,
         get_param_float_replace,
         set_float_replace,

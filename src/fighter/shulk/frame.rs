@@ -26,12 +26,12 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 
         // Damage Check
 
-        let damage = DamageModule::damage(fighter.module_accessor, 0);
-        if damage > WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV) {
-            let burst_recover = damage - WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
-            WorkModule::set_float(fighter.module_accessor, burst_recover, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
-        }
-        WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
+        // let damage = DamageModule::damage(fighter.module_accessor, 0);
+        // if damage > WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV) {
+        //     let burst_recover = damage - WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
+        //     WorkModule::set_float(fighter.module_accessor, burst_recover, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
+        // }
+        // WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
         if !fighter.global_table[IN_HITLAG].get_bool()
         && !MiscModule::is_illegal_status(fighter.module_accessor, false)
@@ -40,7 +40,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_DAMAGE_FALL
         && fighter.global_table[CMD_CAT1].get_i32() == *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
         && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_LW) {
-            let burst_recover = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_RECOVER);
+            let burst_recover = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
             DamageModule::add_damage(fighter.module_accessor, burst_recover * -0.5, 0);
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, true);
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_SPECIAL_LW_ATTACK_POWER);

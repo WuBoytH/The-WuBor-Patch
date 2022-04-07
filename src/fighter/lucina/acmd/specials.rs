@@ -8,7 +8,10 @@ use {
     smash_script::*,
     smashline::*,
     super::super::{helper::*, *},
-    wubor_utils::vars::*
+    wubor_utils::{
+        wua_bind::*,
+        vars::*
+    }
 };
 
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnloop", "game_specialairnloop" ], category = ACMD_GAME, low_priority )]
@@ -119,7 +122,8 @@ unsafe fn lucina_specialairs1(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
+        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);
@@ -251,7 +255,8 @@ unsafe fn lucina_specialhi(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
+        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);
@@ -410,7 +415,8 @@ unsafe fn lucina_specialairhi(fighter: &mut L2CAgentBase) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
+        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);
@@ -574,7 +580,8 @@ unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
+        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         JostleModule::set_status(fighter.module_accessor, false);
         KineticModule::unable_energy_all(fighter.module_accessor);
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT) {
@@ -664,7 +671,8 @@ unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
     let kbg : i32;
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
+        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);

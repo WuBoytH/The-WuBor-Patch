@@ -214,7 +214,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             }
             if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, true);
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, false);
             }
             if (ryu_y - target_y).abs() > 12.0 {
                 StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
@@ -236,7 +236,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             macros::SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
             if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
-                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_TURN_AUTO, true);
+                StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_TURN_AUTO, false);
             }
             if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
                 macros::CAM_ZOOM_OUT(fighter);

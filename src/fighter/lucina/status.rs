@@ -185,7 +185,8 @@ unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
     && spent_meter(fighter.module_accessor, false) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        add_sp(fighter.module_accessor, -spent);
+        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
         sp_diff_checker(fighter.module_accessor);

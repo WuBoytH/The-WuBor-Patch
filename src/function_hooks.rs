@@ -7,7 +7,6 @@ use {
     crate::{
         fighter::{
             lucina::helper::shadow_id,
-            ken::helper::add_vgauge,
             *
         }
     },
@@ -44,17 +43,6 @@ move_type_again: bool) -> u64 {
             }
             else {
                 WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
-            }
-            if MotionModule::motion_kind(attacker_boma) != hash40("special_lw")
-            && !WorkModule::is_flag(attacker_boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-                if MotionModule::motion_kind(attacker_boma) == hash40("attack_s3_s_w")
-                && StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                    add_vgauge(attacker_boma, 100.0);
-                }
-                else {
-                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 5.0;
-                    add_vgauge(attacker_boma, amount);
-                }
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
@@ -169,18 +157,31 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
-// #[skyline::hook(offset = 0x6310a0)]
-// unsafe fn fighter_handle_damage_hook(fighter: *mut BattleObject, arg: *const u8) {
-//     let module_accessor = (*fighter).module_accessor;
-//     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-//     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
-//     println!("damage_received: {}", damage_received);
-//     call_original!(fighter, arg);
-//     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
-//     println!("damage_received 2: {}", damage_received);
-//     let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
-//     println!("attacker ids: {}", attacker_ids);
-// }
+#[skyline::hook(offset = 0x6310a0)]
+unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) {
+    let module_accessor = (*object).module_accessor;
+    // let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
+    call_original!(object, arg);
+    let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
+    // let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
+    // println!("attacker ids: {}", attacker_ids);
+    let category = utility::get_category(&mut *module_accessor);
+    let kind = utility::get_kind(&mut *module_accessor);
+    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        if kind == *FIGHTER_KIND_LUCINA {
+            if !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+                let amount = damage_received * (1.0/6.0);
+                let meter_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+                FGCModule::update_meter(object, amount, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+            }
+        }
+        else if kind == *FIGHTER_KIND_KEN {
+            let amount = damage_received * 2.0;
+            FGCModule::update_meter(object, amount, 900.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
+        }
+    }
+}
 
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
@@ -653,7 +654,7 @@ pub fn install() {
     }
     skyline::install_hooks!(
         notify_log_event_collision_hit_replace,
-        // fighter_handle_damage_hook,
+        fighter_handle_damage_hook,
         is_enable_transition_term_replace,
         get_param_float_replace,
         set_float_replace,

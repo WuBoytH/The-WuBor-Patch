@@ -222,17 +222,3 @@ pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) 
         sp_gauge_handler(module_accessor, false);
     }
 }
-
-#[inline(always)]
-pub unsafe fn add_sp(module_accessor: *mut BattleObjectModuleAccessor, amount: f32) {
-    let mut sp_gauge = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-    sp_gauge += amount;
-    if sp_gauge < 0.0 {
-        sp_gauge = 0.0;
-    }
-    let sp_gauge_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-    if sp_gauge > sp_gauge_max {
-        sp_gauge = sp_gauge_max;
-    }
-    WorkModule::set_float(module_accessor, sp_gauge, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-}

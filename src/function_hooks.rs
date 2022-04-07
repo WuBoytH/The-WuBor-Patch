@@ -7,7 +7,6 @@ use {
     crate::{
         fighter::{
             lucina::helper::shadow_id,
-            ken::helper::add_vgauge,
             *
         }
     },
@@ -44,17 +43,6 @@ move_type_again: bool) -> u64 {
             }
             else {
                 WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
-            }
-            if MotionModule::motion_kind(attacker_boma) != hash40("special_lw")
-            && !WorkModule::is_flag(attacker_boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-                if MotionModule::motion_kind(attacker_boma) == hash40("attack_s3_s_w")
-                && StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                    add_vgauge(attacker_boma, 100.0);
-                }
-                else {
-                    let amount = AttackModule::get_power(attacker_boma, 0, false, 1.0, false) * 5.0;
-                    add_vgauge(attacker_boma, amount);
-                }
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
@@ -169,6 +157,32 @@ move_type_again: bool) -> u64 {
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }
 
+#[skyline::hook(offset = 0x6310a0)]
+unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) {
+    let module_accessor = (*object).module_accessor;
+    // let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+    let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
+    call_original!(object, arg);
+    let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
+    // let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
+    // println!("attacker ids: {}", attacker_ids);
+    let category = utility::get_category(&mut *module_accessor);
+    let kind = utility::get_kind(&mut *module_accessor);
+    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        if kind == *FIGHTER_KIND_LUCINA {
+            if !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+                let amount = damage_received * (1.0/6.0);
+                let meter_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+                FGCModule::update_meter(object, amount, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+            }
+        }
+        else if kind == *FIGHTER_KIND_KEN {
+            let amount = damage_received * 2.0;
+            FGCModule::update_meter(object, amount, 900.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
+        }
+    }
+}
+
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
     let fighter_kind = utility::get_kind(boma);
@@ -239,30 +253,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
 
-        if param_hash == hash40("shield_damage_mul") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 0.2;
-            }
-        }
-
-        else if param_hash == hash40("damage_fly_correction_max") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 0.0;
-            }
-        }
-
-        else if param_hash == hash40("damage_fly_length_mul_max") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 1.0;
-            }
-        }
-
-        else if param_hash == hash40("damage_fly_length_mul_min") {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                return 1.0;
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_KEN {
+        if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("speed_x_mul_s") {
                 if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.15;
@@ -301,7 +292,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
-        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA { // move to status scripts
+        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             if param_hash == hash40("speed_max") {
                 let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
                 let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -553,8 +544,95 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 #[skyline::hook(offset = DEFINE_LUA_CONSTANT_OFFSET)]
 unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     let str = CStr::from_ptr(constant as _).to_str().unwrap();
-    if str.contains("FIGHTER_MARTH_STATUS_KIND_NUM") {
+    if str.contains("FIGHTER_STATUS_GUARD_OFF_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_STATUS_APPEAL_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_STATUS_APPEAL_WORK_INT_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARIO_STATUS_SPECIAL_N_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARIO_STATUS_PUMP_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_MARTH_STATUS_KIND_NUM") {
         value += 0xD;
+    }
+    else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x8;
+    }
+    else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x4;
+    }
+    else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_WORK_FLOAT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_WARIO_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x6;
+    }
+    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TERM") {
+        value += 0x8;
+    }
+    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x6;
+    }
+    else if str.contains("FIGHTER_SHIZUE_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x2;
+    }
+    else if str.contains("FIGHTER_DOLLY_STATUS_SPECIAL_N_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_EFLAME_STATUS_SPECIAL_S_TERM") {
+        value += 0x1;
+    }
+    else if str.contains("FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_TERM") {
+        value += 0x1;
     }
     original!()(unk, constant, value)
 }
@@ -576,6 +654,7 @@ pub fn install() {
     }
     skyline::install_hooks!(
         notify_log_event_collision_hit_replace,
+        fighter_handle_damage_hook,
         is_enable_transition_term_replace,
         get_param_float_replace,
         set_float_replace,

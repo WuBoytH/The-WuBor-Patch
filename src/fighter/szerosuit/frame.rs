@@ -36,7 +36,11 @@ fn szerosuit_frame(fighter: &mut L2CFighterCommon) {
                 }
                 WorkModule::off_flag(fighter.module_accessor, FIGHTER_SZEROSUIT_STATUS_SUPER_JUMP_PUNCH_DECIDE_MOTION);
             }
-            if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+            if [
+                hash40("special_hi_2"),
+                hash40("special_air_hi_2")
+            ].contains(&MotionModule::motion_kind(fighter.module_accessor))
+            && AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
             && MotionModule::frame(fighter.module_accessor) > 30.0 {
                 WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME)
             }

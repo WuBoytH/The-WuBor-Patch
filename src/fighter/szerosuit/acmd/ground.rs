@@ -40,7 +40,7 @@ unsafe fn szerosuit_attack11(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
-    macros::FT_MOTION_RATE(fighter, 3.0);
+    macros::FT_MOTION_RATE(fighter, 2.5);
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 6.0);
@@ -56,7 +56,7 @@ unsafe fn szerosuit_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 13.0);
+    frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     frame(fighter.lua_state_agent, 28.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -65,7 +65,7 @@ unsafe fn szerosuit_attacks3(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
-    macros::FT_MOTION_RATE(fighter, 3.0);
+    macros::FT_MOTION_RATE(fighter, 2.5);
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 6.0);
@@ -82,7 +82,7 @@ unsafe fn szerosuit_attacks3hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 13.0);
+    frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     frame(fighter.lua_state_agent, 28.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -91,7 +91,7 @@ unsafe fn szerosuit_attacks3hi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "szerosuit", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
-    macros::FT_MOTION_RATE(fighter, 3.0);
+    macros::FT_MOTION_RATE(fighter, 2.5);
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 6.0);
@@ -108,7 +108,7 @@ unsafe fn szerosuit_attacks3lw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 13.0);
+    frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     frame(fighter.lua_state_agent, 28.0);
     macros::FT_MOTION_RATE(fighter, 1.0);

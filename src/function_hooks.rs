@@ -555,6 +555,9 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     else if str.contains("FIGHTER_STATUS_APPEAL_WORK_INT_TERM") {
         value += 0x2;
     }
+    else if str.contains("FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_TERM") {
+        value += 0x1;
+    }
     else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_INT_TERM") {
         value += 0x1;
     }

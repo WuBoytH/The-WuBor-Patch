@@ -36,7 +36,7 @@ unsafe fn szerosuit_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, 0x21000012);
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_SZEROSUIT_STATUS_SUPER_JUMP_PUNCH_DECIDE_MOTION);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 26.0);
@@ -68,32 +68,6 @@ unsafe fn szerosuit_specialhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_specialhi2(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 2.0);
-    macros::FT_MOTION_RATE(fighter, 2.0);
-    frame(fighter.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        macros::SA_SET(fighter, *SITUATION_KIND_AIR);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 84, 100, 150, 0, 4.0, 0.0, 8.0, 5.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
-    }
-    wait(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 50, 0, 7.0, 0.0, 19.0, 5.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
-    frame(fighter.lua_state_agent, 23.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
     frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 1, Hash40::new("top"), 1.3, 90, 100, 12, 0, 7.0, 0.0, 12.0, 10.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -117,7 +91,7 @@ unsafe fn szerosuit_specialhi2(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
         macros::SET_SPEED_EX(fighter, 0.5, -3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    wait(fighter.lua_state_agent, 5.0);
+    wait(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -125,15 +99,6 @@ unsafe fn szerosuit_specialhi2(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
 unsafe fn szerosuit_specialhi2_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
-    }
-    frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("szero_smash_fire_02"), Hash40::new("toel"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
-        macros::EFFECT_FLW_POS(fighter, Hash40::new("szero_boost_line_02"), Hash40::new("toer"), 0, -0.7, 0, 90, 0, 0, 1, true);
-        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
-    }
     frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("szero_boost_line_02"), false, false);
@@ -142,7 +107,7 @@ unsafe fn szerosuit_specialhi2_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("szero_smash_fire_02"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
-    frame(fighter.lua_state_agent, 41.0);
+    frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("szero_boost_kick_a"), Hash40::new("top"), 2, 9, -2, 180, 180, 90, 1, true);
     }
@@ -154,11 +119,7 @@ unsafe fn szerosuit_specialhi2_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "sound_specialhi2", category = ACMD_SOUND, low_priority )]
 unsafe fn szerosuit_specialhi2_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_szerosuit_special_h01"));
-    }
-    wait(fighter.lua_state_agent, 30.0);
+    frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_szerosuit_special_h02"));
     }
@@ -166,27 +127,6 @@ unsafe fn szerosuit_specialhi2_snd(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "expression_specialhi2", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn szerosuit_specialhi2_exp(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
-    }
-    frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
-    }
-    frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(
-            fighter.module_accessor,
-            Hash40::new("rbkind_rush"),
-            0,
-            false,
-            *BATTLE_OBJECT_ID_INVALID as u32
-        );
-    }
-    frame(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_NONE, 2);
-    }
     frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 4);
@@ -265,32 +205,6 @@ unsafe fn szerosuit_specialairhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_specialairhi2(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 2.0);
-    macros::FT_MOTION_RATE(fighter, 2.0);
-    frame(fighter.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 90, 100, 130, 0, 4.0, 0.0, 8.0, 11.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.0, 84, 100, 130, 0, 4.0, 0.0, 8.0, 5.0, None, None, None, 1.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
-    }
-    wait(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.3, 367, 100, 50, 0, 7.0, 0.0, 19.0, 5.5, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-    }
-    frame(fighter.lua_state_agent, 15.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
-    frame(fighter.lua_state_agent, 23.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
     frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 1, Hash40::new("top"), 1.3, 90, 100, 12, 0, 7.0, 0.0, 12.0, 10.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -314,7 +228,7 @@ unsafe fn szerosuit_specialairhi2(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
         macros::SET_SPEED_EX(fighter, 0.5, -3.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     }
-    wait(fighter.lua_state_agent, 5.0);
+    wait(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -322,12 +236,6 @@ unsafe fn szerosuit_specialairhi2(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "effect_specialairhi2", category = ACMD_EFFECT, low_priority )]
 unsafe fn szerosuit_specialairhi2_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("szero_smash_fire_02"), Hash40::new("toel"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
-        macros::EFFECT_FLW_POS(fighter, Hash40::new("szero_boost_line_02"), Hash40::new("toer"), 0, -0.7, 0, 90, 0, 0, 1, true);
-        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
-    }
     frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("szero_boost_line_02"), false, false);
@@ -336,7 +244,7 @@ unsafe fn szerosuit_specialairhi2_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("szero_smash_fire_02"), Hash40::new("toer"), 0, -0.7, 0, 0, 0, 0, 0.6, true);
     }
-    frame(fighter.lua_state_agent, 41.0);
+    frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("szero_boost_kick_a"), Hash40::new("top"), 2, 9, -2, 180, 180, 90, 1, true);
     }
@@ -348,11 +256,7 @@ unsafe fn szerosuit_specialairhi2_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "sound_specialairhi2", category = ACMD_SOUND, low_priority )]
 unsafe fn szerosuit_specialairhi2_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_szerosuit_special_h01"));
-    }
-    wait(fighter.lua_state_agent, 30.0);
+    frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_szerosuit_special_h02"));
     }
@@ -360,27 +264,6 @@ unsafe fn szerosuit_specialairhi2_snd(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "szerosuit", script = "expression_specialairhi2", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn szerosuit_specialairhi2_exp(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
-    }
-    frame(fighter.lua_state_agent, 4.0);
-    if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 4);
-    }
-    frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        ControlModule::set_rumble(
-            fighter.module_accessor,
-            Hash40::new("rbkind_rush"),
-            0,
-            false,
-            *BATTLE_OBJECT_ID_INVALID as u32
-        );
-    }
-    frame(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_NONE, 2);
-    }
     frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 4);

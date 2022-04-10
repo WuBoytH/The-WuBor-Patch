@@ -11,7 +11,8 @@ use {
     super::helper::*,
     wubor_utils::{
         wua_bind::*,
-        vars::*
+        vars::*,
+        table_const::*
     }
 };
 
@@ -198,7 +199,8 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
     }
 
-    if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+    if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
+    && !fighter.global_table[IN_HITLAG].get_bool() {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
         && CatchModule::is_catch(fighter.module_accessor) == false
         && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI{

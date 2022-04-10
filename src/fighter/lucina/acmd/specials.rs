@@ -582,6 +582,7 @@ unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
         let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
         let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
         FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+        sp_diff_checker(fighter.module_accessor);
         JostleModule::set_status(fighter.module_accessor, false);
         KineticModule::unable_energy_all(fighter.module_accessor);
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT) {
@@ -648,6 +649,7 @@ unsafe fn lucina_speciallw_hit(fighter: &mut L2CAgentBase) {
         AttackModule::set_force_reaction(fighter.module_accessor, 0, true, false);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
+        sp_diff_checker(fighter.module_accessor);
     }
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 8.0);

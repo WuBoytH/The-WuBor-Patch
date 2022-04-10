@@ -190,32 +190,20 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
 
 #[inline(always)]
 pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
-    if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) < vl::param_private::sp_single {
-        WorkModule::set_int(module_accessor, 0, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
-    }
-    else {
-        let mut level = WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
-        while level < 6 {
-            let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-            if sp >= level as f32 * vl::param_private::sp_single
-            && level as f32 * vl::param_private::sp_single > sp {
-                break;
-            }
-            level += 1;
-            WorkModule::inc_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
-        }
-    }
+    let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+    let level = sp / vl::param_private::sp_single;
+    WorkModule::set_int(module_accessor, level as i32, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
     if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
         WorkModule::set_int(module_accessor, vl::param_private::sp_effect_timer_shadow, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
     else {
         WorkModule::set_int(module_accessor, vl::param_private::sp_effect_timer, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
-    let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-    let level = (sp / vl::param_private::sp_single) as i32;
-    WorkModule::set_int(module_accessor, level, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
-    if WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL) == 0
-    && !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+    let mut level = WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
+    if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+        level += 1;
+    }
+    if level == 0 {
         sp_gauge_handler(module_accessor, true);
     }
     else {

@@ -31,6 +31,9 @@ unsafe fn lucina_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn lucina_jab_cancels_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.global_table[IN_HITLAG].get_bool() {
+        let jump_cancel = if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+            2
+        } else { 0 };
         let special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
@@ -45,7 +48,7 @@ unsafe extern "C" fn lucina_jab_cancels_substatus2(fighter: &mut L2CFighterCommo
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
         ].to_vec();
-        FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
+        FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
     }
     0.into()
 }
@@ -67,28 +70,11 @@ unsafe fn lucina_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackHi3_Common(mot.into(), Hash40::new("attack_hi3").into());
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_attack3_uniq_check(false.into());
-        lucina_attackhi3_cancel_substatus2(fighter);
+        lucina_tilt_cancels_substatus2(fighter);
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_attack3_uniq_check as *const () as _));
-    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(lucina_attackhi3_cancel_substatus2 as *const () as _));
+    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(lucina_tilt_cancels_substatus2 as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackHi3_Main as *const () as _))
-}
-
-unsafe extern "C" fn lucina_attackhi3_cancel_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.global_table[IN_HITLAG].get_bool() {
-        let special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
-        ].to_vec();
-        let jump_cancel = 1;
-        FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, false, jump_cancel);
-    }
-    0.into()
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -112,7 +98,16 @@ unsafe extern "C" fn lucina_tilt_cancels_substatus2(fighter: &mut L2CFighterComm
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
-        FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, false, 0);
+        let jump_cancel = if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+            2
+        }
+        else if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
+            1
+        }
+        else {
+            0
+        };
+        FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, false, jump_cancel);
     }
     0.into()
 }
@@ -154,7 +149,8 @@ unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon
 unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.global_table[IN_HITLAG].get_bool() {
         let mot = MotionModule::motion_kind(fighter.module_accessor);
-        if mot != hash40("attack_air_lw") {
+        if mot != hash40("attack_air_lw")
+        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             let mut jump_cancel = 2;
             if mot == hash40("attack_air_f") {
                 if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL) {
@@ -704,9 +700,39 @@ unsafe fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn lucina_specials_cancel_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.global_table[IN_HITLAG].get_bool() {
-        let special_cancels = [
+        let mut special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+            let status = fighter.global_table[STATUS_KIND].get_i32();
+            if ![
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP,
+                *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END
+            ].contains(&status) {
+                special_cancels.append(&mut vec![
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND
+                ]);
+            }
+            if ![
+                *FIGHTER_STATUS_KIND_SPECIAL_S,
+                *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2
+            ].contains(&status) {
+                special_cancels.append(&mut vec![
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND
+                ]);
+            }
+            if ![
+                *FIGHTER_STATUS_KIND_SPECIAL_HI
+            ].contains(&status) {
+                special_cancels.append(&mut vec![
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND
+                ]);
+            }
+        }
         FGCModule::cancel_system(fighter, [].to_vec(), special_cancels, false, 0);
     }
     0.into()
@@ -824,6 +850,94 @@ unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
+#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn lucina_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_RESET,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        0,
+        0,
+        0,
+        0
+    );
+    0.into()
+}
+
+#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn lucina_speciallw_hit_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn lucina_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn lucina_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_air_lw_hit"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+    }
+    else {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_lw_hit"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_shadowfrenzy_loop as *const () as _))
+}
+
+unsafe extern "C" fn lucina_shadowfrenzy_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        }
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
+    }
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
         lucina_attack_main,
@@ -836,6 +950,7 @@ pub fn install() {
         lucina_specials2_main,
         lucina_specials4_pre, lucina_specials4_main,
         lucina_specialhi_pre, lucina_specialhi_exec, lucina_specialhi_main,
-        lucina_speciallw_main
+        lucina_speciallw_main,
+        lucina_speciallw_hit_pre, lucina_speciallw_hit_init, lucina_speciallw_hit_exec, lucina_speciallw_hit_main
     );
 }

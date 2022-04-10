@@ -122,6 +122,29 @@ unsafe fn lucina_meter_display(fighter: &mut L2CFighterCommon) {
 
 unsafe fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon) {
     if shadow_id(fighter.module_accessor) == true {
+        let eff = WorkModule::get_int(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SHADOW_EFF_ID ) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new("sys_aura_light"),
+                Hash40::new("hip"),
+                &ZERO_VECTOR,
+                &ZERO_VECTOR,
+                4.0,
+                false,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false
+            );
+            let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+            EffectModule::set_rgb(fighter.module_accessor, eff, 0.0, 0.0, 1.0);
+            EffectModule::set_rate(fighter.module_accessor, eff, 0.3);
+            WorkModule::set_int(fighter.module_accessor, eff as i32, FIGHTER_YU_INSTANCE_WORK_ID_INT_SHADOW_EFF_ID );
+        }
         DamageModule::set_damage_mul(fighter.module_accessor, 0.92);
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             // if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {

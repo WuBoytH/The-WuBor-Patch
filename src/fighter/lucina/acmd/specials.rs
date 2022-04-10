@@ -638,9 +638,11 @@ unsafe fn lucina_speciallw_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucina", scripts = [ "game_speciallwhit", "game_specialairlwhit" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_speciallw_hit(fighter: &mut L2CAgentBase) {
     if shadow_id(fighter.module_accessor) {
-        macros::FT_START_CUTIN(fighter);
-        macros::SLOW_OPPONENT(fighter, 20.0, 8.0);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
+        if macros::is_excute(fighter) {
+            macros::FT_START_CUTIN(fighter);
+            macros::SLOW_OPPONENT(fighter, 20.0, 8.0);
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
+        }
     }
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {

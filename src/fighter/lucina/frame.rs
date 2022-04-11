@@ -196,68 +196,60 @@ unsafe fn lucina_on_empty_sp_meter(fighter: &mut L2CFighterCommon) {
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) <= 0.0 {
         WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
+        sp_diff_checker(fighter.module_accessor);
     }
 }
 
 unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
-    if StatusModule::prev_status_kind(fighter.module_accessor, 0) != StatusModule::status_kind(fighter.module_accessor) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
-    }
     let status = fighter.global_table[STATUS_KIND].get_i32();
+    if status == *FIGHTER_STATUS_KIND_THROW {
+        if CatchModule::is_catch(fighter.module_accessor) == false
+        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_CAN_ONE_MORE) {
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_CAN_ONE_MORE);
+        }
+    }
+    else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    && CatchModule::is_catch(fighter.module_accessor) == false
+    && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_CAN_ONE_MORE);
+    }
     if ![
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT
     ].contains(&status)
-    && !fighter.global_table[IN_HITLAG].get_bool() {
-        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && CatchModule::is_catch(fighter.module_accessor) == false
-        && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
-        }
-
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE) {
-            if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+    && !fighter.global_table[IN_HITLAG].get_bool()
+    && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_CAN_ONE_MORE) {
+            if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                 if spent_meter(fighter.module_accessor, true) {
                     WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
                 }
             }
-            else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
+            else if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
             && WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0
             && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY)
             && shadow_id(fighter.module_accessor) {
                 fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
             }
         }
-        else if status == *FIGHTER_STATUS_KIND_THROW {
-            if CatchModule::is_catch(fighter.module_accessor) == false
-            && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE) {
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE);
-            }
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_CAN_ONE_MORE) {
-                if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-                    if spent_meter(fighter.module_accessor, true) {
-                        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);
-                        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
-                    }
-                }
-                else if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
-                && WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0
-                && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY)
-                && shadow_id(fighter.module_accessor) {
-                    fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
-                }
-            }
-        }
         else if !MiscModule::is_damage_check(fighter.module_accessor, false)
         && status != *FIGHTER_STATUS_KIND_SPECIAL_HI
         && CatchModule::is_catch(fighter.module_accessor) == false {
-            if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+            if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
                 if spent_meter(fighter.module_accessor, true) {
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT);
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
                 }
             }
+        }
+    }
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_l") || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r") {
+        if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0
+        && shadow_id(fighter.module_accessor)
+        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
+            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
         }
     }
 }
@@ -276,18 +268,6 @@ unsafe fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
             macros::COL_NORMAL(fighter);
         }
         WorkModule::dec_int(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
-    }
-}
-
-unsafe fn lucina_shadow_frenzy_check(fighter: &mut L2CFighterCommon) {
-    if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_l") || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_hi_r") {
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0 && shadow_id(fighter.module_accessor) && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
-        }
-    }
-    else if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) == 0.0 {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
-        sp_gauge_handler(fighter.module_accessor, true);
     }
 }
 
@@ -321,12 +301,11 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         lucina_reset_vars(fighter);
         lucina_meter_controller(fighter);
         lucina_training_tools(fighter);
-        lucina_meter_display(fighter);
         lucina_normal_shadow_effects(fighter);
         lucina_on_empty_sp_meter(fighter);
+        lucina_meter_display(fighter);
         lucina_one_more_check(fighter);
         lucina_sb_flash(fighter);
-        lucina_shadow_frenzy_check(fighter);
         lucina_heroic_bravery_grab(fighter);
     }
 }

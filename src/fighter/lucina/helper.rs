@@ -200,7 +200,8 @@ pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) 
         WorkModule::set_int(module_accessor, vl::param_private::sp_effect_timer, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_EFFECT_TIMER);
     }
     let mut level = WorkModule::get_int(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_LEVEL);
-    if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+    if WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY)
+    && sp > 0.0 {
         level += 1;
     }
     if level == 0 {

@@ -134,6 +134,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         else if fighter_kind == *FIGHTER_KIND_TOONLINK {
             fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(toonlink_fgc as *const () as _));
         }
+        else if fighter_kind == *FIGHTER_KIND_REFLET {
+            WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
+        }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_NONE, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(speciallw_pre_generic as *const () as _));

@@ -765,7 +765,7 @@ unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
             dmg = 13.0;
-            kbg = 45;
+            kbg = 60;
         }
         else {
             dmg = 9.0;

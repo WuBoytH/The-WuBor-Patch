@@ -7,7 +7,10 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::{helper::*, *},
+    super::super::{
+        vl,
+        helper::*
+    },
     wubor_utils::{
         wua_bind::*,
         vars::*
@@ -51,7 +54,7 @@ unsafe fn lucina_specialnend(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             let ratio;
             if shadow_id(fighter.module_accessor) {
-                ratio = 0.8;
+                ratio = vl::param_private::shadow_type_attack_mul;
             }
             else {
                 ratio = 1.0;
@@ -99,7 +102,7 @@ unsafe fn lucina_specialnendmax(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             let ratio;
             if shadow_id(fighter.module_accessor) {
-                ratio = 0.8;
+                ratio = vl::param_private::shadow_type_attack_mul;
             }
             else {
                 ratio = 1.0;
@@ -287,7 +290,7 @@ unsafe fn lucina_specialhi(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(fighter.module_accessor);
             let ratio;
             if shadow_id(fighter.module_accessor) {
-                ratio = 0.8;
+                ratio = vl::param_private::shadow_type_attack_mul;
             }
             else {
                 ratio = 1.0;
@@ -318,7 +321,7 @@ unsafe fn lucina_specialhi(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(fighter.module_accessor);
             let ratio;
             if shadow_id(fighter.module_accessor) {
-                ratio = 0.8;
+                ratio = vl::param_private::shadow_type_attack_mul;
             }
             else {
                 ratio = 1.0;
@@ -452,7 +455,7 @@ unsafe fn lucina_specialairhi(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(fighter.module_accessor);
             let ratio;
             if shadow_id(fighter.module_accessor) {
-                ratio = 0.8;
+                ratio = vl::param_private::shadow_type_attack_mul;
             }
             else {
                 ratio = 1.0;
@@ -483,7 +486,7 @@ unsafe fn lucina_specialairhi(fighter: &mut L2CAgentBase) {
             AttackModule::clear_all(fighter.module_accessor);
             let ratio;
             if shadow_id(fighter.module_accessor) {
-                ratio = 0.8;
+                ratio = vl::param_private::shadow_type_attack_mul;
             }
             else {
                 ratio = 1.0;

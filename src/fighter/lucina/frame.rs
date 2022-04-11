@@ -152,11 +152,10 @@ unsafe fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon) {
             EffectModule::set_rate(fighter.module_accessor, eff, 0.3);
             WorkModule::set_int(fighter.module_accessor, eff as i32, FIGHTER_YU_INSTANCE_WORK_ID_INT_SHADOW_EFF_ID );
         }
-        DamageModule::set_damage_mul(fighter.module_accessor, 0.92);
+        DamageModule::set_damage_mul(fighter.module_accessor, vl::param_private::shadow_type_damage_mul);
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             // if !TRAINING_TOOLS[entry_id(fighter.module_accessor)] {
-                let amount : f32;
-                amount = 1.0 / 16.0;
+                let amount = vl::param_private::shadow_frenzy_sp_drain;
                 WarkModule::count_down(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE, amount);
             // }
         }
@@ -178,14 +177,14 @@ unsafe fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon) {
         }
     }
     else {
-        if DamageModule::damage(fighter.module_accessor, 0) >= 100.0 {
+        if DamageModule::damage(fighter.module_accessor, 0) >= vl::param_private::awakening_activation_damage {
             if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_AWAKENING)
             && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
             && !MiscModule::is_damage_check(fighter.module_accessor, false)
             && sv_information::is_ready_go() {
-                DamageModule::set_damage_mul(fighter.module_accessor, 0.8);
-                WorkModule::set_float(fighter.module_accessor, 150.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-                FGCModule::update_meter(fighter.battle_object, 50.0, 150.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+                DamageModule::set_damage_mul(fighter.module_accessor, vl::param_private::awakening_damage_mul);
+                WorkModule::set_float(fighter.module_accessor, vl::param_private::awakening_sp_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+                FGCModule::update_meter(fighter.battle_object, vl::param_private::awakening_sp_gain, vl::param_private::awakening_sp_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_AWAKENING);
                 macros::FT_START_CUTIN(fighter);
             }

@@ -7,7 +7,10 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::helper::*,
+    super::super::{
+        vl,
+        helper::*
+    },
     wubor_utils::vars::*,
 };
 
@@ -77,7 +80,7 @@ unsafe fn lucina_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;
@@ -106,7 +109,7 @@ unsafe fn lucina_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     let ratio;
     if shadow_id(fighter.module_accessor) {
-        ratio = 0.8;
+        ratio = vl::param_private::shadow_type_attack_mul;
     }
     else {
         ratio = 1.0;
@@ -131,7 +134,7 @@ unsafe fn lucina_attacklw3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;
@@ -165,7 +168,7 @@ unsafe fn lucina_attackdash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;

@@ -2,7 +2,6 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::Hash40,
         app::lua_bind::*,
         lib::lua_const::*
     },
@@ -41,37 +40,17 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
         // Taunt Movement
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_s_loop") {
-            if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R)
-            && MotionModule::frame(fighter.module_accessor) < 1.0 {
-                let lr = PostureModule::lr(fighter.module_accessor);
-                let mot = if lr < 0.0 {
-                    WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L)
+            let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
+            let mut spin = 0.5 * stickx;
+            if spin.abs() > 0.5 {
+                if spin < 0.0 {
+                    spin = -0.5;
                 }
                 else {
-                    WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
-                };
-                let restart_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME) as f32;
-                MotionModule::change_motion_force_inherit_frame(
-                    fighter.module_accessor,
-                    Hash40::new_raw(mot),
-                    restart_frame,
-                    1.0,
-                    0.0
-                );
-            }
-            else {
-                let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
-                let mut spin = 0.5 * stickx;
-                if spin.abs() > 0.5 {
-                    if spin < 0.0 {
-                        spin = -0.5;
-                    }
-                    else {
-                        spin = 0.5;
-                    }
+                    spin = 0.5;
                 }
-                macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
+            macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }
 }

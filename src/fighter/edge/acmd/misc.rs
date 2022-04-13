@@ -1,13 +1,14 @@
 use {
     smash::{
         lua2cpp::L2CAgentBase,
+        hash40,
         phx::Hash40,
         app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*,
+    wubor_utils::{wua_bind::*, vars::*},
     super::super::vars::*
 };
 
@@ -16,23 +17,16 @@ unsafe fn edge_appeals(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 39.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R) {
         if macros::is_excute(fighter) {
-            WorkModule::set_int(
+            MiscModule::set_appeal_loop(
                 fighter.module_accessor,
-                *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R,
-                FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON
-            );
-            WorkModule::set_int(fighter.module_accessor, 48, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME);
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new("appeal_s_loop"),
-                0.0,
-                1.0,
                 false,
-                0.0,
-                false,
-                false
+                hash40("appeal_s_loop"),
+                48,
+                *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R
             );
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_attack") as i64, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
+            WorkModule::set_int(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_BUTTON);
+            WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION);
         }
     }
 }
@@ -114,13 +108,13 @@ unsafe fn edge_appealsattack(fighter: &mut L2CAgentBase) {
             damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
             macros::SLOW_OPPONENT(fighter, 20.0, 30.0);
         }
-        macros::FT_MOTION_RATE(fighter, 30.0 / 21.0);
+        macros::FT_MOTION_RATE(fighter, 30.0 / 22.0);
     }
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 8.0, 3.0);
     }
-    frame(fighter.lua_state_agent, 21.0);
+    frame(fighter.lua_state_agent, 22.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         let damage;
@@ -131,18 +125,18 @@ unsafe fn edge_appealsattack(fighter: &mut L2CAgentBase) {
         else {
             damage = 20.0;
         }
-        macros::ATTACK(fighter, 0, 0, Hash40::new("swordl1"), damage, 361, 81, 0, 54, 4.0, 0.0, -1.0, 4.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("swordl1"), damage, 361, 78, 0, 57, 4.0, 7.0, -1.0, 4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("swordl1"), damage, 361, 78, 0, 57, 4.0, 15.0, -1.0, 4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 4, 0, Hash40::new("swordl1"), damage, 361, 81, 0, 54, 5.8, 21.5, -1.0, 4.0, None, None, None, 0.9, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), damage, 361, 81, 0, 54, 5.8, 0.0, 8.5, 6.5, Some(0.0), Some(8.5), Some(6.5), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 5, 0, Hash40::new("top"), damage, 361, 78, 0, 57, 5.5, 0.0, 9.0, 16.5, Some(0.0), Some(9.0), Some(21.5), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("swordl1"), damage, 361, 78, 0, 54, 4.0, 0.0, -1.0, 4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("swordl1"), damage, 361, 78, 0, 54, 4.0, 7.0, -1.0, 4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 3, 0, Hash40::new("swordl1"), damage, 361, 78, 0, 54, 4.0, 15.0, -1.0, 4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 4, 0, Hash40::new("swordl1"), damage, 361, 78, 0, 54, 5.8, 21.5, -1.0, 4.0, None, None, None, 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), damage, 361, 78, 0, 54, 5.8, 0.0, 8.5, 6.5, Some(0.0), Some(8.5), Some(6.5), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 5, 0, Hash40::new("top"), damage, 361, 78, 0, 54, 5.5, 0.0, 9.0, 16.5, Some(0.0), Some(9.0), Some(21.5), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 41.0);
+    frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 4.0, 3.0);
     }
@@ -158,11 +152,11 @@ unsafe fn edge_appealsattack_eff(fighter: &mut L2CAgentBase) {
             macros::EFFECT_FOLLOW(fighter, Hash40::new("edge_aura"), Hash40::new("hip"), -2, -2, 0, 80, 90, 0, 1, true);
         }
     }
-    frame(fighter.lua_state_agent, 11.0);
+    frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_smash_flash"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
     }
-    frame(fighter.lua_state_agent, 19.0);
+    frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
         macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_edge_sword1"), Hash40::new("tex_edge_sword2"), 6, Hash40::new("swordl2"), -4.0, 0.0, -0.7, Hash40::new("swordl2"), 29.2, 0.0, 1.5, true, Hash40::new("null"), Hash40::new("swordl2"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_flare"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
@@ -170,19 +164,19 @@ unsafe fn edge_appealsattack_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("edge_sword_light3"), Hash40::new("swordl2"), 0, 0, 0, 0, 180, -90, 1, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
-    frame(fighter.lua_state_agent, 20.0);
+    frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 2, 0, 0, 0, 0, 0, 0.9, 10, 0, 4, 0, 0, 0, false);
         macros::LAST_EFFECT_SET_RATE(fighter, 1.2);
     }
-    frame(fighter.lua_state_agent, 21.0);
+    frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("edge_sword_flare"), false, true);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("edge_sword"), Hash40::new("top"), -1, 13.2, 3.5, 0, -50, 24, 0.95, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 1.1);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("edge_slash_light"), Hash40::new("top"), -1, 13.2, 3.5, 0, 40, 24, 1.05, true);
     }
-    frame(fighter.lua_state_agent, 22.0);
+    frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
         macros::AFTER_IMAGE_OFF(fighter, 2);
     }
@@ -265,22 +259,12 @@ unsafe fn edge_appeallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 39.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
         if macros::is_excute(fighter) {
-            WorkModule::set_int(
+            MiscModule::set_appeal_loop(
                 fighter.module_accessor,
-                *CONTROL_PAD_BUTTON_APPEAL_LW,
-                FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON
-            );
-            WorkModule::set_int(fighter.module_accessor, 60, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME);
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
-            MotionModule::change_motion(
-                fighter.module_accessor,
-                Hash40::new("appeal_lw_loop"),
-                0.0,
-                1.0,
                 false,
-                0.0,
-                false,
-                false
+                hash40("appeal_lw_loop"),
+                60,
+                *CONTROL_PAD_BUTTON_APPEAL_LW
             );
         }
     }

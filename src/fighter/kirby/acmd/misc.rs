@@ -1,13 +1,14 @@
 use {
     smash::{
         lua2cpp::L2CAgentBase,
+        hash40,
         phx::Hash40,
         app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*,
+    wubor_utils::{wua_bind::*, vars::*},
     super::super::{vl, vars::*}
 };
 
@@ -15,19 +16,14 @@ use {
 unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R)
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_FLAG_APPEAL_S_HOLD) {
+    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP) {
         if macros::is_excute(fighter) {
-            WorkModule::set_int(fighter.module_accessor, 9, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME);
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_FLAG_APPEAL_S_HOLD);
-            MotionModule::change_motion(
+            MiscModule::set_appeal_loop(
                 fighter.module_accessor,
-                Hash40::new("appeal_s_loop"),
-                0.0,
-                1.0,
-                false,
-                0.0,
-                false,
-                false
+                true,
+                hash40("appeal_s_loop"),
+                9,
+                *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R
             );
         }
     }

@@ -2,7 +2,7 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::{Hash40, Vector3f},
+        phx::Vector3f,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
@@ -18,7 +18,7 @@ use {
     }
 };
 
-unsafe fn fgc_setup(fighter : &mut L2CFighterCommon) {
+unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode() {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
         && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
@@ -50,41 +50,13 @@ unsafe fn fgc_setup(fighter : &mut L2CFighterCommon) {
     }
 }
 
-/// Used specifically for taunts that we've made loop,
-/// but we want to break the loop early.
-unsafe fn taunt_holds(fighter : &mut L2CFighterCommon) {
-    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_APPEAL
-    && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD) {
-        let button = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON);
-        if ControlModule::check_button_off(fighter.module_accessor, button) {
-            let lr = PostureModule::lr(fighter.module_accessor);
-            let mot = if lr < 0.0 {
-                WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L)
-            }
-            else {
-                WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
-            };
-            let restart_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME) as f32;
-            MotionModule::change_motion_force_inherit_frame(
-                fighter.module_accessor,
-                Hash40::new_raw(mot),
-                restart_frame,
-                1.0,
-                0.0
-            );
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
-        }
-    }
-}
-
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
-fn common_fighter_frame(fighter : &mut L2CFighterCommon) {
+fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         fgc_setup(fighter);
         common_fgc(fighter);
-        taunt_holds(fighter);
 
         // Checks what frame you hit the opponent.
 

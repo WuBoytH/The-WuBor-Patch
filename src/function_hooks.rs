@@ -559,10 +559,10 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
         value += 0x1;
     }
     else if str.contains("FIGHTER_STATUS_APPEAL_FLAG_TERM") {
-        value += 0x1;
+        value += 0x3;
     }
     else if str.contains("FIGHTER_STATUS_APPEAL_WORK_INT_TERM") {
-        value += 0x2;
+        value += 0x5;
     }
     else if str.contains("FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_TERM") {
         value += 0x1;

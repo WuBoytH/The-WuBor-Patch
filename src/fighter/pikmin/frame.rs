@@ -5,7 +5,8 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    smashline::*
+    smashline::*,
+    wubor_utils::table_const::*
 };
 
 #[repr(C)]
@@ -20,7 +21,7 @@ struct TroopManager {
 }
 
 unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[0x9].get_i32() == *FIGHTER_STATUS_KIND_ENTRY
+    if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ENTRY
     || sv_information::is_ready_go() {
         let troops = WorkModule::get_int64(fighter.module_accessor, 0x100000C0);
         let troopmanager = troops as *const TroopManager;

@@ -7,11 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::helper::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::{helper::*, vars::*},
 };
 
 #[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

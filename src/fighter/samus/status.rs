@@ -8,12 +8,12 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vl::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::vl::*
 };
 
 #[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

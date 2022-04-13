@@ -6,7 +6,16 @@ use {
     },
     crate::{
         fighter::{
-            lucina::helper::shadow_id,
+            gaogaen::vars::*,
+            kamui::vars::*,
+            ken::vars::*,
+            lucina::{
+                helper::shadow_id,
+                vars::*
+            },
+            mario::vars::*,
+            ryu::vars::*,
+            wario::vars::*,
             *
         }
     },
@@ -162,6 +171,8 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
     let module_accessor = (*object).module_accessor;
     // let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE);
+    // let hitstun = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
+    // println!("histun remaining: {}", hitstun);
     call_original!(object, arg);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
     // let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
@@ -553,6 +564,9 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     else if str.contains("FIGHTER_STATUS_APPEAL_WORK_INT_TERM") {
         value += 0x2;
     }
+    else if str.contains("FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_TERM") {
+        value += 0x1;
+    }
     else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_INT_TERM") {
         value += 0x1;
     }
@@ -578,7 +592,7 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
         value += 0x8;
     }
     else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x4;
+        value += 0x5;
     }
     else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_TERM") {
         value += 0x2;

@@ -12,7 +12,8 @@ use {
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::vars::*
 };
 
 unsafe fn ryu_reset_vars(fighter: &mut L2CFighterCommon) {

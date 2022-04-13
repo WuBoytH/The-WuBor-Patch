@@ -11,7 +11,8 @@ use {
     wubor_utils::{
         wua_bind::*,
         vars::*
-    }
+    },
+    super::vars::*
 };
 
 // Notes:

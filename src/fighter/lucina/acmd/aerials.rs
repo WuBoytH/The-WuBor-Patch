@@ -7,8 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::helper::*,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::super::{vl, helper::*},
 };
 
 #[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME, low_priority )]
@@ -21,7 +21,7 @@ unsafe fn lucina_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;
@@ -89,7 +89,7 @@ unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     let ratio;
     if shadow_id(fighter.module_accessor) {
-        ratio = 0.8;
+        ratio = vl::param_private::shadow_type_attack_mul;
     }
     else {
         ratio = 1.0;
@@ -170,7 +170,7 @@ unsafe fn lucina_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     let ratio;
     if shadow_id(fighter.module_accessor) {
-        ratio = 0.8;
+        ratio = vl::param_private::shadow_type_attack_mul;
     }
     else {
         ratio = 1.0;
@@ -262,7 +262,7 @@ unsafe fn lucina_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;
@@ -302,7 +302,7 @@ unsafe fn lucina_attackairlw(fighter: &mut L2CAgentBase) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;

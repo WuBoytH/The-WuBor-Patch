@@ -7,11 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::{
-        helper::*,
-        vl
-    },
     wubor_utils::vars::*,
+    super::super::{helper::*, vl, vars::*}
 };
 
 #[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]

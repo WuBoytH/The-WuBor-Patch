@@ -8,9 +8,9 @@ use {
     smash_script::*,
     wubor_utils::{
         wua_bind::*,
-        vars::*,
         table_const::*
-    }
+    },
+    super::vars::*
 };
 
 #[inline(always)]

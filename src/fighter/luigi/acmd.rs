@@ -7,7 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::vars::*
 };
 
 #[acmd_script( agent = "luigi", script = "game_attackhi3", category = ACMD_GAME, low_priority )]

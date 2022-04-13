@@ -24,6 +24,7 @@ use {
                 fgc::daisy_fgc
             },
             dolly::agent_init::*,
+            donkey::vars::*,
             element::fgc::element_fgc,
             ganon::fgc::ganon_fgc,
             kirby::agent_init::kirby_specialn_pre,
@@ -33,14 +34,21 @@ use {
                 agent_init::lucario_specialhi_pre,
                 fgc::lucario_fgc
             },
-            lucina::agent_init::{
-                yu_specialns_pre,
-                yu_speciallw_pre,
-                yu_check_special_command
+            lucina::{
+                agent_init::{
+                    yu_specialns_pre,
+                    yu_speciallw_pre,
+                    yu_check_special_command
+                },
+                vars::*
             },
             miifighter::fgc::miifighter_fgc,
             richter::fgc::richter_fgc,
-            samusd::fgc::samusd_fgc,
+            ryu::vars::*,
+            samusd::{
+                fgc::samusd_fgc,
+                vars::*
+            },
             shizue::agent_init::shizue_special_lw_pre,
             toonlink::fgc::toonlink_fgc,
             trail::agent_init::trail_guard_cont_pre
@@ -133,6 +141,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         else if fighter_kind == *FIGHTER_KIND_TOONLINK {
             fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(toonlink_fgc as *const () as _));
+        }
+        else if fighter_kind == *FIGHTER_KIND_REFLET {
+            WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);
         }
         else if fighter_kind == *FIGHTER_KIND_SHULK {
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_NONE, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);

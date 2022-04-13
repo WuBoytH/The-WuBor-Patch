@@ -7,11 +7,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    super::vl,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::{vl, vars::*}
 };
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

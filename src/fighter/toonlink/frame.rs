@@ -7,10 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]

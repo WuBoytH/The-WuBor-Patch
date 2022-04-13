@@ -1,8 +1,11 @@
 use {
-    smash::lua2cpp::L2CFighterCommon,
-    smash::app::smashball,
+    smash::{
+        lua2cpp::L2CFighterCommon,
+        app::smashball
+    },
+    smashline::*,
     wubor_utils::vars::*,
-    smashline::*
+    crate::fighter::donkey::vars::*
 };
 
 #[fighter_reset]

@@ -7,7 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::super::vars::*
 };
 
 #[acmd_script( agent = "ganon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]

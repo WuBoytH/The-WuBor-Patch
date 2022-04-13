@@ -7,10 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
+    wubor_utils::wua_bind::*,
+    super::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_KAMUI )]

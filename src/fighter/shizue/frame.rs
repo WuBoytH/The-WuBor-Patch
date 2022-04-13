@@ -5,12 +5,11 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    super::helper::*,
     wubor_utils::{
         wua_bind::*,
-        vars::*,
         table_const::*
-    }
+    },
+    super::{helper::*, vars::*},
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_SHIZUE )]

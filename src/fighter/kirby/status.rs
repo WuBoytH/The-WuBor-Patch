@@ -7,14 +7,14 @@ use {
     },
     smash_script::*,
     smashline::*,
+    wubor_utils::table_const::*,
     crate::{
-        fighter::ganon::helper::*
+        fighter::ganon::{
+            helper::*,
+            vars::*
+        }
     },
-    super::vl,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    super::{vl, vars::*},
 };
 
 #[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

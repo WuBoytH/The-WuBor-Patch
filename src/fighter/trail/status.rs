@@ -8,12 +8,12 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::common::common_status::attack::*,
     wubor_utils::{
         vars::*,
         cancels::*,
         table_const::*
-    }
+    },
+    super::super::common::common_status::attack::*
 };
 
 #[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

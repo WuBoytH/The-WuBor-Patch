@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*
+    super::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]

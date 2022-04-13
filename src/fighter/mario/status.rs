@@ -8,12 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vl,
     wubor_utils::{
         wua_bind::*,
-        vars::*,
         table_const::*
-    }
+    },
+    super::{vl, vars::*}
 };
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_S4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]

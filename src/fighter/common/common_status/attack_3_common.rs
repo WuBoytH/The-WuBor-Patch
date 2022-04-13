@@ -6,8 +6,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
+    wubor_utils::table_const::*,
     super::attack::only_jabs,
-    wubor_utils::table_const::*
 };
 
 #[hook(module = "common", symbol = "_ZN7lua2cpp16L2CFighterCommon28sub_attack3_uniq_check_paramEN3lib8L2CValueES2_S2_")]

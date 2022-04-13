@@ -8,14 +8,15 @@ use {
     },
     smash_script::*,
     smashline::*,
+    wubor_utils::{
+        vars::*,
+        table_const::*
+    },
     super::super::{
         common::common_status::dash::*,
         ryu::helper::*
     },
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    super::vars::*
 };
 
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

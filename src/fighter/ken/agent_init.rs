@@ -4,10 +4,8 @@ use {
         app::lua_bind::WorkModule,
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::vars::*
 };
 
 pub unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

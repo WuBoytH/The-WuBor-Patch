@@ -7,7 +7,10 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::helper::*
+    super::super::{
+        vl,
+        helper::*
+    },
 };
 
 #[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
@@ -23,7 +26,7 @@ unsafe fn lucina_attacks4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;
@@ -52,7 +55,7 @@ unsafe fn lucina_attackhi4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let ratio;
         if shadow_id(fighter.module_accessor) {
-            ratio = 0.8;
+            ratio = vl::param_private::shadow_type_attack_mul;
         }
         else {
             ratio = 1.0;

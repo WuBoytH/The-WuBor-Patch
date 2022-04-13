@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*
+    super::vars::*
 };
 
 #[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
@@ -52,8 +52,16 @@ unsafe fn falco_attacklw4(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "falco", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority)]
+unsafe fn falco_appeallw(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
-        falco_attacklw4
+        falco_attacklw4,
+        falco_appeallw
     );
 }

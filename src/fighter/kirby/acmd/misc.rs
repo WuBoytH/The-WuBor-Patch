@@ -7,8 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vl,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::super::{vl, vars::*}
 };
 
 #[acmd_script( agent = "kirby", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]

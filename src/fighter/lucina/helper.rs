@@ -4,8 +4,8 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    super::vl,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::{vl, vars::*},
 };
 
 #[inline(always)]

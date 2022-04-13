@@ -8,8 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vl,
     wubor_utils::vars::*,
+    super::super::{vl, vars::*}
 };
 
 #[acmd_script( agent = "mario", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]

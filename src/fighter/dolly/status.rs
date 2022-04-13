@@ -8,13 +8,13 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::{helper::*, vl},
-    super::super::common::common_status::dash::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::{helper::*, vl, vars::*},
+    super::super::common::common_status::dash::*
 };
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

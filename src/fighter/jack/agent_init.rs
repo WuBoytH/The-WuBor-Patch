@@ -5,8 +5,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    super::status::*,
-    wubor_utils::table_const::*
+    wubor_utils::table_const::*,
+    super::status::*
 };
 
 unsafe fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) {

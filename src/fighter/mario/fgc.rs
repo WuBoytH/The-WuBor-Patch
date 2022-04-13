@@ -8,7 +8,8 @@ use {
     wubor_utils::{
         wua_bind::*,
         vars::*
-    }
+    },
+    super::vars::*
 };
 
 pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {

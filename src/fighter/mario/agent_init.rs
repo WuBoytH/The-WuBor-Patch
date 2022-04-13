@@ -4,7 +4,7 @@ use {
         app::lua_bind::WorkModule,
         lib::L2CValue
     },
-    wubor_utils::vars::*
+    super::vars::*
 };
 
 pub unsafe extern "C" fn mario_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

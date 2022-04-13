@@ -7,8 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vl,
     wubor_utils::vars::*,
+    super::super::vl
 };
 
 #[acmd_script( agent = "daisy", script = "game_specialsjump", category = ACMD_GAME, low_priority )]

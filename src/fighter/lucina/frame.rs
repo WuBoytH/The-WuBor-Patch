@@ -8,15 +8,16 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::{
-        vl,
-        helper::*
-    },
     wubor_utils::{
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::{
+        vl,
+        helper::*,
+        vars::*
+    },
 };
 
 unsafe fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {

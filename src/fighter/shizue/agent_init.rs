@@ -4,8 +4,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    super::helper::*,
-    wubor_utils::vars::*
+    super::{helper::*, vars::*}
 };
 
 pub unsafe extern "C" fn shizue_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

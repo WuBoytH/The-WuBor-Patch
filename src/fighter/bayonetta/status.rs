@@ -7,11 +7,11 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    super::super::common::common_status::attack::only_jabs,
     wubor_utils::{
         wua_bind::*,
         table_const::*
-    }
+    },
+    super::super::common::common_status::attack::only_jabs,
 };
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

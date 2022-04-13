@@ -9,9 +9,9 @@ use {
     smashline::*,
     super::super::{
         vl,
-        helper::*
-    },
-    wubor_utils::vars::*,
+        helper::*,
+        vars::*
+    }
 };
 
 #[acmd_script( agent = "lucina", script = "game_attack11", category = ACMD_GAME, low_priority )]

@@ -7,12 +7,10 @@ use {
     },
     smash_script::*,
     smashline::*,
+    wubor_utils::wua_bind::*,
     super::super::{
         vl,
-        helper::*
-    },
-    wubor_utils::{
-        wua_bind::*,
+        helper::*,
         vars::*
     }
 };

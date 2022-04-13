@@ -8,11 +8,11 @@ use {
     },
     smash_script::*,
     smashline::*,
+    wubor_utils::table_const::*,
     super::super::common::common_status::{
         dash::*,
         attack::only_jabs
-    },
-    wubor_utils::table_const::*
+    }
 };
 
 #[status_script(agent = "demon", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

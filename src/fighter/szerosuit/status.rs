@@ -8,10 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::vars::*
 };
 
 #[status_script(agent = "szerosuit", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

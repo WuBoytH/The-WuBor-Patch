@@ -8,11 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vl,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::{vl, vars::*},
 };
 
 #[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

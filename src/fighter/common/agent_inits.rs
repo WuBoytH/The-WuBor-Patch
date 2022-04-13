@@ -24,6 +24,7 @@ use {
                 fgc::daisy_fgc
             },
             dolly::agent_init::*,
+            donkey::vars::*,
             element::fgc::element_fgc,
             ganon::fgc::ganon_fgc,
             kirby::agent_init::kirby_specialn_pre,
@@ -33,14 +34,21 @@ use {
                 agent_init::lucario_specialhi_pre,
                 fgc::lucario_fgc
             },
-            lucina::agent_init::{
-                yu_specialns_pre,
-                yu_speciallw_pre,
-                yu_check_special_command
+            lucina::{
+                agent_init::{
+                    yu_specialns_pre,
+                    yu_speciallw_pre,
+                    yu_check_special_command
+                },
+                vars::*
             },
             miifighter::fgc::miifighter_fgc,
             richter::fgc::richter_fgc,
-            samusd::fgc::samusd_fgc,
+            ryu::vars::*,
+            samusd::{
+                fgc::samusd_fgc,
+                vars::*
+            },
             shizue::agent_init::shizue_special_lw_pre,
             toonlink::fgc::toonlink_fgc,
             trail::agent_init::trail_guard_cont_pre

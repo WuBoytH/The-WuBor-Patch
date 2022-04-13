@@ -5,7 +5,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    wubor_utils::vars::*,
+    super::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]

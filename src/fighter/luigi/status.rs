@@ -11,7 +11,8 @@ use {
     wubor_utils::{
         vars::*,
         table_const::*
-    }
+    },
+    super::vars::*
 };
 
 #[status_script(agent = "luigi", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]

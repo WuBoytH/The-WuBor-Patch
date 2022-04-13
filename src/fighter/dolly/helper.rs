@@ -5,11 +5,8 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    super::vl,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::{vl, vars::*}
 };
 
 pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {

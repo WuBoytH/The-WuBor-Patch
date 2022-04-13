@@ -6,10 +6,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    wubor_utils::table_const::*,
+    super::vars::*
 };
 
 pub unsafe extern "C" fn dolly_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

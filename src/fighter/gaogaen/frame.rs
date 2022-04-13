@@ -9,7 +9,8 @@ use {
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]

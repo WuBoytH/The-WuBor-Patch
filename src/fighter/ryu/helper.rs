@@ -7,8 +7,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    super::super::common::common_status::attack::only_jabs,
-    wubor_utils::table_const::*
+    wubor_utils::table_const::*,
+    super::super::common::common_status::attack::only_jabs
 };
 
 pub unsafe extern "C" fn ryu_attack_main_uniq_chk(fighter: &mut L2CFighterCommon) -> L2CValue {

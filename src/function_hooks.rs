@@ -6,7 +6,16 @@ use {
     },
     crate::{
         fighter::{
-            lucina::helper::shadow_id,
+            gaogaen::vars::*,
+            kamui::vars::*,
+            ken::vars::*,
+            lucina::{
+                helper::shadow_id,
+                vars::*
+            },
+            mario::vars::*,
+            ryu::vars::*,
+            wario::vars::*,
             *
         }
     },

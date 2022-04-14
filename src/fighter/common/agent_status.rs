@@ -6,7 +6,8 @@ use {
         app::*,
         lib::lua_const::*
     },
-    wubor_utils::{table_const::*, custom_status::*}
+    wubor_utils::table_const::*,
+    custom_status::*
 };
 
 #[skyline::hook(replace = L2CAgentBase_reserve_status_data_array)]

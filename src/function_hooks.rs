@@ -585,9 +585,6 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     else if str.contains("FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_TERM") {
         value += 0x1;
     }
-    else if str.contains("FIGHTER_MARTH_STATUS_KIND_NUM") {
-        value += 0xD;
-    }
     else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_TERM") {
         value += 0x8;
     }

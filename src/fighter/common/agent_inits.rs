@@ -42,6 +42,7 @@ use {
                 },
                 vars::*
             },
+            marth::agent_init::*,
             miifighter::fgc::miifighter_fgc,
             richter::fgc::richter_fgc,
             ryu::vars::*,
@@ -123,6 +124,10 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         else if fighter_kind == *FIGHTER_KIND_GANON {
             fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(specialn_pre_generic as *const () as _));
             fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(ganon_fgc as *const () as _));
+        }
+        else if fighter_kind == *FIGHTER_KIND_MARTH {
+            fighter.global_table[CHECK_GROUND_SPECIAL_PRE].assign(&L2CValue::Ptr(marth_check_special_pre as *const () as _));
+            fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(marth_speciallw_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_LUCINA {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);

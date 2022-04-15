@@ -33,7 +33,7 @@ unsafe extern "C" fn marth_speciallw_enter_pre(fighter: &mut L2CFighterCommon) -
         false,
         false,
         0,
-        0,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
         0,
         0
     );
@@ -56,7 +56,7 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
 
 unsafe extern "C" fn marth_speciallw_enter_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if marth_stance_cancel_helper(fighter).get_bool() {
-        return 0.into();
+        return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
@@ -118,13 +118,13 @@ unsafe extern "C" fn marth_speciallw_wait_main_loop(fighter: &mut L2CFighterComm
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_IS_STANCE) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
         fighter.change_status(status.into(), true.into());
-        return true.into();
+        return 1.into();
     }
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
         fighter.change_status(status.into(), true.into());
-        return true.into();
+        return 1.into();
     }
     0.into()
 }
@@ -218,7 +218,7 @@ unsafe extern "C" fn marth_speciallw_attack_pre(fighter: &mut L2CFighterCommon) 
         false,
         false,
         false,
-        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_ADDITIONS_ATTACK_01 as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_ADDITIONS_ATTACK_01 | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
@@ -242,7 +242,7 @@ unsafe extern "C" fn marth_speciallw_attack_main(fighter: &mut L2CFighterCommon)
 
 unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if marth_stance_cancel_helper(fighter).get_bool() {
-        return 0.into();
+        return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
@@ -267,8 +267,10 @@ unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterCommon) 
             return true.into();
         }
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
+        let curr_status = fighter.global_table[STATUS_KIND].get_i32();
+        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
+        if curr_status < status
+        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 {
             fighter.change_status(status.into(), true.into());
             return true.into();
         }

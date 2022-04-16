@@ -19,6 +19,12 @@ fn marth_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && !MiscModule::is_damage_check(fighter.module_accessor, false)
+        && ![
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2,
+            *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3,
+            *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4
+        ].contains(&fighter.global_table[STATUS_KIND].get_i32())
         && WorkModule::get_int(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_INT_STANCE_CHANGE_LOCKOUT) <= 0 {
             let stance = WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
             WorkModule::set_flag(fighter.module_accessor, !stance, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);

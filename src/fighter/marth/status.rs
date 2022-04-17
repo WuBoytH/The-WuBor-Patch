@@ -396,11 +396,6 @@ unsafe extern "C" fn marth_speciallw_enter_main_loop(fighter: &mut L2CFighterCom
     0.into()
 }
 
-unsafe extern "C" fn marth_speciallw_enter_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    marth_speciallw_common_end(fighter);
-    0.into()
-}
-
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT
 
 unsafe extern "C" fn marth_speciallw_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -484,11 +479,6 @@ unsafe extern "C" fn marth_speciallw_wait_main_loop(fighter: &mut L2CFighterComm
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         }
     }
-    0.into()
-}
-
-unsafe extern "C" fn marth_speciallw_wait_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    marth_speciallw_common_end(fighter);
     0.into()
 }
 
@@ -596,13 +586,6 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-// Dash End
-
-unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    marth_speciallw_common_end(fighter);
-    0.into()
-}
-
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT
 
 unsafe extern "C" fn marth_speciallw_exit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -665,12 +648,7 @@ unsafe extern "C" fn marth_speciallw_exit_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-unsafe extern "C" fn marth_speciallw_exit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    marth_speciallw_common_end(fighter);
-    0.into()
-}
-
-// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK
+// Jab/Tilt common pre function
 
 unsafe extern "C" fn marth_speciallw_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -692,13 +670,17 @@ unsafe extern "C" fn marth_speciallw_attack_pre(fighter: &mut L2CFighterCommon) 
         false,
         false,
         false,
-        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_ADDITIONS_ATTACK_01 | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW
+            | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK
+            | *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
         0,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
     0.into()
 }
+
+// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK
 
 unsafe extern "C" fn marth_speciallw_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
@@ -714,6 +696,24 @@ unsafe extern "C" fn marth_speciallw_attack_main(fighter: &mut L2CFighterCommon)
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_main_loop as *const () as _))
 }
 
+// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3
+
+unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_lw_attack_lw3"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_main_loop as *const () as _))
+}
+
+// Jab/Tilt common main loop function
+
 unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if marth_stance_cancel_helper(fighter).get_bool() {
         return 1.into();
@@ -722,11 +722,6 @@ unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
         return 1.into();
     }
     marth_stance_mot_end_helper(fighter);
-    0.into()
-}
-
-unsafe extern "C" fn marth_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    marth_speciallw_common_end(fighter);
     0.into()
 }
 
@@ -779,9 +774,15 @@ unsafe extern "C" fn marth_ground_air_cancel_helper(fighter: &mut L2CFighterComm
     false.into()
 }
 
-unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     let curr_status = fighter.global_table[STATUS_KIND].get_i32();
+    let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3);
+    if curr_status < status
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
+        fighter.change_status(status.into(), true.into());
+        return true.into();
+    }
     let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
     if curr_status < status
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
@@ -792,7 +793,7 @@ unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFighterC
     false.into()
 }
 
-unsafe extern "C" fn marth_stance_air_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn marth_stance_air_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     // let curr_status = fighter.global_table[STATUS_KIND].get_i32();
     // let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
@@ -872,12 +873,13 @@ unsafe extern "C" fn marth_stance_mot_end_helper(fighter: &mut L2CFighterCommon)
     false.into()
 }
 
-unsafe extern "C" fn marth_speciallw_common_end(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn marth_speciallw_common_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status < CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ENTER)
     && status != *FIGHTER_STATUS_KIND_SPECIAL_LW {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
     }
+    0.into()
 }
 
 pub fn install() {
@@ -893,7 +895,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_enter_pre)
             .with_main(marth_speciallw_enter_main)
-            .with_end(marth_speciallw_enter_end)
+            .with_end(marth_speciallw_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -901,7 +903,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_wait_pre)
             .with_main(marth_speciallw_wait_main)
-            .with_end(marth_speciallw_wait_end)
+            .with_end(marth_speciallw_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -909,7 +911,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_dash_pre)
             .with_main(marth_speciallw_dash_f_main)
-            .with_end(marth_speciallw_dash_end)
+            .with_end(marth_speciallw_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -917,7 +919,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_dash_pre)
             .with_main(marth_speciallw_dash_b_main)
-            .with_end(marth_speciallw_dash_end)
+            .with_end(marth_speciallw_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -925,7 +927,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_exit_pre)
             .with_main(marth_speciallw_exit_main)
-            .with_end(marth_speciallw_exit_end)
+            .with_end(marth_speciallw_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -933,6 +935,14 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_main)
-            .with_end(marth_speciallw_attack_end)
+            .with_end(marth_speciallw_common_end)
+    );
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_marth"),
+        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3,
+        StatusInfo::new()
+            .with_pre(marth_speciallw_attack_pre)
+            .with_main(marth_speciallw_attack_lw3_main)
+            .with_end(marth_speciallw_common_end)
     );
 }

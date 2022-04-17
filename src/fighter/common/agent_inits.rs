@@ -126,7 +126,8 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(ganon_fgc as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_MARTH {
-            fighter.global_table[CHECK_GROUND_SPECIAL_PRE].assign(&L2CValue::Ptr(marth_check_special_pre as *const () as _));
+            fighter.global_table[CHECK_GROUND_SPECIAL_PRE].assign(&L2CValue::Ptr(marth_check_ground_special_pre as *const () as _));
+            fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&L2CValue::Ptr(marth_check_air_special_pre as *const () as _));
             fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(marth_speciallw_pre as *const () as _));
         }
         else if fighter_kind == *FIGHTER_KIND_LUCINA {

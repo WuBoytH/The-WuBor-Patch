@@ -20,9 +20,7 @@ unsafe fn marth_allow_stance_toggle(fighter: &mut L2CFighterCommon) -> bool {
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4,
-        CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ENTER),
-        CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT)
+        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
         false
     }

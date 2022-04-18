@@ -162,7 +162,8 @@ pub unsafe extern "C" fn marth_stance_mot_end_helper(fighter: &mut L2CFighterCom
     if MotionModule::is_end(fighter.module_accessor) {
         if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
             let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
-            fighter.change_status(status.into(), true.into());
+            let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0;
+            fighter.change_status(status.into(), clear_buffer.into());
             return true.into();
         }
         else {

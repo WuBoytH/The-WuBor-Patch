@@ -120,6 +120,14 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
+// Dash End
+
+unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+    marth_stance_common_end(fighter);
+    0.into()
+}
+
 pub fn install() {
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -127,7 +135,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_dash_pre)
             .with_main(marth_speciallw_dash_f_main)
-            .with_end(marth_speciallw_common_end)
+            .with_end(marth_speciallw_dash_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -135,6 +143,6 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_dash_pre)
             .with_main(marth_speciallw_dash_b_main)
-            .with_end(marth_speciallw_common_end)
+            .with_end(marth_speciallw_dash_end)
     );
 }

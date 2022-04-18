@@ -260,7 +260,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_enter_pre)
             .with_main(marth_speciallw_enter_main)
-            .with_end(marth_speciallw_common_end)
+            .with_end(marth_stance_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -268,7 +268,7 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_wait_pre)
             .with_main(marth_speciallw_wait_main)
-            .with_end(marth_speciallw_common_end)
+            .with_end(marth_stance_common_end)
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
@@ -276,6 +276,6 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_exit_pre)
             .with_main(marth_speciallw_exit_main)
-            .with_end(marth_speciallw_common_end)
+            .with_end(marth_stance_common_end)
     );
 }

@@ -173,10 +173,11 @@ pub unsafe extern "C" fn marth_stance_mot_end_helper(fighter: &mut L2CFighterCom
     false.into()
 }
 
-pub unsafe extern "C" fn marth_speciallw_common_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn marth_stance_common_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status < CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ENTER)
-    && status != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+    && status != *FIGHTER_STATUS_KIND_SPECIAL_LW
+    && status != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
     }
     0.into()

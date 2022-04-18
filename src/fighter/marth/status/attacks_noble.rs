@@ -92,10 +92,8 @@ unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
 // Jab/Tilt common end function
 
 unsafe extern "C" fn marth_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
-    }
-    marth_speciallw_common_end(fighter);
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+    marth_stance_common_end(fighter);
     0.into()
 }
 

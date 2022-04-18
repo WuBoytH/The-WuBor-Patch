@@ -11,7 +11,6 @@ use {
         wua_bind::*,
         table_const::*
     },
-    custom_status::*,
     super::{vars::*, vl}
 };
 

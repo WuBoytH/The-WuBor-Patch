@@ -5,7 +5,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     custom_status::*,
-    super::{status::*, vars::*}
+    super::{status::helper::*, vars::*}
 };
 
 pub unsafe extern "C" fn marth_check_ground_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

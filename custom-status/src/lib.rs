@@ -348,7 +348,7 @@ impl CustomStatusModule {
                 
                 for (id, info) in agents.iter() {
                     let kind = module.common_status_end + *id;
-                    println!("[CustomStatusModule: INSTALL] Installing agent statuse with ID {} | {}", id, kind);
+                    println!("[CustomStatusModule: INSTALL] Installing agent status with ID {} | {}", id, kind);
                     if let Some(func) = info.pre.clone() {
                         set_status_func(agent, kind, 0, func);
                     }

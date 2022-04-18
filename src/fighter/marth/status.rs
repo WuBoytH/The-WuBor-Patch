@@ -491,7 +491,7 @@ unsafe extern "C" fn marth_speciallw_dash_pre(fighter: &mut L2CFighterCommon) ->
         *FIGHTER_KINETIC_TYPE_MOTION,
         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        false,
+        true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,

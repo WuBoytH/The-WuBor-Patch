@@ -7,10 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{
-        wua_bind::*,
-        table_const::*
-    },
+    wubor_utils::table_const::*,
     super::{vars::*, vl}
 };
 
@@ -48,16 +45,11 @@ unsafe fn marth_stance_toggle_handler(fighter: &mut L2CFighterCommon, stance: bo
 #[fighter_frame( agent = FIGHTER_KIND_MARTH )]
 fn marth_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if MiscModule::is_damage_check(fighter.module_accessor, false)
-        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
-        }
         if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_INT_STANCE_CHANGE_LOCKOUT) <= 0 {
             let stance = WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
             let mut change = false;
             if !stance {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-                && !MiscModule::is_damage_check(fighter.module_accessor, false)
                 && marth_allow_stance_toggle(fighter) {
                     change = true;
                 }
@@ -65,7 +57,6 @@ fn marth_frame(fighter: &mut L2CFighterCommon) {
             else {
                 if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
                 || ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-                && !MiscModule::is_damage_check(fighter.module_accessor, false)
                 && marth_allow_stance_toggle(fighter) {
                     change = true;
                 }

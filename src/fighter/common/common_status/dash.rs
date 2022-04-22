@@ -266,10 +266,8 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CV
         return 1.into();
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
-    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
-        return 1.into();
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return true.into();
     }
 
     if fighter.sub_transition_group_check_special_command().get_bool() {
@@ -543,11 +541,11 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     // }
 
     // new
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
-    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
-        return 1.into();
+
+    if fighter.sub_transition_group_check_ground_guard().get_bool() {
+        return true.into();
     }
+
 
     if fighter.sub_transition_group_check_special_command().get_bool() {
         return 1.into();

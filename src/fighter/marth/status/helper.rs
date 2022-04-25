@@ -73,6 +73,12 @@ pub unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFigh
         return true.into();
     }
     let curr_status = fighter.global_table[STATUS_KIND].get_i32();
+    let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_HI3);
+    if curr_status < status
+    && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 {
+        fighter.change_status(status.into(), true.into());
+        return true.into();
+    }
     let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3);
     if curr_status < status
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {

@@ -1,9 +1,11 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::Hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
+    smash_script::*,
     wubor_utils::table_const::*,
     custom_status::*,
     crate::fighter::common::common_status::attack::only_jabs,
@@ -29,12 +31,43 @@ pub unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterComm
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
         if fighter.sub_transition_group_check_ground_catch().get_bool()
         || fighter.sub_transition_group_check_ground_special().get_bool()
         || fighter.sub_transition_group_check_ground_attack().get_bool()
         || fighter.sub_transition_group_check_air_special().get_bool() 
         || fighter.sub_transition_group_check_air_attack().get_bool() {
             return true.into();
+        }
+        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+            if fighter.pop_lua_stack(1).get_bool() {
+                fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                return true.into();
+            }
+        }
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+            if fighter.pop_lua_stack(1).get_bool() {
+                fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                return true.into();
+            }
+        }
+        if cat2 & (*FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R) != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S) {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, Hash40::new_raw(0x1daca540be));
+            if fighter.pop_lua_stack(1).get_bool() {
+                fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                return true.into();
+            }
         }
     }
     false.into()

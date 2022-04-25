@@ -40,7 +40,6 @@ unsafe fn marth_speciallwattack11_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        // macros::AFTER_IMAGE_OFF(fighter, 4);
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("marth_sword_blue"), false, true);
     }
 }

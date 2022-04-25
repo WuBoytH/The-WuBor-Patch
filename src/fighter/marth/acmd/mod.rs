@@ -3,6 +3,7 @@
 // mod throws;
 // mod aerials;
 mod specials;
+mod stance_movement;
 mod stance_normals;
 // mod misc;
 
@@ -12,6 +13,7 @@ pub fn install() {
     // throws::install();
     // aerials::install();
     specials::install();
+    stance_movement::install();
     stance_normals::install();
     // misc::install();
 }

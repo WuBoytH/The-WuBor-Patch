@@ -58,7 +58,7 @@ unsafe extern "C" fn marth_speciallw_dash_f_main(fighter: &mut L2CFighterCommon)
         set_speed_mul,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        0.5
+        0.8
     );
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -85,13 +85,13 @@ unsafe extern "C" fn marth_speciallw_dash_b_main(fighter: &mut L2CFighterCommon)
         set_speed_mul,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        0.5
+        0.9
     );
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("escape_b"),
+        Hash40::new("special_lw_dash_b"),
         0.0,
-        2.0,
+        1.0,
         false,
         0.0,
         false,

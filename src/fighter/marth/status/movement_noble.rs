@@ -62,9 +62,9 @@ unsafe extern "C" fn marth_speciallw_dash_f_main(fighter: &mut L2CFighterCommon)
     );
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("final_dash_end"),
+        Hash40::new("special_lw_dash_f"),
         0.0,
-        2.5,
+        1.0,
         false,
         0.0,
         false,
@@ -104,18 +104,29 @@ unsafe extern "C" fn marth_speciallw_dash_b_main(fighter: &mut L2CFighterCommon)
 
 unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if fighter.global_table[MOTION_FRAME].get_f32() >= vl::param_stance::dash_attack_cancel_frame {
-            CancelModule::enable_cancel(fighter.module_accessor);
+        let cancel = CancelModule::is_enable_cancel(fighter.module_accessor);
+        if fighter.global_table[MOTION_FRAME].get_f32() >= vl::param_stance::dash_attack_cancel_frame
+        || cancel {
+            if marth_stance_cancel_helper(fighter).get_bool() {
+                return 1.into();
+            }
         }
-        if marth_stance_cancel_helper(fighter).get_bool() {
-            return 1.into();
-        }
-        if fighter.global_table[MOTION_FRAME].get_f32() >= vl::param_stance::dash_redash_frame {
+        if cancel {
             if marth_stance_dash_cancel_helper(fighter, true).get_bool() {
                 return 1.into();
             }
         }
         marth_stance_mot_end_helper(fighter);
+    }
+    else {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return true.into();
+        }
+        else {
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            fighter.change_status(status.into(), false.into());
+        }
     }
     0.into()
 }

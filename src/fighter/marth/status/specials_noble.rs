@@ -47,9 +47,11 @@ unsafe extern "C" fn marth_speciallw_hit_main_loop(fighter: &mut L2CFighterCommo
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
     }
-    if marth_stance_cancel_helper(fighter).get_bool()
-    || marth_stance_dash_cancel_helper(fighter, true).get_bool() {
-        return 1.into();
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if marth_stance_cancel_helper(fighter).get_bool()
+        || marth_stance_dash_cancel_helper(fighter, true).get_bool() {
+            return 1.into();
+        }
     }
     marth_stance_mot_end_helper(fighter);
     0.into()

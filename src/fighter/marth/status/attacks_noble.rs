@@ -78,21 +78,35 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCom
 }
 
 unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if marth_stance_cancel_helper(fighter).get_bool() {
-        return 1.into();
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !fighter.global_table[IN_HITLAG].get_bool() {
+            if marth_stance_cancel_helper(fighter).get_bool()
+            || marth_stance_dash_cancel_helper(fighter, true).get_bool() {
+                return 1.into();
+            }
+        }
+        if MotionModule::is_end(fighter.module_accessor) {
+            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
+                let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0;
+                fighter.change_status(status.into(), clear_buffer.into());
+                return true.into();
+            }
+            else {
+                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SQUAT_WAIT);
+                fighter.change_status(status.into(), false.into());
+            }
+        }
     }
-    if marth_stance_dash_cancel_helper(fighter, true).get_bool() {
-        return 1.into();
-    }
-    if MotionModule::is_end(fighter.module_accessor) {
+    else {
         if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
-            let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0;
-            fighter.change_status(status.into(), clear_buffer.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return true.into();
         }
         else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SQUAT_WAIT);
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
             fighter.change_status(status.into(), false.into());
         }
     }
@@ -102,13 +116,27 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFight
 // Jab/Tilt common main loop function
 
 unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if marth_stance_cancel_helper(fighter).get_bool() {
-        return 1.into();
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if CancelModule::is_enable_cancel(fighter.module_accessor)
+        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+        && !fighter.global_table[IN_HITLAG].get_bool() {
+            if marth_stance_cancel_helper(fighter).get_bool()
+            || marth_stance_dash_cancel_helper(fighter, true).get_bool() {
+                return 1.into();
+            }
+        }
+        marth_stance_mot_end_helper(fighter);
     }
-    if marth_stance_dash_cancel_helper(fighter, true).get_bool() {
-        return 1.into();
+    else {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return true.into();
+        }
+        else {
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            fighter.change_status(status.into(), false.into());
+        }
     }
-    marth_stance_mot_end_helper(fighter);
     0.into()
 }
 

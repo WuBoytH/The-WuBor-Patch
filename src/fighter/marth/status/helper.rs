@@ -11,34 +11,30 @@ use {
 };
 
 pub unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if CancelModule::is_enable_cancel(fighter.module_accessor)
-    || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && !fighter.global_table[IN_HITLAG].get_bool() {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
-            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-                if marth_stance_air_cancel_helper(fighter).get_bool() {
-                    return true.into();
-                }
-            }
-            else {
-                if marth_stance_ground_cancel_helper(fighter).get_bool () {
-                    return true.into();
-                }
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            if marth_stance_air_cancel_helper(fighter).get_bool() {
+                return true.into();
             }
         }
         else {
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
-            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
-            if fighter.sub_transition_group_check_ground_catch().get_bool()
-            || fighter.sub_transition_group_check_ground_special().get_bool()
-            || fighter.sub_transition_group_check_ground_attack().get_bool()
-            || fighter.sub_transition_group_check_air_special().get_bool() 
-            || fighter.sub_transition_group_check_air_attack().get_bool() {
+            if marth_stance_ground_cancel_helper(fighter).get_bool () {
                 return true.into();
             }
+        }
+    }
+    else {
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+        if fighter.sub_transition_group_check_ground_catch().get_bool()
+        || fighter.sub_transition_group_check_ground_special().get_bool()
+        || fighter.sub_transition_group_check_ground_attack().get_bool()
+        || fighter.sub_transition_group_check_air_special().get_bool() 
+        || fighter.sub_transition_group_check_air_attack().get_bool() {
+            return true.into();
         }
     }
     false.into()

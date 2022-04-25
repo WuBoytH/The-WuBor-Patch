@@ -1,14 +1,14 @@
 mod specials;
-mod wait_noble;
-mod movement_noble;
-mod attacks_noble;
-mod specials_noble;
+mod stance_wait;
+mod stance_movement;
+mod stance_attacks;
+mod stance_specials;
 pub mod helper;
 
 pub fn install() {
     specials::install();
-    wait_noble::install();
-    movement_noble::install();
-    attacks_noble::install();
-    specials_noble::install();
+    stance_wait::install();
+    stance_movement::install();
+    stance_attacks::install();
+    stance_specials::install();
 }

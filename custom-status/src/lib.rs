@@ -249,10 +249,10 @@ impl CustomStatusModule {
         let mut mgr = CUSTOM_STATUS_MANAGER.read();
         let mut modules = mgr.modules.write();
         let module = modules.get_mut(&agent_hash).unwrap();
-        println!("[CustomStatusModule: INIT] Got CustomStatusModule for {:#x}", agent_hash.hash);
+        // println!("[CustomStatusModule: INIT] Got CustomStatusModule for {:#x}", agent_hash.hash);
 
         module.agent_statuses = CustomStatusManager::get_agent_status_scripts(agent_hash);
-        println!("[CustomStatusModule: INIT] Got agent status scripts for {:#x}", agent_hash.hash);
+        // println!("[CustomStatusModule: INIT] Got agent status scripts for {:#x}", agent_hash.hash);
         module.vanilla_status_max = max;
 
         let mut common_max = -1;
@@ -269,8 +269,8 @@ impl CustomStatusModule {
             }
         }
 
-        println!("[CustomStatusModule: INIT] Number of added common statuses: {}", common_max);
-        println!("[CustomStatusModule: INIT] Number of added agent statuses: {}", agents_max);
+        // println!("[CustomStatusModule: INIT] Number of added common statuses: {}", common_max);
+        // println!("[CustomStatusModule: INIT] Number of added agent statuses: {}", agents_max);
 
         module.common_status_end = module.vanilla_status_max + common_max + 1;
         module.common_status_end + agents_max + 1
@@ -284,11 +284,11 @@ impl CustomStatusModule {
         let mut mgr = CUSTOM_STATUS_MANAGER.read();
         let mut modules = mgr.modules.write();
         if let Some(mut module) = modules.get_mut(&agent_hash) {
-            println!("[CustomStatusModule: INSTALL] Got CustomStatusModule for {:#x}", agent_hash.hash);
+            // println!("[CustomStatusModule: INSTALL] Got CustomStatusModule for {:#x}", agent_hash.hash);
             let common = module.common_statuses.read();
 
             for (id, info) in common.iter() {
-                println!("[CustomStatusModule: INSTALL] Installing common status with ID {}", id);
+                // println!("[CustomStatusModule: INSTALL] Installing common status with ID {}", id);
 
                 let kind = module.vanilla_status_max + *id;
                 if let Some(func) = info.pre.clone() {
@@ -348,7 +348,7 @@ impl CustomStatusModule {
                 
                 for (id, info) in agents.iter() {
                     let kind = module.common_status_end + *id;
-                    println!("[CustomStatusModule: INSTALL] Installing agent status with ID {} | {}", id, kind);
+                    // println!("[CustomStatusModule: INSTALL] Installing agent status with ID {} | {}", id, kind);
                     if let Some(func) = info.pre.clone() {
                         set_status_func(agent, kind, 0, func);
                     }
@@ -403,7 +403,7 @@ impl CustomStatusModule {
                 }
             }
         }
-        println!("[CustomStatusModule: INSTALL] Finished installing status scripts!");
+        // println!("[CustomStatusModule: INSTALL] Finished installing status scripts!");
     }
 
     #[export_name = "CustomStatusModule__get_agent_status_kind"]
@@ -415,8 +415,8 @@ impl CustomStatusModule {
         let mut mgr = CUSTOM_STATUS_MANAGER.read();
         let mut modules = mgr.modules.write();
         let module = modules.get_mut(&agent_hash).unwrap();
-        println!("[CustomStatusModule: AGENT] Got CustomStatusModule for {:#x}", agent_hash.hash);
-        println!("[CustomStatusModule: AGENT] Getting Agent Status ID {}", id);
+        // println!("[CustomStatusModule: AGENT] Got CustomStatusModule for {:#x}", agent_hash.hash);
+        // println!("[CustomStatusModule: AGENT] Getting Agent Status ID {}", id);
 
         module.common_status_end + id
     }
@@ -430,8 +430,8 @@ impl CustomStatusModule {
         let mut mgr = CUSTOM_STATUS_MANAGER.read();
         let mut modules = mgr.modules.write();
         let module = modules.get_mut(&agent_hash).unwrap();
-        println!("[CustomStatusModule: COMMON] Got CustomStatusModule for {:#x}", agent_hash.hash);
-        println!("[CustomStatusModule: COMMON] Getting Common Status ID {}", id);
+        // println!("[CustomStatusModule: COMMON] Got CustomStatusModule for {:#x}", agent_hash.hash);
+        // println!("[CustomStatusModule: COMMON] Getting Common Status ID {}", id);
 
         module.vanilla_status_max + id
     }

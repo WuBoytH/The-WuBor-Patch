@@ -80,11 +80,11 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_LW_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_LW_FLAG_CHANGE_MOTION);
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW4);
-                fighter.change_status(status.into(), false.into());
+                fighter.change_status(status.into(), true.into());
                 return 1.into();
             }
         }
@@ -123,7 +123,6 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFight
 }
 
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW4
-// Temporary
 
 unsafe extern "C" fn marth_speciallw_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
@@ -141,8 +140,8 @@ unsafe extern "C" fn marth_speciallw_attack_lw4_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_lw4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_LW_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_LW_FLAG_CHANGE_MOTION);
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
             let dir = FGCModule::get_command_stick_direction(fighter, true);
             let mot;
             if [1, 4, 7].contains(&dir) {
@@ -170,7 +169,7 @@ unsafe extern "C" fn marth_speciallw_attack_lw4_main_loop(fighter: &mut L2CFight
     marth_speciallw_attack_main_loop(fighter)
 }
 
-// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_HU3
+// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_HI3
 
 unsafe extern "C" fn marth_speciallw_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
@@ -183,7 +182,27 @@ unsafe extern "C" fn marth_speciallw_attack_hi3_main(fighter: &mut L2CFighterCom
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_hi3_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn marth_speciallw_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+                MotionModule::change_motion_inherit_frame(
+                    fighter.module_accessor,
+                    Hash40::new("special_lw_attack_hi4"),
+                    -1.0,
+                    1.0,
+                    0.0,
+                    false,
+                    false
+                );
+            }
+        }
+    }
+    marth_speciallw_attack_main_loop(fighter)
 }
 
 // Jab/Tilt common main loop function

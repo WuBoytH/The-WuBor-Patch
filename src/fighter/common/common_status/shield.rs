@@ -752,56 +752,57 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL)
-        && fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() == false
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD) {
-            let mut cont = ItemModule::is_have_item(fighter.module_accessor, 0);
-            if cont {
-                fighter.clear_lua_stack();
-                lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
-                sv_module_access::item(fighter.lua_state_agent);
-                cont = fighter.pop_lua_stack(1).get_bool();
-                if !cont {
-                    fighter.clear_lua_stack();
-                    lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
-                    sv_module_access::item(fighter.lua_state_agent);
-                    cont = fighter.pop_lua_stack(1).get_bool();
-                    if cont {
-                        cont = ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0;
-                    }
-                }
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL) {
+            if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() == false
+            && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD) {
+                let mut cont = ItemModule::is_have_item(fighter.module_accessor, 0);
                 if cont {
                     fighter.clear_lua_stack();
                     lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
                     sv_module_access::item(fighter.lua_state_agent);
                     cont = fighter.pop_lua_stack(1).get_bool();
-                    if !cont
-                    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-                    && fighter.global_table[CMD_CAT3].get_i32() & (
-                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
-                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
-                    ) != 0 {
-                        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-                        return true.into();
+                    if !cont {
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
+                        sv_module_access::item(fighter.lua_state_agent);
+                        cont = fighter.pop_lua_stack(1).get_bool();
+                        if cont {
+                            cont = ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0;
+                        }
                     }
-                    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-                    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0
-                    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
-                    && fighter.global_table[CMD_CAT3].get_i32() & (
-                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
-                        *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
-                    ) != 0 {
-                        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-                        return true.into();
+                    if cont {
+                        fighter.clear_lua_stack();
+                        lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
+                        sv_module_access::item(fighter.lua_state_agent);
+                        cont = fighter.pop_lua_stack(1).get_bool();
+                        if !cont
+                        && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+                        && fighter.global_table[CMD_CAT3].get_i32() & (
+                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
+                        ) != 0 {
+                            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+                            return true.into();
+                        }
+                        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+                        && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER == 0
+                        && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
+                        && fighter.global_table[CMD_CAT3].get_i32() & (
+                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI |
+                            *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4
+                        ) != 0 {
+                            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+                            return true.into();
+                        }
                     }
                 }
             }
-        }
-        if fighter.sub_transition_group_check_ground_item().get_bool() == false
-        && fighter.sub_transition_group_check_ground_catch().get_bool() == false
-        && fighter.sub_transition_group_check_ground_special().get_bool() == false
-        && fighter.sub_transition_group_check_ground_attack().get_bool() == false {
-            return false.into();
+            if fighter.sub_transition_group_check_ground_item().get_bool() == false
+            && fighter.sub_transition_group_check_ground_catch().get_bool() == false
+            && fighter.sub_transition_group_check_ground_special().get_bool() == false
+            && fighter.sub_transition_group_check_ground_attack().get_bool() == false {
+                return false.into();
+            }
         }
         return false.into();
     }

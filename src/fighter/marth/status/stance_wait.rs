@@ -251,12 +251,12 @@ unsafe extern "C" fn marth_speciallw_squat_main_loop(fighter: &mut L2CFighterCom
         fighter.change_status(status.into(), true.into());
         return 0.into();
     }
+    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
+        fighter.change_status(status.into(), true.into());
+        return 1.into();
+    }
     if MotionModule::is_end(fighter.module_accessor) {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
-            fighter.change_status(status.into(), true.into());
-            return 1.into();
-        }
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SQUAT_WAIT);
         fighter.change_status(status.into(), false.into());
     }
@@ -328,12 +328,12 @@ unsafe extern "C" fn marth_speciallw_squat_rv_main_loop(fighter: &mut L2CFighter
         fighter.change_status(status.into(), true.into());
         return 0.into();
     }
+    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
+        fighter.change_status(status.into(), true.into());
+        return 1.into();
+    }
     if MotionModule::is_end(fighter.module_accessor) {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
-            fighter.change_status(status.into(), true.into());
-            return 1.into();
-        }
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
         fighter.change_status(status.into(), false.into());
     }

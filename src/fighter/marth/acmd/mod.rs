@@ -1,5 +1,5 @@
-// mod ground_normals;
-// mod smash_attacks;
+mod normals;
+mod smash;
 // mod throws;
 // mod aerials;
 mod specials;
@@ -8,8 +8,8 @@ mod stance_normals;
 // mod misc;
 
 pub fn install() {
-    // ground_normals::install();
-    // smash_attacks::install();
+    normals::install();
+    smash::install();
     // throws::install();
     // aerials::install();
     specials::install();

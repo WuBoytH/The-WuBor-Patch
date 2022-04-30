@@ -12,17 +12,17 @@ A mod for Super Smash Bros. Ultimate that brings character overhauls and mechani
 
 0. Download and install the dependencies first!
 1. Download a release of The WuBor Patch.
-1.5. Be sure to remove any previous installation of The WuBor Patch.
+- Be sure to remove any previous installation of The WuBor Patch.
 2. Move the contents of the 7z file to the root of your SD card.
 3. If you changed the location of your mods workspace, move "The WuBor Patch" folder in Ultimate/mods/ to your workspace. If you don't know what that is, then you should be good to go!
 4. Boot up the game and enjoy!
 
 ## Special Thanks
 
-blujay - For being a funny and smart coding guy, as well as creating CustomStatusModule that I adapted for use in this project.
-Claude - For helping this project gain footing, coding wise, when it was just starting out.
-LemonPunk - For creating animations for the project and pitching funny LemonMan ideas.
-SM8 - For creating animations for the proeject.
+* blujay - For being a funny and smart coding guy, as well as creating CustomStatusModule that I adapted for use in this project.
+* Claude - For helping this project gain footing, coding wise, when it was just starting out.
+* LemonPunk - For creating animations for the project and pitching funny LemonMan ideas.
+* SM8 - For creating animations for the proeject.
 
 ## Notes
 

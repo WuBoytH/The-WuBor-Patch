@@ -56,6 +56,20 @@ pub unsafe fn marth_is_unstance(fighter: &mut L2CAgentBase) -> bool {
             prev_status = StatusModule::prev_status_kind(fighter.module_accessor, 1);
         }
     }
+    else if status == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP {
+        prev_status = StatusModule::prev_status_kind(fighter.module_accessor, 1);
+    }
+    else if [
+        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END,
+        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX
+    ].contains(&status) {
+        if prev_status == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP {
+            prev_status = StatusModule::prev_status_kind(fighter.module_accessor, 2);
+        }
+        else {
+            prev_status = StatusModule::prev_status_kind(fighter.module_accessor, 1);
+        }
+    }
     let range_lw = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_DASH_F);
     if prev_status == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT
     || range_lw <= prev_status {

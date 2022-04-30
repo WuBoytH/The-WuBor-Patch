@@ -12,12 +12,7 @@ use {
 };
 
 unsafe fn marth_allow_stance_toggle(fighter: &mut L2CFighterCommon) -> bool {
-    if [
-        *FIGHTER_STATUS_KIND_SPECIAL_S,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3,
-        *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4
-    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_FLAG_DISABLE_STANCE_CHANGE) {
         false
     }
     else {
@@ -28,7 +23,7 @@ unsafe fn marth_allow_stance_toggle(fighter: &mut L2CFighterCommon) -> bool {
 unsafe fn marth_stance_toggle_handler(fighter: &mut L2CFighterCommon, stance: bool) {
     WorkModule::set_flag(fighter.module_accessor, !stance, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
     macros::EFFECT(fighter, Hash40::new("marth_counter_flash"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, true);
-    if !stance {
+    if stance {
         macros::LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.2, 0.2);
     }
     else {

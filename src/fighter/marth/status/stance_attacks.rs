@@ -245,6 +245,43 @@ unsafe extern "C" fn marth_speciallw_attack_f3_main_loop(fighter: &mut L2CFighte
     marth_speciallw_attack_main_loop(fighter)
 }
 
+// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_B3
+// Placeholder
+
+unsafe extern "C" fn marth_speciallw_attack_b3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_lw_attack_f3"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_b3_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn marth_speciallw_attack_b3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
+                sv_kinetic_energy!(
+                    set_speed_mul,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                    1.5
+                );
+                WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY);
+            }
+        }
+    }
+    marth_speciallw_attack_main_loop(fighter)
+}
+
 // Jab/Tilt common main loop function
 
 unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -319,6 +356,14 @@ pub fn install() {
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_f3_main)
+            .with_end(marth_speciallw_attack_end)
+    );
+    CustomStatusManager::add_new_agent_status_script(
+        Hash40::new("fighter_kind_marth"),
+        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_B3,
+        StatusInfo::new()
+            .with_pre(marth_speciallw_attack_pre)
+            .with_main(marth_speciallw_attack_b3_main)
             .with_end(marth_speciallw_attack_end)
     );
 }

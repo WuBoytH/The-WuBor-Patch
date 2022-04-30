@@ -5,6 +5,7 @@ mod smash;
 mod specials;
 mod stance_movement;
 mod stance_normals;
+mod stance_specials;
 // mod misc;
 
 pub fn install() {
@@ -15,5 +16,6 @@ pub fn install() {
     specials::install();
     stance_movement::install();
     stance_normals::install();
+    stance_specials::install();
     // misc::install();
 }

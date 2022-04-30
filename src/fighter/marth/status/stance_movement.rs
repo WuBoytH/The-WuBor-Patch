@@ -116,6 +116,12 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
                 return 1.into();
             }
         }
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SPECIAL_S);
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
+            fighter.change_status(status.into(), true.into());
+            return true.into();
+        }
         marth_stance_mot_end_helper(fighter);
     }
     else {

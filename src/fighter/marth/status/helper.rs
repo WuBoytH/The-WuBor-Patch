@@ -15,12 +15,13 @@ use {
 pub unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            if marth_stance_air_cancel_helper(fighter).get_bool() {
+            if marth_stance_special_cancel_helper(fighter).get_bool() {
                 return true.into();
             }
         }
         else {
-            if marth_stance_ground_cancel_helper(fighter).get_bool () {
+            if marth_stance_special_cancel_helper(fighter).get_bool()
+            || marth_stance_ground_cancel_helper(fighter).get_bool () {
                 return true.into();
             }
         }
@@ -76,13 +77,14 @@ pub unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterComm
 pub unsafe extern "C" fn marth_ground_air_cancel_helper(fighter: &mut L2CFighterCommon, require_cancel: bool) -> L2CValue {
     if !require_cancel || CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            if marth_stance_ground_cancel_helper(fighter).get_bool()
+            if marth_stance_special_cancel_helper(fighter).get_bool()
+            || marth_stance_ground_cancel_helper(fighter).get_bool()
             || marth_stance_dash_cancel_helper(fighter, require_cancel).get_bool() {
                 return true.into();
             }
         }
         else {
-            if marth_stance_air_cancel_helper(fighter).get_bool() {
+            if marth_stance_special_cancel_helper(fighter).get_bool() {
                 return true.into();
             }
         }
@@ -92,19 +94,6 @@ pub unsafe extern "C" fn marth_ground_air_cancel_helper(fighter: &mut L2CFighter
 
 pub unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    // let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3);
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
-        return true.into();
-    }
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
-        return true.into();
-    }
-    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
-        return true.into();
-    }
     let curr_status = fighter.global_table[STATUS_KIND].get_i32();
     let lr = PostureModule::lr(fighter.module_accessor);
     let turn = FighterControlModuleImpl::get_attack_s3_turn(fighter.module_accessor) as i32;
@@ -138,22 +127,16 @@ pub unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFigh
     false.into()
 }
 
-pub unsafe extern "C" fn marth_stance_air_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn marth_stance_special_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-    // let curr_status = fighter.global_table[STATUS_KIND].get_i32();
-    // let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
-    // if curr_status < status
-    // && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
-    // && only_jabs(fighter) {
-    //     fighter.change_status(status.into(), true.into());
-    //     return true.into();
-    // }
+    // let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3);
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
         return true.into();
     }
+    let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SPECIAL_S);
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
-        fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
+        fighter.change_status(status.into(), true.into());
         return true.into();
     }
     if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {

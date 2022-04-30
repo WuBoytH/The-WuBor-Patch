@@ -37,7 +37,7 @@ unsafe fn marth_speciallwdashf_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "sound_speciallwdashf", category = ACMD_SOUND, low_priority )]
 unsafe fn marth_speciallwdashf_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_marth_escape"));
     }
@@ -77,7 +77,7 @@ unsafe fn marth_speciallwdashb_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "sound_speciallwdashb", category = ACMD_SOUND, low_priority )]
 unsafe fn marth_speciallwdashb_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_marth_escape"));
     }

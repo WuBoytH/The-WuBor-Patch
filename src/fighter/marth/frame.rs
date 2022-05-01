@@ -40,6 +40,10 @@ unsafe fn marth_stance_toggle_handler(fighter: &mut L2CFighterCommon, stance: bo
 #[fighter_frame( agent = FIGHTER_KIND_MARTH )]
 fn marth_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
+        if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_AIR_STANCE);
+        }
+
         if WorkModule::get_int(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_INT_STANCE_CHANGE_LOCKOUT) <= 0 {
             let stance = WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
             let mut change = false;

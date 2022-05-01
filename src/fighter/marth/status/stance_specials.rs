@@ -148,6 +148,12 @@ unsafe extern "C" fn marth_speciallw_specials_pre(fighter: &mut L2CFighterCommon
 unsafe extern "C" fn marth_speciallw_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
     WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_FLAG_DISABLE_STANCE_CHANGE);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    let turn = FighterControlModuleImpl::get_special_s_turn(fighter.module_accessor) as i32;
+    if (lr < 0.0 && turn == *FIGHTER_COMMAND_TURN_LR_RIGHT) || (lr >= 0.0 && turn == *FIGHTER_COMMAND_TURN_LR_LEFT) {
+        PostureModule::reverse_lr(fighter.module_accessor);
+    }
+    PostureModule::update_rot_y_lr(fighter.module_accessor);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
             fighter.module_accessor,

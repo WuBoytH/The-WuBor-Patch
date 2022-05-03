@@ -642,8 +642,12 @@ unsafe extern "C" fn marth_speciallw_specials2_loop_main_loop(fighter: &mut L2CF
             // Placeholder
         }
     }
+    if started_ground
+    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_FLAG_FINAL_BLOW);
+    }
     if MotionModule::is_end(fighter.module_accessor) {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK_RAW) {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_FLAG_FINAL_BLOW) {
             fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END_MAX.into(), true.into());
             return 1.into();
             // placeholder

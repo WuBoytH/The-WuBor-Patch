@@ -12,7 +12,7 @@ use {
     custom_status::*,
     super::{
         helper::*,
-        super::vars::*
+        super::{vars::*, vl}
     }
 };
 
@@ -172,7 +172,7 @@ unsafe extern "C" fn marth_speciallw_specials_main(fighter: &mut L2CFighterCommo
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_STOP,
             ENERGY_STOP_RESET_TYPE_AIR,
-            speed_x * 0.5,
+            speed_x * vl::param_stance::special_s_start_x_mul,
             0.0,
             0.0,
             0.0,
@@ -182,14 +182,14 @@ unsafe extern "C" fn marth_speciallw_specials_main(fighter: &mut L2CFighterCommo
             set_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            speed_y * 0.2
+            speed_y * vl::param_stance::special_s_start_y_mul
         );
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
         sv_kinetic_energy!(
             set_accel,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y * 0.2
+            -air_accel_y * vl::param_stance::special_s_start_y_mul
         );
     }
     else {
@@ -209,7 +209,7 @@ unsafe extern "C" fn marth_speciallw_specials_main(fighter: &mut L2CFighterCommo
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_STOP,
             ENERGY_STOP_RESET_TYPE_GROUND,
-            speed_x * 0.5,
+            speed_x * vl::param_stance::special_s_start_x_mul,
             0.0,
             0.0,
             0.0,
@@ -518,6 +518,7 @@ unsafe extern "C" fn marth_speciallw_specials2_start_main(fighter: &mut L2CFight
     WorkModule::set_int(fighter.module_accessor, 1, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_LOOP_COUNT);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_AIR, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_START_SITUAITON);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_special_air_s2_start"),
@@ -528,9 +529,45 @@ unsafe extern "C" fn marth_speciallw_specials2_start_main(fighter: &mut L2CFight
             false,
             false
         );
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y * 1.5
+        );
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            vl::param_stance::special_s2_start_y
+        );
+        let lr = PostureModule::lr(fighter.module_accessor);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            vl::param_stance::special_s2_start_x * lr,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_accel_x_mul,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.0
+        );
+        sv_kinetic_energy!(
+            mul_x_speed_max,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.0
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     else {
         WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_GROUND, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_START_SITUAITON);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_special_s2_start"),
@@ -602,6 +639,7 @@ unsafe extern "C" fn marth_speciallw_specials2_loop_main(fighter: &mut L2CFighte
     WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_FLAG_DISABLE_STANCE_CHANGE);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_AIR, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_START_SITUAITON);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_special_air_s2_loop"),
@@ -612,6 +650,35 @@ unsafe extern "C" fn marth_speciallw_specials2_loop_main(fighter: &mut L2CFighte
             false,
             false
         );
+        let lr = PostureModule::lr(fighter.module_accessor);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            vl::param_stance::special_s2_start_x * lr,
+            0.0
+        );
+        sv_kinetic_energy!(
+            mul_x_accel_mul,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            vl::param_stance::special_s2_x_accel_mul_air
+        );
+        sv_kinetic_energy!(
+            mul_x_accel_add,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            vl::param_stance::special_s2_x_accel_mul_air
+        );
+        let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            air_speed_y_stable * vl::param_stance::special_s2_y_stable_mul
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     else {
         WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_GROUND, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_START_SITUAITON);
@@ -639,8 +706,11 @@ unsafe extern "C" fn marth_speciallw_specials2_loop_main_loop(fighter: &mut L2CF
             return 0.into();
         }
         else {
-            // fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-            // Placeholder
+            // let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SPECIAL_S2_LANDING);
+            // fighter.change_status(status.into(), false.into());
+            WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            return 0.into();
         }
     }
     if started_ground
@@ -656,7 +726,7 @@ unsafe extern "C" fn marth_speciallw_specials2_loop_main_loop(fighter: &mut L2CF
         }
         if started_ground {
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            && loop_count < 5 {
+            && loop_count < vl::param_stance::special_s2_ground_loop_max {
                 MotionModule::change_motion(
                     fighter.module_accessor,
                     Hash40::new("special_lw_special_s2_loop"),
@@ -673,6 +743,26 @@ unsafe extern "C" fn marth_speciallw_specials2_loop_main_loop(fighter: &mut L2CF
                     fighter,
                     FIGHTER_KINETIC_ENERGY_ID_MOTION,
                     motion_mul
+                );
+                WorkModule::inc_int(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_LOOP_COUNT);
+            }
+            else {
+                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SPECIAL_S2_END);
+                fighter.change_status(status.into(), false.into());
+            }
+        }
+        else {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
+            && loop_count < vl::param_stance::special_s2_air_loop_max {
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new("special_lw_special_air_s2_loop"),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
                 );
                 WorkModule::inc_int(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_SPECIAL_S2_LOOP_COUNT);
             }
@@ -721,6 +811,7 @@ unsafe extern "C" fn marth_speciallw_specials2_end_main(fighter: &mut L2CFighter
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
     WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_FLAG_DISABLE_STANCE_CHANGE);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("special_lw_special_air_s2_end"),
@@ -731,6 +822,34 @@ unsafe extern "C" fn marth_speciallw_specials2_end_main(fighter: &mut L2CFighter
             false,
             false
         );
+        sv_kinetic_energy!(
+            mul_x_accel_mul,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            vl::param_stance::special_s2_x_accel_mul_air
+        );
+        sv_kinetic_energy!(
+            mul_x_accel_add,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            vl::param_stance::special_s2_x_accel_mul_air
+        );
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y * vl::param_stance::special_s2_y_accel_mul_fall
+        );
+        let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            air_speed_y_stable * vl::param_stance::special_s2_y_stable_mul
+        );
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     }
     else {
         MotionModule::change_motion(
@@ -756,8 +875,9 @@ unsafe extern "C" fn marth_speciallw_specials2_end_main_loop(fighter: &mut L2CFi
             return 0.into();
         }
         else {
-            // fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-            // Placeholder
+            WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
+            return 0.into();
         }
     }
     if MotionModule::is_end(fighter.module_accessor) {
@@ -821,6 +941,69 @@ unsafe extern "C" fn marth_speciallw_specials2_end2_main(fighter: &mut L2CFighte
 }
 
 unsafe extern "C" fn marth_speciallw_specials2_end2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+    }
+    0.into()
+}
+
+// FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SPECIAL_S2_LANDING
+
+unsafe extern "C" fn marth_speciallw_specials2_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW
+            | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK) as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+    0.into()
+}
+
+unsafe extern "C" fn marth_speciallw_specials2_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE);
+    WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_FLAG_DISABLE_STANCE_CHANGE);
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("special_lw_special_s2_landing"),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_specials2_landing_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn marth_speciallw_specials2_landing_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {

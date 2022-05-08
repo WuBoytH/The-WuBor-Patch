@@ -57,6 +57,7 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
         false
     );
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         if speed_y < 0.0
@@ -89,7 +90,6 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
             vl::param_stance::fall_speed_x_mul
         );
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_AIR_STANCE);
     }
     else {

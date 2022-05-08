@@ -246,14 +246,11 @@ unsafe extern "C" fn marth_speciallw_attack_f3_main_loop(fighter: &mut L2CFighte
 }
 
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_B3
-// Placeholder
 
 unsafe extern "C" fn marth_speciallw_attack_b3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY);
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("special_lw_attack_f3"),
+        Hash40::new("special_lw_attack_b3"),
         0.0,
         1.0,
         false,
@@ -266,20 +263,19 @@ unsafe extern "C" fn marth_speciallw_attack_b3_main(fighter: &mut L2CFighterComm
 
 unsafe extern "C" fn marth_speciallw_attack_b3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                sv_kinetic_energy!(
-                    set_speed_mul,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_MOTION,
-                    1.5
-                );
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY);
-            }
+        marth_stance_mot_end_helper(fighter);
+    }
+    else {
+        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return true.into();
+        }
+        else {
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            fighter.change_status(status.into(), false.into());
         }
     }
-    marth_speciallw_attack_main_loop(fighter)
+    0.into()
 }
 
 // Jab/Tilt common main loop function

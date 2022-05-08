@@ -76,7 +76,8 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
             WarkModule::count_down(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN, 1.0);
         }
 
-        if fighter.global_table[FLICK_Y].get_i32() < 8
+        if fighter.global_table[STICK_Y].get_f32() < -0.5
+        && fighter.global_table[FLICK_Y].get_i32() == 1
         && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0 {
             WorkModule::set_float(fighter.module_accessor, 7.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN);
         }

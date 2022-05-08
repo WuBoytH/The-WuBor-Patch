@@ -3,6 +3,7 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
+        hash40,
         phx::Hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
@@ -13,6 +14,37 @@ use {
         table_const::*
     }
 };
+
+#[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
+unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN) > 0.0 {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+    }
+    else {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+    }
+    let mut jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        jump_squat_frame += 2.0;
+    }
+    let mot = param_1.get_u64();
+    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(mot));
+    let mut rate = end_frame / jump_squat_frame;
+    if rate < 1.0 {
+        rate += 0.001;
+    }
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new_raw(mot),
+        0.0,
+        rate,
+        false,
+        0.0,
+        false,
+        false
+    );
+}
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_common)]
 unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
@@ -158,9 +190,19 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_end_JumpSquat)]
+unsafe fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
+    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_JUMP {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+    }
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            sub_jump_squat_uniq_process_init_param,
             status_jumpsquat_common,
             status_jumpsquat_main,
             sub_jump_squat_uniq_check_sub_mini_attack

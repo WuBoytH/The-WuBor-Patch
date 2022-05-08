@@ -160,7 +160,7 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Dash_Main_common)]
-unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1 : L2CValue) -> L2CValue {
+unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if fighter.global_table[DASH_COMMON_PRE].get_bool() != false && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_COMMON_PRE].get_ptr());
         callable(fighter).get_bool()

@@ -3,16 +3,35 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
+        hash40,
         phx::Hash40,
         app::lua_bind::*,
         lib::{lua_const::*, L2CAgent, L2CValue}
     },
+    smash_script::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::super::common_param
 };
+
+#[skyline::hook(replace = L2CFighterCommon_sub_attack_air_uniq_process_init)]
+unsafe fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let shield_stiff_mul_attack_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_mul_attack_air"));
+    AttackModule::set_shield_stiff_mul(fighter.module_accessor, shield_stiff_mul_attack_air);
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
+    && WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -common_param::jump::super_jump_gravity
+        );
+    }
+    0.into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_common)]
 unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
@@ -112,6 +131,7 @@ unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            sub_attack_air_uniq_process_init,
             sub_attack_air_common,
             status_attackair_main_common,
             bind_address_call_status_end_attackair,

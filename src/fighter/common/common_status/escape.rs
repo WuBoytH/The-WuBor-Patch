@@ -13,11 +13,20 @@ use {
         wua_bind::*,
         vars::*,
         table_const::*
-    }
+    },
+    super::super::common_param
 };
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_common_initStatus_common)]
 unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -common_param::jump::super_jump_gravity
+        );
+    }
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
         sv_kinetic_energy!(
             clear_speed_ex,

@@ -1,6 +1,7 @@
 pub mod dash;
 mod run;
 mod jump_squat;
+mod jump;
 mod tread_jump;
 mod shield;
 mod escape;
@@ -14,6 +15,7 @@ mod damage;
 mod damage_air;
 mod damage_fall;
 mod landing;
+mod pass;
 mod appeal;
 mod sub_transitions;
 
@@ -21,6 +23,7 @@ pub fn install() {
     dash::install();
     run::install();
     jump_squat::install();
+    jump::install();
     tread_jump::install();
     shield::install();
     escape::install();
@@ -34,6 +37,7 @@ pub fn install() {
     damage_air::install();
     damage_fall::install();
     landing::install();
+    pass::install();
     appeal::install();
     sub_transitions::install();
 }

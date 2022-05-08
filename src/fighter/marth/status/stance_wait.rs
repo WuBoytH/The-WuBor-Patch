@@ -69,13 +69,6 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
                 0.0
             );
         }
-        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y * 0.2
-        );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
         sv_kinetic_energy!(

@@ -310,6 +310,8 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
         invalid_capture_frame += guard_off_invalid_capture_frame_add as f32;
         // println!("invalid_capture_frame: {}", invalid_capture_frame);
         WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_GUARD_INVALID_CAPTURE_FRAME);
+        WorkModule::set_int(fighter.module_accessor, invalid_capture_frame as i32, *FIGHTER_INSTANCE_WORK_ID_INT_INVALID_CAPTURE_FRAME);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CHECK_CATCH);
     }
     WorkModule::set_int(fighter.module_accessor, shield_stiff_frame as i32, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME);
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {

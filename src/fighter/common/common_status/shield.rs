@@ -285,7 +285,6 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     // println!("shield_stiff_frame: {}", shield_stiff_frame);
     shield_stiff_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_mul"));
     // println!("shield_stiff_frame * shield_setoff_mul: {}", shield_stiff_frame);
-    let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         shield_stiff_frame *= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("just_shield_setoff_mul"));
         // println!("now with just shield mul: {}", shield_stiff_frame);
@@ -297,6 +296,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
         shield_stiff_frame = shield_stiff_frame_max;
     }
     // println!("final shield_stiff_frame: {}", shield_stiff_frame as i32);
+    let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
     if object_id != *BATTLE_OBJECT_ID_INVALID {
         capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
         fighter.pop_lua_stack(1);

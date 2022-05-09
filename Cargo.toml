@@ -34,5 +34,5 @@ panic = "abort"
 [profile.release]
 opt-level = 'z'
 panic = "abort"
-lto = true
+# lto = true
 codegen-units = 1

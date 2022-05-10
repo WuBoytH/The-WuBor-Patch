@@ -17,7 +17,7 @@ use {
 };
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
-unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
+unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
         let super_jump_x_mul;
         let jump_y;
@@ -108,7 +108,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
     ControlModule::reset_trigger(fighter.module_accessor);
     fighter.sub_air_check_fall_common_pre();
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_STOP_CEIL);
-    let mut mot;
+    let mot;
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_POWBLOCK_QUAKE_JUMP) {
         let stick_x = fighter.global_table[STICK_X].get_f32();
         let lr = PostureModule::lr(fighter.module_accessor);
@@ -146,8 +146,12 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
     else {
         mot = Hash40::new("jump_f_mini");
     }
+    let ret : L2CValue;
     if param_1.get_u64() != hash40("invalid") {
-        mot = Hash40::new_raw(param_1.get_u64());
+        ret = param_1.clone();
+    }
+    else {
+        ret = 0.into();
     }
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -167,6 +171,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         fighter.sub_fall_common_uniq(false.into());
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_fall_common_uniq as *const () as _));
+    ret
 }
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_Jump)]

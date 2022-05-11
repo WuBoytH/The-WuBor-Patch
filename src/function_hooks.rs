@@ -636,6 +636,9 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     else if str.contains("WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLAG_TERM") {
         value += 0x1;
     }
+    else if str.contains("FIGHTER_EDGE_INSTANCE_WORK_ID_INT_TERM") {
+        value += 0x1;
+    }
     else if str.contains("FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_TERM") {
         value += 0x1;
     }

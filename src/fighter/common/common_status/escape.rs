@@ -122,23 +122,17 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
     let mut hit_normal_frame = 0.0;
     let mut penalty_hit_normal_frame = 0.0;
     if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-        used_escape = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_USED_ESCAPE_AIR);
+        // used_escape = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_USED_ESCAPE_AIR);
         penalty_motion_rate = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_penalty_motion_rate"));
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if MiscModule::is_damage_check(fighter.module_accessor, true)
-                || WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0 {
-                    hit_xlu_frame = 1.0;
-                    penalty_hit_xlu_frame = 1.0;
-                    hit_normal_frame = 20.0;
-                    penalty_hit_normal_frame = 20.0;
-                }
-                else {
-                    hit_xlu_frame = 0.0;
-                    penalty_hit_xlu_frame = 0.0;
-                    hit_normal_frame = 0.0;
-                    penalty_hit_normal_frame = 0.0;
-                }
+            used_escape = 0.0; // new
+            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
+            && (MiscModule::is_damage_check(fighter.module_accessor, true)
+            || WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0) {
+                hit_xlu_frame = 1.0;
+                penalty_hit_xlu_frame = 1.0;
+                hit_normal_frame = 20.0;
+                penalty_hit_normal_frame = 20.0;
             }
             else {
                 hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_hit_xlu_frame"));
@@ -152,6 +146,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
             }
         }
         else {
+            used_escape = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_USED_ESCAPE_AIR); // new
             hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_hit_xlu_frame"));
             penalty_hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_penalty_hit_xlu_frame"));
             hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_hit_normal_frame"));
@@ -232,7 +227,8 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
     }
     WorkModule::set_int(fighter.module_accessor, xlu_interp as i32, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
     WorkModule::set_int(fighter.module_accessor, interp_invuln as i32, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_NORMAL_FRAME);
-    if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+    if status_kind_interrupt == *FIGHTER_STATUS_KIND_ESCAPE_AIR
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
         let add_xlu_start_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_AIR_ESCAPE_ADD_XLU_START_FRAME);
         if 0 < add_xlu_start_frame {
             WorkModule::add_int(fighter.module_accessor, add_xlu_start_frame, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
@@ -334,9 +330,12 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, boma);
         KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
-        let escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame"));
-        let escape_air_slide_u_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_u_stiff_frame"));
-        let escape_air_slide_d_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_d_stiff_frame"));
+        // let escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame"));
+        // let escape_air_slide_u_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_u_stiff_frame"));
+        // let escape_air_slide_d_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_d_stiff_frame"));
+        let escape_air_slide_stiff_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_frame")); // new
+        let escape_air_slide_u_stiff_frame = escape_air_slide_stiff_frame;
+        let escape_air_slide_d_stiff_frame = escape_air_slide_stiff_frame;
         dirx = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         diry = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
         let arctangent = diry.atan2(dirx.abs());
@@ -383,6 +382,49 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
             0
         );
     }
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
+unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return true.into();
+    }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return true.into();
+        }
+    }
+    if fighter.sub_escape_air_common_strans_main().get_bool() {
+        return true.into();
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING) {
+            fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
+            return true.into();
+        }
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE)
+    && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.global_table[MOTION_FRAME].get_f32() >= 14.0 {
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
+            if fighter.sub_transition_group_check_air_lasso().get_bool()
+            || fighter.sub_transition_group_check_air_attack().get_bool()
+            || fighter.sub_transition_group_check_air_special().get_bool() {
+                return true.into();
+            }
+        }
+        if fighter.global_table[MOTION_FRAME].get_f32() >= 28.0 {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return true.into();
+    }
+    0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_exec_escape_air_slide)]
@@ -486,7 +528,8 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
         else {
             escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
         }
-        let end = accel * -escape_air_slide_back_distance;
+        // let end = accel * -escape_air_slide_back_distance;
+        let end = accel * escape_air_slide_back_distance; // new
         WorkModule::set_float(fighter.module_accessor, curve, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
         let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
@@ -558,6 +601,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_escape_uniq_process_common_initstatus_common,
             status_escape_main,
             setup_escape_air_slide_common,
+            sub_escape_air_common_main,
             exec_escape_air_slide,
             status_end_escapeair
         );

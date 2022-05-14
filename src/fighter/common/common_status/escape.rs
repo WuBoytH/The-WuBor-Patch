@@ -296,6 +296,9 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         let normalize = sv_math::vec2_normalize(stickx, sticky);
         let mut dirx = normalize.x;
         let mut diry = normalize.y;
+        if diry == 0.0 {
+            diry = 0.2;
+        }
         WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
         let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));

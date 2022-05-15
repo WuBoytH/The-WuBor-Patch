@@ -70,6 +70,7 @@ pub mod shizue;
 pub mod plizardon;
 pub mod pikmin;
 pub mod marth;
+pub mod sonic;
 
 pub fn install() {
     common::install();
@@ -143,4 +144,5 @@ pub fn install() {
     plizardon::install();
     pikmin::install();
     marth::install();
+    sonic::install();
 }

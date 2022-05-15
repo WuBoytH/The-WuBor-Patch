@@ -12,6 +12,7 @@ use {
 
 #[skyline::hook(offset = 0xc5d580)]
 pub unsafe extern "C" fn lucario_on_grab(_vtable: u64, fighter: &mut Fighter, capture_event: &mut LinkEventCapture) -> u64 {
+    // param_3 + 0x10
     if capture_event.link_event_kind.as_u64() == hash40("capture") {
         let module_accessor = fighter.battle_object.module_accessor;
         if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {

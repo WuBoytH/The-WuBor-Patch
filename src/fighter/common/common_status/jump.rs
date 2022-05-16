@@ -154,26 +154,30 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_Jump)]
 unsafe fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
-        let status = fighter.global_table[STATUS_KIND].get_i32();
-        if status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
+            let status = fighter.global_table[STATUS_KIND].get_i32();
+            if status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+                if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+                    WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+                }
+                else {
+                    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+                    sv_kinetic_energy!(
+                        set_speed,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        speed_y * 0.69
+                    );
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
                     WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
                 }
             }
-            else {
-                let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-                sv_kinetic_energy!(
-                    set_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    speed_y * 0.69
-                );
-                WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
-                WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
-            }
         }
+    }
+    else {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
     }
     0.into()
 }
@@ -181,26 +185,30 @@ unsafe fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _age
 #[skyline::hook(replace = L2CFighterCommon_status_end_Jump)]
 unsafe fn status_end_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
-        let status = fighter.global_table[STATUS_KIND].get_i32();
-        if status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
+            let status = fighter.global_table[STATUS_KIND].get_i32();
+            if status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
+                if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+                    WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+                }
+                else {
+                    let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+                    sv_kinetic_energy!(
+                        set_speed,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        speed_y * 0.69
+                    );
                     WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
                     WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
                 }
             }
-            else {
-                let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-                sv_kinetic_energy!(
-                    set_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    speed_y * 0.69
-                );
-                WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
-                WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
-            }
         }
+    }
+    else {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+        WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
     }
     0.into()
 }

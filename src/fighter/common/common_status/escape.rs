@@ -495,6 +495,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+            let speed_x_mul = 0.75;
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
@@ -504,7 +505,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_CONTROL,
                 ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST_NO_CAP,
-                speed_x,
+                speed_x * speed_x_mul,
                 0.0,
                 0.0,
                 0.0,

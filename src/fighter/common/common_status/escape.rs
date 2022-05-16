@@ -26,6 +26,20 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
             FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
             -common_param::jump::super_jump_gravity
         );
+        if [
+            *FIGHTER_KIND_NESS, *FIGHTER_KIND_LUCAS, *FIGHTER_KIND_MEWTWO
+        ].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+            let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            let super_jump_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+            let ratio = super_jump_frame / 10.0;
+            let floaty_bastard_mul = 1.0 - (0.36 * ratio);
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                speed_y * floaty_bastard_mul
+            );
+        }
     }
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
         sv_kinetic_energy!(
@@ -481,6 +495,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+            let speed_x_mul = 0.75;
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
@@ -490,7 +505,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_CONTROL,
                 ENERGY_CONTROLLER_RESET_TYPE_FALL_ADJUST_NO_CAP,
-                speed_x,
+                speed_x * speed_x_mul,
                 0.0,
                 0.0,
                 0.0,

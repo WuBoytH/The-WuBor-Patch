@@ -427,7 +427,9 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
-            if fighter.sub_transition_group_check_air_lasso().get_bool()
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
+            if fighter.sub_transition_group_check_air_item_throw().get_bool()
+            || fighter.sub_transition_group_check_air_lasso().get_bool()
             || fighter.sub_transition_group_check_air_special().get_bool()
             || fighter.sub_transition_group_check_air_attack().get_bool() {
                 return true.into();

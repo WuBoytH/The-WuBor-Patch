@@ -13,7 +13,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: &mut WorkModule, _damag
         return 1;
     }
     let go_meter = work.get_float(WorkId::from_u32_unchecked(FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_GO_METER as u32));
-    println!("go_meter: {}", go_meter);
+    // println!("go_meter: {}", go_meter);
     if go_meter >= 100.0 {
         return 1;
     }

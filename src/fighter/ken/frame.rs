@@ -1,7 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        hash40,
+        // hash40,
         phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
         lib::lua_const::*
@@ -25,36 +25,6 @@ unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER);
         WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA);
         WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
-    }
-}
-
-unsafe fn ken_meter_controller(fighter: &mut L2CFighterCommon) {
-    let meter_max = 900.0;
-    let meter_const = FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE;
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
-    && MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw")
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_s_w")
-        && WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
-            FGCModule::update_meter(fighter.battle_object, 50.0, meter_max, meter_const);
-        }
-        else {
-            let amount = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) * 2.0;
-            FGCModule::update_meter(fighter.battle_object, amount, meter_max, meter_const);
-        }
-    }
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        if MotionModule::motion_kind(fighter.module_accessor) != hash40("special_lw")
-        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-            if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_s_w")
-            && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                FGCModule::update_meter(fighter.battle_object, 100.0, meter_max, meter_const);
-            }
-            else {
-                let amount = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) * 5.0;
-                FGCModule::update_meter(fighter.battle_object, amount, meter_max, meter_const);
-            }
-        }
     }
 }
 
@@ -240,7 +210,6 @@ unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
 fn ken_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         ken_reset_vars(fighter);
-        ken_meter_controller(fighter);
         ken_vgauge_flash(fighter);
         ken_vskill(fighter);
         ken_vtrigger(fighter);

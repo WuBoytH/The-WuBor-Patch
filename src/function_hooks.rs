@@ -6,6 +6,7 @@ use {
     },
     crate::{
         fighter::{
+            dolly::vars::*,
             gaogaen::vars::*,
             kamui::vars::*,
             ken::vars::*,
@@ -175,21 +176,64 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
     // println!("histun remaining: {}", hitstun);
     call_original!(object, arg);
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
-    // let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
+    let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
     // println!("attacker ids: {}", attacker_ids);
-    let category = utility::get_category(&mut *module_accessor);
-    let kind = utility::get_kind(&mut *module_accessor);
-    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if kind == *FIGHTER_KIND_LUCINA {
-            if !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-                let amount = damage_received * (1.0/6.0);
-                let meter_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-                FGCModule::update_meter(object, amount, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-            }
+    
+    for x in 0..8 {
+        if attacker_ids & (1 << x) == 0 {
+            continue;
         }
-        else if kind == *FIGHTER_KIND_KEN {
-            let amount = damage_received * 2.0;
-            FGCModule::update_meter(object, amount, 900.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
+        if let Some(object_id) = get_active_battle_object_id_from_entry_id(x) {
+            let object = get_battle_object_from_id(object_id);
+            let module_accessor = (*object).module_accessor;
+            let kind = utility::get_kind(&mut *module_accessor);
+            if kind == *FIGHTER_KIND_LUCINA {
+                let meter_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+                let meter_const = FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE;
+                
+                if !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+                    if !WorkModule::is_flag(module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+                        let mut amount = damage_received;
+                        if shadow_id(module_accessor) == false {
+                            amount *= 0.75;
+                        }
+                        if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY) > 0.0 {
+                            amount *= 0.1;
+                        }
+                        FGCModule::update_meter(object, amount, meter_max, meter_const);
+                    }
+                }
+            }
+            else if kind == *FIGHTER_KIND_KEN {
+                let meter_max = 900.0;
+                let meter_const = FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE;
+                if MotionModule::motion_kind(module_accessor) != hash40("special_lw")
+                && !WorkModule::is_flag(module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+                    if MotionModule::motion_kind(module_accessor) == hash40("attack_s3_s_w")
+                    && StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
+                        FGCModule::update_meter(object, 100.0, meter_max, meter_const);
+                    }
+                    else {
+                        let amount = damage_received * 5.0;
+                        FGCModule::update_meter(object, amount, meter_max, meter_const);
+                    }
+                }
+            }
+            else if kind == *FIGHTER_KIND_DOLLY {
+                let status = StatusModule::status_kind(module_accessor);
+                if ![
+                    *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
+                    *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
+                    *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
+                ].contains(&status) {
+                    let meter_max = 200.0;
+                    let meter_const = FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_GO_METER;
+                    let amount = damage_received / 0.75;
+                    FGCModule::update_meter(object, amount, meter_max, meter_const);
+                    let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+                    dolly::vtable_hook::dolly_check_super_special_pre(module_accessor, is_superspecial as u8);
+                }
+            }
         }
     }
 }
@@ -627,6 +671,9 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
     else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_TERM") {
         value += 0x1;
     }
+    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_TERM") {
+        value += 0x1;
+    }
     else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_TERM") {
         value += 0x2;
     }
@@ -649,6 +696,56 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
         value += 0x1;
     }
     original!()(unk, constant, value)
+}
+
+pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
+    use smash::lib::lua_const::*;
+    use smash::app::lua_bind::*;
+    let object = get_battle_object_from_entry_id(entry_id)?;
+    if object.is_null() { return None; }
+    let object = unsafe { &mut *object };
+    let kind = object.kind as i32;
+    let status = unsafe {
+        StatusModule::status_kind(object.module_accessor)
+    };
+    if status != *FIGHTER_STATUS_KIND_NONE && status != *FIGHTER_STATUS_KIND_STANDBY {
+        return Some(object.battle_object_id);
+    }
+    if kind == *FIGHTER_KIND_ELIGHT || kind == *FIGHTER_KIND_EFLAME {
+        Some(object.battle_object_id + 0x10000)
+    } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
+        let next_id = object.battle_object_id + 0x10000;
+        let next_object = unsafe { &mut *get_battle_object_from_id(next_id) };
+        let next_status = unsafe {
+            StatusModule::status_kind(next_object.module_accessor)
+        };
+        if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
+            Some(next_id)
+        } else {
+            Some(next_id + 0x10000)
+        }
+    } else {
+        Some(object.battle_object_id)
+    }
+}
+
+pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObject> {
+    unsafe {
+        let entry = get_fighter_entry(singletons::FighterManager(), entry_id);
+        if entry.is_null() {
+            None
+        } else {
+            Some(*(entry.add(0x4160) as *mut *mut BattleObject))
+        }
+    }
+}
+
+#[skyline::from_offset(0x3ac540)]
+pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
+
+extern "C" {
+    #[link_name = "\u{1}_ZN3app8lua_bind38FighterManager__get_fighter_entry_implEPNS_14FighterManagerENS_14FighterEntryIDE"]
+    fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;
 }
 
 pub fn install() {

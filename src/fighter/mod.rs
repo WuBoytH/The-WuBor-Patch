@@ -28,8 +28,8 @@ pub mod gamewatch;
 pub mod donkey;
 pub mod richter;
 pub mod eflame;
-pub mod element;
 pub mod elight;
+pub mod element;
 pub mod falco;
 pub mod purin;
 pub mod ken;
@@ -71,6 +71,7 @@ pub mod plizardon;
 pub mod pikmin;
 pub mod marth;
 pub mod sonic;
+pub mod peach;
 
 pub fn install() {
     common::install();
@@ -104,6 +105,7 @@ pub fn install() {
     richter::install();
     eflame::install();
     elight::install();
+    element::install();
     falco::install();
     purin::install();
     ken::install();
@@ -145,4 +147,5 @@ pub fn install() {
     pikmin::install();
     marth::install();
     sonic::install();
+    peach::install();
 }

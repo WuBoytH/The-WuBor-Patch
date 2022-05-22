@@ -82,8 +82,8 @@ unsafe fn dolly_attack12(fighter: &mut L2CAgentBase) {
 unsafe fn dolly_attack13(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 47, 0, 0, 75, 4.0, 0.0, 4.0, 4.0, Some(0.0), Some(15.0), Some(10.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 1, 2.0, false);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 60, 0, 0, 75, 4.0, 0.0, 4.0, 4.0, Some(0.0), Some(15.0), Some(10.5), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
+        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 0, 7.0, false);
     }
     wait(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

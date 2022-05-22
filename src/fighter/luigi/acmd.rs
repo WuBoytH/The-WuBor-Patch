@@ -158,7 +158,6 @@ unsafe fn luigi_specialsend(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SPECIAL_HITSTUN);
         AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 270, 45, 20, 0, 5.0, 0.0, 14.0, 9.0, Some(0.0), Some(5.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 4.2);

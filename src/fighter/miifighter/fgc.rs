@@ -5,16 +5,13 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
+    wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
 pub unsafe extern "C" fn miifighter_fgc(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         MiscModule::set_hp(fighter, 112.0);
-        let status = StatusModule::status_kind(fighter.module_accessor);
+        let status = fighter.global_table[STATUS_KIND].get_i32();
         let mut ground_normal = true;
         let mut normal_cancels = [].to_vec();
         let mut special_cancels = [].to_vec();

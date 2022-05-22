@@ -57,7 +57,7 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         fgc_setup(fighter);
-        common_fgc(fighter);
+        fgc_frame(fighter);
 
         // Checks what frame you hit the opponent.
 

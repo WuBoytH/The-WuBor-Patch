@@ -1,10 +1,12 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::vars::*
+    smashline::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::fgc::*
 };
 
 pub unsafe extern "C" fn lucario_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -13,4 +15,22 @@ pub unsafe extern "C" fn lucario_specialhi_pre(fighter: &mut L2CFighterCommon) -
         return 0.into();
     }
     1.into()
+}
+
+#[fighter_init]
+fn agent_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
+        if fighter_kind != *FIGHTER_KIND_LUCARIO {
+            return;
+        }
+        fighter.global_table[SPECIAL_HI_PRE].assign(&L2CValue::Ptr(lucario_specialhi_pre as *const () as _));
+        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(lucario_fgc as *const () as _));
+    }
+}
+
+pub fn install() {
+    install_agent_init_callbacks!(
+        agent_init
+    );
 }

@@ -1,7 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
@@ -44,7 +44,7 @@ unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2C
 #[fighter_reset]
 fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
-        let fighter_kind = smash::app::utility::get_kind(&mut *fighter.module_accessor);
+        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind == *FIGHTER_KIND_JACK {
             set_move_customizer(fighter, jack_move_customizer);
         }

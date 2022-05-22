@@ -6,13 +6,14 @@ use {
     },
     wubor_utils::{
         wua_bind::*,
-        vars::*
+        vars::*,
+        table_const::*
     }
 };
 
 pub unsafe extern "C" fn ganon_fgc(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-        let status = StatusModule::status_kind(fighter.module_accessor);
+        let status = fighter.global_table[STATUS_KIND].get_i32();
         let mut special_cancels : Vec<i32> = [].to_vec();
         let mut normal_cancels : Vec<i32> = [].to_vec();
         MiscModule::set_hp(fighter, 70.0);

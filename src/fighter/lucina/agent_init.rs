@@ -1,25 +1,26 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    smashline::*,
     wubor_utils::table_const::*,
     super::{helper::*, vars::*}
 };
 
-pub unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S) {
         return 0.into();
     }
     1.into()
 }
 
-pub unsafe extern "C" fn yu_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn yu_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CValue {
     return 0.into();
 }
 
-pub unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut ret = false;
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND);
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
@@ -58,4 +59,26 @@ pub unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND);
     }
     ret.into()
+}
+
+#[fighter_init]
+fn agent_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
+        if fighter_kind != *FIGHTER_KIND_LUCINA {
+            return;
+        }
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
+        WorkModule::set_float(fighter.module_accessor, 100.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
+        fighter.global_table[SPECIAL_S_PRE].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
+        fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
+        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
+    }
+}
+
+pub fn install() {
+    install_agent_init_callbacks!(
+        agent_init
+    );
 }

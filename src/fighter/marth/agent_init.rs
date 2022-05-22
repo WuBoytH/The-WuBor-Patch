@@ -1,9 +1,10 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    smashline::*,
     custom_status::*,
     wubor_utils::table_const::*,
     super::{status::helper::*, vars::*}
@@ -39,4 +40,23 @@ pub unsafe extern "C" fn marth_check_air_special_pre(fighter: &mut L2CFighterCom
 
 pub unsafe extern "C" fn marth_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CValue {
     false.into()
+}
+
+#[fighter_init]
+fn agent_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
+        if fighter_kind != *FIGHTER_KIND_MARTH {
+            return;
+        }
+        fighter.global_table[CHECK_GROUND_SPECIAL_PRE].assign(&L2CValue::Ptr(marth_check_ground_special_pre as *const () as _));
+        fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&L2CValue::Ptr(marth_check_air_special_pre as *const () as _));
+        fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(marth_speciallw_pre as *const () as _));
+    }
+}
+
+pub fn install() {
+    install_agent_init_callbacks!(
+        agent_init
+    );
 }

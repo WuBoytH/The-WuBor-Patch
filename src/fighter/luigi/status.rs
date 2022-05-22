@@ -8,10 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    },
+    wubor_utils::table_const::*,
     super::vars::*
 };
 
@@ -128,7 +125,6 @@ unsafe fn luigi_specials_charge_end(fighter: &mut L2CFighterCommon) -> L2CValue 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn luigi_specials_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     luigi_remove_thunderhand_eff(fighter);
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SPECIAL_HITSTUN);
     0.into()
 }
 

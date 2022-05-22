@@ -818,9 +818,12 @@ unsafe fn dolly_superspecial(fighter: &mut L2CAgentBase) {
         FGCModule::update_meter(fighter.battle_object, -100.0, 200.0, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_GO_METER);
         dolly_check_super_special_pre(fighter.module_accessor, 0);
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 4.0, 4.0);
-        damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 5);
     }
-    frame(fighter.lua_state_agent, 15.0);
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);
+    }
+    frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0);
     }

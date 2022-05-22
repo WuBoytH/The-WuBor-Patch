@@ -212,6 +212,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         else if fighter_kind == *FIGHTER_KIND_DOLLY {
             fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
+            fighter.global_table[CHECK_GROUND_ATTACK_PRE].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
+            fighter.global_table[CHECK_GROUND_SPECIAL_PRE].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
+            fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
             fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
             fighter.global_table[CHECK_GROUND_CATCH_PRE].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
         }

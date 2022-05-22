@@ -1,8 +1,5 @@
 use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::smashball
-    },
+    smash::lua2cpp::L2CFighterCommon,
     smashline::*,
     wubor_utils::vars::*,
     crate::fighter::donkey::vars::*
@@ -12,9 +9,7 @@ use {
 fn fighter_reset(_fighter: &mut L2CFighterCommon) {
     unsafe {
         DK_COUNT = 0;
-        if !smashball::is_training_mode() {
-            FGC_TRAINING = false;
-        }
+        FGC_TRAINING = false;
     }
 }
 

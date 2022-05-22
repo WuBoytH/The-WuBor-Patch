@@ -42,7 +42,7 @@ move_type_again: bool) -> u64 {
     let defender_boma = sv_battle_object::module_accessor(defender_object_id);
     let attacker_fighter_kind = sv_battle_object::kind(attacker_object_id);
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
-    let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
+    // let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     let attacker_cat = utility::get_category(&mut *attacker_boma);
     let defender_cat = utility::get_category(&mut *defender_boma);
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -72,10 +72,6 @@ move_type_again: bool) -> u64 {
         }
     }
     if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if a_entry_id < 8
-        && WorkModule::is_flag(attacker_boma, FIGHTER_INSTANCE_WORK_ID_FLAG_SPECIAL_HITSTUN) {
-            WorkModule::on_flag(defender_boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN);
-        }
         if defender_fighter_kind == *FIGHTER_KIND_RYU {
             if WorkModule::is_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
                 let target_x;
@@ -200,45 +196,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     let ret = original!()(boma,term);
     
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-
-        if [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_CEIL,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP
-        ].contains(&term) {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND)
-                && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR)
-                && !WorkModule::is_enable_transition_term(boma, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR)
-                && StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                    return false;
-                }
-            }
-        }
-
-        else if [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON
-        ].contains(&term) {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
-                if MiscModule::is_damage_check(boma, false) {
-                    return false;
-                }
-            }
-        }
-
-        if fighter_kind == *FIGHTER_KIND_LUCINA {
+        if fighter_kind == *FIGHTER_KIND_LUCINA { // Make this a custom command grab
             if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB)
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
@@ -247,7 +205,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 return false;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_RYU {
+        else if fighter_kind == *FIGHTER_KIND_RYU { // make secret sensation its own status
             if WorkModule::is_flag(boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA) {
                 return false;
             }
@@ -328,24 +286,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
     }
     return ret;
-}
-
-#[skyline::hook(replace = WorkModule::set_float )]
-pub unsafe fn set_float_replace(boma: &mut BattleObjectModuleAccessor, mut val: f32, term: i32) {
-    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if StatusModule::status_kind(boma) - 0x48 < 7
-        && term == *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME {
-            if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-            && !WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN) {
-                val = val * WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL);
-                if WorkModule::get_float(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL) > 0.5 {
-                    WarkModule::add_f32(boma, FIGHTER_INSTANCE_WORK_ID_FLOAT_FGC_HITSTUN_MUL, -0.05);
-                }
-                WorkModule::off_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_HIT_BY_SPECIAL_HITSTUN);
-            }
-        }
-    }
-    original!()(boma, val, term);
 }
 
 #[skyline::hook(replace = WorkModule::get_int64 )]
@@ -671,7 +611,6 @@ pub fn install() {
         fighter_handle_damage_hook,
         is_enable_transition_term_replace,
         get_param_float_replace,
-        set_float_replace,
         get_int64_replace,
         play_se_replace,
         play_fly_voice_replace,

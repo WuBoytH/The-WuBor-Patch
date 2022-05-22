@@ -140,20 +140,10 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         penalty_motion_rate = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_penalty_motion_rate"));
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
             used_escape = 0.0; // new
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-            && (MiscModule::is_damage_check(fighter.module_accessor, true)
-            || WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME) > 0.0) {
-                hit_xlu_frame = 1.0;
-                penalty_hit_xlu_frame = 1.0;
-                hit_normal_frame = 20.0;
-                penalty_hit_normal_frame = 20.0;
-            }
-            else {
-                hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_hit_xlu_frame"));
-                penalty_hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_penalty_hit_xlu_frame"));
-                hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_hit_normal_frame"));
-                penalty_hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_penalty_hit_normal_frame"));
-            }
+            hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_hit_xlu_frame"));
+            penalty_hit_xlu_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_penalty_hit_xlu_frame"));
+            hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_hit_normal_frame"));
+            penalty_hit_normal_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_penalty_hit_normal_frame"));
             if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("escape_air_slide")) {
                 hit_xlu_frame -= 1.0;
                 penalty_hit_xlu_frame -= 1.0;
@@ -373,14 +363,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         }
         let escape_air_slide_stiff_start_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_start_frame"));
         WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_START_FRAME);
-        let escape_air_slide_back_end_frame;
-        if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-        && !MiscModule::is_damage_check(boma, true) {
-            escape_air_slide_back_end_frame = 0;
-        }
-        else {
-            escape_air_slide_back_end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_end_frame"));
-        }
+        let escape_air_slide_back_end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_end_frame"));
         let add_xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
         WorkModule::set_int(fighter.module_accessor, escape_air_slide_back_end_frame + add_xlu, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_BACK_END_FRAME);
         WorkModule::set_float(fighter.module_accessor, stiff_lerp.get_f32(), *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
@@ -540,14 +523,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
         let back_accel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
         let curve = sv_math::bezier_curve(0.5, 0.8, 0.9, 1.0, result);
         let accel = curve - back_accel;
-        let escape_air_slide_back_distance;
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC)
-        && !MiscModule::is_damage_check(fighter.module_accessor, true) {
-            escape_air_slide_back_distance = 0.0;
-        }
-        else {
-            escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
-        }
+        let escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
         // let end = accel * -escape_air_slide_back_distance;
         let end = accel * escape_air_slide_back_distance; // new
         WorkModule::set_float(fighter.module_accessor, curve, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);

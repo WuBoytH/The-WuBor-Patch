@@ -29,24 +29,12 @@ unsafe fn trail_attack11(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 3, 11.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 4, 11.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 5, 11.0, false);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 0, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 1, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 2, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 3, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 4, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 5, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 1, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 2, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 3, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 4, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 5, 3.0);
     }
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -61,26 +49,16 @@ unsafe fn trail_attack11(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 1, 8.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 2, 8.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 3, 8.0, false);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 0, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 1, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 2, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 3, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 1, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 2, 3.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 3, 3.0);
     }
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 2.8, 361, 16, 0, 26, 2.8, 0.0, 9.2, -6.8, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 3, 8.0, false);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 3, 3.0);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 3, 3.0);
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -108,19 +86,10 @@ unsafe fn trail_attacks3(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 7.2, 361, 110, 0, 48, 3.4, 0.0, 4.6, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 7.2, 361, 110, 0, 48, 3.4, 0.0, 9.2, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 7.2, 361, 110, 0, 48, 3.4, -3.2, 9.2, -3.6, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 0, 2.4);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 1, 2.4);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 2, 2.4);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, 3, 2.4);
-        ATK_SET_SHIELD_SETOFF_MUL2(fighter.lua_state_agent);
-        // macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, id, val);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 0, 2.4);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 1, 2.4);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 2, 2.4);
+        macros::ATK_SET_SHIELD_SETOFF_MUL2(fighter, 3, 2.4);
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

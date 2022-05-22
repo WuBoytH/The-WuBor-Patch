@@ -65,29 +65,32 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     false
                 );
             }
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION) {
-                let action_button = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_BUTTON);
-                if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
-                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
-                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
-                    let action_mot = WorkModule::get_int64(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
-                    MotionModule::change_motion(
-                        fighter.module_accessor,
-                        Hash40::new_raw(action_mot),
-                        0.0,
-                        1.0,
-                        false,
-                        0.0,
-                        false,
-                        false
-                    );
-                    return 0.into();
-                }
-            }
             let is_loop = WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
             taunt_holds(fighter, is_loop);
         }
-        else {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION) {
+            let action_button = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_BUTTON);
+            if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
+                let action_mot = WorkModule::get_int64(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new_raw(action_mot),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
+                );
+                WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION);
+            }
+        }
+        if [
+            WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L),
+            WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
+        ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             // Original logic but now within an else statement, so the taunt actions take priority.
             let motion_frame = fighter.global_table[MOTION_FRAME].get_f32();
             if motion_frame >= 2.0 {
@@ -115,9 +118,9 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     return 0.into();
                 }
             }
-            if MotionModule::is_end(fighter.module_accessor) {
-                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            }
+        }
+        if MotionModule::is_end(fighter.module_accessor) {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         }
     }
     else {

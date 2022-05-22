@@ -6,17 +6,24 @@ A mod for Super Smash Bros. Ultimate that brings character overhauls and mechani
 
 * [ARCropolis](https://github.com/Raytwo/ARCropolis) - Make sure to grab AT LEAST release 3.1.0! Extract this to the root of your SD card.
 * [smashline_hook](https://github.com/blu-dev/smashline_hook/releases/latest) - Download libsmashline_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
-* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/v0.3.0) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
+* [NRO_Hook](https://github.com/ultimate-research/nro-hook-plugin/releases/tag/beta) - Download libnro_hook.nro and place it at atmosphere\contents\01006A800016E000\romfs\skyline\plugins
 
 ### How to Install
 
 0. Download and install the dependencies first!
 1. Download a release of The WuBor Patch.
-1.5. Be sure to remove any previous installation of The WuBor Patch.
+- Be sure to remove any previous installation of The WuBor Patch.
 2. Move the contents of the 7z file to the root of your SD card.
 3. If you changed the location of your mods workspace, move "The WuBor Patch" folder in Ultimate/mods/ to your workspace. If you don't know what that is, then you should be good to go!
 4. Boot up the game and enjoy!
 
+## Special Thanks
+
+* blujay - For being a funny and smart coding guy, as well as creating CustomStatusModule that I adapted for use in this project.
+* Claude - For helping this project gain footing, coding wise, when it was just starting out.
+* LemonPunk - For creating animations for the project and pitching funny LemonMan ideas.
+* SM8 - For creating animations for the proeject.
+
 ## Notes
 
-Please don't use any part of this project for your own. Should you have any questions, please message me on Discord at WuBoy#0238.
+If you use any part of this project for yourself or have any questions, please message WuBoy#0238 on Discord.

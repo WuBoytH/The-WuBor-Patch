@@ -18,6 +18,12 @@ pub unsafe extern "C" fn dolly_guard_cont_pre(fighter: &mut L2CFighterCommon) ->
     false.into()
 }
 
+pub unsafe extern "C" fn dolly_check_ground_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND);
+    false.into()
+}
+
 pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_check_super_special_command(fighter).get_bool() {
         return true.into();
@@ -85,7 +91,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     false.into()
 }
 
-unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     WorkModule::set_int(fighter.module_accessor, cat4, *FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_CAT4_SPECIAL_COMMAND);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND

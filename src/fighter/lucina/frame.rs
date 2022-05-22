@@ -37,23 +37,6 @@ unsafe fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn lucina_meter_controller(fighter: &mut L2CFighterCommon) {
-    let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-    let meter_const = FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE;
-    
-    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
-            let mut amount = AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false);
-            if shadow_id(fighter.module_accessor) == false {
-                amount *= 0.75;
-            }
-            if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY) > 0.0 {
-                amount *= 0.1;
-            }
-            FGCModule::update_meter(fighter.battle_object, amount, meter_max, meter_const);
-        }
-    }
-
     if WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE) >= 25.0
     || WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
         if WorkModule::get_int(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_GLOW_TIMER) == 0 {

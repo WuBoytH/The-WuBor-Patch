@@ -72,18 +72,23 @@ unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
         if combo < 3
         && !CancelModule::is_enable_cancel(fighter.module_accessor)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL) {
-            if FGCModule::cancel_exceptions(
+            let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
+            let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
+            if (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0
+            && FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_HI3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3,
                 true
-            ).get_bool()
-            || FGCModule::cancel_exceptions(
+            ).get_bool())
+            || (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 == 0
+            && attack_s3_stick_dir_hi < stick_dir
+            && FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_S3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
                 true
-            ).get_bool() {
+            ).get_bool()) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
                 return 1.into();
             }
@@ -147,12 +152,24 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if dolly_hit_cancel(fighter).get_i32() == 0
-    && dolly_attack_start_cancel(fighter).get_i32() == 0 {
-        fighter.status_AttackDash_Main();
-        return 0.into();
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    if prev_status != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
+    || !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+        if dolly_hit_cancel(fighter).get_i32() == 1
+        || dolly_attack_start_cancel(fighter).get_i32() == 1 {
+            return 1.into();
+        }
     }
-    1.into()
+    else if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
+    && !fighter.global_table[IN_HITLAG].get_bool()
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
+        if fighter.sub_transition_group_check_ground_special().get_bool() {
+            return 1.into();
+        }
+    }
+    fighter.status_AttackDash_Main();
+    0.into()
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
@@ -206,18 +223,23 @@ unsafe extern "C" fn dolly_attacks3_main_loop(fighter: &mut L2CFighterCommon) ->
     && dolly_attack_start_cancel(fighter).get_i32() == 0 {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_lw")
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if FGCModule::cancel_exceptions(
+            let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
+            let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
+            if (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0
+            && FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_HI3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3,
                 true
-            ).get_bool()
-            || FGCModule::cancel_exceptions(
+            ).get_bool())
+            || (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 == 0
+            && attack_s3_stick_dir_hi < stick_dir
+            && FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_S3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
                 true
-            ).get_bool() {
+            ).get_bool()) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
                 return 1.into();
             }
@@ -343,6 +365,7 @@ unsafe extern "C" fn dolly_attacks3_mtrans_param(fighter: &mut L2CFighterCommon,
     }
     else {
         if cont
+        && !force_hi
         && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
             let jump_mini_attack_enable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("jump_mini_attack_enable_frame"));
             WorkModule::set_int(fighter.module_accessor, jump_mini_attack_enable_frame, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
@@ -365,7 +388,6 @@ unsafe extern "C" fn dolly_attacks3_mtrans_param(fighter: &mut L2CFighterCommon,
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
     fighter.clear_lua_stack();
     let mut mot = sv_fighter_util::get_attack_hi3_motion(fighter.lua_state_agent);
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE
@@ -374,6 +396,9 @@ unsafe fn dolly_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16 - 1);
     }
     fighter.status_AttackHi3_Common(mot.into(), mot.into());
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
+    }
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_attack3_uniq_check(false.into());
     }
@@ -383,7 +408,8 @@ unsafe fn dolly_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn dolly_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0 {
-        if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE {
+        if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE
+        && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
             if dolly_attack_start_cancel(fighter).get_i32() == 1 {
                 return 1.into();
             }
@@ -417,23 +443,29 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     if dolly_hit_cancel(fighter).get_i32() == 0
     && dolly_attack_start_cancel(fighter).get_i32() == 0 {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if FGCModule::cancel_exceptions(
+            let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
+            let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
+            if (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0
+            && FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_HI3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3,
                 true
-            ).get_bool()
-            || FGCModule::cancel_exceptions(
+            ).get_bool())
+            || (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 == 0
+            && attack_s3_stick_dir_hi < stick_dir
+            && FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_S3,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
                 true
-            ).get_bool() {
+            ).get_bool()) {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
                 return 1.into();
             }
         }
-        if FGCModule::chain_cancels(fighter,
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 == 0
+        && FGCModule::chain_cancels(fighter,
             *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3,
             true,
             FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT,

@@ -69,7 +69,7 @@ unsafe extern "C" fn dolly_attack_substatus3(fighter: &mut L2CFighterCommon) -> 
 unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0 {
         let combo = ComboModule::count(fighter.module_accessor);
-        if combo < 3
+        if combo == 2
         && !CancelModule::is_enable_cancel(fighter.module_accessor)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL) {
             let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
@@ -442,7 +442,8 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     }
     if dolly_hit_cancel(fighter).get_i32() == 0
     && dolly_attack_start_cancel(fighter).get_i32() == 0 {
-        if !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if WorkModule::get_int(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT) > 0
+        && !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
             let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
             if (fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 == 0

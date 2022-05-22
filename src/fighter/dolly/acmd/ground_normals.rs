@@ -197,8 +197,8 @@ unsafe fn dolly_attacks3hi(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 11.0 / 7.0);
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
-        macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_XLU);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_XLU);
     }
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 9.0);
@@ -211,8 +211,8 @@ unsafe fn dolly_attacks3hi(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("arml"), *HIT_STATUS_NORMAL);
+        macros::HIT_NODE(fighter, Hash40::new("shoulderl"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 20.0);

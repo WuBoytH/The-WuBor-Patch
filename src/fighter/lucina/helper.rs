@@ -4,11 +4,26 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    wubor_utils::vars::*,
+    wubor_utils::{wua_bind::*, vars::*},
     super::{vl, vars::*},
 };
 
-#[inline(always)]
+pub unsafe fn add_sp(object: *mut BattleObject, module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
+    let meter_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+    let meter_const = FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE;
+    if !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
+        if !WorkModule::is_flag(module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+            if shadow_id(module_accessor) == false {
+                amount *= 0.75;
+            }
+            if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY) > 0.0 {
+                amount *= 0.1;
+            }
+            FGCModule::update_meter(object, amount, meter_max, meter_const);
+        }
+    }
+}
+
 pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onemore: bool) -> bool {
     let mut spent = false;
     let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
@@ -62,7 +77,6 @@ pub unsafe fn spent_meter(module_accessor: *mut BattleObjectModuleAccessor, onem
     return spent;
 }
 
-#[inline(always)]
 pub unsafe fn spent_meter_super(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let mut spent = false;
     let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
@@ -104,7 +118,6 @@ pub unsafe fn spent_meter_super(module_accessor: *mut BattleObjectModuleAccessor
     return spent;
 }
 
-#[inline(always)]
 pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_status_joint(module_accessor, Hash40::new("waist"), HitStatus(*HIT_STATUS_INVINCIBLE), 0);
@@ -126,7 +139,6 @@ pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_
     }
 }
 
-#[inline(always)]
 pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
     if is_invuln {
         HitModule::set_whole(module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
@@ -136,7 +148,6 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
     }
 }
 
-#[inline(always)]
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let color = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
     if color == 6
@@ -148,7 +159,6 @@ pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> boo
     }
 }
 
-#[inline(always)]
 pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) {
     let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
     let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
@@ -164,7 +174,6 @@ pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) 
     }
 }
 
-#[inline(always)]
 pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor, remove: bool) {
     EffectModule::kill_kind(module_accessor, Hash40::new("sys_starrod_bullet"), false, true);
     if !remove {
@@ -188,7 +197,6 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
     }
 }
 
-#[inline(always)]
 pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
     let sp = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
     let level = sp / vl::param_private::sp_single;

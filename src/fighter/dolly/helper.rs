@@ -2,12 +2,28 @@ use {
     smash::{
         lua2cpp::{L2CFighterCommon, L2CAgentBase},
         hash40,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::table_const::*,
-    super::{vl, vars::*}
+    wubor_utils::{wua_bind::*, table_const::*},
+    super::{vtable_hook::*, vl, vars::*}
 };
+
+pub unsafe fn add_go(object: *mut BattleObject, module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
+    let status = StatusModule::status_kind(module_accessor);
+    if ![
+        *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
+        *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
+        *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
+    ].contains(&status) {
+        let meter_max = 200.0;
+        let meter_const = FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_GO_METER;
+        amount /= 0.75;
+        FGCModule::update_meter(object, amount, meter_max, meter_const);
+        let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
+        dolly_check_super_special_pre(module_accessor, is_superspecial as u8);
+    }
+}
 
 pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {

@@ -70,7 +70,8 @@ unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
     if dolly_hit_cancel(fighter).get_i32() == 0 {
         let combo = ComboModule::count(fighter.module_accessor);
         if combo < 3
-        && !CancelModule::is_enable_cancel(fighter.module_accessor) {
+        && !CancelModule::is_enable_cancel(fighter.module_accessor)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL) {
             if FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_HI3,

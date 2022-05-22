@@ -154,7 +154,7 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if prev_status != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-    || !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
         if dolly_hit_cancel(fighter).get_i32() == 1
         || dolly_attack_start_cancel(fighter).get_i32() == 1 {
             return 1.into();
@@ -470,11 +470,7 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
             true,
             FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT,
             1
-        ).get_bool() == false {
-            fighter.status_AttackLw3_Main();
-            return 0.into();
-        }
-        else {
+        ).get_bool() {
             let count = WorkModule::get_int(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT);
             let mot;
             match count {
@@ -491,7 +487,10 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
                 false,
                 false
             );
+            return 0.into();
         }
+        fighter.status_AttackLw3_Main();
+        return 0.into();
     }
     1.into()
 }

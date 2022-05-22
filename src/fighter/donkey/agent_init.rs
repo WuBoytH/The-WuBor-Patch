@@ -8,6 +8,13 @@ use {
     super::vars::*
 };
 
+#[fighter_reset]
+fn fighter_reset(_fighter: &mut L2CFighterCommon) {
+    unsafe {
+        DK_COUNT = 0;
+    }
+}
+
 #[fighter_init]
 fn agent_init(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -20,6 +27,9 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
+    install_agent_resets!(
+        fighter_reset
+    );
     install_agent_init_callbacks!(
         agent_init
     );

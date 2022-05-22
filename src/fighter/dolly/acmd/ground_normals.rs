@@ -142,7 +142,7 @@ unsafe fn dolly_attacks3hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-    macros::FT_MOTION_RATE(fighter, 1.8);
+    macros::FT_MOTION_RATE(fighter, 11.0 / 7.0);
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -167,6 +167,7 @@ unsafe fn dolly_attacks3hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
+    macros::FT_MOTION_RATE(fighter, 11.0 / 20.0);
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]

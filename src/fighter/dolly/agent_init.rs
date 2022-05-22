@@ -85,7 +85,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     false.into()
 }
 
-unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     WorkModule::set_int(fighter.module_accessor, cat4, *FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_CAT4_SPECIAL_COMMAND);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND

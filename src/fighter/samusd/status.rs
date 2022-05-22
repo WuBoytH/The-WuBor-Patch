@@ -422,7 +422,10 @@ unsafe extern "C" fn samusd_speciallw_air_is_end_helper(fighter: &mut L2CFighter
 unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    if utility::get_kind(&mut *oboma)  == *FIGHTER_KIND_SAMUSD {
+    if [
+        *FIGHTER_KIND_SAMUSD,
+        *FIGHTER_KIND_KIRBY
+    ].contains(&utility::get_kind(&mut *oboma)) {
         WorkModule::set_int(oboma, weapon.global_table[OBJECT_ID].get_i32(), FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
     }
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_cshot"), hash40("life"));

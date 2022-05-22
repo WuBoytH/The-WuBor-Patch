@@ -4,7 +4,6 @@
 
 use skyline::libc::c_char;
 
-// mod api;
 mod function_hooks;
 mod fighter;
 
@@ -30,9 +29,8 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
-    // api::install();
     wubor_utils::vars::install();
     function_hooks::install();
     fighter::install();
-    skyline::install_hook!(change_version_string_hook);
+    skyline::install_hooks!(change_version_string_hook);
 }

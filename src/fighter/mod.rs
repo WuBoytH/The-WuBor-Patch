@@ -69,6 +69,8 @@ pub mod murabito;
 pub mod shizue;
 pub mod plizardon;
 pub mod pikmin;
+pub mod marth;
+pub mod sonic;
 
 pub fn install() {
     common::install();
@@ -140,5 +142,7 @@ pub fn install() {
     murabito::install();
     shizue::install();
     plizardon::install();
-    pikmin::install()
+    pikmin::install();
+    marth::install();
+    sonic::install();
 }

@@ -34,7 +34,7 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
                 Hash40::new("hip"),
                 &ZERO_VECTOR,
                 &ZERO_VECTOR,
-                4.0,
+                3.0,
                 false,
                 0,
                 0,
@@ -45,7 +45,7 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
                 false
             );
             let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-            EffectModule::set_rgb(fighter.module_accessor, eff, 1.0, 1.0, 0.2);
+            EffectModule::set_rgb(fighter.module_accessor, eff, 1.0, 0.6, 0.2);
             WorkModule::set_int(fighter.module_accessor, eff as i32, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_SUPER_SPECIAL_AURA);
         }
         let eff = WorkModule::get_int(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_SUPER_SPECIAL_AURA2) as u32;
@@ -56,7 +56,7 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
                 Hash40::new("hip"),
                 &ZERO_VECTOR,
                 &ZERO_VECTOR,
-                4.0,
+                3.0,
                 false,
                 0,
                 0,
@@ -67,7 +67,7 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
                 false
             );
             let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
-            EffectModule::set_rgb(fighter.module_accessor, eff, 1.0, 1.0, 0.2);
+            EffectModule::set_rgb(fighter.module_accessor, eff, 1.0, 0.6, 0.2);
             WorkModule::set_int(fighter.module_accessor, eff as i32, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_SUPER_SPECIAL_AURA2);
         }
     }

@@ -6,25 +6,19 @@ use {
     },
     crate::{
         fighter::{
-            dolly::vars::*,
+            dolly::helper::*,
             gaogaen::vars::*,
             kamui::vars::*,
-            ken::vars::*,
-            lucina::{
-                helper::shadow_id,
-                vars::*
-            },
+            ken::{helper::*, vars::*},
+            lucina::{helper::*, vars::*},
             mario::vars::*,
             ryu::vars::*,
             wario::vars::*,
             *
         }
     },
+    wubor_utils::vars::*,
     std::ffi::CStr,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    },
     skyline::hooks::{
         getRegionAddress,
         Region
@@ -184,51 +178,13 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
             let module_accessor = (*object).module_accessor;
             let kind = utility::get_kind(&mut *module_accessor);
             if kind == *FIGHTER_KIND_LUCINA {
-                let meter_max = WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-                let meter_const = FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE;
-                
-                if !WorkModule::is_flag(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
-                    if !WorkModule::is_flag(module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
-                        let mut amount = damage_received;
-                        if shadow_id(module_accessor) == false {
-                            amount *= 0.75;
-                        }
-                        if WorkModule::get_float(module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAIN_PENALTY) > 0.0 {
-                            amount *= 0.1;
-                        }
-                        FGCModule::update_meter(object, amount, meter_max, meter_const);
-                    }
-                }
+                add_sp(object, module_accessor, damage_received);
             }
             else if kind == *FIGHTER_KIND_KEN {
-                let meter_max = 900.0;
-                let meter_const = FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE;
-                if MotionModule::motion_kind(module_accessor) != hash40("special_lw")
-                && !WorkModule::is_flag(module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-                    if MotionModule::motion_kind(module_accessor) == hash40("attack_s3_s_w")
-                    && StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-                        FGCModule::update_meter(object, 100.0, meter_max, meter_const);
-                    }
-                    else {
-                        let amount = damage_received * 5.0;
-                        FGCModule::update_meter(object, amount, meter_max, meter_const);
-                    }
-                }
+                add_vgauge(object, module_accessor, damage_received);
             }
             else if kind == *FIGHTER_KIND_DOLLY {
-                let status = StatusModule::status_kind(module_accessor);
-                if ![
-                    *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
-                    *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
-                    *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-                ].contains(&status) {
-                    let meter_max = 200.0;
-                    let meter_const = FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_GO_METER;
-                    let amount = damage_received / 0.75;
-                    FGCModule::update_meter(object, amount, meter_max, meter_const);
-                    let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
-                    dolly::vtable_hook::dolly_check_super_special_pre(module_accessor, is_superspecial as u8);
-                }
+                add_go(object, module_accessor, damage_received);
             }
         }
     }

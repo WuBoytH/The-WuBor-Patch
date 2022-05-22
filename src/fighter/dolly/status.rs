@@ -204,7 +204,7 @@ unsafe fn dolly_attacks3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn dolly_attacks3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0
     && dolly_attack_start_cancel(fighter).get_i32() == 0 {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_s")
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_lw")
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
             if FGCModule::cancel_exceptions(
                 fighter,

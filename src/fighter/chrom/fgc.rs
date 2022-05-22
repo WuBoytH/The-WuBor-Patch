@@ -1,14 +1,13 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
         lib::lua_const::*
     },
-    wubor_utils::wua_bind::*
+    wubor_utils::{wua_bind::*, table_const::*}
 };
 
 pub unsafe extern "C" fn chrom_fgc(fighter: &mut L2CFighterCommon) {
-    let status = StatusModule::status_kind(fighter.module_accessor);
+    let status = fighter.global_table[STATUS_KIND].get_i32();
     let mut special_cancels : Vec<i32> = [].to_vec();
     let mut normal_cancels : Vec<i32> = [].to_vec();
     if [

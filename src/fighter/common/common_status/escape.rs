@@ -10,7 +10,6 @@ use {
     },
     smash_script::*,
     wubor_utils::{
-        wua_bind::*,
         vars::*,
         table_const::*
     },

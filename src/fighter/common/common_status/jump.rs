@@ -18,38 +18,47 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
+    // let energy_ids = [
+    //     *FIGHTER_KINETIC_ENERGY_ID_MOTION,
+    //     *FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+    //     *FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+    //     *FIGHTER_KINETIC_ENERGY_ID_STOP,
+    //     *FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
+    //     *FIGHTER_KINETIC_ENERGY_ID_ENV_WIND,
+    //     *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT,
+    //     *FIGHTER_KINETIC_ENERGY_ID_JOSTLE,
+    //     *FIGHTER_KINETIC_ENERGY_ID_CONTROL_NO_STOP,
+    //     *FIGHTER_KINETIC_ENERGY_ID_DAMAGE_NO_STOP,
+    //     *FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP
+    // ];
+    // for id in energy_ids {
+    //     fighter.clear_lua_stack();
+    //     lua_args!(fighter, id);
+    //     let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+    //     println!("ID: {}, Speed X: {}", id, speed_x);
+    // }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
-        let super_jump_x_mul;
+        let mut speed_x;
         let jump_y;
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         if mini_jump {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -2, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            super_jump_x_mul = common_param::jump::hyper_hop_speed_x_mul;
+            speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+            speed_x *= common_param::jump::hyper_hop_air_speed_x_stable_mul;
+            speed_x = speed_x.clamp(1.2, f32::MAX);
+            let stick_x = fighter.global_table[STICK_X].get_f32();
+            speed_x *= stick_x;
+            // println!("Hyper Hop Speed: {}", speed_x);
             jump_y = 0.0;
         }
         else {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -5, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            super_jump_x_mul = common_param::jump::super_jump_speed_x_mul;
+            speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+            speed_x *= common_param::jump::super_jump_speed_x_mul;
             let jump_initial_y = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_initial_y"), 0) / 10.0;
             let ratio = 2.0 - (jump_initial_y / 2.8);
             jump_y = common_param::jump::super_jump_speed_y_init + (jump_initial_y * ratio);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        }
-        let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-        speed_x *= super_jump_x_mul;
-        let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-        let air_speed_x_stable = air_speed_x_stable * common_param::jump::hyper_hop_air_speed_x_stable_mul;
-        if mini_jump
-        && speed_x.abs() < air_speed_x_stable {
-            if speed_x == 0.0 {
-                speed_x = air_speed_x_stable * PostureModule::lr(fighter.module_accessor);
-            }
-            else if speed_x < 0.0 {
-                speed_x = -air_speed_x_stable;
-            }
-            else {
-                speed_x = air_speed_x_stable;
-            }
         }
         sv_kinetic_energy!(
             set_speed,
@@ -77,15 +86,15 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
                 speed_x.abs()
             );
         }
-        let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0);
-        if speed_x.abs() > jump_speed_x_max {
-            sv_kinetic_energy!(
-                set_limit_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                speed_x.abs()
-            );
-        }
+        // let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0);
+        // if speed_x.abs() > jump_speed_x_max {
+        //     sv_kinetic_energy!(
+        //         set_limit_speed,
+        //         fighter,
+        //         FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        //         speed_x.abs()
+        //     );
+        // }
         if jump_y != 0.0 {
             sv_kinetic_energy!(
                 set_speed,

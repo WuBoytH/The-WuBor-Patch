@@ -7,9 +7,8 @@ pub const guard_off_invalid_capture_frame_add : i32 = 3;
 
 pub mod jump {
     pub const special_jump_control_mul : f32 = 0.5;
-    pub const hyper_hop_speed_x_mul : f32 = 1.4;
-    pub const hyper_hop_air_speed_x_stable_mul : f32 = 1.2;
-    pub const super_jump_speed_x_mul : f32 = 0.9;
+    pub const hyper_hop_air_speed_x_stable_mul : f32 = 1.4;
+    pub const super_jump_speed_x_mul : f32 = 0.8;
     pub const super_jump_speed_y_init : f32 = 1.825;
     pub const super_jump_gravity : f32 = 0.27;
 }

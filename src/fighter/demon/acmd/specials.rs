@@ -1,5 +1,3 @@
-use smash::app::sv_system;
-
 use {
     smash::{
         lua2cpp::L2CAgentBase,

@@ -1,9 +1,9 @@
 #![feature(concat_idents)]
 #![feature(proc_macro_hygiene)]
-#![feature(asm)]
+#![allow(unused_macros)]
+#![allow(unused_must_use)]
 
 use skyline::libc::c_char;
-
 mod function_hooks;
 mod fighter;
 

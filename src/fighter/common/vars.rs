@@ -1,5 +1,3 @@
-#![allow(unused_must_use)]
-
 use wubor_utils::vars::*;
 
 fn unload_nro_hook(_info: &skyline::nro::NroInfo) {

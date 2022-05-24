@@ -1,5 +1,3 @@
-#![allow(unused_must_use)]
-
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},

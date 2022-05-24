@@ -1,7 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CAgentBase,
-        phx::Hash40,
+        phx::{Hash40, Vector2f},
         app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },

@@ -397,34 +397,38 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     }
     if [
         *FIGHTER_KIND_DONKEY,
-        *FIGHTER_KIND_YOSHI,
-        *FIGHTER_KIND_NESS,
+        *FIGHTER_KIND_KIRBY,
         *FIGHTER_KIND_CAPTAIN,
+        *FIGHTER_KIND_DAISY,
         *FIGHTER_KIND_SHEIK,
         *FIGHTER_KIND_PICHU,
+        *FIGHTER_KIND_FALCO,
         *FIGHTER_KIND_CHROM,
         *FIGHTER_KIND_METAKNIGHT,
         *FIGHTER_KIND_PIT,
         *FIGHTER_KIND_IKE,
-        *FIGHTER_KIND_LUCAS,
+        *FIGHTER_KIND_LUCARIO,
         *FIGHTER_KIND_TOONLINK,
         *FIGHTER_KIND_MIISWORDSMAN,
         *FIGHTER_KIND_REFLET,
         *FIGHTER_KIND_DUCKHUNT,
-        *FIGHTER_KIND_JACK,
-        *FIGHTER_KIND_BUDDY
-    ].contains(&fighter_kind) {
+        *FIGHTER_KIND_BAYONETTA,
+        *FIGHTER_KIND_BUDDY,
+        *FIGHTER_KIND_TANTAN
+        ].contains(&fighter_kind) {
         return 1.3;
     }
     if [
-        *FIGHTER_KIND_MARIO,
-        *FIGHTER_KIND_FALCO,
+        *FIGHTER_KIND_SAMUS,
         *FIGHTER_KIND_MARTH,
         *FIGHTER_KIND_YOUNGLINK,
-        *FIGHTER_KIND_GANON,
+        *FIGHTER_KIND_ROY,
         *FIGHTER_KIND_GAMEWATCH,
+        *FIGHTER_KIND_WARIO,
+        *FIGHTER_KIND_PFUSHIGISOU,
         *FIGHTER_KIND_SNAKE,
         *FIGHTER_KIND_DIDDY,
+        *FIGHTER_KIND_LUCAS,
         *FIGHTER_KIND_SONIC,
         *FIGHTER_KIND_PIKMIN,
         *FIGHTER_KIND_DEDEDE,
@@ -433,21 +437,18 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_ROCKMAN,
         *FIGHTER_KIND_LITTLEMAC,
         *FIGHTER_KIND_PACMAN,
-        *FIGHTER_KIND_RYU,
         *FIGHTER_KIND_KEN,
         *FIGHTER_KIND_KAMUI,
-        *FIGHTER_KIND_BAYONETTA,
         *FIGHTER_KIND_KROOL,
+        *FIGHTER_KIND_SHIZUE,
         *FIGHTER_KIND_GAOGAEN,
         *FIGHTER_KIND_PACKUN,
         *FIGHTER_KIND_BRAVE,
-        *FIGHTER_KIND_DOLLY,
         *FIGHTER_KIND_MASTER,
-        *FIGHTER_KIND_TANTAN,
         *FIGHTER_KIND_PICKEL,
-        *FIGHTER_KIND_EDGE,
-        *FIGHTER_KIND_ELIGHT,
-        *FIGHTER_KIND_DEMON
+        *FIGHTER_KIND_EFLAME,
+        *FIGHTER_KIND_DEMON,
+        *FIGHTER_KIND_TRAIL
     ].contains(&fighter_kind) {
         return 0.9
     }

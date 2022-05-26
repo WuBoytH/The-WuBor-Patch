@@ -72,6 +72,7 @@ pub mod pikmin;
 pub mod marth;
 pub mod sonic;
 pub mod peach;
+pub mod wiifit;
 
 pub fn install() {
     common::install();
@@ -148,4 +149,5 @@ pub fn install() {
     marth::install();
     sonic::install();
     peach::install();
+    wiifit::install();
 }

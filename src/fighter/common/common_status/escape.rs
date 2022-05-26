@@ -400,23 +400,24 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_YOSHI,
         *FIGHTER_KIND_NESS,
         *FIGHTER_KIND_CAPTAIN,
-        *FIGHTER_KIND_KOOPA,
         *FIGHTER_KIND_SHEIK,
         *FIGHTER_KIND_PICHU,
+        *FIGHTER_KIND_CHROM,
         *FIGHTER_KIND_METAKNIGHT,
         *FIGHTER_KIND_PIT,
-        *FIGHTER_KIND_PITB,
-        *FIGHTER_KIND_PZENIGAME,
+        *FIGHTER_KIND_IKE,
         *FIGHTER_KIND_LUCAS,
         *FIGHTER_KIND_TOONLINK,
+        *FIGHTER_KIND_MIISWORDSMAN,
         *FIGHTER_KIND_REFLET,
+        *FIGHTER_KIND_DUCKHUNT,
         *FIGHTER_KIND_JACK,
         *FIGHTER_KIND_BUDDY
     ].contains(&fighter_kind) {
         return 1.3;
     }
     if [
-        *FIGHTER_KIND_ZELDA,
+        *FIGHTER_KIND_MARIO,
         *FIGHTER_KIND_FALCO,
         *FIGHTER_KIND_MARTH,
         *FIGHTER_KIND_YOUNGLINK,

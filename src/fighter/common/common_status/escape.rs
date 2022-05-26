@@ -295,8 +295,9 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         let normalize = sv_math::vec2_normalize(stickx, sticky);
-        let mut dirx = normalize.x;
-        let mut diry = normalize.y;
+        let airdash_mul = get_airdash_mul(fighter);
+        let mut dirx = normalize.x * airdash_mul;
+        let mut diry = normalize.y * airdash_mul;
         if diry == 0.0 {
             diry = 0.2;
         }
@@ -381,6 +382,77 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     }
 }
 
+unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
+    // don't do this
+    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    if [
+        *FIGHTER_KIND_MEWTWO
+    ].contains(&fighter_kind) {
+        return 2.5;
+    }
+    if [
+        *FIGHTER_KIND_RIDLEY
+    ].contains(&fighter_kind) {
+        return 1.5;
+    }
+    if [
+        *FIGHTER_KIND_DONKEY,
+        *FIGHTER_KIND_YOSHI,
+        *FIGHTER_KIND_NESS,
+        *FIGHTER_KIND_CAPTAIN,
+        *FIGHTER_KIND_KOOPA,
+        *FIGHTER_KIND_SHEIK,
+        *FIGHTER_KIND_PICHU,
+        *FIGHTER_KIND_METAKNIGHT,
+        *FIGHTER_KIND_PIT,
+        *FIGHTER_KIND_PITB,
+        *FIGHTER_KIND_PZENIGAME,
+        *FIGHTER_KIND_LUCAS,
+        *FIGHTER_KIND_TOONLINK,
+        *FIGHTER_KIND_REFLET,
+        *FIGHTER_KIND_JACK,
+        *FIGHTER_KIND_BUDDY
+    ].contains(&fighter_kind) {
+        return 1.3;
+    }
+    if [
+        *FIGHTER_KIND_ZELDA,
+        *FIGHTER_KIND_FALCO,
+        *FIGHTER_KIND_MARTH,
+        *FIGHTER_KIND_YOUNGLINK,
+        *FIGHTER_KIND_GANON,
+        *FIGHTER_KIND_GAMEWATCH,
+        *FIGHTER_KIND_SNAKE,
+        *FIGHTER_KIND_DIDDY,
+        *FIGHTER_KIND_SONIC,
+        *FIGHTER_KIND_PIKMIN,
+        *FIGHTER_KIND_DEDEDE,
+        *FIGHTER_KIND_ROBOT,
+        *FIGHTER_KIND_WOLF,
+        *FIGHTER_KIND_ROCKMAN,
+        *FIGHTER_KIND_LITTLEMAC,
+        *FIGHTER_KIND_PACMAN,
+        *FIGHTER_KIND_RYU,
+        *FIGHTER_KIND_KEN,
+        *FIGHTER_KIND_KAMUI,
+        *FIGHTER_KIND_BAYONETTA,
+        *FIGHTER_KIND_KROOL,
+        *FIGHTER_KIND_GAOGAEN,
+        *FIGHTER_KIND_PACKUN,
+        *FIGHTER_KIND_BRAVE,
+        *FIGHTER_KIND_DOLLY,
+        *FIGHTER_KIND_MASTER,
+        *FIGHTER_KIND_TANTAN,
+        *FIGHTER_KIND_PICKEL,
+        *FIGHTER_KIND_EDGE,
+        *FIGHTER_KIND_ELIGHT,
+        *FIGHTER_KIND_DEMON
+    ].contains(&fighter_kind) {
+        return 0.9
+    }
+    1.1
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
 unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
@@ -403,7 +475,8 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE)
     && !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.global_table[MOTION_FRAME].get_f32() >= 14.0 {
+        let airdash_params = get_airdash_params(fighter);
+        if fighter.global_table[MOTION_FRAME].get_f32() >= airdash_params.attack_frame {
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
@@ -415,7 +488,16 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
                 return true.into();
             }
         }
-        if fighter.global_table[MOTION_FRAME].get_f32() >= 28.0 {
+        if fighter.global_table[MOTION_FRAME].get_f32() >= airdash_params.cancel_frame {
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+                let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+                sv_kinetic_energy!(
+                    set_accel,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    -air_accel_y
+                );
+            }
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
@@ -424,6 +506,28 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
         return true.into();
     }
     0.into()
+}
+
+pub struct AirDashParams {
+    attack_frame: f32,
+    cancel_frame: f32
+}
+
+unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
+    let attack_frame: f32;
+    let cancel_frame: f32;
+    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    if [
+        *FIGHTER_KIND_MEWTWO
+    ].contains(&fighter_kind) {
+        attack_frame = 24.0;
+        cancel_frame = 34.0;
+    }
+    else {
+        attack_frame = 14.0;
+        cancel_frame = 28.0;
+    }
+    AirDashParams{attack_frame: attack_frame, cancel_frame: cancel_frame}
 }
 
 #[skyline::hook(replace = L2CFighterCommon_exec_escape_air_slide)]
@@ -477,7 +581,20 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            let speed_x_mul = 0.75;
+            let speed_x_mul =
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+                0.0
+            }
+            else {
+                0.75
+            };
+            let speed_y_mul = 
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+                0.0
+            }
+            else {
+                1.0
+            };
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
@@ -500,11 +617,20 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
                 ENERGY_GRAVITY_RESET_TYPE_GRAVITY,
                 0.0,
-                speed_y,
+                speed_y * speed_y_mul,
                 0.0,
                 0.0,
                 0.0
             );
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+                let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+                sv_kinetic_energy!(
+                    set_accel,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    -air_accel_y * 0.1
+                );
+            }
             sv_kinetic_energy!(enable, fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_STOP, fighter.module_accessor);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL);

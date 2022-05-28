@@ -596,12 +596,12 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0.0
             );
         }
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-        let speedx = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-        let speedy = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+        // fighter.clear_lua_stack();
+        // lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        // let speedx = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        // fighter.clear_lua_stack();
+        // lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        // let speedy = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
         // println!("Airdash speed x: {}, speed y: {}", speedx, speedy);
         let something = WorkModule::get_param_float(fighter.module_accessor, 0x15f2c6719b, 0);
         if something <= slide_frame as f32 {

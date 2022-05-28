@@ -11,7 +11,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamage_init_common)]
 unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
-    let mut reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
+    let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
     fighter.clear_lua_stack();
     lua_args!(fighter, 0xba5d667d4 as u64);

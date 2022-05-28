@@ -297,9 +297,12 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         let normalize = sv_math::vec2_normalize(stickx, sticky);
         let airdash_mul = get_airdash_mul(fighter);
         let mut dirx = normalize.x * airdash_mul;
-        let mut diry = normalize.y * airdash_mul;
-        if diry == 0.0 {
+        let mut diry = normalize.y;
+        if diry.abs() < 0.2 {
             diry = 0.2;
+        }
+        else {
+            diry *= airdash_mul / 2.0;
         }
         WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
@@ -388,12 +391,12 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     if [
         *FIGHTER_KIND_MEWTWO
     ].contains(&fighter_kind) {
-        return 2.5;
+        return 1.5;
     }
     if [
         *FIGHTER_KIND_RIDLEY
     ].contains(&fighter_kind) {
-        return 1.5;
+        return 0.95;
     }
     if [
         *FIGHTER_KIND_DONKEY,
@@ -415,7 +418,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_BUDDY,
         *FIGHTER_KIND_TANTAN
         ].contains(&fighter_kind) {
-        return 1.3;
+        return 0.88;
     }
     if [
         *FIGHTER_KIND_SAMUS,
@@ -450,9 +453,9 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_DEMON,
         *FIGHTER_KIND_TRAIL
     ].contains(&fighter_kind) {
-        return 0.9
+        return 0.8
     }
-    1.1
+    0.85
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
@@ -566,18 +569,40 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
         else {
             let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
             let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+            // sv_kinetic_energy!(
+            //     reset_energy,
+            //     fighter,
+            //     FIGHTER_KINETIC_ENERGY_ID_STOP,
+            //     ENERGY_STOP_RESET_TYPE_ESCAPE_AIR_SLIDE,
+            //     dir_x,
+            //     dir_y,
+            //     0.0,
+            //     0.0,
+            //     0.0
+            // );
+            let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
             sv_kinetic_energy!(
-                reset_energy,
+                set_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                ENERGY_STOP_RESET_TYPE_ESCAPE_AIR_SLIDE,
-                dir_x,
-                dir_y,
-                0.0,
-                0.0,
+                escape_air_slide_speed * dir_x,
+                escape_air_slide_speed * dir_y
+            );
+            sv_kinetic_energy!(
+                set_brake,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                0.25,
                 0.0
             );
         }
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        let speedx = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        let speedy = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+        // println!("Airdash speed x: {}, speed y: {}", speedx, speedy);
         let something = WorkModule::get_param_float(fighter.module_accessor, 0x15f2c6719b, 0);
         if something <= slide_frame as f32 {
             fighter.clear_lua_stack();
@@ -585,17 +610,17 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
             let speed_x_mul =
             if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
-                0.0
+                0.2
             }
             else {
-                0.75
+                0.65
             };
             let speed_y_mul = 
             if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
-                0.0
+                0.2
             }
             else {
-                1.0
+                0.5
             };
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);

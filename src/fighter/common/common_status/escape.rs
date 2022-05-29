@@ -302,7 +302,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
             diry = 0.2;
         }
         else {
-            diry *= airdash_mul / 2.0;
+            diry *= airdash_mul * 0.65;
         }
         WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
@@ -396,7 +396,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     if [
         *FIGHTER_KIND_RIDLEY
     ].contains(&fighter_kind) {
-        return 0.95;
+        return 1.0;
     }
     if [
         *FIGHTER_KIND_DONKEY,
@@ -418,7 +418,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_BUDDY,
         *FIGHTER_KIND_TANTAN
         ].contains(&fighter_kind) {
-        return 0.88;
+        return 0.92;
     }
     if [
         *FIGHTER_KIND_SAMUS,
@@ -453,9 +453,9 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_DEMON,
         *FIGHTER_KIND_TRAIL
     ].contains(&fighter_kind) {
-        return 0.8
+        return 0.82
     }
-    0.85
+    0.87
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
@@ -608,6 +608,9 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
             let speed_x_mul =
             if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
                 0.2
@@ -620,11 +623,13 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0.2
             }
             else {
-                0.5
+                if speed_y < 0.0 {
+                    1.0
+                }
+                else {
+                    0.5
+                }
             };
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-            let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
             sv_kinetic_energy!(
                 reset_energy,
@@ -702,7 +707,7 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
             let frame_ratio = frame / end_frame;
             let landing_frame = fighter.lerp(landing_frame_escape_air_slide.into(), landing_frame_escape_air_slide_max.into(), frame_ratio.into()).get_f32();
             WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            let escape_air_slide_landing_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_landing_speed_max"));
+            let escape_air_slide_landing_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_landing_speed_max")) * 0.75;
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);

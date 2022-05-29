@@ -51,7 +51,8 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         let stick_y = param_2.get_f32();
         let length = sv_math::vec2_length(stick_x, stick_y);
         let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
-        if escape_air_slide_stick <= length {
+        if escape_air_slide_stick <= length
+        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
         }
         if prev_status != *FIGHTER_STATUS_KIND_DAMAGE_FALL {
@@ -290,9 +291,18 @@ unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_setup_escape_air_slide_common)]
 pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
-    let stickx = param_1.get_f32();
-    let sticky = param_2.get_f32();
+    let mut stickx = param_1.get_f32();
+    let mut sticky = param_2.get_f32();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE) {
+            let length = sv_math::vec2_length(stickx, sticky);
+            let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
+            if length < escape_air_slide_stick {
+                stickx = 1.0 * PostureModule::lr(fighter.module_accessor);
+                sticky = 0.0;
+            }
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE);
+        }
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         let normalize = sv_math::vec2_normalize(stickx, sticky);
         let airdash_mul = get_airdash_mul(fighter);
@@ -418,7 +428,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_BUDDY,
         *FIGHTER_KIND_TANTAN
         ].contains(&fighter_kind) {
-        return 0.92;
+        return 0.95;
     }
     if [
         *FIGHTER_KIND_SAMUS,
@@ -453,9 +463,9 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_DEMON,
         *FIGHTER_KIND_TRAIL
     ].contains(&fighter_kind) {
-        return 0.82
+        return 0.85
     }
-    0.87
+    0.9
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
@@ -743,6 +753,7 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
             // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
         }
     }
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE);
     0.into()
 }
 

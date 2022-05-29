@@ -32,10 +32,20 @@ pub unsafe extern "C" fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
     ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
         jump_cancel = 1;
     }
-    if [hash40("attack_air_f3")].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S
-        ].to_vec();
+    if [
+        *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U
+    ].contains(&status) {
+        if FGCModule::air_dash_cancel_check(fighter, false).get_bool() {
+            return;
+        }
+    }
+    if [
+        *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP
+    ].contains(&status)
+    && MotionModule::frame(fighter.module_accessor) > 31.0 {
+        if FGCModule::air_dash_cancel_check(fighter, false).get_bool() {
+            return;
+        }
     }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
         MiscModule::set_hp(fighter, 132.0);

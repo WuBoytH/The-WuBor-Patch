@@ -113,21 +113,6 @@ move_type_again: bool) -> u64 {
         //         WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
         //     }
         // }
-        // else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
-        //     if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
-        //     || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
-        //     && WorkModule::get_int(defender_boma, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 1 {
-        //         WorkModule::set_int(defender_boma, 2, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
-        //         if PostureModule::pos_x(defender_boma) < PostureModule::pos_x(attacker_boma)
-        //         && PostureModule::lr(defender_boma) == 1.0 {
-        //             PostureModule::reverse_lr(defender_boma);
-        //         }
-        //         else if PostureModule::pos_x(defender_boma) > PostureModule::pos_x(attacker_boma)
-        //         && PostureModule::lr(defender_boma) == -1.0 {
-        //             PostureModule::reverse_lr(defender_boma);
-        //         }
-        //     }
-        // }
         else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {

@@ -153,9 +153,6 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
     let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
     // println!("attacker ids: {}", attacker_ids);
-    println!("hi");
-    let hit_stop_frame = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
-    println!("hit stop frame: {}", hit_stop_frame);
     let fighter_kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
     if fighter_kind == *FIGHTER_KIND_GAOGAEN {
         handle_revenge(module_accessor, attacker_ids);

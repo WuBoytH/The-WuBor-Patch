@@ -62,7 +62,7 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
         // Checks what frame you hit the opponent.
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0
-        && !fighter.global_table[IN_HITLAG].get_bool() {
+        && !fighter.global_table[IS_STOP].get_bool() {
             WarkModule::count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
         }
 
@@ -72,7 +72,7 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
         }
         
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN) > 0.0
-        && !fighter.global_table[IN_HITLAG].get_bool() {
+        && !fighter.global_table[IS_STOP].get_bool() {
             WarkModule::count_down(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN, 1.0);
         }
 
@@ -83,7 +83,7 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME) > 0.0
-        && !fighter.global_table[IN_HITLAG].get_bool() {
+        && !fighter.global_table[IS_STOP].get_bool() {
             WarkModule::count_down(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME, 1.0);
         }
 

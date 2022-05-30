@@ -92,7 +92,7 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFight
         }
         if CancelModule::is_enable_cancel(fighter.module_accessor)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && !fighter.global_table[IN_HITLAG].get_bool() {
+        && !fighter.global_table[IS_STOP].get_bool() {
             if marth_stance_cancel_helper(fighter).get_bool()
             || marth_stance_dash_cancel_helper(fighter, true).get_bool() {
                 return 1.into();
@@ -284,7 +284,7 @@ unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if CancelModule::is_enable_cancel(fighter.module_accessor)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-        && !fighter.global_table[IN_HITLAG].get_bool() {
+        && !fighter.global_table[IS_STOP].get_bool() {
             if marth_stance_cancel_helper(fighter).get_bool()
             || marth_stance_dash_cancel_helper(fighter, true).get_bool() {
                 return 1.into();

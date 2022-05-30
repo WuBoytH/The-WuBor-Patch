@@ -47,7 +47,7 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
     if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
     && WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FOCUS)
     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-    && !fighter.global_table[IN_HITLAG].get_bool() {
+    && !fighter.global_table[IS_STOP].get_bool() {
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
     }
 
@@ -122,7 +122,7 @@ unsafe fn ryu_secret_sensation_hit_cancel(fighter: &mut L2CFighterCommon) {
     && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-    && !fighter.global_table[IN_HITLAG].get_bool() {
+    && !fighter.global_table[IS_STOP].get_bool() {
         fighter.clear_lua_stack();
         lua_args!(fighter, Hash40::new_raw(0x1daca540be));
         sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);

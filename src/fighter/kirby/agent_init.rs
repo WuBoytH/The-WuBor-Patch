@@ -59,7 +59,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_KIRBY {
             return;
         }
-        fighter.global_table[SPECIAL_N_PRE].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
+        fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
     }
 }
 

@@ -30,7 +30,7 @@ unsafe fn lucina_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_jab_cancels_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.global_table[IN_HITLAG].get_bool() {
+    if !fighter.global_table[IS_STOP].get_bool() {
         let jump_cancel = if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
             2
         } else { 0 };
@@ -88,7 +88,7 @@ unsafe fn lucina_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_tilt_cancels_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.global_table[IN_HITLAG].get_bool() {
+    if !fighter.global_table[IS_STOP].get_bool() {
         let special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
@@ -147,7 +147,7 @@ unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon
 }
 
 unsafe extern "C" fn lucina_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.global_table[IN_HITLAG].get_bool() {
+    if !fighter.global_table[IS_STOP].get_bool() {
         let mot = MotionModule::motion_kind(fighter.module_accessor);
         if mot != hash40("attack_air_lw")
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY) {
@@ -699,7 +699,7 @@ unsafe fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_specials_cancel_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.global_table[IN_HITLAG].get_bool() {
+    if !fighter.global_table[IS_STOP].get_bool() {
         let mut special_cancels = [
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2
         ].to_vec();

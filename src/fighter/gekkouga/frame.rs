@@ -17,7 +17,7 @@ fn gekkouga_frame(fighter: &mut L2CFighterCommon) {
             hash40("appeal_lw_r")
         ].contains(&MotionModule::motion_kind(fighter.module_accessor))
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool() {
+        && !fighter.global_table[IS_STOP].get_bool() {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }

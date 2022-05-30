@@ -23,7 +23,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_MARIO {
             return;
         }
-        fighter.global_table[SPECIAL_LW_PRE].assign(&L2CValue::Ptr(mario_speciallw_pre as *const () as _));
+        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(mario_speciallw_pre as *const () as _));
         fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(mario_fgc as *const () as _));
     }
 }

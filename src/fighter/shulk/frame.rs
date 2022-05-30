@@ -34,7 +34,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
         // }
         // WorkModule::set_float(fighter.module_accessor, damage, FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_PREV);
 
-        if !fighter.global_table[IN_HITLAG].get_bool()
+        if !fighter.global_table[IS_STOP].get_bool()
         && !MiscModule::is_illegal_status(fighter.module_accessor, false)
         && !MiscModule::is_illegal_status(fighter.module_accessor, true)
         && MiscModule::is_damage_check(fighter.module_accessor, false)

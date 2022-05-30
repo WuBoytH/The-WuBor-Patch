@@ -36,7 +36,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND)
-    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_LW_PRE].clone()).get_bool() {
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_LW_UNIQ].clone()).get_bool() {
         fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND.into(), true.into());
         return true.into();
     }
@@ -49,13 +49,13 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     }
     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_S_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
-    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_S_PRE].clone()).get_bool() {
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_S_UNIQ].clone()).get_bool() {
         fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_COMMAND.into(), true.into());
         return true.into();
     }
     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND)
-    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_S_PRE].clone()).get_bool() {
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_S_UNIQ].clone()).get_bool() {
         fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_S_COMMAND.into(), true.into());
         return true.into();
     }
@@ -132,7 +132,7 @@ unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterC
 unsafe extern "C" fn dolly_check_special_hi_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI2_COMMAND != 0
-    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[SPECIAL_HI_PRE].clone()).get_bool() {
+    && fighter.sub_transition_term_id_cont_disguise(fighter.global_table[CHECK_SPECIAL_HI_UNIQ].clone()).get_bool() {
         fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND.into(), true.into());
         return true.into();
     }
@@ -154,12 +154,12 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_DOLLY {
             return;
         }
-        fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
-        fighter.global_table[CHECK_GROUND_ATTACK_PRE].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
-        fighter.global_table[CHECK_GROUND_SPECIAL_PRE].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
-        fighter.global_table[CHECK_AIR_SPECIAL_PRE].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
+        fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
+        fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
+        fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
+        fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
-        fighter.global_table[CHECK_GROUND_CATCH_PRE].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
+        fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
         fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(dolly_fgc as *const () as _));
     }
 }

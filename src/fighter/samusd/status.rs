@@ -241,7 +241,7 @@ unsafe extern "C" fn samusd_specialn_hold_main_loop(fighter: &mut L2CFighterComm
             fighter.change_status(next_status.into(), true.into());
             return 1.into();
         }
-        if fighter.global_table[IN_HITLAG].get_bool() {
+        if fighter.global_table[IS_STOP].get_bool() {
             let charge = WorkModule::get_int(fighter.module_accessor, *FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_SPECIAL_N_COUNT);
             let charge_max = samusd_get_max_charge_frame(fighter).get_f32();
             let ratio = charge as f32 / charge_max;

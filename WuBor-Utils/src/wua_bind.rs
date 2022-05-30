@@ -70,7 +70,7 @@ pub mod FGCModule {
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && cancel_timer > 0.0 {
             let sit = fighter.global_table[SITUATION_KIND].get_i32();
             jump_cancel_common(fighter, sit.into())
@@ -105,7 +105,7 @@ pub mod FGCModule {
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && cancel_timer > 0.0
         && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
         && get_command_stick_direction(fighter, true) == dir {
@@ -121,7 +121,7 @@ pub mod FGCModule {
         let sit = fighter.global_table[SITUATION_KIND].get_i32();
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (on_block && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && cancel_timer > 0.0 {
             if airdash_cancel_common(fighter, sit.into()).get_bool() {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE);
@@ -154,7 +154,7 @@ pub mod FGCModule {
         || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && cancel_timer > 0.0) {
             if (cat1 & cat1_compare) != 0 {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, true);
@@ -186,7 +186,7 @@ pub mod FGCModule {
         if !on_hit
         || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && cancel_timer > 0.0) {
             let count = WorkModule::get_int(fighter.module_accessor, counter) + 1;
             if (cat1 & cat1_compare) != 0
@@ -211,7 +211,7 @@ pub mod FGCModule {
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && cancel_timer > 0.0 {
             if jump_cancel != 0
             && jump_cancel_check_hit(fighter, jump_cancel == 2).get_bool() {

@@ -103,8 +103,8 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_Main)]
 unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[JUMP_SQUAT_MAIN_PRE].get_bool() != false && {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[JUMP_SQUAT_MAIN_PRE].get_ptr());
+    if fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_bool() != false && {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_ptr());
         callable(fighter).get_bool()
     } {
         return 1.into();
@@ -126,8 +126,8 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             if fighter.sub_transition_specialflag_hoist().get_bool() == false {
                 if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
                 && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) == false {
-                    if fighter.global_table[ATTACK_HI4_PRE].get_bool() != false && {
-                        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[ATTACK_HI4_PRE].get_ptr());
+                    if fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_bool() != false && {
+                        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_ptr());
                         callable(fighter).get_bool()
                     } {
                         return 1.into();

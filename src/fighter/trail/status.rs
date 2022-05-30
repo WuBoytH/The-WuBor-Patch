@@ -167,7 +167,7 @@ unsafe extern "C" fn trail_attackairn_main_loop(fighter: &mut L2CFighterCommon) 
         }
     }
     fighter.sub_air_check_superleaf_fall_slowly();
-    if !fighter.global_table[IN_HITLAG].get_bool() {
+    if !fighter.global_table[IS_STOP].get_bool() {
         fighter.sub_attack_air_inherit_jump_aerial_motion_uniq_process_exec_fix_pos();
     }
     0.into()

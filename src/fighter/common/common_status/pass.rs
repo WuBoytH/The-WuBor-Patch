@@ -68,8 +68,8 @@ unsafe fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-            if fighter.global_table[SPECIAL_LW_PRE].get_bool() && {
-                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[SPECIAL_LW_PRE].get_ptr());
+            if fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_bool() && {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_ptr());
                 callable(fighter).get_bool()
             } {
                 return 1.into();
@@ -117,8 +117,8 @@ unsafe fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue
     let attack_lw4_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw4_stick_y"));
     if stick_y <= attack_lw4_stick_y {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            if fighter.global_table[ATTACK_LW4_PRE].get_bool() && {
-                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[ATTACK_LW4_PRE].get_ptr());
+            if fighter.global_table[CHECK_ATTACK_LW4_UNIQ].get_bool() && {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_ATTACK_LW4_UNIQ].get_ptr());
                 callable(fighter).get_bool()
             } {
                 return 1.into();

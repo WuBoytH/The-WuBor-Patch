@@ -158,7 +158,7 @@ pub unsafe extern "C" fn marth_stance_dash_cancel_helper(fighter: &mut L2CFighte
     let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK);
     let is_jab = curr_status == status && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD);
     let cancel = CancelModule::is_enable_cancel(fighter.module_accessor) || is_jab;
-    let cancel = cancel && !fighter.global_table[IN_HITLAG].get_bool();
+    let cancel = cancel && !fighter.global_table[IS_STOP].get_bool();
     if cancel || !require_cancel {
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
             let cat1 = fighter.global_table[CMD_CAT1].get_i32();

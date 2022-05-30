@@ -24,7 +24,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_TRAIL {
             return;
         }
-        fighter.global_table[GUARD_CONT_PRE].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
+        fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
     }
 }
 

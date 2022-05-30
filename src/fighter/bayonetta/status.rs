@@ -129,7 +129,7 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
         }
     }
     if jump_attack_frame == 1 {
-        if fighter.global_table[IN_HITLAG].get_bool() == false {
+        if fighter.global_table[IS_STOP].get_bool() == false {
             let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
             if 0 < attack_kind {
                 FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);

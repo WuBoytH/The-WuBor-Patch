@@ -155,8 +155,8 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont)]
 unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[GUARD_CONT_PRE].get_bool() != false && {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[GUARD_CONT_PRE].get_ptr());
+    if fighter.global_table[GUARD_CONT_UNIQ].get_bool() != false && {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[GUARD_CONT_UNIQ].get_ptr());
         callable(fighter).get_bool()
     } {
         return true.into();

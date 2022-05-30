@@ -187,7 +187,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_CAN_ONE_MORE);
     }
     if ![*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT].contains(&status)
-    && !fighter.global_table[IN_HITLAG].get_bool()
+    && !fighter.global_table[IS_STOP].get_bool()
     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_CAN_ONE_MORE) {

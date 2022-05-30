@@ -118,7 +118,7 @@ unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CVa
 unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let button = param_1.get_i32();
     if only_jabs(fighter) {
-        if fighter.global_table[IN_HITLAG].get_bool() {
+        if fighter.global_table[IS_STOP].get_bool() {
             if !ControlModule::check_button_on_trriger(fighter.module_accessor, button)
             && !ControlModule::check_button_on_release(fighter.module_accessor, button) {
                 return;
@@ -183,7 +183,7 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
         return 1.into();
     }
     if 1 == WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME)
-    && !fighter.global_table[IN_HITLAG].get_bool() {
+    && !fighter.global_table[IS_STOP].get_bool() {
         let kind =  WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
         if 0 < kind {
             FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, kind);

@@ -17,7 +17,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_RICHTER {
             return;
         }
-        fighter.global_table[SPECIAL_HI_PRE].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));
+        fighter.global_table[CHECK_SPECIAL_HI_UNIQ].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));
         fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(richter_fgc as *const () as _));
     }
 }

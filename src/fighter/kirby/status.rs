@@ -141,7 +141,7 @@ unsafe extern "C" fn kirby_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
             }
         }
         if 1 == jump_attack_frame {
-            if fighter.global_table[IN_HITLAG].get_bool()
+            if fighter.global_table[IS_STOP].get_bool()
             && WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND) > 0 {
                 let log = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
                 FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log);
@@ -207,7 +207,7 @@ unsafe fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn kirby_attacklw3_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE) {
         if !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IN_HITLAG].get_bool()
+        && !fighter.global_table[IS_STOP].get_bool()
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             macros::EFFECT(fighter, Hash40::new("kirby_star"), Hash40::new("top"), 0, 3, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
             StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);

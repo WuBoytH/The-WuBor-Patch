@@ -7,7 +7,7 @@ use {
     crate::{
         fighter::{
             dolly::helper::*,
-            gaogaen::vars::*,
+            gaogaen::helper::*,
             kamui::vars::*,
             ken::{helper::*, vars::*},
             lucina::{helper::*, vars::*},
@@ -113,21 +113,21 @@ move_type_again: bool) -> u64 {
         //         WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
         //     }
         // }
-        else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
-            if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
-            || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
-            && WorkModule::get_int(defender_boma, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 1 {
-                WorkModule::set_int(defender_boma, 2, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
-                if PostureModule::pos_x(defender_boma) < PostureModule::pos_x(attacker_boma)
-                && PostureModule::lr(defender_boma) == 1.0 {
-                    PostureModule::reverse_lr(defender_boma);
-                }
-                else if PostureModule::pos_x(defender_boma) > PostureModule::pos_x(attacker_boma)
-                && PostureModule::lr(defender_boma) == -1.0 {
-                    PostureModule::reverse_lr(defender_boma);
-                }
-            }
-        }
+        // else if defender_fighter_kind == *FIGHTER_KIND_GAOGAEN {
+        //     if (MotionModule::motion_kind(defender_boma) == hash40("special_lw_start")
+        //     || MotionModule::motion_kind(defender_boma) == hash40("special_air_lw_start"))
+        //     && WorkModule::get_int(defender_boma, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 1 {
+        //         WorkModule::set_int(defender_boma, 2, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+        //         if PostureModule::pos_x(defender_boma) < PostureModule::pos_x(attacker_boma)
+        //         && PostureModule::lr(defender_boma) == 1.0 {
+        //             PostureModule::reverse_lr(defender_boma);
+        //         }
+        //         else if PostureModule::pos_x(defender_boma) > PostureModule::pos_x(attacker_boma)
+        //         && PostureModule::lr(defender_boma) == -1.0 {
+        //             PostureModule::reverse_lr(defender_boma);
+        //         }
+        //     }
+        // }
         else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
@@ -168,7 +168,13 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
     let damage_received = WorkModule::get_float(module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_SUCCEED_HIT_DAMAGE) - damage_received;
     let attacker_ids = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_SUCCEED_ATTACKER_ENTRY_ID);
     // println!("attacker ids: {}", attacker_ids);
-    
+    println!("hi");
+    let hit_stop_frame = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
+    println!("hit stop frame: {}", hit_stop_frame);
+    let fighter_kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
+    if fighter_kind == *FIGHTER_KIND_GAOGAEN {
+        handle_revenge(module_accessor, attacker_ids);
+    }
     for x in 0..8 {
         if attacker_ids & (1 << x) == 0 {
             continue;

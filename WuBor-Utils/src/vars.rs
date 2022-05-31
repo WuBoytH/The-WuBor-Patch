@@ -117,6 +117,11 @@ pub mod singletons {
     pub static mut FIGHTER_MANAGER : *const *mut smash::app::FighterManager = 0 as _;
     pub static mut FIGHTER_CUTIN_MANAGER : *const *mut smash::app::FighterCutInManager = 0 as _;
 
+    extern "C" {
+        #[link_name = "\u{1}_ZN3lib9SingletonIN3app16BattleObjectSlowEE9instance_E"]
+        pub static mut BATTLE_OBJECT_SLOW: *mut u8;
+    }
+    
     macro_rules! expose_singleton {
         ($($public:ident, $private:ident)*) => {
             $(

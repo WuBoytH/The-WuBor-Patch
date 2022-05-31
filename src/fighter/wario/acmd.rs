@@ -150,6 +150,25 @@ unsafe fn wario_specialnopenwait(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "wario", scripts = [ "game_specialnbite", "game_specialairnbite" ], category = ACMD_GAME, low_priority )]
+unsafe fn wario_specialnbite(fighter: &mut L2CAgentBase) {
+    for _ in 0..i32::MAX {
+        frame(fighter.lua_state_agent, 21.0);
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("head"), 2.0, 361, 100, 30, 0, 3.0, -0.5, 2.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BITE);
+            WorkModule::inc_int(fighter.module_accessor, 0x100000bf); // FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_COUNT
+        }
+        wait(fighter.lua_state_agent, 4.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(fighter.module_accessor);
+        }
+        fighter.clear_lua_stack();
+        wait_loop(fighter.lua_state_agent);
+        fighter.clear_lua_stack();
+        frame_clear(fighter.lua_state_agent);
+    }
+}
+
 #[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
 unsafe fn wario_speciallwsr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
@@ -226,16 +245,6 @@ unsafe fn wario_speciallwflyr(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = [
-    "game_appeallwl", "game_appeallwr", "game_appealsl", "game_appealsr", "game_appealhil", "game_appealhir"
-    ], category = ACMD_GAME, low_priority )]
-unsafe fn wario_appeal(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        WorkModule::inc_int(fighter.module_accessor, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         wario_throwf,
@@ -243,10 +252,10 @@ pub fn install() {
         wario_throwhi,
         wario_throwlw,
         wario_specialnopenwait,
+        wario_specialnbite,
         wario_speciallwsr,
         wario_speciallwmr,
         wario_speciallwlr,
-        wario_speciallwflyr,
-        wario_appeal
+        wario_speciallwflyr
     );
 }

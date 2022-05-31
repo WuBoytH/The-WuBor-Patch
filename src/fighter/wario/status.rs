@@ -14,8 +14,10 @@ use {
 
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn wario_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
+    WorkModule::set_int(fighter.module_accessor, 0, 0x100000bf); // FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_COUNT
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_FLASHING);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_CHARGE_MAX);
+    EffectModule::remove_common(fighter.module_accessor, Hash40::new("wario_charge_max"));
     fighter.status_pre_Rebirth()
 }
 
@@ -144,26 +146,10 @@ unsafe extern "C" fn wario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn wario_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING {
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
-    }
-    0.into()
-}
-
-#[status_script(agent = "wario", status = FIGHTER_WARIO_STATUS_KIND_SPECIAL_LW_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn wario_speciallw_landing_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN);
-    0.into()
-}
-
 pub fn install() {
     install_status_scripts!(
         wario_rebirth_pre,
         wario_throw_exec,
-        wario_speciallw_main,
-        wario_speciallw_end,
-        wario_speciallw_landing_end
+        wario_speciallw_main
     );
 }

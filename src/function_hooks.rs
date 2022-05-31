@@ -13,7 +13,6 @@ use {
             lucina::{helper::*, vars::*},
             mario::vars::*,
             ryu::vars::*,
-            wario::vars::*,
             *
         }
     },
@@ -220,23 +219,6 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 if WorkModule::is_flag(boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER)
                 && WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
                     return 0.1;
-                }
-            }
-        }
-        else if fighter_kind == *FIGHTER_KIND_WARIO {
-            if param_hash == hash40("gass_middle_time") {
-                if WorkModule::get_int(boma, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN) > 0 {
-                    return 1.0;
-                }
-            }
-            else if param_hash == hash40("gass_large_time") {
-                if WorkModule::get_int(boma, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN) > 6 {
-                    return 1.0;
-                }
-            }
-            else if param_hash == hash40("gass_max_time") {
-                if WorkModule::get_int(boma, FIGHTER_WARIO_INSTANCE_WORK_ID_INT_FINISH_SIGN) >= 14 {
-                    return 1.0;
                 }
             }
         }
@@ -526,9 +508,6 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
         value += 0x1;
     }
     else if str.contains("FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_WARIO_INSTANCE_WORK_ID_INT_TERM") {
         value += 0x1;
     }
     else if str.contains("FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_TERM") {

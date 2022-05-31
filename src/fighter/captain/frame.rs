@@ -1,4 +1,3 @@
-use std::arch::asm;
 use {
     smash::{
         lua2cpp::L2CFighterCommon,

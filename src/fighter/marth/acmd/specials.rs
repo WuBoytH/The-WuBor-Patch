@@ -512,6 +512,16 @@ unsafe fn marth_speciallwexit(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
 }
 
+#[acmd_script( agent = "marth", script = "game_speciallwairenter", category = ACMD_GAME, low_priority )]
+unsafe fn marth_speciallwairenter(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 2.0);
+}
+
+#[acmd_script( agent = "marth", script = "game_speciallwairexit", category = ACMD_GAME, low_priority )]
+unsafe fn marth_speciallwairexit(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 2.0);
+}
+
 pub fn install() {
     install_acmd_scripts!(
         marth_specialnend, marth_specialnend_eff,
@@ -524,5 +534,7 @@ pub fn install() {
         marth_speciallw,
         marth_speciallwenter,
         marth_speciallwexit,
+        marth_speciallwairenter,
+        marth_speciallwairexit
     );
 }

@@ -46,17 +46,9 @@ unsafe extern "C" fn marth_speciallw_enter_pre(fighter: &mut L2CFighterCommon) -
 }
 
 unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("special_lw_enter"),
-        0.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
+    let mot;
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        mot = Hash40::new("special_lw_air_enter");
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -86,9 +78,20 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_AIR_STANCE);
     }
     else {
+        mot = Hash40::new("special_lw_enter");
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_enter_main_loop as *const () as _))
 }
 
@@ -97,7 +100,9 @@ unsafe extern "C" fn marth_speciallw_enter_main_loop(fighter: &mut L2CFighterCom
         return 1.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
+        let mot;
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            mot = Hash40::new("special_lw_air_enter");
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             sv_kinetic_energy!(
@@ -108,9 +113,19 @@ unsafe extern "C" fn marth_speciallw_enter_main_loop(fighter: &mut L2CFighterCom
             );
         }
         else {
+            mot = Hash40::new("special_lw_enter");
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         }
+        MotionModule::change_motion_inherit_frame(
+            fighter.module_accessor,
+            mot,
+            -1.0,
+            1.0,
+            0.0,
+            false,
+            false
+        );
     }
     marth_stance_mot_end_helper(fighter);
     0.into()
@@ -147,17 +162,9 @@ unsafe extern "C" fn marth_speciallw_wait_pre(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn marth_speciallw_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("special_lw_wait"),
-        0.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
+    let mot;
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        mot = Hash40::new("special_lw_air_wait");
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
         sv_kinetic_energy!(
@@ -168,9 +175,20 @@ unsafe extern "C" fn marth_speciallw_wait_main(fighter: &mut L2CFighterCommon) -
         );
     }
     else {
+        mot = Hash40::new("special_lw_wait");
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_wait_main_loop as *const () as _))
 }
 
@@ -192,6 +210,15 @@ unsafe extern "C" fn marth_speciallw_wait_main_loop(fighter: &mut L2CFighterComm
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new("special_lw_air_wait"),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
             sv_kinetic_energy!(
@@ -202,9 +229,32 @@ unsafe extern "C" fn marth_speciallw_wait_main_loop(fighter: &mut L2CFighterComm
             );
         }
         else {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new("special_lw_landing"),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         }
+    }
+    if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw_landing")
+    && MotionModule::is_end(fighter.module_accessor) {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new("special_lw_wait"),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
     }
     0.into()
 }
@@ -382,9 +432,16 @@ unsafe extern "C" fn marth_speciallw_exit_pre(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn marth_speciallw_exit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mot;
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        mot = Hash40::new("special_lw_air_exit");
+    }
+    else {
+        mot = Hash40::new("special_lw_exit");
+    }
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("special_lw_exit"),
+        mot,
         0.0,
         1.0,
         false,
@@ -401,6 +458,24 @@ unsafe extern "C" fn marth_speciallw_exit_main_loop(fighter: &mut L2CFighterComm
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
+    }
+    if StatusModule::is_situation_changed(fighter.module_accessor) {
+        let mot;
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            mot = Hash40::new("special_lw_air_exit");
+        }
+        else {
+            mot = Hash40::new("special_lw_exit");
+        }
+        MotionModule::change_motion_inherit_frame(
+            fighter.module_accessor,
+            mot,
+            -1.0,
+            1.0,
+            0.0,
+            false,
+            false
+        );
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {

@@ -64,14 +64,18 @@ pub mod WarkModule {
 pub mod FGCModule {
     use super::*;
 
+    /// A utility function that just checks if you're within the cancel window or not.
+    pub unsafe fn check_cancel_window(fighter: &mut L2CFighterCommon) -> bool {
+        let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+        let motion_frame = fighter.global_table[MOTION_FRAME].get_f32();
+        motion_frame - hit_frame <= 10.0 && !fighter.global_table[IS_STOP].get_bool() && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
+    }
+
     /// A function used to enable jump-cancels, styled after the special cancel functions that Ryu, Ken, and Terry use.
     pub unsafe fn jump_cancel_check_hit(fighter: &mut L2CFighterCommon, jump_on_block: bool) -> L2CValue {
-        let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && jump_on_block))
-        && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IS_STOP].get_bool()
-        && cancel_timer > 0.0 {
+        && check_cancel_window(fighter) {
             let sit = fighter.global_table[SITUATION_KIND].get_i32();
             jump_cancel_common(fighter, sit.into())
         }
@@ -91,7 +95,6 @@ pub mod FGCModule {
         let dir;
         let cat;
         let status;
-        let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if reverse {
             dir = 4;
             cat = *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH;
@@ -104,9 +107,7 @@ pub mod FGCModule {
         }
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
-        && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IS_STOP].get_bool()
-        && cancel_timer > 0.0
+        && check_cancel_window(fighter)
         && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
         && get_command_stick_direction(fighter, true) == dir {
             StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
@@ -117,12 +118,10 @@ pub mod FGCModule {
 
     /// Used to check air dash cancels. This is set-up so you can only air dash, not air dodge.
     pub unsafe fn air_dash_cancel_check(fighter: &mut L2CFighterCommon, on_block: bool) -> L2CValue {
-        let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         let sit = fighter.global_table[SITUATION_KIND].get_i32();
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (on_block && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
-        && !fighter.global_table[IS_STOP].get_bool()
-        && cancel_timer > 0.0 {
+        && check_cancel_window(fighter) {
             if airdash_cancel_common(fighter, sit.into()).get_bool() {
                 WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE);
                 return true.into();
@@ -149,13 +148,10 @@ pub mod FGCModule {
     /// ```
     pub unsafe fn cancel_exceptions(fighter: &mut L2CFighterCommon, next_status: i32, cat1_compare: i32, on_hit: bool) -> L2CValue {
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
-        let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if !on_hit
         || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-        && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IS_STOP].get_bool()
-        && cancel_timer > 0.0) {
+        && check_cancel_window(fighter)) {
             if (cat1 & cat1_compare) != 0 {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, next_status, true);
                 return true.into();
@@ -182,12 +178,10 @@ pub mod FGCModule {
     /// ```
     pub unsafe fn chain_cancels(fighter: &mut L2CFighterCommon, cat1_compare: i32, on_hit: bool, counter: i32, max: i32) -> L2CValue {
         let cat1 = ControlModule::get_command_flag_cat(fighter.module_accessor, 0);
-        let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if !on_hit
         || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-        && !fighter.global_table[IS_STOP].get_bool()
-        && cancel_timer > 0.0) {
+        && check_cancel_window(fighter)) {
             let count = WorkModule::get_int(fighter.module_accessor, counter) + 1;
             if (cat1 & cat1_compare) != 0
             && count <= max {
@@ -207,12 +201,9 @@ pub mod FGCModule {
     /// * `aerial_cancel` - Checks if you can cancel into an aerial.
     /// * `jump_cancel` - Checks if you can jump-cancel. 0 = None | 1 = On Hit | 2 = On Hit or Block
     pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) {
-        let cancel_timer = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
-        && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
-        && !fighter.global_table[IS_STOP].get_bool()
-        && cancel_timer > 0.0 {
+        && check_cancel_window(fighter) {
             if jump_cancel != 0
             && jump_cancel_check_hit(fighter, jump_cancel == 2).get_bool() {
                 return;

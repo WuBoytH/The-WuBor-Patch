@@ -51,6 +51,33 @@ unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
+    let frame = fighter.global_table[MOTION_FRAME].get_f32();
+    let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+
+    if frame < hit_frame {
+        WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    }
+
+    if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+    || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+        WorkModule::set_float(fighter.module_accessor, frame, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+    }
+}
+
+unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
+    if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN) > 0.0
+    && !fighter.global_table[IS_STOP].get_bool() {
+        WarkModule::count_down(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN, 1.0);
+    }
+
+    if fighter.global_table[STICK_Y].get_f32() < -0.5
+    && fighter.global_table[FLICK_Y].get_i32() == 1
+    && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0 {
+        WorkModule::set_float(fighter.module_accessor, 7.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN);
+    }
+}
+
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback]
 fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
@@ -58,31 +85,8 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
 
         fgc_setup(fighter);
         fgc_frame(fighter);
-
-        // Checks what frame you hit the opponent.
-
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER) > 0.0
-        && !fighter.global_table[IS_STOP].get_bool() {
-            WarkModule::count_down(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER, 1.0);
-        }
-
-        if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            WorkModule::set_float(fighter.module_accessor, 10.0, FIGHTER_STATUS_WORK_ID_FLOAT_CANCEL_TIMER);
-        }
-        
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN) > 0.0
-        && !fighter.global_table[IS_STOP].get_bool() {
-            WarkModule::count_down(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN, 1.0);
-        }
-
-        if fighter.global_table[STICK_Y].get_f32() < -0.5
-        && fighter.global_table[FLICK_Y].get_i32() == 1
-        && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0 {
-            WorkModule::set_float(fighter.module_accessor, 7.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN);
-        }
-
-        // global_command_inputs(fighter);
+        hit_cancel_frame_set(fighter);
+        special_jump_stick_flick(fighter);
     }
 }
 

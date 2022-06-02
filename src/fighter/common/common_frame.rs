@@ -82,7 +82,6 @@ unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
 #[fighter_frame_callback]
 fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-
         fgc_setup(fighter);
         fgc_frame(fighter);
         hit_cancel_frame_set(fighter);

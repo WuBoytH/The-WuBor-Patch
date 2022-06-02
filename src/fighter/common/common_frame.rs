@@ -6,7 +6,7 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    smash_script::*,
+    // smash_script::*,
     smashline::*,
     super::{
         // command_inputs::*,
@@ -81,30 +81,6 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
         && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0 {
             WorkModule::set_float(fighter.module_accessor, 7.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN);
         }
-
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME) > 0.0
-        && !fighter.global_table[IS_STOP].get_bool() {
-            WarkModule::count_down(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME, 1.0);
-        }
-
-        if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_JUMP_SQUAT
-        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP)
-        && WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME) <= 0.0 {
-            let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -air_accel_y
-            );
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
-            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
-        }
-
-        // if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS) != 0b0000000
-        // && CancelModule::is_enable_cancel(fighter.module_accessor) {
-        //     WorkModule::set_int(fighter.module_accessor, 0b0000000, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
-        // }
 
         // global_command_inputs(fighter);
     }

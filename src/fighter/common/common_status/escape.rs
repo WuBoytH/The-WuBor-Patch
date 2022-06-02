@@ -16,28 +16,6 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_common_initStatus_common)]
 unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -common_param::jump::super_jump_gravity
-        );
-        if [
-            *FIGHTER_KIND_NESS, *FIGHTER_KIND_LUCAS, *FIGHTER_KIND_MEWTWO
-        ].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
-            let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            let super_jump_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
-            let ratio = super_jump_frame / 10.0;
-            let floaty_bastard_mul = 1.0 - (0.36 * ratio);
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                speed_y * floaty_bastard_mul
-            );
-        }
-    }
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
         sv_kinetic_energy!(
             clear_speed_ex,
@@ -54,6 +32,28 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         if escape_air_slide_stick <= length
         || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+        }
+        else if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                -common_param::jump::super_jump_gravity
+            );
+            if [
+                *FIGHTER_KIND_NESS, *FIGHTER_KIND_LUCAS, *FIGHTER_KIND_MEWTWO
+            ].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+                let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
+                let super_jump_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+                let ratio = super_jump_frame / 10.0;
+                let floaty_bastard_mul = 1.0 - (0.36 * ratio);
+                sv_kinetic_energy!(
+                    set_speed,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    speed_y * floaty_bastard_mul
+                );
+            }
         }
         if prev_status != *FIGHTER_STATUS_KIND_DAMAGE_FALL {
             if prev_status == *FIGHTER_STATUS_KIND_TREAD_FALL {
@@ -470,6 +470,20 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
 unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+        let super_jump_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+        if fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 - super_jump_frame {
+            let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                -air_accel_y
+            );
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+        }
+    }
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return true.into();
     }
@@ -754,6 +768,8 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE);
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+    WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
     0.into()
 }
 

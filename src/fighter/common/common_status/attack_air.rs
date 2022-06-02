@@ -51,6 +51,20 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
 unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+        let super_jump_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+        if fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 - super_jump_frame {
+            let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+            sv_kinetic_energy!(
+                set_accel,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                -air_accel_y
+            );
+            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
+        }
+    }
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_AIR_ATTACK_WHIFF);
@@ -91,6 +105,8 @@ unsafe fn bind_address_call_status_end_attackair(fighter: &mut L2CFighterCommon,
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
         FGCModule::reset_used_aerials(fighter);
     }
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+    WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
     0.into()
 }
 
@@ -99,6 +115,8 @@ unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CA
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
         FGCModule::reset_used_aerials(fighter);
     }
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+    WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_INSTANCE_WORK_ID_FLOAT_SUPER_JUMP_FRAME);
     0.into()
 }
 

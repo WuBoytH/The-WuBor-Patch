@@ -265,11 +265,7 @@ unsafe extern "C" fn bayonetta_specialairs_d_main_loop(fighter: &mut L2CFighterC
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn bayonetta_specialairs_d_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("special_air_s_d_landing"));
-    let used_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_INT_SPECIAL_AIR_S_USED_COUNT);
-    let rate = match used_count {
-        0 | 1 => end_frame / 40.0,
-        _ => end_frame / 50.0
-    };
+    let rate = end_frame / 40.0;
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_s_d_landing"),

@@ -16,13 +16,13 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     fighter.clear_lua_stack();
     lua_args!(fighter, 0xba5d667d4 as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
-    let pop1 = fighter.pop_lua_stack(1).get_f32();
-    // println!("damage log value 0xba5d667d4: {}", pop1);
+    let damage_speed_x = fighter.pop_lua_stack(1).get_f32();
+    // println!("damage log value speed x probably: {}", damage_speed_x);
     fighter.clear_lua_stack();
     lua_args!(fighter, 0xbd2d15742 as u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
-    let pop2 = fighter.pop_lua_stack(1).get_f32();
-    // println!("damage log value 0xbd2d15742: {}", pop2);
+    let damage_speed_y = fighter.pop_lua_stack(1).get_f32();
+    // println!("damage log value speed y probably: {}", damage_speed_y);
     fighter.clear_lua_stack();
     lua_args!(fighter, hash40("attr"));
     sv_information::damage_log_value(fighter.lua_state_agent);
@@ -54,14 +54,18 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     // println!("damage log value angle: {}", angle);
     let degrees = angle.to_degrees();
     // println!("degrees: {}", degrees);
-    fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
+    // let speed_vector = sv_math::vec2_length(damage_speed_x, damage_speed_y);
+    // println!("speed vector: {}", speed_vector);
+    // if speed_vector >= 3.5 {
+        fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
+    // }
     let damage_cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_cliff_no_catch_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);
     let cursor_fly_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cursor_fly_speed"));
     // println!("cursor_fly_speed: {}", cursor_fly_speed);
-    let pop1squared = pop1 * pop1;
+    let pop1squared = damage_speed_x * damage_speed_x;
     // println!("pop1squared: {}", pop1squared);
-    let pop2squared = pop2 * pop2;
+    let pop2squared = damage_speed_y * damage_speed_y;
     // println!("pop2squared: {}", pop2squared);
     let combined = pop1squared + pop2squared;
     let cursor_fly_speed_squared = cursor_fly_speed * cursor_fly_speed;

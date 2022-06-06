@@ -110,48 +110,47 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 1.into();
     }
     
-    if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
-        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
+        fighter.change_status(FIGHTER_STATUS_KIND_JUMP.into(), false.into());
+        return 0.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL)
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+        return 0.into();
+    }
+    if fighter.sub_transition_group_check_ground_item().get_bool() == false {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
+        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
+        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
             return 0.into();
         }
-        if fighter.sub_transition_group_check_ground_item().get_bool() == false {
-            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
-            && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-            && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
-                return 0.into();
-            }
-            if fighter.sub_transition_specialflag_hoist().get_bool() == false {
-                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-                && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) == false {
-                    if fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_bool() != false && {
-                        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_ptr());
-                        callable(fighter).get_bool()
-                    } {
-                        return 1.into();
-                    }
-                    if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
-                    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                        fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI4_START.into(), true.into());
-                        return 0.into();
-                    }
+        if fighter.sub_transition_specialflag_hoist().get_bool() == false {
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
+            && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) == false {
+                if fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_bool() != false && {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_ptr());
+                    callable(fighter).get_bool()
+                } {
+                    return 0.into();
                 }
-                if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
-                && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+                if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
                 && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-                    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1daca540be));
-                    if fighter.pop_lua_stack(1).get_bool() {
-                        fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
-                        return 0.into();
-                    }
+                    fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI4_START.into(), true.into());
+                    return 0.into();
+                }
+            }
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U)
+            && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+            && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1daca540be));
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_APPEAL.into(), false.into());
+                    return 0.into();
                 }
             }
         }
-    }
-    else {
-        fighter.change_status(FIGHTER_STATUS_KIND_JUMP.into(), false.into());
     }
     0.into()
 }

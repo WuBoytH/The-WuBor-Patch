@@ -152,19 +152,14 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
-    if prev_status != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
-        if dolly_hit_cancel(fighter).get_i32() == 1
-        || dolly_attack_start_cancel(fighter).get_i32() == 1 {
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
+        if dolly_hit_cancel(fighter).get_i32() == 1 {
             return 1.into();
         }
     }
-    else if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-    && !fighter.global_table[IS_STOP].get_bool()
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
-        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
-        if fighter.sub_transition_group_check_ground_special().get_bool() {
+    else if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+        if dolly_hit_cancel(fighter).get_i32() == 1
+        || dolly_attack_start_cancel(fighter).get_i32() == 1 {
             return 1.into();
         }
     }
@@ -202,10 +197,14 @@ unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND);
     }
+
     if ![
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND
     ].contains(&status) {
-        EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
+            EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+        }
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE);
     }
     fighter.status_end_AttackDash();
     0.into()
@@ -757,7 +756,10 @@ unsafe fn dolly_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_specialhi_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP {
-        EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
+            EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+        }
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE);
     }
     dolly_specialhi_end_main(fighter)
 }
@@ -783,7 +785,10 @@ unsafe fn dolly_specialhi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
     ItemModule::set_change_status_event(fighter.module_accessor, true);
-    EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
+        EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+    }
+    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE);
     0.into()
 }
 
@@ -871,7 +876,11 @@ unsafe fn dolly_superspecial2_blow_end(fighter: &mut L2CFighterCommon) -> L2CVal
     if ![
         *FIGHTER_STATUS_KIND_ATTACK_DASH
     ].contains(&status) {
+        WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE);
         EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
+    }
+    else {
+        WorkModule::on_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE);
     }
     WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
     0.into()

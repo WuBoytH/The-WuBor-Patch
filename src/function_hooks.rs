@@ -541,7 +541,7 @@ unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
         value += 0x1;
     }
     else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x2;
+        value += 0x3;
     }
     else if str.contains("FIGHTER_DOLLY_STATUS_SPECIAL_N_TERM") {
         value += 0x1;

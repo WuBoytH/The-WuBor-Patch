@@ -63,7 +63,7 @@ unsafe fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         set_speed_mul,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        1.25
+        1.5
     );
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);
@@ -102,21 +102,19 @@ unsafe extern "C" fn kirby_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
         }
     }
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
-    // new stuff
-    if StatusModule::is_situation_changed(fighter.module_accessor) {
-        if situation != *SITUATION_KIND_GROUND {
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        }
-        else {
-            GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
-        }
-    }
     if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_DASH_FLAG_END) {
-        if situation == *SITUATION_KIND_GROUND {
-            GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        }
-        else {
+        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+        if situation != *SITUATION_KIND_GROUND {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+            fighter.clear_lua_stack();
+            lua_args!(fighter, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+            let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                *FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                speed_x * 0.5
+            );
         }
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_DASH_FLAG_END);
     }

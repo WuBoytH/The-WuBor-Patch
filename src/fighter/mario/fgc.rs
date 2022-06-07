@@ -10,8 +10,7 @@ use {
         wua_bind::*,
         vars::*,
         table_const::*
-    },
-    super::vars::*
+    }
 };
 
 pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
@@ -85,7 +84,7 @@ pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
             ].to_vec();
         }
         else if status == *FIGHTER_STATUS_KIND_SPECIAL_N {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL) {
+            if VarModule::is_flag(fighter.battle_object, mario::special_n::flag::FGC_CANCEL) {
                 FGCModule::jump_cancel_check_exception(fighter);
             }
         }

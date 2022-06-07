@@ -5,12 +5,13 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{helper::*, vars::*}
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::helper::*
 };
 
 unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S) {
+    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::DISABLE_SPECIAL_N_S) {
         return 0.into();
     }
     1.into()
@@ -22,12 +23,12 @@ unsafe extern "C" fn yu_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CVal
 
 unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut ret = false;
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND);
+    VarModule::off_flag(fighter.battle_object, yu::instance::flag::COMMAND);
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();
     if !ret
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SUPER_SPECIAL2_COMMAND != 0
-    && spent_meter_super(fighter.module_accessor)
+    && spent_meter_super(fighter.battle_object)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2) {
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4.into(), true.into());
         ret = true;
@@ -56,7 +57,7 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
         ret = true;
     }
     if ret {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND);
+        VarModule::on_flag(fighter.battle_object, yu::instance::flag::COMMAND);
     }
     ret.into()
 }
@@ -69,7 +70,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             return;
         }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
-        WorkModule::set_float(fighter.module_accessor, 100.0, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
+        VarModule::set_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX, 100.0);
         fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));

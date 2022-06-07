@@ -130,6 +130,97 @@ pub mod appeal {
     }
 }
 
+pub mod yu { // lucina
+    use super::*;
+    
+    pub mod instance {
+        pub mod flag {
+            pub const DISABLE_SPECIAL_N_S : i32 = 0x0100;
+            pub const AWAKENING : i32 = 0x0101;
+            pub const SHADOW_FRENZY : i32 = 0x0102;
+            pub const ROMAN_ON_HIT : i32 = 0x0103;
+            pub const HEROIC_GRAB : i32 = 0x0104;
+            pub const COMMAND : i32 = 0x0105;
+        }
+        pub mod int {
+            pub const SP_LEVEL : i32 = 0x0100;
+            pub const SP_EFFECT_TIMER : i32 = 0x0101;
+            pub const SP_FLASH_TIMER : i32 = 0x0102;
+            pub const SP_GLOW_TIMER : i32 = 0x0103;
+            pub const SHADOW_EFF_ID : i32 = 0x0104;
+        }
+        pub mod float {
+            pub const SP_GAUGE : i32 = 0x0100;
+            pub const SPENT_SP : i32 = 0x0101;
+            pub const SP_GAUGE_MAX : i32 = 0x0102;
+            pub const SP_GAIN_PENALTY : i32 = 0x0103;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const IS_EX : i32 = 0x1100;
+            pub const CAN_ONE_MORE : i32 = 0x1101;
+            pub const ATTACK_DASH_BIG_GAMBLE : i32 = 0x1102;
+            pub const SPECIAL_LW_DECIDE_ROMAN_DIREC : i32 = 0x1103;
+            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1104;
+        }
+        pub mod float {
+            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1100;
+        }
+    }
+
+    pub const SP_1 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -6.0};
+    pub const SP_2 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: -2.0};
+    pub const SP_3 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 2.0};
+    pub const SP_4 : Vector3f = Vector3f{x: 0.0, y: 22.0, z: 6.0};
+    pub const SP_5 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: -2.0};
+    pub const SP_6 : Vector3f = Vector3f{x: 0.0, y: 27.0, z: 2.0};
+
+    pub static YU_AUDIO: [&'static str; 36] = ["appeal01", "appeal02", "attack01", "attack02", "attack03", "attack04", "attack05", "attack06", "attack07", "cliffcatch", "damage_twinkle", "damage01", "damage02", "damage03", "damagefly01", "damagefly02", "final", "furafura", "furasleep", "heavyget", "jump01", "missfoot01", "missfoot02", "ottotto", "passive", "special_h01", "special_l01", "special_l02", "special_n01", "swimup", "win01", "win02", "win03", "win_marth", "win_ike", "knockout"];
+    pub static YU_SEQ: [&'static str; 8] = ["attack", "special_n", "special_l", "special_h", "futtobi01", "futtobi02", "jump", "ottotto"];
+}
+
+pub mod luigi {
+    pub mod instance {
+        pub mod flag {
+            pub const SPECIAL_HI_CANCEL : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod mario {
+    pub mod instance {
+        pub mod flag {
+            pub const SPECIAL_LW_BLJ_PREV : i32 = 0x0100;
+        }
+        pub mod int {
+            pub const SPECIAL_LW_KIND : i32 = 0x0100;
+        }
+    }
+    pub mod special_n {
+        pub mod flag {
+            pub const FGC_CANCEL : i32 = 0x1100;
+        }
+    }
+    pub mod special_lw {
+        pub mod flag {
+            pub const LANDING : i32 = 0x1100;
+            pub const BLJ : i32 = 0x1101;
+        }
+        pub mod int {
+            pub const LONG_JUMP_KIND : i32 = 0x1100;
+        }
+    }
+    pub const SPECIAL_LW_KIND_LONG_JUMP : i32 = 0;
+    pub const SPECIAL_LW_KIND_GROUND_POUND : i32 = 1;
+    pub const SPECIAL_LW_KIND_GROUND_POUND_CANCEL : i32 = 2;
+
+    pub const LONG_JUMP_W : i32 = 0;
+    pub const LONG_JUMP_M : i32 = 1;
+    pub const LONG_JUMP_S : i32 = 2;
+    pub const LONG_JUMP_B : i32 = 3;
+}
+
 pub mod marth {
     pub mod instance {
         pub mod flag {

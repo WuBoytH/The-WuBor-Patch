@@ -758,7 +758,7 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
             );
         }
         else {
-            let landing_frame_escape_air = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air"));
+            let landing_frame_escape_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("landing_frame_escape_air"));
             WorkModule::set_float(fighter.module_accessor, landing_frame_escape_air, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         }
         if status == *FIGHTER_STATUS_KIND_LANDING {

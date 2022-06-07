@@ -8,7 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_MARIO )]
@@ -30,7 +31,7 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT,
                 *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE
             ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
-                WorkModule::set_int(fighter.module_accessor, FIGHTER_MARIO_SPECIAL_LW_KIND_LONG_JUMP, FIGHTER_MARIO_INSTANCE_WORK_ID_INT_SPECIAL_LW_KIND);
+                VarModule::set_int(fighter.battle_object, mario::instance::int::SPECIAL_LW_KIND, mario::SPECIAL_LW_KIND_LONG_JUMP);
             }
         }
     }

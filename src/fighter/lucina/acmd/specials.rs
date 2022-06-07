@@ -7,11 +7,11 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::wua_bind::*,
+    custom_var::*,
+    wubor_utils::{vars::*, wua_bind::*},
     super::super::{
         vl,
-        helper::*,
-        vars::*
+        helper::*
     }
 };
 
@@ -120,17 +120,17 @@ unsafe fn lucina_specialnendmax(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_specialairs1(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
-    && spent_meter(fighter.module_accessor, false) {
-        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND)
+    && spent_meter(fighter.battle_object, false) {
+        let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.battle_object, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::IS_EX);
         sp_diff_checker(fighter.module_accessor);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX)
+        VarModule::off_flag(fighter.battle_object, yu::status::flag::IS_EX);
     }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -159,7 +159,7 @@ unsafe fn lucina_specialairs2hi(fighter: &mut L2CAgentBase) {
         let kbg : i32;
         let velx : f32;
         let vely : f32;
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             dmg = 16.0;
             kbg = 90;
             velx = vl::param_special_s::dive_speed_x_ex;
@@ -253,22 +253,22 @@ unsafe fn lucina_specials2hi_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_specialhi(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
-    && spent_meter(fighter.module_accessor, false) {
-        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND)
+    && spent_meter(fighter.battle_object, false) {
+        let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.battle_object, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::IS_EX);
         sp_diff_checker(fighter.module_accessor);
         full_invuln(fighter.module_accessor, true);
         macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+        VarModule::off_flag(fighter.battle_object, yu::status::flag::IS_EX);
         upper_invuln(fighter.module_accessor, true);
     }
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
         frame(fighter.lua_state_agent, 10.0);
         macros::FT_MOTION_RATE(fighter, 1.0);
         if macros::is_excute(fighter) {
@@ -340,7 +340,7 @@ unsafe fn lucina_specialhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucina", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_specialhi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(fighter.lua_state_agent, 8.0);
@@ -357,7 +357,7 @@ unsafe fn lucina_specialhi_eff(fighter: &mut L2CAgentBase) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("lucina_dolphin_jump"), -1);
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("lucina_dolphin_swing"), -1);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_dolphin_shadow"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
         }
@@ -393,7 +393,7 @@ unsafe fn lucina_specialhi_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         }
         else {
@@ -402,7 +402,7 @@ unsafe fn lucina_specialhi_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         }
         else {
@@ -413,27 +413,27 @@ unsafe fn lucina_specialhi_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_specialairhi(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND)
-    && spent_meter(fighter.module_accessor, false) {
-        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND)
+    && spent_meter(fighter.battle_object, false) {
+        let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.battle_object, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::IS_EX);
         sp_diff_checker(fighter.module_accessor);
         full_invuln(fighter.module_accessor, true);
         macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+        VarModule::off_flag(fighter.battle_object, yu::status::flag::IS_EX);
     }
     frame(fighter.lua_state_agent, 3.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+    if !VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
         if macros::is_excute(fighter) {
             upper_invuln(fighter.module_accessor, true);
         }
     }
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
         frame(fighter.lua_state_agent, 10.0);
         macros::FT_MOTION_RATE(fighter, 1.0);
         if macros::is_excute(fighter) {
@@ -505,7 +505,7 @@ unsafe fn lucina_specialairhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucina", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_specialairhi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
     frame(fighter.lua_state_agent, 8.0);
@@ -522,7 +522,7 @@ unsafe fn lucina_specialairhi_eff(fighter: &mut L2CAgentBase) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("lucina_dolphin_jump"), -1);
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("lucina_dolphin_swing"), -1);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_dolphin_shadow"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
             EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
         }
@@ -558,7 +558,7 @@ unsafe fn lucina_specialairhi_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         }
         else {
@@ -567,7 +567,7 @@ unsafe fn lucina_specialairhi_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
         }
         else {
@@ -580,14 +580,14 @@ unsafe fn lucina_specialairhi_exp(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
+        let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);
         sp_diff_checker(fighter.module_accessor);
         JostleModule::set_status(fighter.module_accessor, false);
         KineticModule::unable_energy_all(fighter.module_accessor);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
+        if VarModule::is_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT) {
+            VarModule::off_flag(fighter.battle_object, yu::instance::flag::DISABLE_SPECIAL_N_S);
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 20.0, 0.0, 10.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
             full_invuln(fighter.module_accessor, true);
         }
@@ -598,11 +598,11 @@ unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_DECIDE_ROMAN_DIREC);
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
     }
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE);
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_ROMAN_MOVE);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 35.0, 0.0, 10.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
     }
     wait(fighter.lua_state_agent, 1.0);
@@ -613,8 +613,8 @@ unsafe fn lucina_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 21.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_ROMAN_ON_HIT) {
+        VarModule::off_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_ROMAN_MOVE);
+        if VarModule::is_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT) {
             full_invuln(fighter.module_accessor, false);
         }
     }
@@ -651,8 +651,8 @@ unsafe fn lucina_speciallw_hit(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 80, 60, 80, 30, 15.0, 0.0, 15.0, 0.0, None, None, None, 2.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 30.0, false);
         AttackModule::set_force_reaction(fighter.module_accessor, 0, true, false);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
+        VarModule::on_flag(fighter.battle_object, yu::instance::flag::SHADOW_FRENZY);
+        VarModule::off_flag(fighter.battle_object, yu::instance::flag::DISABLE_SPECIAL_N_S);
         sp_diff_checker(fighter.module_accessor);
     }
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -678,8 +678,8 @@ unsafe fn lucina_specialairlw_hit(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.0, 85, 60, 80, 35, 15.0, 0.0, 15.0, 0.0, None, None, None, 2.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 30.0, false);
         AttackModule::set_force_reaction(fighter.module_accessor, 0, true, false);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_SHADOW_FRENZY);
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N_S);
+        VarModule::on_flag(fighter.battle_object, yu::instance::flag::SHADOW_FRENZY);
+        VarModule::off_flag(fighter.battle_object, yu::instance::flag::DISABLE_SPECIAL_N_S);
         sp_diff_checker(fighter.module_accessor);
     }
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -732,21 +732,22 @@ unsafe fn lucina_speciallw_hit_exp(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
     let mut dmg : f32;
     let kbg : i32;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_COMMAND) {
-        let spent = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SPENT_SP);
-        let meter_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE_MAX);
-        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, FIGHTER_YU_INSTANCE_WORK_ID_FLOAT_SP_GAUGE);
-        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_YU_INSTANCE_WORK_ID_INT_SP_FLASH_TIMER);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND)
+    && spent_meter(fighter.battle_object, false) {
+        let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.battle_object, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::IS_EX);
         sp_diff_checker(fighter.module_accessor);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX);
+        VarModule::off_flag(fighter.battle_object, yu::status::flag::IS_EX);
     }
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0/3.0);
     frame(fighter.lua_state_agent, 15.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
         macros::FT_MOTION_RATE(fighter, 0.2);
     }
     else {
@@ -761,7 +762,7 @@ unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 44.0);
     if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_YU_STATUS_FLAG_IS_EX) {
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             dmg = 13.0;
             kbg = 60;
         }

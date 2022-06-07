@@ -10,20 +10,19 @@ use {
             gaogaen::helper::*,
             kamui::vars::*,
             ken::{helper::*, vars::*},
-            lucina::{helper::*, vars::*},
-            mario::vars::*,
+            lucina::helper::*,
             *
         }
     },
     custom_var::*,
-    wubor_utils::vars::*,
+    wubor_utils::vars,
     skyline::hooks::{
         getRegionAddress,
         Region
     }
 };
 
-#[skyline::hook(offset = NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
+#[skyline::hook(offset = vars::NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET)]
 pub unsafe fn notify_log_event_collision_hit_replace(
 fighter_manager: &mut FighterManager,
 attacker_object_id: u32,
@@ -43,17 +42,17 @@ move_type_again: bool) -> u64 {
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if attacker_fighter_kind == *FIGHTER_KIND_KEN {
             if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                VarModule::set_int(attacker_object, commons::instance::int::TARGET_ID, defender_object_id as i32);
+                VarModule::set_int(attacker_object, vars::commons::instance::int::TARGET_ID, defender_object_id as i32);
             }
             else {
-                VarModule::set_int(attacker_object, commons::instance::int::TARGET_ID, 0);
+                VarModule::set_int(attacker_object, vars::commons::instance::int::TARGET_ID, 0);
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
             if StatusModule::status_kind(attacker_boma) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
                 let slow_mul;
                 let frames;
-                if WorkModule::is_flag(attacker_boma, FIGHTER_YU_STATUS_SPECIAL_LW_FLAG_ROMAN_MOVE) {
+                if VarModule::is_flag(attacker_object, vars::yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
                     slow_mul = lucina::vl::param_special_lw::onemore_slowdown_mul;
                     frames = lucina::vl::param_special_lw::onemore_slowdown_frame;
                     SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -68,12 +67,12 @@ move_type_again: bool) -> u64 {
     }
     if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if defender_fighter_kind == *FIGHTER_KIND_RYU {
-            if VarModule::is_flag(defender_object, wubor_utils::vars::ryu::instance::flag::SEC_SEN_STATE) {
+            if VarModule::is_flag(defender_object, vars::ryu::instance::flag::SEC_SEN_STATE) {
                 let target_x;
                 let target_y;
                 if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
                 || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, attacker_object_id as i32);
+                    VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, attacker_object_id as i32);
                     target_x = PostureModule::pos_x(attacker_boma);
                     target_y = PostureModule::pos_y(attacker_boma);
                     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -86,12 +85,12 @@ move_type_again: bool) -> u64 {
                     if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                         target_x = PostureModule::pos_x(defender_boma);
                         target_y = PostureModule::pos_y(defender_boma);
-                        VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0);
+                        VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, 0);
                     }
                     else {
                         target_x = PostureModule::pos_x(oboma);
                         target_y = PostureModule::pos_y(oboma);
-                        VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, otarget_id as i32);
+                        VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, otarget_id as i32);
                         if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                             JostleModule::set_status(&mut *oboma, false);
                         }
@@ -100,11 +99,11 @@ move_type_again: bool) -> u64 {
                 else {
                     target_x = PostureModule::pos_x(defender_boma);
                     target_y = PostureModule::pos_y(defender_boma);
-                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0);
+                    VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, 0);
                 }
-                VarModule::set_float(defender_object, wubor_utils::vars::ryu::instance::float::TARGET_X, target_x);
-                VarModule::set_float(defender_object, wubor_utils::vars::ryu::instance::float::TARGET_Y, target_y);
-                VarModule::on_flag(defender_object, wubor_utils::vars::ryu::instance::flag::SECRET_SENSATION);
+                VarModule::set_float(defender_object, vars::ryu::instance::float::TARGET_X, target_x);
+                VarModule::set_float(defender_object, vars::ryu::instance::float::TARGET_Y, target_y);
+                VarModule::on_flag(defender_object, vars::ryu::instance::flag::SECRET_SENSATION);
             }
         }
         // else if defender_fighter_kind == *FIGHTER_KIND_KEN {
@@ -116,27 +115,27 @@ move_type_again: bool) -> u64 {
         else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, attacker_object_id as i32);
+                VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, attacker_object_id as i32);
             }
             else if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
                 let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
                 let oboma = sv_battle_object::module_accessor(otarget_id);
                 if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0)
+                    VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, 0)
                 }
                 else {
-                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, otarget_id as i32);
+                    VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, otarget_id as i32);
                 }
             }
             else {
-                VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0)
+                VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, 0)
             }
         }
     }
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
-            let oboma = sv_battle_object::module_accessor((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
-            WorkModule::on_flag(oboma, FIGHTER_MARIO_STATUS_SPECIAL_N_FLAG_FGC_CANCEL);
+            let object = sv_system::battle_object((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u64);
+            VarModule::on_flag(object, vars::mario::special_n::flag::FGC_CANCEL);
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
@@ -186,7 +185,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     let object = sv_system::battle_object(object_id as u64);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if fighter_kind == *FIGHTER_KIND_LUCINA { // Make this a custom command grab
-            if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB)
+            if VarModule::is_flag(object, vars::yu::instance::flag::HEROIC_GRAB)
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3
@@ -195,7 +194,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         else if fighter_kind == *FIGHTER_KIND_RYU { // make secret sensation its own status
-            if VarModule::is_flag(object, wubor_utils::vars::ryu::instance::flag::SEC_SEN_CAMERA) {
+            if VarModule::is_flag(object, vars::ryu::instance::flag::SEC_SEN_CAMERA) {
                 return false;
             }
         }
@@ -203,7 +202,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     return ret;
 }
 
-#[skyline::hook(offset = FLOAT_OFFSET)]
+#[skyline::hook(offset = vars::FLOAT_OFFSET)]
 pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> f32 {
     let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let object_id = (*boma).battle_object_id;
@@ -228,7 +227,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
         else if fighter_kind == *FIGHTER_KIND_LUCARIO {
             if param_hash == 0x189cd804c5 {
-                if VarModule::is_flag(object, commons::instance::flag::IS_FGC) {
+                if VarModule::is_flag(object, vars::commons::instance::flag::IS_FGC) {
                     return 1.0;
                 }
             }
@@ -265,10 +264,12 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 #[skyline::hook(replace = WorkModule::get_int64 )]
 pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> u64 {
     let ret = original!()(boma,term);
+    let object_id = (*boma).battle_object_id;
+    let object = sv_system::battle_object(object_id as u64);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
         && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
-            if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB) {
+            if VarModule::is_flag(object, vars::yu::instance::flag::HEROIC_GRAB) {
                 return hash40("throw_hi");
             }
         }
@@ -291,8 +292,8 @@ unsafe fn play_se_replace(lua_state: u64) {
         l2c_agent.clear_lua_stack();
         let mut new_se = se.get_int();
         for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + vars::yu::YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + vars::yu::YU_AUDIO[i]));
                 break;
             }
         }
@@ -312,8 +313,8 @@ pub unsafe fn play_sequence_replace(lua_state: u64) -> u64 {
         l2c_agent.clear_lua_stack();
         let mut new_seq = seq.get_int();
         for i in 0..8 {
-            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + vars::yu::YU_SEQ[i])) {
+                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + vars::yu::YU_SEQ[i]));
                 break;
             }
         }
@@ -335,11 +336,11 @@ pub unsafe fn play_fly_voice_replace(lua_state: u64) -> u64 {
         let mut new_seq = seq.get_int();
         let mut new_seq2 = seq2.get_int();
         for i in 0..8 {
-            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            if seq.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + vars::yu::YU_SEQ[i])) {
+                new_seq = hash40(&("seq_shadow_rnd_".to_owned() + vars::yu::YU_SEQ[i]));
             }
-            if seq2.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + YU_SEQ[i])) {
-                new_seq2 = hash40(&("seq_shadow_rnd_".to_owned() + YU_SEQ[i]));
+            if seq2.get_int() == hash40(&("seq_lucina_rnd_".to_owned() + vars::yu::YU_SEQ[i])) {
+                new_seq2 = hash40(&("seq_shadow_rnd_".to_owned() + vars::yu::YU_SEQ[i]));
             }
         }
         l2c_agent.push_lua_stack(&mut L2CValue::new_int(new_seq2));
@@ -360,8 +361,8 @@ unsafe fn play_status_replace(lua_state: u64) {
         l2c_agent.clear_lua_stack();
         let mut new_se = se.get_int();
         for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + vars::yu::YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + vars::yu::YU_AUDIO[i]));
                 break;
             }
         }
@@ -381,8 +382,8 @@ unsafe fn play_down_se_replace(lua_state: u64) {
         l2c_agent.clear_lua_stack();
         let mut new_se = se.get_int();
         for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + vars::yu::YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + vars::yu::YU_AUDIO[i]));
                 break;
             }
         }
@@ -402,8 +403,8 @@ unsafe fn play_se_remain_replace(lua_state: u64) {
         l2c_agent.clear_lua_stack();
         let mut new_se = se.get_int();
         for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + vars::yu::YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + vars::yu::YU_AUDIO[i]));
                 break;
             }
         }
@@ -423,8 +424,8 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
         l2c_agent.clear_lua_stack();
         let mut new_se = se.get_int();
         for i in 0..36 {
-            if se.get_int() == hash40(&("vc_lucina_".to_owned() + YU_AUDIO[i])) {
-                new_se = hash40(&("vc_shadow_".to_owned() + YU_AUDIO[i]));
+            if se.get_int() == hash40(&("vc_lucina_".to_owned() + vars::yu::YU_AUDIO[i])) {
+                new_se = hash40(&("vc_shadow_".to_owned() + vars::yu::YU_AUDIO[i]));
                 break;
             }
         }
@@ -499,7 +500,7 @@ pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
 
 pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObject> {
     unsafe {
-        let entry = get_fighter_entry(singletons::FighterManager(), entry_id);
+        let entry = get_fighter_entry(vars::singletons::FighterManager(), entry_id);
         if entry.is_null() {
             None
         } else {
@@ -521,14 +522,14 @@ pub fn install() {
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
         let text_size = (getRegionAddress(Region::Rodata) as usize) - (text_ptr as usize);
         let text = std::slice::from_raw_parts(text_ptr, text_size);
-        if let Some(offset) = find_subsequence(text, FLOAT_SEARCH_CODE) {
-            FLOAT_OFFSET = offset;
+        if let Some(offset) = find_subsequence(text, vars::FLOAT_SEARCH_CODE) {
+            vars::FLOAT_OFFSET = offset;
         }
-        if let Some(offset) = find_subsequence(text, INT_SEARCH_CODE) {
-            INT_OFFSET = offset;
+        if let Some(offset) = find_subsequence(text, vars::INT_SEARCH_CODE) {
+            vars::INT_OFFSET = offset;
         }
-        if let Some(offset) = find_subsequence(text, NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE) {
-            NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET = offset;
+        if let Some(offset) = find_subsequence(text, vars::NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE) {
+            vars::NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET = offset;
         }
     }
     skyline::install_hooks!(

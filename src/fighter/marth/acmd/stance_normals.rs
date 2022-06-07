@@ -7,15 +7,16 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "marth", script = "game_speciallwattack11", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattack11(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(fighter.lua_state_agent, 7.0);
@@ -79,15 +80,15 @@ unsafe fn marth_speciallwattack11_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattacklw3(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -160,7 +161,7 @@ unsafe fn marth_speciallwattacklw4(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 13.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -303,15 +304,15 @@ unsafe fn marth_speciallwattacklw4_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattackhi3(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -439,23 +440,23 @@ unsafe fn marth_speciallwattackhi4_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattackf3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattackf3(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         }
     }
     macros::FT_MOTION_RATE(fighter, 3.0);
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 4.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY) {
+    if !VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
         macros::FT_MOTION_RATE(fighter, 1.5);
     }
     frame(fighter.lua_state_agent, 6.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY) {
+    if !VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
         macros::FT_MOTION_RATE(fighter, 1.0);
     }
     else {
@@ -468,7 +469,7 @@ unsafe fn marth_speciallwattackf3(fighter: &mut L2CAgentBase) {
         let bkb;
         let kbg;
         let sound;
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY) {
+        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
             dmg = 6.0;
             bkb = 75;
             kbg = 54;
@@ -490,7 +491,7 @@ unsafe fn marth_speciallwattackf3(fighter: &mut L2CAgentBase) {
         let bkb;
         let kbg;
         let sound;
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY) {
+        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
             dmg = 4.0;
             bkb = 60;
             kbg = 54;
@@ -528,7 +529,7 @@ unsafe fn marth_speciallwattackf3_eff(fighter: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
     let size;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY) {
+    if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
         size = 1.5;
     }
     else {
@@ -587,6 +588,12 @@ unsafe fn marth_speciallwattackf3_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattackb3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattackb3(fighter: &mut L2CAgentBase) {
+    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
+        if macros::is_excute(fighter) {
+            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
+        }
+    }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 100, 80, 0, 3.0, 0.0, 9.5, 7.0, Some(0.0), Some(9.5), Some(12.0), 1.3, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

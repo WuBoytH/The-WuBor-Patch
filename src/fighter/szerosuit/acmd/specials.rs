@@ -7,7 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "szerosuit", script = "game_specialhi", category = ACMD_GAME, low_priority )]
@@ -36,7 +37,7 @@ unsafe fn szerosuit_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_SZEROSUIT_STATUS_SUPER_JUMP_PUNCH_DECIDE_MOTION);
+        VarModule::on_flag(fighter.battle_object, szerosuit::special_hi::flag::DECIDE_MOTION);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 26.0);
@@ -177,7 +178,7 @@ unsafe fn szerosuit_specialairhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_SZEROSUIT_STATUS_SUPER_JUMP_PUNCH_DECIDE_MOTION);
+        VarModule::on_flag(fighter.battle_object, szerosuit::special_hi::flag::DECIDE_MOTION);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 26.0);

@@ -8,8 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::vars::*
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*}
 };
 
 #[status_script(agent = "szerosuit", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -76,7 +76,7 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop(fighter: &mut L2CFighterCommo
 
 unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.super_jump_punch_main();
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_SZEROSUIT_STATUS_SUPER_JUMP_PUNCH_DECIDE_MOTION) {
+    if VarModule::is_flag(fighter.battle_object, szerosuit::special_hi::flag::DECIDE_MOTION) {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             let mot2;
@@ -96,7 +96,7 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
                 false
             );
         }
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_SZEROSUIT_STATUS_SUPER_JUMP_PUNCH_DECIDE_MOTION);
+        VarModule::off_flag(fighter.battle_object, szerosuit::special_hi::flag::DECIDE_MOTION);
     }
     if [
         hash40("special_hi_2"),

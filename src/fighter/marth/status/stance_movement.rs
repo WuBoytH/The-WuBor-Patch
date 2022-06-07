@@ -8,9 +8,11 @@ use {
     smash_script::*,
     wubor_utils::table_const::*,
     custom_status::*,
+    custom_var::*,
+    wubor_utils::vars::*,
     super::{
         helper::*,
-        super::{vars::*, vl}
+        super::vl
     }
 };
 
@@ -117,7 +119,7 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
             }
         }
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SPECIAL_S);
+        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S);
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
             fighter.change_status(status.into(), true.into());
             return true.into();
@@ -125,12 +127,12 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
         marth_stance_mot_end_helper(fighter);
     }
     else {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return true.into();
         }
         else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
             fighter.change_status(status.into(), false.into());
         }
     }
@@ -140,7 +142,7 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
 // Dash End
 
 unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+    VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
     marth_stance_common_end(fighter);
     0.into()
 }
@@ -148,7 +150,7 @@ unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) ->
 pub fn install() {
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_DASH_F,
+        marth::status::STANCE_DASH_F,
         StatusInfo::new()
             .with_pre(marth_speciallw_dash_pre)
             .with_main(marth_speciallw_dash_f_main)
@@ -156,7 +158,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_DASH_B,
+        marth::status::STANCE_DASH_B,
         StatusInfo::new()
             .with_pre(marth_speciallw_dash_pre)
             .with_main(marth_speciallw_dash_b_main)

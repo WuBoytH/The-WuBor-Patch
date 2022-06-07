@@ -46,69 +46,58 @@ impl CustomVarManager {
 }
 
 pub struct VarModule {
-    int: [Vec<i32>; 3],
-    int64: [Vec<u64>; 3],
-    float: [Vec<f32>; 3],
-    flag: [Vec<bool>; 3]
+    int: [Vec<i32>; 2],
+    int64: [Vec<u64>; 2],
+    float: [Vec<f32>; 2],
+    flag: [Vec<bool>; 2]
 }
 
 /// An additional module to be used with Smash's `BattleObject` class. This handles storing and retrieving primitive variables
 /// that you want to associate with a specific object (such as associating a gimmick timer with mario or dk)
 impl VarModule {
-    /// Resets all integers that are within the common array.
-    pub const RESET_COMMON_INT:   u16 = 0b000000000001;
-    /// Resets all 64-bit values that are within the common array
-    pub const RESET_COMMON_INT64: u16 = 0b000000000010;
-    /// Resets all floats that are within the common array
-    pub const RESET_COMMON_FLOAT: u16 = 0b000000000100;
-    /// Resets all flags that are within the common array (default is `false`)
-    pub const RESET_COMMON_FLAG:  u16 = 0b000000001000;
-
-    /// Resets all integers that are within the instance array
-    pub const RESET_INSTANCE_INT:   u16 = 0b000000010000;
+    /// Resets all integers that are within the instance array.
+    pub const RESET_INSTANCE_INT:   u8 = 0b00000001;
     /// Resets all 64-bit values that are within the instance array
-    pub const RESET_INSTANCE_INT64: u16 = 0b000000100000;
+    pub const RESET_INSTANCE_INT64: u8 = 0b00000010;
     /// Resets all floats that are within the instance array
-    pub const RESET_INSTANCE_FLOAT: u16 = 0b000001000000;
-    /// Resets all flags that are within the instance array
-    pub const RESET_INSTANCE_FLAG:  u16 = 0b000010000000;
+    pub const RESET_INSTANCE_FLOAT: u8 = 0b00000100;
+    /// Resets all flags that are within the instance array (default is `false`)
+    pub const RESET_INSTANCE_FLAG:  u8 = 0b00001000;
 
-    /// Resets all integers that are within the instance array
-    pub const RESET_STATUS_INT:   u16 = 0b000100000000;
-    /// Resets all 64-bit values that are within the instance array
-    pub const RESET_STATUS_INT64: u16 = 0b001000000000;
-    /// Resets all floats that are within the instance array
-    pub const RESET_STATUS_FLOAT: u16 = 0b010000000000;
-    /// Resets all flags that are within the instance array
-    pub const RESET_STATUS_FLAG:  u16 = 0b100000000000;
+    /// Resets all integers that are within the status array
+    pub const RESET_STATUS_INT:   u8 = 0b00010000;
+    /// Resets all 64-bit values that are within the status array
+    pub const RESET_STATUS_INT64: u8 = 0b00100000;
+    /// Resets all floats that are within the status array
+    pub const RESET_STATUS_FLOAT: u8 = 0b01000000;
+    /// Resets all flags that are within the status array
+    pub const RESET_STATUS_FLAG:  u8 = 0b10000000;
 
     /// Resets all integers
-    pub const RESET_INT:   u16 = Self::RESET_COMMON_INT | Self::RESET_INSTANCE_INT | Self::RESET_STATUS_INT;
+    pub const RESET_INT:   u8 = Self::RESET_INSTANCE_INT | Self::RESET_STATUS_INT;
     /// Resets all 64-bit values
-    pub const RESET_INT64: u16 = Self::RESET_COMMON_INT64 | Self::RESET_INSTANCE_INT64 | Self::RESET_STATUS_INT64;
+    pub const RESET_INT64: u8 = Self::RESET_INSTANCE_INT64 | Self::RESET_STATUS_INT64;
     /// Resets all floats
-    pub const RESET_FLOAT: u16 = Self::RESET_COMMON_FLOAT | Self::RESET_INSTANCE_FLOAT | Self::RESET_STATUS_FLOAT;
+    pub const RESET_FLOAT: u8 = Self::RESET_INSTANCE_FLOAT | Self::RESET_STATUS_FLOAT;
     /// Resets all flags
-    pub const RESET_FLAG:  u16 = Self::RESET_COMMON_FLAG | Self::RESET_INSTANCE_FLAG | Self::RESET_STATUS_FLAG;
+    pub const RESET_FLAG:  u8 = Self::RESET_INSTANCE_FLAG | Self::RESET_STATUS_FLAG;
 
-    /// Resets all values in the common array
-    pub const RESET_COMMON:   u16 = 0xF;
     /// Resets all values in the instance array
-    pub const RESET_INSTANCE: u16 = 0xF0;
+    pub const RESET_INSTANCE:   u8 = 0xF;
     /// Resets all values in the status array
-    pub const RESET_STATUS:   u16 = 0xF00;
+    pub const RESET_STATUS:   u8 = 0xF0;
     /// Resets all values
-    pub const RESET_ALL:      u16 = 0xFFF;
+    pub const RESET_ALL:      u8 = 0xFF;
 
     /// Constructs a new instance of `VarModule` that defaults all values to either `0` or `false`
     /// # Returns
     /// A blank `VarModule` instance
     pub(crate) fn new() -> Self {
         Self {
-            int: [vec![0; 0x1000], vec![0; 0x1000], vec![0; 0x1000]],
-            int64: [vec![0; 0x1000], vec![0; 0x1000], vec![0; 0x1000]],
-            float: [vec![0.0; 0x1000], vec![0.0; 0x1000], vec![0.0; 0x1000]],
-            flag: [vec![false; 0x1000], vec![false; 0x1000], vec![false; 0x1000]]
+            int: [vec![0; 0x1000], vec![0; 0x1000]],
+            int64: [vec![0; 0x1000], vec![0; 0x1000]],
+            float: [vec![0.0; 0x1000], vec![0.0; 0x1000]],
+            flag: [vec![false; 0x1000], vec![false; 0x1000]]
         }
     }
 
@@ -117,14 +106,14 @@ impl VarModule {
     /// * `object` - The owning `BattleObject` instance
     /// * `mask` - A mask of the reset values to determine what to reset
     #[export_name = "VarModule__reset"]
-    pub extern "Rust" fn reset(object: *mut BattleObject, mask: u16) {
+    pub extern "Rust" fn reset(object: *mut BattleObject, mask: u8) {
         let entry_id = unsafe{
             Fighter::get_fighter_entry_id((*object).battle_object_id)
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
         if let Some(mut module) = modules.get_mut(&entry_id) {
-            if mask & Self::RESET_COMMON_INT != 0 {
+            if mask & Self::RESET_INSTANCE_INT != 0 {
                 module.int[0].fill(0);
             }
             if mask & Self::RESET_INSTANCE_INT != 0 {
@@ -133,7 +122,7 @@ impl VarModule {
             if mask & Self::RESET_STATUS_INT != 0 {
                 module.int[2].fill(0);
             }
-            if mask & Self::RESET_COMMON_INT64 != 0 {
+            if mask & Self::RESET_INSTANCE_INT64 != 0 {
                 module.int64[0].fill(0);
             }
             if mask & Self::RESET_INSTANCE_INT64 != 0 {
@@ -142,7 +131,7 @@ impl VarModule {
             if mask & Self::RESET_STATUS_INT64 != 0 {
                 module.int64[2].fill(0);
             }
-            if mask & Self::RESET_COMMON_FLOAT != 0 {
+            if mask & Self::RESET_INSTANCE_FLOAT != 0 {
                 module.float[0].fill(0.0);
             }
             if mask & Self::RESET_INSTANCE_FLOAT != 0 {
@@ -151,7 +140,7 @@ impl VarModule {
             if mask & Self::RESET_STATUS_FLOAT != 0 {
                 module.float[2].fill(0.0);
             }
-            if mask & Self::RESET_COMMON_FLAG != 0 {
+            if mask & Self::RESET_INSTANCE_FLAG != 0 {
                 module.flag[0].fill(false);
             }
             if mask & Self::RESET_INSTANCE_FLAG != 0 {

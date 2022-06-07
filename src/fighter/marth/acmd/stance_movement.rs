@@ -2,20 +2,21 @@ use {
     smash::{
         lua2cpp::L2CAgentBase,
         phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*},
+        app::sv_animcmd::*,
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashf", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashf(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(fighter.lua_state_agent, 15.0);
@@ -52,10 +53,10 @@ unsafe fn marth_speciallwdashf_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashb", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashb(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(fighter.lua_state_agent, 15.0);

@@ -8,7 +8,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::{vl, vars::*}
+    custom_var::*,
+    wubor_utils::vars::*,
+    super::super::vl
 };
 
 #[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
@@ -17,7 +19,7 @@ unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        let cshot_id = WorkModule::get_int(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
+        let cshot_id = VarModule::get_int(fighter.battle_object, samusd::instance::int::CSHOT_ID);
         if sv_battle_object::is_active(cshot_id as u32) {
             let boma = sv_battle_object::module_accessor(cshot_id as u32);
             if utility::get_category(&mut *boma) == *BATTLE_OBJECT_CATEGORY_WEAPON

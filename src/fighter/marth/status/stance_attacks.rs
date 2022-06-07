@@ -8,11 +8,9 @@ use {
     },
     smash_script::*,
     custom_status::*,
-    wubor_utils::{wua_bind::*, table_const::*},
-    super::{
-        helper::*,
-        super::vars::*
-    }
+    custom_var::*,
+    wubor_utils::{wua_bind::*, vars::*, table_const::*},
+    super::helper::*
 };
 
 // Jab/Tilt common pre function
@@ -66,7 +64,7 @@ unsafe extern "C" fn marth_speciallw_attack_main(fighter: &mut L2CFighterCommon)
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3
 
 unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_lw3"),
@@ -82,10 +80,10 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW4);
+                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK_LW4);
                 fighter.change_status(status.into(), true.into());
                 return 1.into();
             }
@@ -99,25 +97,25 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFight
             }
         }
         if MotionModule::is_end(fighter.module_accessor) {
-            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
-                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_EXIT);
+            if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
                 let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0;
                 fighter.change_status(status.into(), clear_buffer.into());
                 return 1.into();
             }
             else {
-                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_SQUAT_WAIT);
+                let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SQUAT_WAIT);
                 fighter.change_status(status.into(), false.into());
             }
         }
     }
     else {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return 1.into();
         }
         else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
             fighter.change_status(status.into(), false.into());
         }
     }
@@ -127,7 +125,7 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFight
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW4
 
 unsafe extern "C" fn marth_speciallw_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_lw4"),
@@ -143,8 +141,8 @@ unsafe extern "C" fn marth_speciallw_attack_lw4_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_lw4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
             let dir = FGCModule::get_command_stick_direction(fighter, true);
             let mot;
             if [1, 4, 7].contains(&dir) {
@@ -175,7 +173,7 @@ unsafe extern "C" fn marth_speciallw_attack_lw4_main_loop(fighter: &mut L2CFight
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_HI3
 
 unsafe extern "C" fn marth_speciallw_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_hi3"),
@@ -191,8 +189,8 @@ unsafe extern "C" fn marth_speciallw_attack_hi3_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 MotionModule::change_motion_inherit_frame(
                     fighter.module_accessor,
@@ -212,8 +210,8 @@ unsafe extern "C" fn marth_speciallw_attack_hi3_main_loop(fighter: &mut L2CFight
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_F3
 
 unsafe extern "C" fn marth_speciallw_attack_f3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY);
+    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_f3"),
@@ -229,8 +227,8 @@ unsafe extern "C" fn marth_speciallw_attack_f3_main(fighter: &mut L2CFighterComm
 
 unsafe extern "C" fn marth_speciallw_attack_f3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_3_FLAG_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 sv_kinetic_energy!(
                     set_speed_mul,
@@ -238,7 +236,7 @@ unsafe extern "C" fn marth_speciallw_attack_f3_main_loop(fighter: &mut L2CFighte
                     FIGHTER_KINETIC_ENERGY_ID_MOTION,
                     1.5
                 );
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_MARTH_STATUS_STANCE_ATTACK_F3_FLAG_HEAVY);
+                VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY);
             }
         }
     }
@@ -266,12 +264,12 @@ unsafe extern "C" fn marth_speciallw_attack_b3_main_loop(fighter: &mut L2CFighte
         marth_stance_mot_end_helper(fighter);
     }
     else {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return true.into();
         }
         else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
             fighter.change_status(status.into(), false.into());
         }
     }
@@ -293,12 +291,12 @@ unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
         marth_stance_mot_end_helper(fighter);
     }
     else {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_IS_STANCE) {
+        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return true.into();
         }
         else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_WAIT);
+            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
             fighter.change_status(status.into(), false.into());
         }
     }
@@ -308,7 +306,7 @@ unsafe extern "C" fn marth_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
 // Jab/Tilt common end function
 
 unsafe extern "C" fn marth_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU);
+    VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
     marth_stance_common_end(fighter);
     0.into()
 }
@@ -316,7 +314,7 @@ unsafe extern "C" fn marth_speciallw_attack_end(fighter: &mut L2CFighterCommon) 
 pub fn install() {
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK,
+        marth::status::STANCE_ATTACK,
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_main)
@@ -324,7 +322,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3,
+        marth::status::STANCE_ATTACK_LW3,
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_lw3_main)
@@ -332,7 +330,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW4,
+        marth::status::STANCE_ATTACK_LW4,
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_lw4_main)
@@ -340,7 +338,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_HI3,
+        marth::status::STANCE_ATTACK_HI3,
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_hi3_main)
@@ -348,7 +346,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_F3,
+        marth::status::STANCE_ATTACK_F3,
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_f3_main)
@@ -356,7 +354,7 @@ pub fn install() {
     );
     CustomStatusManager::add_new_agent_status_script(
         Hash40::new("fighter_kind_marth"),
-        FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_B3,
+        marth::status::STANCE_ATTACK_B3,
         StatusInfo::new()
             .with_pre(marth_speciallw_attack_pre)
             .with_main(marth_speciallw_attack_b3_main)

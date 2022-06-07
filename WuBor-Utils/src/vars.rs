@@ -57,89 +57,215 @@ pub const ATTACK_LW4_MASK : i32 = 0b1000000;
 pub mod commons {
     pub mod instance {
         pub mod flag {
-            pub const DISABLE_SPECIAL_N : i32 = 0x0;
-            pub const DISABLE_SPECIAL_S : i32 = 0x1;
-            pub const DISABLE_SPECIAL_HI : i32 = 0x2;
-            pub const DISABLE_SPECIAL_LW : i32 = 0x3;
-            pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x4;
-            pub const IS_FGC : i32 = 0x5;
-            pub const CANCEL_ESCAPE_TO_ESCAPE_FB : i32 = 0x6;
-            pub const SUPER_JUMP : i32 = 0x7;
-            pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x8;
+            pub const DISABLE_SPECIAL_N : i32 = 0x0000;
+            pub const DISABLE_SPECIAL_S : i32 = 0x0001;
+            pub const DISABLE_SPECIAL_HI : i32 = 0x0002;
+            pub const DISABLE_SPECIAL_LW : i32 = 0x0003;
+            pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x0004;
+            pub const IS_FGC : i32 = 0x0005;
+            pub const CANCEL_ESCAPE_TO_ESCAPE_FB : i32 = 0x0006;
+            pub const SUPER_JUMP : i32 = 0x0007;
+            pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
         }
         pub mod int {
-            pub const TARGET_ID : i32 = 0x0;
-            pub const USED_GROUND_NORMALS : i32 = 0x1;
-            pub const USED_AERIALS : i32 = 0x2;
-            // pub const CUSTOM_COMMAND_236_STEP : i32 = 0x3;
-            // pub const CUSTOM_COMMAND_236_TIMER : i32 = 0x4;
-            // pub const CUSTOM_COMMAND_214_STEP : i32 = 0x5;
-            // pub const CUSTOM_COMMAND_214_TIMER : i32 = 0x6;
-            // pub const CUSTOM_COMMAND_623_STEP : i32 = 0x7;
-            // pub const CUSTOM_COMMAND_623_TIMER : i32 = 0x8;
-            // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x9;
-            // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0xA;
+            pub const TARGET_ID : i32 = 0x0000;
+            pub const USED_GROUND_NORMALS : i32 = 0x0001;
+            pub const USED_AERIALS : i32 = 0x0002;
+            // pub const CUSTOM_COMMAND_236_STEP : i32 = 0x0003;
+            // pub const CUSTOM_COMMAND_236_TIMER : i32 = 0x0004;
+            // pub const CUSTOM_COMMAND_214_STEP : i32 = 0x0005;
+            // pub const CUSTOM_COMMAND_214_TIMER : i32 = 0x0006;
+            // pub const CUSTOM_COMMAND_623_STEP : i32 = 0x0007;
+            // pub const CUSTOM_COMMAND_623_TIMER : i32 = 0x0008;
+            // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x0009;
+            // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0x000A;
         }
         pub mod float {
-            pub const FLICK_DOWN : i32 = 0x0;
-            pub const SUPER_JUMP_FRAME : i32 = 0x1;
+            pub const FLICK_DOWN : i32 = 0x0000;
+            pub const SUPER_JUMP_FRAME : i32 = 0x0001;
         }
     }
     pub mod status {
         pub mod flag {
-            pub const JUMP_CANCEL : i32 = 0x2000;
-            pub const NORMAL_CANCEL : i32 = 0x2001;
-            // pub const DASH_CANCEL : i32 = 0x2002;
-            // pub const SPECIAL_CANCEL : i32 = 0x2003;
+            pub const JUMP_CANCEL : i32 = 0x1000;
+            pub const NORMAL_CANCEL : i32 = 0x1001;
+            // pub const DASH_CANCEL : i32 = 0x1002;
+            // pub const SPECIAL_CANCEL : i32 = 0x1003;
         }
         pub mod int {
-            pub const ENABLED_AERIALS : i32 = 0x2000;
+            pub const ENABLED_AERIALS : i32 = 0x1000;
         }
         pub mod float {
-            pub const HIT_FRAME : i32 = 0x2000;
+            pub const HIT_FRAME : i32 = 0x1000;
         }
     }
 }
 
 pub mod attack_air {
     pub mod flag {
-        pub const WHIFF : i32 = 0x2100;
+        pub const WHIFF : i32 = 0x1000;
     }
 }
 
 pub mod guard_off {
     pub mod int {
-        pub const ATTACK_CANCEL_FRAME : i32 = 0x2100;
+        pub const ATTACK_CANCEL_FRAME : i32 = 0x1000;
     }
 }
 
 pub mod appeal {
     pub mod flag {
-        pub const HOLD : i32 = 0x2100;
-        pub const LOOP : i32 = 0x2101;
-        pub const ENABLE_ACTION : i32 = 0x2102;
+        pub const HOLD : i32 = 0x1000;
+        pub const LOOP : i32 = 0x1001;
+        pub const ENABLE_ACTION : i32 = 0x1002;
     }
     pub mod int {
-        pub const HOLD_BUTTON : i32 = 0x2100;
-        pub const ACTION_BUTTON : i32 = 0x2101;
-        pub const RESTART_FRAME : i32 = 0x2102;
+        pub const HOLD_BUTTON : i32 = 0x1000;
+        pub const ACTION_BUTTON : i32 = 0x1001;
+        pub const RESTART_FRAME : i32 = 0x1002;
     }
     pub mod int64 {
-        pub const ACTION_MOT : i32 = 0x2100;
-        pub const LOOP_MOT : i32 = 0x2101;
+        pub const ACTION_MOT : i32 = 0x1000;
+        pub const LOOP_MOT : i32 = 0x1001;
+    }
+}
+
+pub mod marth {
+    pub mod instance {
+        pub mod flag {
+            pub const IS_STANCE : i32 = 0x0100;
+            pub const PARRY_XLU : i32 = 0x0101;
+            pub const AIR_STANCE : i32 = 0x0102;
+        }
+        pub mod int {
+            pub const STANCE_CHANGE_LOCKOUT : i32 = 0x0100;
+        }
+    }
+    pub mod stance {
+        pub mod flag {
+            pub const DISABLE_STANCE_CHANGE : i32 = 0x1100;
+            pub const ATTACK_3_CHANGE_MOTION : i32 = 0x1101;
+            pub const ATTACK_F3_HEAVY : i32 = 0x1102;
+            pub const SPECIAL_S_FLASHING_BLADE : i32 = 0x1101;
+            pub const SPECIAL_S_DASH : i32 = 0x1102;
+            pub const SPECIAL_S_END : i32 = 0x1103;
+            pub const SPECIAL_S2_FINAL_BLOW : i32 = 0x1104;
+        }
+        pub mod int {
+            pub const SPECIAL_S2_START_SITUATION : i32 = 0x1100;
+            pub const SPECIAL_S2_LOOP_COUNT : i32 = 0x1101;
+        }
+        pub mod float {
+            pub const SPECIAL_S_ANGLE : i32 = 0x1100;
+        }
+    }
+    pub mod status {
+        pub const STANCE_ENTER : i32 = 0;
+        pub const STANCE_WAIT : i32 = 1;
+        pub const STANCE_SQUAT : i32 = 2;
+        pub const STANCE_SQUAT_WAIT : i32 = 3;
+        pub const STANCE_SQUAT_RV : i32 = 4;
+        pub const STANCE_EXIT : i32 = 5;
+        pub const STANCE_DASH_F : i32 = 6;
+        pub const STANCE_DASH_B : i32 = 7;
+        pub const STANCE_ATTACK : i32 = 8;
+        pub const STANCE_ATTACK_LW3 : i32 = 9;
+        pub const STANCE_ATTACK_LW4 : i32 = 10;
+        pub const STANCE_ATTACK_HI3 : i32 = 11;
+        pub const STANCE_ATTACK_F3 : i32 = 12;
+        pub const STANCE_ATTACK_B3 : i32 = 13;
+        pub const STANCE_SPECIAL_S : i32 = 14;
+        pub const STANCE_SPECIAL_S_DASH : i32 = 15;
+        pub const STANCE_SPECIAL_S_END : i32 = 16;
+        pub const STANCE_SPECIAL_S2_START : i32 = 17;
+        pub const STANCE_SPECIAL_S2_LOOP : i32 = 18;
+        pub const STANCE_SPECIAL_S2_END : i32 = 19;
+        pub const STANCE_SPECIAL_S2_END2 : i32 = 20;
+        // pub const STANCE_SPECIAL_S2_LANDING : i32 = 21;
+    }
+}
+
+pub mod ryu {
+    pub mod instance {
+        pub mod flag {
+            pub const DISABLE_EX_FOCUS : i32 = 0x0100;
+            pub const EX_FOCUS : i32 = 0x0101;
+            pub const EX_FLASH : i32 = 0x0102;
+            pub const SEC_SEN_STATE : i32 = 0x0103;
+            pub const SECRET_SENSATION : i32 = 0x0104;
+            pub const SEC_SEN_CAMERA : i32 = 0x0105;
+        }
+        pub mod int {
+            pub const FLASH_TIMER : i32 = 0x0100;
+        }
+        pub mod float {
+            pub const RYU_X : i32 = 0x0100;
+            pub const RYU_Y : i32 = 0x0101;
+            pub const TARGET_X : i32 = 0x0102;
+            pub const TARGET_Y : i32 = 0x0103;
+            pub const DISABLE_EX_FOCUS_TIMER : i32 = 0x0104;
+            pub const SEC_SEN_TIMER : i32 = 0x0105;
+            pub const OPPONENT_DIREC : i32 = 0x0106;
+            pub const VERT_EXTRA : i32 = 0x0107;
+        }
+    }
+}
+
+pub mod samusd {
+    pub mod instance {
+        pub mod flag {
+            pub const ATTACK_AIR_N_FLOAT : i32 = 0x0100;
+        }
+        pub mod int {
+            pub const CSHOT_ID : i32 = 0x0100;
+        }
+    }
+    pub mod attack_air_n {
+        pub mod flag {
+            pub const START_FLOAT : i32 = 0x1100;
+        }
+    }
+    pub mod special_lw {
+        pub mod flag {
+            pub const BOUNCE : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod shizue {
+    pub mod instance {
+        pub mod flag {
+            pub const FIRE_ROCKET_ANYTIME : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod shulk {
+    pub mod instance {
+        pub mod float {
+            pub const BURST_COOLDOWN : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod szerosuit {
+    pub mod special_hi {
+        pub mod flag {
+            pub const DECIDE_MOTION : i32 = 0x1100;
+        }
     }
 }
 
 pub mod toonlink {
     pub mod attack_air_lw {
         pub mod flag {
-            pub const BOUNCE : i32 = 0x2100;
+            pub const BOUNCE : i32 = 0x1100;
         }
     }
     pub mod special_hi {
         pub mod float {
-            pub const SPIN_SPEED : i32 = 0x2100;
-            pub const SPIN_SPEED_MAX : i32 = 0x2101;
+            pub const SPIN_SPEED : i32 = 0x1100;
+            pub const SPIN_SPEED_MAX : i32 = 0x1101;
         }
     }
 }
@@ -147,10 +273,10 @@ pub mod toonlink {
 pub mod wario {
     pub mod throw {
         pub mod flag {
-            pub const MOVE : i32 = 0x2100;
+            pub const MOVE : i32 = 0x1100;
         }
         pub mod float {
-            pub const SPIN_SPEED : i32 = 0x2100;
+            pub const SPIN_SPEED : i32 = 0x1100;
         }
     }
 }

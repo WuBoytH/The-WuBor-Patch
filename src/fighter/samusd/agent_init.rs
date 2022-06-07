@@ -1,11 +1,13 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::{lua_bind::WorkModule, *},
+        app::*,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    super::{fgc::*, vars::*}
+    custom_var::*,
+    wubor_utils::vars::*,
+    super::fgc::*
 };
 
 #[fighter_init]
@@ -15,7 +17,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_SAMUSD {
             return;
         }
-        WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID, FIGHTER_SAMUSD_INSTANCE_WORK_ID_INT_CSHOT_ID);
+        VarModule::set_int(fighter.battle_object, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
         fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(samusd_fgc as *const () as _));
     }
 }

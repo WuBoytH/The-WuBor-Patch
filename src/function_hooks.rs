@@ -12,7 +12,6 @@ use {
             ken::{helper::*, vars::*},
             lucina::{helper::*, vars::*},
             mario::vars::*,
-            ryu::vars::*,
             *
         }
     },
@@ -69,7 +68,7 @@ move_type_again: bool) -> u64 {
     }
     if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if defender_fighter_kind == *FIGHTER_KIND_RYU {
-            if WorkModule::is_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
+            if VarModule::is_flag(defender_object, wubor_utils::vars::ryu::instance::flag::SEC_SEN_STATE) {
                 let target_x;
                 let target_y;
                 if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -103,9 +102,9 @@ move_type_again: bool) -> u64 {
                     target_y = PostureModule::pos_y(defender_boma);
                     VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0);
                 }
-                WorkModule::set_float(defender_boma, target_x, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X);
-                WorkModule::set_float(defender_boma, target_y, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_Y);
-                WorkModule::on_flag(defender_boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SECRET_SENSATION);
+                VarModule::set_float(defender_object, wubor_utils::vars::ryu::instance::float::TARGET_X, target_x);
+                VarModule::set_float(defender_object, wubor_utils::vars::ryu::instance::float::TARGET_Y, target_y);
+                VarModule::on_flag(defender_object, wubor_utils::vars::ryu::instance::flag::SECRET_SENSATION);
             }
         }
         // else if defender_fighter_kind == *FIGHTER_KIND_KEN {
@@ -183,7 +182,8 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
     let fighter_kind = utility::get_kind(boma);
     let ret = original!()(boma,term);
-    
+    let object_id = boma.battle_object_id;
+    let object = sv_system::battle_object(object_id as u64);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if fighter_kind == *FIGHTER_KIND_LUCINA { // Make this a custom command grab
             if WorkModule::is_flag(boma, FIGHTER_YU_INSTANCE_WORK_ID_FLAG_HEROIC_GRAB)
@@ -195,7 +195,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
         else if fighter_kind == *FIGHTER_KIND_RYU { // make secret sensation its own status
-            if WorkModule::is_flag(boma, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA) {
+            if VarModule::is_flag(object, wubor_utils::vars::ryu::instance::flag::SEC_SEN_CAMERA) {
                 return false;
             }
         }

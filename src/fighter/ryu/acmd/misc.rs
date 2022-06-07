@@ -7,7 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "ryu", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
@@ -16,9 +17,9 @@ unsafe fn ryu_appealhi(fighter: &mut L2CAgentBase) {
     if DamageModule::damage(fighter.module_accessor, 0) >= 180.0 {
         if macros::is_excute(fighter) {
             macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_aura"));
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
-            WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_RYU_INSTANCE_WORK_ID_INT_FLASH_TIMER);
+            VarModule::on_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE);
+            VarModule::on_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
+            VarModule::set_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER, 0);
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -31,15 +32,15 @@ unsafe fn ryu_appealhi(fighter: &mut L2CAgentBase) {
         }
     }
     frame(fighter.lua_state_agent, 30.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE) {
+    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE) {
         if macros::is_excute(fighter) {
             macros::EFFECT_OFF_KIND(fighter, Hash40::new("ryu_savingattack_aura"), false, true);
             macros::BURN_COLOR_NORMAL(fighter);
             damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
             DamageModule::set_damage_lock(fighter.module_accessor, false);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_EX_FLASH);
+            VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
             macros::COL_NORMAL(fighter);
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_STATE);
+            VarModule::off_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE);
             HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }

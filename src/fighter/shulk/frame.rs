@@ -7,8 +7,7 @@ use {
     },
     smashline::*,
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    super::vars::*
+    wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_SHULK )]
@@ -19,7 +18,7 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_LW);
-            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
+            VarModule::set_float(fighter.battle_object, shulk::instance::float::BURST_COOLDOWN, 0.0);
         }
 
         // Damage Check
@@ -53,14 +52,14 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
             KineticModule::change_kinetic(fighter.module_accessor,*FIGHTER_KINETIC_TYPE_RESET);
             KineticModule::unable_energy_all(fighter.module_accessor);
             VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_LW);
-            WorkModule::set_float(fighter.module_accessor, 3600.0, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
+            VarModule::set_float(fighter.battle_object, shulk::instance::float::BURST_COOLDOWN, 3600.0);
         }
 
         // Special Lw Check
-        let mut burst_cooldown = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
+        let mut burst_cooldown = VarModule::get_float(fighter.battle_object, shulk::instance::float::BURST_COOLDOWN);
         if burst_cooldown > 0.0 {
-            WarkModule::count_down(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN, 1.0);
-            burst_cooldown = WorkModule::get_float(fighter.module_accessor, FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_BURST_COOLDOWN);
+            VarModule::sub_float(fighter.battle_object, shulk::instance::float::BURST_COOLDOWN, 1.0);
+            burst_cooldown = VarModule::get_float(fighter.battle_object, shulk::instance::float::BURST_COOLDOWN);
             if burst_cooldown <= 0.0 {
                 let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
                 let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};

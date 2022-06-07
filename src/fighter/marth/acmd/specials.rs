@@ -8,7 +8,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::{helper::*, vars::*}
+    custom_var::*,
+    wubor_utils::vars::*,
+    super::super::helper::*
 };
 
 #[acmd_script( agent = "marth", script = "game_specialnend", category = ACMD_GAME, low_priority )]
@@ -484,7 +486,7 @@ unsafe fn marth_specialhi_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallw(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_PARRY_XLU) {
+    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SHIELD);
         }

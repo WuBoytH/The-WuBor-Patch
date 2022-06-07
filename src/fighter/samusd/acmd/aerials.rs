@@ -8,7 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "samusd", script = "game_attackairn", category = ACMD_GAME, low_priority )]
@@ -17,9 +18,9 @@ unsafe fn samusd_attackairn(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(fighter.lua_state_agent, 8.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_SAMUSD_INSTANCE_WORK_ID_FLAG_ATTACK_AIR_N_FLOAT) {
+    if !VarModule::is_flag(fighter.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_SAMUSD_STATUS_ATTACK_AIR_FLAG_START_FLOAT);
+            VarModule::on_flag(fighter.battle_object, samusd::attack_air_n::flag::START_FLOAT);
         }
     }
     for _ in 0..7 {

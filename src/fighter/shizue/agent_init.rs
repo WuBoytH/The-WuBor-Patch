@@ -5,14 +5,15 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{helper::*, vars::*}
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::helper::*
 };
 
 unsafe extern "C" fn shizue_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if shizue_check_rocket_fire(fighter)
     && shizue_check_attack_cancel(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_SHIZUE_INSTANCE_WORK_ID_FLAG_FIRE_ROCKET_ANYTIME);
+        VarModule::on_flag(fighter.battle_object, shizue::instance::flag::FIRE_ROCKET_ANYTIME);
         ControlModule::clear_command_one(
             fighter.module_accessor,
             *FIGHTER_PAD_COMMAND_CATEGORY1,

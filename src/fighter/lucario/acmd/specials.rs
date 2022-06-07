@@ -8,8 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*,
-    super::super::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
@@ -46,7 +45,7 @@ unsafe fn lucario_specials(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialhi(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
+        VarModule::off_flag(fighter.battle_object, lucario::instance::flag::IS_SUPER_DASH_CANCEL);
         macros::FT_MOTION_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 21.0);
@@ -59,7 +58,7 @@ unsafe fn lucario_specialhi(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_specialairhi(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI);
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
+        VarModule::off_flag(fighter.battle_object, lucario::instance::flag::IS_SUPER_DASH_CANCEL);
         macros::FT_MOTION_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 13.0);
@@ -122,7 +121,7 @@ unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL) {
+            if VarModule::is_flag(fighter.battle_object, lucario::instance::flag::IS_SUPER_DASH_CANCEL) {
                 macros::SET_SPEED_EX(fighter, 1.1, 1.8, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             }
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL, true);

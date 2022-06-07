@@ -9,8 +9,7 @@ use {
         wua_bind::*,
         vars::*,
         table_const::*
-    },
-    super::vars::*
+    }
 };
 
 pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
@@ -74,7 +73,7 @@ pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
         else if status == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
         && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
+            VarModule::on_flag(fighter.battle_object, lucario::instance::flag::IS_SUPER_DASH_CANCEL);
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
         }
         if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI) {

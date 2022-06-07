@@ -5,16 +5,17 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*,
+    custom_var::*,
+    wubor_utils::vars::*,
 };
 
 #[acmd_script( agent = "dolly", scripts = [ "game_appealhir", "game_appealhil" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_appealhi(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         macros::FT_MOTION_RATE(fighter, 0.8);
     }
     frame(fighter.lua_state_agent, 30.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         if macros::is_excute(fighter) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
@@ -24,11 +25,11 @@ unsafe fn dolly_appealhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly", scripts = [ "game_appeallwr", "game_appeallwl" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_appeallw(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         macros::FT_MOTION_RATE(fighter, 0.8);
     }
     frame(fighter.lua_state_agent, 30.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         if macros::is_excute(fighter) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
@@ -38,11 +39,11 @@ unsafe fn dolly_appeallw(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly", scripts = [ "game_appealsr", "game_appealsl" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_appeals(fighter: &mut L2CAgentBase) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         macros::FT_MOTION_RATE(fighter, 0.8);
     }
     frame(fighter.lua_state_agent, 30.0);
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         if macros::is_excute(fighter) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }

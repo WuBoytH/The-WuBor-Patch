@@ -10,7 +10,7 @@ use {
     smashline::*,
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*},
-    super::super::{vl, vars::*}
+    super::super::vl
 };
 
 #[acmd_script( agent = "kirby", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
@@ -34,7 +34,7 @@ unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {
         let effect;
         let sound_level;
         let sound;
-        let loops = WorkModule::get_int(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_INT_APPEAL_S_LOOP_COUNT);
+        let loops = VarModule::get_int(fighter.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT);
         if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 {
             damage = 20.0 + loops as f32 * 2.0;
             effect = Hash40::new("collision_attr_normal");
@@ -145,7 +145,7 @@ unsafe fn kirby_appeals_exp(fighter: &mut L2CAgentBase) {
 unsafe fn kirby_appealsloop_eff(fighter: &mut L2CAgentBase) {
     for x in 0..i32::MAX {
         if macros::is_excute(fighter) {
-            WorkModule::set_int(fighter.module_accessor, x + 1, FIGHTER_KIRBY_STATUS_APPEAL_WORK_INT_APPEAL_S_LOOP_COUNT);
+            VarModule::set_int(fighter.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT, x + 1);
         }
         frame(fighter.lua_state_agent, 5.0);
         if macros::is_excute(fighter) {
@@ -161,7 +161,7 @@ unsafe fn kirby_appealsloop_eff(fighter: &mut L2CAgentBase) {
 unsafe fn kirby_appealsloop_snd(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(fighter.lua_state_agent, 4.0);
-        let loops = WorkModule::get_int(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_INT_APPEAL_S_LOOP_COUNT);
+        let loops = VarModule::get_int(fighter.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT);
         let sound;
         if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 + 20 {
             sound = Hash40::new("se_common_swing_06");
@@ -187,7 +187,7 @@ unsafe fn kirby_appealsloop_exp(fighter: &mut L2CAgentBase) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
     for _ in 0..i32::MAX {
-        let loops = WorkModule::get_int(fighter.module_accessor, FIGHTER_KIRBY_STATUS_APPEAL_WORK_INT_APPEAL_S_LOOP_COUNT);
+        let loops = VarModule::get_int(fighter.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT);
         let quake;
         let rbkind;
         if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 + 20 {

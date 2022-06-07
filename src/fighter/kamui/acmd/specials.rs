@@ -7,13 +7,14 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     let mut di = false;
-    if WorkModule::get_float(fighter.module_accessor, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
+    if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
     }
     if macros::is_excute(fighter) {
@@ -85,9 +86,9 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             let otarget_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let oboma = sv_battle_object::module_accessor(otarget_id);
-            WorkModule::set_float(oboma, 600.0, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL);
-            WorkModule::set_float(oboma, 24.0, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL_TIMER);
+            let object = sv_system::battle_object(otarget_id as u64);
+            VarModule::set_float(object, kamui::instance::float::DRAGON_INSTALL, 600.0);
+            VarModule::set_float(object, kamui::instance::float::DRAGON_INSTALL_TIMER, 24.0);
         }
     }
 }

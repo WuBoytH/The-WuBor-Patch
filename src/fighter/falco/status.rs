@@ -6,8 +6,8 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    wubor_utils::table_const::*,
-    super::vars::*
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*}
 };
 
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -15,10 +15,10 @@ unsafe fn falco_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = fighter.status_Appeal();
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_l")
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("appeal_lw_r") {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
+        VarModule::on_flag(fighter.battle_object, falco::instance::flag::KAA);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
+        VarModule::off_flag(fighter.battle_object, falco::instance::flag::KAA);
     }
     ret
 }
@@ -26,20 +26,20 @@ unsafe fn falco_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn falco_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW4_START {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
+        VarModule::off_flag(fighter.battle_object, falco::instance::flag::KAA);
     }
     fighter.status_end_Appeal()
 }
 
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn falco_attacks4hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
+    VarModule::off_flag(fighter.battle_object, falco::instance::flag::KAA);
     fighter.status_end_AttackLw4Hold()
 }
 
 #[status_script(agent = "falco", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn falco_attacks4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_KAA);
+    VarModule::off_flag(fighter.battle_object, falco::instance::flag::KAA);
     fighter.status_end_AttackLw4()
 }
 

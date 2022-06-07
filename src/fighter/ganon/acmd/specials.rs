@@ -8,15 +8,14 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*,
-    super::super::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "ganon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
 unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_INIT, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
+        VarModule::set_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_INIT);
     }
     macros::FT_MOTION_RATE(fighter, 0.2);
     frame(fighter.lua_state_agent, 25.0);
@@ -24,30 +23,28 @@ unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_START_GROUND);
+            VarModule::on_flag(fighter.battle_object, ganon::status::flag::TELEPORT_START_GROUND);
         }
         macros::SA_SET(fighter, *SITUATION_KIND_AIR);
         let og_x = PostureModule::pos_x(fighter.module_accessor);
         let og_y = PostureModule::pos_y(fighter.module_accessor);
-        WorkModule::set_float(fighter.module_accessor, og_x, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X);
-        WorkModule::set_float(fighter.module_accessor, og_y, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_Y);
+        VarModule::set_vec2(fighter.battle_object, ganon::status::float::START_POS, Vector2f{x: og_x, y: og_y});
         VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
+        VarModule::on_flag(fighter.battle_object, ganon::status::flag::TELEPORT_STOP);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(fighter.module_accessor, false);
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
     frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_MOVE, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
-        let tele_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_X);
-        let tele_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_TELE_POS_Y);
-        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: tele_x, y: tele_y});
+        VarModule::set_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_MOVE);
+        let end_pos = VarModule::get_vec2(fighter.battle_object, ganon::status::float::END_POS);
+        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: end_pos.x, y: end_pos.y});
     }
     frame(fighter.lua_state_agent, 50.0);
     if macros::is_excute(fighter) {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_GANON_TELEPORT_STEP_CHECK_FEINT, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP);
+        VarModule::set_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_CHECK_FEINT);
     }
     frame(fighter.lua_state_agent, 60.0);
     if macros::is_excute(fighter) {
@@ -57,7 +54,7 @@ unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 64.0);
     macros::FT_MOTION_RATE(fighter, 5.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
+        VarModule::off_flag(fighter.battle_object, ganon::status::flag::TELEPORT_STOP);
         JostleModule::set_status(fighter.module_accessor, true);
         CancelModule::enable_cancel(fighter.module_accessor);
     }

@@ -12,8 +12,7 @@ use {
     wubor_utils::{
         wua_bind::*,
         vars::*
-    },
-    super::vars::*
+    }
 };
 
 // Notes:
@@ -22,45 +21,45 @@ use {
 
 unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_ENABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER);
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
+        VarModule::off_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::SHORYUREPPA, 0);
         VarModule::set_int(fighter.battle_object, commons::instance::int::TARGET_ID, 0);
     }
 }
 
 unsafe fn ken_vgauge_flash(fighter: &mut L2CFighterCommon) {
-    let v_gauge = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
-    let mut flash_max = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX);
+    let v_gauge = VarModule::get_float(fighter.battle_object, ken::instance::float::V_GAUGE);
+    let mut flash_max = VarModule::get_int(fighter.battle_object, ken::instance::int::FLASH_MAX);
     if v_gauge < 300.0
     && flash_max != 0 {
         macros::COL_NORMAL(fighter);
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX);
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_COUNTER);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 0);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_COUNTER, 0);
     }
     else if v_gauge >= 300.0
     && v_gauge < 600.0
     && flash_max != 60 {
         macros::COL_NORMAL(fighter);
-        WorkModule::set_int(fighter.module_accessor, 60, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 60);
     }
     else if v_gauge >= 600.0
     && v_gauge < 900.0
     && flash_max != 40 {
         macros::COL_NORMAL(fighter);
-        WorkModule::set_int(fighter.module_accessor, 40, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 40);
     }
     else if v_gauge == 900.0
     && flash_max != 20 {
         macros::COL_NORMAL(fighter);
-        WorkModule::set_int(fighter.module_accessor, 20, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 20);
     }
 
-    flash_max = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_MAX);
+    flash_max = VarModule::get_int(fighter.battle_object, ken::instance::int::FLASH_MAX);
     if flash_max != 0 {
-        let mut flash_counter = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_COUNTER);
+        let mut flash_counter = VarModule::get_int(fighter.battle_object, ken::instance::int::FLASH_COUNTER);
         if flash_counter == 0 {
-            WorkModule::set_int(fighter.module_accessor, flash_max, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_COUNTER);
+            VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_COUNTER, flash_max);
             flash_counter = flash_max;
         }
         if flash_counter == flash_max {
@@ -69,7 +68,7 @@ unsafe fn ken_vgauge_flash(fighter: &mut L2CFighterCommon) {
         if flash_counter == flash_max - 5 {
             macros::COL_NORMAL(fighter);
         }
-        WorkModule::dec_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_FLASH_COUNTER);
+        VarModule::dec_int(fighter.battle_object, ken::instance::int::FLASH_COUNTER);
     }
 }
 
@@ -87,18 +86,18 @@ unsafe fn ken_vskill(fighter: &mut L2CFighterCommon) {
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_HI4
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_DASH
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_AIR {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VS1_CANCEL);
+            VarModule::on_flag(fighter.battle_object, ken::status::flag::VS1_CANCEL);
         }
     }
 
     if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW
-    && WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_DISABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
+    && VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_RUN {
+        VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_DISABLE);
     }
 
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_DISABLE
+    if VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_DISABLE
     && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_ENABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
     }
 }
 
@@ -106,14 +105,14 @@ unsafe fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     || (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N | *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
     && MotionModule::frame(fighter.module_accessor) >= 13.0) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VT1_CANCEL);
+        VarModule::on_flag(fighter.battle_object, ken::status::flag::VT1_CANCEL);
     }
     
     if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
-        if ((WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VT1_CANCEL)
-        && WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) == 900.0)
-        || (WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_ATTACK_FLAG_VS1_CANCEL)
-        && WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_ENABLE))
+        if ((VarModule::is_flag(fighter.battle_object, ken::status::flag::VT1_CANCEL)
+        && VarModule::get_float(fighter.battle_object, ken::instance::float::V_GAUGE) == 900.0)
+        || (VarModule::is_flag(fighter.battle_object, ken::status::flag::VS1_CANCEL)
+        && VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_ENABLE))
         && !MiscModule::is_damage_check(fighter.module_accessor, false) {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
         }
@@ -124,25 +123,25 @@ unsafe fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_FALL {
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::SHORYUREPPA, 0);
     }
 
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
-    && WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+    && VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 1 {
         fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND.into(), false.into());
     }
 
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-        let v_trigger_eff_timer = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER);
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
+        let v_trigger_eff_timer = VarModule::get_int(fighter.battle_object, ken::instance::int::V_TRIGGER_EFF_TIMER);
         if v_trigger_eff_timer == 32 {
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_flame"), smash::phx::Hash40::new("footl"), &ZERO_VECTOR, &Vector3f{x: 90.0, y: 0.0, z: 0.0}, 0.2, true, 0, 0, 0, 0, 0, true, true);
         }
         if v_trigger_eff_timer == 16 {
             EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_flame"), smash::phx::Hash40::new("footr"), &ZERO_VECTOR, &Vector3f{x: 90.0, y: 0.0, z: 0.0}, 0.2, true, 0, 0, 0, 0, 0, true, true);
         }
-        WorkModule::dec_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER);
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER) <= 0 {
-            WorkModule::set_int(fighter.module_accessor, 32, FIGHTER_KEN_INSTANCE_WORK_ID_INT_V_TRIGGER_EFF_TIMER);
+        VarModule::dec_int(fighter.battle_object, ken::instance::int::V_TRIGGER_EFF_TIMER);
+        if VarModule::get_int(fighter.battle_object, ken::instance::int::V_TRIGGER_EFF_TIMER) <= 0 {
+            VarModule::set_int(fighter.battle_object, ken::instance::int::V_TRIGGER_EFF_TIMER, 32);
         }
     }
 }
@@ -199,10 +198,10 @@ unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_GUARD
     ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L) {
-            FGCModule::update_meter(fighter.battle_object, -300.0, 900.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
+            FGCModule::update_meter(fighter.battle_object, -300.0, 900.0, ken::instance::float::V_GAUGE);
         }
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) {
-            FGCModule::update_meter(fighter.battle_object, 300.0, 900.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
+            FGCModule::update_meter(fighter.battle_object, 300.0, 900.0, ken::instance::float::V_GAUGE);
         }
     }
 }

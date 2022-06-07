@@ -3,18 +3,19 @@ use {
         hash40,
         app::{lua_bind::*, *}
     },
+    custom_var::*,
     crate::function_hooks::{
         get_active_battle_object_id_from_entry_id,
         get_battle_object_from_id
     },
-    super::vars::*
+    wubor_utils::vars::*
 };
 
-pub unsafe fn handle_revenge(module_accessor: *mut BattleObjectModuleAccessor, attacker_ids: i32) {
+pub unsafe fn handle_revenge(object: *mut BattleObject, module_accessor: *mut BattleObjectModuleAccessor, attacker_ids: i32) {
     if (MotionModule::motion_kind(module_accessor) == hash40("special_lw_start")
     || MotionModule::motion_kind(module_accessor) == hash40("special_air_lw_start"))
-    && WorkModule::get_int(module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 1 {
-        WorkModule::set_int(module_accessor, 2, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+    && VarModule::get_int(object, gaogaen::instance::int::REVENGE) == 1 {
+        VarModule::set_int(object, gaogaen::instance::int::REVENGE, 2);
         for x in 0..8 {
             if attacker_ids & (1 << x) == 0 {
                 continue;

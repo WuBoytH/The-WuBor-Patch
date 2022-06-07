@@ -7,8 +7,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{vl, vars::*}
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::vl
 };
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -198,7 +199,7 @@ unsafe fn chrom_speciallw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC) {
+    if VarModule::is_flag(fighter.battle_object, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         sv_kinetic_energy!(
             reset_energy,
@@ -220,7 +221,7 @@ unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_CHROM_STATUS_SPECIAL_LW_FLAG_CHANGE_KINETIC);
+        VarModule::off_flag(fighter.battle_object, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
     }
     0.into()
 }

@@ -8,14 +8,10 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    crate::{
-        fighter::ganon::{
-            helper::*,
-            vars::*
-        }
-    },
-    super::{vl, vars::*},
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    crate::fighter::ganon::helper::*,
+    super::vl,
 };
 
 #[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -102,7 +98,7 @@ unsafe extern "C" fn kirby_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
         }
     }
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_DASH_FLAG_END) {
+    if VarModule::is_flag(fighter.battle_object, kirby::status::flag::ATTACK_DASH_END) {
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         if situation != *SITUATION_KIND_GROUND {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
@@ -116,7 +112,7 @@ unsafe extern "C" fn kirby_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
                 speed_x * 0.5
             );
         }
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_DASH_FLAG_END);
+        VarModule::off_flag(fighter.battle_object, kirby::status::flag::ATTACK_DASH_END);
     }
     //back to original stuff kinda?
     let jump_attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
@@ -199,7 +195,7 @@ unsafe fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE) {
+    if !VarModule::is_flag(fighter.battle_object, kirby::status::flag::ATTACK_LW3_BOUNCE) {
         if !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IS_STOP].get_bool()
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -210,7 +206,7 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 31.0 / 20.0, false, 0.0, false, false);
             macros::SET_SPEED_EX(fighter, -0.5, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             AttackModule::clear_all(fighter.module_accessor);
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_KIRBY_STATUS_ATTACK_LW3_FLAG_BOUNCE);
+            VarModule::on_flag(fighter.battle_object, kirby::status::flag::ATTACK_LW3_BOUNCE);
         }
         return fighter.status_AttackLw3_Main();
     }
@@ -260,13 +256,13 @@ unsafe fn kirby_ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn kirby_ganon_specialn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP) == FIGHTER_GANON_TELEPORT_STEP_INIT {
+    if VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP) == ganon::TELEPORT_STEP_INIT {
         deception_init(fighter);
     }
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP) == FIGHTER_GANON_TELEPORT_STEP_CHECK_FEINT {
+    if VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP) == ganon::TELEPORT_STEP_CHECK_FEINT {
         deception_feint_handler(fighter);
     }
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP) {
+    if VarModule::is_flag(fighter.battle_object, ganon::status::flag::TELEPORT_STOP) {
         KineticModule::unable_energy_all(fighter.module_accessor);
     }
     let curr_sit = fighter.global_table[SITUATION_KIND].get_i32();

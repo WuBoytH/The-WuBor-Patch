@@ -7,7 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "bayonetta", script = "game_specialsholdend", category = ACMD_GAME, low_priority )]
@@ -131,10 +132,10 @@ unsafe fn bayonetta_specialairsd(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     if !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_IS_BOUNCE);
+            VarModule::on_flag(fighter.battle_object, bayonetta::status::flag::SPECIAL_AIR_S_D_IS_BOUNCE);
         }
     }
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_IS_BOUNCE) {
+    if !VarModule::is_flag(fighter.battle_object, bayonetta::status::flag::SPECIAL_AIR_S_D_IS_BOUNCE) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK);
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 50, 38, 0, 100, 4.5, 0.0, 2.0, 4.5, Some(0.0), Some(4.0), Some(3.2), 1.2, 2.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

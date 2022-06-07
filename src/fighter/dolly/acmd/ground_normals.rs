@@ -7,7 +7,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::super::{helper::*, vars::*}
+    custom_var::*,
+    wubor_utils::vars::*,
+    super::super::helper::*
 };
 
 #[acmd_script( agent = "dolly", script = "game_attack11", category = ACMD_GAME, low_priority )]
@@ -95,7 +97,7 @@ unsafe fn dolly_attack13(fighter: &mut L2CAgentBase) {
 unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+        if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
             macros::FT_MOTION_RATE(fighter, 0.8);
         }
@@ -103,14 +105,14 @@ unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
             macros::FT_MOTION_RATE(fighter, 1.5);
         }
     }
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
     frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+    if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
+        if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND) {
             if macros::is_excute(fighter) {
                 macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             }
@@ -130,8 +132,8 @@ unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
         }
     }
     wait(fighter.lua_state_agent, 5.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+    if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
+        if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND) {
             if macros::is_excute(fighter) {
                 macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 361, 30, 0, 45, 4.0, 0.0, 10.0, 4.0, Some(0.0), Some(6.0), Some(4.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
             }
@@ -148,7 +150,7 @@ unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
         JostleModule::set_status(fighter.module_accessor, true);
         AttackModule::clear_all(fighter.module_accessor);
     }
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND) {
+    if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND) {
         macros::FT_MOTION_RATE(fighter, 1.5);
     }
     else {

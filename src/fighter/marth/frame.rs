@@ -13,7 +13,7 @@ use {
 };
 
 unsafe fn marth_allow_stance_toggle(fighter: &mut L2CFighterCommon) -> bool {
-    if VarModule::is_flag(fighter.battle_object, marth::stance::flag::DISABLE_STANCE_CHANGE) {
+    if VarModule::is_flag(fighter.battle_object, marth::status::flag::DISABLE_STANCE_CHANGE) {
         false
     }
     else {

@@ -130,9 +130,198 @@ pub mod appeal {
     }
 }
 
+pub mod bayonetta {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_AIR_S_D_IS_BOUNCE : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod chrom {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_LW_CHANGE_KINETIC : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod dolly {
+    pub mod instance {
+        pub mod flag {
+            pub const IS_SPECIAL_CANCEL : i32 = 0x0100;
+            pub const ATTACK_DASH_COMMAND : i32 = 0x0101;
+            pub const RISING_FORCE : i32 = 0x0102;
+        }
+        pub mod int {
+            pub const D_TILT_CHAIN_COUNT : i32 = 0x0100;
+            pub const SUPER_SPECIAL_AURA : i32 = 0x0101;
+            pub const SUPER_SPECIAL_AURA2 : i32 = 0x0102;
+        }
+        pub mod float {
+            pub const GO_METER : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_N_FEINT : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod dolly_wave {
+    pub mod instance {
+        pub mod flag {
+            pub const FROM_CANCEL : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod donkey {
+    pub static mut DK_COUNT : u64 = 0;
+}
+
+pub mod edge {
+    pub mod instance {
+        pub mod flag {
+            pub const SPECIAL_HI_CANCEL : i32 = 0x1100;
+        }
+        pub mod int {
+            pub const SPECIAL_HI_CANCEL_COUNT : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod eflame {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_ROTATE : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod elight {
+    pub mod instance {
+        pub mod flag {
+            pub const SPECIAL_S_CANCEL : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod falco {
+    pub mod instance {
+        pub mod flag {
+            pub const KAA : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod ganon {
+    pub mod status {
+        pub mod flag {
+            pub const TELEPORT_FEINT : i32 = 0x1100;
+            pub const TELEPORT_STOP : i32 = 0x1101;
+            pub const TELEPORT_START_GROUND : i32 = 0x1102;
+        }
+        pub mod int {
+            pub const TELEPORT_STEP : i32 = 0x1100;
+        }
+        pub mod float {
+            pub const START_POS: i32 = 0x1100;
+
+            pub const END_POS: i32 = 0x1102;
+        }
+    }
+
+    pub const TELEPORT_STEP_INIT : i32 = 1;
+    pub const TELEPORT_STEP_MOVE : i32 = 2;
+    pub const TELEPORT_STEP_CHECK_FEINT : i32 = 3;
+    pub const TELEPORT_STEP_END : i32 = 4;
+}
+
+pub mod gaogaen {
+    pub mod instance {
+        pub mod int {
+            pub const REVENGE : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod jack {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_FEINT : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod kamui {
+    pub mod instance {
+        pub mod float {
+            pub const DRAGON_INSTALL : i32 = 0x0100;
+            pub const DRAGON_INSTALL_TIMER : i32 = 0x0101;
+        }
+    }
+}
+
+pub mod ken {
+    pub mod instance {
+        pub mod flag {
+            pub const V_TRIGGER : i32 = 0x0100;
+        }
+        pub mod int {
+            pub const SPECIAL_LW_TYPE : i32 = 0x0100;
+            pub const QUICK_STEP_STATE : i32 = 0x0101;
+            pub const FLASH_MAX : i32 = 0x0102;
+            pub const FLASH_COUNTER : i32 = 0x0103;
+            pub const SHORYUREPPA : i32 = 0x0104;
+            pub const V_TRIGGER_EFF_TIMER : i32 = 0x0105;
+        }
+        pub mod float {
+            pub const V_GAUGE : i32 =  0x0100;
+            pub const DIFF_X : i32 = 0x0101;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const VS1_CANCEL : i32 = 0x1100;
+            pub const VT1_CANCEL : i32 = 0x1101;
+            pub const GUARD_V_SHIFT : i32 = 0x1102;
+            pub const SPECIAL_LW_STEP_KICK : i32 = 0x1102;
+        }
+    }
+
+    pub const SPECIAL_LW_TYPE_QUICK_STEP : i32 = 0;
+    pub const SPECIAL_LW_TYPE_HEAT_RUSH : i32 = 1;
+
+    pub const QUICK_STEP_STATE_ENABLE : i32 = 0;
+    pub const QUICK_STEP_STATE_RUN : i32 = 1;
+    pub const QUICK_STEP_STATE_DISABLE : i32 = 2;
+}
+
+pub mod kirby {
+    pub mod status {
+        pub mod flag {
+            pub const ATTACK_DASH_END : i32 = 0x1100;
+            pub const ATTACK_LW3_BOUNCE : i32 = 0x1100;
+        }
+        pub mod int {
+            pub const APPEAL_S_LOOP_COUNT : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod lucario {
+    pub mod instance {
+        pub mod flag {
+            pub const IS_SUPER_DASH_CANCEL : i32 = 0x0100;
+        }
+    }
+}
+
 pub mod yu { // lucina
     use super::*;
-    
+
     pub mod instance {
         pub mod flag {
             pub const DISABLE_SPECIAL_N_S : i32 = 0x0100;
@@ -232,7 +421,7 @@ pub mod marth {
             pub const STANCE_CHANGE_LOCKOUT : i32 = 0x0100;
         }
     }
-    pub mod stance {
+    pub mod status {
         pub mod flag {
             pub const DISABLE_STANCE_CHANGE : i32 = 0x1100;
             pub const ATTACK_3_CHANGE_MOTION : i32 = 0x1101;
@@ -249,8 +438,7 @@ pub mod marth {
         pub mod float {
             pub const SPECIAL_S_ANGLE : i32 = 0x1100;
         }
-    }
-    pub mod status {
+
         pub const STANCE_ENTER : i32 = 0;
         pub const STANCE_WAIT : i32 = 1;
         pub const STANCE_SQUAT : i32 = 2;

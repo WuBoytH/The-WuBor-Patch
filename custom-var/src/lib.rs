@@ -635,7 +635,7 @@ impl VarModule {
 }
 
 pub struct GenericModule {
-    vtable: *const u64,
+    _vtable: *const u64,
     owner: *mut BattleObjectModuleAccessor,
     // ...
 }

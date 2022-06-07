@@ -7,8 +7,7 @@ use {
     },
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*,
-    super::vars::*
+    wubor_utils::vars::*
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
@@ -23,9 +22,9 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
             }
         }
 
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL)
+        if VarModule::is_flag(fighter.battle_object, elight::instance::flag::SPECIAL_S_CANCEL)
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
+            VarModule::off_flag(fighter.battle_object, elight::instance::flag::SPECIAL_S_CANCEL);
             MotionModule::set_frame(fighter.module_accessor, 25.0, false);
         }
 
@@ -35,11 +34,11 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
                 && MotionModule::frame(fighter.module_accessor) < 32.0 {
                     if ControlModule::check_button_on(fighter.module_accessor,*CONTROL_PAD_BUTTON_SPECIAL) {
                         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_END, true);
-                        WorkModule::on_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
+                        VarModule::on_flag(fighter.battle_object, elight::instance::flag::SPECIAL_S_CANCEL);
                     }
                 }
                 else {
-                    WorkModule::off_flag(fighter.module_accessor, FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_SPECIAL_S_CANCEL);
+                    VarModule::off_flag(fighter.battle_object, elight::instance::flag::SPECIAL_S_CANCEL);
                 }
             }
         }

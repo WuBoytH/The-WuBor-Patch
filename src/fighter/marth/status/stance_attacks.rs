@@ -64,7 +64,7 @@ unsafe extern "C" fn marth_speciallw_attack_main(fighter: &mut L2CFighterCommon)
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW3
 
 unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_lw3"),
@@ -80,8 +80,8 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
-            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK_LW4);
                 fighter.change_status(status.into(), true.into());
@@ -125,7 +125,7 @@ unsafe extern "C" fn marth_speciallw_attack_lw3_main_loop(fighter: &mut L2CFight
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_LW4
 
 unsafe extern "C" fn marth_speciallw_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_lw4"),
@@ -141,8 +141,8 @@ unsafe extern "C" fn marth_speciallw_attack_lw4_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_lw4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
-            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
             let dir = FGCModule::get_command_stick_direction(fighter, true);
             let mot;
             if [1, 4, 7].contains(&dir) {
@@ -173,7 +173,7 @@ unsafe extern "C" fn marth_speciallw_attack_lw4_main_loop(fighter: &mut L2CFight
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_HI3
 
 unsafe extern "C" fn marth_speciallw_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_hi3"),
@@ -189,8 +189,8 @@ unsafe extern "C" fn marth_speciallw_attack_hi3_main(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn marth_speciallw_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
-            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 MotionModule::change_motion_inherit_frame(
                     fighter.module_accessor,
@@ -210,8 +210,8 @@ unsafe extern "C" fn marth_speciallw_attack_hi3_main_loop(fighter: &mut L2CFight
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ATTACK_F3
 
 unsafe extern "C" fn marth_speciallw_attack_f3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
-    VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY);
+    VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
+    VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack_f3"),
@@ -227,8 +227,8 @@ unsafe extern "C" fn marth_speciallw_attack_f3_main(fighter: &mut L2CFighterComm
 
 unsafe extern "C" fn marth_speciallw_attack_f3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION) {
-            VarModule::off_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION) {
+            VarModule::off_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
                 sv_kinetic_energy!(
                     set_speed_mul,
@@ -236,7 +236,7 @@ unsafe extern "C" fn marth_speciallw_attack_f3_main_loop(fighter: &mut L2CFighte
                     FIGHTER_KINETIC_ENERGY_ID_MOTION,
                     1.5
                 );
-                VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY);
+                VarModule::on_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY);
             }
         }
     }

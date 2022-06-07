@@ -10,8 +10,7 @@ use {
         wua_bind::*,
         vars::*,
         table_const::*
-    },
-    super::vars::*
+    }
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
@@ -31,16 +30,16 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        && WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) > 0
-        && WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) < 3
+        && VarModule::get_int(fighter.battle_object, gaogaen::instance::int::REVENGE) > 0
+        && VarModule::get_int(fighter.battle_object, gaogaen::instance::int::REVENGE) < 3
         && AttackModule::get_power(fighter.module_accessor, 0, false, 1.0, false) >= 20.0 {
             MiscModule::critical_zoom(fighter, 0, 2.0, 1.5);
-            WorkModule::set_int(fighter.module_accessor, 3, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+            VarModule::set_int(fighter.battle_object, gaogaen::instance::int::REVENGE, 3);
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW
         && !fighter.global_table[IS_STOP].get_bool() {
-            if WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 2 {
+            if VarModule::get_int(fighter.battle_object, gaogaen::instance::int::REVENGE) == 2 {
                 fighter.change_status(FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_S_LARIAT.into(), true.into());
             }
         }

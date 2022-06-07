@@ -7,24 +7,25 @@ use {
     },
     smash_script::*,
     smashline::*,
-    super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
 unsafe fn ken_run(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
+        if VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_RUN {
             macros::FT_MOTION_RATE(fighter, 0.7);
         }
     }
     frame(fighter.lua_state_agent, 22.0);
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
+    if VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_RUN {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_SPECIAL_LW_FLAG_STEP_KICK);
+            VarModule::on_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_STEP_KICK);
         }
     }
     frame(fighter.lua_state_agent, 31.0);
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE) == FIGHTER_KEN_QUICK_STEP_STATE_RUN {
+    if VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_RUN {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
 }
@@ -35,7 +36,7 @@ unsafe fn ken_run(fighter: &mut L2CAgentBase) {
 unsafe fn ken_attacks3w(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_DISABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_DISABLE);
     }
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -66,7 +67,7 @@ unsafe fn ken_attacks3w(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 26.0);
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_ENABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
+        VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
         CancelModule::enable_cancel(fighter.module_accessor);
     }
 }
@@ -214,7 +215,7 @@ unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
 unsafe fn ken_specialsstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
         ratio = 1.2;
     }
@@ -242,7 +243,7 @@ unsafe fn ken_specialsstart(fighter: &mut L2CAgentBase) {
 unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
         ratio = 1.2;
     }
@@ -314,7 +315,7 @@ unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
 unsafe fn ken_specialairsstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
         ratio = 1.2;
     }
@@ -351,7 +352,7 @@ unsafe fn ken_specialairsstart(fighter: &mut L2CAgentBase) {
 unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
         ratio = 1.2;
     }
@@ -421,7 +422,7 @@ unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
 unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
         ratio = 1.0;
     }
@@ -477,7 +478,7 @@ unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
 unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
         ratio = 1.0;
     }
@@ -490,15 +491,15 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
     }
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+    if VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 1 {
         WorkModule::set_int(fighter.module_accessor, *FIGHTER_RYU_STRENGTH_S, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     }
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_W
     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_M {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-            WorkModule::inc_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA);
+        if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
+            VarModule::inc_int(fighter.battle_object, ken::instance::int::SHORYUREPPA);
         }
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+        if VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 1 {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.5, 270, 10, 0, 25, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.2, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 1.5, 270, 10, 0, 25, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.2, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
             AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
@@ -516,7 +517,7 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0 * ratio, 80, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 3, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     else {
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+        if VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 1 {
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 270, 10, 0, 25, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 270, 10, 0, 25, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
             AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 28.0, false);
@@ -538,7 +539,7 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 6.0 * ratio, 70, 121, 0, 78, 5.5, 4.0, -0.4, 0.0, None, None, None, 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new(property), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     else {
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+        if VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 1 {
             AttackModule::clear_all(fighter.module_accessor);
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 270, 10, 30, 30, 5.5, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 270, 10, 30, 30, 5.5, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 1.0, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
@@ -568,7 +569,7 @@ unsafe fn ken_specialhicommand_snd(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 0 {
+        if VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 0 {
             macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_h01_command"));
         }
         else {
@@ -597,7 +598,7 @@ unsafe fn ken_specialhicommand_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME, low_priority )]
 unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }
     else {
@@ -650,12 +651,12 @@ unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME, low_priority )]
 unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
-    let special_lw_type = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE);
+    let special_lw_type = VarModule::get_int(fighter.battle_object, ken::instance::int::SPECIAL_LW_TYPE);
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
             SlowModule::clear_whole(fighter.module_accessor);
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -672,8 +673,8 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -690,8 +691,8 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -708,8 +709,8 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -726,8 +727,8 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -747,7 +748,7 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
@@ -755,12 +756,12 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
 unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
-    let special_lw_type = WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE);
+    let special_lw_type = VarModule::get_int(fighter.battle_object, ken::instance::int::SPECIAL_LW_TYPE);
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
             SlowModule::clear_whole(fighter.module_accessor);
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -777,8 +778,8 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -795,11 +796,11 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_QUICK_STEP {
+        if special_lw_type == ken::SPECIAL_LW_TYPE_QUICK_STEP {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
         }
-        else if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        else if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -816,8 +817,8 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -834,8 +835,8 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
-            let diff_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
+            let diff_x = VarModule::get_float(fighter.battle_object, ken::instance::float::DIFF_X);
             if diff_x != 0.0 {
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: (diff_x / 5.0) * PostureModule::lr(fighter.module_accessor),
@@ -855,7 +856,7 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
-        if special_lw_type == FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH {
+        if special_lw_type == ken::SPECIAL_LW_TYPE_HEAT_RUSH {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
@@ -865,8 +866,8 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
 unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    if WorkModule::is_flag(oboma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    let object = sv_system::battle_object(otarget_id as u64);
+    if VarModule::is_flag(object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }
     if macros::is_excute(weapon) {
@@ -885,8 +886,8 @@ unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
 unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    if WorkModule::is_flag(oboma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    let object = sv_system::battle_object(otarget_id as u64);
+    if VarModule::is_flag(object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }
     if macros::is_excute(weapon) {
@@ -905,8 +906,8 @@ unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
 unsafe fn ken_hadoken_moves(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    if WorkModule::is_flag(oboma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+    let object = sv_system::battle_object(otarget_id as u64);
+    if VarModule::is_flag(object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }
     if macros::is_excute(weapon) {

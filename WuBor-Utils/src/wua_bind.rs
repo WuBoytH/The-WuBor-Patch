@@ -183,11 +183,11 @@ pub mod FGCModule {
         || ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
         && check_cancel_window(fighter)) {
-            let count = WorkModule::get_int(fighter.module_accessor, counter) + 1;
+            let count = VarModule::get_int(fighter.battle_object, counter) + 1;
             if (cat1 & cat1_compare) != 0
             && count <= max {
                 fighter.attack_mtrans_pre_process();
-                WorkModule::inc_int(fighter.module_accessor, counter);
+                VarModule::inc_int(fighter.battle_object, counter);
                 return 1.into();
             }
         }

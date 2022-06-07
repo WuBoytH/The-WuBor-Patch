@@ -7,8 +7,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{helper::*, vars::*},
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::helper::*
 };
 
 #[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
@@ -41,13 +42,13 @@ unsafe fn ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn ganon_specialn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP) == FIGHTER_GANON_TELEPORT_STEP_INIT {
+    if VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP) == ganon::TELEPORT_STEP_INIT {
         deception_init(fighter);
     }
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_INT_TELEPORT_STEP) == FIGHTER_GANON_TELEPORT_STEP_CHECK_FEINT {
+    if VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP) == ganon::TELEPORT_STEP_CHECK_FEINT {
         deception_feint_handler(fighter);
     }
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP) {
+    if VarModule::is_flag(fighter.battle_object, ganon::status::flag::TELEPORT_STOP) {
         KineticModule::unable_energy_all(fighter.module_accessor);
     }
     let curr_sit = fighter.global_table[SITUATION_KIND].get_i32();

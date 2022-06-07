@@ -8,8 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*,
-    super::super::vars::*
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME, low_priority )]
@@ -331,7 +330,7 @@ unsafe fn gaogaen_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_MOVE_START);
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+        VarModule::set_int(fighter.battle_object, gaogaen::instance::int::REVENGE, 0);
     }
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 11.0);
@@ -378,7 +377,7 @@ unsafe fn gaogaen_specialairsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_S_FLAG_MOVE_START);
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+        VarModule::set_int(fighter.battle_object, gaogaen::instance::int::REVENGE, 0);
     }
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 11.0);
@@ -512,14 +511,14 @@ unsafe fn gaogaen_specialairsshoulder(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_specialslariat(fighter: &mut L2CAgentBase) {
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) > 0 {
+    if VarModule::get_int(fighter.battle_object, gaogaen::instance::int::REVENGE) > 0 {
         let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(fighter.module_accessor, 0));
         let mut hitlag = 1.0 + 0.5 * DamageModule::damage(fighter.module_accessor, 0);
         if dmg > 36.0 {
             dmg = 36.0;
             hitlag = 2.0;
         }
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE) == 2 {
+        if VarModule::get_int(fighter.battle_object, gaogaen::instance::int::REVENGE) == 2 {
             HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         }
         if macros::is_excute(fighter) {
@@ -653,7 +652,7 @@ unsafe fn gaogaen_specialairhifall_2(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_speciallwstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+        VarModule::set_int(fighter.battle_object, gaogaen::instance::int::REVENGE, 0);
         WorkModule::set_int(fighter.module_accessor, *BATTLE_OBJECT_ID_INVALID as u32 as i32, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_BATTLE_OBJECT_ID_SWING_THROWN_FIGHTER);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_S);
     }
@@ -661,7 +660,7 @@ unsafe fn gaogaen_speciallwstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
         DamageModule::set_damage_mul(fighter.module_accessor, 0.5);
-        WorkModule::set_int(fighter.module_accessor, 1, FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_REVENGE);
+        VarModule::set_int(fighter.battle_object, gaogaen::instance::int::REVENGE, 1);
     }
     frame(fighter.lua_state_agent, 9.0);
     macros::FT_MOTION_RATE(fighter, 1.5);

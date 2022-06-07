@@ -88,7 +88,7 @@ unsafe fn marth_speciallwattacklw3(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -161,7 +161,7 @@ unsafe fn marth_speciallwattacklw4(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 13.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -312,7 +312,7 @@ unsafe fn marth_speciallwattackhi3(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -449,14 +449,14 @@ unsafe fn marth_speciallwattackf3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 3.0);
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, marth::stance::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(fighter.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(fighter.lua_state_agent, 4.0);
-    if !VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
+    if !VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
         macros::FT_MOTION_RATE(fighter, 1.5);
     }
     frame(fighter.lua_state_agent, 6.0);
-    if !VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
+    if !VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
         macros::FT_MOTION_RATE(fighter, 1.0);
     }
     else {
@@ -469,7 +469,7 @@ unsafe fn marth_speciallwattackf3(fighter: &mut L2CAgentBase) {
         let bkb;
         let kbg;
         let sound;
-        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
+        if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
             dmg = 6.0;
             bkb = 75;
             kbg = 54;
@@ -491,7 +491,7 @@ unsafe fn marth_speciallwattackf3(fighter: &mut L2CAgentBase) {
         let bkb;
         let kbg;
         let sound;
-        if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
+        if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
             dmg = 4.0;
             bkb = 60;
             kbg = 54;
@@ -529,7 +529,7 @@ unsafe fn marth_speciallwattackf3_eff(fighter: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
     let size;
-    if VarModule::is_flag(fighter.battle_object, marth::stance::flag::ATTACK_F3_HEAVY) {
+    if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
         size = 1.5;
     }
     else {

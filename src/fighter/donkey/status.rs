@@ -8,8 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{vl, vars::*}
+    wubor_utils::{vars::*, table_const::*},
+    super::vl
 };
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -234,7 +234,7 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
 /// If there are more than (# of DKs in the match * # of barrels allowed per DK)
 /// existing at a time, DK will be unable to pull out a barrel.
 pub unsafe fn barrel_check() -> bool {
-    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= vl::param_special_s::barrel_count as u64 * DK_COUNT {
+    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= vl::param_special_s::barrel_count as u64 * donkey::DK_COUNT {
         return false;
     }
     return true;

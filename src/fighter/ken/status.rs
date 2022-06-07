@@ -16,8 +16,7 @@ use {
     super::super::{
         common::common_status::dash::*,
         ryu::helper::*
-    },
-    super::vars::*
+    }
 };
 
 #[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -425,25 +424,25 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         let mot;
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) < 900.0
-        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
-            WorkModule::set_int(
-                fighter.module_accessor,
-                FIGHTER_KEN_SPECIAL_LW_TYPE_QUICK_STEP,
-                FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE
+        if VarModule::get_float(fighter.battle_object, ken::instance::float::V_GAUGE) < 900.0
+        || VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
+            VarModule::set_int(
+                fighter.battle_object,
+                ken::instance::int::SPECIAL_LW_TYPE,
+                ken::SPECIAL_LW_TYPE_QUICK_STEP
             );
-            WorkModule::set_int(
-                fighter.module_accessor,
-                FIGHTER_KEN_QUICK_STEP_STATE_RUN,
-                FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE
+            VarModule::set_int(
+                fighter.battle_object,
+                ken::instance::int::QUICK_STEP_STATE,
+                ken::QUICK_STEP_STATE_RUN
             );
             mot = Hash40::new("run");
         }
         else {
-            WorkModule::set_int(
-                fighter.module_accessor,
-                FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH,
-                FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE
+            VarModule::set_int(
+                fighter.battle_object,
+                ken::instance::int::SPECIAL_LW_TYPE,
+                ken::SPECIAL_LW_TYPE_HEAT_RUSH
             );
             mot = Hash40::new("special_lw_step_f");
         }
@@ -459,26 +458,26 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
     }
     else {
-        if WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) < 900.0
-        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER) {
+        if VarModule::get_float(fighter.battle_object, ken::instance::float::V_GAUGE) < 900.0
+        || VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_UNIQ);
             macros::SET_SPEED_EX(fighter, 0.8, 0.2, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-            WorkModule::set_int(
-                fighter.module_accessor,
-                FIGHTER_KEN_QUICK_STEP_STATE_DISABLE,
-                FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE
+            VarModule::set_int(
+                fighter.battle_object,
+                ken::instance::int::SPECIAL_LW_TYPE,
+                ken::SPECIAL_LW_TYPE_QUICK_STEP
             );
-            WorkModule::set_int(
-                fighter.module_accessor,
-                FIGHTER_KEN_SPECIAL_LW_TYPE_QUICK_STEP,
-                FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE
+            VarModule::set_int(
+                fighter.battle_object,
+                ken::instance::int::QUICK_STEP_STATE,
+                ken::QUICK_STEP_STATE_DISABLE
             );
         }
         else {
-            WorkModule::set_int(
-                fighter.module_accessor,
-                FIGHTER_KEN_SPECIAL_LW_TYPE_HEAT_RUSH,
-                FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE
+            VarModule::set_int(
+                fighter.battle_object,
+                ken::instance::int::SPECIAL_LW_TYPE,
+                ken::SPECIAL_LW_TYPE_HEAT_RUSH
             );
         }
         MotionModule::change_motion(
@@ -492,7 +491,7 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             false
         );
     }
-    if WorkModule::get_int(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SPECIAL_LW_TYPE) == FIGHTER_KEN_SPECIAL_LW_TYPE_QUICK_STEP {
+    if VarModule::get_int(fighter.battle_object, ken::instance::int::SPECIAL_LW_TYPE) == ken::SPECIAL_LW_TYPE_QUICK_STEP {
         fighter.sub_shift_status_main(L2CValue::Ptr(ken_quickstep_loop as *const () as _))
     }
     else {
@@ -517,16 +516,16 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             else {
                 diff_x = 0.0;
             }
-            WorkModule::set_float(fighter.module_accessor, diff_x, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+            VarModule::set_float(fighter.battle_object, ken::instance::float::DIFF_X, diff_x);
             VarModule::set_int(fighter.battle_object, commons::instance::int::TARGET_ID, 0);
         }
         else {
-            WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_DIFF_X);
+            VarModule::set_float(fighter.battle_object, ken::instance::float::DIFF_X, 0.0);
         }
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_l01"));
         macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l01"));
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER);
-        WorkModule::set_float(fighter.module_accessor, 0.0, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE);
+        VarModule::on_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER);
+        VarModule::set_float(fighter.battle_object, ken::instance::float::V_GAUGE, 0.0);
         fighter.sub_shift_status_main(L2CValue::Ptr(ken_heatrush_loop as *const () as _))
     }
 }
@@ -551,7 +550,7 @@ unsafe extern "C" fn ken_quickstep_loop(fighter: &mut L2CFighterCommon) -> L2CVa
             return 0.into();
         }
     }
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_SPECIAL_LW_FLAG_STEP_KICK) {
+    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_STEP_KICK) {
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new("attack_s3_s_w"),
@@ -562,7 +561,7 @@ unsafe extern "C" fn ken_quickstep_loop(fighter: &mut L2CFighterCommon) -> L2CVa
             false,
             false
         );
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_STATUS_SPECIAL_LW_FLAG_STEP_KICK);
+        VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_STEP_KICK);
     }
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw_step_f") {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

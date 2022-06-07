@@ -5,8 +5,9 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::{wua_bind::*, table_const::*},
-    super::{vtable_hook::*, vl, vars::*}
+    custom_var::*,
+    wubor_utils::{wua_bind::*, vars::*, table_const::*},
+    super::{vtable_hook::*, vl}
 };
 
 pub unsafe fn add_go(object: *mut BattleObject, module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
@@ -17,7 +18,7 @@ pub unsafe fn add_go(object: *mut BattleObject, module_accessor: *mut BattleObje
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
     ].contains(&status) {
         let meter_max = 200.0;
-        let meter_const = FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_GO_METER;
+        let meter_const = dolly::instance::float::GO_METER;
         amount /= 0.75;
         FGCModule::update_meter(object, amount, meter_max, meter_const);
         let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
@@ -82,7 +83,7 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_RISING_FORCE) {
+        if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
@@ -100,7 +101,7 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         }
     }
     if ret.get_bool() {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
     }
     ret
 }
@@ -172,7 +173,7 @@ pub struct SpecialCancelStats {
 }
 
 pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         dmg *= vl::param_private::special_cancel_damage_mul;
         bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
     }

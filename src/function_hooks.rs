@@ -8,8 +8,7 @@ use {
         fighter::{
             dolly::helper::*,
             gaogaen::helper::*,
-            kamui::vars::*,
-            ken::{helper::*, vars::*},
+            ken::helper::*,
             lucina::helper::*,
             *
         }
@@ -154,7 +153,7 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
     // println!("attacker ids: {}", attacker_ids);
     let fighter_kind = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND);
     if fighter_kind == *FIGHTER_KIND_GAOGAEN {
-        handle_revenge(module_accessor, attacker_ids);
+        handle_revenge(object, module_accessor, attacker_ids);
     }
     for x in 0..8 {
         if attacker_ids & (1 << x) == 0 {
@@ -214,13 +213,13 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
 
         if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("speed_x_mul_s") {
-                if WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+                if VarModule::get_int(object, vars::ken::instance::int::SHORYUREPPA) == 1 {
                     return 0.15;
                 }
             }
             else if param_hash == hash40("speed_y_mul_s") {
-                if WorkModule::is_flag(boma, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER)
-                && WorkModule::get_int(boma, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA) == 1 {
+                if VarModule::is_flag(object, vars::ken::instance::flag::V_TRIGGER)
+                && VarModule::get_int(object, vars::ken::instance::int::SHORYUREPPA) == 1 {
                     return 0.1;
                 }
             }
@@ -235,24 +234,20 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
     }
     else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
+            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let object = sv_system::battle_object(otarget_id as u64);
             if param_hash == hash40("speed_max") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
+                if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                     return 1.2;
                 }
             }
             else if param_hash == hash40("life_max") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
+                if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                     return 150.0;
                 }
             }
             else if param_hash == hash40("scale_max") {
-                let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if WorkModule::get_float(oboma, FIGHTER_KAMUI_INSTANCE_WORK_ID_FLOAT_DRAGON_INSTALL) > 0.0 {
+                if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                     return 1.7;
                 }
             }

@@ -5,13 +5,13 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    super::vars::*
+    wubor_utils::vars::*
 };
 
 #[fighter_reset]
 fn fighter_reset(_fighter: &mut L2CFighterCommon) {
     unsafe {
-        DK_COUNT = 0;
+        donkey::DK_COUNT = 0;
     }
 }
 
@@ -22,7 +22,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_DONKEY {
             return;
         }
-        DK_COUNT += 1;
+        donkey::DK_COUNT += 1;
     }
 }
 

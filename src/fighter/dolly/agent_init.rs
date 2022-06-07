@@ -7,8 +7,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{fgc::*, vars::*}
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::fgc::*
 };
 
 unsafe extern "C" fn dolly_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -20,8 +21,8 @@ unsafe extern "C" fn dolly_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe extern "C" fn dolly_check_ground_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_IS_SPECIAL_CANCEL);
-    WorkModule::off_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND);
+    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND);
     false.into()
 }
 
@@ -43,7 +44,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DASH_ATTACK_COMMAND);
+        VarModule::on_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND);
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
         return true.into();
     }

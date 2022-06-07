@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -147,7 +148,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
                 macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
             }
-            let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+            let target_id = VarModule::get_int(fighter.battle_object, commons::instance::int::TARGET_ID) as u32;
             if sv_battle_object::is_active(target_id) {
                 let target_boma = sv_battle_object::module_accessor(target_id);
                 SlowModule::set(
@@ -201,7 +202,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SEC_SEN_CAMERA);
         }
         if WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_SEC_SEN_TIMER) >= 0.0 {
-            let target_id = WorkModule::get_int64(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID) as u32;
+            let target_id = VarModule::get_int(fighter.battle_object, commons::instance::int::TARGET_ID) as u32;
             let ryu_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_X);
             let ryu_y = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_RYU_Y);
             let target_x = WorkModule::get_float(fighter.module_accessor, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X);

@@ -5,13 +5,14 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
+    custom_var::*,
     wubor_utils::{vars::*, table_const::*},
     super::fgc::*
 };
 
 pub unsafe extern "C" fn lucario_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MACH_VALIDITY)
-    || WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
+    || VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI) {
         return 0.into();
     }
     1.into()

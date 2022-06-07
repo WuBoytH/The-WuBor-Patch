@@ -7,6 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::vars::*,
     super::super::{vl, helper::*},
 };
@@ -109,7 +110,7 @@ unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

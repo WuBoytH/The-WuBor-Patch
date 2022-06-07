@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::{wua_bind::*, vars::*},
     // super::super::vars::*
 };
@@ -18,15 +19,15 @@ unsafe fn edge_appeals(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
-                fighter.module_accessor,
+                fighter.battle_object,
                 false,
                 hash40("appeal_s_loop"),
                 48,
                 *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R
             );
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_attack") as i64, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
-            WorkModule::set_int(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_BUTTON);
-            WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION);
+            VarModule::set_int64(fighter.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
+            VarModule::set_int(fighter.battle_object, appeal::int::ACTION_BUTTON, *CONTROL_PAD_BUTTON_ATTACK);
+            VarModule::on_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION);
         }
     }
 }
@@ -53,11 +54,11 @@ unsafe fn edge_appealsloop_eff(fighter: &mut L2CAgentBase) {
         }
         frame(fighter.lua_state_agent, 135.0);
         if macros::is_excute(fighter) {
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_attack_just") as i64, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
+            VarModule::set_int64(fighter.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack_just"));
         }
         frame(fighter.lua_state_agent, 138.0);
         if macros::is_excute(fighter) {
-            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_attack") as i64, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
+            VarModule::set_int64(fighter.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
         }
         fighter.clear_lua_stack();
         wait_loop_sync_mot(fighter.lua_state_agent);
@@ -362,7 +363,7 @@ unsafe fn edge_appeallw(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
-                fighter.module_accessor,
+                fighter.battle_object,
                 false,
                 hash40("appeal_lw_loop"),
                 60,

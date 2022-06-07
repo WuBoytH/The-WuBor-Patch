@@ -7,6 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::vars::*
 };
 
@@ -35,7 +36,7 @@ unsafe fn lucario_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     let mut angle : u64;
     let bkb;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         angle = 70;
         bkb = 40;
     }
@@ -48,7 +49,7 @@ unsafe fn lucario_attackdash(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("footl"), 10.0, angle, 79, 0, bkb, 3.6, 3.2, 0.0, 0.0, Some(0.0), Some(0.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_KICK);
     }
     frame(fighter.lua_state_agent, 11.0);
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         angle = 60;
     }
     if macros::is_excute(fighter) {

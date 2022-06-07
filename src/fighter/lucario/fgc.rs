@@ -4,6 +4,7 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -13,7 +14,7 @@ use {
 };
 
 pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         let status = fighter.global_table[STATUS_KIND].get_i32();
         let mut special_cancels : Vec<i32> = [].to_vec();
         let mut normal_cancels : Vec<i32> = [].to_vec();
@@ -76,7 +77,7 @@ pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
             WorkModule::on_flag(fighter.module_accessor, FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_IS_SUPER_DASH_CANCEL);
             StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
         }
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI) {
+        if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI) {
             special_cancels.append(&mut [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
         }
         FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);

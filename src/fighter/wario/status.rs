@@ -8,8 +8,9 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{vl, vars::*},
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::vl
 };
 
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -24,8 +25,8 @@ unsafe fn wario_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_b") {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_WARIO_STATUS_THROW_FLAG_MOVE) {
-            let mut spin = WorkModule::get_float(fighter.module_accessor, FIGHTER_WARIO_STATUS_THROW_FLOAT_SPIN_SPEED);
+        if VarModule::is_flag(fighter.battle_object, wario::throw::flag::MOVE) {
+            let mut spin = VarModule::get_float(fighter.battle_object, wario::throw::float::SPIN_SPEED);
             let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
             spin += vl::param_private::throw_b_accel * stickx;
             if spin.abs() > vl::param_private::throw_b_speed_max.abs() {
@@ -36,7 +37,7 @@ unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
                     spin = vl::param_private::throw_b_speed_max;
                 }
             }
-            WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_WARIO_STATUS_THROW_FLOAT_SPIN_SPEED);
+            VarModule::set_float(fighter.battle_object, wario::throw::float::SPIN_SPEED, spin);
             macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
         else {

@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*
@@ -24,7 +25,7 @@ unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
         WorkModule::set_int(fighter.module_accessor, FIGHTER_KEN_QUICK_STEP_STATE_ENABLE, FIGHTER_KEN_INSTANCE_WORK_ID_INT_QUICK_STEP_STATE);
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLAG_V_TRIGGER);
         WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_KEN_INSTANCE_WORK_ID_INT_SHORYUREPPA);
-        WorkModule::set_int64(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+        VarModule::set_int(fighter.battle_object, commons::instance::int::TARGET_ID, 0);
     }
 }
 

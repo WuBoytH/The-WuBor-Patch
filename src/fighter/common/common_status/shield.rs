@@ -7,6 +7,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
+    custom_var::*,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -121,7 +122,7 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
         }
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SHIELD_LOCK) {
             let shield_dec1 : f32;
-            if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+            if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
                 shield_dec1 = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_dec1"));
             }
             else {
@@ -718,7 +719,7 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
     let guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
     WorkModule::set_int(fighter.module_accessor, guard_off_cancel_frame, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
-    WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME);
+    VarModule::set_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME, 0);
     let anim_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("guard_off"), true) as f32;
     let mut motion_rate = 1.0;
     if 0.0 < guard_off_cancel_frame as f32
@@ -739,10 +740,10 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_off_uniq)]
 unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
-        if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
-            WorkModule::inc_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME);
-            if WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_GUARD_OFF_WORK_INT_ATTACK_CANCEL_FRAME) == guard_off_attack_cancel_frame {
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
+        if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
+            VarModule::inc_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME);
+            if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) == guard_off_attack_cancel_frame {
+                VarModule::on_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL);
             }
         }
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) > 0 {
@@ -758,7 +759,7 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
 unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL) {
+        if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL) {
             if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() == false
             && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD) {
                 let mut cont = ItemModule::is_have_item(fighter.module_accessor, 0);
@@ -833,7 +834,7 @@ unsafe fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: 1.0, y: 1.0, z: 1.0});
     WorkModule::unable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
+        VarModule::off_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL);
     }
     0.into()
 }

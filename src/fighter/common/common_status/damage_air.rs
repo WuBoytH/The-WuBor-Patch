@@ -4,6 +4,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
+    custom_var::*,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -12,7 +13,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageAir)]
 unsafe fn status_damageair(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
     }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);

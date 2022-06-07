@@ -6,6 +6,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
+    custom_var::*,
     crate::{
         vars::*,
         table_const::*,
@@ -66,7 +67,7 @@ pub mod FGCModule {
 
     /// A utility function that just checks if you're within the cancel window or not.
     pub unsafe fn check_cancel_window(fighter: &mut L2CFighterCommon) -> bool {
-        let hit_frame = WorkModule::get_float(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLOAT_HIT_FRAME);
+        let hit_frame = VarModule::get_float(fighter.battle_object, commons::status::float::HIT_FRAME);
         let motion_frame = fighter.global_table[MOTION_FRAME].get_f32();
         motion_frame - hit_frame <= 10.0 && !fighter.global_table[IS_STOP].get_bool() && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     }
@@ -123,7 +124,7 @@ pub mod FGCModule {
         || (on_block && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
         && check_cancel_window(fighter) {
             if airdash_cancel_common(fighter, sit.into()).get_bool() {
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_FORCE_ESCAPE_AIR_SLIDE);
+                VarModule::on_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
                 return true.into();
             }
         }
@@ -297,11 +298,11 @@ pub mod FGCModule {
     /// Disables a grounded attack. Used for cancel systems with complex cancel trees.
     pub unsafe fn disable_ground_normal(fighter: &mut L2CFighterCommon, ground_normal_mask: i32) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let mut used_ground_normals = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+            let mut used_ground_normals = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS);
             if used_ground_normals & ground_normal_mask == 0 {
                 used_ground_normals += ground_normal_mask;
             }
-            WorkModule::set_int(fighter.module_accessor, used_ground_normals, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+            VarModule::set_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS, used_ground_normals);
         }
     }
 
@@ -309,7 +310,7 @@ pub mod FGCModule {
     /// Used for cancel systems with complex cancel trees.
     pub unsafe fn set_used_ground_normal_transition_terms(fighter: &mut L2CFighterCommon) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+            let used_mask = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS);
             if used_mask & ATTACK_N_MASK != 0 {
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING);
@@ -362,27 +363,27 @@ pub mod FGCModule {
             *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
             *FIGHTER_STATUS_KIND_ATTACK_LW4
         ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-            WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_GROUND_NORMALS);
+            VarModule::set_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS, 0);
         }
     }
 
     /// Disables an aerial. Used for characters who can cancel aerials into other aerials.
     pub unsafe fn disable_aerial(fighter: &mut L2CFighterCommon, aerial_mask: i32) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let mut used_aerials = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+            let mut used_aerials = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_AERIALS);
             if used_aerials & aerial_mask == 0 {
                 used_aerials += aerial_mask;
             }
-            WorkModule::set_int(fighter.module_accessor, used_aerials, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+            VarModule::set_int(fighter.battle_object, commons::instance::int::USED_AERIALS, used_aerials);
         }
     }
 
     /// Checks if certain aerials are enabled.
     pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL)
+        if VarModule::is_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL)
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let enabled_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
-            let used_mask = WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+            let enabled_mask = VarModule::get_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS);
+            let used_mask = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_AERIALS);
             let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
             let aerial_flag;
             match attack_air_kind {
@@ -400,7 +401,7 @@ pub mod FGCModule {
 
     /// Resets your aerial cancel string, enabling all aerials again.
     pub unsafe fn reset_used_aerials(fighter: &mut L2CFighterCommon) {
-        WorkModule::set_int(fighter.module_accessor, 0, FIGHTER_INSTANCE_WORK_ID_INT_USED_AERIALS);
+        VarModule::set_int(fighter.battle_object, commons::instance::int::USED_AERIALS, 0);
     }
 
     /// Handles adding or subtracting meter.
@@ -539,24 +540,16 @@ pub mod MiscModule {
     }
 
     /// Sets all of the values needed for Taunt Hold/Loops.
-    pub unsafe fn set_appeal_loop(module_accessor: *mut BattleObjectModuleAccessor, is_loop: bool, loop_mot: u64, restart_frame: i32, buttons: i32) {
-        WorkModule::set_int(module_accessor, buttons, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON);
-        WorkModule::set_int(module_accessor, restart_frame, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME);
-        WorkModule::set_int64(
-            module_accessor,
-            loop_mot as i64,
-            FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_LOOP_MOT
-        );
-        WorkModule::set_int64(
-            module_accessor,
-            smash::hash40("invalid") as i64,
-            FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT
-        );
+    pub unsafe fn set_appeal_loop(object: *mut BattleObject, is_loop: bool, loop_mot: u64, restart_frame: i32, buttons: i32) {
+        VarModule::set_int(object, appeal::int::HOLD_BUTTON, buttons);
+        VarModule::set_int(object, appeal::int::RESTART_FRAME, restart_frame);
+        VarModule::set_int64(object, appeal::int64::LOOP_MOT, loop_mot);
+        VarModule::set_int64(object, appeal::int64::ACTION_MOT, smash::hash40("invalid"));
         if is_loop {
-            WorkModule::on_flag(module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
+            VarModule::on_flag(object, appeal::flag::LOOP);
         }
         else {
-            WorkModule::on_flag(module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
+            VarModule::on_flag(object, appeal::flag::HOLD);
         }
     }
 }

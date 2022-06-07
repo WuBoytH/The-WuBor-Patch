@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::{wua_bind::*, vars::*},
     super::super::{vl, vars::*}
 };
@@ -16,10 +17,10 @@ use {
 unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R)
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP) {
+    && !VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
-                fighter.module_accessor,
+                fighter.battle_object,
                 true,
                 hash40("appeal_s_loop"),
                 9,

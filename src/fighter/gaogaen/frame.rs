@@ -5,6 +5,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -21,7 +22,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
-        && WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL)
+        && VarModule::is_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL)
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IS_STOP].get_bool() {

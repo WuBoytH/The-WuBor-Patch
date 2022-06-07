@@ -7,6 +7,7 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
+    custom_var::*,
     smashline::*,
     wubor_utils::vars::*
 };
@@ -72,7 +73,7 @@ unsafe fn elight_attacks3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 10.0);
     let angle : u64;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         angle = 361;
     }
     else {

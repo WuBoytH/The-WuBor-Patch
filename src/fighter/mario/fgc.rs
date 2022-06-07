@@ -5,6 +5,7 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -14,7 +15,7 @@ use {
 };
 
 pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         let status = fighter.global_table[STATUS_KIND].get_i32();
         let mut special_cancels : Vec<i32> = [].to_vec();
         let mut normal_cancels : Vec<i32> = [].to_vec();
@@ -63,9 +64,9 @@ pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
             ].to_vec();
             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n") {
-                WorkModule::set_int(fighter.module_accessor, 0b11110, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+                VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, 0b11110);
                 aerial_cancel = true;
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL);
+                VarModule::on_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
             }
         }
         else if [

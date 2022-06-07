@@ -5,6 +5,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
+    custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };
 
@@ -24,7 +25,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
             }
         }
         if copy_kind == *FIGHTER_KIND_GANON {
-            if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N) {
+            if VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N) {
                 return 0.into();
             }
             else {

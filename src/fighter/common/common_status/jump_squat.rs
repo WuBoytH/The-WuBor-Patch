@@ -7,6 +7,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
+    custom_var::*,
     wubor_utils::{
         vars::*,
         table_const::*
@@ -15,17 +16,17 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    if WorkModule::get_float(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLOAT_FLICK_DOWN) > 0.0
+    if VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
     || (fighter.global_table[STICK_Y].get_f32() < -0.5
     && fighter.global_table[FLICK_Y].get_i32() < 7
     && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+        VarModule::on_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
     }
     else {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+        VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
     }
     let mut jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         jump_squat_frame += 2.0;
     }
@@ -91,8 +92,8 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         *FIGHTER_STATUS_KIND_GUARD
     ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32())
     || (fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_OFF
-    && !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL)) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_GUARD_OFF_ATTACK_CANCEL);
+    && !VarModule::is_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL)) {
+        VarModule::off_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE);
@@ -228,7 +229,7 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
 unsafe fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_JUMP {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_SUPER_JUMP);
+        VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
     }
     0.into()
 }

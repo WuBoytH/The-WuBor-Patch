@@ -2,9 +2,9 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         // hash40,
-        app::lua_bind::*,
         // lib::lua_const::*
     },
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -13,7 +13,7 @@ use {
 };
 
 pub unsafe extern "C" fn dolly_fgc(fighter: &mut L2CFighterCommon) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         // let status = fighter.global_table[STATUS_KIND].get_i32();
         // let mut special_cancels : Vec<i32> = [].to_vec();
         // let mut normal_cancels : Vec<i32> = [].to_vec();

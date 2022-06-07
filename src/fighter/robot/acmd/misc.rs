@@ -16,7 +16,7 @@ unsafe fn robot_appealhi(fighter: &mut L2CAgentBase) {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
-                fighter.module_accessor,
+                fighter.battle_object,
                 true,
                 hash40("appeal_hi_loop"),
                 63,

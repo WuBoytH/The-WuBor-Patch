@@ -27,6 +27,7 @@ smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "develo
 wubor_utils = { path = "./WuBor-Utils" }
 # wubor_utils = { git = "https://github.com/WuBoytH/WuBor-Utils" }
 custom_status = { path = "./custom-status" }
+custom_var = { path = "./custom-var" }
 smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 
 [profile.dev]

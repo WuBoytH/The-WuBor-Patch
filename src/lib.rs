@@ -6,6 +6,7 @@
 use skyline::libc::c_char;
 mod function_hooks;
 mod fighter;
+mod custom_vars;
 
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
@@ -32,5 +33,6 @@ pub fn main() {
     wubor_utils::vars::install();
     function_hooks::install();
     fighter::install();
+    custom_vars::install();
     skyline::install_hooks!(change_version_string_hook);
 }

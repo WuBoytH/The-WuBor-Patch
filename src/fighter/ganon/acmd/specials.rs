@@ -7,6 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::vars::*,
     super::super::vars::*
 };
@@ -30,7 +31,7 @@ unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
         let og_y = PostureModule::pos_y(fighter.module_accessor);
         WorkModule::set_float(fighter.module_accessor, og_x, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_X);
         WorkModule::set_float(fighter.module_accessor, og_y, FIGHTER_GANON_STATUS_WORK_ID_FLOAT_TELEPORT_OG_POS_Y);
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_N);
+        VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         WorkModule::on_flag(fighter.module_accessor, FIGHTER_GANON_STATUS_WORK_ID_FLAG_TELEPORT_STOP);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
@@ -127,7 +128,7 @@ unsafe fn ganon_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::CATCH(fighter, 0, Hash40::new("top"), 5.0, 0.0, 8.0, 7.5, Some(0.0), Some(8.0), Some(11.0), *FIGHTER_STATUS_KIND_CATCHED_GANON, *COLLISION_SITUATION_MASK_G);
-        if !WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+        if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
             macros::CATCH(fighter, 1, Hash40::new("top"), 1.0, 0.0, 8.0, 7.2, None, None, None, *FIGHTER_STATUS_KIND_CATCHED_GANON, *COLLISION_SITUATION_MASK_GA);
         }
     }
@@ -204,7 +205,7 @@ unsafe fn ganon_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
             macros::CATCH(fighter, 0, Hash40::new("top"), 4.4, 0.0, 16.0, 6.5, None, None, None, *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_A);
             macros::CATCH(fighter, 1, Hash40::new("top"), 6.5, 0.0, 8.8, 13.7, Some(0.0), Some(1.0), Some(13.7), *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_A);
         }

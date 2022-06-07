@@ -6,6 +6,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
+    custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };
 
@@ -47,10 +48,10 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if sit != *SITUATION_KIND_AIR {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD)
-        || WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP) {
+        if VarModule::is_flag(fighter.battle_object, appeal::flag::HOLD)
+        || VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP) {
             // New logic for taunt holds/loops/actions.
-            let loop_mot = WorkModule::get_int64(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_LOOP_MOT);
+            let loop_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::LOOP_MOT);
             if MotionModule::motion_kind(fighter.module_accessor) != loop_mot {
                 MotionModule::change_motion(
                     fighter.module_accessor,
@@ -63,15 +64,15 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     false
                 );
             }
-            let is_loop = WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
+            let is_loop = VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP);
             taunt_holds(fighter, is_loop);
         }
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION) {
-            let action_button = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_BUTTON);
+        if VarModule::is_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION) {
+            let action_button = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_BUTTON);
             if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
-                WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
-                WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
-                let action_mot = WorkModule::get_int64(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_ACTION_MOT);
+                VarModule::off_flag(fighter.battle_object, appeal::flag::HOLD);
+                VarModule::off_flag(fighter.battle_object, appeal::flag::LOOP);
+                let action_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::ACTION_MOT);
                 MotionModule::change_motion(
                     fighter.module_accessor,
                     Hash40::new_raw(action_mot),
@@ -82,7 +83,7 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     false,
                     false
                 );
-                WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_ENABLE_ACTION);
+                VarModule::off_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION);
             }
         }
         if [
@@ -130,7 +131,7 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 /// Used specifically for taunts that we've made loop,
 /// but we want to break the loop early.
 unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
-    let button = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_HELD_BUTTON);
+    let button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_off(fighter.module_accessor, button)
     && (
         !is_loop || MotionModule::frame(fighter.module_accessor) < 1.0
@@ -142,7 +143,7 @@ unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
         else {
             WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
         };
-        let restart_frame = WorkModule::get_int(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_INT_APPEAL_RESTART_FRAME) as f32;
+        let restart_frame = VarModule::get_int(fighter.battle_object, appeal::int::RESTART_FRAME) as f32;
         MotionModule::change_motion_force_inherit_frame(
             fighter.module_accessor,
             Hash40::new_raw(mot),
@@ -150,8 +151,8 @@ unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
             1.0,
             0.0
         );
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_HOLD);
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_STATUS_APPEAL_WORK_FLAG_APPEAL_LOOP);
+        VarModule::off_flag(fighter.battle_object, appeal::flag::HOLD);
+        VarModule::off_flag(fighter.battle_object, appeal::flag::LOOP);
     }
 }
 

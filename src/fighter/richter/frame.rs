@@ -5,6 +5,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
+    custom_var::*,
     wubor_utils::{
         wua_bind::*,
         vars::*
@@ -14,11 +15,11 @@ use {
 #[fighter_frame( agent = FIGHTER_KIND_RICHTER )]
 fn richter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI)
+        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI)
         && (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         || MiscModule::is_damage_check(fighter.module_accessor, false)) {
-            WorkModule::off_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_SPECIAL_HI);
+            VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI);
         }
     }
 }

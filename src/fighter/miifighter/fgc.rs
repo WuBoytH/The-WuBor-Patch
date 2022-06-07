@@ -5,11 +5,12 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
+    custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
 pub unsafe extern "C" fn miifighter_fgc(fighter: &mut L2CFighterCommon) {
-    if WorkModule::is_flag(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         MiscModule::set_hp(fighter, 112.0);
         let status = fighter.global_table[STATUS_KIND].get_i32();
         let mut ground_normal = true;
@@ -53,10 +54,10 @@ pub unsafe extern "C" fn miifighter_fgc(fighter: &mut L2CFighterCommon) {
             if status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
                 jump_cancel = 2;
                 aerial_cancel = true;
-                WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_NORMAL_CANCEL);
+                VarModule::on_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
                 let mot = MotionModule::motion_kind(fighter.module_accessor);
                 let flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-                WorkModule::set_int(fighter.module_accessor, flags, FIGHTER_STATUS_WORK_ID_INT_ENABLED_AERIALS);
+                VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, flags);
                 if mot == hash40("attack_air_n") {
                     FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
                 }

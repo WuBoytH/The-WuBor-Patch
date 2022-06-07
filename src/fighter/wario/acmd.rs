@@ -7,8 +7,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*,
-    super::vars::*
+    custom_var::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "wario", script = "game_throwf", category = ACMD_GAME, low_priority )]
@@ -42,7 +42,7 @@ unsafe fn wario_throwb(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_WARIO_STATUS_THROW_FLAG_MOVE);
+        VarModule::on_flag(fighter.battle_object, wario::throw::flag::MOVE);
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
@@ -69,7 +69,7 @@ unsafe fn wario_throwb(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 48.0);
     if macros::is_excute(fighter) {
-        WorkModule::off_flag(fighter.module_accessor, FIGHTER_WARIO_STATUS_THROW_FLAG_MOVE);
+        VarModule::off_flag(fighter.battle_object, wario::throw::flag::MOVE);
         macros::REVERSE_LR(fighter);
         let target = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);

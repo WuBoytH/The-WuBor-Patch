@@ -8,15 +8,16 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
-    super::{vl, vars::*},
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::vl
 };
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spin = vl::param_special_hi::rslash_charge_max_speed;
-    WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
-    WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED_MAX);
+    VarModule::set_float(fighter.battle_object, toonlink::special_hi::float::SPIN_SPEED, spin);
+    VarModule::set_float(fighter.battle_object, toonlink::special_hi::float::SPIN_SPEED_MAX, spin);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(toonlink_specialhi_end_substatus as *const () as _));
@@ -31,14 +32,14 @@ unsafe extern "C" fn toonlink_specialhi_end_substatus(fighter: &mut L2CFighterCo
             macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
         else if MotionModule::frame(fighter.module_accessor) > 6.0 {
-            let mut spin = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
+            let mut spin = VarModule::get_float(fighter.battle_object, toonlink::special_hi::float::SPIN_SPEED);
             let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
-            let spin_max = WorkModule::get_float(fighter.module_accessor, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED_MAX);
+            let spin_max = VarModule::get_float(fighter.battle_object, toonlink::special_hi::float::SPIN_SPEED_MAX);
             spin += vl::param_special_hi::rslash_charge_max_accel * stickx;
             if spin > spin_max {
                 spin = spin_max;
             }
-            WorkModule::set_float(fighter.module_accessor, spin, FIGHTER_TOONLINK_STATUS_WORK_ID_FLOAT_SPECIAL_HI_SPIN_SPEED);
+            VarModule::set_float(fighter.battle_object, toonlink::special_hi::float::SPIN_SPEED, spin);
             macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
     }

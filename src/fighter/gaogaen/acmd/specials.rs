@@ -7,6 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
+    custom_var::*,
     wubor_utils::vars::*,
     super::super::vars::*
 };
@@ -83,7 +84,7 @@ unsafe fn gaogaen_specialn(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
@@ -231,7 +232,7 @@ unsafe fn gaogaen_specialairn(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, FIGHTER_STATUS_WORK_ID_FLAG_JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {

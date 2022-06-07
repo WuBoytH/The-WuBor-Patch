@@ -16,8 +16,8 @@ use {
             *
         }
     },
+    custom_var::*,
     wubor_utils::vars::*,
-    std::ffi::CStr,
     skyline::hooks::{
         getRegionAddress,
         Region
@@ -33,7 +33,9 @@ move_type: f32,
 arg5: i32,
 move_type_again: bool) -> u64 {
     let attacker_boma = sv_battle_object::module_accessor(attacker_object_id);
+    let attacker_object = sv_system::battle_object(attacker_object_id as u64);
     let defender_boma = sv_battle_object::module_accessor(defender_object_id);
+    let defender_object = sv_system::battle_object(defender_object_id as u64);
     let attacker_fighter_kind = sv_battle_object::kind(attacker_object_id);
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
     // let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -42,10 +44,10 @@ move_type_again: bool) -> u64 {
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if attacker_fighter_kind == *FIGHTER_KIND_KEN {
             if defender_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                WorkModule::set_int64(attacker_boma, defender_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                VarModule::set_int(attacker_object, commons::instance::int::TARGET_ID, defender_object_id as i32);
             }
             else {
-                WorkModule::set_int64(attacker_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                VarModule::set_int(attacker_object, commons::instance::int::TARGET_ID, 0);
             }
         }
         if attacker_fighter_kind == *FIGHTER_KIND_LUCINA {
@@ -72,7 +74,7 @@ move_type_again: bool) -> u64 {
                 let target_y;
                 if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
                 || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                    WorkModule::set_int64(defender_boma, attacker_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, attacker_object_id as i32);
                     target_x = PostureModule::pos_x(attacker_boma);
                     target_y = PostureModule::pos_y(attacker_boma);
                     if utility::get_category(&mut *attacker_boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
@@ -85,12 +87,12 @@ move_type_again: bool) -> u64 {
                     if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                         target_x = PostureModule::pos_x(defender_boma);
                         target_y = PostureModule::pos_y(defender_boma);
-                        WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                        VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0);
                     }
                     else {
                         target_x = PostureModule::pos_x(oboma);
                         target_y = PostureModule::pos_y(oboma);
-                        WorkModule::set_int64(defender_boma, otarget_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                        VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, otarget_id as i32);
                         if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
                             JostleModule::set_status(&mut *oboma, false);
                         }
@@ -99,7 +101,7 @@ move_type_again: bool) -> u64 {
                 else {
                     target_x = PostureModule::pos_x(defender_boma);
                     target_y = PostureModule::pos_y(defender_boma);
-                    WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0);
                 }
                 WorkModule::set_float(defender_boma, target_x, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_X);
                 WorkModule::set_float(defender_boma, target_y, FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TARGET_Y);
@@ -115,20 +117,20 @@ move_type_again: bool) -> u64 {
         else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                WorkModule::set_int64(defender_boma, attacker_object_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, attacker_object_id as i32);
             }
             else if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
                 let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
                 let oboma = sv_battle_object::module_accessor(otarget_id);
                 if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0)
                 }
                 else {
-                    WorkModule::set_int64(defender_boma, otarget_id as i64, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                    VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, otarget_id as i32);
                 }
             }
             else {
-                WorkModule::set_int64(defender_boma, 0, FIGHTER_INSTANCE_WORK_ID_INT_TARGET_ID);
+                VarModule::set_int(defender_object, commons::instance::int::TARGET_ID, 0)
             }
         }
     }
@@ -204,6 +206,8 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
 #[skyline::hook(offset = FLOAT_OFFSET)]
 pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> f32 {
     let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let object_id = (*boma).battle_object_id;
+    let object = sv_system::battle_object(object_id as u64);
     let ret = original!()(module_accessor, param_type, param_hash);
     let fighter_kind = utility::get_kind(boma);
     
@@ -224,7 +228,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
         }
         else if fighter_kind == *FIGHTER_KIND_LUCARIO {
             if param_hash == 0x189cd804c5 {
-                if WorkModule::is_flag(boma, FIGHTER_INSTANCE_WORK_ID_FLAG_IS_FGC) {
+                if VarModule::is_flag(object, commons::instance::flag::IS_FGC) {
                     return 1.0;
                 }
             }
@@ -462,108 +466,6 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 //     )
 // }
 
-#[skyline::hook(offset = DEFINE_LUA_CONSTANT_OFFSET)]
-unsafe fn declare_const_hook(unk: u64, constant: *const u8, mut value: u32) {
-    let str = CStr::from_ptr(constant as _).to_str().unwrap();
-    if str.contains("FIGHTER_STATUS_GUARD_OFF_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_STATUS_APPEAL_FLAG_TERM") {
-        value += 0x3;
-    }
-    else if str.contains("FIGHTER_STATUS_APPEAL_WORK_INT_TERM") {
-        value += 0x5;
-    }
-    else if str.contains("FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_MARIO_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_MARIO_STATUS_SPECIAL_N_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_MARIO_STATUS_PUMP_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_FALCO_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x8;
-    }
-    else if str.contains("FIGHTER_MARTH_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x5;
-    }
-    else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_TERM") {
-        value += 0x2;
-    }
-    else if str.contains("FIGHTER_MARTH_STATUS_SPECIAL_LW_WORK_FLOAT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_ROY_STATUS_SPECIAL_LW_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x2;
-    }
-    else if str.contains("FIGHTER_SHULK_INSTANCE_WORK_ID_FLOAT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x6;
-    }
-    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_FLOAT_TERM") {
-        value += 0x8;
-    }
-    else if str.contains("FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x6;
-    }
-    else if str.contains("FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_SHIZUE_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_GAOGAEN_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x3;
-    }
-    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLOAT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x3;
-    }
-    else if str.contains("FIGHTER_DOLLY_STATUS_SPECIAL_N_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("WEAPON_DOLLY_WAVE_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_EDGE_INSTANCE_WORK_ID_INT_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_EDGE_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_EFLAME_STATUS_SPECIAL_S_TERM") {
-        value += 0x1;
-    }
-    else if str.contains("FIGHTER_ELIGHT_INSTANCE_WORK_ID_FLAG_TERM") {
-        value += 0x1;
-    }
-    original!()(unk, constant, value)
-}
-
 pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
     use smash::lib::lua_const::*;
     use smash::app::lua_bind::*;
@@ -643,6 +545,6 @@ pub fn install() {
         play_se_remain_replace,
         play_se_no_3d_replace,
         // crit_zoom,
-        declare_const_hook
+        set_work_keep_hook
     );
 }

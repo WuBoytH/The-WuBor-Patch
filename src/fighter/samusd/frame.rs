@@ -35,7 +35,7 @@ fn samusd_frame(fighter: &mut L2CFighterCommon) {
                 WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
                 KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                 KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0,y: 0.5,z: 0.0});
-                VarModule::on_flag(fighter.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT);
+                VarModule::on_flag(fighter.battle_object, samusd::special_lw::flag::BOUNCE);
             }
         }
 

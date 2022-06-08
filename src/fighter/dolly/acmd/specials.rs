@@ -8,6 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
+    crate::function_hooks::get_battle_object_from_id,
     wubor_utils::{wua_bind::*, vars::*},
     super::super::{helper::*, vl, vtable_hook::*}
 };
@@ -932,7 +933,7 @@ unsafe fn dolly_superspecial2(fighter: &mut L2CAgentBase) {
 unsafe fn dolly_wave_normalw(weapon: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
     && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
@@ -970,7 +971,7 @@ unsafe fn dolly_wave_normalw(weapon: &mut L2CAgentBase) {
 unsafe fn dolly_wave_normal(weapon: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
     && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
@@ -1008,7 +1009,7 @@ unsafe fn dolly_wave_normal(weapon: &mut L2CAgentBase) {
 unsafe fn dolly_wave_normalairw(weapon: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
     && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
@@ -1100,7 +1101,7 @@ unsafe fn dolly_wave_normalairw(weapon: &mut L2CAgentBase) {
 unsafe fn dolly_wave_normalair(weapon: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
     && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
@@ -1174,7 +1175,7 @@ unsafe fn dolly_wave_normalair(weapon: &mut L2CAgentBase) {
 unsafe fn dolly_burst_superspecial(weapon: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
     && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {

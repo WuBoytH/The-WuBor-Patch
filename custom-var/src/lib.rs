@@ -32,9 +32,11 @@ impl CustomVarManager {
         let entry_id = unsafe{
             Fighter::get_fighter_entry_id((*object).battle_object_id)
         };
+        println!("[VarModule] Restting VarModule for {}", entry_id);
         let mut manager = CUSTOM_VAR_MANAGER.write();
         let x = if let Some(mut modules) = manager.modules.try_write() {
             let _ = modules.insert(entry_id, VarModule::new());
+            println!("Done!");
             true
         }
         else {
@@ -107,46 +109,37 @@ impl VarModule {
     /// * `mask` - A mask of the reset values to determine what to reset
     #[export_name = "VarModule__reset"]
     pub extern "Rust" fn reset(object: *mut BattleObject, mask: u8) {
+        // println!("[VarModule] Reset");
         let entry_id = unsafe{
             Fighter::get_fighter_entry_id((*object).battle_object_id)
         };
+        // println!("[VarModule] entry_id: {}", entry_id);
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
         if let Some(mut module) = modules.get_mut(&entry_id) {
+            // println!("[VarModule] Resetting for {}", entry_id);
             if mask & Self::RESET_INSTANCE_INT != 0 {
                 module.int[0].fill(0);
             }
-            if mask & Self::RESET_INSTANCE_INT != 0 {
-                module.int[1].fill(0);
-            }
             if mask & Self::RESET_STATUS_INT != 0 {
-                module.int[2].fill(0);
+                module.int[1].fill(0);
             }
             if mask & Self::RESET_INSTANCE_INT64 != 0 {
                 module.int64[0].fill(0);
             }
-            if mask & Self::RESET_INSTANCE_INT64 != 0 {
-                module.int64[1].fill(0);
-            }
             if mask & Self::RESET_STATUS_INT64 != 0 {
-                module.int64[2].fill(0);
+                module.int64[1].fill(0);
             }
             if mask & Self::RESET_INSTANCE_FLOAT != 0 {
                 module.float[0].fill(0.0);
             }
-            if mask & Self::RESET_INSTANCE_FLOAT != 0 {
-                module.float[1].fill(0.0);
-            }
             if mask & Self::RESET_STATUS_FLOAT != 0 {
-                module.float[2].fill(0.0);
+                module.float[1].fill(0.0);
             }
             if mask & Self::RESET_INSTANCE_FLAG != 0 {
                 module.flag[0].fill(false);
             }
-            if mask & Self::RESET_INSTANCE_FLAG != 0 {
-                module.flag[1].fill(false);
-            }
-            if mask & Self::RESET_INSTANCE_FLAG != 0 {
+            if mask & Self::RESET_STATUS_FLAG != 0 {
                 module.flag[1].fill(false);
             }
         }
@@ -632,30 +625,4 @@ impl VarModule {
             Vector4f{x: 0.0, y: 0.0, z: 0.0, w: 0.0}
         }
     }
-}
-
-pub struct GenericModule {
-    _vtable: *const u64,
-    owner: *mut BattleObjectModuleAccessor,
-    // ...
-}
-
-#[skyline::hook( offset = 0x4deb70 )]
-pub unsafe fn set_work_keep_hook(module: *mut GenericModule, float: u32, int: u32, flag: u32) {
-    let mut mask = 0;
-    if flag == 0xFFFFF000 {
-        mask += VarModule::RESET_STATUS_FLAG;
-    }
-    if int == 0xFFFFFFE0 {
-        mask += VarModule::RESET_STATUS_INT;
-        mask += VarModule::RESET_STATUS_INT64;
-    }
-    if float == 0xFFFFFF80 {
-        mask += VarModule::RESET_STATUS_FLOAT;
-    }
-    let module_accessor = (*module).owner;
-    let object_id = (*module_accessor).battle_object_id;
-    let object = sv_system::battle_object(object_id as u64);
-    VarModule::reset(object, mask);
-    original!()(module, flag, int, float)
 }

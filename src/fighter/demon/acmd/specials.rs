@@ -12,9 +12,7 @@ use {
 #[acmd_script( agent = "demon", scripts = [ "game_attackragedrive", "game_attackairragedrive" ], category = ACMD_GAME, low_priority )]
 unsafe fn demon_attackragedrive(fighter: &mut L2CAgentBase) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ATTACK_RAGE_CAPTURE) {
-        fighter.clear_lua_stack();
-        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        FighterSpecializer_Demon::set_devil(&mut *boma, true, 10.0);
+        FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
         if macros::is_excute(fighter) {
             macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
         }
@@ -51,9 +49,7 @@ unsafe fn demon_attackragedrive(fighter: &mut L2CAgentBase) {
         }
     }
     else {
-        fighter.clear_lua_stack();
-        let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        FighterSpecializer_Demon::set_devil(&mut *boma, true, 10.0);
+        FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
         macros::FT_MOTION_RATE(fighter, 0.7);
         if macros::is_excute(fighter) {
             macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
@@ -118,16 +114,12 @@ unsafe fn demon_attackragedrive(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 38.0);
     macros::FT_MOTION_RATE(fighter, 1.3);
     frame(fighter.lua_state_agent, 52.0);
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, false, 0.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
 #[acmd_script( agent = "demon", script = "0x15cb9d3406", category = ACMD_GAME, low_priority )]
 unsafe fn demon_15cb9d3406(fighter: &mut L2CAgentBase) {
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, true, 10.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     macros::FT_MOTION_RATE(fighter, 0.7);
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
@@ -191,16 +183,12 @@ unsafe fn demon_15cb9d3406(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 38.0);
     macros::FT_MOTION_RATE(fighter, 1.3);
     frame(fighter.lua_state_agent, 52.0);
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, false, 0.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
 #[acmd_script( agent = "demon", script = "0x15b52c48bb", category = ACMD_GAME, low_priority )]
 unsafe fn demon_15b52c48bb(fighter: &mut L2CAgentBase) {
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, true, 10.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
     }
@@ -238,16 +226,12 @@ unsafe fn demon_15b52c48bb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 38.0);
     macros::FT_MOTION_RATE(fighter, 1.3);
     frame(fighter.lua_state_agent, 52.0);
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, false, 0.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
 #[acmd_script( agent = "demon", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn demon_speciallw(fighter: &mut L2CAgentBase) {
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, true, 10.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
     }
@@ -312,16 +296,12 @@ unsafe fn demon_speciallw(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 25.0);
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, false, 0.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
 #[acmd_script( agent = "demon", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn demon_specialairlw(fighter: &mut L2CAgentBase) {
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, true, 10.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 5.0, 70, 30, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_BODY);
     }
@@ -386,9 +366,7 @@ unsafe fn demon_specialairlw(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 25.0);
-    fighter.clear_lua_stack();
-    let boma = sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-    FighterSpecializer_Demon::set_devil(&mut *boma, false, 0.0);
+    FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
 pub fn install() {

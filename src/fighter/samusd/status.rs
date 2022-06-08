@@ -9,6 +9,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
+    crate::function_hooks::get_battle_object_from_id,
     wubor_utils::{vars::*, table_const::*},
     super::vl,
 };
@@ -423,7 +424,7 @@ unsafe extern "C" fn samusd_speciallw_air_is_end_helper(fighter: &mut L2CFighter
 unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if [
         *FIGHTER_KIND_SAMUSD,
         *FIGHTER_KIND_KIRBY
@@ -596,7 +597,7 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
 unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_KIRBY].contains(&utility::get_kind(&mut *oboma)) {
         VarModule::set_int(object, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
     }

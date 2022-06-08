@@ -4,6 +4,7 @@ use {
         lib::lua_const::*
     },
     custom_var::*,
+    crate::function_hooks::get_battle_object_from_id,
     wubor_utils::vars::*
 };
 
@@ -23,7 +24,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: &mut GenericModule, _da
         return 1;
     }
     let object_id = (*module_accessor).battle_object_id;
-    let object = sv_system::battle_object(object_id as u64);
+    let object = get_battle_object_from_id(object_id);
     let go_meter = VarModule::get_float(object, dolly::instance::float::GO_METER);
     // println!("go_meter: {}", go_meter);
     if go_meter >= 100.0 {

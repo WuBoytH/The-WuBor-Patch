@@ -3,12 +3,13 @@ use {
         lua2cpp::L2CAgentBase,
         hash40,
         phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
+        app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
     custom_var::*,
+    crate::function_hooks::get_battle_object_from_id,
     wubor_utils::vars::*,
     super::super::vl
 };
@@ -307,7 +308,7 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     let bkb : i32;
     let kbg : i32;
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if VarModule::is_flag(object, commons::instance::flag::IS_FGC) {
         angle = 80;
         bkb = 90;

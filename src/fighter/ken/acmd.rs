@@ -8,6 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
+    crate::function_hooks::get_battle_object_from_id,
     wubor_utils::vars::*
 };
 
@@ -866,7 +867,7 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
 unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if VarModule::is_flag(object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }
@@ -886,7 +887,7 @@ unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
 unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if VarModule::is_flag(object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }
@@ -906,7 +907,7 @@ unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
 unsafe fn ken_hadoken_moves(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-    let object = sv_system::battle_object(otarget_id as u64);
+    let object = get_battle_object_from_id(otarget_id);
     if VarModule::is_flag(object, ken::instance::flag::V_TRIGGER) {
         property = "collision_attr_fire";
     }

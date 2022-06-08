@@ -40,12 +40,11 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         let mut speed_x;
         let jump_y;
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-        println!("Short Hop? {}", mini_jump);
-        if mini_jump {
+         if mini_jump {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -2, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
             speed_x *= common_param::jump::hyper_hop_air_speed_x_stable_mul;
-            speed_x = speed_x.clamp(1.2, f32::MAX);
+            speed_x = speed_x.clamp(1.22, 1.6);
             let stick_x = fighter.global_table[STICK_X].get_f32();
             speed_x *= stick_x;
             // println!("Hyper Hop Speed: {}", speed_x);

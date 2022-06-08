@@ -32,11 +32,11 @@ impl CustomVarManager {
         let entry_id = unsafe{
             Fighter::get_fighter_entry_id((*object).battle_object_id)
         };
-        println!("[VarModule] Restting VarModule for {}", entry_id);
+        // println!("[VarModule] Restting VarModule for {}", entry_id);
         let mut manager = CUSTOM_VAR_MANAGER.write();
         let x = if let Some(mut modules) = manager.modules.try_write() {
             let _ = modules.insert(entry_id, VarModule::new());
-            println!("Done!");
+            // println!("Done!");
             true
         }
         else {

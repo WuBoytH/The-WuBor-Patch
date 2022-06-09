@@ -16,7 +16,8 @@ pub unsafe fn add_go(object: *mut BattleObject, module_accessor: *mut BattleObje
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
         *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-    ].contains(&status) {
+    ].contains(&status)
+    && !VarModule::is_flag(object, dolly::instance::flag::RISING_FORCE) {
         let meter_max = 200.0;
         let meter_const = dolly::instance::float::GO_METER;
         amount /= 0.75;

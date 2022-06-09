@@ -96,10 +96,10 @@ impl VarModule {
     /// A blank `VarModule` instance
     pub(crate) fn new() -> Self {
         Self {
-            int: [vec![0; 0x1000], vec![0; 0x1000]],
-            int64: [vec![0; 0x1000], vec![0; 0x1000]],
-            float: [vec![0.0; 0x1000], vec![0.0; 0x1000]],
-            flag: [vec![false; 0x1000], vec![false; 0x1000]]
+            int: [vec![0; 0x200], vec![0; 0x200]],
+            int64: [vec![0; 0x200], vec![0; 0x200]],
+            float: [vec![0.0; 0x200], vec![0.0; 0x200]],
+            flag: [vec![false; 0x200], vec![false; 0x200]]
         }
     }
 

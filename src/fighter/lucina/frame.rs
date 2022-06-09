@@ -193,7 +193,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
         if VarModule::is_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE) {
             if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
             && spent_meter(fighter.battle_object, true) {
-                VarModule::is_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
+                VarModule::on_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
             }
             else if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0

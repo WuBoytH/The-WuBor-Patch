@@ -214,7 +214,8 @@ pub unsafe extern "C" fn marth_stance_common_end(fighter: &mut L2CFighterCommon)
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status < CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ENTER)
     && status != *FIGHTER_STATUS_KIND_SPECIAL_LW
-    && status != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT {
+    && status != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT
+    && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
         VarModule::off_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
     }
     0.into()

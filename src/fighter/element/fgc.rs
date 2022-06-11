@@ -35,12 +35,7 @@ pub unsafe extern "C" fn element_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
             *FIGHTER_STATUS_KIND_ATTACK_AIR
         ].contains(&status) {
-            if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-                if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
-                    return;
-                }
-            }
-            else if status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
+            if status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
                 jump_cancel = 2;
             }
             special_cancels = [
@@ -68,6 +63,13 @@ pub unsafe extern "C" fn element_fgc(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
             ].to_vec();
         }
-        FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
+        if FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel).get_bool() {
+            return;
+        }
+        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+                return;
+            }
+        }
     }
 }

@@ -42,11 +42,6 @@ pub unsafe extern "C" fn ganon_fgc(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
             *FIGHTER_STATUS_KIND_ATTACK_AIR
         ].contains(&status) {
-            if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-                if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
-                    return;
-                }
-            }
             special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
@@ -59,6 +54,13 @@ pub unsafe extern "C" fn ganon_fgc(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
             ].to_vec();
         }
-        FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
+        if FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0).get_bool() {
+            return;
+        }
+        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+                return;
+            }
+        }
     }
 }

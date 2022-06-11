@@ -201,30 +201,31 @@ pub mod FGCModule {
     /// * `special_cancels` - A vector of all of the special move transition terms you can cancel into.
     /// * `aerial_cancel` - Checks if you can cancel into an aerial.
     /// * `jump_cancel` - Checks if you can jump-cancel. 0 = None | 1 = On Hit | 2 = On Hit or Block
-    pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) {
+    pub unsafe fn cancel_system(fighter: &mut L2CFighterCommon, normal_cancels: Vec<i32>, special_cancels: Vec<i32>, aerial_cancel: bool, jump_cancel: i32) -> L2CValue {
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
         && check_cancel_window(fighter) {
             if jump_cancel != 0
             && jump_cancel_check_hit(fighter, jump_cancel == 2).get_bool() {
-                return;
+                return true.into();
             }
             let sit = fighter.global_table[SITUATION_KIND].get_i32();
             if special_cancels.is_empty() == false
             && special_cancel_common(fighter, sit.into(), special_cancels).get_bool() {
-                return;
+                return true.into();
             }
             if aerial_cancel
             && sit == *SITUATION_KIND_AIR
             && aerial_cancel_common(fighter).get_bool() {
-                return;
+                return true.into();
             }
             if normal_cancels.is_empty() == false
             && sit == *SITUATION_KIND_GROUND
             && normal_cancel_common(fighter, normal_cancels).get_bool() {
-                return;
+                return true.into();
             }
         }
+        false.into()
     }
 
     /// Checks the direction of the left stick and returns a number between 1 and 9, representing numpad notation.

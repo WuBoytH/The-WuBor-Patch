@@ -46,11 +46,6 @@ pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
             if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
                 jump_cancel = 1;
             }
-            else if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-                if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
-                    return;
-                }
-            }
             special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
@@ -88,6 +83,13 @@ pub unsafe extern "C" fn mario_fgc(fighter: &mut L2CFighterCommon) {
                 FGCModule::jump_cancel_check_exception(fighter);
             }
         }
-        FGCModule::cancel_system(fighter, normal_cancels, special_cancels, aerial_cancel, jump_cancel);
+        if FGCModule::cancel_system(fighter, normal_cancels, special_cancels, aerial_cancel, jump_cancel).get_bool() {
+            return;
+        }
+        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            if FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool() {
+                return;
+            }
+        }
     }
 }

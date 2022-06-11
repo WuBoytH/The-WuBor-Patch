@@ -29,11 +29,9 @@ pub unsafe extern "C" fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     else if [
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-        ].to_vec();
+        if FGCModule::air_dash_cancel_check(fighter, false).get_bool() {
+            return;
+        }
     }
     FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
 }

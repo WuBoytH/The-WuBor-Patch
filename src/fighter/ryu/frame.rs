@@ -44,7 +44,7 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
     && VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS)
     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IS_STOP].get_bool() {
-        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, true);
+        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
     }
 
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW

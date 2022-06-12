@@ -451,8 +451,8 @@ pub mod marth {
         pub const STANCE_ATTACK_LW3 : i32 = 9;
         pub const STANCE_ATTACK_LW4 : i32 = 10;
         pub const STANCE_ATTACK_HI3 : i32 = 11;
-        pub const STANCE_ATTACK_F3 : i32 = 12;
-        pub const STANCE_ATTACK_B3 : i32 = 13;
+        pub const STANCE_ATTACK_B3 : i32 = 12;
+        pub const STANCE_ATTACK_F3 : i32 = 13;
         pub const STANCE_SPECIAL_S : i32 = 14;
         pub const STANCE_SPECIAL_S_DASH : i32 = 15;
         pub const STANCE_SPECIAL_S_END : i32 = 16;

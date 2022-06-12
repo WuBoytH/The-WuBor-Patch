@@ -256,24 +256,7 @@ unsafe extern "C" fn marth_speciallw_attack_b3_main(fighter: &mut L2CFighterComm
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_b3_main_loop as *const () as _))
-}
-
-unsafe extern "C" fn marth_speciallw_attack_b3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        marth_stance_mot_end_helper(fighter);
-    }
-    else {
-        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-            return true.into();
-        }
-        else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
-            fighter.change_status(status.into(), false.into());
-        }
-    }
-    0.into()
+    fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_attack_main_loop as *const () as _))
 }
 
 // Jab/Tilt common main loop function

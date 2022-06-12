@@ -15,9 +15,8 @@ use {
 
 #[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
 unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 1.5);
-    frame(fighter.lua_state_agent, 14.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
+    frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         let cshot_id = VarModule::get_int(fighter.battle_object, samusd::instance::int::CSHOT_ID);
         if sv_battle_object::is_active(cshot_id as u32) {
@@ -27,6 +26,10 @@ unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
                 WorkModule::set_int(boma, 1, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
             }
         }
+    }
+    frame(fighter.lua_state_agent, 14.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
         ArticleModule::generate_article_enable(fighter.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_CSHOT, false, -1);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_N_FLAG_BULLET_DISP);
     }

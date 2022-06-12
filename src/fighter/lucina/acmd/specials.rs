@@ -161,13 +161,13 @@ unsafe fn lucina_specialairs2hi(fighter: &mut L2CAgentBase) {
         let vely : f32;
         if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
             dmg = 16.0;
-            kbg = 90;
+            kbg = 71;
             velx = vl::param_special_s::dive_speed_x_ex;
             vely = vl::param_special_s::dive_speed_y_ex;
         }
         else {
             dmg = 11.0;
-            kbg = 70;
+            kbg = 71;
             velx = vl::param_special_s::dive_speed_x;
             vely = vl::param_special_s::dive_speed_y;
         }

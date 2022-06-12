@@ -208,7 +208,7 @@ unsafe fn samusd_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
-    macros::FT_MOTION_RATE(fighter, 7.0 / 6.0);
+    macros::FT_MOTION_RATE(fighter, 5.0 / 3.0);
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {

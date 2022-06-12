@@ -26,7 +26,7 @@ unsafe fn ryu_reset_vars(fighter: &mut L2CFighterCommon) {
 unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
     if !VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DISABLE_EX_FOCUS) {
         if (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_n")
-        && MotionModule::frame(fighter.module_accessor) > 13.0)
+        && MotionModule::frame(fighter.module_accessor) > 16.0)
         || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s_start") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_s")
         && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
         || (MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi") || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_command")
@@ -35,7 +35,7 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
             VarModule::on_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
         }
         else if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS)
-        && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        && ![*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
             VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
         }
     }

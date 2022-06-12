@@ -30,11 +30,13 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
         && MotionModule::frame(fighter.module_accessor) > 16.0 {
             can_exfadc = true;
         }
-        else if [*FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP].contains(&fighter.global_table[STATUS_KIND].get_i32())
-        && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
-            can_exfadc = true;
-        }
-        else if [*FIGHTER_STATUS_KIND_SPECIAL_HI, *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND].contains(&fighter.global_table[STATUS_KIND].get_i32())
+        else if [
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP,
+            *FIGHTER_STATUS_KIND_SPECIAL_HI,
+            *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
+            ].contains(&fighter.global_table[STATUS_KIND].get_i32())
         && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
             can_exfadc = true;
         }

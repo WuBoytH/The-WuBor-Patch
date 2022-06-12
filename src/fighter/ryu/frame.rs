@@ -54,8 +54,8 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
         }
     }
 
-    if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW
-    &&VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS) {
+    if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B].contains(&fighter.global_table[STATUS_KIND].get_i32())
+    && VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS) {
         VarModule::on_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
         VarModule::set_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER, 0);
         VarModule::set_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 1200.0);

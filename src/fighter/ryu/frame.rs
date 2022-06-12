@@ -40,11 +40,18 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
         }
     }
 
-    if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-    && VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS)
+    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS)
     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IS_STOP].get_bool() {
-        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_LW, false);
+        if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_4N4 != 0 {
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B.into(), true.into());
+        }
+        else if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_6N6 != 0 {
+            fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F.into(), true.into());
+        }
+        else if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0 {
+            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+        }
     }
 
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW

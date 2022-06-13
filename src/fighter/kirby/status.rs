@@ -59,7 +59,7 @@ unsafe fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         set_speed_mul,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_MOTION,
-        1.5
+        1.25
     );
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH);

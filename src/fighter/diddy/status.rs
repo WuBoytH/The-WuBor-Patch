@@ -98,7 +98,7 @@ unsafe extern "C" fn diddy_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
                 set_accel,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -air_accel_y * 0.5
+                -air_accel_y * 0.25
             );
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));

@@ -192,7 +192,6 @@ unsafe fn bayonetta_landingairlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        bayonetta_attackairn,
         bayonetta_attackairf,
         bayonetta_attackairf2,
         bayonetta_attackairf3,

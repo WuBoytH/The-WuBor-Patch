@@ -631,9 +631,7 @@ unsafe fn marth_speciallwspecialairs2end_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecialhi", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecialhi(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 3.0);
-    frame(fighter.lua_state_agent, 6.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 80, 30, 0, 120, 4.0, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 25, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 80, 30, 0, 120, 4.0, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(12.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 25, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -642,17 +640,14 @@ unsafe fn marth_speciallwspecialhi(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor, 1, false);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 30, 0, 110, 3.5, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(8.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
-    frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 80, 55, 0, 80, 3.5, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(8.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-    }
-    frame(fighter.lua_state_agent, 16.0);
+    frame(fighter.lua_state_agent, 28.0);
     macros::FT_MOTION_RATE(fighter, 1.5);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 25.0);
+    frame(fighter.lua_state_agent, 37.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_HI_FLAG_KINETIC_CHANGE);
@@ -661,20 +656,20 @@ unsafe fn marth_speciallwspecialhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "effect_speciallwspecialhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_speciallwspecialhi_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 5.0);
+    frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("marth_dolphin_jump"), Hash40::new("top"), -0.0, 0, -5, 0, 0, 0, 1, true);
-    }
-    frame(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_jump"), -1);
         macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_marth_stance_sword1"), Hash40::new("tex_marth_sword2"), 12, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
     }
-    frame(fighter.lua_state_agent, 7.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_jump"), -1);
     }
-    frame(fighter.lua_state_agent, 24.0);
+    frame(fighter.lua_state_agent, 19.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_jump"), -1);
+    }
+    frame(fighter.lua_state_agent, 36.0);
     if macros::is_excute(fighter) {
         macros::AFTER_IMAGE_OFF(fighter, 4);
     }
@@ -682,7 +677,7 @@ unsafe fn marth_speciallwspecialhi_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "sound_speciallwspecialhi", category = ACMD_SOUND, low_priority )]
 unsafe fn marth_speciallwspecialhi_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 5.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_marth_special_h01"));
     }
@@ -693,7 +688,7 @@ unsafe fn marth_speciallwspecialhi_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
     }
-    frame(fighter.lua_state_agent, 5.0);
+    frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(
             fighter.module_accessor,
@@ -703,11 +698,11 @@ unsafe fn marth_speciallwspecialhi_exp(fighter: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(fighter.lua_state_agent, 6.0);
+    frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashl"), 0);
     }
-    frame(fighter.lua_state_agent, 7.0);
+    wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_slashs"), 0);
     }

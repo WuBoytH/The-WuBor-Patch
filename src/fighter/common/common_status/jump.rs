@@ -56,7 +56,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
             speed_x *= common_param::jump::super_jump_speed_x_mul;
             let jump_initial_y = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_initial_y"), 0) / 10.0;
             let ratio = 2.0 - (jump_initial_y / 2.8);
-            jump_y = common_param::jump::super_jump_speed_y_init + (jump_initial_y * ratio);
+            jump_y = common_param::jump::super_jump_speed_y_init + (jump_initial_y * ratio) + get_super_jump_mod(fighter);
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
         }
         sv_kinetic_energy!(
@@ -179,6 +179,23 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_fall_common_uniq as *const () as _));
     ret
+}
+
+unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {
+    // don't do this
+    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    if [
+        *FIGHTER_KIND_MARIO,
+        *FIGHTER_KIND_DAISY
+    ].contains(&fighter_kind) {
+        return -0.4;
+    }
+    if [
+        *FIGHTER_KIND_FALCO
+    ].contains(&fighter_kind) {
+        return 0.6;
+    }
+    0.0
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_Main)]

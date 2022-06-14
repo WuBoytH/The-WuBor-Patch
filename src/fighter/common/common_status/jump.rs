@@ -188,12 +188,12 @@ unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_MARIO,
         *FIGHTER_KIND_DAISY
     ].contains(&fighter_kind) {
-        return -0.4;
+        return -0.2;
     }
     if [
         *FIGHTER_KIND_FALCO
     ].contains(&fighter_kind) {
-        return 0.6;
+        return 0.4;
     }
     0.0
 }

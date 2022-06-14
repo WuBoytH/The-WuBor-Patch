@@ -433,6 +433,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     }
     if [
         *FIGHTER_KIND_SAMUS,
+        *FIGHTER_KIND_SAMUSD,
         *FIGHTER_KIND_MARTH,
         *FIGHTER_KIND_YOUNGLINK,
         *FIGHTER_KIND_ROY,

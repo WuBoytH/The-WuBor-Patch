@@ -32,7 +32,10 @@ pub unsafe extern "C" fn shizue_check_attack_cancel(fighter: &mut L2CFighterComm
     if !(*FIGHTER_STATUS_KIND_WAIT..=*FIGHTER_STATUS_KIND_TURN_RUN_BRAKE).contains(&status)
     && !(*FIGHTER_STATUS_KIND_JUMP..=*FIGHTER_STATUS_KIND_FALL_AERIAL).contains(&status)
     && !(*FIGHTER_STATUS_KIND_SQUAT..=*FIGHTER_STATUS_KIND_SQUAT_RV).contains(&status)
-    && !(*FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT..=*FIGHTER_STATUS_KIND_REBOUND_JUMP).contains(&status) {
+    && !(*FIGHTER_STATUS_KIND_LANDING_DAMAGE_LIGHT..=*FIGHTER_STATUS_KIND_REBOUND_JUMP).contains(&status)
+    && !(*FIGHTER_STATUS_KIND_SPECIAL_N..=*FIGHTER_STATUS_KIND_FINAL).contains(&status)
+    && !(*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_N_SEARCH..=*FIGHTER_MURABITO_STATUS_KIND_NUM).contains(&status)
+    && !(*FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_S_START..=*FIGHTER_SHIZUE_STATUS_KIND_NUM).contains(&status) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
             return true;
         }

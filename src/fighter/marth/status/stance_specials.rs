@@ -90,16 +90,27 @@ unsafe fn marth_speciallw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU)
     && ![
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
         CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_DASH_F),
         CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_DASH_B),
         CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK),
         CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK_LW3),
+        CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK_HI3),
+        CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK_B3),
+        CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ATTACK_F3),
+        CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S)
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
         VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
     marth_speciallw_common_end(fighter);
-    marth_stance_common_end(fighter);
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if status < CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_ENTER)
+    && status != *FIGHTER_STATUS_KIND_SPECIAL_LW
+    && status != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT
+    && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
+        VarModule::off_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
+    }
     0.into()
 }
 

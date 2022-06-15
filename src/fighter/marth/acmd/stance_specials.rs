@@ -13,6 +13,12 @@ use {
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecials", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecials(fighter: &mut L2CAgentBase) {
+    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
+        if macros::is_excute(fighter) {
+            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
+        }
+    }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE);
@@ -115,6 +121,12 @@ unsafe fn marth_speciallwspecials_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecialairs", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecialairs(fighter: &mut L2CAgentBase) {
+    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
+        if macros::is_excute(fighter) {
+            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
+        }
+    }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE);
@@ -631,6 +643,16 @@ unsafe fn marth_speciallwspecialairs2end_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecialhi", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecialhi(fighter: &mut L2CAgentBase) {
+    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
+        if macros::is_excute(fighter) {
+            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+            VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
+        }
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+    }
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 80, 30, 0, 120, 4.0, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 25, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -641,6 +663,7 @@ unsafe fn marth_speciallwspecialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor, 1, false);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 80, 30, 0, 110, 3.5, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(8.0), 0.7, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
     frame(fighter.lua_state_agent, 28.0);
     macros::FT_MOTION_RATE(fighter, 1.5);

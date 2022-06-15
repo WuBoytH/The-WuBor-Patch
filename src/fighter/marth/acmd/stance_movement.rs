@@ -53,7 +53,7 @@ unsafe fn marth_speciallwdashf_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashb", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashb(fighter: &mut L2CAgentBase) {
-    if  VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(fighter) {
             macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
             VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);

@@ -218,5 +218,6 @@ pub unsafe extern "C" fn marth_stance_common_end(fighter: &mut L2CFighterCommon)
     && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
         VarModule::off_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
     }
+    VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
     0.into()
 }

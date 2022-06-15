@@ -257,10 +257,13 @@ unsafe fn lucina_attackairb_exp(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 3.0);
+    frame(fighter.lua_state_agent, 2.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
+    macros::FT_MOTION_RATE(fighter, 3.0);
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 5.0);

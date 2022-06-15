@@ -16,5 +16,7 @@ pub unsafe extern "C" fn wolf_fgc(fighter: &mut L2CFighterCommon) {
     ].contains(&status) {
         jump_cancel = 1;
     }
-    FGCModule::cancel_system(fighter, [].to_vec(), [].to_vec(), false, jump_cancel);
+    if !FGCModule::cancel_system(fighter, [].to_vec(), [].to_vec(), false, jump_cancel).get_bool() {
+        crate::fighter::common::common_fgc::common_fgc(fighter);
+    }
 }

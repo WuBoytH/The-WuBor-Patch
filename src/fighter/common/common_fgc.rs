@@ -27,7 +27,7 @@ pub unsafe fn fgc_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe extern "C" fn common_fgc(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn common_fgc(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         let status = StatusModule::status_kind(fighter.module_accessor);
         let mut special_cancels : Vec<i32> = [].to_vec();

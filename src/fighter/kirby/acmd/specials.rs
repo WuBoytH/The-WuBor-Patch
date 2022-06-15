@@ -103,6 +103,7 @@ unsafe fn kirby_ganonspecialn_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 6, -2, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
         macros::FLASH(fighter, 1, 0, 1, 1.0);
     }
     frame(fighter.lua_state_agent, 34.0);
@@ -110,6 +111,11 @@ unsafe fn kirby_ganonspecialn_eff(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(fighter.module_accessor, false);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
         ItemModule::set_attach_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 35.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 6.0, -2.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
     }
     frame(fighter.lua_state_agent, 60.0);
     if macros::is_excute(fighter) {
@@ -126,16 +132,7 @@ unsafe fn kirby_ganonspecialn_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "kirby", scripts = ["sound_ganonspecialn", "sound_ganonspecialairn"], category = ACMD_SOUND, low_priority )]
 unsafe fn kirby_ganonspecialn_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ganon_special_n01"));
-        macros::PLAY_SE(fighter, Hash40::new("vc_ganon_appeal_h01"));
-    }
     frame(fighter.lua_state_agent, 30.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
-    }
-    frame(fighter.lua_state_agent, 50.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
     }

@@ -42,10 +42,18 @@ unsafe fn ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn ganon_specialn_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP) == ganon::TELEPORT_STEP_INIT {
+    let step = VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP);
+    if step < ganon::TELEPORT_STEP_CHECK_FEINT
+    && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+        VarModule::on_flag(fighter.battle_object, ganon::status::flag::TELEPORT_FEINT);
+    }
+    if step == ganon::TELEPORT_STEP_INIT {
         deception_init(fighter);
     }
-    if VarModule::get_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP) == ganon::TELEPORT_STEP_CHECK_FEINT {
+    if step == ganon::TELEPORT_STEP_MOVE {
+        deception_movement(fighter);
+    }
+    if step == ganon::TELEPORT_STEP_CHECK_FEINT {
         deception_feint_handler(fighter);
     }
     if VarModule::is_flag(fighter.battle_object, ganon::status::flag::TELEPORT_STOP) {

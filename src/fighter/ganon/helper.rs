@@ -1,16 +1,14 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        phx::{Hash40, Vector2f},
+        phx::Vector2f,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    smash_script::*,
     custom_var::*,
     wubor_utils::{
         wua_bind::*,
-        vars::*,
-        table_const::*
+        vars::*
     }
 };
 
@@ -54,21 +52,19 @@ pub unsafe fn deception_init(fighter: &mut L2CFighterCommon) {
         _ => 0.0
     };
     VarModule::set_vec2(fighter.battle_object, ganon::status::float::END_POS, Vector2f{x: tele_x, y: tele_y});
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        VarModule::on_flag(fighter.battle_object, ganon::status::flag::TELEPORT_FEINT);
-    }
+}
+
+#[inline(always)]
+pub unsafe fn deception_movement(fighter: &mut L2CFighterCommon) {
+    let end_pos = VarModule::get_vec2(fighter.battle_object, ganon::status::float::END_POS);
+    PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{x: end_pos.x, y: end_pos.y});
+    VarModule::set_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_MOVE_DONE);
 }
 
 #[inline(always)]
 pub unsafe fn deception_feint_handler(fighter: &mut L2CFighterCommon) {
-    if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY {
-        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 6.0, -2.0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
-    }
-    else {
-        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
-    }
-    let tele_y = VarModule::get_vec2(fighter.battle_object, ganon::status::float::END_POS).y;
     if VarModule::is_flag(fighter.battle_object, ganon::status::flag::TELEPORT_FEINT) {
+        ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
         let og = VarModule::get_vec2(fighter.battle_object, ganon::status::float::START_POS);
         GroundModule::set_passable_check(fighter.module_accessor, true);
         PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f {x: og.x, y: og.y});
@@ -80,6 +76,7 @@ pub unsafe fn deception_feint_handler(fighter: &mut L2CFighterCommon) {
         }
     }
     else {
+        let tele_y = VarModule::get_vec2(fighter.battle_object, ganon::status::float::END_POS).y;
         if VarModule::is_flag(fighter.battle_object, ganon::status::flag::TELEPORT_START_GROUND)
         && tele_y == 0.0 {
             GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));

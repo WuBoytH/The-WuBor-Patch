@@ -39,10 +39,8 @@ unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 34.0);
     if macros::is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_MOVE);
-        let end_pos = VarModule::get_vec2(fighter.battle_object, ganon::status::float::END_POS);
-        PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f {x: end_pos.x, y: end_pos.y});
     }
-    frame(fighter.lua_state_agent, 50.0);
+    frame(fighter.lua_state_agent, 55.0);
     if macros::is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_CHECK_FEINT);
     }
@@ -72,6 +70,7 @@ unsafe fn ganon_specialn_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12, -2, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
         macros::FLASH(fighter, 1, 0, 1, 1.0);
     }
     frame(fighter.lua_state_agent, 34.0);
@@ -79,6 +78,11 @@ unsafe fn ganon_specialn_eff(fighter: &mut L2CAgentBase) {
         VisibilityModule::set_whole(fighter.module_accessor, false);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
         ItemModule::set_attach_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 35.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("ganon_entry"), Hash40::new("top"), 0, 12.0, -2.0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.7);
     }
     frame(fighter.lua_state_agent, 60.0);
     if macros::is_excute(fighter) {
@@ -100,14 +104,9 @@ unsafe fn ganon_specialn_eff(fighter: &mut L2CAgentBase) {
 unsafe fn ganon_specialn_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ganon_special_n01"));
         macros::PLAY_SE(fighter, Hash40::new("vc_ganon_appeal_h01"));
     }
     frame(fighter.lua_state_agent, 30.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
-    }
-    frame(fighter.lua_state_agent, 50.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ganon_appear01"));
     }

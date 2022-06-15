@@ -235,8 +235,9 @@ pub mod ganon {
 
     pub const TELEPORT_STEP_INIT : i32 = 1;
     pub const TELEPORT_STEP_MOVE : i32 = 2;
-    pub const TELEPORT_STEP_CHECK_FEINT : i32 = 3;
-    pub const TELEPORT_STEP_END : i32 = 4;
+    pub const TELEPORT_STEP_MOVE_DONE : i32 = 3;
+    pub const TELEPORT_STEP_CHECK_FEINT : i32 = 4;
+    pub const TELEPORT_STEP_END : i32 = 5;
 }
 
 pub mod gaogaen {

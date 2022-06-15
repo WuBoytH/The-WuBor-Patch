@@ -37,14 +37,17 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
     //     println!("ID: {}, Speed X: {}", id, speed_x);
     // }
     if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
+        let base_speed_x;
         let mut speed_x;
         let jump_y;
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-         if mini_jump {
+        if mini_jump {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -2, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
-            speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+            let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+            speed_x = air_speed_x_stable;
             speed_x *= common_param::jump::hyper_hop_air_speed_x_stable_mul;
             speed_x = speed_x.clamp(1.22, 1.7);
+            base_speed_x = speed_x;
             let stick_x = fighter.global_table[STICK_X].get_f32();
             speed_x *= stick_x;
             // println!("Hyper Hop Speed: {}", speed_x);
@@ -54,6 +57,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -5, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             speed_x *= common_param::jump::super_jump_speed_x_mul;
+            base_speed_x = speed_x;
             let jump_initial_y = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_initial_y"), 0) / 10.0;
             let ratio = 2.0 - (jump_initial_y / 2.8);
             jump_y = common_param::jump::super_jump_speed_y_init + (jump_initial_y * ratio) + get_super_jump_mod(fighter);
@@ -78,11 +82,12 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
             common_param::jump::special_jump_control_mul
         );
         if mini_jump {
+            let stable_speed = speed_x.abs().clamp(base_speed_x * 0.5, f32::MAX);
             sv_kinetic_energy!(
                 set_stable_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                speed_x.abs()
+                stable_speed.abs()
             );
         }
         // let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0);

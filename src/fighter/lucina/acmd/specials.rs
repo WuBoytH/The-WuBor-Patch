@@ -134,6 +134,7 @@ unsafe fn lucina_specialairs1(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_CHECK);
     }
     frame(fighter.lua_state_agent, 17.0);
@@ -153,6 +154,9 @@ unsafe fn lucina_specialairs1_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_specialairs2hi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_specialairs2hi(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         let mut dmg : f32;

@@ -17,7 +17,7 @@ lazy_static! {
 }
 
 pub struct CustomVarManager {
-    pub modules: Arc<RwLock<HashMap<i32, VarModule>>>
+    pub modules: Arc<RwLock<HashMap<u32, VarModule>>>
 }
 
 impl CustomVarManager {
@@ -29,14 +29,20 @@ impl CustomVarManager {
 
     #[export_name = "CustomVarManager__reset_var_module"]
     pub extern "Rust" fn reset_var_module(object: *mut BattleObject) -> bool {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
-        // println!("[VarModule] Restting VarModule for {}", entry_id);
+        // println!("[VarModule] Restting VarModule for {:#x}", object_id);
         let mut manager = CUSTOM_VAR_MANAGER.write();
         let x = if let Some(mut modules) = manager.modules.try_write() {
-            let _ = modules.insert(entry_id, VarModule::new());
-            // println!("Done!");
+            let _ = modules.insert(object_id, VarModule::new());
+            // let x = modules.insert(object_id, VarModule::new());
+            // if x.is_none() {
+            //     println!("[VarModule] There was no VarModule previously present for this Object ID!");
+            // }
+            // else {
+            //     println!("[VarModule] Replaced a previously existing VarModule!");
+            // }
             true
         }
         else {
@@ -110,14 +116,14 @@ impl VarModule {
     #[export_name = "VarModule__reset"]
     pub extern "Rust" fn reset(object: *mut BattleObject, mask: u8) {
         // println!("[VarModule] Reset");
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
-        // println!("[VarModule] entry_id: {}", entry_id);
+        // println!("[VarModule] object_id: {:#x}", object_id);
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
-            // println!("[VarModule] Resetting for {}", entry_id);
+        if let Some(mut module) = modules.get_mut(&object_id) {
+            // println!("[VarModule] Resetting for {:#x}", object_id);
             if mask & Self::RESET_INSTANCE_INT != 0 {
                 module.int[0].fill(0);
             }
@@ -153,12 +159,12 @@ impl VarModule {
     /// The variable requested
     #[export_name = "VarModule__get_int"]
     pub extern "Rust" fn get_int(object: *mut BattleObject, what: i32) -> i32 {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.int[vec_index][index]   
@@ -176,12 +182,12 @@ impl VarModule {
     /// The variable requested
     #[export_name = "VarModule__get_float"]
     pub extern "Rust" fn get_float(object: *mut BattleObject, what: i32) -> f32 {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.float[vec_index][index]
@@ -199,12 +205,12 @@ impl VarModule {
     /// The variable requested
     #[export_name = "VarModule__get_int64"]
     pub extern "Rust" fn get_int64(object: *mut BattleObject, what: i32) -> u64 {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.int64[vec_index][index]
@@ -222,12 +228,12 @@ impl VarModule {
     /// The variable requested
     #[export_name = "VarModule__is_flag"]
     pub extern "Rust" fn is_flag(object: *mut BattleObject, what: i32) -> bool {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.flag[vec_index][index]
@@ -244,12 +250,12 @@ impl VarModule {
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_int"]
     pub extern "Rust" fn set_int(object: *mut BattleObject, what: i32, val: i32) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.int[vec_index][index] = val;
@@ -263,12 +269,12 @@ impl VarModule {
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_float"]
     pub extern "Rust" fn set_float(object: *mut BattleObject, what: i32, val: f32) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.float[vec_index][index] = val;   
@@ -282,12 +288,12 @@ impl VarModule {
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_int64"]
     pub extern "Rust" fn set_int64(object: *mut BattleObject, what: i32, val: u64) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.int64[vec_index][index] = val;
@@ -301,12 +307,12 @@ impl VarModule {
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_flag"]
     pub extern "Rust" fn set_flag(object: *mut BattleObject, what: i32, val: bool) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.flag[vec_index][index] = val;
@@ -360,12 +366,12 @@ impl VarModule {
     /// * `amount` - The value to add to the variable
     #[export_name = "VarModule__add_int"]
     pub extern "Rust" fn add_int(object: *mut BattleObject, what: i32, amount: i32) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.int[vec_index][index] += amount;
@@ -379,12 +385,12 @@ impl VarModule {
     /// * `amount` - The value to subtract from the variable
     #[export_name = "VarModule__sub_int"]
     pub extern "Rust" fn sub_int(object: *mut BattleObject, what: i32, amount: i32) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.int[vec_index][index] -= amount;
@@ -420,12 +426,12 @@ impl VarModule {
     /// * `amount` - The amount to add to the variable
     #[export_name = "VarModule__add_float"]
     pub extern "Rust" fn add_float(object: *mut BattleObject, what: i32, amount: f32) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.float[vec_index][index] += amount;
@@ -439,12 +445,12 @@ impl VarModule {
     /// * `amount` - The amount to subtract from the variable
     #[export_name = "VarModule__sub_float"]
     pub extern "Rust" fn sub_float(object: *mut BattleObject, what: i32, amount: f32) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             module.float[vec_index][index] -= amount;
@@ -460,12 +466,12 @@ impl VarModule {
     /// This function requires that the last 3 bytes of `what` are less than `0xFFF`
     #[export_name = "VarModule__set_vec2"]
     pub extern "Rust" fn set_vec2(object: *mut BattleObject, what: i32, val: Vector2f) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             if index >= 0xFFF {
@@ -485,12 +491,12 @@ impl VarModule {
     /// This function requires that the last 3 bytes of `what` are less than `0xFFE`
     #[export_name = "VarModule__set_vec3"]
     pub extern "Rust" fn set_vec3(object: *mut BattleObject, what: i32, val: Vector3f) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             if index >= 0xFFE {
@@ -511,12 +517,12 @@ impl VarModule {
     /// This function requires that the last 3 bytes of `what` are less than `0xFFD`
     #[export_name = "VarModule__set_vec4"]
     pub extern "Rust" fn set_vec4(object: *mut BattleObject, what: i32, val: Vector4f) {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             if index >= 0xFFD {
@@ -539,12 +545,12 @@ impl VarModule {
     /// This function requires that the last 3 bytes of `what` are less than `0xFFF`
     #[export_name = "VarModule__get_vec2"]
     pub extern "Rust" fn get_vec2(object: *mut BattleObject, what: i32) -> Vector2f {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             if index >= 0xFFF {
@@ -570,12 +576,12 @@ impl VarModule {
     /// This function requires that the last 3 bytes of `what` are less than `0xFFE`
     #[export_name = "VarModule__get_vec3"]
     pub extern "Rust" fn get_vec3(object: *mut BattleObject, what: i32) -> Vector3f {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             if index >= 0xFFE {
@@ -603,12 +609,12 @@ impl VarModule {
     /// This function requires that the last 3 bytes of `what` are less than `0xFFD`
     #[export_name = "VarModule__get_vec4"]
     pub extern "Rust" fn get_vec4(object: *mut BattleObject, what: i32) -> Vector4f {
-        let entry_id = unsafe{
-            Fighter::get_fighter_entry_id((*object).battle_object_id)
+        let object_id = unsafe{
+            (*object).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
-        if let Some(mut module) = modules.get_mut(&entry_id) {
+        if let Some(mut module) = modules.get_mut(&object_id) {
             let vec_index = (what >> 0xC) as usize;
             let index = (what & 0xFFF) as usize;
             if index >= 0xFFD {

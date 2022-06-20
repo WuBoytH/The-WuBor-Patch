@@ -194,6 +194,8 @@ unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {
         return -0.2;
     }
     if [
+        *FIGHTER_KIND_POPO,
+        *FIGHTER_KIND_NANA,
         *FIGHTER_KIND_FALCO
     ].contains(&fighter_kind) {
         return 0.4;

@@ -110,7 +110,12 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     } {
         return 1.into();
     }
-    
+    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
+        let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
+        if fighter.global_table[MOTION_FRAME].get_f32() == jump_squat_frame {
+            macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        }
+    }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START) {
         fighter.change_status(FIGHTER_STATUS_KIND_JUMP.into(), false.into());
         return 0.into();

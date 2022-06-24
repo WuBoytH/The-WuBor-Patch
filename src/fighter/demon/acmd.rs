@@ -1,12 +1,12 @@
 mod jabs;
-mod tilts;
+// mod tilts;
 mod throws;
 mod specials;
 mod misc;
 
 pub fn install() {
     jabs::install();
-    tilts::install();
+    // tilts::install();
     throws::install();
     specials::install();
     misc::install();

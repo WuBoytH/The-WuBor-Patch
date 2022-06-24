@@ -54,7 +54,7 @@ unsafe fn super_jump_restrict(fighter: &mut L2CFighterCommon) -> bool {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     let steve = {
         fighter_kind == *FIGHTER_KIND_PICKEL &&
-        ![
+        [
             *FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP_SQUAT,
             *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT,
             *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT
@@ -62,11 +62,11 @@ unsafe fn super_jump_restrict(fighter: &mut L2CFighterCommon) -> bool {
     };
     let minmin = {
         fighter_kind == *FIGHTER_KIND_TANTAN &&
-        ![*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status)
+        [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status)
     };
     let kirby = {
         fighter_kind == *FIGHTER_KIND_KIRBY &&
-        ![
+        [
             *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP_SQUAT,
             *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N1_JUMP_SQUAT,
             *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N3_JUMP_SQUAT,
@@ -76,25 +76,25 @@ unsafe fn super_jump_restrict(fighter: &mut L2CFighterCommon) -> bool {
     };
     let dedede = {
         fighter_kind == *FIGHTER_KIND_DEDEDE &&
-        ![*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_JUMP_SQUAT].contains(&status)
+        [*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_JUMP_SQUAT].contains(&status)
     };
     let donkey = {
         fighter_kind == *FIGHTER_KIND_DONKEY &&
-        ![*FIGHTER_DONKEY_STATUS_KIND_SHOULDER_JUMP_SQUAT].contains(&status)
+        [*FIGHTER_DONKEY_STATUS_KIND_SHOULDER_JUMP_SQUAT].contains(&status)
     };
     let snake = {
         fighter_kind == *FIGHTER_KIND_SNAKE &&
-        ![*FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP_SQUAT].contains(&status)
+        [*FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP_SQUAT].contains(&status)
     };
     let megaman = {
         fighter_kind == *FIGHTER_KIND_ROCKMAN &&
-        ![*FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT].contains(&status)
+        [*FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT].contains(&status)
     };
     let villager = {
         fighter_kind == *FIGHTER_KIND_MURABITO &&
-        ![*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP_SQUAT].contains(&status)
+        [*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP_SQUAT].contains(&status)
     };
-    let normal = ![
+    let normal = [
         *FIGHTER_STATUS_KIND_HAMMER_JUMP_SQUAT,
         *FIGHTER_STATUS_KIND_ITEM_SHOOT_JUMP_SQUAT
     ].contains(&status);

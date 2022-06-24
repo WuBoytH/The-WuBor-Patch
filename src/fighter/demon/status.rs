@@ -206,11 +206,55 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
     status
 }
 
+#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn demon_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_AttackLw3_common();
+    WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
+    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attacklw3_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn demon_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.status_AttackLw3_Main();
+    if !StatusModule::is_changing(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
+            let mut status = -1;
+            let cat4 = fighter.global_table[CMD_CAT4].get_i32();
+            if fighter.sub_check_command_guard().get_bool() {
+                status = *FIGHTER_STATUS_KIND_GUARD_ON;
+            }
+            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
+                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_3;
+            }
+            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_2 != 0 {
+                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_2;
+            }
+            else if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_3 != 0 {
+                status = *FIGHTER_DEMON_STATUS_KIND_ATTACK_SQUAT_1;
+            }
+            if status != -1 {
+                WorkModule::set_int(fighter.module_accessor, status, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_INC_STEP);
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+            }
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_CHECK_STEP)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_INC_STEP) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_INC_STEP);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_FLAG_CHECK_STEP);
+            if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+                fighter.change_status(FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL.into(), false.into());
+            }
+        }
+    }
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
         demon_dashback_pre,
         demon_dashback_main,
         demon_attack_main,
-        demon_attackcombo_main
+        demon_attackcombo_main,
+        demon_attacklw3_main
     );
 }

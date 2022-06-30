@@ -317,6 +317,9 @@ pub mod lucario {
         pub mod flag {
             pub const IS_SUPER_DASH_CANCEL : i32 = 0x0100;
         }
+        pub mod int {
+            pub const AURA_LEVEL : i32 = 0x0100;
+        }
     }
 }
 

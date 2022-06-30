@@ -512,6 +512,15 @@ extern "C" {
     fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;
 }
 
+#[allow(non_snake_case)]
+pub mod LinkEventThrow {
+    use super::*;
+    extern "C" {
+        #[link_name = "\u{1}_ZN3app14LinkEventThrow13new_l2c_tableEv"]
+        pub fn new_l2c_table() -> L2CValue;
+    }
+}
+
 #[skyline::hook( replace = StatusModule::init_settings )]
 pub unsafe fn init_settings_replace(
     module_accessor: *mut BattleObjectModuleAccessor,

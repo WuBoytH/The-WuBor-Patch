@@ -11,13 +11,12 @@ unsafe fn wario_training_tools(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode() {
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
             let count = WorkModule::get_int(fighter.module_accessor, 0x100000bf);
-            let amount;
-            if count + 3 > 7 {
-                amount = 7;
+            let amount = if count + 3 > 7 {
+                7
             }
             else {
-                amount = count + 3;
-            }
+                count + 3
+            };
             WorkModule::set_int(fighter.module_accessor, amount, 0x100000bf); // FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_COUNT
         }
     }

@@ -47,7 +47,7 @@ unsafe extern "C" fn toonlink_specialhi_end_substatus(fighter: &mut L2CFighterCo
 }
 
 unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false {
+    if !fighter.sub_transition_group_check_air_cliff().get_bool() {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
             if toonlink_specialhi_end_situation_check(fighter).get_bool() {
                 if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -132,8 +132,8 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
             }
         }
         else {
-            if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false
-            && fighter.sub_air_check_fall_common().get_bool() == false {
+            if !fighter.sub_wait_ground_check_common(false.into()).get_bool()
+            && !fighter.sub_air_check_fall_common().get_bool() {
                 if toonlink_specialhi_end_situation_check(fighter).get_bool() {
                     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);

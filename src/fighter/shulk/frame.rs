@@ -39,10 +39,8 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
                 let target_boma = sv_battle_object::module_accessor(target_id);
                 let shulkpos = PostureModule::pos_x(fighter.module_accessor);
                 let opppos = PostureModule::pos_x(target_boma);
-                if shulkpos > opppos && PostureModule::lr(fighter.module_accessor) == 1.0 {
-                    PostureModule::reverse_lr(fighter.module_accessor);
-                }
-                else if shulkpos < opppos && PostureModule::lr(fighter.module_accessor) == -1.0 {
+                if (shulkpos > opppos && PostureModule::lr(fighter.module_accessor) == 1.0)
+                || (shulkpos < opppos && PostureModule::lr(fighter.module_accessor) == -1.0) {
                     PostureModule::reverse_lr(fighter.module_accessor);
                 }
                 SlowModule::set(target_boma, 0, 50, 60, false, *BATTLE_OBJECT_ID_INVALID as u32);

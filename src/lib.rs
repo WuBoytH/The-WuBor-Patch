@@ -1,8 +1,14 @@
-#![feature(concat_idents)]
-#![feature(proc_macro_hygiene)]
-#![allow(unused_macros)]
-#![allow(unused_must_use)]
-#![allow(clippy::borrow_interior_mutable_const)]
+#![feature(
+    concat_idents,
+    proc_macro_hygiene
+)]
+#![allow(
+    unused_macros,
+    unused_must_use,
+    clippy::borrow_interior_mutable_const,
+    clippy::collapsible_if,
+    clippy::collapsible_else_if
+)]
 
 use skyline::libc::c_char;
 mod function_hooks;

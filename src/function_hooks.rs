@@ -105,12 +105,6 @@ move_type_again: bool) -> u64 {
                 VarModule::on_flag(defender_object, vars::ryu::instance::flag::SECRET_SENSATION);
             }
         }
-        // else if defender_fighter_kind == *FIGHTER_KIND_KEN {
-        //     if MotionModule::motion_kind(defender_boma) == hash40("special_lw_step_b")
-        //     && MotionModule::frame(defender_boma) <= 8.75 {
-        //         WorkModule::on_flag(defender_boma, FIGHTER_KEN_STATUS_GUARD_FLAG_V_SHIFT);
-        //     }
-        // }
         else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
             if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
             || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
@@ -198,7 +192,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
             }
         }
     }
-    return ret;
+    ret
 }
 
 #[skyline::hook(offset = vars::FLOAT_OFFSET)]
@@ -253,7 +247,7 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
             }
         }
     }
-    return ret;
+    ret
 }
 
 #[skyline::hook(replace = WorkModule::get_int64 )]
@@ -269,7 +263,7 @@ pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32
             }
         }
     }
-    return ret;
+    ret
 }
 
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {

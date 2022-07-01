@@ -81,14 +81,12 @@ pub unsafe extern "C" fn toonlink_fgc(fighter: &mut L2CFighterCommon) {
             return;
         }
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            if FGCModule::cancel_exceptions(
+            FGCModule::cancel_exceptions(
                 fighter,
                 *FIGHTER_STATUS_KIND_ATTACK_DASH,
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
                 true
-            ).get_bool() {
-                return;
-            }
+            );
         }
     }
 }

@@ -43,7 +43,7 @@ unsafe extern "C" fn trail_attack_substatus(fighter: &mut L2CFighterCommon, para
         }
     }
     let callable: extern "C" fn(&mut L2CFighterCommon, L2CValue) -> L2CValue = std::mem::transmute(fighter.global_table["attack_substatus"].get_ptr());
-    callable(fighter, param_1.clone());
+    callable(fighter, param_1);
     0.into()
 }
 
@@ -65,7 +65,7 @@ unsafe fn trail_attackairn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn trail_attackairn_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if fighter.attack_air_uniq(param_1.clone()).get_bool() {
+    if fighter.attack_air_uniq(param_1).get_bool() {
         return 0.into();
     }
     let mut cont = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0;

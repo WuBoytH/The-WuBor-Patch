@@ -79,13 +79,12 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
     if VarModule::is_flag(fighter.battle_object, szerosuit::special_hi::flag::DECIDE_MOTION) {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             let mot = MotionModule::motion_kind(fighter.module_accessor);
-            let mot2;
-            if mot == hash40("special_hi") {
-                mot2 = Hash40::new("special_hi_2");
+            let mot2 = if mot == hash40("special_hi") {
+                Hash40::new("special_hi_2")
             }
             else {
-                mot2 = Hash40::new("special_air_hi_2");
-            }
+                Hash40::new("special_air_hi_2")
+            };
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
                 mot2,
@@ -109,15 +108,14 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_CHANGE_KINE) {
         return 0.into();
     }
-    let cont;
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
-        cont = false;
+    let cont = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS) {
+        false
     }
     else {
         let kinetic = KineticModule::get_kinetic_type(fighter.module_accessor);
         let some = kinetic == *FIGHTER_KINETIC_TYPE_MOTION_FALL;
-        cont = (some as usize ^ 1) != 0;
-    }
+        (some as usize ^ 1) != 0
+    };
     if !cont {
         return 0.into();
     }
@@ -161,7 +159,7 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
         );
     }
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
-    return 0.into();
+    0.into()
 }
 
 pub fn install() {

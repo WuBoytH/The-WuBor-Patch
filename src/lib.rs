@@ -2,6 +2,7 @@
 #![feature(proc_macro_hygiene)]
 #![allow(unused_macros)]
 #![allow(unused_must_use)]
+#![allow(clippy::borrow_interior_mutable_const)]
 
 use skyline::libc::c_char;
 mod function_hooks;

@@ -37,14 +37,12 @@ unsafe fn ken_vgauge_flash(fighter: &mut L2CFighterCommon) {
         VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 0);
         VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_COUNTER, 0);
     }
-    else if v_gauge >= 300.0
-    && v_gauge < 600.0
+    else if (300.0..600.0).contains(&v_gauge)
     && flash_max != 60 {
         macros::COL_NORMAL(fighter);
         VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 60);
     }
-    else if v_gauge >= 600.0
-    && v_gauge < 900.0
+    else if (600.0..900.0).contains(&v_gauge)
     && flash_max != 40 {
         macros::COL_NORMAL(fighter);
         VarModule::set_int(fighter.battle_object, ken::instance::int::FLASH_MAX, 40);

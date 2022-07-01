@@ -429,13 +429,12 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucina_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_turn;
-    if !VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND) {
-        is_turn = *FIGHTER_STATUS_ATTR_START_TURN as u32;
+    let is_turn = if !VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND) {
+        *FIGHTER_STATUS_ATTR_START_TURN as u32
     }
     else {
-        is_turn = 0;
-    }
+        0
+    };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),

@@ -36,13 +36,12 @@ unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon)
         VarModule::on_flag(fighter.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT);
         let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-        let mul;
-        if sum_speed_y <= 0.0 {
-            mul = vl::param_private::attack_air_n_gravity_mul;
+        let mul = if sum_speed_y <= 0.0 {
+            vl::param_private::attack_air_n_gravity_mul
         }
         else {
-            mul = 1.0;
-        }
+            1.0
+        };
         sv_kinetic_energy!(
             set_accel,
             fighter,
@@ -256,13 +255,12 @@ unsafe extern "C" fn samusd_specialn_hold_main_loop(fighter: &mut L2CFighterComm
             let charge_max = samusd_get_max_charge_frame(fighter).get_f32();
             if charge >= charge_max as i32 {
                 WorkModule::set_int(fighter.module_accessor, charge_max as i32, *FIGHTER_SAMUS_INSTANCE_WORK_ID_INT_SPECIAL_N_COUNT);
-                let mot;
-                if curr_sit != *SITUATION_KIND_GROUND {
-                    mot = Hash40::new("special_air_n_f_max");
+                let mot = if curr_sit != *SITUATION_KIND_GROUND {
+                    Hash40::new("special_air_n_f_max")
                 }
                 else {
-                    mot = Hash40::new("special_n_f_max");
-                }
+                    Hash40::new("special_n_f_max")
+                };
                 MotionModule::change_motion(
                     fighter.module_accessor,
                     mot,
@@ -280,13 +278,12 @@ unsafe extern "C" fn samusd_specialn_hold_main_loop(fighter: &mut L2CFighterComm
         return 0.into();
     }
     else {
-        let mot;
-        if curr_sit != *SITUATION_KIND_GROUND {
-            mot = Hash40::new("special_air_n_f");
+        let mot = if curr_sit != *SITUATION_KIND_GROUND {
+            Hash40::new("special_air_n_f")
         }
         else {
-            mot = Hash40::new("special_n_f");
-        }
+            Hash40::new("special_n_f")
+        };
         MotionModule::change_motion(
             fighter.module_accessor,
             mot,
@@ -492,8 +489,7 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
         let min_scale = WorkModule::get_param_float(weapon.module_accessor, hash40("param_cshot"), hash40("min_scale"));
         let max_scale = WorkModule::get_param_float(weapon.module_accessor, hash40("param_cshot"), hash40("max_scale"));
         let scale = (max_scale - min_scale) * charge + min_scale;
-        if scale < 1.0
-        && scale >= 0.3 {
+        if (0.3..1.0).contains(&scale) {
             effect!(
                 weapon,
                 MA_MSC_EFFECT_REQUEST_FOLLOW,
@@ -568,13 +564,12 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     lua_args!(weapon, WEAPON_KINETIC_TYPE_NORMAL);
     let speed_x = sv_kinetic_energy::get_speed_x(weapon.lua_state_agent);
     if speed_x.abs() < 0.21 {
-        let lr;
-        if speed_x < 0.0 {
-            lr = -1.0;
+        let lr = if speed_x < 0.0 {
+            -1.0
         }
         else {
-            lr = 1.0;
-        }
+            1.0
+        };
         sv_kinetic_energy!(
             set_speed,
             weapon,

@@ -41,7 +41,7 @@ unsafe extern "C" fn luigi_specials_charge_mot_helper(fighter: &mut L2CFighterCo
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) {
             MotionModule::change_motion(
                 fighter.module_accessor,
                 Hash40::new("special_air_s_hold"),
@@ -70,7 +70,7 @@ unsafe extern "C" fn luigi_specials_charge_mot_helper(fighter: &mut L2CFighterCo
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) == false {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FIRST) {
             MotionModule::change_motion(
                 fighter.module_accessor,
                 Hash40::new("special_s_hold"),
@@ -96,11 +96,10 @@ unsafe extern "C" fn luigi_specials_charge_mot_helper(fighter: &mut L2CFighterCo
         }
         WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_AIR, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_INT_MTRANS);
     }
-    return
 }
 
 unsafe extern "C" fn luigi_specials_charge_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) == false {
+    if !ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         let charge = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_WORK_FLOAT_CHARGE);
         let charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("charge_frame"));
         if charge_frame <= charge {
@@ -184,7 +183,7 @@ unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn luigi_specialhi_drop_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    fighter.sub_fall_common_uniq(param_1.clone())
+    fighter.sub_fall_common_uniq(param_1)
 }
 
 unsafe extern "C" fn luigi_specialhi_drop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {

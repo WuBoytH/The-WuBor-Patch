@@ -53,7 +53,7 @@ unsafe fn bayonetta_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn bayonetta_attack_main_hit_uniq_chk(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if param_1.get_bool() == false {
+    if !param_1.get_bool() {
         fighter.attack_uniq_chk();
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
         && only_jabs(fighter) {
@@ -131,7 +131,7 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
         }
     }
     if jump_attack_frame == 1 {
-        if fighter.global_table[IS_STOP].get_bool() == false {
+        if !fighter.global_table[IS_STOP].get_bool() {
             let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
             if 0 < attack_kind {
                 FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, attack_kind);
@@ -203,7 +203,7 @@ unsafe fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 unsafe extern "C" fn bayonetta_specialairs_d_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if param_1.get_bool() == false
+    if !param_1.get_bool()
     && VarModule::is_flag(fighter.battle_object, bayonetta::status::flag::SPECIAL_AIR_S_D_IS_BOUNCE)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_HIT) {
         fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
@@ -231,13 +231,12 @@ unsafe extern "C" fn bayonetta_specialairs_d_main_loop(fighter: &mut L2CFighterC
     // }
     // else {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_FLAG_WALL_CHECK) {
-            let flag;
-            if PostureModule::lr(fighter.module_accessor) < 0.0 {
-                flag = *GROUND_TOUCH_FLAG_LEFT as u32;
+            let flag = if PostureModule::lr(fighter.module_accessor) < 0.0 {
+                *GROUND_TOUCH_FLAG_LEFT as u32
             }
             else {
-                flag = *GROUND_TOUCH_FLAG_RIGHT as u32;
-            }
+                *GROUND_TOUCH_FLAG_RIGHT as u32
+            };
             if GroundModule::is_touch(fighter.module_accessor, flag) {
                 fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_WALL_END.into(), false.into());
             }

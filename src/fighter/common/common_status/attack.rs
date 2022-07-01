@@ -16,7 +16,7 @@ use {
 // can trigger Jab followups.
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
 unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
-    if param_1.get_bool() == false {
+    if !param_1.get_bool() {
         if ControlModule::check_button_on(fighter.module_accessor, param_2.get_i32())
         && only_jabs(fighter) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART) {
@@ -24,7 +24,7 @@ unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, para
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_RESTART_ATTACK);
             }
         }
-        fighter.attack_uniq_chk_command(param_3.clone());
+        fighter.attack_uniq_chk_command(param_3);
     }
     else {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK) {
@@ -41,7 +41,7 @@ unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, para
 
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_uniq_chk_button)]
 unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
-    if param_1.get_bool() == false {
+    if !param_1.get_bool() {
         fighter.attack_uniq_chk_command(param_3.clone());
         if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
         && only_jabs(fighter) {
@@ -249,14 +249,14 @@ unsafe fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
 /// Checks if your attack input is strictly a Neutral Attack input.
 #[inline(always)]
 pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
-    return !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
+    !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
     && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
     && fighter.global_table[CMD_CAT1].get_i32() & (
         *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 |
         *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S4 |
         *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 | *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW4 |
         *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH
-    ) == 0;
+    ) == 0
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

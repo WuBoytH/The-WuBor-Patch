@@ -96,10 +96,10 @@ unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
             return 1.into();
         }
         fighter.status_Attack_Main();
-        return 0.into();
+        0.into()
     }
     else {
-        return 1.into();
+        1.into()
     }
 }
 
@@ -258,11 +258,11 @@ unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterComm
         if combo < s3_combo_max
         || (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)) {
-            dolly_attacks3_mtrans_param(fighter, param_1.clone());
+            dolly_attacks3_mtrans_param(fighter, param_1);
         }
     }
     else {
-        dolly_attacks3_mtrans_param(fighter, param_1.clone());
+        dolly_attacks3_mtrans_param(fighter, param_1);
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
         let jump_attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
@@ -270,7 +270,7 @@ unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterComm
             if !StopModule::is_stop(fighter.module_accessor)
             && fighter.sub_check_button_jump().get_bool() {
                 let log = fighter.status_attack();
-                let info = log[0x10f40d7b92 as u64].get_i64();
+                let info = log[0x10f40d7b92u64].get_i64();
                 let mot = MotionModule::motion_kind(fighter.module_accessor);
                 MotionAnimcmdModule::call_script_single(
                     fighter.module_accessor,
@@ -419,10 +419,10 @@ unsafe extern "C" fn dolly_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -
             }
         }
         fighter.status_AttackHi3_Main();
-        return 0.into();
+        0.into()
     }
     else {
-        return 1.into();
+        1.into()
     }
 }
 
@@ -470,11 +470,10 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
             1
         ).get_bool() {
             let count = VarModule::get_int(fighter.battle_object, dolly::instance::int::D_TILT_CHAIN_COUNT);
-            let mot;
-            match count {
-                1 => mot = Hash40::new("attack_lw3_2"),
-                _ => mot = Hash40::new("attack_lw3")
-            }
+            let mot = match count {
+                1 => Hash40::new("attack_lw3_2"),
+                _ => Hash40::new("attack_lw3")
+            };
             MotionModule::change_motion(
                 fighter.module_accessor,
                 mot,
@@ -504,14 +503,13 @@ unsafe fn dolly_attacklw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let aerial = ControlModule::get_attack_air_kind(fighter.module_accessor);
-    let mot;
-    match aerial {
-        2 => mot = Hash40::new("attack_air_f"),
-        3 => mot = Hash40::new("attack_air_b"),
-        4 => mot = Hash40::new("attack_air_hi"),
-        5 => mot = Hash40::new("attack_air_lw"),
-        _ => mot = Hash40::new("attack_air_n")
-    }
+    let mot= match aerial {
+        2 => Hash40::new("attack_air_f"),
+        3 => Hash40::new("attack_air_b"),
+        4 => Hash40::new("attack_air_hi"),
+        5 => Hash40::new("attack_air_lw"),
+        _ => Hash40::new("attack_air_n")
+    };
     MotionModule::change_motion(
         fighter.module_accessor,
         mot,
@@ -810,13 +808,12 @@ unsafe extern "C" fn dolly_speciallw_end_main(fighter: &mut L2CFighterCommon) ->
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let param;
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_HIT) {
-        param = hash40("landing_frame_hit");
+    let param = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_HIT) {
+        hash40("landing_frame_hit")
     }
     else {
-        param = hash40("landing_frame_fail");
-    }
+        hash40("landing_frame_fail")
+    };
     let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), param);
     WorkModule::set_float(fighter.module_accessor, landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);

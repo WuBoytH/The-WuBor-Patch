@@ -530,13 +530,12 @@ unsafe fn marth_speciallwattackf3_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
-    let size;
-    if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
-        size = 1.5;
+    let size = if VarModule::is_flag(fighter.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
+        1.5
     }
     else {
-        size = 1.0;
-    }
+        1.0
+    };
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, -15, 0, 180, 0, size, true);

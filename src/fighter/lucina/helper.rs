@@ -15,7 +15,7 @@ pub unsafe fn add_sp(object: *mut BattleObject, module_accessor: *mut BattleObje
     let meter_const = yu::instance::float::SP_GAUGE;
     if !VarModule::is_flag(object, yu::instance::flag::SHADOW_FRENZY) {
         if !VarModule::is_flag(object, yu::status::flag::IS_EX) {
-            if shadow_id(module_accessor) == false {
+            if !shadow_id(module_accessor) {
                 amount *= 0.75;
             }
             if VarModule::get_float(object, yu::instance::float::SP_GAIN_PENALTY) > 0.0 {
@@ -76,7 +76,7 @@ pub unsafe fn spent_meter(object: *mut BattleObject, onemore: bool) -> bool {
             vl::param_private::sp_gain_penalty
         );
     }
-    return spent;
+    spent
 }
 
 pub unsafe fn spent_meter_super(object: *mut BattleObject) -> bool {
@@ -117,7 +117,7 @@ pub unsafe fn spent_meter_super(object: *mut BattleObject) -> bool {
             vl::param_private::sp_gain_penalty
         );
     }
-    return spent;
+    spent
 }
 
 pub unsafe fn upper_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_invuln: bool) {
@@ -152,13 +152,7 @@ pub unsafe fn full_invuln(module_accessor: *mut BattleObjectModuleAccessor, is_i
 
 pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let color = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
-    if color == 6
-    || color == 7 {
-        return true;
-    }
-    else {
-        return false;
-    }
+    color == 6 || color == 7
 }
 
 pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) {
@@ -188,15 +182,14 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
             level += 1;
         }
         while level > 0 {
-            let pos;
-            match level {
-                2 => pos = yu::SP_2,
-                3 => pos = yu::SP_3,
-                4 => pos = yu::SP_4,
-                5 => pos = yu::SP_5,
-                6 => pos = yu::SP_6,
-                _ => pos = yu::SP_1,
-            }
+            let pos = match level {
+                2 => yu::SP_2,
+                3 => yu::SP_3,
+                4 => yu::SP_4,
+                5 => yu::SP_5,
+                6 => yu::SP_6,
+                _ => yu::SP_1,
+            };
             EffectModule::req_follow(module_accessor, Hash40::new("sys_starrod_bullet"), Hash40::new("top"), &pos, &ZERO_VECTOR, 0.3, false, 0, 0, 0, 0, 0, false, false);
             level -= 1;
         }

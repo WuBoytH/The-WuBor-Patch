@@ -42,6 +42,7 @@ unsafe fn mario_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Reimplement F.Air Hold as a variable
 #[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
     let spike;
@@ -98,14 +99,8 @@ unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "mario", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn mario_attackairf_eff(fighter: &mut L2CAgentBase) {
-    let spike;
     frame(fighter.lua_state_agent, 10.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-        spike = true;
-    }
-    else {
-        spike = false;
-    }
+    let spike = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK);
     frame(fighter.lua_state_agent, 12.0);
     if spike {
         if macros::is_excute(fighter) {

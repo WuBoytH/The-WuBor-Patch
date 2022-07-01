@@ -129,7 +129,7 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
 
 #[skyline::hook(replace = L2CFighterCommon_status_Dash_Main_common)]
 unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if fighter.global_table[DASH_COMMON_UNIQ].get_bool() != false && {
+    if fighter.global_table[DASH_COMMON_UNIQ].get_bool() && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_COMMON_UNIQ].get_ptr());
         callable(fighter).get_bool()
     } {
@@ -198,7 +198,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         fighter.clear_lua_stack();
         lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
         sv_module_access::item(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1).get_bool() == false
+        !fighter.pop_lua_stack(1).get_bool()
      } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
         return 1.into();
@@ -210,7 +210,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         fighter.clear_lua_stack();
         lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
         sv_module_access::item(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1).get_bool() == false
+        !fighter.pop_lua_stack(1).get_bool()
     } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW_DASH.into(), false.into());
         return 1.into();
@@ -287,7 +287,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START)
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_DASH_ATTACK_S4 != 0
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4) == false {
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4) {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_S4_START.into(), true.into());
         return 1.into();
     }
@@ -358,7 +358,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         return 1.into();
     }
 
-    if fighter.sub_transition_group_check_ground_jump().get_bool() == false {
+    if !fighter.sub_transition_group_check_ground_jump().get_bool() {
         if param_1.get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(param_1.get_ptr());
             if callable(fighter).get_bool() {
@@ -386,19 +386,19 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         }
         if !MotionModule::is_end(fighter.module_accessor) {
             if fighter.sub_ground_check_stop_wall().get_bool() {
-                return 1.into();
+                1.into()
             }
             else {
-                return 0.into();
+                0.into()
             }
         }
         else {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            return 1.into();
+            1.into()
         }
     }
     else {
-        return 1.into();
+        1.into()
     }
 }
 
@@ -487,7 +487,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         fighter.clear_lua_stack();
         lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
         sv_module_access::item(fighter.lua_state_agent);
-        fighter.pop_lua_stack(1).get_bool() == false
+        !fighter.pop_lua_stack(1).get_bool()
     } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
         return 1.into();
@@ -611,7 +611,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         return 1.into();
     }
 
-    if fighter.sub_transition_group_check_ground_jump().get_bool() == false {
+    if !fighter.sub_transition_group_check_ground_jump().get_bool() {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
             let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr = PostureModule::lr(fighter.module_accessor);
@@ -645,14 +645,14 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             else {
                 fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             }
-            return 1.into();
+            1.into()
         }
         else {
-            return 0.into();
+            0.into()
         }
     }
     else {
-        return 1.into();
+        1.into()
     }
 }
 

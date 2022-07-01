@@ -434,13 +434,12 @@ unsafe extern "C" fn marth_speciallw_exit_pre(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn marth_speciallw_exit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let mot;
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        mot = Hash40::new("special_lw_air_exit");
+    let mot = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        Hash40::new("special_lw_air_exit")
     }
     else {
-        mot = Hash40::new("special_lw_exit");
-    }
+        Hash40::new("special_lw_exit")
+    };
     MotionModule::change_motion(
         fighter.module_accessor,
         mot,
@@ -462,13 +461,12 @@ unsafe extern "C" fn marth_speciallw_exit_main_loop(fighter: &mut L2CFighterComm
         }
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
-        let mot;
-        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            mot = Hash40::new("special_lw_air_exit");
+        let mot = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            Hash40::new("special_lw_air_exit")
         }
         else {
-            mot = Hash40::new("special_lw_exit");
-        }
+            Hash40::new("special_lw_exit")
+        };
         MotionModule::change_motion_inherit_frame(
             fighter.module_accessor,
             mot,

@@ -23,12 +23,10 @@ pub unsafe fn handle_revenge(object: *mut BattleObject, module_accessor: *mut Ba
             if let Some(object_id) = get_active_battle_object_id_from_entry_id(x) {
                 let object = get_battle_object_from_id(object_id);
                 let attacker_boma = (*object).module_accessor;
-                if PostureModule::pos_x(module_accessor) < PostureModule::pos_x(attacker_boma)
-                && PostureModule::lr(module_accessor) == 1.0 {
-                    PostureModule::reverse_lr(module_accessor);
-                }
-                else if PostureModule::pos_x(module_accessor) > PostureModule::pos_x(attacker_boma)
-                && PostureModule::lr(module_accessor) == -1.0 {
+                if (PostureModule::pos_x(module_accessor) < PostureModule::pos_x(attacker_boma)
+                && PostureModule::lr(module_accessor) == 1.0)
+                || (PostureModule::pos_x(module_accessor) > PostureModule::pos_x(attacker_boma)
+                && PostureModule::lr(module_accessor) == -1.0) {
                     PostureModule::reverse_lr(module_accessor);
                 }
                 break;

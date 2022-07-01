@@ -29,13 +29,12 @@ pub unsafe fn add_go(object: *mut BattleObject, module_accessor: *mut BattleObje
 
 pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-        let situation : L2CValue;
-        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            situation = SITUATION_KIND_AIR.into();
+        let situation : L2CValue = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            SITUATION_KIND_AIR.into()
         }
         else {
-            situation = SITUATION_KIND_GROUND.into();
-        }
+            SITUATION_KIND_GROUND.into()
+        };
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
         && dolly_final_cancel(fighter, situation.clone()).get_bool() {
@@ -43,7 +42,7 @@ pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2C
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL)
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT)
-        && dolly_special_cancel(fighter, situation.clone()).get_bool() {
+        && dolly_special_cancel(fighter, situation).get_bool() {
             return 1.into();
         }
     }
@@ -51,7 +50,7 @@ pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let ret;
+    
     let terms = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
@@ -90,12 +89,12 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
         }
     }
-    if situation.get_i32() != *SITUATION_KIND_GROUND {
-        ret = fighter.sub_transition_group_check_air_special();
+    let ret = if situation.get_i32() != *SITUATION_KIND_GROUND {
+        fighter.sub_transition_group_check_air_special()
     }
     else {
-        ret = fighter.sub_transition_group_check_ground_special();
-    }
+        fighter.sub_transition_group_check_ground_special()
+    };
     for x in 0..terms.len() {
         if !enableds[x] {
             WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
@@ -108,15 +107,14 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
 }
 
 pub unsafe extern "C" fn dolly_final_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let ret;
     let final_cancel = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
-    if situation.get_i32() != *SITUATION_KIND_GROUND {
-        ret = fighter.sub_transition_group_check_air_special();
+    let ret = if situation.get_i32() != *SITUATION_KIND_GROUND {
+        fighter.sub_transition_group_check_air_special()
     }
     else {
-        ret = fighter.sub_transition_group_check_ground_special();
-    }
+        fighter.sub_transition_group_check_ground_special()
+    };
     if !final_cancel {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     }
@@ -178,5 +176,5 @@ pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32
         dmg *= vl::param_private::special_cancel_damage_mul;
         bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
     }
-    SpecialCancelStats{dmg: dmg, bkb: bkb}
+    SpecialCancelStats{dmg, bkb}
 }

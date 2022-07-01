@@ -50,7 +50,7 @@ unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
         }
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
         && only_jabs(fighter)
-        && StatusModule::is_changing(fighter.module_accessor) == false
+        && !StatusModule::is_changing(fighter.module_accessor)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_ENABLE_COMBO) {
             WorkModule::set_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
         }
@@ -77,17 +77,16 @@ unsafe extern "C" fn demon_attackcombo_main_mot_helper(fighter: &mut L2CFighterC
     WorkModule::set_int(fighter.module_accessor, val, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_NONE, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
-    let mot : u64;
-    match val {
-        2 => mot = hash40("attack_13"),
-        3 => mot = hash40("attack_14"),
-        4 => mot = hash40("attack_15"),
-        5 => mot = hash40("attack_16"),
-        6 => mot = hash40("attack_17"),
-        7 => mot = hash40("attack_18"),
-        8 => mot = hash40("attack_19"),
-        _ => mot = hash40("attack_110"),
-    }
+    let mot = match val {
+        2 => hash40("attack_13"),
+        3 => hash40("attack_14"),
+        4 => hash40("attack_15"),
+        5 => hash40("attack_16"),
+        6 => hash40("attack_17"),
+        7 => hash40("attack_18"),
+        8 => hash40("attack_19"),
+        _ => hash40("attack_110"),
+    };
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new_raw(mot),

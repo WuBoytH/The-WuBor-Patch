@@ -116,7 +116,7 @@ unsafe extern "C" fn donkey_attackdash_main_loop(fighter: &mut L2CFighterCommon)
             if !StopModule::is_stop(fighter.module_accessor)
             && fighter.sub_check_button_jump().get_bool() {
                 let log = fighter.status_attack();
-                let info = log[0x10f40d7b92 as u64].get_i64();
+                let info = log[0x10f40d7b92u64].get_i64();
                 let mot = MotionModule::motion_kind(fighter.module_accessor);
                 MotionAnimcmdModule::call_script_single(
                     fighter.module_accessor,
@@ -155,11 +155,10 @@ unsafe extern "C" fn donkey_attackdash_main_loop(fighter: &mut L2CFighterCommon)
             }
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH) {
-            let cont;
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-                cont = !ItemModule::is_have_item(fighter.module_accessor, 0);
+            let cont = if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                !ItemModule::is_have_item(fighter.module_accessor, 0)
             }
-            else { cont = false; }
+            else { false };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
                 return 0.into();
@@ -222,8 +221,8 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
         }
     }
     else if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        if fighter.sub_wait_ground_check_common(false.into()).get_bool() == false
-        && fighter.sub_air_check_fall_common().get_bool() == false {
+        if !fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        && !fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
         }
     }
@@ -237,7 +236,7 @@ pub unsafe fn barrel_check() -> bool {
     if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= vl::param_special_s::barrel_count as u64 * donkey::DK_COUNT {
         return false;
     }
-    return true;
+    true
 }
 
 pub fn install() {

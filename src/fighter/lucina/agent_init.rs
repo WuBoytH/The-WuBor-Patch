@@ -18,7 +18,7 @@ unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 unsafe extern "C" fn yu_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    return 0.into();
+    0.into()
 }
 
 unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -24,20 +24,19 @@ unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
     }
     frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    let bkb : i32;
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        bkb = 40;
+    let bkb = if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+        40
     }
     else {
-        bkb = 52;
-    }
+        52
+    };
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 10.5, 35, 78, 0, bkb, 3.0, -1.5, 4.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 10.5, 35, 78, 0, bkb, 3.0, -1.5, 8.0, 0.0, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
@@ -68,7 +67,7 @@ unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -87,7 +86,7 @@ unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -150,7 +149,7 @@ unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -168,7 +167,7 @@ unsafe fn eflame_attacks4(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -229,7 +228,7 @@ unsafe fn eflame_attacks4(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -249,7 +248,7 @@ unsafe fn eflame_attackairf(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -293,7 +292,7 @@ unsafe fn eflame_attackairf(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -323,7 +322,7 @@ unsafe fn eflame_attackairb(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -359,7 +358,7 @@ unsafe fn eflame_attackairb(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -389,7 +388,7 @@ unsafe fn eflame_attackairhi(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -420,7 +419,7 @@ unsafe fn eflame_attackairhi(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -447,7 +446,7 @@ unsafe fn eflame_attackairlw(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }
@@ -495,7 +494,7 @@ unsafe fn eflame_attackairlw(fighter: &mut L2CAgentBase) {
             ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD, *WEAPON_EFLAME_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_close"), 5.0, 5.0, false, false, 0.0, false, true, false);
         }
     }
-    if MotionModule::is_changing(fighter.module_accessor) == true {
+    if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
         }

@@ -104,7 +104,7 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_Main)]
 unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_bool() != false && {
+    if fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_bool() && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_ptr());
         callable(fighter).get_bool()
     } {
@@ -120,17 +120,17 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
     }
-    if fighter.sub_transition_group_check_ground_item().get_bool() == false {
+    if !fighter.sub_transition_group_check_ground_item().get_bool() {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI)
         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
             return 0.into();
         }
-        if fighter.sub_transition_specialflag_hoist().get_bool() == false {
+        if !fighter.sub_transition_specialflag_hoist().get_bool() {
             if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
-            && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) == false {
-                if fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_bool() != false && {
+            && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
+                if fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_bool() && {
                     let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_ptr());
                     callable(fighter).get_bool()
                 } {
@@ -177,14 +177,12 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, param_1:
             && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
             && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                return;
             }
         }
         else {
             if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
             || ControlModule::is_jump_mini_button(fighter.module_accessor) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
-                return;
             }
         }
     }

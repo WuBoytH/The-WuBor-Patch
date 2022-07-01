@@ -176,13 +176,13 @@ unsafe fn lucina_on_empty_sp_meter(fighter: &mut L2CFighterCommon) {
 unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_THROW {
-        if CatchModule::is_catch(fighter.module_accessor) == false
+        if !CatchModule::is_catch(fighter.module_accessor)
         && !VarModule::is_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE) {
             VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
         }
     }
     else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && CatchModule::is_catch(fighter.module_accessor) == false
+    && !CatchModule::is_catch(fighter.module_accessor)
     && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
         VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
     }
@@ -205,7 +205,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
         }
         else if !MiscModule::is_damage_check(fighter.module_accessor, false)
         && status != *FIGHTER_STATUS_KIND_SPECIAL_HI
-        && CatchModule::is_catch(fighter.module_accessor) == false
+        && !CatchModule::is_catch(fighter.module_accessor)
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && spent_meter(fighter.battle_object, true) {
             VarModule::off_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
@@ -255,7 +255,7 @@ unsafe fn lucina_heroic_bravery_grab(fighter: &mut L2CFighterCommon) {
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_JUMP
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_CUT
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH
-    && CatchModule::is_catch(fighter.module_accessor) == false
+    && !CatchModule::is_catch(fighter.module_accessor)
     && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_THROW {
         VarModule::off_flag(fighter.battle_object, yu::instance::flag::HEROIC_GRAB);
     }

@@ -87,21 +87,20 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             let stick_y = fighter.global_table[STICK_Y].get_f32();
             let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
-            let cont;
-            if !(stick_y < attack_hi3_stick_y) {
-                cont = false;
+            let cont = if stick_y >= attack_hi3_stick_y {
+                false
             }
             else {
                 let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
-                if !(attack_lw3_stick_y < stick_y) {
-                    cont = false;
+                if attack_lw3_stick_y >= stick_y {
+                    false
                 }
                 else {
                     let stick_x = fighter.global_table[STICK_X].get_f32();
                     let attack_s3_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_x"));
-                    cont = stick_x < attack_s3_stick_x;
+                    stick_x < attack_s3_stick_x
                 }
-            }
+            };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), false.into());
                 return 1.into();
@@ -213,13 +212,12 @@ unsafe fn ryu_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             false
         );
     }
-    let eff;
-    if !MotionModule::is_flip(fighter.module_accessor) {
-        eff = Hash40::new("ryu_tatsumaki_wind_r");
+    let eff = if !MotionModule::is_flip(fighter.module_accessor) {
+        Hash40::new("ryu_tatsumaki_wind_r")
     }
     else {
-        eff = Hash40::new("ryu_tatsumaki_wind_l");
-    }
+        Hash40::new("ryu_tatsumaki_wind_l")
+    };
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
     sv_module_access::effect(fighter.lua_state_agent);

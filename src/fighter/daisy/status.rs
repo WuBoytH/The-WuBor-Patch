@@ -52,7 +52,7 @@ unsafe fn daisy_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn daisy_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false {
+    if !fighter.sub_transition_group_check_air_cliff().get_bool() {
         // let enable_uniq = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_SPECIAL_HI_WORK_INT_ENABLE_UNIQ);
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PEACH_STATUS_SPECIAL_HI_FLAG_MOVE_TRANS) {
             fighter.set_situation(SITUATION_KIND_AIR.into());
@@ -171,7 +171,7 @@ unsafe fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 unsafe extern "C" fn daisy_uniqfloatstart_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false
+    if !fighter.sub_transition_group_check_air_cliff().get_bool()
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
     }
@@ -212,8 +212,8 @@ unsafe extern "C" fn daisy_fallspecial_main_2(fighter: &mut L2CFighterCommon, pa
 }
 
 unsafe extern "C" fn daisy_fallspecial_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false
-    && fighter.sub_fall().get_bool() == false {
+    if !fighter.sub_transition_group_check_air_cliff().get_bool()
+    && !fighter.sub_fall().get_bool() {
         // let parasol_timer = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PEACH_STATUS_SPECIAL_HI_WORK_INT_PARASOL_LIMIT_TIME_COUNTER);
         // if !(0 < parasol_timer) {
             return daisy_fallspecial_main_loop_helper(fighter);

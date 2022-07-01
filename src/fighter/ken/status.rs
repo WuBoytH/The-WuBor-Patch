@@ -88,21 +88,20 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
         && ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
             let stick_y = fighter.global_table[STICK_Y].get_f32();
             let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
-            let cont;
-            if !(stick_y < attack_hi3_stick_y) {
-                cont = false;
+            let cont = if stick_y >= attack_hi3_stick_y {
+                false
             }
             else {
                 let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
-                if !(attack_lw3_stick_y < stick_y) {
-                    cont = false;
+                if attack_lw3_stick_y >= stick_y {
+                    false
                 }
                 else {
                     let stick_x = fighter.global_table[STICK_X].get_f32();
                     let attack_s3_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_x"));
-                    cont = stick_x < attack_s3_stick_x;
+                    stick_x < attack_s3_stick_x
                 }
-            }
+            };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_ATTACK.into(), false.into());
                 return 1.into();
@@ -206,13 +205,12 @@ unsafe fn ken_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             false
         );
     }
-    let eff;
-    if !MotionModule::is_flip(fighter.module_accessor) {
-        eff = Hash40::new("ken_tatsumaki_wind_r");
+    let eff = if !MotionModule::is_flip(fighter.module_accessor) {
+        Hash40::new("ken_tatsumaki_wind_r")
     }
     else {
-        eff = Hash40::new("ken_tatsumaki_wind_l");
-    }
+        Hash40::new("ken_tatsumaki_wind_l")
+    };
     fighter.clear_lua_stack();
     lua_args!(fighter, MA_MSC_EFFECT_REQUEST_FOLLOW, eff, hash40("rot"), 0.0, 1.5, 0.0, 0.0, 0.0, 0.0, 1.0, false, *EFFECT_SUB_ATTRIBUTE_SYNC_STOP, 0, -1);
     sv_module_access::effect(fighter.lua_state_agent);
@@ -366,13 +364,12 @@ unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
         0.0
     );
     KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-    let reset_type;
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        reset_type = ENERGY_MOTION_RESET_TYPE_AIR_TRANS;
+    let reset_type = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        ENERGY_MOTION_RESET_TYPE_AIR_TRANS
     }
     else {
-        reset_type = ENERGY_MOTION_RESET_TYPE_GROUND_TRANS;
-    }
+        ENERGY_MOTION_RESET_TYPE_GROUND_TRANS
+    };
     sv_kinetic_energy!(
         reset_energy,
         fighter,
@@ -423,8 +420,7 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_SPECIAL_LW);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        let mot;
-        if VarModule::get_float(fighter.battle_object, ken::instance::float::V_GAUGE) < 900.0
+        let mot = if VarModule::get_float(fighter.battle_object, ken::instance::float::V_GAUGE) < 900.0
         || VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
             VarModule::set_int(
                 fighter.battle_object,
@@ -436,7 +432,7 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 ken::instance::int::QUICK_STEP_STATE,
                 ken::QUICK_STEP_STATE_RUN
             );
-            mot = Hash40::new("run");
+            Hash40::new("run")
         }
         else {
             VarModule::set_int(
@@ -444,8 +440,8 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 ken::instance::int::SPECIAL_LW_TYPE,
                 ken::SPECIAL_LW_TYPE_HEAT_RUSH
             );
-            mot = Hash40::new("special_lw_step_f");
-        }
+            Hash40::new("special_lw_step_f")
+        };
         MotionModule::change_motion(
             fighter.module_accessor,
             mot,

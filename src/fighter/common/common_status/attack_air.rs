@@ -40,7 +40,7 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
         fighter.attack_air_uniq(false.into());
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_attack_air_uniq as *const () as _));
-    if param_1.get_bool() == true {
+    if param_1.get_bool() {
         fighter.sub_attack_air_kind();
     }
     ControlModule::reset_attack_air_kind(fighter.module_accessor);

@@ -127,7 +127,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         let jump_neutral_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_x"));
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         let stick_x = stick_x * lr * -1.0;
-        if !(jump_neutral_x <= stick_x) {
+        if stick_x > jump_neutral_x {
             if !mini_jump {
                 mot = Hash40::new("jump_f");
             }
@@ -158,13 +158,12 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
     else {
         mot = Hash40::new("jump_f_mini");
     }
-    let ret : L2CValue;
-    if param_1.get_u64() != hash40("invalid") {
-        ret = param_1.clone();
+    let ret = if param_1.get_u64() != hash40("invalid") {
+        param_1
     }
     else {
-        ret = 0.into();
-    }
+        0.into()
+    };
     MotionModule::change_motion(
         fighter.module_accessor,
         mot,

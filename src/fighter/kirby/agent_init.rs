@@ -17,7 +17,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
         let copy_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA);
         if copy_kind == *FIGHTER_KIND_ROSETTA {
             let rosetta_interval = WorkModule::get_int(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_ROSETTA_SPECIAL_N_INTERVAL);
-            if !(0 < rosetta_interval) {
+            if rosetta_interval <= 0 {
                 return 1.into();
             }
             else {
@@ -36,7 +36,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
             if copy_kind != *FIGHTER_KIND_PITB {
                 if copy_kind == *FIGHTER_KIND_INKLING {
                     let inkling_ink = WorkModule::get_float(fighter.module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_FLOAT_INKLING_SPECIAL_N_INK);
-                    if !(inkling_ink <= 0.0) {
+                    if inkling_ink > 0.0 {
                         return 1.into();
                     }
                     else {
@@ -50,7 +50,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
             return 1.into();
         }
     }
-    return 0.into();
+    0.into()
 }
 
 #[fighter_init]

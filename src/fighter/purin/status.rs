@@ -31,7 +31,7 @@ unsafe extern "C" fn purin_specialn_hit_end_main_loop(fighter: &mut L2CFighterCo
             return 1.into();
         }
     }
-    if fighter.sub_transition_group_check_air_cliff().get_bool() == false
+    if !fighter.sub_transition_group_check_air_cliff().get_bool()
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
     }

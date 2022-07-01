@@ -13,7 +13,7 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW
-        && CatchModule::is_catch(fighter.module_accessor) == false {
+        && !CatchModule::is_catch(fighter.module_accessor) {
             let special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,

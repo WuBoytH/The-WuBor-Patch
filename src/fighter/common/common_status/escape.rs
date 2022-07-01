@@ -358,21 +358,20 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         dirx = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         diry = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
         let arctangent = diry.atan2(dirx.abs());
-        let stiff_lerp;
-        if 0.0 > arctangent.to_degrees() {
-            stiff_lerp = fighter.lerp(
+        let stiff_lerp = if 0.0 > arctangent.to_degrees() {
+            fighter.lerp(
                 escape_air_slide_stiff_frame.into(),
                 escape_air_slide_d_stiff_frame.into(),
                 (arctangent.to_degrees() / 90.0).into()
-            );
+            )
         }
         else {
-            stiff_lerp = fighter.lerp(
+            fighter.lerp(
                 escape_air_slide_stiff_frame.into(),
                 escape_air_slide_u_stiff_frame.into(),
                 (arctangent.to_degrees() / 90.0).into()
-            );
-        }
+            )
+        };
         let escape_air_slide_stiff_start_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_stiff_start_frame"));
         WorkModule::set_float(fighter.module_accessor, escape_air_slide_stiff_start_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_START_FRAME);
         let escape_air_slide_back_end_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_end_frame"));
@@ -558,7 +557,7 @@ unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
         attack_frame = 14.0;
         cancel_frame = 28.0;
     }
-    AirDashParams{attack_frame: attack_frame, cancel_frame: cancel_frame}
+    AirDashParams{attack_frame, cancel_frame}
 }
 
 #[skyline::hook(replace = L2CFighterCommon_exec_escape_air_slide)]

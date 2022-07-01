@@ -58,7 +58,7 @@ unsafe fn edge_specialairhi2end(fighter: &mut L2CAgentBase) {
         let angle_ratio = rush_angle / 90.0;
         let angle_diff = 60.0 * angle_ratio;
         let mut angle = base_angle + angle_diff;
-        if angle < 15.0 || angle > 345.0 { angle = 361.0 }
+        if !(15.0..=345.0).contains(&angle) { angle = 361.0 }
         let bkb;
         let kbg;
         if angle < 360.0 && angle > 60.0 {

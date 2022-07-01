@@ -100,7 +100,6 @@ unsafe extern "C" fn kamui_speciallw_hit_mot(fighter: &mut L2CFighterCommon) {
             );
         }
     }
-    return
 }
 
 unsafe extern "C" fn kamui_speciallw_hit_dragon_mot(fighter: &mut L2CFighterCommon) {
@@ -148,13 +147,12 @@ unsafe extern "C" fn kamui_speciallw_hit_dragon_mot(fighter: &mut L2CFighterComm
             }
         }
     }
-    return
 }
 
 unsafe extern "C" fn kamui_speciallw_hit_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool()
-    && fighter.sub_air_check_fall_common().get_bool() == true {
+    && fighter.sub_air_check_fall_common().get_bool() {
         return 1.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {

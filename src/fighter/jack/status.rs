@@ -25,7 +25,7 @@ unsafe extern "C" fn jack_special_mot_helper(fighter: &mut L2CFighterCommon, da_
         mot = air_mot.get_u64();
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_FALL_NORMAL) == false {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_S_FLAG_FALL_NORMAL) {
             let speed_max_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("speed_max_y"));
             let accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("accel_y"));
             sv_kinetic_energy!(
@@ -63,7 +63,7 @@ unsafe extern "C" fn jack_special_mot_helper(fighter: &mut L2CFighterCommon, da_
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         }
-        if !(da_bool.get_bool() == false) {
+        if da_bool.get_bool() {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
             return;
         }
@@ -72,13 +72,12 @@ unsafe extern "C" fn jack_special_mot_helper(fighter: &mut L2CFighterCommon, da_
         mot = ground_mot.get_u64();
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        if !(da_bool.get_bool() == false) {
+        if da_bool.get_bool() {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new_raw(mot), 0.0, 1.0, false, 0.0, false, false);
             return;
         }
     }
     MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new_raw(mot), -1.0, 1.0, 0.0, false, false);
-    return
 }
 
 unsafe extern "C" fn jack_special_s_main_helper(fighter: &mut L2CFighterCommon) -> L2CValue {

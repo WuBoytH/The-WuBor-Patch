@@ -25,7 +25,7 @@ pub unsafe fn marth_unstance_game(fighter: &mut L2CAgentBase, mut hit_effect: u6
         hit_effect = hash40("collision_attr_fire");
         hit_sound = *COLLISION_SOUND_ATTR_FIRE;
     }
-    UnstanceGame{hit_effect: hit_effect, hit_sound: hit_sound}
+    UnstanceGame{hit_effect, hit_sound}
 }
 
 pub unsafe fn marth_unstance_effect(fighter: &mut L2CAgentBase, mut trail1: u64, mut trail2: u64, mut swordflare: u64) -> UnstanceEffect {
@@ -34,7 +34,7 @@ pub unsafe fn marth_unstance_effect(fighter: &mut L2CAgentBase, mut trail1: u64,
         trail2 = hash40("tex_marth_unstance_sword2");
         swordflare = hash40("marth_sword_red");
     }
-    UnstanceEffect{trail1: trail1, trail2: trail2, swordflare: swordflare}
+    UnstanceEffect{trail1, trail2, swordflare}
 }
 
 pub unsafe fn marth_is_unstance(fighter: &mut L2CAgentBase) -> bool {
@@ -73,11 +73,5 @@ pub unsafe fn marth_is_unstance(fighter: &mut L2CAgentBase) -> bool {
     let range_lw = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_DASH_F);
     let range_hi = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S);
     let stance_range = (range_lw..range_hi).contains(&prev_status);
-    if prev_status == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT
-    || stance_range {
-        true
-    }
-    else {
-        false
-    }
+    prev_status == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT || stance_range
 }

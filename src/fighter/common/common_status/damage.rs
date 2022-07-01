@@ -14,12 +14,12 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
     fighter.clear_lua_stack();
-    lua_args!(fighter, 0xba5d667d4 as u64);
+    lua_args!(fighter, 0xba5d667d4u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let damage_speed_x = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value speed x probably: {}", damage_speed_x);
     fighter.clear_lua_stack();
-    lua_args!(fighter, 0xbd2d15742 as u64);
+    lua_args!(fighter, 0xbd2d15742u64);
     sv_information::damage_log_value(fighter.lua_state_agent);
     let damage_speed_y = fighter.pop_lua_stack(1).get_f32();
     // println!("damage log value speed y probably: {}", damage_speed_y);
@@ -30,7 +30,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     // println!("damage log value attr: {}", attr);
     let _status = StatusModule::status_kind(fighter.module_accessor);
     // this isn't used in anyhthing???
-    if !(0 < reaction_frame as i32) {
+    if 0 >= reaction_frame as i32 {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_END_REACTION);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_SPEED_UP);
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);

@@ -100,13 +100,12 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
         }
     }
     else {
-        let status;
-        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            status = FIGHTER_STATUS_KIND_FALL;
+        let status= if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            FIGHTER_STATUS_KIND_FALL
         }
         else {
-            status = FIGHTER_STATUS_KIND_WAIT;
-        }
+            FIGHTER_STATUS_KIND_WAIT
+        };
         fighter.change_status(status.into(), false.into());
     }
     0.into()

@@ -22,7 +22,7 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW
-        && CatchModule::is_catch(fighter.module_accessor) == false
+        && !CatchModule::is_catch(fighter.module_accessor)
         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
         }

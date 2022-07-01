@@ -87,14 +87,13 @@ pub unsafe extern "C" fn ryu_attack_main_uniq_chk4(fighter: &mut L2CFighterCommo
             && only_jabs(fighter) {
                 let stick_y = fighter.global_table[STICK_Y].get_f32();
                 let attack_hi3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi3_stick_y"));
-                let cont;
-                if !(stick_y < attack_hi3_stick_y) {
-                    cont = false;
+                let cont = if stick_y >= attack_hi3_stick_y {
+                    false
                 }
                 else {
                     let attack_lw3_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_y"));
-                    cont = attack_lw3_stick_y < stick_y;
-                }
+                    attack_lw3_stick_y < stick_y
+                };
                 if cont {
                     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_INT_BUTTON_ON_FRAME);
                     return 0.into();
@@ -158,15 +157,14 @@ pub unsafe extern "C" fn ryu_specials_init_main(fighter: &mut L2CFighterCommon) 
     let add_speed_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("add_speed_x"));
     let lr = PostureModule::lr(fighter.module_accessor);
     speed_x += add_speed_x * lr;
-    let stop_type;
-    if sit != *SITUATION_KIND_GROUND {
+    let stop_type = if sit != *SITUATION_KIND_GROUND {
         let add_speed_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_s"), hash40("add_speed_y"));
         speed_y += add_speed_y;
-        stop_type = ENERGY_STOP_RESET_TYPE_AIR;
+        ENERGY_STOP_RESET_TYPE_AIR
     }
     else {
-        stop_type = ENERGY_STOP_RESET_TYPE_NONE;
-    }
+        ENERGY_STOP_RESET_TYPE_NONE
+    };
     sv_kinetic_energy!(
         reset_energy,
         fighter,
@@ -600,15 +598,14 @@ unsafe extern "C" fn ryu_specialhi_mot_helper(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let ret;
     let final_cancel = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
-    if situation.get_i32() != *SITUATION_KIND_GROUND {
-        ret = fighter.sub_transition_group_check_air_special().get_bool();
+    let ret = if situation.get_i32() != *SITUATION_KIND_GROUND {
+        fighter.sub_transition_group_check_air_special().get_bool()
     }
     else {
-        ret = fighter.sub_transition_group_check_ground_special().get_bool();
-    }
+        fighter.sub_transition_group_check_ground_special().get_bool()
+    };
     if !final_cancel {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL);
     }
@@ -616,7 +613,6 @@ pub unsafe extern "C" fn ryu_final_hit_cancel(fighter: &mut L2CFighterCommon, si
 }
 
 pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    let ret;
     let special_n = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     let special_s = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
     let special_hi = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
@@ -635,12 +631,12 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
-    if situation.get_i32() != *SITUATION_KIND_GROUND {
-        ret = fighter.sub_transition_group_check_air_special().get_bool();
+    let ret = if situation.get_i32() != *SITUATION_KIND_GROUND {
+        fighter.sub_transition_group_check_air_special().get_bool()
     }
     else {
-        ret = fighter.sub_transition_group_check_ground_special().get_bool();
-    }
+        fighter.sub_transition_group_check_ground_special().get_bool()
+    };
     if !special_n {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N);
     }
@@ -672,7 +668,6 @@ pub unsafe extern "C" fn ryu_hit_cancel(fighter: &mut L2CFighterCommon, situatio
 }
 
 pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret;
     let special_n_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
     let special_n2_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
     let special_s_command = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
@@ -683,7 +678,7 @@ pub unsafe extern "C" fn ryu_kara_cancel(fighter: &mut L2CFighterCommon) -> L2CV
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1);
-    ret = fighter.sub_transition_group_check_special_command().get_bool();
+    let ret = fighter.sub_transition_group_check_special_command().get_bool();
     if !special_n_command {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND);
     }

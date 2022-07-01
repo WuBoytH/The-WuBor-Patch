@@ -117,7 +117,7 @@ unsafe fn demon_attackragedrive(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = "0x15cb9d3406", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = 0x15cb9d3406, category = ACMD_GAME, low_priority )]
 unsafe fn demon_15cb9d3406(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     macros::FT_MOTION_RATE(fighter, 0.7);
@@ -186,7 +186,7 @@ unsafe fn demon_15cb9d3406(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = "0x15b52c48bb", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = 0x15b52c48bb, category = ACMD_GAME, low_priority )]
 unsafe fn demon_15b52c48bb(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     if macros::is_excute(fighter) {

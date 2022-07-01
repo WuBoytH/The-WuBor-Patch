@@ -161,6 +161,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
         fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
+        // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
         fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(dolly_fgc as *const () as _));
     }
 }

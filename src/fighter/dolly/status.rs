@@ -888,6 +888,36 @@ unsafe fn dolly_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+// #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+// unsafe fn dolly_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.status_pre_Wait()
+// }
+
+// #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// unsafe fn dolly_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.status_Wait()
+// }
+
+// #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// unsafe fn dolly_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.status_Walk()
+// }
+
+// #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SQUAT_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// unsafe fn dolly_squat_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.status_SquatWait()
+// }
+
+// #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+// unsafe fn dolly_landing_light_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.sub_landing_uniq_process_init()
+// }
+
+// #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+// unsafe fn dolly_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     fighter.sub_landing_uniq_process_init()
+// }
+
 pub fn install() {
     install_status_scripts!(
         dolly_dashback_pre, dolly_dashback_main,
@@ -916,6 +946,11 @@ pub fn install() {
         dolly_superspecial_end,
         dolly_superspecial2_end,
         dolly_superspecial2_blow_end,
-        dolly_appeal_end
+        dolly_appeal_end,
+        // dolly_wait_pre, dolly_wait_main,
+        // dolly_walk_main,
+        // dolly_squat_wait_main,
+        // dolly_landing_light_init,
+        // dolly_landing_init
     );
 }

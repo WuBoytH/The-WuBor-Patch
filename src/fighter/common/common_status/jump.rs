@@ -42,7 +42,6 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         let jump_y;
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         if mini_jump {
-            macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -2, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
             speed_x = air_speed_x_stable;
             speed_x *= common_param::jump::hyper_hop_air_speed_x_stable_mul;
@@ -54,7 +53,6 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
             jump_y = 0.0;
         }
         else {
-            macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 1, -5, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
             speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
             speed_x *= common_param::jump::super_jump_speed_x_mul;
             base_speed_x = speed_x;
@@ -195,6 +193,8 @@ unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {
         return -0.2;
     }
     if [
+        *FIGHTER_KIND_POPO,
+        *FIGHTER_KIND_NANA,
         *FIGHTER_KIND_FALCO
     ].contains(&fighter_kind) {
         return 0.4;

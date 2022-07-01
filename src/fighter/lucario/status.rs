@@ -23,57 +23,15 @@ unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CVal
 
 unsafe extern "C" fn lucario_special_s_throw_set_kinetic(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        lucario_special_s_throw_set_air(fighter);
+        lucario_special_set_air(fighter);
+        lucario_special_air_mot_helper(fighter);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
     }
     else {
-        lucario_special_s_throw_set_ground(fighter);
+        lucario_special_set_ground(fighter);
+        lucario_special_ground_mot_helper(fighter);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
     }
-    lucario_special_s_throw_mot_helper(fighter);
-}
-
-unsafe extern "C" fn lucario_special_s_throw_set_ground(fighter: &mut L2CFighterCommon) {
-    fighter.set_situation(SITUATION_KIND_GROUND.into());
-    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-}
-
-unsafe extern "C" fn lucario_special_s_throw_set_air(fighter: &mut L2CFighterCommon) {
-    fighter.set_situation(SITUATION_KIND_AIR.into());
-    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-}
-
-unsafe extern "C" fn lucario_special_s_throw_mot_helper(fighter: &mut L2CFighterCommon) {
-    let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
-        MotionModule::change_motion_inherit_frame_keep_rate(
-            fighter.module_accessor,
-            Hash40::new_raw(mot),
-            -1.0,
-            1.0,
-            0.0
-        );
-    }
-    else {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new_raw(mot),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-    }
-}
-
-unsafe extern "C" fn lucario_special_s_throw_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    if param_1.get_bool() {
-        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME);
-    }
-    0.into()
 }
 
 unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -150,6 +108,75 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
             status = FIGHTER_STATUS_KIND_WAIT;
         }
         fighter.change_status(status.into(), false.into());
+    }
+    0.into()
+}
+
+unsafe extern "C" fn lucario_special_set_ground(fighter: &mut L2CFighterCommon) {
+    fighter.set_situation(SITUATION_KIND_GROUND.into());
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
+}
+
+unsafe extern "C" fn lucario_special_set_air(fighter: &mut L2CFighterCommon) {
+    fighter.set_situation(SITUATION_KIND_AIR.into());
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+}
+
+unsafe extern "C" fn lucario_special_ground_mot_helper(fighter: &mut L2CFighterCommon) {
+    let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
+        MotionModule::change_motion_inherit_frame_keep_rate(
+            fighter.module_accessor,
+            Hash40::new_raw(mot),
+            -1.0,
+            1.0,
+            0.0
+        );
+    }
+    else {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new_raw(mot),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
+    }
+}
+
+unsafe extern "C" fn lucario_special_air_mot_helper(fighter: &mut L2CFighterCommon) {
+    let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT) {
+        MotionModule::change_motion_inherit_frame_keep_rate(
+            fighter.module_accessor,
+            Hash40::new_raw(mot),
+            -1.0,
+            1.0,
+            0.0
+        );
+    }
+    else {
+        MotionModule::change_motion(
+            fighter.module_accessor,
+            Hash40::new_raw(mot),
+            0.0,
+            1.0,
+            false,
+            0.0,
+            false,
+            false
+        );
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
+    }
+}
+
+unsafe extern "C" fn lucario_special_s_throw_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if param_1.get_bool() {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME);
     }
     0.into()
 }

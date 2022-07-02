@@ -262,8 +262,7 @@ unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_GUARD
     && (status != *FIGHTER_STATUS_KIND_GUARD_DAMAGE
-    || (status == *FIGHTER_STATUS_KIND_GUARD_DAMAGE
-    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD))) {
+    || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD)) {
         effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0xafae75f05), true, true);
         effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x10da0b43c8), true, true);
     }
@@ -822,7 +821,7 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_control)]
 unsafe fn sub_status_guard_off_main_common_control(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_ground_jump().get_bool() == false {
+    if !fighter.sub_transition_group_check_ground_jump().get_bool() {
         return false.into();
     }
     true.into()

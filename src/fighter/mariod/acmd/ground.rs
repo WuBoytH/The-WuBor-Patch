@@ -11,7 +11,10 @@ use {
 
 #[acmd_script( agent = "mariod", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attack11(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 2.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 361, 50, 0, 25, 1.2, 0.0, 6.3, 6.7, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 3.0, 361, 33, 0, 20, 1.5, 0.0, 6.3, 9.3, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -31,7 +34,10 @@ unsafe fn mariod_attack11(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "mariod", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attack12(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 2.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 361, 35, 0, 30, 1.8, 0.0, 5.0, 4.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 361, 25, 0, 20, 3.0, 0.0, 6.0, 7.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);

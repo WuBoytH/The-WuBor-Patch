@@ -414,6 +414,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_CAPTAIN,
         *FIGHTER_KIND_DAISY,
         *FIGHTER_KIND_SHEIK,
+        *FIGHTER_KIND_MARIOD,
         *FIGHTER_KIND_PICHU,
         *FIGHTER_KIND_FALCO,
         *FIGHTER_KIND_CHROM,

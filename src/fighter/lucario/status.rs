@@ -6,6 +6,7 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    smash_script::*,
     smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*}
@@ -14,7 +15,25 @@ use {
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-    WorkModule::set_int64(fighter.module_accessor, hash40("special_s_throw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
+    let mot = if !enhance {
+        hash40("special_s_throw")
+    }
+    else {
+        hash40("special_s_throw_2")
+    };
+    WorkModule::set_int64(fighter.module_accessor, mot as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    let mot = if !enhance {
+        hash40("special_air_s_throw")
+    }
+    else {
+        hash40("special_air_s_throw_2")
+    };
+    WorkModule::set_int64(fighter.module_accessor, mot as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+    if enhance {
+        VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
+        VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+    }
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME);
     lucario_special_s_throw_set_kinetic(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucario_special_s_throw_substatus as *const () as _));
@@ -25,7 +44,26 @@ unsafe extern "C" fn lucario_special_s_throw_set_kinetic(fighter: &mut L2CFighte
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         lucario_special_set_air(fighter);
         lucario_special_air_mot_helper(fighter);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        sv_kinetic_energy!(
+            mul_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            0.5
+        );
+        sv_kinetic_energy!(
+            mul_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            0.2
+        );
+        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+        sv_kinetic_energy!(
+            set_accel,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+            -air_accel_y * 0.2
+        );
     }
     else {
         lucario_special_set_ground(fighter);
@@ -94,13 +132,13 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_THROW_DONE); 
             }
         }
-        if !StatusModule::is_changing(fighter.module_accessor)
-        && StatusModule::is_situation_changed(fighter.module_accessor) {
-            lucario_special_s_throw_set_kinetic(fighter);
-        }
+        // if !StatusModule::is_changing(fighter.module_accessor)
+        // && StatusModule::is_situation_changed(fighter.module_accessor) {
+        //     lucario_special_s_throw_set_kinetic(fighter);
+        // }
     }
     else {
-        let status= if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+        let status = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             FIGHTER_STATUS_KIND_FALL
         }
         else {

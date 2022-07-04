@@ -25,7 +25,10 @@ pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectMo
         std::process::abort();
     }
     let object = get_battle_object_from_id((*module_accessor).battle_object_id);
-    let aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
+        aura += 1.0;
+    }
     1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0)
 }
 
@@ -36,7 +39,10 @@ pub unsafe extern "C" fn lucario_check_aura2(module: &mut GenericModule) -> f32 
         std::process::abort();
     }
     let object = get_battle_object_from_id((*module_accessor).battle_object_id);
-    let aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
+        aura += 1.0;
+    }
     1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0)
 }
 
@@ -47,7 +53,10 @@ pub unsafe extern "C" fn lucario_handle_aura(_vtable: u64, fighter: &mut Fighter
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
+        aura += 1.0;
+    }
     let aura = 1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0);
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
 }
@@ -59,7 +68,10 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
+        aura += 1.0;
+    }
     let aura = 1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0);
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
     let prev_charge = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_PREV_AURABALL_CHARGE_FRAME);
@@ -184,6 +196,7 @@ pub fn install() {
         lucario_check_aura,
         lucario_check_aura2,
         lucario_handle_aura,
+        lucario_handle_aura2,
         lucario_on_grab
     );
 }

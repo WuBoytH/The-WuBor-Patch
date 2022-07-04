@@ -321,6 +321,11 @@ pub mod lucario {
             pub const AURA_LEVEL : i32 = 0x0100;
         }
     }
+    pub mod status {
+        pub mod flag {
+            pub const IS_AURA_ENHANCED : i32 = 0x1100;
+        }
+    }
 }
 
 pub mod yu { // lucina

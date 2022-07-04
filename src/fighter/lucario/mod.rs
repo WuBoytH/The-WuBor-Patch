@@ -4,6 +4,7 @@ mod frame;
 mod agent_init;
 pub mod fgc;
 mod vtable_hook;
+pub mod vl;
 
 pub fn install() {
     acmd::install();

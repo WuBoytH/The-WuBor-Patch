@@ -56,7 +56,7 @@ unsafe fn mariod_attackairb(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "mariod", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 0.75);
+    macros::FT_MOTION_RATE(fighter, 1.25);
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

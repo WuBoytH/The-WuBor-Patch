@@ -10,7 +10,8 @@ use {
     },
     crate::function_hooks::get_battle_object_from_id,
     custom_var::*,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::vl
 };
 
 #[skyline::hook(offset = 0xc5bff0)]
@@ -182,7 +183,11 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
         if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
             charge += 1.0;
         }
-        1.0 + (0.3 * charge.clamp(0.0, 2.0) / 2.0)
+        let min_aurapower = vl::aurapower::MIN_AURAPOWER;
+        let max_aurapower = vl::aurapower::MAX_AURAPOWER;
+        let diff = max_aurapower - min_aurapower;
+        let max_charge = vl::private::AURA_CHARGE_MAX as f32;
+        min_aurapower + (diff * charge.clamp(0.0, max_charge) / max_charge)
     }
 }
 

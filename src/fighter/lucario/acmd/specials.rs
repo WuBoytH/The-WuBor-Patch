@@ -1,14 +1,15 @@
 use {
     smash::{
         lua2cpp::L2CAgentBase,
-        phx::Hash40,
+        phx::{Hash40, Vector3f},
         app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*
+    wubor_utils::vars::*,
+    super::super::vl
 };
 
 #[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
@@ -480,6 +481,82 @@ unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_speciallw(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(fighter, 8.0);
+    frame(fighter.lua_state_agent, 16.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 24.0);
+    if macros::is_excute(fighter) {
+        if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
+            VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucario_speciallw_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_kagebunshin"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT(fighter, Hash40::new("lucario_kagebunshin_flash"), Hash40::new("top"), 0, 15, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.85, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.70);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
+unsafe fn lucario_speciallw_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.125);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_l01"));
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_specialairlw(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0, y: 0.4, z: 0.0});
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(fighter, 8.0);
+    frame(fighter.lua_state_agent, 16.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 24.0);
+    if macros::is_excute(fighter) {
+        if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
+            VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucario_specialairlw_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_kagebunshin"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT(fighter, Hash40::new("lucario_kagebunshin_flash"), Hash40::new("top"), 0, 15, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.70);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "sound_specialairlw", category = ACMD_SOUND, low_priority )]
+unsafe fn lucario_specialairlw_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.125);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_l01"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         lucario_specialnshoot,
@@ -497,6 +574,8 @@ pub fn install() {
         lucario_specialhimove,
         lucario_specialairhimove,
         lucario_specialhiend,
-        lucario_specialairhiend
+        lucario_specialairhiend,
+        lucario_speciallw, lucario_speciallw_eff, lucario_speciallw_snd,
+        lucario_specialairlw, lucario_specialairlw_eff, lucario_specialairlw_snd
     );
 }

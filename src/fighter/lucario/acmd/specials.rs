@@ -19,6 +19,10 @@ unsafe fn lucario_specialnshoot(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario_auraball", scripts = [ "game_charge", "game_chargemax" ], category = ACMD_GAME, low_priority )]
+unsafe fn lucario_auraball_charge(_weapon: &mut L2CAgentBase) {
+}
+
 #[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_auraball_shoot(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
@@ -479,6 +483,7 @@ unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_specialnshoot,
+        lucario_auraball_charge,
         lucario_auraball_shoot,
         lucario_specials,
         lucario_specialairs,

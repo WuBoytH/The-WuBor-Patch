@@ -1,6 +1,7 @@
 #![feature(
     concat_idents,
-    proc_macro_hygiene
+    proc_macro_hygiene,
+    simd_ffi
 )]
 #![allow(
     unused_macros,

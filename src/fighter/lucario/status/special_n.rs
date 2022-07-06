@@ -2,13 +2,12 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
+    wubor_utils::vars::*,
     super::super::helper::*
 };
 
@@ -26,32 +25,6 @@ unsafe fn lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_main_loop as *const () as _))
-}
-
-unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFighterCommon) {
-    let havel = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    let haver = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
-    ModelModule::joint_global_position(
-        fighter.module_accessor,
-        Hash40::new("havel"),
-        havel,
-        true
-    );
-    ModelModule::joint_global_position(
-        fighter.module_accessor,
-        Hash40::new("haver"),
-        haver,
-        true
-    );
-    let new_pos = Vector3f{x: havel.x + haver.x, y: havel.y + haver.y, z: havel.z + haver.z};
-    let new_pos = Vector3f{x: new_pos.x * 0.5, y: new_pos.y * 0.5, z: new_pos.z * 0.5};
-    ModelModule::set_joint_translate(
-        fighter.module_accessor,
-        Hash40::new("throw"),
-        &new_pos,
-        true,
-        false
-    );
 }
 
 unsafe extern "C" fn lucario_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -109,95 +82,6 @@ unsafe extern "C" fn lucario_special_n_hold_main_loop(fighter: &mut L2CFighterCo
 unsafe fn lucario_special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_n_save_charge_status(fighter);
     0.into()
-}
-
-unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
-    let kind = fighter.global_table[FIGHTER_KIND].get_i32();
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    let status_global = fighter.global_table[STATUS_KIND].get_i32();
-    let statuses = if kind != *FIGHTER_KIND_KIRBY {
-        [
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
-        ]
-    }
-    else {
-        [
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
-        ]
-    };
-    if status != statuses[0]
-    || status_global == statuses[1]
-    || status_global == statuses[3] {
-        if status == statuses[1] {
-            if status_global != statuses[2] {
-                if status_global != statuses[3] {
-                    lucario_special_n_save_charge_status_shoot(fighter);
-                    return;
-                }
-            }
-        }
-        else if status == statuses[2] {
-            if status_global != statuses[3] {
-                lucario_special_n_save_charge_status_shoot(fighter);
-                return;
-            }
-        }
-        else if status != statuses[3] {
-            lucario_special_n_save_charge_status_shoot(fighter);
-            return;
-        }
-        else {
-            if !ArticleModule::is_exist(fighter.module_accessor, statuses[5]) {
-                lucario_special_n_save_charge_status_shoot(fighter);
-                return;
-            }
-        }
-    }
-    lucario_special_n_save_charge_status_shoot(fighter);
-}
-
-unsafe extern "C" fn lucario_special_n_save_charge_status_shoot(fighter: &mut L2CFighterCommon) {
-    let kind = fighter.global_table[FIGHTER_KIND].get_i32();
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    let status_global = fighter.global_table[STATUS_KIND].get_i32();
-    let statuses = if kind != *FIGHTER_KIND_KIRBY {
-        [
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
-        ]
-    }
-    else {
-        [
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
-        ]
-    };
-    if status == statuses[0] {
-        if status_global == statuses[3] {
-            EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-        }
-    }
-    if status == statuses[3] {
-        FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, false, 0);
-    }
 }
 
 pub fn install() {

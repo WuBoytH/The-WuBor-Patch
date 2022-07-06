@@ -68,30 +68,37 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
-    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
-        aura += 1.0;
+    let aura = if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+        1.0
     }
-    let aura = 1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0);
+    else {
+        let mut charge = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+        if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
+            charge += 1.0;
+        }
+        1.0 + (0.3 * charge.clamp(0.0, 2.0) / 2.0)
+    };
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
     let prev_charge = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_PREV_AURABALL_CHARGE_FRAME);
     let mut charge_frame;
     if !ArticleModule::is_exist(module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL) {
         charge_frame = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME);
         if !WorkModule::is_flag(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_AURABALL_HAD) {
-            charge_frame = i32::MAX;
+            charge_frame = -1;
         }
     }
     else {
         let article = ArticleModule::get_article(module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
-        if article != std::ptr::null_mut::<smash::app::Article>() {
-            let auraball = (*(article as *mut Article)).battle_object.module_accessor;
+        if article != std::ptr::null_mut::<Article>() {
+            let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
+            let object = get_battle_object_from_id(object_id);
+            let auraball = (*object).module_accessor;
             charge_frame = WorkModule::get_int(auraball, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
         }
         else {
             charge_frame = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME);
             if !WorkModule::is_flag(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_AURABALL_HAD) {
-                charge_frame = i32::MAX;
+                charge_frame = -1;
             }
         }
     }

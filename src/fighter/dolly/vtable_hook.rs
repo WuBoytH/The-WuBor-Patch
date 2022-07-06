@@ -8,15 +8,9 @@ use {
     wubor_utils::vars::*
 };
 
-pub struct GenericModule {
-    _vtable: *const u64,
-    owner: *mut BattleObjectModuleAccessor,
-    // ...
-}
-
 #[skyline::hook(offset = 0x971230)]
-pub unsafe extern "C" fn dolly_check_super_special(work: &mut GenericModule, _damage: &mut GenericModule) -> u64 {
-    let module_accessor = work.owner;
+pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u64 {
+    let module_accessor = &mut *(*((work as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }

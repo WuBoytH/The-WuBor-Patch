@@ -197,12 +197,12 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
 
 #[skyline::hook(offset = vars::FLOAT_OFFSET)]
 pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: u64) -> f32 {
-    let module_accessor = &mut *(*((module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let ret = original!()(module, param_type, param_hash);
-    let fighter_kind = utility::get_kind(module_accessor);
-    
-    if utility::get_category(module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        let object_id = (*module_accessor).battle_object_id;
+    let module_accessor = &mut *(*((module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let category = utility::get_category(&mut *module_accessor);
+    let fighter_kind = utility::get_kind(&mut *module_accessor);
+    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        let object_id = module_accessor.battle_object_id;
         let object = get_battle_object_from_id(object_id);
         if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("speed_x_mul_s") {
@@ -218,23 +218,25 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
             }
         }
     }
-    else if utility::get_category(module_accessor) == *BATTLE_OBJECT_CATEGORY_WEAPON {
+    else if category == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             let otarget_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let object = get_battle_object_from_id(otarget_id);
-            if param_hash == hash40("speed_max") {
-                if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
-                    return 1.2;
+            if sv_battle_object::is_active(otarget_id) {
+                let object = get_battle_object_from_id(otarget_id);
+                if param_hash == hash40("speed_max") {
+                    if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+                        return 1.2;
+                    }
                 }
-            }
-            else if param_hash == hash40("life_max") {
-                if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
-                    return 150.0;
+                else if param_hash == hash40("life_max") {
+                    if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+                        return 150.0;
+                    }
                 }
-            }
-            else if param_hash == hash40("scale_max") {
-                if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
-                    return 1.7;
+                else if param_hash == hash40("scale_max") {
+                    if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+                        return 1.7;
+                    }
                 }
             }
         }

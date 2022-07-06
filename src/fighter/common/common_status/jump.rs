@@ -125,7 +125,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         let jump_neutral_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_x"));
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         let stick_x = stick_x * lr * -1.0;
-        if stick_x > jump_neutral_x {
+        if stick_x <= jump_neutral_x {
             if !mini_jump {
                 mot = Hash40::new("jump_f");
             }

@@ -8,7 +8,8 @@
     clippy::borrow_interior_mutable_const,
     clippy::collapsible_if,
     clippy::collapsible_else_if,
-    clippy::absurd_extreme_comparisons
+    clippy::absurd_extreme_comparisons,
+    clippy::cmp_null
 )]
 
 use skyline::libc::c_char;

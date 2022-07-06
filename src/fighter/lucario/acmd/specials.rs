@@ -19,6 +19,16 @@ unsafe fn lucario_specialnshoot(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_auraball_shoot(weapon: &mut L2CAgentBase) {
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 12.0, 361, 42, 0, 14, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 12.0, 361, 49, 0, 35, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        attack!(weapon, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
+        AttackModule::enable_safe_pos(weapon.module_accessor);
+    }
+}
+
 #[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -469,6 +479,7 @@ unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_specialnshoot,
+        lucario_auraball_shoot,
         lucario_specials,
         lucario_specialairs,
         lucario_specialsthrow,

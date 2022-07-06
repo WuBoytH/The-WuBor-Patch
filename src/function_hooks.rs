@@ -196,15 +196,14 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
 }
 
 #[skyline::hook(offset = vars::FLOAT_OFFSET)]
-pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, param_hash: u64) -> f32 {
-    let boma = &mut *(*((module_accessor as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let object_id = (*boma).battle_object_id;
-    let object = get_battle_object_from_id(object_id);
-    let ret = original!()(module_accessor, param_type, param_hash);
-    let fighter_kind = utility::get_kind(boma);
+pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: u64) -> f32 {
+    let module_accessor = &mut *(*((module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let ret = original!()(module, param_type, param_hash);
+    let fighter_kind = utility::get_kind(module_accessor);
     
-    if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-
+    if utility::get_category(module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        let object_id = (*module_accessor).battle_object_id;
+        let object = get_battle_object_from_id(object_id);
         if fighter_kind == *FIGHTER_KIND_KEN {
             if param_hash == hash40("speed_x_mul_s") {
                 if VarModule::get_int(object, vars::ken::instance::int::SHORYUREPPA) == 1 {
@@ -218,17 +217,10 @@ pub unsafe fn get_param_float_replace(module_accessor: u64, param_type: u64, par
                 }
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_LUCARIO {
-            if param_hash == 0x189cd804c5 {
-                if VarModule::is_flag(object, vars::commons::instance::flag::IS_FGC) {
-                    return 1.0;
-                }
-            }
-        }
     }
-    else if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_WEAPON {
+    else if utility::get_category(module_accessor) == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
-            let otarget_id = WorkModule::get_int(boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+            let otarget_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let object = get_battle_object_from_id(otarget_id);
             if param_hash == hash40("speed_max") {
                 if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {

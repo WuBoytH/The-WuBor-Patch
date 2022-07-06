@@ -1,7 +1,7 @@
 use {
     smash::{
         hash40,
-        app::{BattleObjectModuleAccessor, Fighter, Article, lua_bind::*},
+        app::{BattleObjectModuleAccessor, BattleObject, Fighter, Article, lua_bind::*},
         lib::lua_const::*
     },
     smash_rs::{
@@ -25,11 +25,7 @@ pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectMo
         std::process::abort();
     }
     let object = get_battle_object_from_id((*module_accessor).battle_object_id);
-    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
-    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
-        aura += 1.0;
-    }
-    1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0)
+    get_aura(object)
 }
 
 #[skyline::hook(offset = 0xc5be20)]
@@ -39,11 +35,7 @@ pub unsafe extern "C" fn lucario_check_aura2(module: &mut GenericModule) -> f32 
         std::process::abort();
     }
     let object = get_battle_object_from_id((*module_accessor).battle_object_id);
-    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
-    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
-        aura += 1.0;
-    }
-    1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0)
+    get_aura(object)
 }
 
 #[skyline::hook(offset = 0xc5e530)]
@@ -53,11 +45,7 @@ pub unsafe extern "C" fn lucario_handle_aura(_vtable: u64, fighter: &mut Fighter
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let mut aura = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
-    if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
-        aura += 1.0;
-    }
-    let aura = 1.0 + (0.3 * aura.clamp(0.0, 2.0) / 2.0);
+    let aura = get_aura(object);
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
 }
 
@@ -68,16 +56,7 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let aura = if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
-        1.0
-    }
-    else {
-        let mut charge = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
-        if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
-            charge += 1.0;
-        }
-        1.0 + (0.3 * charge.clamp(0.0, 2.0) / 2.0)
-    };
+    let aura = get_aura(object);
     WorkModule::set_float(module_accessor, aura, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
     let prev_charge = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_PREV_AURABALL_CHARGE_FRAME);
     let mut charge_frame;
@@ -196,6 +175,20 @@ pub unsafe extern "C" fn lucario_on_grab(_vtable: u64, fighter: &mut Fighter, ca
         }
     }
     1
+}
+
+unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
+    let module_accessor = (*object).module_accessor;
+    if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_KIND) == *FIGHTER_KIND_KIRBY {
+        1.0
+    }
+    else {
+        let mut charge = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
+        if VarModule::is_flag(object, lucario::status::flag::IS_AURA_ENHANCED) {
+            charge += 1.0;
+        }
+        1.0 + (0.3 * charge.clamp(0.0, 2.0) / 2.0)
+    }
 }
 
 pub fn install() {

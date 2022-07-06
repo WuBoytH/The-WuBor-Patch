@@ -75,7 +75,7 @@ pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
             special_cancels.append(&mut [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
         }
         if FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel).get_bool() {
-            
+            return;
         }
         if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
             FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true);

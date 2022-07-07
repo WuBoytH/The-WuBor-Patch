@@ -324,6 +324,8 @@ pub mod lucario {
     pub mod status {
         pub mod flag {
             pub const IS_AURA_ENHANCED : i32 = 0x1100;
+
+            pub const SPECIAL_LW_ENABLE_CANCEL : i32 = 0x1150;
         }
     }
 }

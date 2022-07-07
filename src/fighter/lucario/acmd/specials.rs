@@ -485,12 +485,18 @@ unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 8.0);
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+    }
     frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
             VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+            FighterUtil::flash_eye_info(fighter.module_accessor);
+            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
         }
     }
 }
@@ -525,12 +531,18 @@ unsafe fn lucario_specialairlw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 8.0);
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+    }
     frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
             VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+            FighterUtil::flash_eye_info(fighter.module_accessor);
+            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
         }
     }
 }
@@ -557,6 +569,30 @@ unsafe fn lucario_specialairlw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "lucario", script = "game_speciallwcancel", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_speciallwcancel(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
+#[acmd_script( agent = "lucario", script = "effect_speciallwcancel", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucario_speciallwcancel_eff(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucario_aura"), false, true);
+    }
+}
+
+#[acmd_script( agent = "lucario", script = "game_specialairlwcancel", category = ACMD_GAME, low_priority )]
+unsafe fn lucario_specialairlwcancel(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
+#[acmd_script( agent = "lucario", script = "effect_specialairlwcancel", category = ACMD_EFFECT, low_priority )]
+unsafe fn lucario_specialairlwcancel_eff(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucario_aura"), false, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         lucario_specialnshoot,
@@ -576,6 +612,8 @@ pub fn install() {
         lucario_specialhiend,
         lucario_specialairhiend,
         lucario_speciallw, lucario_speciallw_eff, lucario_speciallw_snd,
-        lucario_specialairlw, lucario_specialairlw_eff, lucario_specialairlw_snd
+        lucario_specialairlw, lucario_specialairlw_eff, lucario_specialairlw_snd,
+        lucario_speciallwcancel, lucario_speciallwcancel_eff,
+        lucario_specialairlwcancel, lucario_specialairlwcancel_eff
     );
 }

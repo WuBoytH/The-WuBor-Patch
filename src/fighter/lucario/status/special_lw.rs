@@ -2,6 +2,7 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
+        phx::{Vector3f, Vector2f},
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -39,6 +40,47 @@ unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
+    0.into()
+}
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let start_x_spd_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("start_x_spd_mul"));
+    let speed_x = speed_x * start_x_spd_mul;
+    lua_bind::KineticEnergy::reset_energy(
+        stop_energy as *mut smash::app::KineticEnergy,
+        *ENERGY_STOP_RESET_TYPE_AIR,
+        &Vector2f{x: speed_x, y: 0.0},
+        &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+        fighter.module_accessor
+    );
+    lua_bind::KineticEnergy::enable(stop_energy as *mut smash::app::KineticEnergy);
+    let gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    let speed_y = if !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR) {
+        0.0
+    }
+    else {
+        KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN)
+    };
+    lua_bind::FighterKineticEnergyGravity::set_speed(
+        gravity as *mut smash::app::FighterKineticEnergyGravity,
+        speed_y
+    );
+    let fall_acc_y = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("fall_acc_y"));
+    lua_bind::FighterKineticEnergyGravity::set_accel(
+        gravity as *mut smash::app::FighterKineticEnergyGravity,
+        -fall_acc_y
+    );
+    let fall_spd_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("fall_spd_max"));
+    lua_bind::FighterKineticEnergyGravity::set_limit_speed(
+        gravity as *mut smash::app::FighterKineticEnergyGravity,
+        fall_spd_max
+    );
+    lua_bind::KineticEnergy::enable(gravity as *mut smash::app::KineticEnergy);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
     0.into()
 }
 
@@ -113,6 +155,6 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
 
 pub fn install() {
     install_status_scripts!(
-        lucario_special_lw_pre, lucario_special_lw_main
+        lucario_special_lw_pre, lucario_special_lw_init, lucario_special_lw_main
     );
 }

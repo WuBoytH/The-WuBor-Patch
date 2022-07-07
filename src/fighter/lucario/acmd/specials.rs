@@ -535,8 +535,11 @@ unsafe fn lucario_speciallw_snd(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialairlw(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0, y: 0.4, z: 0.0});
+    if !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR) {
+        if macros::is_excute(fighter) {
+            KineticModule::add_speed(fighter.module_accessor, &Vector3f{x: 0.0, y: 0.4, z: 0.0});
+            VarModule::on_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR);
+        }
     }
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 8.0);

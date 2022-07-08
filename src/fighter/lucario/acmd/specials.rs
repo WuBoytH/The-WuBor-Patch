@@ -483,6 +483,9 @@ unsafe fn lucario_specialairhiend(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_speciallw(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 8.0);
     frame(fighter.lua_state_agent, 6.125);
@@ -541,6 +544,9 @@ unsafe fn lucario_specialairlw(fighter: &mut L2CAgentBase) {
             VarModule::on_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR);
         }
     }
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
     frame(fighter.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(fighter, 8.0);
     frame(fighter.lua_state_agent, 6.125);
@@ -595,6 +601,7 @@ unsafe fn lucario_speciallwcancel(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        JostleModule::set_status(fighter.module_accessor, true);
     }
 }
 
@@ -610,6 +617,7 @@ unsafe fn lucario_specialairlwcancel(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        JostleModule::set_status(fighter.module_accessor, true);
     }
 }
 

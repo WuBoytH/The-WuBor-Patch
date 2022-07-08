@@ -415,26 +415,31 @@ unsafe extern "C" fn ken_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> 
             // }
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             if !StatusModule::is_changing(fighter.module_accessor) {
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-                sv_kinetic_energy!(
-                    reset_energy,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_MOTION,
-                    ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0
-                );
-                KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
-                let start_accel_y = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("start_accel_y"));
-                sv_kinetic_energy!(
-                    set_accel,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    -start_accel_y
-                );
+                if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_reppa") {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
+                }
+                else {
+                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
+                    sv_kinetic_energy!(
+                        reset_energy,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                        ENERGY_MOTION_RESET_TYPE_AIR_TRANS,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    );
+                    KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
+                    let start_accel_y = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("start_accel_y"));
+                    sv_kinetic_energy!(
+                        set_accel,
+                        fighter,
+                        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                        -start_accel_y
+                    );
+                }
             }
         }
         else {

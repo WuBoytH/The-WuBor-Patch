@@ -201,24 +201,7 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
     let module_accessor = &mut *(*((module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let category = utility::get_category(&mut *module_accessor);
     let fighter_kind = utility::get_kind(&mut *module_accessor);
-    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        let object_id = module_accessor.battle_object_id;
-        let object = get_battle_object_from_id(object_id);
-        if fighter_kind == *FIGHTER_KIND_KEN {
-            if param_hash == hash40("speed_x_mul_s") {
-                if VarModule::get_int(object, vars::ken::instance::int::SHORYUREPPA) == 1 {
-                    return 0.15;
-                }
-            }
-            else if param_hash == hash40("speed_y_mul_s") {
-                if VarModule::is_flag(object, vars::ken::instance::flag::V_TRIGGER)
-                && VarModule::get_int(object, vars::ken::instance::int::SHORYUREPPA) == 1 {
-                    return 0.1;
-                }
-            }
-        }
-    }
-    else if category == *BATTLE_OBJECT_CATEGORY_WEAPON {
+    if category == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             let otarget_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             if sv_battle_object::is_active(otarget_id) {

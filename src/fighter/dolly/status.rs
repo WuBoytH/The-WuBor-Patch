@@ -67,7 +67,7 @@ unsafe extern "C" fn dolly_attack_substatus3(fighter: &mut L2CFighterCommon) -> 
 unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0 {
         let combo = ComboModule::count(fighter.module_accessor);
-        if combo == 2
+        if combo < 3
         && !CancelModule::is_enable_cancel(fighter.module_accessor)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL) {
             let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);

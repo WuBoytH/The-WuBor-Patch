@@ -287,8 +287,12 @@ pub mod ken {
         pub mod flag {
             pub const VS1_CANCEL : i32 = 0x1100;
             pub const VT1_CANCEL : i32 = 0x1101;
-            pub const GUARD_V_SHIFT : i32 = 0x1102;
-            pub const SPECIAL_LW_STEP_KICK : i32 = 0x1102;
+
+            pub const GUARD_V_SHIFT : i32 = 0x1150;
+
+            pub const SPECIAL_LW_STEP_KICK : i32 = 0x1150;
+
+            pub const SPECIAL_HI_CHANGE_REPPA : i32 = 0x1150;
         }
     }
 

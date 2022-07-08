@@ -415,7 +415,7 @@ unsafe extern "C" fn ken_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> 
             // }
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             if !StatusModule::is_changing(fighter.module_accessor) {
-                if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_hi_reppa") {
+                if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA) {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
                 }
                 else {

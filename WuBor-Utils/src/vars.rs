@@ -275,8 +275,7 @@ pub mod ken {
             pub const QUICK_STEP_STATE : i32 = 0x0101;
             pub const FLASH_MAX : i32 = 0x0102;
             pub const FLASH_COUNTER : i32 = 0x0103;
-            pub const SHORYUREPPA : i32 = 0x0104;
-            pub const V_TRIGGER_EFF_TIMER : i32 = 0x0105;
+            pub const V_TRIGGER_EFF_TIMER : i32 = 0x0104;
         }
         pub mod float {
             pub const V_GAUGE : i32 =  0x0100;

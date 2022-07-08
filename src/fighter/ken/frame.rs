@@ -23,7 +23,6 @@ unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
         VarModule::off_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER);
-        VarModule::set_int(fighter.battle_object, ken::instance::int::SHORYUREPPA, 0);
         VarModule::set_int(fighter.battle_object, commons::instance::int::TARGET_ID, 0);
     }
 }
@@ -114,19 +113,6 @@ unsafe fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
         && !MiscModule::is_damage_check(fighter.module_accessor, false) {
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), false.into());
         }
-    }
-
-    if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_SPECIAL_HI
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_FALL {
-        VarModule::set_int(fighter.battle_object, ken::instance::int::SHORYUREPPA, 0);
-    }
-
-    if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_LANDING
-    && VarModule::get_int(fighter.battle_object, ken::instance::int::SHORYUREPPA) == 1 {
-        fighter.change_status(FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND.into(), false.into());
     }
 
     if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {

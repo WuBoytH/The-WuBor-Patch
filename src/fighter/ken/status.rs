@@ -383,8 +383,8 @@ unsafe extern "C" fn ken_specialhi_substatus(fighter: &mut L2CFighterCommon, par
 }
 
 unsafe extern "C" fn ken_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER)
-    && !VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA)
+    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA)
+    && VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER)
     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) == *FIGHTER_RYU_STRENGTH_S
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         MotionModule::change_motion_inherit_frame(
@@ -397,7 +397,7 @@ unsafe extern "C" fn ken_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> 
             false
         );
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        VarModule::on_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA);
+        VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA);
     }
     if StatusModule::is_changing(fighter.module_accessor)
     || StatusModule::is_situation_changed(fighter.module_accessor) {

@@ -32,7 +32,7 @@ unsafe fn inkling_escapeairslide(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
-        VisibilityModule::set_whole(fighter.module_accessor, false);
+        VisibilityModule::set_whole(fighter.module_accessor, true);
     }
     frame(fighter.lua_state_agent, 43.0);
     if macros::is_excute(fighter) {

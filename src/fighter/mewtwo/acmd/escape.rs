@@ -19,7 +19,7 @@ unsafe fn mewtwo_escapeairslide(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 32.0);
     if macros::is_excute(fighter) {
-        VisibilityModule::set_whole(fighter.module_accessor, false);
+        VisibilityModule::set_whole(fighter.module_accessor, true);
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_MEWTWO_GENERATE_ARTICLE_ESCAPEAIRDUMMY, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }

@@ -399,11 +399,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     // don't do this
     let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
     if [
-        *FIGHTER_KIND_MEWTWO
-    ].contains(&fighter_kind) {
-        return 1.5;
-    }
-    if [
+        *FIGHTER_KIND_MEWTWO,
         *FIGHTER_KIND_RIDLEY
     ].contains(&fighter_kind) {
         return 1.0;
@@ -561,6 +557,102 @@ unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     AirDashParams{attack_frame, cancel_frame}
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_escape_air_uniq)]
+pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if !param_1.get_bool() {
+        let slide = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+        let escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
+        let item_air_catch_frame_escape = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("item_air_catch_frame_escape"));
+        if escape_frame <= item_air_catch_frame_escape {
+            fighter.sub_GetLightItemImm(L2CValue::Void());
+        }
+        if slide {
+            if ItemModule::is_have_item(fighter.module_accessor, 0) {
+                let escape_throw_item_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("escape_throw_item_frame"));
+                if escape_frame < escape_throw_item_frame {
+                    fighter.sub_AIRChkDropItemImm();
+                }
+            }
+        }
+        if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
+            if slide {
+                fighter.exec_escape_air_slide();
+            }
+            let xlu_start = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
+            if 0 < xlu_start {
+                if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU) {
+                    let rate_penalty = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
+                    MotionModule::set_rate(fighter.module_accessor, rate_penalty);
+                    WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
+                }
+            }
+            if StatusModule::is_changing(fighter.module_accessor) {
+                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_END_STIFF) {
+                    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+                        MotionModule::set_rate(fighter.module_accessor, 1.0);
+                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_END_STIFF);
+                    }
+                }
+            }
+            else {
+                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_STIFF)
+                && !slide {
+                    let stiff_start = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_START_FRAME);
+                    if 0.0 < stiff_start {
+                        let frame = MotionModule::frame(fighter.module_accessor);
+                        if stiff_start < frame {
+                            let end_frame = MotionModule::end_frame(fighter.module_accessor);
+                            let which_cancel = if !slide {
+                                hash40("escape_air_cancel_frame")
+                            }
+                            else {
+                                hash40("escape_air_slide_cancel_frame")
+                            };
+                            let mut cancel = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), which_cancel);
+                            if cancel < 0.0 {
+                                cancel = end_frame;
+                            }
+                            let stiff_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
+                            if stiff_frame < frame {
+                                WorkModule::set_float(fighter.module_accessor, end_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
+                            }
+                            let diff = cancel - frame;
+                            let stiff_diff = stiff_frame - frame;
+                            let stiff_rate = diff / stiff_diff;
+                            let rate = MotionModule::rate(fighter.module_accessor);
+                            MotionModule::set_rate(fighter.module_accessor, rate * stiff_rate);
+                            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_STIFF);
+                        }
+                    }
+                }
+            }
+        }
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_FALL) {
+            return 0.into();
+        }
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL);
+            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+                fighter.sub_fighter_cliff_check(L2CValue::Void());
+            }
+        }
+        fighter.sub_fall_common_uniq(param_1);
+    }
+    else {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
+            let escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
+            let attack_air_lasso_enable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("attack_air_lasso_enable_frame"));
+            if attack_air_lasso_enable_frame < escape_frame {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO);
+            }
+        }
+    }
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_exec_escape_air_slide)]
 pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
     let mut slide_step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
@@ -576,10 +668,28 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL) {
         return;
     }
-    if slide_step != 0 {
-        if slide_step != 1 {
-            return;
-        }
+    if slide_step == 0 {
+        let slide_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
+        let frame = back_end_frame as f32 - 1.0;
+        let result = slide_frame as f32 / frame;
+        let back_accel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
+        let curve = sv_math::bezier_curve(0.5, 0.8, 0.9, 1.0, result);
+        let accel = curve - back_accel;
+        let escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
+        // let end = accel * -escape_air_slide_back_distance;
+        let end = accel * escape_air_slide_back_distance; // new
+        WorkModule::set_float(fighter.module_accessor, curve, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
+        let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
+        let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
+        sv_kinetic_energy!(
+            set_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            dir_x * end,
+            dir_y * end
+        );
+    }
+    else if slide_step == 1 {
         let slide_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
         if slide_frame != 0 {
             if 1 <= slide_frame {
@@ -614,12 +724,18 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 escape_air_slide_speed * dir_x,
                 escape_air_slide_speed * dir_y
             );
+            let brake_y = if dir_y < 0.0 {
+                0.0
+            }
+            else {
+                0.12
+            };
             sv_kinetic_energy!(
                 set_brake,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                0.25,
-                0.0
+                0.15,
+                brake_y
             );
         }
         // fighter.clear_lua_stack();
@@ -629,8 +745,11 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
         // lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
         // let speedy = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
         // println!("Airdash speed x: {}, speed y: {}", speedx, speedy);
-        let something = WorkModule::get_param_float(fighter.module_accessor, 0x15f2c6719b, 0);
-        if something <= slide_frame as f32 {
+        let enable_gravity = if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_MEWTWO {
+            WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL)
+        } else { 17.0 <= fighter.global_table[MOTION_FRAME].get_f32() };
+        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL) {
+        if enable_gravity {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
@@ -697,27 +816,6 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             WorkModule::set_int(fighter.module_accessor, 2, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
         }
     }
-    else {
-        let slide_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
-        let frame = back_end_frame as f32 - 1.0;
-        let result = slide_frame as f32 / frame;
-        let back_accel = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
-        let curve = sv_math::bezier_curve(0.5, 0.8, 0.9, 1.0, result);
-        let accel = curve - back_accel;
-        let escape_air_slide_back_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_back_distance"));
-        // let end = accel * -escape_air_slide_back_distance;
-        let end = accel * escape_air_slide_back_distance; // new
-        WorkModule::set_float(fighter.module_accessor, curve, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_BACK_ACCEL);
-        let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
-        let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            dir_x * end,
-            dir_y * end
-        );
-    }
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
@@ -782,6 +880,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_escape_main,
             setup_escape_air_slide_common,
             sub_escape_air_common_main,
+            sub_escape_air_uniq,
             exec_escape_air_slide,
             status_end_escapeair
         );

@@ -59,7 +59,7 @@ pub mod gekkouga;
 pub mod szerosuit;
 pub mod demon;
 pub mod chrom;
-// pub mod captain;
+pub mod captain;
 pub mod trail;
 pub mod fox;
 pub mod koopa;
@@ -136,7 +136,7 @@ pub fn install() {
     szerosuit::install();
     demon::install();
     chrom::install();
-    // captain::install();
+    captain::install();
     trail::install();
     fox::install();
     koopa::install();

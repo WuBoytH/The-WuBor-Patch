@@ -1,7 +1,7 @@
-mod ground_normals;
+mod normals;
 mod specials;
 
 pub fn install() {
-    ground_normals::install();
+    normals::install();
     specials::install();
 }

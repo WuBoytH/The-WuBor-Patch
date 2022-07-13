@@ -1,9 +1,9 @@
-// mod ground;
+// mod normals;
 mod smash_attacks;
 mod escape;
 
 pub fn install() {
-    // ground::install();
+    // normals::install();
     smash_attacks::install();
     escape::install();
 }

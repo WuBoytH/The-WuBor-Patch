@@ -1,10 +1,10 @@
-mod ground_normals;
+mod normals;
 mod aerials;
 mod specials;
 mod escape;
 
 pub fn install() {
-    ground_normals::install();
+    normals::install();
     aerials::install();
     specials::install();
     escape::install();

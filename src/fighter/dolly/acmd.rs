@@ -1,4 +1,4 @@
-mod ground_normals;
+mod normals;
 mod smashes;
 mod throws;
 mod aerials;
@@ -7,7 +7,7 @@ mod escape;
 mod misc;
 
 pub fn install() {
-    ground_normals::install();
+    normals::install();
     smashes::install();
     throws::install();
     aerials::install();

@@ -1,9 +1,9 @@
-mod ground;
+mod normals;
 mod aerials;
 mod specials;
 
 pub fn install() {
-    ground::install();
+    normals::install();
     aerials::install();
     specials::install();
 }

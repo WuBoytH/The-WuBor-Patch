@@ -15,7 +15,7 @@ pub mod dolly;
 pub mod shulk;
 pub mod pikachu;
 pub mod robot;
-// pub mod snake;
+pub mod snake;
 pub mod palutena;
 pub mod master;
 pub mod ryu;
@@ -44,7 +44,7 @@ pub mod pickel;
 pub mod pitb;
 pub mod diddy;
 pub mod sheik;
-// pub mod tantan;
+pub mod tantan;
 pub mod yoshi;
 pub mod mario;
 pub mod duckhunt;
@@ -74,6 +74,22 @@ pub mod sonic;
 pub mod peach;
 pub mod wiifit;
 
+// Here only for the air dash changes.
+pub mod brave;
+pub mod iceclimber;
+pub mod ike;
+pub mod inkling;
+pub mod pfushigisou;
+pub mod krool;
+pub mod rockman;
+pub mod mewtwo;
+pub mod miigunner;
+pub mod pichu;
+pub mod rosetta;
+pub mod roy;
+pub mod simon;
+pub mod younglink;
+
 pub fn install() {
     common::install();
     daisy::install();
@@ -92,7 +108,7 @@ pub fn install() {
     shulk::install();
     pikachu::install();
     robot::install();
-    // snake::install();
+    snake::install();
     palutena::install();
     master::install();
     ryu::install();
@@ -121,7 +137,7 @@ pub fn install() {
     pitb::install();
     diddy::install();
     sheik::install();
-    // tantan::install();
+    tantan::install();
     yoshi::install();
     mario::install();
     duckhunt::install();
@@ -150,4 +166,19 @@ pub fn install() {
     sonic::install();
     peach::install();
     wiifit::install();
+
+    brave::install();
+    iceclimber::install();
+    ike::install();
+    inkling::install();
+    pfushigisou::install();
+    krool::install();
+    rockman::install();
+    mewtwo::install();
+    miigunner::install();
+    pichu::install();
+    rosetta::install();
+    roy::install();
+    simon::install();
+    younglink::install();
 }

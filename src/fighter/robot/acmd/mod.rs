@@ -1,11 +1,13 @@
-mod ground;
+mod normals;
 mod aerials;
 mod specials;
-mod misc;
+mod escape;
+mod appeal;
 
 pub fn install() {
-    ground::install();
+    normals::install();
     aerials::install();
     specials::install();
-    misc::install();
+    escape::install();
+    appeal::install();
 }

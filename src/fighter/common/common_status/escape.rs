@@ -745,11 +745,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
         // lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
         // let speedy = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
         // println!("Airdash speed x: {}, speed y: {}", speedx, speedy);
-        let enable_gravity = if fighter.global_table[FIGHTER_KIND].get_i32() != *FIGHTER_KIND_MEWTWO {
-            WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL)
-        } else { 17.0 <= fighter.global_table[MOTION_FRAME].get_f32() };
-        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL) {
-        if enable_gravity {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);

@@ -9,8 +9,8 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "bayonetta", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_escapeairslide(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "tantan", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+unsafe fn tantan_escapeairslide(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -24,6 +24,6 @@ unsafe fn bayonetta_escapeairslide(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        bayonetta_escapeairslide
+        tantan_escapeairslide
     );
 }

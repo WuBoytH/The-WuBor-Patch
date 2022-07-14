@@ -425,7 +425,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_BUDDY,
         *FIGHTER_KIND_TANTAN
         ].contains(&fighter_kind) {
-        return 0.95;
+        return 0.94;
     }
     if [
         *FIGHTER_KIND_SAMUS,
@@ -461,9 +461,9 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_DEMON,
         *FIGHTER_KIND_TRAIL
     ].contains(&fighter_kind) {
-        return 0.85
+        return 0.82
     }
-    0.9
+    0.88
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]

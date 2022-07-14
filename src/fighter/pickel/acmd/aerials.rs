@@ -499,6 +499,28 @@ unsafe fn pickel_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pickel", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_attackairlw(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        macros::SET_SPEED_EX(fighter, 0, 0.4, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
+        KineticModule::suspend_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+    macros::FT_MOTION_RATE(fighter, 4.0 / 3.0);
+    frame(fighter.lua_state_agent, 12.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_STATUS_ATTACK_FLAG_FORGE_GENERATE_ENABLE);
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    }
+}
+
 #[acmd_script( agent = "pickel_forge", script = "game_fallattack", category = ACMD_GAME, low_priority )]
 unsafe fn pickel_forge_fallattack(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
@@ -542,6 +564,7 @@ pub fn install() {
         pickel_attackairf,
         pickel_attackairb,
         pickel_attackairhi,
+        pickel_attackairlw,
         pickel_forge_fallattack,
         pickel_forge_fallattackride,
         pickel_forge_wait

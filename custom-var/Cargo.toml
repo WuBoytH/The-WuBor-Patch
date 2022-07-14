@@ -1,6 +1,6 @@
 [package]
 name = "custom_var"
-version = "0.13.0"
+version = "2.0.0"
 edition = "2018"
 
 [dependencies]

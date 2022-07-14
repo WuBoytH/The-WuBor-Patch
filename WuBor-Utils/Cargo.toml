@@ -1,6 +1,6 @@
 [package]
 name = "wubor_utils"
-version = "0.13.0"
+version = "1.0.0"
 edition = "2018"
 
 [dependencies]

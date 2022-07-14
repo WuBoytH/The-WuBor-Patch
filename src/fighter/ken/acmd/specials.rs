@@ -224,12 +224,16 @@ unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     else {
         ratio = 0.8;
     }
-    frame(fighter.lua_state_agent, 5.0);
+    macros::FT_MOTION_RATE(fighter, 5.0 / 4.0);
+    frame(fighter.lua_state_agent, 4.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
+        VarModule::on_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA);
     }
+    frame(fighter.lua_state_agent, 5.0);
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_W
     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_M {
         if macros::is_excute(fighter) {
@@ -294,13 +298,16 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     else {
         ratio = 0.8;
     }
-    frame(fighter.lua_state_agent, 5.0);
+    macros::FT_MOTION_RATE(fighter, 5.0 / 4.0);
+    frame(fighter.lua_state_agent, 4.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         VarModule::on_flag(fighter.battle_object, ken::status::flag::SPECIAL_HI_CHANGE_REPPA);
     }
+    frame(fighter.lua_state_agent, 5.0);
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_W
     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH) != *FIGHTER_RYU_STRENGTH_M {
         if macros::is_excute(fighter) {

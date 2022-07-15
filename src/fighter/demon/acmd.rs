@@ -3,6 +3,7 @@ mod jabs;
 mod crouching;
 mod smashes;
 mod throws;
+mod aerials;
 mod specials;
 mod escape;
 mod misc;
@@ -13,6 +14,7 @@ pub fn install() {
     crouching::install();
     smashes::install();
     throws::install();
+    aerials::install();
     specials::install();
     escape::install();
     misc::install();

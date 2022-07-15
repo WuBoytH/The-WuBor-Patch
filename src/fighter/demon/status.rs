@@ -119,8 +119,13 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
+        let combo_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
+        if combo_count == 3
+        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
+            fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW3.into(), true.into());
+            return 0.into();
+        }
         if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO {
-            let combo_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
             demon_attackcombo_main_mot_helper(fighter, (combo_count + 1).into());
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
             return 0.into();

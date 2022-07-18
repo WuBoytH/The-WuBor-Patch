@@ -1,8 +1,8 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        // hash40,
-        // phx::*,
+        hash40,
+        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -13,32 +13,64 @@ use {
     // super::super::helper::*
 };
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    StatusModule::init_settings(
-        fighter.module_accessor,
-        SituationKind(*SITUATION_KIND_NONE),
-        *FIGHTER_KINETIC_TYPE_UNIQ,
-        *GROUND_CORRECT_KIND_KEEP as u32,
-        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
-        true,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
-        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
-        0
+// #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+// unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     StatusModule::init_settings(
+//         fighter.module_accessor,
+//         SituationKind(*SITUATION_KIND_NONE),
+//         *FIGHTER_KINETIC_TYPE_UNIQ,
+//         *GROUND_CORRECT_KIND_KEEP as u32,
+//         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+//         true,
+//         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+//         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+//         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+//         0
+//     );
+//     FighterStatusModuleImpl::set_fighter_status_data(
+//         fighter.module_accessor,
+//         false,
+//         *FIGHTER_TREADED_KIND_NO_REAC,
+//         false,
+//         false,
+//         false,
+//         *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+//         *FIGHTER_STATUS_ATTR_DISABLE_TURN_DAMAGE as u32,
+//         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
+//         0
+//     );
+//     let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
+//     if enhance {
+//         VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
+//         VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+//     }
+//     0.into()
+// }
+
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn lucario_special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+    let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    let start_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("start_x_mul"));
+    let speed_x = speed_x / start_x_mul;
+    lua_bind::KineticEnergy::reset_energy(
+        stop_energy as *mut smash::app::KineticEnergy,
+        *ENERGY_STOP_RESET_TYPE_AIR,
+        &Vector2f{x: speed_x, y: 0.0},
+        &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+        fighter.module_accessor
     );
-    FighterStatusModuleImpl::set_fighter_status_data(
-        fighter.module_accessor,
-        false,
-        *FIGHTER_TREADED_KIND_NO_REAC,
-        false,
-        false,
-        false,
-        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
-        *FIGHTER_STATUS_ATTR_DISABLE_TURN_DAMAGE as u32,
-        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
-        0
+    lua_bind::KineticEnergy::enable(stop_energy as *mut smash::app::KineticEnergy);
+    let gravity = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+    lua_bind::FighterKineticEnergyGravity::set_speed(
+        gravity as *mut smash::app::FighterKineticEnergyGravity,
+        0.0
     );
+    lua_bind::KineticEnergy::enable(gravity as *mut smash::app::KineticEnergy);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, fighter.module_accessor);
+    KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_START_CHARA_LR);
     let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
     if enhance {
         VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
@@ -172,6 +204,6 @@ unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        lucario_special_lw_pre/*, lucario_special_hi_main*/
+        /*lucario_special_hi_pre, */lucario_special_hi_init/*, lucario_special_hi_main*/
     );
 }

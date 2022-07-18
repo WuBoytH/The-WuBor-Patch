@@ -84,6 +84,7 @@ pub mod krool;
 pub mod rockman;
 pub mod mewtwo;
 pub mod miigunner;
+pub mod ness;
 pub mod pichu;
 pub mod rosetta;
 pub mod roy;
@@ -176,6 +177,7 @@ pub fn install() {
     rockman::install();
     mewtwo::install();
     miigunner::install();
+    ness::install();
     pichu::install();
     rosetta::install();
     roy::install();

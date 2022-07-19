@@ -9,7 +9,7 @@ use {
     smashline::*,
     custom_var::*,
     wubor_utils::vars::*,
-    super::super::vl
+    super::super::helper::*
 };
 
 #[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
@@ -505,11 +505,8 @@ unsafe fn lucario_speciallw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
-            VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-            FighterUtil::flash_eye_info(fighter.module_accessor);
-            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
-        }
+        lucario_gain_aura(fighter);
+        VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
     }
 }
 
@@ -566,11 +563,8 @@ unsafe fn lucario_specialairlw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
-            VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-            FighterUtil::flash_eye_info(fighter.module_accessor);
-            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
-        }
+        lucario_gain_aura(fighter);
+        VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
     }
 }
 

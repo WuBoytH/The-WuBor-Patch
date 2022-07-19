@@ -6,8 +6,6 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*,
     super::super::helper::*
 };
 
@@ -16,11 +14,7 @@ unsafe fn lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-    let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
-    if enhance {
-        VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
-        VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-    }
+    lucario_drain_aura(fighter, false);
     lucario_special_set_kinetic(fighter);
     lucario_special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);

@@ -6,11 +6,8 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    // smash_script::*,
     smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*/*, table_const::**/},
-    // super::super::helper::*
+    super::super::helper::*
 };
 
 // #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -39,11 +36,6 @@ use {
 //         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
 //         0
 //     );
-//     let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
-//     if enhance {
-//         VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
-//         VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-//     }
 //     0.into()
 // }
 
@@ -71,11 +63,7 @@ unsafe fn lucario_special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_MOTION, fighter.module_accessor);
     let lr = PostureModule::lr(fighter.module_accessor);
     WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_START_CHARA_LR);
-    let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
-    if enhance {
-        VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
-        VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-    }
+    lucario_drain_aura(fighter, false);
     0.into()
 }
 

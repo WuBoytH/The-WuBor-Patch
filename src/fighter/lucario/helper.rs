@@ -1,12 +1,43 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         phx::{Hash40, Vector3f},
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    wubor_utils::table_const::*
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*},
+    super::vl
 };
+
+pub unsafe extern "C" fn lucario_drain_aura(fighter: &mut L2CAgentBase, drain_all: bool) -> bool {
+    let aura_charge = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+    if aura_charge > 0 {
+        if drain_all {
+            VarModule::set_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL, 0);
+            VarModule::set_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY, aura_charge);
+        }
+        else {
+            VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+            VarModule::inc_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY);
+        }
+        true
+    }
+    else {
+        false
+    }
+}
+
+pub unsafe extern "C" fn lucario_gain_aura(fighter: &mut L2CAgentBase) -> bool {
+    if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
+        VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+        FighterUtil::flash_eye_info(fighter.module_accessor);
+        true
+    }
+    else {
+        false
+    }
+}
 
 pub unsafe extern "C" fn lucario_special_set_kinetic(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {

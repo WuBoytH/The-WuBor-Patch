@@ -16,7 +16,7 @@ use {
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-    let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
+    let enhance = lucario_drain_aura(fighter, false);
     let mot = if !enhance {
         hash40("special_s_throw")
     }
@@ -31,10 +31,7 @@ unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CVal
         hash40("special_air_s_throw_2")
     };
     WorkModule::set_int64(fighter.module_accessor, mot as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-    if enhance {
-        VarModule::on_flag(fighter.battle_object, lucario::status::flag::IS_AURA_ENHANCED);
-        VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-    }
+
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME);
     lucario_special_s_throw_set_kinetic(fighter);
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucario_special_s_throw_substatus as *const () as _));

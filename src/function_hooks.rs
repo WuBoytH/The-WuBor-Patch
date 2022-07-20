@@ -492,6 +492,15 @@ pub mod LinkEventThrow {
     }
 }
 
+// #[allow(non_snake_case)]
+// extern "C" {
+//     #[link_name = "\u{1}_ZN3app8lua_bind52GroundModule__get_touch_normal_consider_gravity_implEPNS_26BattleObjectModuleAccessorEj"]
+//     pub fn get_touch_normal_consider_gravity_2(
+//         module_accessor: *mut BattleObjectModuleAccessor,
+//         arg2: u32,
+//     ) -> smash_rs::phx::Vector4f;
+// }
+
 #[skyline::hook( replace = StatusModule::init_settings )]
 pub unsafe fn init_settings_replace(
     module_accessor: *mut BattleObjectModuleAccessor,

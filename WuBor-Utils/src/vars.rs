@@ -318,8 +318,8 @@ pub mod kirby {
 pub mod lucario {
     pub mod instance {
         pub mod flag {
-            pub const IS_SUPER_DASH_CANCEL : i32 = 0x0100;
-            pub const USED_AURA_CHARGE_AIR : i32 = 0x0101;
+            pub const USED_AURA_CHARGE_AIR : i32 = 0x0100;
+            pub const FORCE_LANDING_FALL_SPECIAL : i32 = 0x0101;
         }
         pub mod int {
             pub const AURA_LEVEL : i32 = 0x0100;
@@ -327,6 +327,11 @@ pub mod lucario {
     }
     pub mod status {
         pub mod flag {
+            pub const SPECIAL_N_ENABLE_SUPERDASH : i32 = 0x1150;
+
+            pub const SPECIAL_HI_CANCELLED_INTO : i32 = 0x1150;
+            pub const SPECIAL_HI_SUPER_DASH_CANCEL : i32 = 0x1151;
+
             pub const SPECIAL_LW_ENABLE_CANCEL : i32 = 0x1150;
         }
         pub mod int {

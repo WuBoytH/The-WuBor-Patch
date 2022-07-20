@@ -424,7 +424,9 @@ unsafe fn lucario_specialairhi(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_specialhimove(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
-        macros::ATTACK(fighter, 0, 0, Hash40::new("rot"), 6.0, 38, 70, 0, 50, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        if VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
+            macros::ATTACK(fighter, 0, 0, Hash40::new("rot"), 6.0, 38, 70, 0, 50, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        }
     }
 }
 
@@ -435,7 +437,9 @@ unsafe fn lucario_specialhimove_eff(fighter: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_sinsoku_hadou2"), Hash40::new("haver"), 0, 0, 0, 0, -30, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("rot"), 0, 0, 0, 180, 0, 0, 1.0, true);
+        if VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("rot"), 0, 0, 0, 180, 0, 0, 1.0, true);
+        }
     }
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

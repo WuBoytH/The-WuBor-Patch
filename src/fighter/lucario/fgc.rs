@@ -1,7 +1,6 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
         lib::lua_const::*
     },
     custom_var::*,
@@ -43,6 +42,7 @@ pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
             special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
             ].to_vec();
             normal_cancels = [
@@ -59,20 +59,12 @@ pub unsafe extern "C" fn lucario_fgc(fighter: &mut L2CFighterCommon) {
             special_cancels = [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
             ].to_vec();
         }
         else if status == *FIGHTER_STATUS_KIND_ATTACK_DASH {
             jump_cancel = 1;
-        }
-        else if status == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
-        && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)) {
-            VarModule::on_flag(fighter.battle_object, lucario::instance::flag::IS_SUPER_DASH_CANCEL);
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, true);
-        }
-        if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI) {
-            special_cancels.append(&mut [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
         }
         if FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel).get_bool() {
             return;

@@ -329,6 +329,9 @@ pub mod lucario {
         pub mod flag {
             pub const SPECIAL_N_ENABLE_SUPERDASH : i32 = 0x1150;
 
+            pub const SPECIAL_S_THROW_ENABLE_GRAVITY : i32 = 0x1150;
+            pub const SPECIAL_S_THROW_POST_GRAVITY : i32 = 0x1151;
+
             pub const SPECIAL_HI_CANCELLED_INTO : i32 = 0x1150;
             pub const SPECIAL_HI_SUPER_DASH_CANCEL : i32 = 0x1151;
 

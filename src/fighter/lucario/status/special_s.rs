@@ -42,26 +42,33 @@ unsafe extern "C" fn lucario_special_s_throw_set_kinetic(fighter: &mut L2CFighte
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         lucario_special_set_air(fighter);
         lucario_special_air_mot_helper(fighter);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         sv_kinetic_energy!(
-            mul_speed,
+            reset_energy,
             fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            0.5
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            ENERGY_STOP_RESET_TYPE_FREE,
+            speed_x,
+            speed_y.clamp(-1.0, 1.0),
+            0.0,
+            0.0,
+            0.0
         );
         sv_kinetic_energy!(
-            mul_speed,
+            set_brake,
             fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            0.2
+            FIGHTER_KINETIC_ENERGY_ID_STOP,
+            0.06,
+            0.06
         );
-        let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
         sv_kinetic_energy!(
-            set_accel,
+            clear_speed,
             fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -air_accel_y * 0.2
+            FIGHTER_KINETIC_ENERGY_ID_GRAVITY
         );
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     }
     else {
         lucario_special_set_ground(fighter);
@@ -85,6 +92,13 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
         //         return 0.into();
         //     }
         // }
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_THROW_ENABLE_GRAVITY) {
+                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_THROW_ENABLE_GRAVITY);
+                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_THROW_POST_GRAVITY);
+            }
+        }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_CRITICAL_HIT) {
             if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 1 {
                 let pos = ModelModule::joint_global_position(

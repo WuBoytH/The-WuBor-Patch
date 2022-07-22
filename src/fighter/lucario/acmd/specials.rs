@@ -398,9 +398,8 @@ unsafe fn lucario_qigong_shoot(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialhi(fighter: &mut L2CAgentBase) {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        macros::FT_MOTION_RATE(fighter, 0.5);
-    }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.75);
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_RUSH_DIR);
@@ -409,9 +408,8 @@ unsafe fn lucario_specialhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialairhi(fighter: &mut L2CAgentBase) {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        macros::FT_MOTION_RATE(fighter, 0.5);
-    }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.75);
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_GRAVITY_ONOFF);

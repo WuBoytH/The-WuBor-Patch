@@ -89,8 +89,8 @@ pub mod commons {
         pub mod flag {
             pub const JUMP_CANCEL : i32 = 0x1000;
             pub const NORMAL_CANCEL : i32 = 0x1001;
-            // pub const DASH_CANCEL : i32 = 0x1002;
-            // pub const SPECIAL_CANCEL : i32 = 0x1003;
+            pub const DASH_CANCEL : i32 = 0x1002;
+            pub const SPECIAL_CANCEL : i32 = 0x1003;
         }
         pub mod int {
             pub const ENABLED_AERIALS : i32 = 0x1000;

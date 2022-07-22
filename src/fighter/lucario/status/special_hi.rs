@@ -181,6 +181,10 @@ unsafe extern "C" fn lucario_special_hi_rush_end_main_loop(fighter: &mut L2CFigh
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             return 0.into();
         }
+        if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            return 0.into();
+        }
     }
     // let cont = if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_LEFT as u32) {
     //     lucario_special_hi_attach_wall(fighter, (1.0_f32).into()).get_bool()

@@ -189,12 +189,35 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
     }
 }
 
+#[skyline::hook(offset = 0xc5ce20)]
+pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fighter) {
+    original!()(vtable, fighter);
+    let object = &mut fighter.battle_object;
+    let module_accessor = object.module_accessor;
+    let effect = WorkModule::get_int64(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_KIND);
+    if effect != hash40("null") {
+        let left = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_LHADOU) as u32;
+        let right = WorkModule::get_int(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_EF_ID_RHADOU) as u32;
+        let aurapower = WorkModule::get_float(module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
+        let ratio = (aurapower - vl::aurapower::MIN_AURAPOWER) / (vl::aurapower::MAX_AURAPOWER - vl::aurapower::MIN_AURAPOWER);
+        let diff = vl::aurapower::MAX_SCALE - vl::aurapower::MIN_SCALE;
+        let scale = vl::aurapower::MIN_SCALE + (diff * ratio);
+        if left != 0 {
+            EffectModule::set_scale(module_accessor, left, &smash::phx::Vector3f{x: scale, y: scale, z: scale});
+        }
+        if right != 0 {
+            EffectModule::set_scale(module_accessor, right, &smash::phx::Vector3f{x: scale, y: scale, z: scale});
+        }
+    }
+}
+
 pub fn install() {
     skyline::install_hooks!(
         lucario_check_aura,
         lucario_check_aura2,
         lucario_handle_aura,
         lucario_handle_aura2,
-        lucario_on_grab
+        lucario_on_grab,
+        lucario_set_effect_scale
     );
 }

@@ -34,13 +34,13 @@ unsafe fn sonic_throwf(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "sonic", script = "effect_throwf", category = ACMD_EFFECT, low_priority )]
 unsafe fn sonic_throwf_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 9.0);
+    frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 1, 7.8, -2, 0, 0, 0, 0.9, true, *EF_FLIP_YZ);
     }
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 13, 7.5, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, false);
+        macros::EFFECT(fighter, Hash40::new("sys_attack_impact"), Hash40::new("top"), 20, 7.5, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 360, false);
     }
 }
 

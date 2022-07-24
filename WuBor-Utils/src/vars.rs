@@ -488,6 +488,16 @@ pub mod marth {
     }
 }
 
+pub mod pikachu {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_LW_START : i32 = 0x1100;
+            pub const SPECIAL_LW_ENABLE_LANDING : i32 = 0x1101;
+            pub const SPECIAL_LW_ENABLE_GRAVITY : i32 = 0x1102;
+        }
+    }
+}
+
 pub mod ryu {
     pub mod instance {
         pub mod flag {

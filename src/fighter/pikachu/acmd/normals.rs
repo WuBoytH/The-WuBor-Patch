@@ -23,6 +23,11 @@ unsafe fn pikachu_attack11(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("attack_11"), true);
+    frame(fighter.lua_state_agent, cancel_frame);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_RESTART);
+    }
 }
 
 #[acmd_script( agent = "pikachu", script = "game_attackhi3", category = ACMD_GAME, low_priority )]

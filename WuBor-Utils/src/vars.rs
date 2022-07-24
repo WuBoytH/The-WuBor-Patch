@@ -498,6 +498,14 @@ pub mod pikachu {
     }
 }
 
+pub mod pikachu_dengekidama {
+    pub mod status {
+        pub mod flag {
+            pub const SPEED_UP : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod ryu {
     pub mod instance {
         pub mod flag {

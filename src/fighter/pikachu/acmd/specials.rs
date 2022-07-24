@@ -11,6 +11,26 @@ use {
     wubor_utils::vars::*
 };
 
+#[acmd_script( agent = "pikachu", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
+unsafe fn pikachu_specialn(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 19.0);
+    if macros::is_excute(fighter) {
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_DENGEKIDAMA, false, -1);
+    }
+    macros::FT_MOTION_RATE(fighter, 0.6);
+}
+
+#[acmd_script( agent = "pikachu_dengekidama", script = "game_regular", category = ACMD_GAME, low_priority )]
+unsafe fn pikachu_dengekidama_regular(weapon: &mut L2CAgentBase) {
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 3.0, 361, 30, 0, 35, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -1.9, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+    }
+    frame(weapon.lua_state_agent, 10.0);
+    if macros::is_excute(weapon) {
+        VarModule::on_flag(weapon.battle_object, pikachu_dengekidama::status::flag::SPEED_UP);
+    }
+}
+
 #[acmd_script( agent = "pikachu", script = "game_speciallwstrike", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_speciallwstrike(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
@@ -125,6 +145,8 @@ unsafe fn pikachu_speciallwstrike_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        pikachu_specialn,
+        pikachu_dengekidama_regular,
         pikachu_speciallwstrike, pikachu_speciallwstrike_eff, pikachu_speciallwstrike_snd, pikachu_speciallwstrike_exp
     );
 }

@@ -32,7 +32,7 @@ unsafe extern "C" fn pikachu_special_lw_main_loop(weapon: &mut L2CWeaponCommon) 
     let start_speed = WorkModule::get_param_float(weapon.module_accessor, hash40("param_dengekidama"), hash40("speed_"));
     let max_speed = vl::dengekidama::SPEED_MAX;
     let diff = max_speed - start_speed;
-    let speed_x = KineticModule::get_sum_speed_x(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL) - start_speed;
+    let speed_x = KineticModule::get_sum_speed_x(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs() - start_speed;
     let ratio = speed_x / diff;
     let damage_diff = vl::dengekidama::DAMAGE_MAX - vl::dengekidama::DAMAGE_MIN;
     let damage = (vl::dengekidama::DAMAGE_MIN + damage_diff * ratio).clamp(vl::dengekidama::DAMAGE_MIN, vl::dengekidama::DAMAGE_MAX);

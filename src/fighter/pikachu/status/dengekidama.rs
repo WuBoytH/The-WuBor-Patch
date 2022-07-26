@@ -1,7 +1,6 @@
 use {
     smash::{
         lua2cpp::*,
-        hash40,
         phx::*,
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
@@ -9,7 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*,
+    wubor_utils::{vars::*, table_const::*},
     super::super::vl
 };
 
@@ -29,21 +28,23 @@ unsafe fn pikachu_dengekidama_regular_main(weapon: &mut L2CWeaponCommon) -> L2CV
         set_limit_speed,
         weapon,
         WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL,
-        vl::dengekidama::SPEED_MAX,
+        vl::dengekidama::FRAME_MAX,
         0.0
     );
     weapon.fastshift(L2CValue::Ptr(pikachu_dengekidama_regular_main_loop as *const () as _))
 }
 
 unsafe extern "C" fn pikachu_dengekidama_regular_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    let start_speed = WorkModule::get_param_float(weapon.module_accessor, hash40("param_dengekidama"), hash40("speed_"));
-    let max_speed = vl::dengekidama::SPEED_MAX;
-    let diff = max_speed - start_speed;
-    let speed_x = KineticModule::get_sum_speed_x(weapon.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL).abs() - start_speed;
-    let ratio = speed_x / diff;
-    let damage_diff = vl::dengekidama::DAMAGE_MAX - vl::dengekidama::DAMAGE_MIN;
-    let damage = (vl::dengekidama::DAMAGE_MIN + damage_diff * ratio).clamp(vl::dengekidama::DAMAGE_MIN, vl::dengekidama::DAMAGE_MAX);
-    AttackModule::set_power(weapon.module_accessor, 0, damage, false);
+    let frame_min = vl::dengekidama::FRAME_MIN;
+    let frame_max = vl::dengekidama::FRAME_MAX;
+    let frame = weapon.global_table[MOTION_FRAME].get_f32();
+    if (frame_min..=frame_max).contains(&frame) {
+        let frame_range = frame_max - frame_min;
+        let ratio = (frame - frame_min) / frame_range;
+        let damage_diff = vl::dengekidama::DAMAGE_MAX - vl::dengekidama::DAMAGE_MIN;
+        let damage = (vl::dengekidama::DAMAGE_MIN + damage_diff * ratio).clamp(vl::dengekidama::DAMAGE_MIN, vl::dengekidama::DAMAGE_MAX);
+        AttackModule::set_power(weapon.module_accessor, 0, damage, false);
+    }
     if VarModule::is_flag(weapon.battle_object, pikachu_dengekidama::status::flag::SPEED_UP) {
         let lr = PostureModule::lr(weapon.module_accessor);
         sv_kinetic_energy!(

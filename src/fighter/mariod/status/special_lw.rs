@@ -8,7 +8,8 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*
+    custom_var::*,
+    wubor_utils::{wua_bind::*, cancels::*, vars::*, table_const::*}
 };
 
 #[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -100,6 +101,13 @@ unsafe extern "C" fn mariod_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
+            return 0.into();
+        }
+    }
+    else if VarModule::is_flag(fighter.battle_object, mariod::status::flag::SPECIAL_N_ENABLE_ACTIONS) {
+        let situation = fighter.global_table[SITUATION_KIND].clone();
+        if FGCModule::air_dash_cancel_check(fighter, false, true).get_bool()
+        || special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec()).get_bool() {
             return 0.into();
         }
     }

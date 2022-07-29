@@ -434,6 +434,14 @@ pub mod mario {
     pub const LONG_JUMP_B : i32 = 3;
 }
 
+pub mod mariod {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_N_ENABLE_ACTIONS : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod marth {
     pub mod instance {
         pub mod flag {

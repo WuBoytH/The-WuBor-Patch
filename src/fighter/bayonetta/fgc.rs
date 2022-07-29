@@ -36,7 +36,7 @@ pub unsafe extern "C" fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
     if [
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_U
     ].contains(&status) {
-        if FGCModule::air_dash_cancel_check(fighter, false).get_bool() {
+        if FGCModule::air_dash_cancel_check(fighter, false, false).get_bool() {
             return;
         }
     }
@@ -44,7 +44,7 @@ pub unsafe extern "C" fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
         *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_HI_JUMP
     ].contains(&status)
     && MotionModule::frame(fighter.module_accessor) > 31.0 {
-        if FGCModule::air_dash_cancel_check(fighter, false).get_bool() {
+        if FGCModule::air_dash_cancel_check(fighter, false, false).get_bool() {
             return;
         }
     }

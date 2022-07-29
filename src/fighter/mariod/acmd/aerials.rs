@@ -50,7 +50,7 @@ unsafe fn mariod_attackairn_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 6, -0.5, 5, -206, -3, 1.1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 4.5, -0.5, 5, -206, -3, 1.1, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 0.7);
     }
 }

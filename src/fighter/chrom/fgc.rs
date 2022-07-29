@@ -29,7 +29,7 @@ pub unsafe extern "C" fn chrom_fgc(fighter: &mut L2CFighterCommon) {
     else if [
         *FIGHTER_STATUS_KIND_ATTACK_AIR
     ].contains(&status) {
-        if FGCModule::air_dash_cancel_check(fighter, false).get_bool() {
+        if FGCModule::air_dash_cancel_check(fighter, false, false).get_bool() {
             return;
         }
     }

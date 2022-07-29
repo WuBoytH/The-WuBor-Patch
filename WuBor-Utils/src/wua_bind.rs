@@ -118,11 +118,12 @@ pub mod FGCModule {
     }
 
     /// Used to check air dash cancels. This is set-up so you can only air dash, not air dodge.
-    pub unsafe fn air_dash_cancel_check(fighter: &mut L2CFighterCommon, on_block: bool) -> L2CValue {
+    pub unsafe fn air_dash_cancel_check(fighter: &mut L2CFighterCommon, on_block: bool, whiff: bool) -> L2CValue {
         let sit = fighter.global_table[SITUATION_KIND].get_i32();
-        if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        if ((AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (on_block && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
-        && check_cancel_window(fighter) {
+        && check_cancel_window(fighter))
+        || whiff {
             if airdash_cancel_common(fighter, sit.into()).get_bool() {
                 VarModule::on_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
                 return true.into();

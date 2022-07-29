@@ -8,8 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    crate::function_hooks::get_battle_object_from_id,
-    wubor_utils::vars::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
@@ -87,7 +86,7 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             let otarget_id = WorkModule::get_int(fighter.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            let object = get_battle_object_from_id(otarget_id);
+            let object = MiscModule::get_battle_object_from_id(otarget_id);
             VarModule::set_float(object, kamui::instance::float::DRAGON_INSTALL, 600.0);
             VarModule::set_float(object, kamui::instance::float::DRAGON_INSTALL_TIMER, 24.0);
         }

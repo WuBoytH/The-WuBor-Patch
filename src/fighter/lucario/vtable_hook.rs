@@ -8,9 +8,8 @@ use {
         phx::Hash40,
         app::LinkEventCapture
     },
-    crate::function_hooks::get_battle_object_from_id,
     custom_var::*,
-    wubor_utils::vars::*,
+    wubor_utils::{wua_bind::*, vars::*},
     super::vl
 };
 
@@ -19,7 +18,7 @@ pub unsafe extern "C" fn lucario_check_aura(module_accessor: *mut BattleObjectMo
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let object = get_battle_object_from_id((*module_accessor).battle_object_id);
+    let object = MiscModule::get_battle_object_from_id((*module_accessor).battle_object_id);
     get_aura(object)
 }
 
@@ -29,7 +28,7 @@ pub unsafe extern "C" fn lucario_check_aura2(module: u64) -> f32 {
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let object = get_battle_object_from_id((*module_accessor).battle_object_id);
+    let object = MiscModule::get_battle_object_from_id((*module_accessor).battle_object_id);
     get_aura(object)
 }
 
@@ -66,7 +65,7 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     //     let article = ArticleModule::get_article(module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
     //     if article != std::ptr::null_mut::<Article>() {
     //         let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
-    //         let object = get_battle_object_from_id(object_id);
+    //         let object = MiscModule::get_battle_object_from_id(object_id);
     //         let auraball = sv_battle_object::module_accessor(object_id);
     //         charge_frame = WorkModule::get_int(auraball, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_CHARGE_FRAME);
     //     }

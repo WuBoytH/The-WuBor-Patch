@@ -5,7 +5,6 @@ use {
         lib::lua_const::*
     },
     custom_var::*,
-    crate::function_hooks::get_battle_object_from_id,
     wubor_utils::{wua_bind::*, vars::*},
     super::vl
 };
@@ -161,7 +160,7 @@ pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) 
     EffectModule::set_rate(module_accessor, onemoreeff, 2.0);
     EffectModule::set_rate(module_accessor, onemoreeff2, 2.0);
     let object_id = (*module_accessor).battle_object_id;
-    let object = get_battle_object_from_id(object_id);
+    let object = MiscModule::get_battle_object_from_id(object_id);
     if VarModule::is_flag(object, yu::instance::flag::SHADOW_FRENZY) {
         EffectModule::set_rgb(module_accessor, onemoreeff, 0.6, 0.0, 1.0);
         EffectModule::set_rgb(module_accessor, onemoreeff2, 0.6, 0.0, 1.0);
@@ -176,7 +175,7 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
     EffectModule::kill_kind(module_accessor, Hash40::new("sys_starrod_bullet"), false, true);
     if !remove {
         let object_id = (*module_accessor).battle_object_id;
-        let object = get_battle_object_from_id(object_id);
+        let object = MiscModule::get_battle_object_from_id(object_id);
         let mut level = VarModule::get_int(object, yu::instance::int::SP_LEVEL);
         if VarModule::is_flag(object, yu::instance::flag::SHADOW_FRENZY) {
             level += 1;
@@ -198,7 +197,7 @@ pub unsafe fn sp_gauge_handler(module_accessor: *mut BattleObjectModuleAccessor,
 
 pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) {
     let object_id = (*module_accessor).battle_object_id;
-    let object = get_battle_object_from_id(object_id);
+    let object = MiscModule::get_battle_object_from_id(object_id);
     let sp = VarModule::get_float(object, yu::instance::float::SP_GAUGE);
     let level = sp / vl::param_private::sp_single;
     VarModule::set_int(object, yu::instance::int::SP_LEVEL, level as i32);

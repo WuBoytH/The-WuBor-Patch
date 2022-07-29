@@ -4,11 +4,7 @@ use {
         app::{lua_bind::*, *}
     },
     custom_var::*,
-    crate::function_hooks::{
-        get_active_battle_object_id_from_entry_id,
-        get_battle_object_from_id
-    },
-    wubor_utils::vars::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 pub unsafe fn handle_revenge(object: *mut BattleObject, module_accessor: *mut BattleObjectModuleAccessor, attacker_ids: i32) {
@@ -20,8 +16,8 @@ pub unsafe fn handle_revenge(object: *mut BattleObject, module_accessor: *mut Ba
             if attacker_ids & (1 << x) == 0 {
                 continue;
             }
-            if let Some(object_id) = get_active_battle_object_id_from_entry_id(x) {
-                let object = get_battle_object_from_id(object_id);
+            if let Some(object_id) = MiscModule::get_active_battle_object_id_from_entry_id(x) {
+                let object = MiscModule::get_battle_object_from_id(object_id);
                 let attacker_boma = (*object).module_accessor;
                 if (PostureModule::pos_x(module_accessor) < PostureModule::pos_x(attacker_boma)
                 && PostureModule::lr(module_accessor) == 1.0)

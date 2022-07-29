@@ -14,7 +14,7 @@ use {
         }
     },
     custom_var::*,
-    wubor_utils::vars,
+    wubor_utils::{wua_bind::*, vars},
     skyline::hooks::{
         getRegionAddress,
         Region
@@ -30,9 +30,9 @@ move_type: f32,
 arg5: i32,
 move_type_again: bool) -> u64 {
     let attacker_boma = sv_battle_object::module_accessor(attacker_object_id);
-    let attacker_object = get_battle_object_from_id(attacker_object_id);
+    let attacker_object = MiscModule::get_battle_object_from_id(attacker_object_id);
     let defender_boma = sv_battle_object::module_accessor(defender_object_id);
-    let defender_object = get_battle_object_from_id(defender_object_id);
+    let defender_object = MiscModule::get_battle_object_from_id(defender_object_id);
     let attacker_fighter_kind = sv_battle_object::kind(attacker_object_id);
     let defender_fighter_kind = sv_battle_object::kind(defender_object_id);
     // let a_entry_id = WorkModule::get_int(attacker_boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
@@ -127,7 +127,7 @@ move_type_again: bool) -> u64 {
     }
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
-            let object = get_battle_object_from_id((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+            let object = MiscModule::get_battle_object_from_id((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
             VarModule::on_flag(object, vars::mario::special_n::flag::FGC_CANCEL);
         }
     }
@@ -153,8 +153,8 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
         if attacker_ids & (1 << x) == 0 {
             continue;
         }
-        if let Some(object_id) = get_active_battle_object_id_from_entry_id(x) {
-            let object = get_battle_object_from_id(object_id);
+        if let Some(object_id) = MiscModule::get_active_battle_object_id_from_entry_id(x) {
+            let object = MiscModule::get_battle_object_from_id(object_id);
             let module_accessor = (*object).module_accessor;
             let kind = utility::get_kind(&mut *module_accessor);
             if kind == *FIGHTER_KIND_LUCINA {
@@ -175,7 +175,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
     let fighter_kind = utility::get_kind(boma);
     let ret = original!()(boma,term);
     let object_id = boma.battle_object_id;
-    let object = get_battle_object_from_id(object_id);
+    let object = MiscModule::get_battle_object_from_id(object_id);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         if fighter_kind == *FIGHTER_KIND_LUCINA { // Make this a custom command grab
             if VarModule::is_flag(object, vars::yu::instance::flag::HEROIC_GRAB)
@@ -205,7 +205,7 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
         if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
             let otarget_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             if sv_battle_object::is_active(otarget_id) {
-                let object = get_battle_object_from_id(otarget_id);
+                let object = MiscModule::get_battle_object_from_id(otarget_id);
                 if param_hash == hash40("speed_max") {
                     if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                         return 1.2;
@@ -234,7 +234,7 @@ pub unsafe fn get_int64_replace(boma: &mut BattleObjectModuleAccessor, term: i32
         if utility::get_kind(boma) == *FIGHTER_KIND_LUCINA
         && term == *FIGHTER_STATUS_CATCH_WAIT_WORK_INT_MOTION_KIND {
             let object_id = (*boma).battle_object_id;
-            let object = get_battle_object_from_id(object_id);
+            let object = MiscModule::get_battle_object_from_id(object_id);
             if VarModule::is_flag(object, vars::yu::instance::flag::HEROIC_GRAB) {
                 return hash40("throw_hi");
             }
@@ -433,56 +433,6 @@ unsafe fn play_se_no_3d_replace(lua_state: u64) {
 //     )
 // }
 
-pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
-    use smash::lib::lua_const::*;
-    use smash::app::lua_bind::*;
-    let object = get_battle_object_from_entry_id(entry_id)?;
-    if object.is_null() { return None; }
-    let object = unsafe { &mut *object };
-    let kind = object.kind as i32;
-    let status = unsafe {
-        StatusModule::status_kind(object.module_accessor)
-    };
-    if status != *FIGHTER_STATUS_KIND_NONE && status != *FIGHTER_STATUS_KIND_STANDBY {
-        return Some(object.battle_object_id);
-    }
-    if kind == *FIGHTER_KIND_ELIGHT || kind == *FIGHTER_KIND_EFLAME {
-        Some(object.battle_object_id + 0x10000)
-    } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
-        let next_id = object.battle_object_id + 0x10000;
-        let next_object = unsafe { &mut *get_battle_object_from_id(next_id) };
-        let next_status = unsafe {
-            StatusModule::status_kind(next_object.module_accessor)
-        };
-        if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
-            Some(next_id)
-        } else {
-            Some(next_id + 0x10000)
-        }
-    } else {
-        Some(object.battle_object_id)
-    }
-}
-
-pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObject> {
-    unsafe {
-        let entry = get_fighter_entry(vars::singletons::FighterManager(), entry_id);
-        if entry.is_null() {
-            None
-        } else {
-            Some(*(entry.add(0x4160) as *mut *mut BattleObject))
-        }
-    }
-}
-
-#[skyline::from_offset(0x3ac540)]
-pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
-
-extern "C" {
-    #[link_name = "\u{1}_ZN3app8lua_bind38FighterManager__get_fighter_entry_implEPNS_14FighterManagerENS_14FighterEntryIDE"]
-    fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;
-}
-
 #[allow(non_snake_case)]
 pub mod LinkEventThrow {
     use super::*;
@@ -526,7 +476,7 @@ pub unsafe fn init_settings_replace(
         mask += VarModule::RESET_STATUS_FLOAT;
     }
     let object_id = (*module_accessor).battle_object_id;
-    let object = get_battle_object_from_id(object_id);
+    let object = MiscModule::get_battle_object_from_id(object_id);
     VarModule::reset(object, mask);
     original!()(
         module_accessor,

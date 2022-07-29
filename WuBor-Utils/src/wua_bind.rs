@@ -518,7 +518,22 @@ pub mod MiscModule {
     }
 
     /// Creates the "critical hit" effect. Will be replaced later with a better implementation.
+    #[deprecated(since = "1.1.0", note = "Should use the updated critical zoom function instead.")]
     pub unsafe fn critical_zoom(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
+        if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
+            macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+            if rate != 0 {
+                SlowModule::set_whole(fighter.module_accessor, rate, 0);
+            }
+            if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
+                macros:: CAM_ZOOM_IN_arg5(fighter, frames, 0.0, zoom, 0.0, 0.0);
+            }
+            macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
+        }
+    }
+
+    /// Creates the "critical hit" effect. Will be replaced later with a better implementation.
+    pub unsafe fn critical_zoom_revised(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
         if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
             macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
             if rate != 0 {
@@ -553,4 +568,54 @@ pub mod MiscModule {
             VarModule::on_flag(object, appeal::flag::HOLD);
         }
     }
+
+    pub fn get_active_battle_object_id_from_entry_id(entry_id: u32) -> Option<u32> {
+        use smash::lib::lua_const::*;
+        use smash::app::lua_bind::*;
+        let object = get_battle_object_from_entry_id(entry_id)?;
+        if object.is_null() { return None; }
+        let object = unsafe { &mut *object };
+        let kind = object.kind as i32;
+        let status = unsafe {
+            StatusModule::status_kind(object.module_accessor)
+        };
+        if status != *FIGHTER_STATUS_KIND_NONE && status != *FIGHTER_STATUS_KIND_STANDBY {
+            return Some(object.battle_object_id);
+        }
+        if kind == *FIGHTER_KIND_ELIGHT || kind == *FIGHTER_KIND_EFLAME {
+            Some(object.battle_object_id + 0x10000)
+        } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
+            let next_id = object.battle_object_id + 0x10000;
+            let next_object = unsafe { &mut *MiscModule::get_battle_object_from_id(next_id) };
+            let next_status = unsafe {
+                StatusModule::status_kind(next_object.module_accessor)
+            };
+            if next_status != *FIGHTER_STATUS_KIND_NONE && next_status != *FIGHTER_STATUS_KIND_STANDBY {
+                Some(next_id)
+            } else {
+                Some(next_id + 0x10000)
+            }
+        } else {
+            Some(object.battle_object_id)
+        }
+    }
+    
+    pub fn get_battle_object_from_entry_id(entry_id: u32) -> Option<*mut BattleObject> {
+        unsafe {
+            let entry = get_fighter_entry(singletons::FighterManager(), entry_id);
+            if entry.is_null() {
+                None
+            } else {
+                Some(*(entry.add(0x4160) as *mut *mut BattleObject))
+            }
+        }
+    }
+    
+    #[skyline::from_offset(0x3ac540)]
+    pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
+}
+
+extern "C" {
+    #[link_name = "\u{1}_ZN3app8lua_bind38FighterManager__get_fighter_entry_implEPNS_14FighterManagerENS_14FighterEntryIDE"]
+    fn get_fighter_entry(manager: *mut smash::app::FighterManager, entry_id: u32) -> *mut u8;
 }

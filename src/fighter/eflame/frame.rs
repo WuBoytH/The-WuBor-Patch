@@ -6,8 +6,7 @@ use {
     },
     smashline::*,
     custom_var::*,
-    crate::function_hooks::get_battle_object_from_id,
-    wubor_utils::vars::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[fighter_frame( agent = FIGHTER_KIND_EFLAME )]
@@ -34,7 +33,7 @@ fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
         if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY {
             let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
             let oboma = sv_battle_object::module_accessor(otarget_id);
-            let object = get_battle_object_from_id(otarget_id);
+            let object = MiscModule::get_battle_object_from_id(otarget_id);
             if utility::get_kind(&mut *oboma) == *FIGHTER_KIND_EFLAME
             && VarModule::is_flag(object, eflame::status::flag::SPECIAL_S_ROTATE) {
                 StatusModule::change_status_request_from_script(weapon.module_accessor, *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_ROTATE, true);

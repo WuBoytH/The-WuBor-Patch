@@ -1,7 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        phx::Hash40,
+        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -518,7 +518,7 @@ pub mod MiscModule {
     }
 
     /// Creates the "critical hit" effect. Will be replaced later with a better implementation.
-    #[deprecated(since = "1.1.0", note = "Should use the updated critical zoom function instead.")]
+    // #[deprecated(since = "1.1.0", note = "Should use the updated critical zoom function instead.")]
     pub unsafe fn critical_zoom(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
         if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
             macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -532,19 +532,63 @@ pub mod MiscModule {
         }
     }
 
-    /// Creates the "critical hit" effect. Will be replaced later with a better implementation.
-    pub unsafe fn critical_zoom_revised(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
-        if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
-            macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            if rate != 0 {
-                SlowModule::set_whole(fighter.module_accessor, rate, 0);
-            }
-            if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
-                macros:: CAM_ZOOM_IN_arg5(fighter, frames, 0.0, zoom, 0.0, 0.0);
-            }
-            macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
-        }
-    }
+    // /// Creates the "critical hit" effect.
+    // pub unsafe fn critical_zoom_revised(
+    //     module_accessor: *mut BattleObjectModuleAccessor,
+    //     target_id: u32,
+    //     rate: u8,
+    //     frame: f32,
+    //     zoom_amount: f32,
+    //     zoom_frame: f32,
+    //     one_on_one: bool,
+    //     bg_only_frame: f32,
+    //     offset: Vector2f
+    // ) {
+    //     let manager = singletons::FighterManager() as *mut u64;
+    //     if *manager.add(0xb9) == 0 && *manager.add(0x1e8) == 0 && *manager.add(0x398) < 1 {
+    //         let target_object = get_battle_object_from_id(target_id);
+    //         if (*target_object).battle_object_id >> 0x1c == 0 {
+    //             let target_boma = (*target_object).module_accessor;
+    //             DamageModule::set_critical_hit(target_boma, true);
+    //             call_critical(
+    //                 rate,
+    //                 zoom_amount,
+    //                 offset,
+    //                 (*module_accessor as *mut *mut u64).offset(0x38) as *mut Module,
+    //                 frame,
+    //                 zoom_frame,
+    //                 true,
+    //                 one_on_one,
+    //                 target_id,
+    //                 0,
+    //                 0
+    //             );
+
+    //         }
+    //     }
+    // }
+
+    // #[repr(C)]
+    // pub struct Module {
+    //   vtable: *const u64,
+    //   owner: *mut BattleObjectModuleAccessor,
+    //   // ...
+    // }
+    
+    // #[skyline::from_offset(0x6ad990)]
+    // fn call_critical(
+    //     slow: f32,
+    //     zoom: f32,
+    //     offset: Vector2f,
+    //     posturemodule: *mut Module,
+    //     frame: f32,
+    //     zoom_in_frame: f32,
+    //     some: bool,
+    //     one_on_one: bool,
+    //     target_id: u32,
+    //     some2: i32,
+    //     some3: i32
+    // );
 
     /// Used in Fighting Game Mode to reduce a fighter's HP to their Fighting Game Mode value.
     pub unsafe fn set_hp(fighter: &mut L2CFighterCommon, hp: f32) {
@@ -586,7 +630,7 @@ pub mod MiscModule {
             Some(object.battle_object_id + 0x10000)
         } else if kind == *FIGHTER_KIND_PZENIGAME || kind == *FIGHTER_KIND_PFUSHIGISOU || kind == *FIGHTER_KIND_PLIZARDON {
             let next_id = object.battle_object_id + 0x10000;
-            let next_object = unsafe { &mut *MiscModule::get_battle_object_from_id(next_id) };
+            let next_object = unsafe { &mut *get_battle_object_from_id(next_id) };
             let next_status = unsafe {
                 StatusModule::status_kind(next_object.module_accessor)
             };

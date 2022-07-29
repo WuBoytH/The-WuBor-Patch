@@ -90,7 +90,7 @@ unsafe fn pikachu_attackairb_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "expression_attackairb", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "pikachu", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn pikachu_attackairb_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {

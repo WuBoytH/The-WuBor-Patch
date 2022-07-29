@@ -68,7 +68,7 @@ unsafe fn mariod_attackairn_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "expression_attackairn", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mariod", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn mariod_attackairn_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

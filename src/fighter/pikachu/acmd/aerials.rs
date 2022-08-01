@@ -72,7 +72,7 @@ unsafe fn pikachu_attackairb_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pikachu_elec"), Hash40::new("footr"), 1.5, 0, 0, 0, 0, 0, 0.3, true);
-        macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), -5, 5, -8.5, 0, 0, 0, 0.8, true);
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -5, 5, -1, 180, 0, 0, 0.7, true, *EF_FLIP_YZ);
     }
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {

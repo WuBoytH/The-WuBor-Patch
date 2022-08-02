@@ -101,10 +101,11 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_CRITICAL_HIT) {
             if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 1 {
-                let pos = ModelModule::joint_global_position(
+                let mut pos = Vector3f{x: 0.0, y: 0.0, z: 0.0};
+                ModelModule::joint_global_position(
                     fighter.module_accessor,
                     Hash40::new("throw"),
-                    &mut Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                    &mut pos,
                     true
                 );
                 let capture_object = LinkModule::get_node_object_id(fighter.module_accessor, *LINK_NO_CAPTURE) as u32;

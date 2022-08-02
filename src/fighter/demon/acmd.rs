@@ -5,6 +5,7 @@ mod smashes;
 mod throws;
 mod aerials;
 mod specials;
+mod stand;
 mod step;
 mod escape;
 mod misc;
@@ -17,6 +18,7 @@ pub fn install() {
     throws::install();
     aerials::install();
     specials::install();
+    stand::install();
     step::install();
     escape::install();
     misc::install();

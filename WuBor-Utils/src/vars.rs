@@ -146,6 +146,14 @@ pub mod chrom {
     }
 }
 
+pub mod demon {
+    pub mod status {
+        pub mod flag {
+            pub const ATTACK_STAND_2_SPECIAL_FINISHER : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod dolly {
     pub mod instance {
         pub mod flag {

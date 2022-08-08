@@ -57,11 +57,23 @@ unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
 
     if frame < hit_frame {
         VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, 0.0);
+        return;
+    }
+
+    if hit_frame == 0.0 {
+        if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
+        || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, frame);
+            return;
+        }
     }
 
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
+    || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+    && frame != hit_frame {
         VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, frame);
+        let hitstop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_HIT_STOP_ATTACK_SUSPEND_FRAME);
+        ControlModule::set_command_life_extend(fighter.module_accessor, hitstop_frame as u8);
     }
 }
 

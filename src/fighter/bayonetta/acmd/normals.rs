@@ -116,7 +116,7 @@ unsafe fn bayonetta_attacklw3(fighter: &mut L2CAgentBase) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b7cb92b79), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, false, 10);
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 5.0, 6.5);
     }
-    macros::FT_MOTION_RATE(fighter, 0.5);
+    macros::FT_MOTION_RATE(fighter, 5.0 / 6.0);
     frame(fighter.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(fighter, 0.8);
     if macros::is_excute(fighter) {

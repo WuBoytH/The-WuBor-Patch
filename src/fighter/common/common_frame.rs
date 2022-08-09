@@ -58,15 +58,19 @@ unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
     if frame < hit_frame {
         VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, 0.0);
         VarModule::off_flag(fighter.battle_object, commons::status::flag::HITSTOP_PRECEDE_EXTENSION);
-        return;
     }
 
     if hit_frame == 0.0 {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
             VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, frame);
-            return;
         }
+    }
+    
+    if frame > hit_frame + 1.0
+    && VarModule::is_flag(fighter.battle_object, commons::status::flag::HITSTOP_PRECEDE_EXTENSION) {
+        ControlModule::set_command_life_extend(fighter.module_accessor, 0);
+        VarModule::off_flag(fighter.battle_object, commons::status::flag::HITSTOP_PRECEDE_EXTENSION);
     }
 
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)

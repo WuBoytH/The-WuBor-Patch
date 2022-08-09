@@ -104,30 +104,30 @@ pub mod commons {
 
 pub mod attack_air {
     pub mod flag {
-        pub const WHIFF : i32 = 0x1000;
+        pub const WHIFF : i32 = 0x1050;
     }
 }
 
 pub mod guard_off {
     pub mod int {
-        pub const ATTACK_CANCEL_FRAME : i32 = 0x1000;
+        pub const ATTACK_CANCEL_FRAME : i32 = 0x1050;
     }
 }
 
 pub mod appeal {
     pub mod flag {
-        pub const HOLD : i32 = 0x1000;
-        pub const LOOP : i32 = 0x1001;
-        pub const ENABLE_ACTION : i32 = 0x1002;
+        pub const HOLD : i32 = 0x1050;
+        pub const LOOP : i32 = 0x1051;
+        pub const ENABLE_ACTION : i32 = 0x1052;
     }
     pub mod int {
-        pub const HOLD_BUTTON : i32 = 0x1000;
-        pub const ACTION_BUTTON : i32 = 0x1001;
-        pub const RESTART_FRAME : i32 = 0x1002;
+        pub const HOLD_BUTTON : i32 = 0x1050;
+        pub const ACTION_BUTTON : i32 = 0x1051;
+        pub const RESTART_FRAME : i32 = 0x1052;
     }
     pub mod int64 {
-        pub const ACTION_MOT : i32 = 0x1000;
-        pub const LOOP_MOT : i32 = 0x1001;
+        pub const ACTION_MOT : i32 = 0x1050;
+        pub const LOOP_MOT : i32 = 0x1051;
     }
 }
 

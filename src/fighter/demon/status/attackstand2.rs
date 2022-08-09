@@ -51,7 +51,7 @@ unsafe extern "C" fn demon_attackstand2_get_mot(fighter: &mut L2CFighterCommon) 
         0 => hash40("attack_stand_21"),
         1 => {
             if VarModule::is_flag(fighter.battle_object, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER) {
-                hash40("attack_stand_24")
+                hash40("attack_stand_2f")
             }
             else {
                 hash40("attack_stand_22")
@@ -91,9 +91,6 @@ unsafe extern "C" fn demon_attackstand2_main_loop(fighter: &mut L2CFighterCommon
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_FLAG_INC_STEP);
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_WORK_INT_COMBO);
             let mot = demon_attackstand2_get_mot(fighter).get_u64();
-            if combo + 1 != 1 {
-                VarModule::off_flag(fighter.battle_object, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER);
-            }
             let rate = MotionModule::rate(fighter.module_accessor);
             MotionModule::change_motion(
                 fighter.module_accessor,

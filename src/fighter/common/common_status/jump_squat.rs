@@ -116,9 +116,9 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
         PostureModule::update_rot_y_lr(fighter.module_accessor);
     }
-    ControlModule::reset_flick_y(fighter.module_accessor);
-    ControlModule::reset_flick_sub_y(fighter.module_accessor);
-    fighter.global_table[FLICK_Y].assign(&0xFE.into());
+    // ControlModule::reset_flick_y(fighter.module_accessor);
+    // ControlModule::reset_flick_sub_y(fighter.module_accessor);
+    // fighter.global_table[FLICK_Y].assign(&0xFE.into());
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
@@ -194,7 +194,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 } {
                     return 0.into();
                 }
-                if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_ATTACK_DASH_ATTACK_HI4 != 0
+                if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI4 != 0
                 && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                     fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_HI4_START.into(), true.into());
                     return 0.into();

@@ -16,10 +16,10 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    if (VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
+    if VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
     || (fighter.global_table[STICK_Y].get_f32() < -0.5
     && fighter.global_table[FLICK_Y].get_i32() < 7
-    && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0)) {
+    && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0) {
         VarModule::on_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
     }
     else {

@@ -521,6 +521,38 @@ unsafe fn pickel_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pickel", script = "game_attackairlw2", category = ACMD_GAME, low_priority )]
+unsafe fn pickel_attackairlw2(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 60, 50, 0, 72, 4.0, 0.0, 1.0, 4.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    wait(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "pickel", script = "expression_attackairlw2", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn pickel_attackairlw2_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_nohitm"),
+            0,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 8);
+    }
+}
+
 #[acmd_script( agent = "pickel_forge", script = "game_fallattack", category = ACMD_GAME, low_priority )]
 unsafe fn pickel_forge_fallattack(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
@@ -565,6 +597,7 @@ pub fn install() {
         pickel_attackairb,
         pickel_attackairhi,
         pickel_attackairlw,
+        pickel_attackairlw2, pickel_attackairlw2_exp,
         pickel_forge_fallattack,
         pickel_forge_fallattackride,
         pickel_forge_wait

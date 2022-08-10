@@ -492,6 +492,9 @@ pub unsafe fn init_settings_replace(
     )
 }
 
+#[skyline::from_offset(0x3f0830)]
+pub fn some_catch(catchmodule: *mut smash_rs::app::Module);
+
 pub fn install() {
     unsafe{
         let text_ptr = getRegionAddress(Region::Text) as *const u8;

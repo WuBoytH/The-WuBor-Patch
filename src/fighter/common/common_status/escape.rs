@@ -468,20 +468,6 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
 unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
-        let super_jump_frame = VarModule::get_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME);
-        if fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 - super_jump_frame {
-            let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -air_accel_y
-            );
-            VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
-            VarModule::set_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME, 0.0);
-        }
-    }
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return true.into();
     }
@@ -864,8 +850,7 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
     }
     VarModule::off_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
-    VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
-    VarModule::set_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME, 0.0);
+    fighter.status_end_Jump();
     0.into()
 }
 

@@ -16,8 +16,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    if !super_jump_restrict(fighter)
-    && (VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
+    if (VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
     || (fighter.global_table[STICK_Y].get_f32() < -0.5
     && fighter.global_table[FLICK_Y].get_i32() < 7
     && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0)) {
@@ -47,58 +46,6 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
         false,
         false
     );
-}
-
-unsafe fn super_jump_restrict(fighter: &mut L2CFighterCommon) -> bool {
-    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
-    let status = fighter.global_table[STATUS_KIND].get_i32();
-    let steve = {
-        fighter_kind == *FIGHTER_KIND_PICKEL &&
-        [
-            *FIGHTER_PICKEL_STATUS_KIND_ATTACK_JUMP_SQUAT,
-            *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT,
-            *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT
-        ].contains(&status)
-    };
-    let minmin = {
-        fighter_kind == *FIGHTER_KIND_TANTAN &&
-        [*FIGHTER_TANTAN_STATUS_KIND_ATTACK_JUMP_SQUAT].contains(&status)
-    };
-    let kirby = {
-        fighter_kind == *FIGHTER_KIND_KIRBY &&
-        [
-            *FIGHTER_KIRBY_STATUS_KIND_SPECIAL_S_JUMP_SQUAT,
-            *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N1_JUMP_SQUAT,
-            *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N3_JUMP_SQUAT,
-            *FIGHTER_KIRBY_STATUS_KIND_SNAKE_SPECIAL_N_HOLD_JUMP_SQUAT,
-            *FIGHTER_KIRBY_STATUS_KIND_BUDDY_SPECIAL_N_SHOOT_JUMP_SQUAT
-        ].contains(&status)
-    };
-    let dedede = {
-        fighter_kind == *FIGHTER_KIND_DEDEDE &&
-        [*FIGHTER_DEDEDE_STATUS_KIND_SPECIAL_LW_JUMP_SQUAT].contains(&status)
-    };
-    let donkey = {
-        fighter_kind == *FIGHTER_KIND_DONKEY &&
-        [*FIGHTER_DONKEY_STATUS_KIND_SHOULDER_JUMP_SQUAT].contains(&status)
-    };
-    let snake = {
-        fighter_kind == *FIGHTER_KIND_SNAKE &&
-        [*FIGHTER_SNAKE_STATUS_KIND_SPECIAL_N_HOLD_JUMP_SQUAT].contains(&status)
-    };
-    let megaman = {
-        fighter_kind == *FIGHTER_KIND_ROCKMAN &&
-        [*FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT].contains(&status)
-    };
-    let villager = {
-        fighter_kind == *FIGHTER_KIND_MURABITO &&
-        [*FIGHTER_MURABITO_STATUS_KIND_SPECIAL_LW_WATER_JUMP_SQUAT].contains(&status)
-    };
-    let normal = [
-        *FIGHTER_STATUS_KIND_HAMMER_JUMP_SQUAT,
-        *FIGHTER_STATUS_KIND_ITEM_SHOOT_JUMP_SQUAT
-    ].contains(&status);
-    steve || minmin || kirby || dedede || donkey || snake || megaman || villager || normal
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_common)]

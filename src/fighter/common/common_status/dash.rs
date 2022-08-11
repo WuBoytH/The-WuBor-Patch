@@ -7,11 +7,13 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    wubor_utils::table_const::*
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*}
 };
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Dash)]
 unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,6 +39,39 @@ unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
+    VarModule::set_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL, dash_cancel);
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
+unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+    fighter.status_pre_DashCommon();
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_OTTOTTO as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        true,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        true,
+        false,
+        false,
+        0,
+        (*FIGHTER_STATUS_ATTR_ENABLE_ROCKETBELT_EJECT | *FIGHTER_STATUS_ATTR_INTO_DOOR) as u32,
+        0,
+        0
+    );
+    VarModule::set_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
@@ -139,6 +174,19 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 1.into();
+    }
+
+    if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
+            VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+                WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+            }
+        }
+        else {
+            return 0.into();
+        }
     }
 
     if CancelModule::is_enable_cancel(fighter.module_accessor)
@@ -365,7 +413,8 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
                 return 1.into();
             }
         }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
+        if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
             let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr = PostureModule::lr(fighter.module_accessor);
             let run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x"));
@@ -403,6 +452,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -428,6 +478,7 @@ pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
+    VarModule::set_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
@@ -444,6 +495,19 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), 1.into());
         return 1.into();
+    }
+
+    if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
+            VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+                WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+            }
+        }
+        else {
+            return 0.into();
+        }
     }
 
     if CancelModule::is_enable_cancel(fighter.module_accessor)
@@ -612,7 +676,8 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 
     if !fighter.sub_transition_group_check_ground_jump().get_bool() {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
+        if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
             let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr = PostureModule::lr(fighter.module_accessor);
             let run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x"));
@@ -656,12 +721,119 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_dash_uniq_process_main_internal)]
+unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    if !WorkModule::is_enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) {
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let walk_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x206138766c);
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let is_backdash = if param_1.get_bool() { -1.0 } else { 1.0 };
+        if stick_x * lr * is_backdash < walk_threshold {
+            WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
+            WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH);
+            // WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+            VarModule::on_flag(fighter.battle_object, dash::flag::DISABLE_RUN);
+        }
+    }
+    let dash_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_COUNT);
+    WorkModule::set_int(fighter.module_accessor, dash_count + 1, *FIGHTER_STATUS_DASH_WORK_INT_COUNT);
+    let dash_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_COUNT);
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_TURN_DASH
+    && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON) {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FROM_DASH_COUNT);
+    }
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4)
+    && FighterControlModuleImpl::get_param_dash_s4_frame(fighter.module_accessor) as i32 <= dash_count {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_S4);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_ESCAPE) {
+        let dash_escape_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("dash_escape_frame"));
+        if dash_escape_frame <= dash_count as f32 {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_ESCAPE);
+        }
+    }
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_SLIP) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_SLIP);
+    }
+    if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
+        WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
+    }
+    let turn_dash_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
+    if 0 <= turn_dash_frame {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
+        if turn_dash_frame - 1 < 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
+        }
+    }
+    let retry_dash_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME);
+    if 0 <= retry_dash_frame {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_RETRY_TURN_DASH_FRAME);
+        if retry_dash_frame - 1 < 0 {
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
+        }
+    }
+    let attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME);
+    if 0 <= attack_frame {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_ENABLE_ATTACK_FRAME);
+        if attack_frame - 1 < 0 {
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
+            WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT);
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY);
+        }
+    }
+    let invalid_attack_escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_INVALID_ATTACK_ESCAPE_FRAME);
+    if 0 < invalid_attack_escape_frame {
+        WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_INVALID_ATTACK_ESCAPE_FRAME);
+        if invalid_attack_escape_frame - 1 == 0 {
+            let transitions = [
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SHOOT_S4,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_COMMAND1,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY_DASH,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_COMMAND_623NB,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT
+            ];
+            for val in transitions.iter() {
+                WorkModule::enable_transition_term(fighter.module_accessor, *val);
+            }
+        }
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_dash,
+            status_pre_turndash,
             status_dashcommon,
-            status_dash_main_common
+            status_dash_main_common,
+            sub_dash_uniq_process_main_internal
         );
     }
 }

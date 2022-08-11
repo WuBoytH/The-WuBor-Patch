@@ -93,24 +93,21 @@ pub mod FGCModule {
 
     /// Used to enable dash-cancels. You need to specify whether you're cancelling into a forward dash (reverse = false) or back dash (reverse = true);
     pub unsafe fn dash_cancel_check(fighter: &mut L2CFighterCommon, dash_on_block: bool, reverse: bool) -> L2CValue {
-        let dir;
         let cat;
         let status;
         if reverse {
-            dir = 4;
             cat = *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH;
             status = *FIGHTER_STATUS_KIND_TURN_DASH;
         }
         else {
-            dir = 6;
             cat = *FIGHTER_PAD_CMD_CAT1_FLAG_DASH;
             status = *FIGHTER_STATUS_KIND_DASH;
         }
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
         && check_cancel_window(fighter)
-        && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0
-        && get_command_stick_direction(fighter, true) == dir {
+        && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0 {
+            VarModule::on_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
             StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
             return true.into();
         }

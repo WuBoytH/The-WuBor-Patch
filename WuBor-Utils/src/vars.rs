@@ -108,6 +108,13 @@ pub mod attack_air {
     }
 }
 
+pub mod dash {
+    pub mod flag {
+        pub const IS_DASH_CANCEL : i32 = 0x1050;
+        pub const DISABLE_RUN : i32 = 0x1051;
+    }
+}
+
 pub mod guard_off {
     pub mod int {
         pub const ATTACK_CANCEL_FRAME : i32 = 0x1050;

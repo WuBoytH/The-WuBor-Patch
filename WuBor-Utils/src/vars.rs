@@ -593,6 +593,14 @@ pub mod shulk {
     }
 }
 
+pub mod sonic {
+    pub mod status {
+        pub mod flag {
+            pub const DASH_FROM_THROW_LW : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod szerosuit {
     pub mod special_hi {
         pub mod flag {

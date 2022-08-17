@@ -210,10 +210,10 @@ unsafe extern "C" fn marth_specials_substatus(fighter: &mut L2CFighterCommon, _p
             }
             let stick_y = fighter.global_table[STICK_Y].get_f32();
             let squat_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"));
-            if stick_y > squat_stick_y {
+            if stick_y > -squat_stick_y {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_HI);
             }
-            else if -stick_y > squat_stick_y {
+            else if stick_y < squat_stick_y {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW);
             }
         }

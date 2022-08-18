@@ -36,10 +36,10 @@ jobs:
           prerelease: true
           allow_override: true
           gzip: false
-          tag: beta
-          name: beta
+          tag: nightly-dev
+          name: nightly-dev
           body: >
-            Beta built off of the latest code in the repository. 
+            Beta built off of the latest code in the dev branch. 
             
             ## Installation
             

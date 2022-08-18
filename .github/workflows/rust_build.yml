@@ -24,7 +24,6 @@ jobs:
           path: plugin
   upload:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev' && needs.plugin.status == 'success'
     needs:
       - plugin
     steps:

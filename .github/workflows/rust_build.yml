@@ -18,10 +18,10 @@ jobs:
         env:
           HOME: /root
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: plugin
-          path: target/aarch64-skyline-switch/release/libthe_wubor_patch.nro
+          path: plugin
   upload:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev' && needs.plugin.status == 'success'
@@ -29,21 +29,20 @@ jobs:
       - plugin
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v2
-      - name: Update Release
-        uses: meeDamian/github-release@2.0
+        uses: actions/download-artifact@v3.0.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          name: plugin
+      - name: Update Release
+        uses: svenstaro/upload-release-action@2.3.0
+        with:
+          file: '*.nro'
           prerelease: true
-          allow_override: true
-          gzip: false
+          file_glob: true
           tag: nightly-dev
-          name: nightly-dev
+          release_name: nightly-dev
           body: >
             Beta built off of the latest code in the repository. 
             
             ## Installation
             
             Rename the file to plugin.nro and replace the one in `ultimate/mods/The WuBor Patch`.
-          files: >
-            plugin/*

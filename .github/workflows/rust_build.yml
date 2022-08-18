@@ -1,37 +1,54 @@
-name: Rust Build
+name: Rust
 
 on:
   push:
-    branches: [ master ]
-  # pull_request:
-  #   branches: [ main ]
+    branches: [ dev ]
+  workflow_dispatch:
 
 jobs:
-  build:
-    env:
-      PLUGIN_NAME: The_WuBor_Patch
+  plugin:
     runs-on: ubuntu-latest
-    container: 
-      image: jugeeya/cargo-skyline:2.1.0-dkp
+    container:
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
-    - uses: actions/checkout@v2
-    - name: Update STD
-      run: PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline update-std
-    - name: Attempt to build
-      run: PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
-# uncomment the build step below to build on every change to master.
-#    - name: Update Release
-#      env:
-#          PLUGIN_NAME: 'libThe_Bor_Patch.nro'  #  change this to the name of your plugin
-#      uses: meeDamian/github-release@2.0
-#      with:
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        prerelease: true
-#        allow_override: true
-#        gzip: false
-#        tag: master
-#        name: master
-#        body: Build of ${{env.PLUGIN_NAME}} from master.
-#        files: >
-#          ./target/aarch64-skyline-switch/release/${{env.PLUGIN_NAME}}
-# test
+      - uses: actions/checkout@v2
+      - name: Build release NRO
+        run: |
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
+        env:
+          HOME: /root
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: plugin
+          path: target/aarch64-skyline-switch/release/libthe_wubor_patch.nro
+      - name: Upload static files
+        uses: actions/upload-artifact@v2
+        with:
+          name: static
+          path: src/static
+  upload:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs:
+      - plugin
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+      - name: Update Release
+        uses: meeDamian/github-release@2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: true
+          allow_override: true
+          gzip: false
+          tag: nightly-dev
+          name: nightly-dev
+          body: >
+            Beta built off of the latest code in the repository. 
+            
+            ## Installation
+            
+            Rename the file to plugin.nro and replace the one in `ultimate/mods/The WuBor Patch`.
+          files: >
+            plugin/*

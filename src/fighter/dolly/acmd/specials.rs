@@ -22,7 +22,7 @@ unsafe fn dolly_specialn(fighter: &mut L2CAgentBase) {
         macros::FT_MOTION_RATE(fighter, 7.0 / 6.0);
     }
     else {
-        macros::FT_MOTION_RATE(fighter, 5.0 / 6.0);
+        macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
     }
     frame(fighter.lua_state_agent, 12.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {

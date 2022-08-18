@@ -22,11 +22,6 @@ jobs:
         with:
           name: plugin
           path: target/aarch64-skyline-switch/release/libthe_wubor_patch.nro
-      - name: Upload static files
-        uses: actions/upload-artifact@v2
-        with:
-          name: static
-          path: src/static
   upload:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'

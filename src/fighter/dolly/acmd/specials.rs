@@ -19,10 +19,10 @@ unsafe fn dolly_specialn(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
     }
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W {
-        macros::FT_MOTION_RATE(fighter, 7.0 / 6.0);
+        MotionModule::set_rate(fighter.module_accessor, 6.0 / 7.0);
     }
     else {
-        macros::FT_MOTION_RATE(fighter, 2.0 / 3.0);
+        MotionModule::set_rate(fighter.module_accessor, 3.0 / 2.0);
     }
     frame(fighter.lua_state_agent, 12.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {

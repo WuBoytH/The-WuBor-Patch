@@ -29,8 +29,6 @@ jobs:
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
-        with:
-          name: plugin
       - name: Update Release
         uses: meeDamian/github-release@2.0
         with:

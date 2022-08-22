@@ -59,7 +59,7 @@ jobs:
           tag: nightly-dev
           name: ${{needs.plugin.outputs.version}}
           body: >
-            Beta built off of the latest code in the dev branch.
+            Nightly built off of the latest code in the dev branch.
             
             ## Installation
             

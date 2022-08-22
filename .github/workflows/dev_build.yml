@@ -1,4 +1,4 @@
-name: Rust
+name: Dev Build
 
 on:
   push:
@@ -6,10 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  plugin:
+  getversion:
     runs-on: ubuntu-latest
-    container:
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
       - uses: actions/checkout@v2.4.2
       - name: Echo
@@ -20,6 +18,14 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
         uses: dante-signal31/rust-app-version@v1.0.0
+    outputs:
+      version: ${{ steps.plugin_version.outputs.app_version }}
+  plugin:
+    runs-on: ubuntu-latest
+    container:
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+    steps:
+      - uses: actions/checkout@v2.4.2
       - name: Build release NRO
         run: |
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
@@ -59,7 +65,7 @@ jobs:
           allow_override: true
           gzip: false
           tag: nightly-dev
-          name: ${{needs.plugin.outputs.version}}
+          name: ${{needs.getversion.outputs.version}}
           body: >
             Nightly built off of the latest code in the dev branch.
             

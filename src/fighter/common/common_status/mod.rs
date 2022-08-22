@@ -16,6 +16,7 @@ mod damage_air;
 mod damage_fall;
 mod landing;
 mod pass;
+mod cliff;
 mod appeal;
 mod sub_transitions;
 
@@ -38,6 +39,7 @@ pub fn install() {
     damage_fall::install();
     landing::install();
     pass::install();
+    cliff::install();
     appeal::install();
     sub_transitions::install();
 }

@@ -15,6 +15,8 @@ jobs:
       - name: Echo Workspace Location
         run: |
           echo ${{github.workspace}}/
+          cd ${{github.workspace}}/
+          ls
       - name: Get Plugin Version
         id: plugin_version
         # You may pin to the exact commit or the version.

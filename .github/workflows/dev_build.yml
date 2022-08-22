@@ -12,16 +12,13 @@ jobs:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
       - uses: actions/checkout@v2.4.2
-      - name: Echo Workspace Location
-        run: |
-          echo ${{github.workspace}}/
       - name: Get Plugin Version
         id: plugin_version
         # You may pin to the exact commit or the version.
         # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
         uses: dante-signal31/rust-app-version@v1.0.0
         with:
-          cargo_toml_folder: /__w/The-WuBor-Patch/The-WuBor-Patch/
+          cargo_toml_folder: "."
       - name: Build release NRO
         run: |
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release

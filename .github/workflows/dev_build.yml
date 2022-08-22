@@ -12,6 +12,16 @@ jobs:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
       - uses: actions/checkout@v2.4.2
+      - name: Echo Workspace Location
+        run: |
+          echo ${{github.workspace}}/
+      - name: Get Plugin Version
+        id: plugin_version
+        # You may pin to the exact commit or the version.
+        # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
+        uses: dante-signal31/rust-app-version@v1.0.0
+        with:
+          cargo_toml_folder: /__w/The-WuBor-Patch/The-WuBor-Patch/
       - name: Build release NRO
         run: |
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
@@ -22,19 +32,14 @@ jobs:
         with:
           name: plugin
           path: target/aarch64-skyline-switch/release/libthe_wubor_patch.nro
+    outputs:
+      version: ${{ steps.plugin_version.outputs.app_version }}
   upload:
     runs-on: ubuntu-latest
     needs:
       - plugin
     steps:
       - uses: actions/checkout@v2.4.2
-      - name: Get Plugin Version
-        id: plugin_version
-        # You may pin to the exact commit or the version.
-        # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
-        uses: dante-signal31/rust-app-version@v1.0.0
-        with:
-          cargo_toml_folder: ${{github.workspace}}/
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
       - name: Download Assets
@@ -58,7 +63,7 @@ jobs:
           allow_override: true
           gzip: false
           tag: nightly-dev
-          name: ${{ steps.plugin_version.outputs.app_version }}
+          name: ${{needs.plugin.outputs.version}}
           body: >
             Nightly built off of the latest code in the dev branch.
             

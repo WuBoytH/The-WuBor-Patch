@@ -14,14 +14,14 @@ jobs:
       - uses: actions/checkout@v2.4.2
       - name: Echo Workspace Location
         run: |
-          echo ${{github.workspace}}
+          echo ${{github.workspace}}/
       - name: Get Plugin Version
         id: plugin_version
         # You may pin to the exact commit or the version.
         # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
         uses: dante-signal31/rust-app-version@v1.0.0
         with:
-          cargo_toml_folder: ${{github.workspace}}
+          cargo_toml_folder: ${{github.workspace}}/
       - name: Build release NRO
         run: |
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release

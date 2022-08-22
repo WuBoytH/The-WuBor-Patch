@@ -62,9 +62,9 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW
+        // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U,
+        // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S,
+        // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW
     ];
     let mut enableds = [false; 13];
     for x in 0..terms.len() {
@@ -80,9 +80,9 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
         if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND);
@@ -153,9 +153,9 @@ pub unsafe extern "C" fn dolly_kara_cancel(fighter: &mut L2CFighterCommon) -> L2
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
-        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_U);
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_S);
+        // WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_APPEAL_LW);
     }
     let val = fighter.sub_transition_group_check_special_command();
     for x in 0..terms.len() {

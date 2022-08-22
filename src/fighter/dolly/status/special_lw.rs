@@ -3,7 +3,7 @@ use {
         lua2cpp::L2CFighterCommon,
         hash40,
         phx::Hash40,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
@@ -11,6 +11,55 @@ use {
     custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };
+
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn dolly_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    dolly_speciallw_pre_main(fighter)
+}
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn dolly_speciallw_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    dolly_speciallw_pre_main(fighter)
+}
+
+unsafe extern "C" fn dolly_speciallw_pre_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_LW);
+    }
+    let attr = if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL)
+    && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH {
+        0
+    }
+    else {
+        *FIGHTER_STATUS_ATTR_START_TURN
+    };
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_NONE),
+        *FIGHTER_KINETIC_TYPE_UNIQ,
+        *GROUND_CORRECT_KIND_KEEP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        (*FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON) as u64,
+        attr as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
+        0
+    );
+    0.into()
+}
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -107,6 +156,8 @@ unsafe fn dolly_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue
 
 pub fn install() {
     install_status_scripts!(
+        dolly_speciallw_pre,
+        dolly_speciallw_command_pre,
         dolly_speciallw_end,
         dolly_speciallw_command_end,
         dolly_speciallw_attack_main, dolly_speciallw_attack_end

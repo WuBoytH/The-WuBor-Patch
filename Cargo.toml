@@ -1,6 +1,6 @@
 [package]
 name = "the_wubor_patch"
-version = "0.15.0"
+version = "0.15.0-dev"
 authors = ["WuBoy and Bor"]
 edition = "2018"
 

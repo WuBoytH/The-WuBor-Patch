@@ -53,7 +53,7 @@ jobs:
           # 
           repo: WuBor-Romfs
           # 
-          tag: latest
+          tag: dev
           # 
           file: romfs.zip
       - name: Update Release
@@ -63,10 +63,13 @@ jobs:
           prerelease: true
           allow_override: true
           gzip: false
-          tag: nightly-dev
+          tag: ${{needs.getversion.outputs.version}}
           name: ${{needs.getversion.outputs.version}}
           body: >
             Nightly built off of the latest code in the dev branch.
+
+            [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
+            These will be updated to match the most recent dev build (this one!).
             
             ## Installation
             

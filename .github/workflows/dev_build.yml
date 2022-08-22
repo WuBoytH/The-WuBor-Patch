@@ -2,7 +2,7 @@ name: Rust
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ ]
   workflow_dispatch:
 
 jobs:
@@ -56,7 +56,11 @@ jobs:
             
             ## Installation
             
-            Rename the file to plugin.nro and replace the one in `ultimate/mods/The WuBor Patch`.
+            Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
+
+            Extract `romfs.zip` to the root of the SD card.
+
+            Rename `libthe_wubor_patch.nro` file to `plugin.nro` and replace the one in `ultimate/mods/The WuBor Patch`.
           files: >
             plugin/*
             romfs.zip

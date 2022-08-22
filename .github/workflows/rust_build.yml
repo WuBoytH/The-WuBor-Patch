@@ -29,6 +29,19 @@ jobs:
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
+      - name: Download Assets
+        # You may pin to the exact commit or the version.
+        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
+        uses: i3h/download-release-asset@v1.3.2
+        with:
+          # 
+          owner: WuBoytH
+          # 
+          repo: WuBoyr-Romfs
+          # 
+          tag: latest
+          # 
+          file: romfs.zip
       - name: Update Release
         uses: meeDamian/github-release@2.0
         with:
@@ -46,3 +59,4 @@ jobs:
             Rename the file to plugin.nro and replace the one in `ultimate/mods/The WuBor Patch`.
           files: >
             plugin/*
+            romfs.zip

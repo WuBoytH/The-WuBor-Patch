@@ -579,6 +579,20 @@ unsafe fn dolly_specialhicommand(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "dolly", script = "game_speciallwstart", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_speciallwstart(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 60, 30, 60, 80, 5.0, 0.0, 10.0, 3.0, Some(0.0), Some(6.0), Some(3.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
+        AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 0, 2.0, false);
+        VarModule::on_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_CHECK_BREAK);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
 #[acmd_script( agent = "dolly", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_specialairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 0.0);
@@ -1238,6 +1252,7 @@ pub fn install() {
         dolly_specialsbattack,
         dolly_specialhi,
         dolly_specialhicommand,
+        dolly_speciallwstart,
         dolly_specialairlw,
         dolly_superspecial,
         dolly_superspecial2start,

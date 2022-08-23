@@ -151,7 +151,7 @@ unsafe extern "C" fn dolly_speciallw_mot_helper(fighter: &mut L2CFighterCommon, 
 unsafe extern "C" fn dolly_speciallw_substatus(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_INT_START_SITUATION);
     if start_sit == *SITUATION_KIND_GROUND
-    && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
+    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
         VarModule::on_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_ENABLE_BREAK);
     }
     0.into()

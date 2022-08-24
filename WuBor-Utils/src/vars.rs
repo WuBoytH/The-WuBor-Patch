@@ -181,6 +181,10 @@ pub mod dolly {
     pub mod status {
         pub mod flag {
             pub const SPECIAL_N_FEINT : i32 = 0x1100;
+
+            pub const SPECIAL_LW_CHECK_BREAK : i32 = 0x1100;
+            pub const SPECIAL_LW_ENABLE_BREAK : i32 = 0x1101;
+            pub const SPECIAL_LW_BREAK : i32 = 0x1102;
         }
     }
 }

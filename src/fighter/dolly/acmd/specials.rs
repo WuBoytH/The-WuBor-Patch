@@ -586,7 +586,8 @@ unsafe fn dolly_speciallwstart(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 6.0, 70, 30, 60, 73, 5.0, 0.0, 10.0, 6.0, Some(0.0), Some(6.0), Some(6.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
+        let output = dolly_calc_special_cancel(fighter, 4.5, 30);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), output.dmg, 65, 30, 30, 73, 5.0, 0.0, 10.0, 7.5, Some(0.0), Some(6.0), Some(7.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_BODY);
         VarModule::on_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_CHECK_BREAK);
     }
     wait(fighter.lua_state_agent, 1.0);
@@ -596,6 +597,77 @@ unsafe fn dolly_speciallwstart(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "effect_speciallwstart", category = ACMD_EFFECT, low_priority )]
+unsafe fn dolly_speciallwstart_eff(fighter: &mut L2CAgentBase) {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(fighter) {
+            macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 8, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+            macros::LAST_EFFECT_SET_RATE(fighter, 1.3);
+        }
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("dolly_down_start"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_BREAK) {
+        if macros::is_excute(fighter) {
+            for _ in 0..5 {
+                macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_flyroll_smoke"), Hash40::new("emit"), 0, 0, 0, 0, 0, 0, 1.0, true);
+                macros::LAST_EFFECT_SET_RATE(fighter, 0.1);
+                macros::LAST_EFFECT_SET_COLOR(fighter, 0.1, 0.1, 1.0);
+                macros::LAST_EFFECT_SET_ALPHA(fighter, 0.4);
+            }
+        }
+    }
+    frame(fighter.lua_state_agent, 11.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("sys_flyroll_smoke"), false, false);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "sound_speciallwstart", category = ACMD_SOUND, low_priority )]
+unsafe fn dolly_speciallwstart_snd(fighter: &mut L2CAgentBase) {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_dolly_command_success"));
+        }
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_BREAK) {
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("vc_dolly_ottotto"));
+        }
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "expression_speciallwstart", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dolly_speciallwstart_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_rush"),
+            8,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(fighter) {
+            macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+        }
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
 }
 
@@ -1258,7 +1330,7 @@ pub fn install() {
         dolly_specialsbattack,
         dolly_specialhi,
         dolly_specialhicommand,
-        dolly_speciallwstart,
+        dolly_speciallwstart, dolly_speciallwstart_eff, dolly_speciallwstart_snd, dolly_speciallwstart_exp,
         dolly_specialairlw,
         dolly_superspecial,
         dolly_superspecial2start,

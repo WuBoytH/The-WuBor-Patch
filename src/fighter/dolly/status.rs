@@ -1,3 +1,4 @@
+mod wait;
 mod dash_back;
 mod guard_off;
 mod escape;
@@ -15,6 +16,7 @@ mod superspecial;
 mod appeal;
 
 pub fn install() {
+    wait::install();
     dash_back::install();
     guard_off::install();
     escape::install();

@@ -73,7 +73,7 @@ unsafe extern "C" fn lucario_special_s_throw_set_kinetic(fighter: &mut L2CFighte
     else {
         lucario_special_set_ground(fighter);
         lucario_special_ground_mot_helper(fighter);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
 }
 

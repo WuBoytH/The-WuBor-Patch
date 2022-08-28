@@ -849,6 +849,25 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
             // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_LANDING_CLIFF_STOP);
         }
     }
+    else {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
+        let mut air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
+        if speed_x.abs() > air_speed_x_stable {
+            if speed_x < 1.0 { air_speed_x_stable *= -1.0 }
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+            let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+            sv_kinetic_energy!(
+                set_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                air_speed_x_stable,
+                speed_y
+            );
+        }
+    }
     VarModule::off_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
     fighter.status_end_Jump();
     0.into()

@@ -157,10 +157,10 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         mot = Hash40::new("jump_f_mini");
     }
     let ret = if param_1.get_u64() != hash40("invalid") {
-        param_1
+        param_1.get_u64()
     }
     else {
-        0.into()
+        0
     };
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -180,7 +180,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         fighter.sub_fall_common_uniq(false.into());
     }
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_fall_common_uniq as *const () as _));
-    ret
+    ret.into()
 }
 
 unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {

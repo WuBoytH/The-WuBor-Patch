@@ -193,7 +193,7 @@ unsafe extern "C" fn dolly_status_end_control(fighter: &mut L2CFighterCommon) ->
                     }
                     else if !cont && status == *FIGHTER_STATUS_KIND_ATTACK {
                         if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ATTACK
-                        && ComboModule::count(fighter.module_accessor) != 0 {
+                        && ComboModule::count(fighter.module_accessor) == 0 {
                             cont = true;
                         }
                     }

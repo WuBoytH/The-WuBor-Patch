@@ -102,6 +102,14 @@ pub mod commons {
     }
 }
 
+pub mod weapon {
+    pub mod instance {
+        pub mod flag {
+            pub const FROM_POCKET : i32 = 0x0000;
+        }
+    }
+}
+
 pub mod attack_air {
     pub mod flag {
         pub const WHIFF : i32 = 0x1050;
@@ -348,6 +356,7 @@ pub mod lucario {
     pub mod status {
         pub mod flag {
             pub const SPECIAL_N_ENABLE_SUPERDASH : i32 = 0x1150;
+            pub const SPECIAL_N_SPIRIT_BOMB : i32 = 0x1151;
 
             pub const SPECIAL_S_THROW_ENABLE_GRAVITY : i32 = 0x1150;
             pub const SPECIAL_S_THROW_POST_GRAVITY : i32 = 0x1151;
@@ -359,6 +368,20 @@ pub mod lucario {
         }
         pub mod int {
             pub const AURA_ENHANCED_BY : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod lucario_auraball {
+    pub mod instance {
+        pub mod flag {
+            pub const SPIRIT_BOMB : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const FROM_AIR : i32 = 0x1100;
+            pub const EXPLOSION : i32 = 0x1101;
         }
     }
 }

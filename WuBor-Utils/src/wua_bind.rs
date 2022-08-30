@@ -654,6 +654,30 @@ pub mod MiscModule {
     
     #[skyline::from_offset(0x3ac540)]
     pub fn get_battle_object_from_id(id: u32) -> *mut BattleObject;
+
+    pub unsafe fn get_vars_from_pocket(object: *mut BattleObject) -> bool {
+        // println!("Weapon ID: {:#x}", (*object).battle_object_id);
+        let owner_object_id = WorkModule::get_int((*object).module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        // println!("Owner ID: {:#x}", owner_object_id);
+        let owner_cat = sv_battle_object::category(owner_object_id);
+        // println!("Owner Category: {:#x}", owner_cat);
+        let owner_kind = sv_battle_object::kind(owner_object_id);
+        // println!("Owner Kind: {:#x}", owner_kind);
+        if owner_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
+        && [*FIGHTER_KIND_MURABITO, *FIGHTER_KIND_SHIZUE].contains(&owner_kind) {
+            // println!("Owner objects are either Villager or Isabelle!");
+            let owner_module_accessor = sv_battle_object::module_accessor(owner_object_id);
+            let pocket_object_id = WorkModule::get_int(owner_module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_SPECIAL_N_OBJECT_ID) as u32;
+            // println!("Pocketed Item Object ID: {:#x}", pocket_object_id);
+            if (*object).battle_object_id == pocket_object_id {
+                // println!("Pocket object and new object match! Retrieving pocketed vars...");
+                VarModule::retrieve_pocketed_vars(object, owner_object_id);
+                VarModule::on_flag(object, weapon::instance::flag::FROM_POCKET);
+                return true;
+            }
+        }
+        false
+    }
 }
 
 extern "C" {

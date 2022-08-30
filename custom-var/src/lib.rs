@@ -156,12 +156,6 @@ impl VarModule {
             if mask & Self::RESET_STATUS_FLAG != 0 {
                 module.flag[1].fill(false);
             }
-            if mask & Self::RESET_ALL != 0 {
-                module.copy_int.fill(0);
-                module.copy_int64.fill(0);
-                module.copy_float.fill(0.0);
-                module.copy_flag.fill(false);
-            }
         }
     }
 
@@ -178,19 +172,27 @@ impl VarModule {
         let mut float_temp = vec![0.0f32; 0x200];
         let mut flag_temp = vec![false; 0x200];
         if let Some(mut pocket_module) = modules.get_mut(&pocketed_object_id) {
+            // println!("[VarModule] Retrieving Vars to Pocket from {:#x}", pocketed_object_id);
             for x in 0..0x200 {
                 int_temp[x] = pocket_module.int[0][x];
                 int64_temp[x] = pocket_module.int64[0][x];
                 float_temp[x] = pocket_module.float[0][x];
                 flag_temp[x] = pocket_module.flag[0][x];
+                // if flag_temp[x] {
+                //     println!("[VarModule] Pocketed Var {:#x} was true! (Get)", x);
+                // }
             }
         }
         if let Some(mut module) = modules.get_mut(&object_id) {
+            // println!("[VarModule] Storing Pocketed Vars into {:#x}", object_id);
             for x in 0..0x200 {
                 module.copy_int[x] = int_temp[x];
                 module.copy_int64[x] = int64_temp[x];
                 module.copy_float[x] = float_temp[x];
                 module.copy_flag[x] = flag_temp[x];
+                // if flag_temp[x] {
+                //     println!("[VarModule] Pocketed Var {:#x} was true! (Store)", x);
+                // }
             }
         }
     }
@@ -208,23 +210,27 @@ impl VarModule {
         let mut float_temp = vec![0.0f32; 0x200];
         let mut flag_temp = vec![false; 0x200];
         if let Some(mut pocket_module) = modules.get_mut(&owner_object_id) {
+            // println!("[VarModule] Retrieving Pocketed Vars from {:#x}", owner_object_id);
             for x in 0..0x200 {
                 int_temp[x] = pocket_module.copy_int[x];
                 int64_temp[x] = pocket_module.copy_int64[x];
                 float_temp[x] = pocket_module.copy_float[x];
                 flag_temp[x] = pocket_module.copy_flag[x];
-                pocket_module.copy_int.fill(0);
-                pocket_module.copy_int64.fill(0);
-                pocket_module.copy_float.fill(0.0);
-                pocket_module.copy_flag.fill(false);
+                // if flag_temp[x] {
+                //     println!("[VarModule] Retrieved Var {:#x} was true! (Get)", x);
+                // }
             }
         }
         if let Some(mut module) = modules.get_mut(&object_id) {
+            // println!("[VarModule] Storing Pocketed Vars into {:#x}", object_id);
             for x in 0..0x200 {
                 module.int[0][x] = int_temp[x];
                 module.int64[0][x] = int64_temp[x];
                 module.float[0][x] = float_temp[x];
                 module.flag[0][x] = flag_temp[x];
+                // if flag_temp[x] {
+                //     println!("[VarModule] Retrieved Var {:#x} was true! (Store)", x);
+                // }
             }
         }
     }

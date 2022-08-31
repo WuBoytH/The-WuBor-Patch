@@ -1,6 +1,6 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
@@ -677,6 +677,16 @@ pub mod MiscModule {
             }
         }
         false
+    }
+
+    pub unsafe fn calc_motion_rate_from_cancel_frame(fighter: &mut L2CAgentBase, current_frame: f32, adjust_frame: f32) {
+        let mot = MotionModule::motion_kind(fighter.module_accessor);
+        let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(mot), true);
+        let adjusted_frame = cancel_frame - current_frame;
+        if adjusted_frame > 0.0
+        && adjusted_frame + adjust_frame > 0.0 {
+            macros::FT_MOTION_RATE(fighter, (adjusted_frame + adjust_frame) / adjusted_frame);
+        }
     }
 }
 

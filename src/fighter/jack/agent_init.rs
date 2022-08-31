@@ -32,7 +32,7 @@ unsafe fn get_original_customizer(fighter: &mut L2CFighterCommon) -> Option<unsa
 unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2CValue {
     let customize_to = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_WAZA_CUSTOMIZE_TO);
     if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_S_1 {
-        fighter.sv_set_status_func(FIGHTER_STATUS_KIND_SPECIAL_S.into(), LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(), &mut *(jack_specials_main as *const () as *mut skyline::libc::c_void));
+        fighter.sv_set_status_func(FIGHTER_STATUS_KIND_SPECIAL_S.into(), LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(), &mut *(jack_specials_main as *const () as *mut libc::c_void));
         0.into()
     } else if let Some(original) = get_original_customizer(fighter) {
         original(fighter)

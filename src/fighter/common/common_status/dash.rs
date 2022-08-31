@@ -75,6 +75,59 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_Dash_Sub)]
+unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
+    let start_frame = if [
+        *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_LANDING_LIGHT
+    ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
+        6.0
+    }
+    else {
+        0.0
+    };
+    // New
+    let start_rate = if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+        0.75
+    }
+    else {
+        1.0
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("dash"),
+        0.0,
+        start_rate,
+        false,
+        start_frame,
+        false,
+        false
+    );
+    fighter.status_DashCommon();
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Sub)]
+unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
+    // New
+    let start_rate = if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+        0.75
+    }
+    else {
+        1.0
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("turn_dash"),
+        0.0,
+        start_rate,
+        false,
+        0.0,
+        false,
+        false
+    );
+    WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+    fighter.status_DashCommon();
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_DashCommon)]
 unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
@@ -179,6 +232,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
     if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
             VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            MotionModule::set_rate(fighter.module_accessor, 1.0);
             if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
                 WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
@@ -483,7 +537,14 @@ pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub unsafe fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash_b"), 0.0, 1.0, false, 0.0, false, false);
+    // New
+    let start_rate = if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+        0.75
+    }
+    else {
+        1.0
+    };
+    MotionModule::change_motion(fighter.module_accessor, Hash40::new("dash_b"), 0.0, start_rate, false, 0.0, false, false);
     fighter.status_DashCommon();
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH);
@@ -500,6 +561,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
             VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            MotionModule::set_rate(fighter.module_accessor, 1.0);
             if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
                 WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
@@ -831,6 +893,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             status_pre_dash,
             status_pre_turndash,
+            status_dash_sub,
+            status_turndash_sub,
             status_dashcommon,
             status_dash_main_common,
             sub_dash_uniq_process_main_internal

@@ -87,6 +87,7 @@ unsafe fn lucario_special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn lucario_special_hi_rush_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     if situation != *SITUATION_KIND_GROUND {
+        FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, false);
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
         GroundModule::set_cliff_check(fighter.module_accessor, GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES));
@@ -252,7 +253,6 @@ unsafe fn lucario_special_hi_rush_end_end(fighter: &mut L2CFighterCommon) -> L2C
         lucario_special_hi_end(fighter, fighter.global_table[STATUS_KIND].clone());
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, false);
         if VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0
         && !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA) {
             FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, true);

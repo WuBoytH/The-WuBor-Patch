@@ -16,11 +16,11 @@ use {
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucario_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let enhanced_by = VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY);
-    let cancel = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT {
-        VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH)
-    }
-    else { false };
+    // let enhanced_by = VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY);
+    // let cancel = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT {
+    //     VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH)
+    // }
+    // else { false };
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -45,10 +45,10 @@ unsafe fn lucario_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_HI as u32,
         0
     );
-    VarModule::set_flag(fighter.battle_object, lucario::status::flag::SPECIAL_HI_CANCELLED_INTO, cancel);
-    if cancel {
-        VarModule::set_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY, enhanced_by);
-    }
+    // VarModule::set_flag(fighter.battle_object, lucario::status::flag::SPECIAL_HI_CANCELLED_INTO, cancel);
+    // if cancel {
+    //     VarModule::set_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY, enhanced_by);
+    // }
     0.into()
 }
 
@@ -77,7 +77,7 @@ unsafe fn lucario_special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr = PostureModule::lr(fighter.module_accessor);
     WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_START_CHARA_LR);
     FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, false);
-    if !VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_HI_CANCELLED_INTO) {
+    if !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA) {
         lucario_drain_aura(fighter, false);
     }
     0.into()
@@ -250,6 +250,16 @@ unsafe fn lucario_special_hi_rush_end_end(fighter: &mut L2CFighterCommon) -> L2C
             VarModule::on_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
         }
         lucario_special_hi_end(fighter, fighter.global_table[STATUS_KIND].clone());
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        if VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0
+        && !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA) {
+            FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, true);
+            VarModule::on_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA);
+        }
+        else {
+            FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, false);
+        }
     }
     0.into()
 }

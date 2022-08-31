@@ -11,13 +11,16 @@ use {
 };
 
 pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
+    || status == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::off_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR);
+        VarModule::off_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA);
         if ![
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_LANDING_LIGHT,
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
-        ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        ].contains(&status) {
             VarModule::off_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
         }
     }

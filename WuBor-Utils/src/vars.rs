@@ -348,6 +348,7 @@ pub mod lucario {
         pub mod flag {
             pub const USED_AURA_CHARGE_AIR : i32 = 0x0100;
             pub const FORCE_LANDING_FALL_SPECIAL : i32 = 0x0101;
+            pub const EXTREME_SPEED_FORCE_NO_AURA : i32 = 0x0102;
         }
         pub mod int {
             pub const AURA_LEVEL : i32 = 0x0100;

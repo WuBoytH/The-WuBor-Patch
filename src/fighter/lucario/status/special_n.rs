@@ -17,7 +17,7 @@ unsafe fn lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
     WorkModule::set_customize_no(fighter.module_accessor, 0, 0);
-    lucario_drain_aura(fighter, false);
+    // lucario_drain_aura(fighter, false);
     lucario_special_set_kinetic(fighter);
     lucario_special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
@@ -35,7 +35,7 @@ unsafe extern "C" fn lucario_special_n_main_loop(fighter: &mut L2CFighterCommon)
     }
     else {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        && VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) >= 2 {
+        && VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 2 {
             lucario_drain_aura(fighter, true);
             VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB);
             if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_GROUND {
@@ -113,7 +113,7 @@ unsafe extern "C" fn lucario_special_n_shoot_main_loop(fighter: &mut L2CFighterC
             return 0.into();
         }
     }
-    if VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0
+    if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0
     && VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH) {
         let situation = fighter.global_table[SITUATION_KIND].clone();
         special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());

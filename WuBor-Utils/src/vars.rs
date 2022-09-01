@@ -334,8 +334,8 @@ pub mod ken {
 pub mod kirby {
     pub mod status {
         pub mod flag {
-            pub const ATTACK_DASH_END : i32 = 0x1100;
-            pub const ATTACK_LW3_BOUNCE : i32 = 0x1100;
+            pub const ATTACK_DASH_END : i32 = 0x1150;
+            pub const ATTACK_LW3_BOUNCE : i32 = 0x1150;
         }
         pub mod int {
             pub const APPEAL_S_LOOP_COUNT : i32 = 0x1100;

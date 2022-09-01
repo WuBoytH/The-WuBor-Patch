@@ -16,7 +16,7 @@ unsafe fn kirby_lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CVal
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-    lucario_drain_aura(fighter, false);
+    WorkModule::set_customize_no(fighter.module_accessor, 0, 0);
     kirby_lucario_special_set_kinetic(fighter);
     lucario_special_n_joint_translate(fighter);
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
@@ -132,8 +132,8 @@ unsafe extern "C" fn kirby_lucario_special_n_hold_main_loop(fighter: &mut L2CFig
         return 0.into();
     }
     let max_charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("max_charge_frame"));
-    let charge = WorkModule::get_int(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AURABALL_CHARGE_FRAME);
-    if charge >= max_charge_frame as i32 {
+    let charge = fighter.global_table[MOTION_FRAME].get_f32();
+    if charge >= max_charge_frame + 4.0 {
         fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT.into(), false.into());
     }
     0.into()

@@ -19,7 +19,7 @@ wubor_utils = { path = "./WuBor-Utils" }
 custom_status = { path = "./custom-status" }
 custom_var = { path = "./custom-var" }
 smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
-libc-nnsdk = { git = "https://github.com/ultimate-research/libc-nnsdk" }
+libc-nnsdk = "0.2.0"
 
 [profile.dev]
 panic = "abort"

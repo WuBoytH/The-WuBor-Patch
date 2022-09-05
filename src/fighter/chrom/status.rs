@@ -182,7 +182,7 @@ unsafe fn chrom_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn chrom_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH)
-        && GroundModule::can_entry_cliff(fighter.module_accessor) == 1 {
+        && GroundModule::can_entry_cliff(fighter.module_accessor) != 0 {
             fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE.into(), false.into());
         }
     }

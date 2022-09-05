@@ -41,7 +41,11 @@ unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
         let owner_object = MiscModule::get_battle_object_from_id(owner_id);
-        if StatusModule::situation_kind((*owner_object).module_accessor) == *SITUATION_KIND_GROUND {
+        let lucario = sv_battle_object::category(owner_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+        && sv_battle_object::kind(owner_id) == *FIGHTER_KIND_LUCARIO
+        && VarModule::is_flag(owner_object, lucario::status::flag::SPECIAL_N_START_FROM_GROUND);
+        if StatusModule::situation_kind((*owner_object).module_accessor) == *SITUATION_KIND_GROUND
+        || lucario {
             WorkModule::set_customize_no(weapon.module_accessor, 1, 0);
         }
         else {
@@ -208,15 +212,13 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
     let mut y_val = 0.0;
     if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
         if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32) {
-            let normal = GroundModule::get_touch_normal_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
-            x_val = normal.x;
-            y_val = normal.y;
+            x_val = GroundModule::get_touch_normal_x_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
+            y_val = GroundModule::get_touch_normal_y_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
         }
     }
     else {
-        let normal = GroundModule::get_touch_normal_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
-        x_val = normal.x;
-        y_val = normal.y;
+        x_val = GroundModule::get_touch_normal_x_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+        y_val = GroundModule::get_touch_normal_y_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
     }
     let length = sv_math::vec2_length(x_val, y_val);
     if 0.0 < length {

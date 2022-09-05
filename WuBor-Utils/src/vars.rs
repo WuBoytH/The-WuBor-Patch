@@ -358,6 +358,9 @@ pub mod lucario {
         pub mod flag {
             pub const SPECIAL_N_ENABLE_SUPERDASH : i32 = 0x1150;
             pub const SPECIAL_N_SPIRIT_BOMB : i32 = 0x1151;
+            pub const SPECIAL_N_START_FROM_GROUND : i32 = 0x1152;
+            pub const SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL : i32 = 0x1153;
+            pub const SPECIAL_N_SPIRIT_BOMB_FALLING : i32 = 0x1154;
 
             pub const SPECIAL_S_THROW_ENABLE_GRAVITY : i32 = 0x1150;
             pub const SPECIAL_S_THROW_POST_GRAVITY : i32 = 0x1151;

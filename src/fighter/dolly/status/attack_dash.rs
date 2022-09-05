@@ -3,7 +3,7 @@ use {
         lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
@@ -77,35 +77,11 @@ unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let status = fighter.global_table[STATUS_KIND].get_i32();
-    if [
-        *FIGHTER_STATUS_KIND_SPECIAL_LW,
-        *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND
-    ].contains(&status) {
-        fighter.clear_lua_stack();
-        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
-        let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-        let mut mul = 0.3;
-        if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_APPEAL {
-            mul = 0.1;
-        }
-        sv_kinetic_energy!(
-            reset_energy,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
-            speed_x * mul,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        );
-    }
     if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND) {
         VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND);
     }
-
+    let status = fighter.global_table[STATUS_KIND].get_i32();
     if ![
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND
     ].contains(&status) {

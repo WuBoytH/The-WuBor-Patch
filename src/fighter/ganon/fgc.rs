@@ -16,7 +16,7 @@ pub unsafe extern "C" fn ganon_fgc(fighter: &mut L2CFighterCommon) {
         let status = fighter.global_table[STATUS_KIND].get_i32();
         let mut special_cancels : Vec<i32> = [].to_vec();
         let mut normal_cancels : Vec<i32> = [].to_vec();
-        MiscModule::set_hp(fighter, 70.0);
+        MiscModule::set_hp(fighter, 230.0);
         if [
             *FIGHTER_STATUS_KIND_ATTACK,
             *FIGHTER_STATUS_KIND_ATTACK_DASH

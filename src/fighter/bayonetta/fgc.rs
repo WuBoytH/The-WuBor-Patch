@@ -51,7 +51,7 @@ pub unsafe extern "C" fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
         }
     }
     if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        MiscModule::set_hp(fighter, 132.0);
+        MiscModule::set_hp(fighter, 168.0);
         if [
             *FIGHTER_STATUS_KIND_ATTACK
         ].contains(&status) {

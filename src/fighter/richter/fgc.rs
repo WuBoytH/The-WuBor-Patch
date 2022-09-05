@@ -20,7 +20,7 @@ pub unsafe extern "C" fn richter_fgc(fighter: &mut L2CFighterCommon) {
         let mut normal_cancels : Vec<i32> = [].to_vec();
         let mut aerial_cancel = false;
         let mut jump_cancel = 0;
-        MiscModule::set_hp(fighter, 102.0);
+        MiscModule::set_hp(fighter, 198.0);
         if [
             *FIGHTER_STATUS_KIND_ATTACK
         ].contains(&status)

@@ -18,7 +18,7 @@ pub unsafe extern "C" fn dolly_fgc(fighter: &mut L2CFighterCommon) {
         // let mut special_cancels : Vec<i32> = [].to_vec();
         // let mut normal_cancels : Vec<i32> = [].to_vec();
         // let mut jump_cancel = 0;
-        MiscModule::set_hp(fighter, 90.0);
+        MiscModule::set_hp(fighter, 180.0);
         // if [
         //     *FIGHTER_STATUS_KIND_ATTACK,
         //     *FIGHTER_STATUS_KIND_ATTACK_DASH

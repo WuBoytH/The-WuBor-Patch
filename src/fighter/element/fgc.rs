@@ -19,7 +19,7 @@ pub unsafe extern "C" fn element_fgc(fighter: &mut L2CFighterCommon) {
         let mut special_cancels : Vec<i32> = [].to_vec();
         let mut normal_cancels : Vec<i32> = [].to_vec();
         let mut jump_cancel = 0;
-        MiscModule::set_hp(fighter, 112.0);
+        MiscModule::set_hp(fighter, 188.0);
         if [
             *FIGHTER_STATUS_KIND_ATTACK
         ].contains(&status) {

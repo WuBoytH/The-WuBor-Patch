@@ -589,9 +589,14 @@ pub mod MiscModule {
 
     /// Used in Fighting Game Mode to reduce a fighter's HP to their Fighting Game Mode value.
     pub unsafe fn set_hp(fighter: &mut L2CFighterCommon, hp: f32) {
-        if DamageModule::damage(fighter.module_accessor, 0) < hp
+        let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as i32;
+        let fighterentryid = smash::app::FighterEntryID(entry_id);
+        let fighterinformation = smash::app::lua_bind::FighterManager::get_fighter_information(singletons::FighterManager(), fighterentryid);
+        let max_hp = smash::app::lua_bind::FighterInformation::hit_point_max(fighterinformation, false);
+        let new_hp = max_hp - (hp / 300.0 * max_hp);
+        if DamageModule::damage(fighter.module_accessor, 0) < new_hp
         && !smashball::is_training_mode() {
-            let dmg = hp - DamageModule::damage(fighter.module_accessor, 0);
+            let dmg = new_hp - DamageModule::damage(fighter.module_accessor, 0);
             DamageModule::add_damage(fighter.module_accessor, dmg, 0);
         }
     }

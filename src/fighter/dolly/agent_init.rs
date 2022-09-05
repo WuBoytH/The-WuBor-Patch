@@ -196,6 +196,9 @@ unsafe extern "C" fn dolly_status_end_control(fighter: &mut L2CFighterCommon) ->
                         && ComboModule::count(fighter.module_accessor) == 0 {
                             cont = true;
                         }
+                        else {
+                            cont = true;
+                        }
                     }
                     else if !cont && status == *FIGHTER_STATUS_KIND_ITEM_THROW {
                         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

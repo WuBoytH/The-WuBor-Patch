@@ -746,7 +746,7 @@ unsafe fn lucario_specialairsthrow2_exp(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_qigong_shoot(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 10.0, 361, 68, 0, 60, 3.0, 0.0, 0.0, -4.5, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 10.0, 361, 68, 0, 60, 3.0, 0.0, 0.0, -4.5, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
     }
     wait(weapon.lua_state_agent, 2.0);
     if macros::is_excute(weapon) {

@@ -19,8 +19,7 @@ pub unsafe extern "C" fn bayonetta_fgc(fighter: &mut L2CFighterCommon) {
     let mut aerial_cancel = false;
     let mut jump_cancel = 0;
     if [
-        *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_S_HOLD_END
+        *FIGHTER_STATUS_KIND_ATTACK_LW3
     ].contains(&status)
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_100_end")
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SHOOTING_ACTION) {

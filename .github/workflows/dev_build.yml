@@ -60,12 +60,12 @@ jobs:
       - name: Create release zip
         shell: bash
         run: |
-          ls && cd scripts && python3 make_dist.py && cd ..
+          ls && cd scripts && python3 make_dist.py && cd .. && ls
       - name: Upload plugin artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           name: build
-          path: ../The_WuBor_Patch.zip
+          path: The_WuBor_Patch.zip
   # upload:
   #   runs-on: ubuntu-latest
   #   needs: [ plugin, getversion ]

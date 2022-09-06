@@ -107,6 +107,9 @@ pub mod weapon {
         pub mod flag {
             pub const FROM_POCKET : i32 = 0x0000;
         }
+        pub mod int {
+            pub const ORIGINAL_OWNER : i32 = 0x0000;
+        }
     }
 }
 

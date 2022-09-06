@@ -79,7 +79,7 @@ move_type_again: bool) -> u64 {
                     }
                 }
                 else if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                    let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                    let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
                     let oboma = sv_battle_object::module_accessor(otarget_id);
                     if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                         target_x = PostureModule::pos_x(defender_boma);
@@ -111,7 +111,7 @@ move_type_again: bool) -> u64 {
                 VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, attacker_object_id as i32);
             }
             else if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+                let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
                 let oboma = sv_battle_object::module_accessor(otarget_id);
                 if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
                     VarModule::set_int(defender_object, vars::commons::instance::int::TARGET_ID, 0)

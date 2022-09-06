@@ -19,8 +19,8 @@ jobs:
       version: ${{ steps.plugin_version.outputs.app_version }}
   plugin:
   needs: getversion
-    if: ${{ contains(needs.getversion.outputs.version, 'dev') }}
     runs-on: ubuntu-latest
+    if: ${{ contains(needs.getversion.outputs.version, 'dev') }}
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:

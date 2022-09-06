@@ -55,20 +55,8 @@ jobs:
           HOME: /root
       - name: Check Filesystem
         run: |
-          echo "Checking Base Folder:"
-          ls
-          echo "Checking Target"
-          cd target
-          ls
-          echo "Checking aarch64-skyline-switch"
-          cd aarch64-skyline-switch
-          ls
-          echo "Checking release"
-          cd release
-          ls
-          cd ../
-          cd ../
-          cd ../
+          echo "Moving the plugin:"
+          mv ./target/aarch64-skyline-switch/release/libthe_wubor_patch.nro ./plugin.nro
       - name: Create release zip
         shell: bash
         run: |

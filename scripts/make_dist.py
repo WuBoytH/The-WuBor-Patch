@@ -11,7 +11,7 @@ if "build" in os.listdir('..'):
   shutil.rmtree('../build')
 os.makedirs('../build/')
 shutil.unpack_archive("../romfs.zip", "../build/")
-shutil.copytree("../target/aarch64-skyline-switch/release/libthe_wubor_patch.nro", "../build/ultimate/mods/The WuBor Patch/plugin.nro")
+shutil.copytree("../plugin.nro", "../build/ultimate/mods/The WuBor Patch/plugin.nro")
 
 # zip each folder in the staging dir
 shutil.make_archive("The_WuBor_Patch", 'zip', '../build/ultimate')

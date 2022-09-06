@@ -142,16 +142,14 @@ pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFigh
 
 pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    let status_global = fighter.global_table[STATUS_KIND].get_i32();
+    let status = fighter.global_table[STATUS_KIND].get_i32();
     let statuses = if kind != *FIGHTER_KIND_KIRBY {
         [
             *FIGHTER_STATUS_KIND_SPECIAL_N,
             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
+            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL
         ]
     }
     else {
@@ -160,71 +158,45 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD,
             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX,
             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
+            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL
         ]
     };
-    if status != statuses[0]
-    || status_global == statuses[1]
-    || status_global == statuses[3] {
-        if status == statuses[1] {
-            if status_global != statuses[2] {
-                if status_global != statuses[3] {
-                    lucario_special_n_save_charge_status_shoot(fighter);
-                    return;
-                }
-            }
-        }
-        else if status == statuses[2] {
-            if status_global != statuses[3] {
-                lucario_special_n_save_charge_status_shoot(fighter);
-                return;
-            }
-        }
-        else if status != statuses[3] {
-            lucario_special_n_save_charge_status_shoot(fighter);
-            return;
-        }
-        else {
-            if !ArticleModule::is_exist(fighter.module_accessor, statuses[5]) {
-                lucario_special_n_save_charge_status_shoot(fighter);
-                return;
-            }
-        }
+    if !statuses.contains(&status) {
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
-    lucario_special_n_save_charge_status_shoot(fighter);
+    // lucario_special_n_save_charge_status_shoot(fighter);
 }
 
-unsafe extern "C" fn lucario_special_n_save_charge_status_shoot(fighter: &mut L2CFighterCommon) {
-    let kind = fighter.global_table[FIGHTER_KIND].get_i32();
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    let status_global = fighter.global_table[STATUS_KIND].get_i32();
-    let statuses = if kind != *FIGHTER_KIND_KIRBY {
-        [
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
-            *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
-        ]
-    }
-    else {
-        [
-            *FIGHTER_STATUS_KIND_SPECIAL_N,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT,
-            *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL,
-            *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
-        ]
-    };
-    if status == statuses[0] {
-        if status_global == statuses[3] {
-            EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
-        }
-    }
-    if status == statuses[3] {
-        FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, false, 0);
-    }
-}
+// unsafe extern "C" fn lucario_special_n_save_charge_status_shoot(fighter: &mut L2CFighterCommon) {
+//     let kind = fighter.global_table[FIGHTER_KIND].get_i32();
+//     let status = StatusModule::status_kind(fighter.module_accessor);
+//     let status_global = fighter.global_table[STATUS_KIND].get_i32();
+//     let statuses = if kind != *FIGHTER_KIND_KIRBY {
+//         [
+//             *FIGHTER_STATUS_KIND_SPECIAL_N,
+//             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD,
+//             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_MAX,
+//             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT,
+//             *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_CANCEL,
+//             *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
+//         ]
+//     }
+//     else {
+//         [
+//             *FIGHTER_STATUS_KIND_SPECIAL_N,
+//             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD,
+//             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_MAX,
+//             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT,
+//             *FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_CANCEL,
+//             *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL
+//         ]
+//     };
+//     if status == statuses[0] {
+//         if status_global == statuses[3] {
+//             EffectModule::remove_common(fighter.module_accessor, Hash40::new("charge_max"));
+//         }
+//     }
+//     if status == statuses[3] {
+//         FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, false, 0);
+//     }
+// }

@@ -20,7 +20,7 @@ jobs:
   canceljob:
     runs-on: ubuntu-latest
     needs: getversion
-    if: ${{ contains(${{needs.getversion.outputs.version}}, 'dev') != true }}
+    if: ${{ contains(needs.getversion.outputs.version, 'dev') != true }}
     steps:
       - name: Cancel Run if Version is not Dev
         uses: potiuk/cancel-workflow-runs@master

@@ -17,18 +17,9 @@ jobs:
         uses: dante-signal31/rust-app-version@v1.0.0
     outputs:
       version: ${{ steps.plugin_version.outputs.app_version }}
-  canceljob:
-    runs-on: ubuntu-latest
-    needs: getversion
-    if: ${{ contains(needs.getversion.outputs.version, 'dev') }}
-    steps:
-      - name: Cancel Run if Version is Dev
-        uses: potiuk/cancel-workflow-runs@master
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          cancelMode: self
-          selfPreservation: false
   plugin:
+  needs: getversion
+    if: ${{ contains(needs.getversion.outputs.version, 'dev') != true }}
     runs-on: ubuntu-latest
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta

@@ -42,12 +42,12 @@ jobs:
           tag: dev
           # 
           file: romfs.zip
-      - name: Build release NRO
+      - name: Build Release NRO
         run: |
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
         env:
           HOME: /root
-      - name: Create release zip
+      - name: Create Release ZIP
         shell: bash
         run: |
           cd scripts && python3 create_dev.py && cd ..
@@ -70,8 +70,8 @@ jobs:
           prerelease: true
           allow_override: true
           gzip: false
-          tag: ${{needs.getversion.outputs.version}}
-          name: ${{needs.getversion.outputs.version}}
+          tag: ${{needs.get-version.outputs.version}}
+          name: ${{needs.get-version.outputs.version}}
           body: >
             Nightly built off of the latest code in the dev branch.
 

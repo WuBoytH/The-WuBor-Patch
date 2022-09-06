@@ -42,12 +42,12 @@ jobs:
           tag: latest
           # 
           file: romfs.zip
-      - name: Build release NRO
+      - name: Build Release NRO
         run: |
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
         env:
           HOME: /root
-      - name: Create release zip
+      - name: Create Release ZIP
         shell: bash
         run: |
           cd scripts && python3 create_main.py && cd ..

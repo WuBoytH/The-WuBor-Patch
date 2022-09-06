@@ -48,6 +48,9 @@ jobs:
       - name: Check Filesystem
         run: |
           ls
+          cd ../
+          ls
+          cd The_WuBor_Patch/
       - name: Move romfs.zip
         run: |
           mv ~/romfs.zip romfs.zip

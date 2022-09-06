@@ -47,8 +47,9 @@ jobs:
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
         env:
           HOME: /root
-      - name: Check Filesystem
+      - name: Move romfs.zip
         run: |
+          mv ../romfs.zip romfs.zip
           ls
       - name: build distribution
         shell: bash

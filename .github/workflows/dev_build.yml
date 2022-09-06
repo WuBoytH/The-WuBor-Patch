@@ -53,10 +53,10 @@ jobs:
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
         env:
           HOME: /root
-      - name: Check Filesystem
-        run: |
-          echo "Moving the plugin:"
-          mv ./target/aarch64-skyline-switch/release/libthe_wubor_patch.nro ./plugin.nro
+      # - name: Check Filesystem
+      #   run: |
+      #     echo "Moving the plugin:"
+      #     mv ./target/aarch64-skyline-switch/release/libthe_wubor_patch.nro ./plugin.nro
       - name: Create release zip
         shell: bash
         run: |

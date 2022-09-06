@@ -92,6 +92,9 @@ unsafe fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -> L2CValue 
     let ratio = charge as f32 / max_charge as f32;
     AttackModule::set_lerp_ratio(weapon.module_accessor, ratio, 0);
     AttackModule::set_attack_scale(weapon.module_accessor, 1.0, false);
+    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        GroundModule::set_passable_check(weapon.module_accessor, true);
+    }
     if !StopModule::is_stop(weapon.module_accessor) {
         lucario_auraball_shoot_substatus(weapon, false.into());
     }

@@ -24,7 +24,7 @@ jobs:
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
-      - name: Download Assets
+      - name: Download ROMFS
         # You may pin to the exact commit or the version.
         # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
         uses: i3h/download-release-asset@v1.3.2
@@ -37,19 +37,23 @@ jobs:
           tag: dev
           # 
           file: romfs.zip
-      - uses: actions/checkout@v2.4.2
-      - name: Build release NRO
-        run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
-        env:
-          HOME: /root
-      - name: Upload plugin artifact
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: plugin
-          path: target/aarch64-skyline-switch/release/libthe_wubor_patch.nro
+      # - uses: actions/checkout@v2.4.2
+      # - name: Build release NRO
+      #   run: |
+      #     PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
+      #   env:
+      #     HOME: /root
+      # - name: Upload plugin artifact
+      #   uses: actions/upload-artifact@v3.1.0
+      #   with:
+      #     name: plugin
+      #     path: target/aarch64-skyline-switch/release/libthe_wubor_patch.nro
       - name: Check Filesystem
         run: |
+          ls
+      - name: Extract ROMFS
+        run: |
+          7z x romfs.zip
           ls
   # upload:
   #   runs-on: ubuntu-latest
@@ -58,7 +62,7 @@ jobs:
   #     - uses: actions/checkout@v2.4.2
   #     - name: Download all artifacts
   #       uses: actions/download-artifact@v3.0.0
-  #     - name: Download Assets
+  #     - name: Download ROMFS
   #       # You may pin to the exact commit or the version.
   #       # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
   #       uses: i3h/download-release-asset@v1.3.2

@@ -50,7 +50,7 @@ jobs:
           ls
       - name: Move romfs.zip
         run: |
-          mv ../romfs.zip romfs.zip
+          mv ~/romfs.zip romfs.zip
           ls
       # - name: Build release NRO
       #   run: |

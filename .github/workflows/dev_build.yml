@@ -24,8 +24,10 @@ jobs:
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
-      - name: Setup p7zip fork
-        uses: AnimMouse/setup-p7zip-fork@v1
+      - name: Install 7z
+        run: |
+          sudo apt install p7zip-full p7zip-rar
+          y
       - name: Download ROMFS
         # You may pin to the exact commit or the version.
         # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
@@ -96,9 +98,7 @@ jobs:
             
   #           Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
 
-  #           Extract `romfs.zip` to the root of the SD card.
-
-  #           Rename `libthe_wubor_patch.nro` file to `plugin.nro` and replace the one in `ultimate/mods/The WuBor Patch`.
+  #           Extract `romfs.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
   #         files: >
   #           plugin/*
   #           romfs.zip

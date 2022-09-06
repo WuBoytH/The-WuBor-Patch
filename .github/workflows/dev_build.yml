@@ -63,6 +63,9 @@ jobs:
           echo "Checking aarch64-skyline-switch"
           cd aarch64-skyline-switch
           ls
+          echo "Checking release"
+          cd release
+          ls
           cd ../
           cd ../
           cd ../

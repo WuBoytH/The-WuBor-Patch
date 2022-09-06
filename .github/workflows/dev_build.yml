@@ -53,6 +53,12 @@ jobs:
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
         env:
           HOME: /root
+            - name: Check Filesystem
+        run: |
+          ls
+          cd target
+          ls
+          cd ../
       - name: Create release zip
         shell: bash
         run: |

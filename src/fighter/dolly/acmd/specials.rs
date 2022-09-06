@@ -1022,7 +1022,7 @@ unsafe fn dolly_superspecial2(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_wave_normalw(weapon: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -1060,7 +1060,7 @@ unsafe fn dolly_wave_normalw(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_wave_normal(weapon: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -1098,7 +1098,7 @@ unsafe fn dolly_wave_normal(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalairw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_wave_normalairw(weapon: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -1190,7 +1190,7 @@ unsafe fn dolly_wave_normalairw(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalair", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_wave_normalair(weapon: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -1264,7 +1264,7 @@ unsafe fn dolly_wave_normalair(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly_burst", script = "game_superspecial", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_burst_superspecial(weapon: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER

@@ -306,7 +306,7 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     let angle : u64;
     let bkb : i32;
     let kbg : i32;
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if VarModule::is_flag(object, commons::instance::flag::IS_FGC) {
         angle = 80;

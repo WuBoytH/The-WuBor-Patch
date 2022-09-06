@@ -15,7 +15,7 @@ use {
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.battle_object, weapon::instance::flag::FROM_POCKET) {
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
         if sv_battle_object::category(owner_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
         && sv_battle_object::kind(owner_id) == *FIGHTER_KIND_LUCARIO {
             let owner_object = MiscModule::get_battle_object_from_id(owner_id);
@@ -43,7 +43,7 @@ unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
         // println!("Was this auraball outta pocket? {}", VarModule::is_flag(weapon.battle_object, 0x0000));
     }
     if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
-        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
+        let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
         let owner_object = MiscModule::get_battle_object_from_id(owner_id);
         let lucario = sv_battle_object::category(owner_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
         && sv_battle_object::kind(owner_id) == *FIGHTER_KIND_LUCARIO

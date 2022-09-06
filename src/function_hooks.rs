@@ -127,7 +127,7 @@ move_type_again: bool) -> u64 {
     }
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
-            let object = MiscModule::get_battle_object_from_id((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER)) as u32);
+            let object = MiscModule::get_battle_object_from_id((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
             VarModule::on_flag(object, vars::mario::special_n::flag::FGC_CANCEL);
         }
     }
@@ -172,12 +172,12 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
 
 #[skyline::hook(replace = WorkModule::is_enable_transition_term )]
 pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAccessor, term: i32) -> bool {
-    let fighter_kind = utility::get_kind(boma);
+    let kind = utility::get_kind(boma);
     let ret = original!()(boma,term);
     let object_id = boma.battle_object_id;
     let object = MiscModule::get_battle_object_from_id(object_id);
     if utility::get_category(boma) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        if fighter_kind == *FIGHTER_KIND_LUCINA { // Make this a custom command grab
+        if kind == *FIGHTER_KIND_LUCINA { // Make this a custom command grab
             if VarModule::is_flag(object, vars::yu::instance::flag::HEROIC_GRAB)
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT
             && term != *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_THROW_HI
@@ -186,7 +186,7 @@ pub unsafe fn is_enable_transition_term_replace(boma: &mut BattleObjectModuleAcc
                 return false;
             }
         }
-        else if fighter_kind == *FIGHTER_KIND_RYU { // make secret sensation its own status
+        else if kind == *FIGHTER_KIND_RYU { // make secret sensation its own status
             if VarModule::is_flag(object, vars::ryu::instance::flag::SEC_SEN_CAMERA) {
                 return false;
             }
@@ -200,11 +200,12 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
     let ret = original!()(module, param_type, param_hash);
     let module_accessor = &mut *(*((module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
     let category = utility::get_category(&mut *module_accessor);
-    let fighter_kind = utility::get_kind(&mut *module_accessor);
+    let kind = utility::get_kind(&mut *module_accessor);
     if category == *BATTLE_OBJECT_CATEGORY_WEAPON {
-        if fighter_kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
-            let otarget_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LINK_OWNER) as u32;
-            if sv_battle_object::is_active(otarget_id) {
+        if kind == *WEAPON_KIND_KAMUI_RYUSENSYA {
+            let otarget_id = WorkModule::get_int(module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+            if sv_battle_object::is_active(otarget_id)
+            && sv_battle_object::kind(otarget_id) == *FIGHTER_KIND_KAMUI {
                 let object = MiscModule::get_battle_object_from_id(otarget_id);
                 if param_hash == hash40("speed_max") {
                     if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {

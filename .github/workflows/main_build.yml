@@ -15,6 +15,12 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
         uses: dante-signal31/rust-app-version@v1.0.0
+      - name: Cancel Run if Version is Dev
+        if: contains(${{ steps.plugin_version.outputs.app_version }}, 'dev') != true
+        uses: potiuk/cancel-workflow-runs@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          cancelMode: self
     outputs:
       version: ${{ steps.plugin_version.outputs.app_version }}
   plugin:

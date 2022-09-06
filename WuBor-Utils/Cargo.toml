@@ -5,6 +5,8 @@ edition = "2018"
 
 [dependencies]
 skyline = "0.2.1"
-skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
-smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
+# skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
+skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", branch = "Specific-Skyline-Version", features = ["weak_l2cvalue"] }
+# smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
+smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "static-2-temp" }
 custom_var = { path = "../custom-var" }

@@ -44,16 +44,19 @@ jobs:
       - name: Check Filesystem
         run: |
           ls
-      # - uses: actions/checkout@v2.4.2
+      - uses: actions/checkout@v2.4.2
+      - name: Check Filesystem
+        run: |
+          ls
+      - name: Move romfs.zip
+        run: |
+          mv ../romfs.zip romfs.zip
+          ls
       # - name: Build release NRO
       #   run: |
       #     PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
       #   env:
       #     HOME: /root
-      # - name: Move romfs.zip
-      #   run: |
-      #     mv ../romfs.zip romfs.zip
-      #     ls
       # - name: Create release zip
       #   shell: bash
       #   run: |

@@ -14,5 +14,5 @@ shutil.unpack_archive("../romfs.zip", "../build/")
 shutil.move("../target/aarch64-skyline-switch/release/libthe_wubor_patch.nro", "../build/ultimate/mods/The WuBor Patch/plugin.nro")
 
 # zip each folder in the staging dir
-shutil.make_archive("The_WuBor_Patch", 'zip', '../build/ultimate')
-shutil.move("The_WuBor_Patch.zip", "../The_WuBor_Patch.zip")
+shutil.make_archive("The_WuBor_Patch_Dev", 'zip', '../build')
+shutil.move("The_WuBor_Patch_Dev.zip", "../The_WuBor_Patch_Dev.zip")

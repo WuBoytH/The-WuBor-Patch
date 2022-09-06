@@ -24,6 +24,9 @@ jobs:
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
+      - name: Install 7z
+        run: |
+          sudo apt install p7zip-full p7zip-rar
       - name: Download ROMFS
         # You may pin to the exact commit or the version.
         # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef

@@ -24,8 +24,8 @@ unsafe fn status_damageflyroll_common(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_U,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_DAMAGE_FLY_REFLECT_D
     ];
-    for x in enables {
-        WorkModule::enable_transition_term(fighter.module_accessor, x);
+    for x in enables.iter() {
+        WorkModule::enable_transition_term(fighter.module_accessor, *x);
     }
     let unables = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_WALL_JUMP_BUTTON,
@@ -35,8 +35,8 @@ unsafe fn status_damageflyroll_common(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE
     ];
-    for x in unables {
-        WorkModule::unable_transition_term(fighter.module_accessor, x);
+    for x in unables.iter() {
+        WorkModule::unable_transition_term(fighter.module_accessor, *x);
     }
     fighter.sub_DamageFlyCommon_check_dead();
     fighter.sub_DamageFlyCommon_init();

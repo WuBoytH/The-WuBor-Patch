@@ -25,6 +25,9 @@ pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterComm
             VarModule::off_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
         }
     }
+    if status == *FIGHTER_STATUS_KIND_REBIRTH {
+        VarModule::set_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL, 0);
+    }
     0.into()
 }
 

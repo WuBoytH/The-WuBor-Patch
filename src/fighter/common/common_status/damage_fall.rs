@@ -24,15 +24,7 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
     || fighter.check_damage_fall_transition().get_bool() {
         return 0.into();
     }
-    let tech = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_GROUND) {
-        ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    }
-    else {
-        let mut flame_choke_tech_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("ganon_special_s_passive_trigger_frame")) as f32;
-        let tech_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);
-        flame_choke_tech_frame *= tech_mul;
-        fighter.sub_check_passive_button(flame_choke_tech_frame.into()).get_bool()
-    };
+    let tech = fighter.sub_check_passive_button(L2CValue::Void()).get_bool();
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB)
     && FighterUtil::is_touch_passive_ground(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32)
     && WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value")) <= fighter.global_table[STICK_X].get_f32().abs()

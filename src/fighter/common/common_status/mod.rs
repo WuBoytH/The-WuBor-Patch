@@ -6,6 +6,7 @@ mod tread_jump;
 mod shield;
 mod escape;
 mod escape_air;
+mod passive;
 pub mod attack;
 mod attack_3;
 // mod attack_3_common;
@@ -30,6 +31,7 @@ pub fn install() {
     shield::install();
     escape::install();
     escape_air::install();
+    passive::install();
     attack::install();
     attack_3::install();
     // attack_3_common::install();

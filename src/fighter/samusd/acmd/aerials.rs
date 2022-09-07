@@ -120,10 +120,16 @@ unsafe fn samusd_attackairf(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 361, 85, 0, 30, 2.5, 0.0, 10.0, 9.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 7.0, 361, 85, 0, 30, 2.5, 0.0, 10.0, 14.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 7.0, 361, 85, 0, 30, 4.0, 0.0, 10.0, 20.0, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_PUNCH);
     }
     macros::FT_MOTION_RATE(fighter, 5.0);
-    wait(fighter.lua_state_agent, 5.0);
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    wait(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {

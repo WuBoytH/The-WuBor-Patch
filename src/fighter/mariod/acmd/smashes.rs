@@ -53,7 +53,7 @@ unsafe fn mariod_attackhi4(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "mariod", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attacklw4(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 5.0);
+    frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
     }

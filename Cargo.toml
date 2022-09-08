@@ -12,17 +12,13 @@ crate-type = ["cdylib"]
 
 [dependencies]
 skyline = "0.2.1"
-# skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
-skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", branch = "Specific-Skyline-Version", features = ["weak_l2cvalue"] }
-# smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
-smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "static-2-temp" }
-# smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
-smashline = { git = "https://github.com/wuboyth/smashline.git", branch = "fixed-skyline" }
+skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
+smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
+smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "development" }
 wubor_utils = { path = "./WuBor-Utils" }
 custom_status = { path = "./custom-status" }
 custom_var = { path = "./custom-var" }
-# smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
-smash_rs = { package = "smash", git = "https://github.com/wuboyth/smash-rs" }
+smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 libc-nnsdk = "0.2.0"
 
 [profile.dev]

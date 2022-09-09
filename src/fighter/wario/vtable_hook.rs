@@ -11,8 +11,8 @@ use {
 #[skyline::hook(offset = 0x1286ac0)]
 pub unsafe extern "C" fn wario_vtable_func(vtable: u64, fighter: &mut Fighter) {
     let module_accessor = (fighter.battle_object).module_accessor;
-
-    if (*singletons::BATTLE_OBJECT_SLOW.add(0x8) == 0 || *(singletons::BATTLE_OBJECT_SLOW as *const u32) == 0)
+    let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
+    if (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
     && !StopModule::is_stop(module_accessor) && !WorkModule::is_flag(module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_CHARGE_STOP) {
         let gas_count = WorkModule::get_int(module_accessor, 0x100000bf); // FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_COUNT
         let gas_level;

@@ -6,6 +6,7 @@ pub mod common_param;
 // pub mod command_inputs;
 pub mod common_fgc;
 mod vars;
+// mod energy;
 
 pub fn install() {
     common_frame::install();
@@ -14,4 +15,5 @@ pub fn install() {
     agent_status::install();
     common_fgc::install();
     vars::install();
+    // energy::install();
 }

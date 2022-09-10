@@ -173,6 +173,11 @@ unsafe fn bayonetta_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn bayonetta_attackairf_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_attack_air_uniq_process_init()
+}
+
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn bayonetta_attackairf_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
@@ -317,7 +322,7 @@ pub fn install() {
     install_status_scripts!(
         bayonetta_attack_main,
         bayonetta_attackair_end,
-        bayonetta_attackairf_end,
+        bayonetta_attackairf_init, bayonetta_attackairf_end,
         bayonetta_specialairs_d_main,
         bayonetta_specialairs_d_landing_main
     );

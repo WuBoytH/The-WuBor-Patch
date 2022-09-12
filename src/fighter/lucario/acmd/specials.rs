@@ -8,7 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*,
+    wubor_utils::{wua_bind::*, vars::*},
     super::super::helper::*
 };
 
@@ -24,6 +24,7 @@ unsafe fn lucario_specialnshoot(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 12.0, 6.0);
 }
 
 #[acmd_script( agent = "lucario", script = "expression_specialnshoot2", category = ACMD_EXPRESSION, low_priority )]

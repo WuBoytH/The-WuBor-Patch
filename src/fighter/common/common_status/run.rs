@@ -148,6 +148,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE_DASH)
+    && ItemModule::is_have_item(fighter.module_accessor, 0)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && {
         fighter.clear_lua_stack();

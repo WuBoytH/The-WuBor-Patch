@@ -66,7 +66,7 @@ unsafe fn sub_status_runbrake(fighter: &mut L2CFighterCommon) {
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY);
     if fighter.global_table[FALL_BRAKE_UNIQ].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(fighter.global_table[FALL_BRAKE_UNIQ].get_ptr());
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[FALL_BRAKE_UNIQ].get_ptr());
         callable(fighter);
     }
     fighter.clear_lua_stack();

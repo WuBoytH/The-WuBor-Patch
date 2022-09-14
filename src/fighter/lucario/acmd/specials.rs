@@ -14,6 +14,13 @@ use {
 
 // SPECIAL N
 
+#[acmd_script( agent = "lucario", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+unsafe fn lucario_specialnstart(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 2.2);
+    }
+}
+
 #[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialnshoot(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
@@ -1149,6 +1156,7 @@ unsafe fn lucario_specialairlwcancel_eff(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        lucario_specialnstart,
         lucario_specialnshoot, lucario_specialnshoot_exp,
         lucario_specialairnshoot_exp,
         lucario_specialnhold2_eff, lucario_specialnhold2_snd,

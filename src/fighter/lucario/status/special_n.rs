@@ -46,6 +46,7 @@ unsafe extern "C" fn lucario_special_n_main_loop(fighter: &mut L2CFighterCommon)
                 WorkModule::set_customize_no(fighter.module_accessor, 2, 0);
             }
         }
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL, false, -1);
         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD.into(), false.into());
     }
     0.into()

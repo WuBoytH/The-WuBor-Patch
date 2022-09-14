@@ -190,29 +190,14 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
 }
 
 unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
-    || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD)
-    && !AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_REFLECTOR) {
-        if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
+        || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD)
+        && !AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_REFLECTOR) {
             if !VarModule::is_flag(weapon.battle_object, lucario_auraball::status::flag::EXPLOSION) {
                 WorkModule::set_int(weapon.module_accessor, 30, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
                 VarModule::on_flag(weapon.battle_object, lucario_auraball::status::flag::EXPLOSION);
             }
-        }
-        else {
-            let pos = PostureModule::pos(weapon.module_accessor);
-            EffectModule::req(
-                weapon.module_accessor,
-                Hash40::new_raw(0x15cff20136),
-                pos,
-                &ZERO_VECTOR,
-                1.0,
-                0,
-                -1,
-                false,
-                0
-            );
-            notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
         }
     }
     let mut x_val = 0.0;

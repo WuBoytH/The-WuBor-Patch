@@ -32,6 +32,12 @@ impl CustomVarManager {
         let object_id = unsafe{
             (*object).battle_object_id
         };
+        Self::reset_var_module_by_object_id(object_id)
+
+    }
+
+    #[export_name = "CustomVarManager__reset_var_module_by_object_id"]
+    pub extern "Rust" fn reset_var_module_by_object_id(object_id: u32) -> bool {
         // println!("[VarModule] Restting VarModule for {:#x}", object_id);
         let mut manager = CUSTOM_VAR_MANAGER.write();
         let x = if let Some(mut modules) = manager.modules.try_write() {
@@ -51,6 +57,50 @@ impl CustomVarManager {
 
         x
     }
+
+    #[export_name = "CustomVarManager__remove_var_module"]
+    pub extern "Rust" fn remove_var_module(object: *mut BattleObject) -> bool {
+        let object_id = unsafe{
+            (*object).battle_object_id
+        };
+        Self::remove_var_module_by_object_id(object_id)
+    }
+
+    #[export_name = "CustomVarManager__remove_var_module_by_object_id"]
+    pub extern "Rust" fn remove_var_module_by_object_id(object_id: u32) -> bool {
+        // println!("[VarModule] Restting VarModule for {:#x}", object_id);
+        let mut manager = CUSTOM_VAR_MANAGER.write();
+        let x = if let Some(mut modules) = manager.modules.try_write() {
+            let _ = modules.remove(&object_id);
+            // let x = modules.insert(object_id, VarModule::new());
+            // if x.is_none() {
+            //     println!("[VarModule] There was no VarModule previously present for this Object ID!");
+            // }
+            // else {
+            //     println!("[VarModule] Replaced a previously existing VarModule!");
+            // }
+            true
+        }
+        else {
+            false
+        };
+
+        x
+    }
+    
+    #[export_name = "CustomVarManager__count"]
+    pub extern "Rust" fn count() -> i32 {
+        let mut manager = CUSTOM_VAR_MANAGER.write();
+        let x = if let Some(mut modules) = manager.modules.try_write() {
+            modules.len() as i32
+        }
+        else {
+            -1
+        };
+
+        x
+    }
+
 }
 
 pub struct VarModule {

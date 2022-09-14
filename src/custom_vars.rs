@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 use {
     smash::{
         lua2cpp::*,
@@ -45,6 +47,16 @@ fn agent_init(agent: &mut L2CFighterBase) {
     }
 }
 
+#[skyline::hook(offset = 0x3afde0)]
+pub unsafe fn battleobjectmoduleaccessor__end_modules(module_accessor: *mut BattleObjectModuleAccessor) {
+    let object_id = (*module_accessor).battle_object_id;
+    // println!("[CustomVarManager] Module Count before removing: {}", CustomVarManager::count());
+    // println!("[CustomVarManager] Ending Modules for {:#x}", object_id);
+    CustomVarManager::remove_var_module_by_object_id(object_id);
+    // println!("[CustomVarManager] Module Count after removing: {}", CustomVarManager::count());
+    original!()(module_accessor);
+}
+
 pub fn install() {
     install_agent_resets!(
         fighter_reset,
@@ -52,5 +64,8 @@ pub fn install() {
     );
     install_agent_init_callbacks!(
         agent_init
+    );
+    skyline::install_hooks!(
+        battleobjectmoduleaccessor__end_modules
     );
 }

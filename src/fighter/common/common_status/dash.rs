@@ -164,8 +164,8 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
+        // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
+        // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON
     ];
     for val in transitions.iter() {
@@ -229,18 +229,8 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         return 1.into();
     }
 
-    if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
-            VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
-            MotionModule::set_rate(fighter.module_accessor, 1.0);
-            if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
-                WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
-            }
-        }
-        else {
-            return 0.into();
-        }
+    if check_dash_cancel_early_return(fighter).get_bool() {
+        return 0.into();
     }
 
     if CancelModule::is_enable_cancel(fighter.module_accessor)
@@ -352,6 +342,13 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         return true.into();
     }
 
+    // Allow crouch out of dash
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
+    && fighter.sub_check_command_squat().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_SQUAT.into(), true.into());
+        return 1.into();
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4) && {
         fighter.clear_lua_stack();
         lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SWING);
@@ -460,49 +457,45 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         return 1.into();
     }
 
-    if !fighter.sub_transition_group_check_ground_jump().get_bool() {
-        if param_1.get_bool() {
-            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(param_1.get_ptr());
-            if callable(fighter).get_bool() {
-                return 1.into();
-            }
-        }
-        if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
-        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
-            let stick_x = fighter.global_table[STICK_X].get_f32();
-            let lr = PostureModule::lr(fighter.module_accessor);
-            let run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x"));
-            run_stick_x <= stick_x * lr
-        } {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_RUN) {
-                fighter.change_status(FIGHTER_STATUS_KIND_WALK.into(), true.into());
-            }
-            else {
-                fighter.change_status(FIGHTER_STATUS_KIND_RUN.into(), true.into());
-            }
+    if fighter.sub_transition_group_check_ground_jump().get_bool() {
+        return 1.into();
+    }
+    if param_1.get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(param_1.get_ptr());
+        if callable(fighter).get_bool() {
             return 1.into();
         }
-        if GroundModule::get_down_friction(fighter.module_accessor) < 1.0
-        && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true) {
-            fighter.change_status(FIGHTER_STATUS_KIND_WALK_BRAKE.into(), false.into());
-            return 1.into();
-        }
-        if !MotionModule::is_end(fighter.module_accessor) {
-            if fighter.sub_ground_check_stop_wall().get_bool() {
-                1.into()
-            }
-            else {
-                0.into()
-            }
+    }
+    if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_stick_x"));
+        run_stick_x <= stick_x * lr
+    } {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_RUN) {
+            fighter.change_status(FIGHTER_STATUS_KIND_WALK.into(), true.into());
         }
         else {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            1.into()
+            fighter.change_status(FIGHTER_STATUS_KIND_RUN.into(), true.into());
+        }
+        return 1.into();
+    }
+    if GroundModule::get_down_friction(fighter.module_accessor) < 1.0
+    && FighterMotionModuleImpl::is_valid_cancel_frame(fighter.module_accessor, -1, true) {
+        fighter.change_status(FIGHTER_STATUS_KIND_WALK_BRAKE.into(), false.into());
+        return 1.into();
+    }
+    if !MotionModule::is_end(fighter.module_accessor) {
+        if fighter.sub_ground_check_stop_wall().get_bool() {
+            return 1.into();
         }
     }
     else {
-        1.into()
+        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        return 1.into();
     }
+    0.into()
 }
 
 pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -558,18 +551,8 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         return 1.into();
     }
 
-    if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
-            VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
-            MotionModule::set_rate(fighter.module_accessor, 1.0);
-            if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
-                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
-                WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
-            }
-        }
-        else {
-            return 0.into();
-        }
+    if check_dash_cancel_early_return(fighter).get_bool() {
+        return 0.into();
     }
 
     if CancelModule::is_enable_cancel(fighter.module_accessor)
@@ -651,6 +634,13 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 
     if fighter.sub_transition_specialflag_hoist().get_bool() {
         return true.into();
+    }
+
+    // Allow crouch out of dash
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
+    && fighter.sub_check_command_squat().get_bool() {
+        fighter.change_status(FIGHTER_STATUS_KIND_SQUAT.into(), true.into());
+        return 1.into();
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_4) && {
@@ -844,6 +834,8 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
         if attack_frame - 1 < 0 {
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
+            // Enable crouching at the same time as you can attack.
+            WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_LIGHT);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_PICKUP_HEAVY);
         }
@@ -886,6 +878,23 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
             }
         }
     }
+}
+
+unsafe extern "C" fn check_dash_cancel_early_return(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
+            VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            MotionModule::set_rate(fighter.module_accessor, 1.0);
+            if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
+                WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+                WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
+            }
+        }
+        else {
+            return true.into();
+        }
+    }
+    false.into()
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

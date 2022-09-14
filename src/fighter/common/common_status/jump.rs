@@ -172,8 +172,8 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         false,
         false
     );
-    if fighter.global_table[FALL_UNIQ].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[FALL_UNIQ].get_ptr());
+    if fighter.global_table[FALL_BRAKE_UNIQ].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[FALL_BRAKE_UNIQ].get_ptr());
         callable(fighter);
     }
     if !StopModule::is_stop(fighter.module_accessor) {

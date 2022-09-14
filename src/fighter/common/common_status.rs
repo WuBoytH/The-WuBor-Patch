@@ -1,5 +1,6 @@
 pub mod dash;
 mod run;
+mod run_brake;
 mod jump_squat;
 mod jump;
 mod tread_jump;
@@ -28,6 +29,7 @@ mod sub_transitions;
 pub fn install() {
     dash::install();
     run::install();
+    run_brake::install();
     jump_squat::install();
     jump::install();
     tread_jump::install();

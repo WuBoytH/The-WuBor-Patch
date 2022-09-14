@@ -76,10 +76,11 @@ jobs:
           prerelease: false
           allow_override: true
           gzip: false
+          draft: true
           tag: ${{needs.get-version.outputs.version}}
           name: ${{needs.get-version.outputs.version}}
           body: >
-            Nightly built off of the latest code in the dev branch.
+            Full release of the latest version. DO NOT PUBLISH UNTIL THIS BODY HAS BEEN UPDATED.
 
             [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
             [You can view all changes up to a specific version here.](https://drive.google.com/drive/folders/1zIqkVWlZWb56ar7UqRTECYUVuBfqW0v1?usp=sharing)

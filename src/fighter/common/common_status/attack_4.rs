@@ -155,7 +155,7 @@ unsafe fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon, param_1: L
         return;
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(param_1.clone(), false.into());
+        fighter.change_status(param_1, false.into());
     }
 }
 

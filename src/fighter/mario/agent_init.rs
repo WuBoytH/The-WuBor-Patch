@@ -1,11 +1,13 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::*,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_var::*,
+    custom_cancel::*,
     wubor_utils::{vars::*, table_const::*},
     super::fgc
 };
@@ -30,6 +32,8 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
+    let agent = Hash40::new("fighter_kind_mario");
+    CustomCancelManager::initialize_agent(agent);
     install_agent_reset!(
         agent_reset
     );

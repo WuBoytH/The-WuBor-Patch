@@ -9,6 +9,7 @@ mod escape;
 mod escape_air;
 mod passive;
 pub mod attack;
+mod attack_100;
 mod attack_dash;
 mod attack_3;
 // mod attack_3_common;
@@ -39,6 +40,7 @@ pub fn install() {
     escape_air::install();
     passive::install();
     attack::install();
+    attack_100::install();
     attack_dash::install();
     attack_3::install();
     // attack_3_common::install();

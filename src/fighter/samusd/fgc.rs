@@ -8,7 +8,6 @@ use {
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_samusd");
-    CustomCancelManager::initialize_agent(agent);
     CustomCancelManager::add_hp_value(agent, 190.0);
     for x in [
         *FIGHTER_STATUS_KIND_ATTACK,

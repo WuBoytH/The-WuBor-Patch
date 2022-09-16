@@ -1,10 +1,12 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::*,
-        lib::{lua_const::*, L2CValue}
+        lib::lua_const::*
     },
     smashline::*,
+    custom_cancel::*,
     super::fgc::*
 };
 
@@ -15,11 +17,14 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if ![*FIGHTER_KIND_EFLAME, *FIGHTER_KIND_ELIGHT].contains(&fighter_kind) {
             return;
         }
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(element_fgc as *const () as _));
+        let agent = (*fighter.battle_object).agent_kind_hash;
+        element_fgc(agent);
     }
 }
 
 pub fn install() {
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_eflame"));
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_elight"));
     install_agent_init_callbacks!(
         agent_init
     );

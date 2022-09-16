@@ -11,6 +11,23 @@ use {
     wubor_utils::vars::*
 };
 
+#[acmd_script( agent = "elight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
+unsafe fn elight_attack100end(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 40, 90, 0, 80, 8.0, 0.0, 10.0, 12.0, Some(0.0), Some(10.0), Some(18.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 16.0);
+    if macros::is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL);
+    }
+}
+
 #[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -235,6 +252,7 @@ unsafe fn elight_attacklw3(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        elight_attack100end,
         elight_attackdash,
         elight_attacks3,
         elight_attackhi3,

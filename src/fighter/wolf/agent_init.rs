@@ -39,6 +39,8 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
+    let agent = Hash40::new("fighter_kind_wolf");
+    CustomCancelManager::initialize_agent(agent);
     install_agent_resets!(
         agent_reset
     );

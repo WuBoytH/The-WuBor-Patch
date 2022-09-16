@@ -11,6 +11,23 @@ use {
     wubor_utils::vars::*
 };
 
+#[acmd_script( agent = "eflame", script = "game_attack100end", category = ACMD_GAME, low_priority )]
+unsafe fn eflame_attack100end(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.0, 40, 80, 0, 80, 7.0, 0.0, 10.0, 10.0, Some(0.0), Some(10.0), Some(18.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_MAGIC);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 16.0);
+    if macros::is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL);
+    }
+}
+
 #[acmd_script( agent = "eflame", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -157,6 +174,7 @@ unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        eflame_attack100end,
         eflame_attacks3,
         eflame_attackhi3
     );

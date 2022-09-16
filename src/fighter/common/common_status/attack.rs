@@ -6,6 +6,7 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
+    custom_cancel::*,
     wubor_utils::{
         wua_bind::*,
         table_const::*
@@ -138,8 +139,12 @@ unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CVal
 #[skyline::hook(replace = L2CFighterCommon_status_Attack_Main_button)]
 unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     fighter.check_100_count_button(param_1.clone());
-    if CancelModule::is_enable_cancel(fighter.module_accessor)
-    && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
+            return 1.into();
+        }
+    }
+    if CustomCancelManager::execute_cancel(fighter) {
         return 1.into();
     }
     let attack100_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack100_type"), 0);

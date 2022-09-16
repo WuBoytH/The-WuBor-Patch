@@ -2,10 +2,11 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
+        lib::lua_const::*
     },
     smashline::*,
     custom_var::*,
+    custom_cancel::*,
     wubor_utils::{
         wua_bind::*,
         vars::*,
@@ -20,85 +21,92 @@ pub unsafe fn fgc_frame(fighter: &mut L2CFighterCommon) {
         else {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
         }
+        let hp = CustomCancelManager::get_hp_value((*fighter.battle_object).agent_kind_hash);
+        if hp != 0.0 {
+            MiscModule::set_hp(fighter, hp);
+        }
+        else {
+            MiscModule::set_hp(fighter, 190.0);
+        }
     }
-    if fighter.global_table["fgc_func"].get_bool() {
-        let callable: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(fighter.global_table["fgc_func"].get_ptr());
-        callable(fighter);
-    }
+    // if fighter.global_table["fgc_func"].get_bool() {
+    //     let callable: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(fighter.global_table["fgc_func"].get_ptr());
+    //     callable(fighter);
+    // }
 }
 
-pub unsafe extern "C" fn common_fgc(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        let status = StatusModule::status_kind(fighter.module_accessor);
-        let mut special_cancels : Vec<i32> = [].to_vec();
-        let mut normal_cancels : Vec<i32> = [].to_vec();
-        let mut jump_cancel = 0;
-        MiscModule::set_hp(fighter, 190.0);
-        if [
-            *FIGHTER_STATUS_KIND_ATTACK
-        ].contains(&status) {
-            special_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-            ].to_vec();
-            normal_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-            ].to_vec();
-        }
-        else if [
-            *FIGHTER_STATUS_KIND_ATTACK_S3,
-            *FIGHTER_STATUS_KIND_ATTACK_LW3,
-            *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            *FIGHTER_STATUS_KIND_ATTACK_DASH,
-            *FIGHTER_STATUS_KIND_ATTACK_AIR
-        ].contains(&status) {
-            special_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-            ].to_vec();
-            normal_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-            ].to_vec();
-        }
-        else if [
-            *FIGHTER_STATUS_KIND_ATTACK_S4,
-            *FIGHTER_STATUS_KIND_ATTACK_LW4,
-            *FIGHTER_STATUS_KIND_ATTACK_HI4
-        ].contains(&status) {
-            if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-                jump_cancel = 1;
-            }
-            special_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-            ].to_vec();
-        }
-        if FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel).get_bool() {
-            return;
-        }
-        if status == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-            FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true);
-        }
-    }
+pub unsafe extern "C" fn ftilt_dash_attack(fighter: &mut L2CFighterCommon) -> bool {
+    FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool()
 }
 
 #[fighter_init]
 fn agent_init(fighter: &mut L2CFighterCommon) {
-    if !fighter.global_table["fgc_func"].get_bool() {
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(common_fgc as *const () as _));
+    unsafe {
+        if CustomCancelManager::initialize_agent((*fighter.battle_object).agent_kind_hash) {
+            let agent = (*fighter.battle_object).agent_kind_hash;
+            CustomCancelManager::add_cancel_info(
+                agent,
+                *FIGHTER_STATUS_KIND_ATTACK,
+                CancelInfo::new()
+                    .enable_normals([
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+                    ].to_vec())
+            );
+            CustomCancelManager::add_cancel_info(
+                agent,
+                *FIGHTER_STATUS_KIND_ATTACK_AIR,
+                CancelInfo::new()
+            );
+            for x in [
+                *FIGHTER_STATUS_KIND_ATTACK_S3,
+                *FIGHTER_STATUS_KIND_ATTACK_LW3,
+                *FIGHTER_STATUS_KIND_ATTACK_HI3,
+                *FIGHTER_STATUS_KIND_ATTACK_DASH
+            ].iter() {
+                let mut info = CancelInfo::new()
+                .enable_normals([
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+                ].to_vec());
+                if *x == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+                    info = info.exception_function(ftilt_dash_attack);
+                }
+                if *x == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
+                    info = info.enable_jump_cancel(CancelType::HIT);
+                }
+                CustomCancelManager::add_cancel_info(
+                    agent,
+                    *x,
+                    info
+                );
+            }
+            for x in [
+                *FIGHTER_STATUS_KIND_ATTACK_S4,
+                *FIGHTER_STATUS_KIND_ATTACK_LW4,
+                *FIGHTER_STATUS_KIND_ATTACK_HI4
+            ].iter() {
+                let mut info = CancelInfo::new()
+                .enable_normals([
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+                ].to_vec());
+                if *x == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
+                    info = info.enable_jump_cancel(CancelType::HIT);
+                }
+                CustomCancelManager::add_cancel_info(
+                    agent,
+                    *x,
+                    info
+                );
+            }
+        }
     }
 }
 

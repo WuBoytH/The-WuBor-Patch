@@ -7,7 +7,7 @@ use {
     smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*},
-    super::fgc::*
+    super::fgc
 };
 
 unsafe extern "C" fn mario_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -17,20 +17,20 @@ unsafe extern "C" fn mario_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CV
     1.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_MARIO {
             return;
         }
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(mario_speciallw_pre as *const () as _));
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(mario_fgc as *const () as _));
+        fgc::install();
     }
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
+    install_agent_reset!(
+        agent_reset
     );
 }

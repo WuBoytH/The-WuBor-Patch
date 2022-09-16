@@ -18,6 +18,7 @@ smashline = { git = "https://github.com/blu-dev/smashline.git", branch = "develo
 wubor_utils = { path = "./WuBor-Utils" }
 custom_status = { path = "./custom-status" }
 custom_var = { path = "./custom-var" }
+custom_cancel = { path = "./custom-cancel" }
 smash_rs = { package = "smash", git = "https://github.com/blu-dev/smash-rs" }
 libc-nnsdk = "0.2.0"
 

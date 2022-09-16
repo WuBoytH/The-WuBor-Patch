@@ -87,7 +87,9 @@ pub unsafe fn special_cancel_common(fighter: &mut L2CFighterCommon, situation: L
         enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
     }
     for val in allowed_terms.iter() {
-        WorkModule::enable_transition_term(fighter.module_accessor, *val);
+        if terms.contains(val) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *val);
+        }
     }
     if situation.get_i32() != *SITUATION_KIND_GROUND {
         ret = fighter.sub_transition_group_check_air_special().get_bool();
@@ -136,7 +138,9 @@ pub unsafe fn normal_cancel_common(fighter: &mut L2CFighterCommon, allowed_terms
         enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
     }
     for val in allowed_terms.iter() {
-        WorkModule::enable_transition_term(fighter.module_accessor, *val);
+        if terms.contains(val) {
+            WorkModule::enable_transition_term(fighter.module_accessor, *val);
+        }
     }
     ret = fighter.sub_transition_group_check_ground_attack().get_bool();
     for x in 0..terms.len() {

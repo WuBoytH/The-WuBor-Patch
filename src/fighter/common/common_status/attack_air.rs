@@ -8,6 +8,7 @@ use {
     },
     smash_script::*,
     custom_var::*,
+    custom_cancel::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*},
     super::super::common_param
 };
@@ -63,10 +64,13 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
     }
     if !fighter.attack_air_common_strans().get_bool() {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if !MotionModule::is_end(fighter.module_accessor) {
-                return false.into();
+            if MotionModule::is_end(fighter.module_accessor) {
+                fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             }
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
+            if CustomCancelManager::execute_cancel(fighter) {
+                return true.into();
+            }
+            return false.into();
         }
         else {
             if !fighter.sub_wait_ground_check_common(false.into()).get_bool() {

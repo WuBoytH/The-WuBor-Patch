@@ -42,8 +42,10 @@ pub unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, _param_1:
     let fb = passive_fb_cont_value <= stick_x.abs();
     let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
     let jump = jump_stick_y <= stick_y;
-    let jump_button = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP);
-    (fb || jump || jump_button).into()
+    let guard_button = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
+    let no_rapid_frame_value = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("no_rapid_frame_value"));
+    let passive_input = no_rapid_frame_value <= ControlModule::get_trigger_count_prev(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xff;
+    (fb || jump || guard_button || passive_input).into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button_for_damage)]

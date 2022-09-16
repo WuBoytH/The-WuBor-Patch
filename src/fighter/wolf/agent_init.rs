@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::*,
         lib::lua_const::*
     },
@@ -16,7 +17,8 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_WOLF {
             return;
         }
-        let agent = (*fighter.battle_object).agent_kind_hash;
+        let agent = Hash40::new("fighter_kind_wolf");
+        CustomCancelManager::initialize_agent(agent);
         generic_attack(agent);
         generic_attackair(agent);
         CustomCancelManager::add_cancel_info(

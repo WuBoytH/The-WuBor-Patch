@@ -1,75 +1,78 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        app::lua_bind::*,
+        phx::*,
         lib::lua_const::*
     },
-    custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*,
-        table_const::*
-    }
+    custom_cancel::*
 };
 
-pub unsafe extern "C" fn samusd_fgc(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        let status = fighter.global_table[STATUS_KIND].get_i32();
-        let mut special_cancels : Vec<i32> = [].to_vec();
-        let mut normal_cancels : Vec<i32> = [].to_vec();
-        let mut jump_cancel = 0;
-        MiscModule::set_hp(fighter, 190.0);
-        if [
-            *FIGHTER_STATUS_KIND_ATTACK,
-            *FIGHTER_STATUS_KIND_ATTACK_DASH
-        ].contains(&status) {
-            special_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-            ].to_vec();
-            normal_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3
-            ].to_vec();
-        }
-        else if [
-            *FIGHTER_STATUS_KIND_ATTACK_S3,
-            *FIGHTER_STATUS_KIND_ATTACK_LW3,
-            *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            *FIGHTER_STATUS_KIND_ATTACK_AIR
-        ].contains(&status) {
-            special_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-            ].to_vec();
-            normal_cancels = [
-                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START
-            ].to_vec();
-        }
-        else if [
-            *FIGHTER_STATUS_KIND_ATTACK_HI3,
-            *FIGHTER_STATUS_KIND_ATTACK_LW4
-        ].contains(&status)
-        || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_b")
-        || MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_hi") {
-            jump_cancel = 1;
-        }
-        else if status == *FIGHTER_STATUS_KIND_ATTACK_S4 {
-            if FGCModule::dash_cancel_check(fighter, false, false).get_bool() {
-                return;
-            }
-        }
-        else if status == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-            if FGCModule::dash_cancel_check(fighter, false, true).get_bool() {
-                return;
-            }
-        }
-        FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, jump_cancel);
+pub fn install() {
+    let agent = Hash40::new("fighter_kind_samusd");
+    CustomCancelManager::initialize_agent(agent);
+    CustomCancelManager::add_hp_value(agent, 190.0);
+    for x in [
+        *FIGHTER_STATUS_KIND_ATTACK,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH
+    ].iter() {
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            CancelInfo::new()
+                .enable_normals([
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3
+                ].to_vec())
+        );
     }
+    for x in [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3
+    ].iter() {
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            CancelInfo::new()
+                .enable_normals([
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START
+                ].to_vec())
+        );
+    }
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        CancelInfo::new()
+            .enable_jump_cancel(CancelType::HIT)
+            .enable_normals([
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START
+            ].to_vec())
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        CancelInfo::new()
+            .enable_specials([].to_vec())
+            .enable_jump_cancel(CancelType::HIT)
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        CancelInfo::new()
+            .enable_jump_cancel(CancelType::HIT)
+            .jump_cancel_require_flag()
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        CancelInfo::new()
+            .enable_dash_cancel(CancelType::HIT)
+            .set_dash_cancel_direction(DashCancelDir::FORWARD)
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        CancelInfo::new()
+            .enable_dash_cancel(CancelType::HIT)
+            .set_dash_cancel_direction(DashCancelDir::BACKWARD)
+    );
 }

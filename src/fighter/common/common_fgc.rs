@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::lua_bind::*,
         lib::lua_const::*
     },
@@ -39,73 +40,89 @@ pub unsafe extern "C" fn ftilt_dash_attack(fighter: &mut L2CFighterCommon) -> bo
     FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool()
 }
 
+pub unsafe fn generic_attack(agent: Hash40) {
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK,
+        CancelInfo::new()
+            .enable_normals([
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+                *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+            ].to_vec())
+    );
+}
+
+pub unsafe fn generic_attackair(agent: Hash40) {
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        CancelInfo::new()
+    );
+}
+
+pub unsafe fn generic_attack3(agent: Hash40) {
+    for x in [
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH
+    ].iter() {
+        let mut info = CancelInfo::new()
+        .enable_normals([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+        ].to_vec());
+        if *x == *FIGHTER_STATUS_KIND_ATTACK_S3 {
+            info = info.exception_function(ftilt_dash_attack);
+        }
+        if *x == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
+            info = info.enable_jump_cancel(CancelType::HIT);
+        }
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            info
+        );
+    }
+}
+
+pub unsafe fn generic_attack4(agent: Hash40) {
+    for x in [
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4
+    ].iter() {
+        let mut info = CancelInfo::new()
+        .enable_normals([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+        ].to_vec());
+        if *x == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
+            info = info.enable_jump_cancel(CancelType::HIT);
+        }
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            info
+        );
+    }
+}
+
 #[fighter_init]
 fn agent_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         if CustomCancelManager::initialize_agent((*fighter.battle_object).agent_kind_hash) {
             let agent = (*fighter.battle_object).agent_kind_hash;
-            CustomCancelManager::add_cancel_info(
-                agent,
-                *FIGHTER_STATUS_KIND_ATTACK,
-                CancelInfo::new()
-                    .enable_normals([
-                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
-                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3,
-                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
-                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-                        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-                    ].to_vec())
-            );
-            CustomCancelManager::add_cancel_info(
-                agent,
-                *FIGHTER_STATUS_KIND_ATTACK_AIR,
-                CancelInfo::new()
-            );
-            for x in [
-                *FIGHTER_STATUS_KIND_ATTACK_S3,
-                *FIGHTER_STATUS_KIND_ATTACK_LW3,
-                *FIGHTER_STATUS_KIND_ATTACK_HI3,
-                *FIGHTER_STATUS_KIND_ATTACK_DASH
-            ].iter() {
-                let mut info = CancelInfo::new()
-                .enable_normals([
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-                ].to_vec());
-                if *x == *FIGHTER_STATUS_KIND_ATTACK_S3 {
-                    info = info.exception_function(ftilt_dash_attack);
-                }
-                if *x == *FIGHTER_STATUS_KIND_ATTACK_HI3 {
-                    info = info.enable_jump_cancel(CancelType::HIT);
-                }
-                CustomCancelManager::add_cancel_info(
-                    agent,
-                    *x,
-                    info
-                );
-            }
-            for x in [
-                *FIGHTER_STATUS_KIND_ATTACK_S4,
-                *FIGHTER_STATUS_KIND_ATTACK_LW4,
-                *FIGHTER_STATUS_KIND_ATTACK_HI4
-            ].iter() {
-                let mut info = CancelInfo::new()
-                .enable_normals([
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-                ].to_vec());
-                if *x == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-                    info = info.enable_jump_cancel(CancelType::HIT);
-                }
-                CustomCancelManager::add_cancel_info(
-                    agent,
-                    *x,
-                    info
-                );
-            }
+            generic_attack(agent);
+            generic_attackair(agent);
+            generic_attack3(agent);
+            generic_attack4(agent);
         }
     }
 }

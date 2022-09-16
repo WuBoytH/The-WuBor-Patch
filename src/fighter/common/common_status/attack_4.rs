@@ -130,7 +130,7 @@ unsafe fn bind_address_call_status_end_attacklw4(fighter: &mut L2CFighterCommon,
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackLw4_Main_param)]
-unsafe fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if !StatusModule::is_changing(fighter.module_accessor) {
         let combo = ComboModule::count(fighter.module_accessor) as i32;
         let lw4_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("lw4_combo_max"), 0);
@@ -141,25 +141,22 @@ unsafe fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon, param_1: L
         }
     }
     else {
-        
         fighter.attack_lw4_mtrans_common(hash40("attack_lw4").into());
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
-        return true.into();
+        return;
     }
     if CustomCancelManager::execute_cancel(fighter) {
-        return true.into();
+        return;
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-        return true.into();
+        return;
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(param_1, false.into());
-        return true.into();
+        fighter.change_status(param_1.clone(), false.into());
     }
-    0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackLw4)]

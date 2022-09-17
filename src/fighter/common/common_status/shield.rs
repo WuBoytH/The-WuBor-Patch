@@ -410,17 +410,6 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     if shield_setoff_speed_max < setoff_speed {
         setoff_speed = shield_setoff_speed_max;
     }
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
-        setoff_speed *= 2.0;
-        if shield_setoff_speed_max * 2.0 < setoff_speed {
-            setoff_speed = shield_setoff_speed_max * 2.0;
-        }
-    }
-    else {
-        if shield_setoff_speed_max < setoff_speed {
-            setoff_speed = shield_setoff_speed_max;
-        }
-    }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         let stick_x = fighter.global_table[STICK_X].get_f32();
         setoff_speed *= stick_x;

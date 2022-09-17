@@ -116,6 +116,35 @@ pub unsafe fn aerial_cancel_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     ret.into()
 }
 
+pub unsafe fn aerial_cancel_common_revised(fighter: &mut L2CFighterCommon, allow_jumps: bool) -> L2CValue {
+    let ret;
+    let attack_air = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+    let terms = [
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_AERIAL_BUTTON,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_NEXT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_FLY_BUTTON
+    ];
+    let mut enableds = [false; 3];
+    if allow_jumps {
+        for x in 0..terms.len() {
+            enableds[x] = WorkModule::is_enable_transition_term(fighter.module_accessor, terms[x]);
+            WorkModule::enable_transition_term(fighter.module_accessor, terms[x]);
+        }
+    }
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+    ret = fighter.sub_transition_group_check_air_attack().get_bool();
+    if !attack_air {
+        WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_AIR);
+    }
+    for x in 0..terms.len() {
+        if !enableds[x] {
+            WorkModule::unable_transition_term(fighter.module_accessor, terms[x]);
+        }
+    }
+    ret.into()
+}
+
 pub unsafe fn normal_cancel_common(fighter: &mut L2CFighterCommon, allowed_terms: Vec<i32>) -> L2CValue {
     let ret;
     let terms = [

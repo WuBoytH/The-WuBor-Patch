@@ -66,7 +66,8 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND)
     && !VarModule::is_flag(fighter.battle_object, yu::instance::flag::SHADOW_FRENZY)
-    && VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE) >= 25.0 {
+    && VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE) >= 25.0
+    && VarModule::is_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT) {
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
         ret = true;
     }

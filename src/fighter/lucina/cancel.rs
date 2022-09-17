@@ -35,7 +35,7 @@ fn set_aerials() -> CancelInfo {
             AltInfo::new()
                 .set_flag(yu::instance::flag::SHADOW_FRENZY)
                 .enable_aerials(CancelType::HIT | CancelType::BLOCK)
-                .enable_jump_cancel(CancelType::HIT)
+                .enable_jump_cancel(CancelType::HIT | CancelType::BLOCK)
                 .set_fgc_flags(FGCFlags::NONE)
         )
 }

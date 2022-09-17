@@ -455,7 +455,7 @@ impl CustomCancelManager {
                 else {
                     true
                 };
-                if check_fgc && !cancel_info.specials.is_empty() {
+                if check_fgc {
                     let special_cancel = cancel_info.special_cancel;
                     
                     let mut specials = cancel_info.specials.clone();
@@ -520,7 +520,7 @@ impl CustomCancelManager {
                 else {
                     true
                 };
-                if check_fgc && !cancel_info.normals.is_empty() {
+                if check_fgc {
                     let normal_cancel = cancel_info.normal_cancel;
 
                     let mut normals = cancel_info.normals.clone();
@@ -579,13 +579,65 @@ impl CustomCancelManager {
 
                 // Aerial Cancel
 
+                // I need to see if you can jump cancel your current move so...
+                let can_jump = {
+                    let jump_cancel = cancel_info.jump_cancel;
+
+                    let condition =
+                    if cancel_info.alt_info.is_some()
+                    && {
+                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    } {
+                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                        let alt_cancel = alt_enable.jump_cancel;
+                        if alt_cancel.contains(CancelType::WHIFF)
+                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
+                        || (alt_cancel.contains(CancelType::HIT) && hit) {
+                            true
+                        }
+                        else {
+                            false
+                        }
+                    }
+                    else if jump_cancel.contains(CancelType::WHIFF)
+                    || (jump_cancel.contains(CancelType::BLOCK) && shield)
+                    || (jump_cancel.contains(CancelType::HIT) && hit) {
+                        true
+                    }
+                    else {
+                        false
+                    };
+
+                    let require_flag = if cancel_info.alt_info.is_some()
+                    && {
+                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    } {
+                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                        alt_enable.jump_cancel_require_flag
+                    }
+                    else {
+                        cancel_info.jump_cancel_require_flag
+                    };
+                    
+                    let flag_check = if require_flag {
+                        VarModule::is_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL)
+                    }
+                    else {
+                        cancel_window
+                    };
+                    
+                    condition && flag_check
+                };
+
                 let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::AERIAL) {
                     fgc
                 }
                 else {
                     true
                 };
-                if check_fgc && !cancel_info.aerial_cancel.is_empty() {
+                if check_fgc {
                     let aerial_cancel = cancel_info.aerial_cancel;
 
                     let condition =
@@ -634,69 +686,21 @@ impl CustomCancelManager {
                     };
 
                     if flag_check && condition
-                    && aerial_cancel_common(fighter).get_bool() {
+                    && aerial_cancel_common_revised(fighter, can_jump).get_bool() {
                         return true;
                     }
                 }
 
                 // Jump Cancel
 
-                
                 let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::JUMP) {
                     fgc
                 }
                 else {
                     true
                 };
-                if check_fgc && !cancel_info.jump_cancel.is_empty() {
-                    let jump_cancel = cancel_info.jump_cancel;
-
-                    let condition =
-                    if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        let alt_cancel = alt_enable.jump_cancel;
-                        if alt_cancel.contains(CancelType::WHIFF)
-                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
-                        || (alt_cancel.contains(CancelType::HIT) && hit) {
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else if jump_cancel.contains(CancelType::WHIFF)
-                    || (jump_cancel.contains(CancelType::BLOCK) && shield)
-                    || (jump_cancel.contains(CancelType::HIT) && hit) {
-                        true
-                    }
-                    else {
-                        false
-                    };
-
-                    let require_flag = if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        alt_enable.jump_cancel_require_flag
-                    }
-                    else {
-                        cancel_info.jump_cancel_require_flag
-                    };
-                    
-                    let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL)
-                    }
-                    else {
-                        cancel_window
-                    };
-                    
-                    if condition && flag_check
+                if check_fgc {
+                    if can_jump
                     && jump_cancel_common(fighter, situation.into()).get_bool() {
                         return true;
                     }
@@ -710,7 +714,7 @@ impl CustomCancelManager {
                 else {
                     true
                 };
-                if check_fgc && !cancel_info.dash_cancel.is_empty() {
+                if check_fgc {
                     let dash_cancel = cancel_info.dash_cancel;
                     let dash_cancel_dir = cancel_info.dash_cancel_direction;
 
@@ -784,7 +788,7 @@ impl CustomCancelManager {
                 else {
                     true
                 };
-                if check_fgc && !cancel_info.airdash_cancel.is_empty() {
+                if check_fgc {
                     let airdash_cancel = cancel_info.airdash_cancel;
                     
                     let condition =

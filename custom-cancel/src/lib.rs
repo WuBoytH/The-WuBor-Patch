@@ -43,6 +43,7 @@ bitflags! {
 }
 
 pub struct CancelInfo {
+    pub pre: Option<CancelFunc>,
     pub normals: Vec<i32>,
     pub normal_cancel: CancelType,
     pub normal_cancel_require_flag: bool,
@@ -65,6 +66,7 @@ pub struct CancelInfo {
 impl CancelInfo {
     pub fn new() -> CancelInfo {
         CancelInfo {
+            pre: None,
             normals: vec![0; 0],
             normal_cancel: CancelType::HIT | CancelType::BLOCK,
             normal_cancel_require_flag: false,
@@ -88,6 +90,11 @@ impl CancelInfo {
             fgc_flags: FGCFlags::ALL,
             exception: None
         }
+    }
+
+    pub fn pre_function(mut self, pre: CancelFunc) -> Self {
+        self.pre = Some(pre);
+        self
     }
 
     pub fn enable_normals(mut self, normals: Vec<i32>) -> Self {
@@ -263,7 +270,7 @@ impl CustomCancelManager {
         let mut manager = CUSTOM_CANCEL_MANAGER.write();
         let agent = unsafe{ (*fighter.battle_object).agent_kind_hash };
         if let Some(agent_infos) = manager.cancel_infos.get_mut(&agent) {
-            let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
+            let status = unsafe {StatusModule::status_kind(fighter.module_accessor)};
             if let Some(cancel_info) = agent_infos.get_mut(&status) {
                 if !fighter.global_table[IS_STOP].get_bool() {
                     if Self::execute_cancel_inner(fighter, cancel_info) {
@@ -278,6 +285,12 @@ impl CustomCancelManager {
     extern "Rust" fn execute_cancel_inner(fighter: &mut L2CFighterCommon, cancel_info: &CancelInfo) -> bool {
         if !fighter.global_table[IS_STOP].get_bool() {
             unsafe {
+                if let Some(pre_func) = cancel_info.pre {
+                    // println!("[CustomCancelModule] Pre Check found!");
+                    if pre_func(fighter) {
+                        return false;
+                    }
+                }
                 let hit = AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT);
                 let shield = AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD);
                 let cancel_window = FGCModule::check_cancel_window(fighter);

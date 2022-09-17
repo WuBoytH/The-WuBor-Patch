@@ -60,8 +60,8 @@ unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterComm
         let combo = ComboModule::count(fighter.module_accessor) as i32;
         let s3_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("s3_combo_max"), 0);
         if combo < s3_combo_max
-        || (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
-        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)) {
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
             dolly_attacks3_mtrans_param(fighter, param_1);
         }
     }

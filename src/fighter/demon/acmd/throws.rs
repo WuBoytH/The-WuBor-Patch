@@ -30,7 +30,7 @@ unsafe fn demon_catchcommand(fighter: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(fighter, 1.6);
     frame(fighter.lua_state_agent, 3.0);
-    macros::FT_START_ADJUST_MOTION_FRAME_arg1(fighter, 1);
+    macros::FT_START_ADJUST_MOTION_FRAME_arg1(fighter, 1.0);
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::CATCH(fighter, 0, Hash40::new("top"), 4.0, 0.0, 6.6, 5.0, Some(0.0), Some(6.6), Some(11.2), *FIGHTER_STATUS_KIND_CAPTURE_PULLED, *COLLISION_SITUATION_MASK_G);

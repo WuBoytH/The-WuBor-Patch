@@ -23,8 +23,8 @@ unsafe fn status_attacks3_main_param(fighter: &mut L2CFighterCommon, param_1: L2
         let combo = ComboModule::count(fighter.module_accessor) as i32;
         let s3_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("s3_combo_max"), 0);
         if combo < s3_combo_max
-        || (WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
-        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)) {
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
             fighter.attack_s3_mtrans_param(param_1);
         }
     }

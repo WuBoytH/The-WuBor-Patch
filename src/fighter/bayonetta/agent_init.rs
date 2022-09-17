@@ -1,12 +1,14 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::*,
-        lib::{lua_const::*, L2CValue}
+        lib::lua_const::*
     },
     smashline::*,
+    custom_cancel::*,
     // wubor_utils::table_const::*,
-    super::fgc::*
+    super::fgc
 };
 
 // unsafe extern "C" fn bayonetta_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -42,19 +44,20 @@ use {
 //     return (0 < count).into();
 // }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_BAYONETTA {
             return;
         }
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(bayonetta_fgc as *const () as _));
+        fgc::install();
     }
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_bayonetta"));
+    install_agent_resets!(
+        agent_reset
     );
 }

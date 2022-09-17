@@ -418,7 +418,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
         let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
         setoff_speed *= shield_lr;
     }
-    println!("setoff_speed: {}", setoff_speed);
+    // println!("setoff_speed: {}", setoff_speed);
     sv_kinetic_energy!(
         reset_energy,
         fighter,

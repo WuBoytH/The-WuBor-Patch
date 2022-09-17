@@ -1,13 +1,15 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_var::*,
+    custom_cancel::*,
     wubor_utils::{vars::*, table_const::*},
-    super::helper::*
+    super::{helper::*, cancel}
 };
 
 unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -17,8 +19,8 @@ unsafe extern "C" fn yu_specialns_pre(fighter: &mut L2CFighterCommon) -> L2CValu
     1.into()
 }
 
-unsafe extern "C" fn yu_speciallw_pre(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
+unsafe extern "C" fn yu_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    spent_meter(fighter.battle_object, true).into()
 }
 
 unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -62,6 +64,17 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
     ret.into()
 }
 
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
+        if fighter_kind != *FIGHTER_KIND_LUCINA {
+            return;
+        }
+        cancel::install();
+    }
+}
+
 #[fighter_init]
 fn agent_init(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -79,7 +92,11 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucina"));
+    install_agent_resets!(
+        agent_reset
+    );
+    install_agent_init_callback!(
         agent_init
     );
 }

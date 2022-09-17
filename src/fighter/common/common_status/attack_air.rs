@@ -15,6 +15,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_uniq_process_init)]
 unsafe fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
     let shield_stiff_mul_attack_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_mul_attack_air"));
     AttackModule::set_shield_stiff_mul(fighter.module_accessor, shield_stiff_mul_attack_air);
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
@@ -31,7 +32,6 @@ unsafe fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_common)]
 unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    VarModule::off_flag(fighter.battle_object, attack_air::flag::WHIFF);
     ControlModule::reset_trigger(fighter.module_accessor);
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);

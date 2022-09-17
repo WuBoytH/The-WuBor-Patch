@@ -4,6 +4,7 @@ mod status;
 mod agent_init;
 pub mod helper;
 pub mod vl;
+pub mod cancel;
 
 pub fn install() {
     acmd::install();

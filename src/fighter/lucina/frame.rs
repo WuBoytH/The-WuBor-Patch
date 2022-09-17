@@ -175,41 +175,37 @@ unsafe fn lucina_on_empty_sp_meter(fighter: &mut L2CFighterCommon) {
 
 unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
-    if status == *FIGHTER_STATUS_KIND_THROW {
-        if !CatchModule::is_catch(fighter.module_accessor)
-        && !VarModule::is_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE) {
-            VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
-        }
+    // if status == *FIGHTER_STATUS_KIND_THROW {
+    //     if !CatchModule::is_catch(fighter.module_accessor)
+    //     && !VarModule::is_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE) {
+    //         VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
+    //     }
+    // }
+    // else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
+    // && !CatchModule::is_catch(fighter.module_accessor)
+    // && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
+    //     VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
+    // }
+    if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+        VarModule::on_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
     }
-    else if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
-    && !CatchModule::is_catch(fighter.module_accessor)
-    && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
-        VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
+    else {
+        VarModule::off_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
     }
-    if ![*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT].contains(&status)
-    && !fighter.global_table[IS_STOP].get_bool()
-    && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
-        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if VarModule::is_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE) {
-            if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
-            && spent_meter(fighter.battle_object, true) {
-                VarModule::on_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
-                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
-            }
-            else if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
-            && VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE) >= 25.0
-            && !VarModule::is_flag(fighter.battle_object, yu::instance::flag::SHADOW_FRENZY)
-            && shadow_id(fighter.module_accessor) {
-                fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
-            }
-        }
-        else if !MiscModule::is_damage_check(fighter.module_accessor, false)
-        && status != *FIGHTER_STATUS_KIND_SPECIAL_HI
-        && !CatchModule::is_catch(fighter.module_accessor)
-        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
+    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+    if status == *FIGHTER_STATUS_KIND_THROW
+    && !CatchModule::is_catch(fighter.module_accessor) {
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
         && spent_meter(fighter.battle_object, true) {
-            VarModule::off_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
+            VarModule::on_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+        }
+        else if shadow_id(fighter.module_accessor)
+        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
+        && VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE) >= 25.0
+        && !VarModule::is_flag(fighter.battle_object, yu::instance::flag::SHADOW_FRENZY) {
+            fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());
         }
     }
     if shadow_id(fighter.module_accessor)

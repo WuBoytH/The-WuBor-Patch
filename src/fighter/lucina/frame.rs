@@ -210,6 +210,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
     }
     if shadow_id(fighter.module_accessor)
     && [hash40("appeal_hi_l"), hash40("appeal_hi_r")].contains(&MotionModule::motion_kind(fighter.module_accessor))
+    && !VarModule::is_flag(fighter.battle_object, yu::instance::flag::SHADOW_FRENZY)
     && VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE) >= 25.0
     && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
         fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT.into(), true.into());

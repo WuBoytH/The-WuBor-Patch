@@ -123,7 +123,6 @@ unsafe fn toonlink_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
     }
 }
 

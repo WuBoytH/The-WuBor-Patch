@@ -379,7 +379,7 @@ pub mod FGCModule {
 
     /// Checks if certain aerials are enabled.
     pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {
-        if VarModule::is_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL)
+        if VarModule::is_flag(fighter.battle_object, commons::status::flag::ENABLE_AERIAL_STRING)
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
             let enabled_mask = VarModule::get_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS);
             let used_mask = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_AERIALS);

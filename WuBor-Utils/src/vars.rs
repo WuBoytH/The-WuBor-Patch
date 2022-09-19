@@ -91,7 +91,7 @@ pub mod commons {
             pub const NORMAL_CANCEL : i32 = 0x1001;
             pub const DASH_CANCEL : i32 = 0x1002;
             pub const SPECIAL_CANCEL : i32 = 0x1003;
-            pub const HITSTOP_PRECEDE_EXTENSION : i32 = 0x1004;
+            pub const ENABLE_AERIAL_STRING : i32 = 0x1004;
         }
         pub mod int {
             pub const ENABLED_AERIALS : i32 = 0x1000;

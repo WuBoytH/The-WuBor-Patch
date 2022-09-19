@@ -2,13 +2,15 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
+        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    custom_cancel::*,
     smashline::*,
     wubor_utils::table_const::*,
     crate::fighter::common::agent_inits::*,
-    super::fgc::*
+    super::fgc
 };
 
 pub unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -29,7 +31,7 @@ pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L
             //     *ITEM_KIND_PEACHDAIKON,
             //     *ITEM_KIND_DAISYDAIKON
             // ].contains(&ItemModule::get_have_item_kind(fighter.module_accessor, 0)) {
-        &&ItemModule::is_have_item(fighter.module_accessor, 0) {
+        && ItemModule::is_have_item(fighter.module_accessor, 0) {
             throw = WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
         }
         if throw {
@@ -40,8 +42,8 @@ pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_DAISY {
@@ -54,12 +56,13 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[CHECK_AIR_JUMP_AERIAL_UNIQ].assign(&false.into());
         fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(daisy_speciallw_pre as *const () as _));
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(daisy_fgc as *const () as _));
+        fgc::install();
     }
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_daisy"));
+    install_agent_resets!(
+        agent_reset
     );
 }

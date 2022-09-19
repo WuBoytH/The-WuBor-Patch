@@ -1,37 +1,41 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        phx::*,
         lib::lua_const::*
     },
-    wubor_utils::{wua_bind::*, table_const::*}
+    custom_cancel::*,
 };
 
-pub unsafe extern "C" fn chrom_fgc(fighter: &mut L2CFighterCommon) {
-    let status = fighter.global_table[STATUS_KIND].get_i32();
-    let mut special_cancels : Vec<i32> = [].to_vec();
-    let mut normal_cancels : Vec<i32> = [].to_vec();
-    if [
+pub fn install() {
+    let agent = Hash40::new("fighter_kind_chrom");
+    for x in [
         *FIGHTER_STATUS_KIND_ATTACK_DASH,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
-    ].contains(&status) {
-        special_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-        ].to_vec();
-        normal_cancels = [
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-        ].to_vec();
+    ].iter() {
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            CancelInfo::new()
+                .enable_normals([
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
+                ].to_vec())
+                .enable_specials([
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+                    *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
+                ].to_vec())
+                .set_fgc_flags(FGCFlags::NONE)
+        );
     }
-    else if [
-        *FIGHTER_STATUS_KIND_ATTACK_AIR
-    ].contains(&status) {
-        if FGCModule::air_dash_cancel_check(fighter, false, false).get_bool() {
-            return;
-        }
-    }
-    FGCModule::cancel_system(fighter, normal_cancels, special_cancels, false, 0);
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        CancelInfo::new()
+            .enable_specials([].to_vec())
+            .enable_airdash_cancel(CancelType::HIT)
+            .set_fgc_flags(FGCFlags::NONE)
+    );
 }

@@ -1,13 +1,15 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::*,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_var::*,
+    custom_cancel::*,
     wubor_utils::{vars::*, table_const::*},
-    super::fgc::*
+    super::fgc
 };
 
 pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -35,8 +37,8 @@ pub unsafe extern "C" fn lucario_special_s_uniq(fighter: &mut L2CFighterCommon) 
     (!VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_S)).into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_LUCARIO {
@@ -44,12 +46,13 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         }
         fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(lucario_special_s_uniq as *const () as _));
         fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(lucario_status_end_control as *const () as _));
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(lucario_fgc as *const () as _));
+        fgc::install();
     }
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucario"));
+    install_agent_resets!(
+        agent_reset
     );
 }

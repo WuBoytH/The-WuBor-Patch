@@ -140,9 +140,6 @@ unsafe fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon, param_1: L
             fighter.attack_lw4_mtrans_common(hash40("attack_lw4").into());
         }
     }
-    else {
-        fighter.attack_lw4_mtrans_common(hash40("attack_lw4").into());
-    }
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return;

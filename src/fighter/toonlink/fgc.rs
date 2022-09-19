@@ -49,6 +49,22 @@ pub unsafe extern "C" fn install() {
                 ].to_vec())
         );
     }
+    for x in [
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+    ].iter() {
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            CancelInfo::new()
+        );
+    }
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        CancelInfo::new()
+            .enable_jump_cancel(CancelType::HIT)
+    );
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,

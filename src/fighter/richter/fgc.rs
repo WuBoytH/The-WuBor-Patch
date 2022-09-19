@@ -22,6 +22,11 @@ pub fn install() {
     );
     CustomCancelManager::add_cancel_info(
         agent,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        CancelInfo::new()
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
         *FIGHTER_STATUS_KIND_ATTACK_100,
         CancelInfo::new()
             .enable_normals([

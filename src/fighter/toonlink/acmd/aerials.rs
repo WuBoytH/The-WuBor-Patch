@@ -5,8 +5,10 @@ use {
         app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },
+    custom_var::*,
     smash_script::*,
-    smashline::*
+    smashline::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "toonlink", script = "game_attackairn", category = ACMD_GAME, low_priority )]
@@ -53,6 +55,7 @@ unsafe fn toonlink_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
         macros::ATTACK(fighter, 0, 0, Hash40::new("sword2"), 14.0, 80, 95, 0, 25, 4.6, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("sword2"), 14.0, 80, 95, 0, 25, 5.2, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("arml"), 14.0, 80, 95, 0, 25, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
@@ -74,6 +77,10 @@ unsafe fn toonlink_attackairhi(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    wait(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
     }
 }
 
@@ -104,6 +111,7 @@ unsafe fn toonlink_attackairlw(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 50, 98, 0, 40, 5.0, 1.0, -1.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
+        VarModule::on_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
     }
     frame(fighter.lua_state_agent, 65.0);
     if macros::is_excute(fighter) {
@@ -115,6 +123,7 @@ unsafe fn toonlink_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
         KineticModule::resume_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        VarModule::off_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
     }
 }
 

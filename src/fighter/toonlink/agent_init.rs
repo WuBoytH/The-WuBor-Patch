@@ -1,26 +1,29 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        phx::*,
         app::*,
-        lib::{lua_const::*, L2CValue}
+        lib::lua_const::*
     },
+    custom_cancel::*,
     smashline::*,
-    super::fgc::*
+    super::fgc
 };
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_TOONLINK {
             return;
         }
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(toonlink_fgc as *const () as _));
+        fgc::install();
     }
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
+    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_toonlink"));
+    install_agent_resets!(
+        agent_reset
     );
 }

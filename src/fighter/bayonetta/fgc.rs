@@ -66,7 +66,7 @@ pub unsafe extern "C" fn install() {
             .enable_dash_cancel(CancelType::HIT)
             .set_dash_cancel_direction(DashCancelDir::FORWARD)
             .dash_cancel_require_flag()
-            .set_fgc_flags(FGCFlags::AERIAL | FGCFlags::AIRDASH | FGCFlags::NORMAL | FGCFlags::SPECIAL | FGCFlags::JUMP)
+            .set_fgc_flags(FGCFlags::ALL - FGCFlags::DASH)
             .pre_function(disable_during_bullet_arts)
     );
     CustomCancelManager::add_cancel_info(
@@ -80,7 +80,7 @@ pub unsafe extern "C" fn install() {
             ].to_vec())
             .enable_jump_cancel(CancelType::HIT)
             .jump_cancel_require_flag()
-            .set_fgc_flags(FGCFlags::AERIAL | FGCFlags::AIRDASH | FGCFlags::NORMAL | FGCFlags::SPECIAL | FGCFlags::DASH)
+            .set_fgc_flags(FGCFlags::ALL - FGCFlags::JUMP)
             .pre_function(disable_during_bullet_arts)
     );
     CustomCancelManager::add_cancel_info(
@@ -105,7 +105,7 @@ pub unsafe extern "C" fn install() {
             ].to_vec())
             .enable_dash_cancel(CancelType::HIT)
             .set_dash_cancel_direction(DashCancelDir::FORWARD)
-            .set_fgc_flags(FGCFlags::AERIAL | FGCFlags::AIRDASH | FGCFlags::NORMAL | FGCFlags::SPECIAL | FGCFlags::JUMP)
+            .set_fgc_flags(FGCFlags::ALL - FGCFlags::DASH)
             .pre_function(disable_during_bullet_arts)
     );
     CustomCancelManager::add_cancel_info(
@@ -114,7 +114,10 @@ pub unsafe extern "C" fn install() {
         CancelInfo::new()
             .enable_aerials(CancelType::HIT | CancelType::BLOCK)
             .enable_jump_cancel(CancelType::HIT)
+            .enable_airdash_cancel(CancelType::HIT)
+            .airdash_cancel_require_flag()
             .pre_function(bayo_disable_aerials)
+            .set_fgc_flags(FGCFlags::ALL - FGCFlags::AIRDASH)
     );
     CustomCancelManager::add_cancel_info(
         agent,

@@ -60,6 +60,7 @@ pub const CHECK_SPECIAL_COMMAND:           i32 = 0x3C;
 pub const WAZA_CUSTOMIZE_CONTROL:          i32 = 0x3D;
 pub const STATUS_END_CONTROL:              i32 = 0x3E;
 
+pub const DAMAGE_MOTION_KIND_CALLBACK:     i32 = 0x42;
 pub const SUB_UNIQ_DAMAGE_FLY_UNIQ:        i32 = 0x43;
 pub const DOWN_DAMAGE_UNIQ:                i32 = 0x44;
 pub const THROW_F_STATUS_KIND:             i32 = 0x45;

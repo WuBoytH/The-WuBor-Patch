@@ -48,13 +48,13 @@ fn agent_init(agent: &mut L2CFighterBase) {
 }
 
 #[skyline::hook(offset = 0x3afde0)]
-pub unsafe fn battleobjectmoduleaccessor__end_modules(module_accessor: *mut BattleObjectModuleAccessor) {
+pub unsafe fn battleobjectmoduleaccessor__end_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: u32) {
     let object_id = (*module_accessor).battle_object_id;
     // println!("[CustomVarManager] Module Count before removing: {}", CustomVarManager::count());
     // println!("[CustomVarManager] Ending Modules for {:#x}", object_id);
     CustomVarManager::remove_var_module_by_object_id(object_id);
     // println!("[CustomVarManager] Module Count after removing: {}", CustomVarManager::count());
-    original!()(module_accessor);
+    original!()(module_accessor, param_1)
 }
 
 pub fn install() {

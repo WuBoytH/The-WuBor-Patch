@@ -211,6 +211,17 @@ pub unsafe extern "C" fn lucario_set_effect_scale(vtable: u64, fighter: &mut Fig
     }
 }
 
+// #[skyline::hook(offset = 0xc5da80)]
+// unsafe fn auraball_init(article: *mut smash::app::Article, owner: *mut BattleObjectModuleAccessor) -> u32 {
+//     // let object = &mut (*article).battle_object;
+//     // let module_accessor = object.module_accessor;
+//     // if VarModule::is_flag(object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+//     //     WorkModule::set_customize_no(module_accessor, 1, 0);
+//     // }
+//     println!("Initializing auraball");
+//     original!()(article, owner)
+// }
+
 pub fn install() {
     skyline::install_hooks!(
         lucario_check_aura,
@@ -218,6 +229,7 @@ pub fn install() {
         lucario_handle_aura,
         lucario_handle_aura2,
         lucario_on_grab,
-        lucario_set_effect_scale
+        lucario_set_effect_scale,
+        // auraball_init
     );
 }

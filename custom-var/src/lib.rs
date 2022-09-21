@@ -28,34 +28,36 @@ impl CustomVarManager {
     }
 
     #[export_name = "CustomVarManager__reset_var_module"]
-    pub extern "Rust" fn reset_var_module(object: *mut BattleObject) -> bool {
+    pub extern "Rust" fn reset_var_module(object: *mut BattleObject, force: bool) -> bool {
         let object_id = unsafe{
             (*object).battle_object_id
         };
-        Self::reset_var_module_by_object_id(object_id)
+        Self::reset_var_module_by_object_id(object_id, force)
 
     }
 
     #[export_name = "CustomVarManager__reset_var_module_by_object_id"]
-    pub extern "Rust" fn reset_var_module_by_object_id(object_id: u32) -> bool {
+    pub extern "Rust" fn reset_var_module_by_object_id(object_id: u32, force: bool) -> bool {
         // println!("[VarModule] Restting VarModule for {:#x}", object_id);
         let mut manager = CUSTOM_VAR_MANAGER.write();
-        let x = if let Some(mut modules) = manager.modules.try_write() {
-            let _ = modules.insert(object_id, VarModule::new());
-            // let x = modules.insert(object_id, VarModule::new());
-            // if x.is_none() {
-            //     println!("[VarModule] There was no VarModule previously present for this Object ID!");
-            // }
-            // else {
-            //     println!("[VarModule] Replaced a previously existing VarModule!");
-            // }
-            true
+        if let Some(mut modules) = manager.modules.try_write() {
+            if force {
+                // println!("[VarModule] Inserted new VarModule (Forced) for {:#x}", object_id);
+                modules.insert(object_id, VarModule::new());
+                return true;
+            }
+            else {
+                if modules.contains_key(&object_id) {
+                    // println!("[VarModule] VarModule for {:#x} already exists!", object_id);
+                }
+                else {
+                    // println!("[VarModule] Inserted new VarModule (Not Forced) for {:#x}", object_id);
+                    modules.insert(object_id, VarModule::new());
+                    return true;
+                }
+            }
         }
-        else {
-            false
-        };
-
-        x
+        false
     }
 
     #[export_name = "CustomVarManager__remove_var_module"]
@@ -253,6 +255,12 @@ impl VarModule {
         let object_id = unsafe{
             (*object).battle_object_id
         };
+        Self::retrieve_pocketed_vars_by_object_id(object_id, owner_object_id)
+    }
+
+    /// Retrieves the instance variable values from a pocketed instance using the object id directly.
+    #[export_name = "VarModule__retrieve_pocketed_vars_by_object_id"]
+    pub extern "Rust" fn retrieve_pocketed_vars_by_object_id(object_id: u32, owner_object_id: u32) {
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
         let mut int_temp = vec![0i32; 0x200];
@@ -365,6 +373,17 @@ impl VarModule {
         let object_id = unsafe{
             (*object).battle_object_id
         };
+        Self::is_flag_from_object_id(object_id, what)
+    }
+
+    /// Retrieves a flag, but using the object id directly.
+    /// # Arguments
+    /// * `object_id` - The battle object id of the object.
+    /// * `what` - The variable to retrieve
+    /// # Returns
+    /// The variable requested
+    #[export_name = "VarModule__is_flag_from_object_id"]
+    pub extern "Rust" fn is_flag_from_object_id(object_id: u32, what: i32) -> bool {
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
         if let Some(mut module) = modules.get_mut(&object_id) {
@@ -387,6 +406,16 @@ impl VarModule {
         let object_id = unsafe{
             (*object).battle_object_id
         };
+        Self::set_int_from_object_id(object_id, what, val)
+    }
+
+    /// Sets an integer value
+    /// # Arguments
+    /// * `object` - The owning `BattleObject` instance
+    /// * `what` - The variable to set
+    /// * `val` - The value to set the variable to
+    #[export_name = "VarModule__set_int_from_object_id"]
+    pub extern "Rust" fn set_int_from_object_id(object_id: u32, what: i32, val: i32) {
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
         if let Some(mut module) = modules.get_mut(&object_id) {
@@ -444,6 +473,16 @@ impl VarModule {
         let object_id = unsafe{
             (*object).battle_object_id
         };
+        Self::set_flag_from_object_id(object_id, what, val)
+    }
+
+    /// Sets a flag using the object id directly.
+    /// # Arguments
+    /// * `object_id` - The battle object id of the object.
+    /// * `what` - The variable to set
+    /// * `val` - The value to set the variable to
+    #[export_name = "VarModule__set_flag_from_object_id"]
+    pub extern "Rust" fn set_flag_from_object_id(object_id: u32, what: i32, val: bool) {
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
         if let Some(mut module) = modules.get_mut(&object_id) {

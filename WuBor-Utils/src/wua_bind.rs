@@ -688,6 +688,32 @@ pub mod MiscModule {
         false
     }
 
+    pub unsafe fn get_vars_from_pocket_by_object_id(object_id: u32, owner_object_id: u32) -> bool {
+        // println!("Owner ID: {:#x}", owner_object_id);
+        let owner_cat = sv_battle_object::category(owner_object_id);
+        // println!("Owner Category: {:#x}", owner_cat);
+        let owner_kind = sv_battle_object::kind(owner_object_id);
+        // println!("Owner Kind: {:#x}", owner_kind);
+        if owner_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
+        && [*FIGHTER_KIND_MURABITO, *FIGHTER_KIND_SHIZUE, *FIGHTER_KIND_KIRBY].contains(&owner_kind) {
+            // println!("Owner objects are either Villager or Isabelle!");
+            let owner_module_accessor = sv_battle_object::module_accessor(owner_object_id);
+            if owner_kind == *FIGHTER_KIND_KIRBY
+            && ![*FIGHTER_KIND_MURABITO, *FIGHTER_KIND_SHIZUE].contains(&WorkModule::get_int(owner_module_accessor, *FIGHTER_KIRBY_INSTANCE_WORK_ID_INT_COPY_CHARA)) {
+                return false;
+            }
+            let pocket_object_id = WorkModule::get_int(owner_module_accessor, *FIGHTER_MURABITO_INSTANCE_WORK_ID_INT_SPECIAL_N_OBJECT_ID) as u32;
+            // println!("Pocketed Item Object ID: {:#x}", pocket_object_id);
+            if object_id == pocket_object_id {
+                // println!("Pocket object and new object match! Retrieving pocketed vars...");
+                VarModule::retrieve_pocketed_vars_by_object_id(object_id, owner_object_id);
+                VarModule::set_flag_from_object_id(object_id, weapon::instance::flag::FROM_POCKET, true);
+                return true;
+            }
+        }
+        false
+    }
+
     pub unsafe fn calc_motion_rate_from_cancel_frame(fighter: &mut L2CAgentBase, current_frame: f32, adjust_frame: f32) {
         let mot = MotionModule::motion_kind(fighter.module_accessor);
         let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(mot), true);

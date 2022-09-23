@@ -131,13 +131,20 @@ unsafe fn samusd_attackairf(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn samusd_attackairf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
+    let mut effect = 0;
     if macros::is_excute(fighter) {
         let color = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) as i32;
         macros::EFFECT_FOLLOW_arg11(fighter, Hash40::new("samusd_gbeam_flash_01"), Hash40::new("armr"), 7, 0, 0, 0, 0, 0, 1.3, true, color);
         macros::EFFECT(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 11.5, 3, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_atk_bomb"), Hash40::new("armr"), 14.387, -0.341, -0.169, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_RATE(fighter, 2.0);
+        effect = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+        EffectModule::set_rate(fighter.module_accessor, effect, 2.0);
+    }
+    wait(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        EffectModule::set_rate(fighter.module_accessor, effect, 1.0);
+        EffectModule::detach(fighter.module_accessor, effect, -1);
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {

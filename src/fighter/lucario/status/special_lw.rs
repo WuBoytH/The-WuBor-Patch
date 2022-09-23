@@ -119,11 +119,9 @@ unsafe extern "C" fn lucario_special_lw_set_kinetic(fighter: &mut L2CFighterComm
 
 unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL) {
-        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
-        || cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0 {
-            ControlModule::clear_command(fighter.module_accessor, true);
+        let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
+        if pad_flag & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
+            ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
             WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_cancel") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
             WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_cancel") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);

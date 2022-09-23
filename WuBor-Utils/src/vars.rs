@@ -377,8 +377,14 @@ pub mod lucario {
         }
         pub mod int {
             pub const AURA_ENHANCED_BY : i32 = 0x1100;
+
+            pub const SPECIAL_LW_STEP : i32 = 0x1150;
         }
     }
+
+    pub const SPECIAL_LW_STEP_START : i32 = 0x0;
+    pub const SPECIAL_LW_STEP_CHARGE : i32 = 0x1;
+    pub const SPECIAL_LW_STEP_END : i32 = 0x2;
 }
 
 pub mod lucario_auraball {

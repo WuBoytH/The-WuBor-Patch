@@ -83,7 +83,6 @@ unsafe fn lucario_specialnhold2_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_specialnhold2_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_lucario_005"));
-        macros::PLAY_STATUS(fighter, Hash40::new("se_lucario_special_n01_l"));
     }
 }
 
@@ -132,7 +131,21 @@ unsafe fn lucario_specialnshoot2_exp(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario_auraball", scripts = [ "game_charge", "game_chargemax" ], category = ACMD_GAME, low_priority )]
-unsafe fn lucario_auraball_charge(_weapon: &mut L2CAgentBase) {
+unsafe fn lucario_auraball_charge(weapon: &mut L2CAgentBase) {
+    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if macros::is_excute(weapon) {
+            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        }
+    }
+}
+
+#[acmd_script( agent = "lucario_auraball", script = "sound_charge", category = ACMD_SOUND, low_priority )]
+unsafe fn lucario_auraball_charge_snd(weapon: &mut L2CAgentBase) {
+    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if macros::is_excute(weapon) {
+            macros::PLAY_STATUS(weapon, Hash40::new("se_lucario_special_n01_l"));
+        }
+    }
 }
 
 #[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
@@ -147,8 +160,8 @@ unsafe fn lucario_auraball_shoot(weapon: &mut L2CAgentBase) {
     }
     else {
         if macros::is_excute(weapon) {
-            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.5, 366, 49, 60, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-            macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 0.5, 366, 49, 60, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
             attack!(weapon, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
             AttackModule::enable_safe_pos(weapon.module_accessor);
         }
@@ -1161,7 +1174,7 @@ pub fn install() {
         lucario_specialairnshoot_exp,
         lucario_specialnhold2_eff, lucario_specialnhold2_snd,
         lucario_specialnshoot2, lucario_specialnshoot2_eff, lucario_specialnshoot2_snd, lucario_specialnshoot2_exp,
-        lucario_auraball_charge,
+        lucario_auraball_charge, lucario_auraball_charge_snd,
         lucario_auraball_shoot, lucario_auraball_shoot_snd,
         lucario_auraball_explosion, lucario_auraball_explosion_eff,
 

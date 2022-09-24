@@ -68,7 +68,7 @@ unsafe fn demon_attacklw3_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValu
 
 unsafe extern "C" fn demon_attacklw3_cancel_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
-    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS) != *FIGHTER_STATUS_KIND_GUARD_ON {
+    && WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_GUARD_ON {
         let mut status = -1;
         let cat4 = fighter.global_table[CMD_CAT4].get_i32();
         if cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {

@@ -1,5 +1,5 @@
 mod jabs;
-// mod normals;
+mod normals;
 mod smashes;
 mod throws;
 mod aerials;
@@ -12,7 +12,7 @@ mod misc;
 
 pub fn install() {
     jabs::install();
-    // normals::install();
+    normals::install();
     smashes::install();
     throws::install();
     aerials::install();

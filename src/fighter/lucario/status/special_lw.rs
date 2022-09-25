@@ -149,6 +149,7 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
                 lucario_gain_aura(fighter);
                 if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) >= vl::private::AURA_CHARGE_MAX
                 || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
                     VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
                 }
             }

@@ -2,7 +2,7 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        phx::{Vector3f, Vector2f},
+        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -10,7 +10,7 @@ use {
     smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*},
-    super::super::helper::*
+    super::super::{helper::*, vl}
 };
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
@@ -86,10 +86,14 @@ unsafe fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP, lucario::SPECIAL_LW_STEP_START);
+    VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
+    VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGES_GAINED, 0);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
     lucario_special_lw_set_kinetic(fighter);
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(lucario_special_lw_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_lw_main_loop as *const () as _))
 }
 
@@ -117,18 +121,44 @@ unsafe extern "C" fn lucario_special_lw_set_kinetic(fighter: &mut L2CFighterComm
     }
 }
 
-unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL) {
-        let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
-        if pad_flag & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
-            ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
-            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_cancel") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_cancel") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-            lucario_special_lw_set_kinetic(fighter);
-            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    let step = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP);
+    if param_1.get_bool() {
+        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL) {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+                ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
+                VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL);
+            }
+        }
+        if step == lucario::SPECIAL_LW_STEP_CHARGE {
+            let charges_gained = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGES_GAINED);
+            if VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME) == 0 {
+                if charges_gained == 0 {
+                    macros::EFFECT_OFF_KIND(fighter, Hash40::new("lucario_aura"), false, true);
+                }
+                macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_aura"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+                let rate_add = vl::special_lw::CHARGE_FRAME_SUBSEQUENT_MUL * VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGES_GAINED) as f32;
+                macros::LAST_EFFECT_SET_RATE(fighter, 0.5 + rate_add);
+                macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_l01"));
+            }
+            VarModule::inc_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME);
+            let charge_max = vl::special_lw::CHARGE_FRAME - (vl::special_lw::CHARGE_FRAME * charges_gained as f32 * vl::special_lw::CHARGE_FRAME_SUBSEQUENT_MUL);
+            if VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME) >= charge_max as i32 {
+                VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
+                lucario_gain_aura(fighter);
+                if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) >= vl::private::AURA_CHARGE_MAX
+                || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+                    VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
+                }
+            }
         }
     }
+    0.into()
+}
+
+unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let step = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP);
     if !StatusModule::is_changing(fighter.module_accessor)
     && StatusModule::is_situation_changed(fighter.module_accessor) {
         lucario_special_lw_set_kinetic(fighter);
@@ -139,14 +169,44 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
             return 0.into();
         }
     }
-    if MotionModule::is_end(fighter.module_accessor) {
-        let status = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-            FIGHTER_STATUS_KIND_FALL
+    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL)
+    || VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END) {
+        let mot_g;
+        let mot_a;
+        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL) {
+            mot_g = hash40("special_lw_cancel");
+            mot_a = hash40("special_air_lw_cancel");
         }
         else {
-            FIGHTER_STATUS_KIND_WAIT
-        };
-        fighter.change_status(status.into(), false.into());
+            mot_g = hash40("special_lw_end");
+            mot_a = hash40("special_air_lw_end");
+        }
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
+        WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+        WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+        lucario_special_lw_set_kinetic(fighter);
+        VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP, lucario::SPECIAL_LW_STEP_END);
+        VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL);
+        VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        if step == lucario::SPECIAL_LW_STEP_END {
+            let status = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+                FIGHTER_STATUS_KIND_FALL
+            }
+            else {
+                FIGHTER_STATUS_KIND_WAIT
+            };
+            fighter.change_status(status.into(), false.into());
+            return 0.into();
+        }
+        else if step == lucario::SPECIAL_LW_STEP_START {
+            VarModule::inc_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_lw_charge") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+            WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw_charge") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+            lucario_special_lw_set_kinetic(fighter);
+        }
     }
     0.into()
 }

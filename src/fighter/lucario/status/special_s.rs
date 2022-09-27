@@ -116,7 +116,7 @@ unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CVal
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
-    let enhance = lucario_drain_aura(fighter, false);
+    let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
     let mot = if !enhance {
         hash40("special_s_throw")
     }

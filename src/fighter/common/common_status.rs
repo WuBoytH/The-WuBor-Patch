@@ -16,6 +16,7 @@ mod attack_3;
 mod attack_4;
 mod attack_air;
 mod catch;
+mod capture_pulled;
 mod damage;
 mod damage_air;
 mod damage_fall;
@@ -47,6 +48,7 @@ pub fn install() {
     attack_4::install();
     attack_air::install();
     catch::install();
+    capture_pulled::install();
     damage::install();
     damage_air::install();
     damage_fall::install();

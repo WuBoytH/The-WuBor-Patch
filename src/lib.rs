@@ -42,7 +42,6 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
 
 #[skyline::main(name = "the_wubor_patch")]
 pub fn main() {
-    wubor_utils::vars::install();
     function_hooks::install();
     fighter::install();
     custom_vars::install();

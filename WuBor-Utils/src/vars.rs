@@ -1,7 +1,6 @@
 #![allow(non_upper_case_globals)]
 
 use {
-    std::sync::Once,
     smash::{
         phx::Vector3f,
         app::*,
@@ -129,6 +128,12 @@ pub mod dash {
 pub mod guard_off {
     pub mod int {
         pub const ATTACK_CANCEL_FRAME : i32 = 0x1050;
+    }
+}
+
+pub mod captured {
+    pub mod flag {
+        pub const FORCE_PALM : i32 = 0x1050;
     }
 }
 
@@ -683,25 +688,81 @@ pub mod wario {
 pub mod singletons {
     // All credit for this to blujay, macros are very cool
     use super::*;
-    use skyline::nn::ro::LookupSymbol;
-    
-    static INIT : Once = Once::new();
 
-    static mut BOSS_MANAGER:                   *const *mut BossManager                 = 0 as _;
-    static mut ITEM_MANAGER:                   *const *mut ItemManager                 = 0 as _;
-    static mut STAGE_MANAGER:                  *const *mut StageManager                = 0 as _;
-    static mut FIGHTER_MANAGER:                *const *mut FighterManager              = 0 as _;
-    static mut BATTLE_OBJECT_SLOW:             *const *mut BattleObjectSlow            = 0 as _;
-    static mut BATTLE_OBJECT_WORLD:            *const *mut BattleObjectWorld           = 0 as _;
-    static mut ITEM_PARAM_ACCESSOR:            *const *mut ItemParamAccessor           = 0 as _;
-    static mut BATTLE_OBJECT_MANAGER:          *const *mut BattleObjectManager         = 0 as _;
-    static mut FIGHTER_CUT_IN_MANAGER:         *const *mut FighterCutInManager         = 0 as _;
-    static mut FIGHTER_PARAM_ACCESSOR2:        *const *mut FighterParamAccessor2       = 0 as _;
-    static mut GIMMICK_EVENT_PRESENTER:        *const *mut GimmickEventPresenter       = 0 as _;
-    static mut FIGHTER_PIT_B_FINAL_MODULE:     *const *mut FighterPitBFinalModule      = 0 as _;
-    static mut FIGHTER_BAYONETTA_FINAL_MODULE: *const *mut FighterBayonettaFinalModule = 0 as _;
-    // static mut LUA_MANAGER:                    *const *mut u8                          = 0 as _;
-    // static mut EFFECT_MANAGER:                 *const *mut u8                          = 0 as _;
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app11BossManagerEE9instance_E"]
+        static BOSS_MANAGER: *mut smash::app::BossManager;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E"]
+        static ITEM_MANAGER: *mut smash::app::ItemManager;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app12StageManagerEE9instance_E"]
+        static STAGE_MANAGER: *mut smash::app::StageManager;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E"]
+        static FIGHTER_MANAGER: *mut smash::app::FighterManager;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app16BattleObjectSlowEE9instance_E"]
+        static BATTLE_OBJECT_SLOW: *mut smash::app::BattleObjectSlow;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app17BattleObjectWorldEE9instance_E"]
+        static BATTLE_OBJECT_WORLD: *mut smash::app::BattleObjectWorld;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app17ItemParamAccessorEE9instance_E"]
+        static ITEM_PARAM_ACCESSOR: *mut smash::app::ItemParamAccessor;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app19BattleObjectManagerEE9instance_E"]
+        static BATTLE_OBJECT_MANAGER: *mut smash::app::BattleObjectManager;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E"]
+        static FIGHTER_CUT_IN_MANAGER: *mut smash::app::FighterCutInManager;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app21FighterParamAccessor2EE9instance_E"]
+        static FIGHTER_PARAM_ACCESSOR2: *mut smash::app::FighterParamAccessor2;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app21GimmickEventPresenterEE9instance_E"]
+        static GIMMICK_EVENT_PRESENTER: *mut smash::app::GimmickEventPresenter;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app22FighterPitBFinalModuleEE9instance_E"]
+        static FIGHTER_PIT_B_FINAL_MODULE: *mut smash::app::FighterPitBFinalModule;
+    }
+
+    extern "C"{
+        #[link_name = "_ZN3lib9SingletonIN3app27FighterBayonettaFinalModuleEE9instance_E"]
+        static FIGHTER_BAYONETTA_FINAL_MODULE: *mut smash::app::FighterBayonettaFinalModule;
+    }
+
+    // extern "C"{
+    //     #[link_name = "_ZN3lib9SingletonINS_10LuaManagerEE9instance_E"]
+    //     static LUA_MANAGER: *mut u8;
+    // }
+
+    // extern "C"{
+    //     #[link_name = "_ZN3lib9SingletonINS_13EffectManagerEE9instance_E"]
+    //     static EFFECT_MANAGER: *mut u8;
+    // }
 
     macro_rules! expose_singleton {
         ($($public:ident, $private:ident)*) => {
@@ -710,22 +771,11 @@ pub mod singletons {
                 #[allow(non_snake_case)]
                 pub fn $public() -> *mut $public {
                     unsafe {
-                        *$private
+                        $private
                     }
                 }
             )*
         }
-    }
-
-    macro_rules! assign_symbol {
-        ($id:ident, $e:expr) => {{
-            unsafe {
-                let mut sym = 0usize;
-                LookupSymbol(&mut sym as *mut usize, $e.as_ptr() as _);
-                assert!(sym != 0, "Failed to find symbol {}", $e);
-                $id = std::mem::transmute(sym)
-            }
-        }}
     }
 
     expose_singleton!(
@@ -736,6 +786,7 @@ pub mod singletons {
         BattleObjectSlow,            BATTLE_OBJECT_SLOW
         BattleObjectWorld,           BATTLE_OBJECT_WORLD
         ItemParamAccessor,           ITEM_PARAM_ACCESSOR
+        BattleObjectManager,         BATTLE_OBJECT_MANAGER
         FighterCutInManager,         FIGHTER_CUT_IN_MANAGER
         FighterParamAccessor2,       FIGHTER_PARAM_ACCESSOR2
         GimmickEventPresenter,       GIMMICK_EVENT_PRESENTER
@@ -744,28 +795,4 @@ pub mod singletons {
         // LuaManager,                  LUA_MANAGER
         // EffectManager,               EFFECT_MANAGER
     );
-
-    pub fn init() {
-        INIT.call_once(|| {
-            assign_symbol!(BOSS_MANAGER,                   "_ZN3lib9SingletonIN3app11BossManagerEE9instance_E\0");
-            assign_symbol!(ITEM_MANAGER,                   "_ZN3lib9SingletonIN3app11ItemManagerEE9instance_E\0");
-            assign_symbol!(STAGE_MANAGER,                  "_ZN3lib9SingletonIN3app12StageManagerEE9instance_E\0");
-            assign_symbol!(FIGHTER_MANAGER,                "_ZN3lib9SingletonIN3app14FighterManagerEE9instance_E\0");
-            assign_symbol!(BATTLE_OBJECT_SLOW,             "_ZN3lib9SingletonIN3app16BattleObjectSlowEE9instance_E\0");
-            assign_symbol!(BATTLE_OBJECT_WORLD,            "_ZN3lib9SingletonIN3app17BattleObjectWorldEE9instance_E\0");
-            assign_symbol!(ITEM_PARAM_ACCESSOR,            "_ZN3lib9SingletonIN3app17ItemParamAccessorEE9instance_E\0");
-            assign_symbol!(BATTLE_OBJECT_MANAGER,          "_ZN3lib9SingletonIN3app19BattleObjectManagerEE9instance_E\0");
-            assign_symbol!(FIGHTER_CUT_IN_MANAGER,         "_ZN3lib9SingletonIN3app19FighterCutInManagerEE9instance_E\0");
-            assign_symbol!(FIGHTER_PARAM_ACCESSOR2,        "_ZN3lib9SingletonIN3app21FighterParamAccessor2EE9instance_E\0");
-            assign_symbol!(GIMMICK_EVENT_PRESENTER,        "_ZN3lib9SingletonIN3app21GimmickEventPresenterEE9instance_E\0");
-            assign_symbol!(FIGHTER_PIT_B_FINAL_MODULE,     "_ZN3lib9SingletonIN3app22FighterPitBFinalModuleEE9instance_E\0");
-            assign_symbol!(FIGHTER_BAYONETTA_FINAL_MODULE, "_ZN3lib9SingletonIN3app27FighterBayonettaFinalModuleEE9instance_E\0");
-            // assign_symbol!(LUA_MANAGER,                    "_ZN3lib9SingletonINS_10LuaManagerEE9instance_E\0");
-            // assign_symbol!(EFFECT_MANAGER,                 "_ZN3lib9SingletonINS_13EffectManagerEE9instance_E\0");
-        });
-    }
-}
-
-pub fn install() {
-    singletons::init();
 }

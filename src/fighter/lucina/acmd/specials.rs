@@ -731,7 +731,7 @@ unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
     let mut dmg : f32;
     let kbg : i32;
     if VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND)
-    && spent_meter(fighter.battle_object, false) {
+    && spent_meter_super(fighter.battle_object) {
         let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
         let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
         FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);

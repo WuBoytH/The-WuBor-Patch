@@ -388,6 +388,9 @@ pub mod lucario {
             pub const SPECIAL_LW_STEP : i32 = 0x1150;
             pub const SPECIAL_LW_CHARGE_TIME : i32 = 0x1151;
             pub const SPECIAL_LW_CHARGES_GAINED : i32 = 0x1152;
+            pub const SPECIAL_LW_EFF1 : i32 = 0x1153;
+            pub const SPECIAL_LW_EFF2 : i32 = 0x1154;
+            pub const SPECIAL_LW_EFF3 : i32 = 0x1155;
         }
     }
 

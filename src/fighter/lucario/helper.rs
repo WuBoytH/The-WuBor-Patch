@@ -200,3 +200,12 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
 //         FighterSpecializer_Lucario::save_aura_ball_status(fighter.module_accessor, false, 0);
 //     }
 // }
+
+pub unsafe extern "C" fn lucario_special_lw_eff_remover(fighter: &mut L2CAgentBase) {
+    for x in lucario::status::int::SPECIAL_LW_EFF1..=lucario::status::int::SPECIAL_LW_EFF3 {
+        let eff = VarModule::get_int(fighter.battle_object, x) as u32;
+        if EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            EffectModule::kill(fighter.module_accessor, eff, true, true);
+        }
+    }
+}

@@ -125,13 +125,14 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
     let step = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP);
     if param_1.get_bool() {
         if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL) {
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+            if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
                 ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL);
             }
         }
         if step == lucario::SPECIAL_LW_STEP_CHARGE {
+            lucario_special_lw_effect_helper(fighter);
             let charges_gained = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGES_GAINED);
             if VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME) == 0 {
                 if charges_gained == 0 {
@@ -147,6 +148,7 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
             if VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME) >= charge_max as i32 {
                 VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
                 lucario_gain_aura(fighter);
+                lucario_special_lw_effect_helper(fighter);
                 if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) >= vl::private::AURA_CHARGE_MAX
                 || !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                     VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
@@ -156,6 +158,81 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
         }
     }
     0.into()
+}
+
+unsafe extern "C" fn lucario_special_lw_effect_helper(fighter: &mut L2CFighterCommon) {
+    let level = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+    if level > 2 {
+        let eff = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_EFF3) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new("lucario_hadou_l_l"),
+                Hash40::new("top"),
+                &Vector3f{x: 0.0, y: 25.0, z: 0.0},
+                &ZERO_VECTOR,
+                1.0,
+                false,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false
+            );
+            let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+            VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_EFF3, eff as i32);
+        }
+    }
+    if level > 1 {
+        let eff = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_EFF2) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            let lr = PostureModule::lr(fighter.module_accessor);
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new("lucario_hadou_m"),
+                Hash40::new("top"),
+                &Vector3f{x: 0.0, y: 15.0, z: 12.0 * lr},
+                &ZERO_VECTOR,
+                1.0,
+                false,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false
+            );
+            let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+            VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_EFF2, eff as i32);
+        }
+    }
+    if level > 0 {
+        let eff = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_EFF1) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            let lr = PostureModule::lr(fighter.module_accessor);
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new("lucario_hadou"),
+                Hash40::new("top"),
+                &Vector3f{x: 0.0, y: 15.0, z: -12.0 * lr},
+                &ZERO_VECTOR,
+                1.0,
+                false,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false
+            );
+            let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+            VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_EFF1, eff as i32);
+        }
+    }
 }
 
 unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -212,8 +289,14 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
+#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn lucario_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    lucario_special_lw_eff_remover(fighter);
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
-        lucario_special_lw_pre, lucario_special_lw_init, lucario_special_lw_main
+        lucario_special_lw_pre, lucario_special_lw_init, lucario_special_lw_main, lucario_special_lw_end
     );
 }

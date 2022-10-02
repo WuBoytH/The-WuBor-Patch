@@ -35,14 +35,6 @@ unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_speciallw(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 7.0);
-    if macros::is_excute(fighter) {
-        StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_KIND_SPECIAL_LW_HIT, false);
-    }
-}
-
 #[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
 unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -96,7 +88,6 @@ unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         kamui_specialsjump,
-        kamui_speciallw,
         kamui_speciallwhit,
         kamui_waterdragon_speciallwhit
     );

@@ -420,7 +420,8 @@ pub mod FGCModule {
     #[inline(always)]
     pub unsafe fn ex_flash(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
-            macros::EFFECT_FLIP(fighter, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), 5, 10, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+            let lr = PostureModule::lr(fighter.module_accessor);
+            macros::EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 8.0 * lr, 10, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
             macros::LAST_EFFECT_SET_COLOR(fighter, 0.831, 0.686, 0.216);
         }
     }

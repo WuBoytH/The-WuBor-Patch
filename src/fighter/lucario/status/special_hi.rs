@@ -77,14 +77,15 @@ unsafe fn lucario_special_hi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let lr = PostureModule::lr(fighter.module_accessor);
     WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLOAT_START_CHARA_LR);
     FighterSpecializer_Lucario::set_mach_validity(fighter.module_accessor, false);
-    if !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA) {
-        lucario_drain_aura(fighter, false);
-    }
     0.into()
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !VarModule::is_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA)
+    && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        lucario_drain_aura(fighter, false);
+    }
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_INT_RUSH_FRAME);
     GroundModule::set_passable_check(fighter.module_accessor, true);
     MotionModule::change_motion(

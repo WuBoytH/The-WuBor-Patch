@@ -69,6 +69,8 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
         VarModule::set_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 1200.0);
         VarModule::on_flag(fighter.battle_object, ryu::instance::flag::DISABLE_EX_FOCUS);
         VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
+        macros::EFFECT_FLIP(fighter, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -5, 10, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
     }
 
     if VarModule::get_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER) > 0.0 {

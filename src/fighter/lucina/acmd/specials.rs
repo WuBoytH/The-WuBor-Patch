@@ -15,6 +15,22 @@ use {
     }
 };
 
+#[acmd_script( agent = "lucina", scripts = [ "effect_specialnstart", "effect_specialairnstart" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn lucina_specialnstart_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_flash(fighter);
+    }
+}
+
+#[acmd_script( agent = "lucina", scripts = [ "sound_specialnstart", "sound_specialairnstart" ], category = ACMD_SOUND, low_priority )]
+unsafe fn lucina_specialnstart_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_se(fighter);
+    }
+}
+
 #[acmd_script( agent = "lucina", scripts = [ "game_specialnloop", "game_specialairnloop" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucina_specialnloop(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.4);
@@ -144,9 +160,29 @@ unsafe fn lucina_specialairs1(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "effect_specialairs1", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_specialairs1_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_flash(fighter);
+    }
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "lucina", script = "sound_specialairs1", category = ACMD_SOUND, low_priority )]
+unsafe fn lucina_specialairs1_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_se(fighter);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_lucina_attack01"));
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_s01"));
     }
 }
 
@@ -339,9 +375,9 @@ unsafe fn lucina_specialhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_specialhi_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        FGCModule::ex_flash(fighter);
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -370,6 +406,10 @@ unsafe fn lucina_specialhi_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "sound_specialhi", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_specialhi_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_se(fighter);
+    }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_h01"));
@@ -502,9 +542,9 @@ unsafe fn lucina_specialairhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_specialairhi_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        FGCModule::ex_flash(fighter);
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -533,6 +573,10 @@ unsafe fn lucina_specialairhi_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "sound_specialairhi", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_specialairhi_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_se(fighter);
+    }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_special_h01"));
@@ -783,6 +827,10 @@ unsafe fn lucina_lightningflash(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "effect_specials1", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_lightningflash_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_flash(fighter);
+    }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("lucina_sword_purple"), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -815,6 +863,10 @@ unsafe fn lucina_lightningflash_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_lightningflash_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+        FGCModule::ex_se(fighter);
+    }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_lucina_jump02"));
@@ -845,16 +897,21 @@ unsafe fn lucina_lightningflash_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        lucina_specialnstart_eff, lucina_specialnstart_snd,
         lucina_specialnloop,
         lucina_specialnend,
         lucina_specialnendmax,
-        lucina_specialairs1, lucina_specialairs1_eff,
+
+        lucina_specialairs1, lucina_specialairs1_eff, lucina_specialairs1_snd,
         lucina_specialairs2hi, lucina_specialairs2hi_eff, lucina_specialairs2hi_snd,
         lucina_specials2hi, lucina_specials2hi_eff, lucina_specials2hi_snd, lucina_specials2hi_exp,
+
         lucina_specialhi, lucina_specialhi_eff, lucina_specialhi_snd, lucina_specialhi_exp,
         lucina_specialairhi, lucina_specialairhi_eff, lucina_specialairhi_snd, lucina_specialairhi_exp,
+
         lucina_speciallw, lucina_speciallw_eff, lucina_speciallw_snd,
         lucina_speciallw_hit, lucina_specialairlw_hit, lucina_speciallw_hit_eff, lucina_speciallw_hit_snd, lucina_speciallw_hit_exp,
+
         lucina_lightningflash, lucina_lightningflash_eff, lucina_lightningflash_snd, lucina_lightningflash_exp
     );
 }

@@ -943,6 +943,42 @@ unsafe fn dolly_superspecial(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "dolly", script = "effect_superspecial", category = ACMD_EFFECT, low_priority )]
+unsafe fn dolly_superspecial_eff(fighter: &mut L2CAgentBase) {
+    FGCModule::ex_flash(fighter);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_aura"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
+        // macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 13, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
+        // macros::LAST_EFFECT_SET_RATE(fighter, 1.3);
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_attack_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(fighter.lua_state_agent, 18.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("dolly_wave_arc"), Hash40::new("dolly_wave_arc"), Hash40::new("top"), 0, 10, 4, 69, -46, -45, 1.2, true, *EF_FLIP_YZ);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "sound_superspecial", category = ACMD_SOUND, low_priority )]
+unsafe fn dolly_superspecial_snd(fighter: &mut L2CAgentBase) {
+    FGCModule::ex_se(fighter);
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial_success"));
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_special_ss01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial01_01"));
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial01_02"));
+    }
+}
+
 #[acmd_script( agent = "dolly", script = "game_superspecial2start", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_superspecial2start(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -984,6 +1020,53 @@ unsafe fn dolly_superspecial2start(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         macros::HIT_NODE(fighter, Hash40::new("shoulderr"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("armr"), *HIT_STATUS_NORMAL);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "effect_superspecial2start", category = ACMD_EFFECT, low_priority )]
+unsafe fn dolly_superspecial2start_eff(fighter: &mut L2CAgentBase) {
+    FGCModule::ex_flash(fighter);
+    if macros::is_excute(fighter) {
+        // macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -15, 16, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
+        // macros::LAST_EFFECT_SET_RATE(fighter, 1.1);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("dolly_wave_hold"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_attack_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("dolly_buster_punch"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
+        macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("dolly_buster_dash"), Hash40::new("top"), 0, 0, -8, 0, 0, 0, 1, false);
+        EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 31.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("dolly_buster_punch"), 6);
+    }
+    frame(fighter.lua_state_agent, 37.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("dolly_buster_dash"), false, true);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "sound_superspecial2start", category = ACMD_SOUND, low_priority )]
+unsafe fn dolly_superspecial2start_snd(fighter: &mut L2CAgentBase) {
+    FGCModule::ex_se(fighter);
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial_success"));
+    }
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_dolly_superspecial02_01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial02_01"));
+    }
+    frame(fighter.lua_state_agent, 19.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial02_02"));
+    }
+    frame(fighter.lua_state_agent, 30.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial02_03"));
     }
 }
 
@@ -1324,19 +1407,26 @@ pub fn install() {
     install_acmd_scripts!(
         dolly_specialn,
         dolly_specialairn,
+
         dolly_specialsfattack,
+
         dolly_specialsbstart,
         dolly_specialsbattackw,
         dolly_specialsbattack,
+
         dolly_specialhi,
         dolly_specialhicommand,
+
         dolly_speciallwstart, dolly_speciallwstart_eff, dolly_speciallwstart_snd, dolly_speciallwstart_exp,
         dolly_specialairlw,
-        dolly_superspecial,
-        dolly_superspecial2start,
+
+        dolly_superspecial, dolly_superspecial_eff, dolly_superspecial_snd,
+        dolly_superspecial2start, dolly_superspecial2start_eff, dolly_superspecial2start_snd,
         dolly_superspecial2,
+
         dolly_wave_normalw, dolly_wave_normal,
         dolly_wave_normalairw, dolly_wave_normalair,
+
         dolly_burst_superspecial
     );
 }

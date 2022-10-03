@@ -1,9 +1,11 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
+        hash40,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    smash_script::*,
     wubor_utils::table_const::*
 };
 
@@ -12,7 +14,17 @@ unsafe fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_trigger(fighter.module_accessor);
-    if !fighter.is_enable_passive().get_bool() {
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("speed_vec_x"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let speed_vec_x = fighter.pop_lua_stack(1).get_f32();
+    fighter.clear_lua_stack();
+    lua_args!(fighter, hash40("speed_vec_y"));
+    sv_information::damage_log_value(fighter.lua_state_agent);
+    let speed_vec_y = fighter.pop_lua_stack(1).get_f32();
+    let length = sv_math::vec2_length(speed_vec_x, speed_vec_y);
+    let damage_fly_roll_speed = 3.0;
+    if damage_fly_roll_speed <= length {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL);
         return 1.into();
     }

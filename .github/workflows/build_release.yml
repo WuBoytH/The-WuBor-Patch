@@ -59,7 +59,7 @@ jobs:
       - name: Upload Plugin Artifact (Dev)
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: build
+          name: The_WuBor_Patch
           path: The_WuBor_Patch.zip
 
   package-dev:
@@ -99,7 +99,7 @@ jobs:
       - name: Upload Plugin Artifact (Dev)
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: build
+          name: The_WuBor_Patch_Dev
           path: The_WuBor_Patch_Dev.zip
 
   upload-main:
@@ -129,7 +129,7 @@ jobs:
 
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
-            build/*
+            The_WuBor_Patch/*
 
   upload-dev:
     runs-on: ubuntu-latest
@@ -165,4 +165,4 @@ jobs:
 
             Extract `The_WuBor_Patch_Dev.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
-            build/*
+            The_WuBor_Patch_Dev/*

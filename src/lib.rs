@@ -16,9 +16,9 @@
 )]
 
 use skyline::libc::c_char;
-mod function_hooks;
-mod fighter;
-mod custom_vars;
+// mod function_hooks;
+// mod fighter;
+// mod custom_vars;
 
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
@@ -49,10 +49,10 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::main(name = "the_wubor_patch")]
+#[skyline::main(name = "wubor")]
 pub fn main() {
-    function_hooks::install();
-    fighter::install();
-    custom_vars::install();
+    // function_hooks::install();
+    // fighter::install();
+    // custom_vars::install();
     skyline::install_hooks!(change_version_string_hook);
 }

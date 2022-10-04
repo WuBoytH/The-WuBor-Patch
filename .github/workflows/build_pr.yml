@@ -60,11 +60,5 @@ jobs:
       - name: Upload Plugin Artifact (PR)
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: build
+          name: The_WuBor_Patch_PR
           path: The_WuBor_Patch_PR.zip
-      - name: Pull request artifacts
-        uses: gavv/pull-request-artifacts@v1.0.0
-        with:
-          commit: ${{ github.event.pull_request.head.sha }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: The_WuBor_Patch_PR.zip

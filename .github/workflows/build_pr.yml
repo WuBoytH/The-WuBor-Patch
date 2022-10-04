@@ -48,11 +48,11 @@ jobs:
           tag: dev
           # 
           file: romfs.zip
-      - name: Build Release NRO (PR)
-        run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
-        env:
-          HOME: /root
+      # - name: Build Release NRO (PR)
+      #   run: |
+      #     PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
+      #   env:
+      #     HOME: /root
       - name: Create Release ZIP (PR)
         shell: bash
         run: |

@@ -1,4 +1,4 @@
-name: Create PR Build
+name: build_pr
 
 on: 
   pull_request:
@@ -62,12 +62,3 @@ jobs:
         with:
           name: The_WuBor_Patch_PR
           path: build/
-      - name: Comment Artifact Link
-        uses: tonyhallett/artifacts-url-comments@v1.1.0
-        with:
-          pullState: open
-          addTo: pull
-          prefix: "Download the artifact for this Pull Request:"
-          format: name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

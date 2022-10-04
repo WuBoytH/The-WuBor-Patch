@@ -53,24 +53,5 @@ pub fn install() {
             info
         );
     }
-    for x in [
-        *FIGHTER_STATUS_KIND_ATTACK_S4,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4
-    ].iter() {
-        let mut info = CancelInfo::new()
-        .enable_normals([
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-        ].to_vec());
-        if *x == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
-            info = info.enable_jump_cancel(CancelType::HIT);
-        }
-        CustomCancelManager::add_cancel_info(
-            agent,
-            *x,
-            info
-        );
-    }
+    generic_attack4(agent);
 }

@@ -45,7 +45,7 @@ pub unsafe extern "C" fn ftilt_dash_attack(fighter: &mut L2CFighterCommon) -> bo
     }
 }
 
-pub unsafe fn generic_attack(agent: Hash40) {
+pub fn generic_attack(agent: Hash40) {
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK,
@@ -61,7 +61,7 @@ pub unsafe fn generic_attack(agent: Hash40) {
     );
 }
 
-pub unsafe fn generic_attackair(agent: Hash40) {
+pub fn generic_attackair(agent: Hash40) {
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,
@@ -69,7 +69,7 @@ pub unsafe fn generic_attackair(agent: Hash40) {
     );
 }
 
-pub unsafe fn generic_attack3(agent: Hash40) {
+pub fn generic_attack3(agent: Hash40) {
     for x in [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
@@ -96,18 +96,13 @@ pub unsafe fn generic_attack3(agent: Hash40) {
     }
 }
 
-pub unsafe fn generic_attack4(agent: Hash40) {
+pub fn generic_attack4(agent: Hash40) {
     for x in [
         *FIGHTER_STATUS_KIND_ATTACK_S4,
         *FIGHTER_STATUS_KIND_ATTACK_LW4,
         *FIGHTER_STATUS_KIND_ATTACK_HI4
     ].iter() {
-        let mut info = CancelInfo::new()
-        .enable_normals([
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
-        ].to_vec());
+        let mut info = CancelInfo::new();
         if *x == *FIGHTER_STATUS_KIND_ATTACK_HI4 {
             info = info.enable_jump_cancel(CancelType::HIT);
         }

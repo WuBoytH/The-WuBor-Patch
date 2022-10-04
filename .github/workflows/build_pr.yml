@@ -1,0 +1,64 @@
+name: build_pr
+
+on: 
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  package-pr:
+    runs-on: ubuntu-latest
+    container:
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - uses: actions/checkout@v2.4.2
+      - name: Get Branch Name
+        id: branch-name
+        uses: tj-actions/branch-names@v6
+      - name: Download ROMFS
+        id: pr-romfs
+        continue-on-error: true
+        # You may pin to the exact commit or the version.
+        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
+        uses: i3h/download-release-asset@v1.3.2
+        with:
+          # 
+          owner: WuBoytH
+          # 
+          repo: WuBor-Romfs
+          # 
+          tag: ${{ steps.branch-name.outputs.current_branch }}
+          # 
+          file: romfs.zip
+      - name: Download ROMFS (Backup)
+        if: steps.pr-romfs.outcome == 'failure'
+        # You may pin to the exact commit or the version.
+        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
+        uses: i3h/download-release-asset@v1.3.2
+        with:
+          # 
+          owner: WuBoytH
+          # 
+          repo: WuBor-Romfs
+          # 
+          tag: dev
+          # 
+          file: romfs.zip
+      # - name: Build Release NRO (PR)
+      #   run: |
+      #     PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
+      #   env:
+      #     HOME: /root
+      - name: Setup Build Directory (PR)
+        shell: bash
+        run: |
+          cd scripts && python3 create_pr.py && cd ..
+      - name: Upload Plugin Artifact (PR)
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: The_WuBor_Patch_PR
+          path: build/

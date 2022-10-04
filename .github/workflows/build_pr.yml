@@ -22,8 +22,6 @@ jobs:
       - name: Download ROMFS
         id: pr-romfs
         continue-on-error: true
-        # You may pin to the exact commit or the version.
-        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
         uses: i3h/download-release-asset@v1.3.2
         with:
           # 
@@ -36,8 +34,6 @@ jobs:
           file: romfs.zip
       - name: Download ROMFS (Backup)
         if: steps.pr-romfs.outcome == 'failure'
-        # You may pin to the exact commit or the version.
-        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
         uses: i3h/download-release-asset@v1.3.2
         with:
           # 

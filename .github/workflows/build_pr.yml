@@ -62,7 +62,6 @@ jobs:
         with:
           name: The_WuBor_Patch_PR
           path: The_WuBor_Patch_PR.zip
-      - name: Comment PR Artifacts
 
   comment-pr:
     runs-on: ubuntu-latest

@@ -8,6 +8,7 @@ use {
     },
     smashline::*,
     custom_var::*,
+    custom_cancel::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*},
     super::super::helper::*
 };
@@ -55,6 +56,9 @@ unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterComm
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 0.into();
+    }
+    if CustomCancelManager::execute_cancel(fighter) {
+        return 1.into();
     }
     if !StatusModule::is_changing(fighter.module_accessor) {
         let combo = ComboModule::count(fighter.module_accessor) as i32;

@@ -1300,8 +1300,8 @@ unsafe fn lucario_specialairlwattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 40.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 279, 30, 0, 60, 6.0, 0.0, -4.0, 10.0, Some(0.0), Some(7.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_AURA);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 279, 20, 0, 45, 6.0, 0.0, -4.0, 10.0, Some(0.0), Some(7.0), Some(10.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_AURA);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 279, 30, 0, 60, 6.0, 0.0, -4.0, 7.0, Some(0.0), Some(7.0), Some(7.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_AURA);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 279, 20, 0, 45, 6.0, 0.0, -4.0, 7.0, Some(0.0), Some(7.0), Some(7.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_AURA);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 1, 8.0, false);
     }
     frame(fighter.lua_state_agent, 44.0);
@@ -1322,7 +1322,7 @@ unsafe fn lucario_specialairlwattack_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), -1, 6, 6, 0, 0, -80, 1.0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), -1, 6, 3, 0, 0, -80, 1.0, true);
         macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }

@@ -48,12 +48,12 @@ jobs:
           tag: dev
           # 
           file: romfs.zip
-      - name: Build Release NRO (PR)
-        run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
-        env:
-          HOME: /root
-      - name: Create Release ZIP (PR)
+      # - name: Build Release NRO (PR)
+      #   run: |
+      #     PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
+      #   env:
+      #     HOME: /root
+      - name: Setup Build Directory (PR)
         shell: bash
         run: |
           cd scripts && python3 create_pr.py && cd ..
@@ -64,8 +64,8 @@ jobs:
           path: build/
       - name: Commnet Artifact Link
         uses: montogeek/github-action-comment-artifacts@1.0
-        id: message
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          id: message
           prefix: Download the artifact for this Pull Request

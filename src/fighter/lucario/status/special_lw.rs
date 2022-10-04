@@ -125,10 +125,18 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
     let step = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP);
     if param_1.get_bool() {
         if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL) {
-            if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
+            let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
+            if pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+                ControlModule::clear_command(fighter.module_accessor, false);
+                VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ATTACK);
+                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
+            }
+            if pad_flag & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
                 ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL);
+                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
             }
         }
         if step == lucario::SPECIAL_LW_STEP_CHARGE {
@@ -247,11 +255,14 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
             return 0.into();
         }
     }
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL)
-    || VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END) {
+    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END) {
         let mot_g;
         let mot_a;
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL) {
+        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ATTACK) {
+            mot_g = hash40("special_lw_attack");
+            mot_a = hash40("special_air_lw_attack");
+        }
+        else if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL) {
             mot_g = hash40("special_lw_cancel");
             mot_a = hash40("special_air_lw_cancel");
         }
@@ -264,6 +275,7 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
         WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
         lucario_special_lw_set_kinetic(fighter);
         VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP, lucario::SPECIAL_LW_STEP_END);
+        VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ATTACK);
         VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL);
         VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
     }

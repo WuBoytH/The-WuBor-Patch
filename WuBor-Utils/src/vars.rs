@@ -379,8 +379,9 @@ pub mod lucario {
             pub const SPECIAL_HI_SUPER_DASH_CANCEL : i32 = 0x1151;
 
             pub const SPECIAL_LW_ENABLE_CANCEL : i32 = 0x1150;
-            pub const SPECIAL_LW_CANCEL : i32 = 0x1151;
-            pub const SPECIAL_LW_CHARGE_END : i32 = 0x1152;
+            pub const SPECIAL_LW_ATTACK : i32 = 0x1151;
+            pub const SPECIAL_LW_CANCEL : i32 = 0x1152;
+            pub const SPECIAL_LW_CHARGE_END : i32 = 0x1153;
         }
         pub mod int {
             pub const AURA_ENHANCED_BY : i32 = 0x1100;

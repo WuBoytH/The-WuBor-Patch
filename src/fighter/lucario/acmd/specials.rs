@@ -1229,7 +1229,8 @@ unsafe fn lucario_speciallwattack_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), -1, 6, 6, 0, -10, -90, 1.0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), -1, 6, 6, 0, 0, -80, 1.0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.25);
     }
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
@@ -1321,7 +1322,8 @@ unsafe fn lucario_specialairlwattack_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 35.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), -1, 6, 6, 0, -10, -90, 1.0, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc_c"), Hash40::new("top"), -1, 6, 6, 0, 0, -80, 1.0, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
     }
 }
 

@@ -75,4 +75,4 @@ jobs:
           commit: ${{ github.event.pull_request.head.sha }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           artifacts-branch: ${{ github.event.pull_request.head.name }}
-          artifacts: The_WuBor_Patch_PR.zip
+          artifacts: The_WuBor_Patch_PR/The_WuBor_Patch_PR.zip

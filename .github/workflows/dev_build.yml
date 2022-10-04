@@ -60,24 +60,24 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ package-dev, get-version ]
     steps:
-      - name: Delete Version Dev Build
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
-        with:
-          delete_release: true
-          tag_name: ${{needs.get-version.outputs.version}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Delete Version Dev Build
+      #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      #   with:
+      #     delete_release: true
+      #     tag_name: ${{needs.get-version.outputs.version}}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
-      - name: Update Release
-        uses: meeDamian/github-release@2.0
+      - name: Create Prerelease
+        uses: softprops/action-gh-release@v0.1.14
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{needs.get-version.outputs.version}}
+          release_name: ${{needs.get-version.outputs.version}}
+          draft: false
           prerelease: true
-          allow_override: true
-          gzip: false
-          tag: ${{needs.get-version.outputs.version}}
-          name: ${{needs.get-version.outputs.version}}
           body: >
             Nightly built off of the latest code in the dev branch.
 

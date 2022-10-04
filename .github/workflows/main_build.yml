@@ -60,25 +60,24 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ package-main, get-version ]
     steps:
-      - name: Delete Version Main Build
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
-        with:
-          delete_release: true
-          tag_name: ${{needs.get-version.outputs.version}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Delete Version Main Build
+      #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      #   with:
+      #     delete_release: true
+      #     tag_name: ${{needs.get-version.outputs.version}}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
-      - name: Update Release
-        uses: meeDamian/github-release@2.0
+      - name: Create Release
+        uses: softprops/action-gh-release@v0.1.14
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: false
-          allow_override: true
-          gzip: false
+          tag_name: ${{needs.get-version.outputs.version}}
+          release_name: ${{needs.get-version.outputs.version}}
           draft: true
-          tag: ${{needs.get-version.outputs.version}}
-          name: ${{needs.get-version.outputs.version}}
+          prerelease: false
           body: >
             Full release of the latest version. DO NOT PUBLISH UNTIL THIS BODY HAS BEEN UPDATED.
 
@@ -92,3 +91,4 @@ jobs:
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
             build/*
+

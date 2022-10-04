@@ -17,10 +17,10 @@ jobs:
         uses: dante-signal31/rust-app-version@v1.0.0
       - name: Get Branch Name
         id: branch-name
-        uses: nelonoel/branch-name@v1.0.1
+        uses: tj-actions/branch-names@v6
     outputs:
       version: ${{ steps.plugin-version.outputs.app_version }}
-      branch: ${{ steps.branch-name.outputs.BRANCH_NAME }}
+      branch: ${{ steps.branch-name.outputs.current_branch }}
   package:
     needs: get-version
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
           # 
           repo: WuBor-Romfs
           # 
-          tag: dev
+          tag: ${{needs.get-version.outputs.branch}}
           # 
           file: romfs.zip
       - name: Build Release NRO

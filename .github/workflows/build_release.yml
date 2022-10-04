@@ -154,7 +154,7 @@ jobs:
           draft: false
           prerelease: true
           body: >
-            Nightly built off of ${{needs.get-version.outputs.branch}}-dev/${{github.sha}}.
+            Nightly built off of ${{needs.get-version.outputs.version}}-dev/${{github.sha}}.
 
             [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
             These will be updated to match the most recent dev build (this one!).

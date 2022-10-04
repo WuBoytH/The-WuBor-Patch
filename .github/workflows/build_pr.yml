@@ -64,7 +64,8 @@ jobs:
           path: build/
       - name: Commnet Artifact Link
         uses: montogeek/github-action-comment-artifacts@1.0
+        id: message
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          prefix: "Download the artifact for this Pull Request"
+          prefix: Download the artifact for this Pull Request

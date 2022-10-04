@@ -48,21 +48,21 @@ jobs:
           tag: dev
           # 
           file: romfs.zip
-      # - name: Build Release NRO (PR)
-      #   run: |
-      #     PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
-      #   env:
-      #     HOME: /root
+      - name: Build Release NRO (PR)
+        run: |
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
+        env:
+          HOME: /root
       - name: Create Release ZIP (PR)
         shell: bash
         run: |
           cd scripts && python3 create_pr.py && cd ..
       - name: Upload Plugin Artifact (PR)
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: The_WuBor_Patch_PR
-          path: The_WuBor_Patch_PR.zip
-      - name: Comment PR Artifacts
+      #   uses: actions/upload-artifact@v3.1.0
+      #   with:
+      #     name: The_WuBor_Patch_PR
+      #     path: The_WuBor_Patch_PR.zip
+      # - name: Comment PR Artifacts
         uses: gavv/pull-request-artifacts@v1.0.0
         with:
           commit: ${{ github.event.pull_request.head.sha }}

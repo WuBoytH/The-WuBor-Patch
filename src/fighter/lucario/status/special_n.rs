@@ -186,8 +186,7 @@ unsafe extern "C" fn lucario_special_n_shoot_main_loop(fighter: &mut L2CFighterC
             VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING);
         }
     }
-    if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0
-    && VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH) {
+    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH) {
         let situation = fighter.global_table[SITUATION_KIND].clone();
         special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
     }

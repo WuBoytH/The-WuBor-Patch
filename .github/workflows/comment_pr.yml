@@ -1,7 +1,7 @@
 name: Comment PR Artifacts
 on:
   workflow_run:
-    workflows: ['build_pr']
+    workflows: ["Create PR Build"]
     types: [completed]
 jobs:
   pr_comment:

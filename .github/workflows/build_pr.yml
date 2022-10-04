@@ -6,7 +6,7 @@ on:
       - dev
 
 jobs:
-  package-pr:
+  Package PR Build:
     runs-on: ubuntu-latest
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta

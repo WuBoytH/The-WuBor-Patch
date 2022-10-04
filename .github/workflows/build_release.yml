@@ -24,7 +24,7 @@ jobs:
 
   package-main:
     needs: get-version
-    if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
+    if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
     runs-on: ubuntu-latest
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta

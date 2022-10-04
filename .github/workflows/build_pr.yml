@@ -79,32 +79,3 @@ jobs:
         with:
           name: build
           path: The_WuBor_Patch_PR.zip
-
-  upload-main:
-    runs-on: ubuntu-latest
-    needs: [ package-main, get-version ]
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.0
-      - name: Create Main Draft Release
-        uses: softprops/action-gh-release@v0.1.14
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{needs.get-version.outputs.version}}
-          name: ${{needs.get-version.outputs.version}}
-          draft: true
-          prerelease: false
-          body: >
-            Full release of the latest version. DO NOT PUBLISH UNTIL THIS BODY HAS BEEN UPDATED.
-
-            [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
-            [You can view all changes up to a specific version here.](https://drive.google.com/drive/folders/1zIqkVWlZWb56ar7UqRTECYUVuBfqW0v1?usp=sharing)
-            
-            ## Installation
-            
-            Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
-
-            Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
-          files: >
-            build/*

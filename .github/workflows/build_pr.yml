@@ -58,4 +58,9 @@ jobs:
         run: |
           cd scripts && python3 create_pr.py && cd ..
       - name: Upload Plugin Artifact (PR)
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: The_WuBor_Patch_PR
+          path: build/
+      - name: Commnet Artifact Link
         uses: montogeek/github-action-comment-artifacts@1.0

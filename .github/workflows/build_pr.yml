@@ -62,7 +62,7 @@ jobs:
         with:
           name: The_WuBor_Patch_PR
           path: build/
-      - name: Commnet Artifact Link
+      - name: Comment Artifact Link
         uses: tonyhallett/artifacts-url-comments@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

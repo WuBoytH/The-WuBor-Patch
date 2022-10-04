@@ -1,8 +1,8 @@
-name: Main Build
+name: Create Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   workflow_dispatch:
 
 jobs:
@@ -15,11 +15,14 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
         uses: dante-signal31/rust-app-version@v1.0.0
+      - name: Get Branch Name
+        id: branch-name
+        uses: nelonoel/branch-name@v1.0.1
     outputs:
       version: ${{ steps.plugin-version.outputs.app_version }}
-  package-main:
+      branch: ${{ steps.branch-name.outputs.BRANCH_NAME }}
+  package:
     needs: get-version
-    if: ${{ contains(needs.get-version.outputs.version, 'dev') != true }}
     runs-on: ubuntu-latest
     container:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
@@ -39,7 +42,7 @@ jobs:
           # 
           repo: WuBor-Romfs
           # 
-          tag: latest
+          tag: dev
           # 
           file: romfs.zip
       - name: Build Release NRO
@@ -47,35 +50,65 @@ jobs:
           PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
         env:
           HOME: /root
-      - name: Create Release ZIP
+      - name: Create Release ZIP (Dev)
         shell: bash
         run: |
-          cd scripts && python3 create_main.py && cd ..
+          cd scripts && python3 create_${{needs.get-version.outputs.branch}}.py && cd ..
       - name: Upload Plugin Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           name: build
-          path: The_WuBor_Patch.zip
-  upload:
+          path: /*
+  upload-dev:
     runs-on: ubuntu-latest
-    needs: [ package-main, get-version ]
+    needs: [ package, get-version ]
+    if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
     steps:
-      # - name: Delete Version Main Build
-      #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
-      #   with:
-      #     delete_release: true
-      #     tag_name: ${{needs.get-version.outputs.version}}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Delete Version Dev Build
+        uses: dev-drprasad/delete-tag-and-release@v0.2.0
+        with:
+          delete_release: true
+          tag_name: ${{needs.get-version.outputs.version}}-dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
-      - name: Create Release
+      - name: Create Dev Prerelease
+        uses: softprops/action-gh-release@v0.1.14
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{needs.get-version.outputs.version}}-dev
+          name: ${{needs.get-version.outputs.version}}-dev
+          draft: false
+          prerelease: true
+          body: >
+            Nightly built off of ${{needs.get-version.outputs.branch}}-dev/${{github.sha}}.
+
+            [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
+            These will be updated to match the most recent dev build (this one!).
+            
+            ## Installation
+            
+            Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
+
+            Extract `The_WuBor_Patch_Dev.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
+          files: >
+            build/*
+  upload-main:
+    runs-on: ubuntu-latest
+    needs: [ package, get-version ]
+    if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3.0.0
+      - name: Create Main Draft Release
         uses: softprops/action-gh-release@v0.1.14
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{needs.get-version.outputs.version}}
-          release_name: ${{needs.get-version.outputs.version}}
+          name: ${{needs.get-version.outputs.version}}
           draft: true
           prerelease: false
           body: >
@@ -91,4 +124,3 @@ jobs:
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
             build/*
-

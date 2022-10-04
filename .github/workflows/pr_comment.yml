@@ -1,7 +1,7 @@
 name: Comment PR artifacts links
 on:
   workflow_run:
-    workflows: ['build_pr']
+    workflows: ["Create PR Release"]
     types: [completed]
 jobs:
   pr_comment:

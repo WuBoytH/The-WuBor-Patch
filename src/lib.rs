@@ -28,7 +28,10 @@ extern "C" {
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
-        let version = if cfg!(feature = "dev") {
+        let version = if cfg!(feature = "pr") {
+            format!("{}-pr", env!("CARGO_PKG_VERSION"))
+        }
+        else if cfg!(feature = "dev") {
             format!("{}-dev", env!("CARGO_PKG_VERSION"))
         }
         else {
@@ -46,7 +49,7 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
-#[skyline::main(name = "the_wubor_patch")]
+#[skyline::main(name = "wubor")]
 pub fn main() {
     function_hooks::install();
     fighter::install();

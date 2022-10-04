@@ -28,10 +28,16 @@ extern "C" {
 fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
+        let version = if cfg!(feature = "dev") {
+            format!("{}-dev", env!("CARGO_PKG_VERSION"))
+        }
+        else {
+            env!("CARGO_PKG_VERSION").to_string()
+        };
         let new_str = format!(
             "{}, WuBor Patch Ver. {}\0",
             original_str,
-            env!("CARGO_PKG_VERSION")
+            version
         );
 
         call_original!(arg, skyline::c_str(&new_str))

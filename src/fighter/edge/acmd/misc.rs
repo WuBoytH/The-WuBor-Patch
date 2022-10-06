@@ -16,14 +16,14 @@ use {
 #[acmd_script( agent = "edge", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
 unsafe fn edge_appeals(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 39.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R) {
+    let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
+    if ControlModule::check_button_on(fighter.module_accessor, hold_button) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
                 fighter.battle_object,
                 false,
                 hash40("appeal_s_loop"),
-                48,
-                *CONTROL_PAD_BUTTON_APPEAL_S_L | *CONTROL_PAD_BUTTON_APPEAL_S_R
+                48
             );
             VarModule::set_int64(fighter.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
             VarModule::set_int(fighter.battle_object, appeal::int::ACTION_BUTTON, *CONTROL_PAD_BUTTON_ATTACK);
@@ -360,14 +360,14 @@ unsafe fn edge_appealsattackjust_exp(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "edge", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority )]
 unsafe fn edge_appeallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 39.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
+    let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
+    if ControlModule::check_button_on(fighter.module_accessor, hold_button) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
                 fighter.battle_object,
                 false,
                 hash40("appeal_lw_loop"),
-                60,
-                *CONTROL_PAD_BUTTON_APPEAL_LW
+                60
             );
         }
     }

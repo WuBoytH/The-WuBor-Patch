@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
+        hash40,
         phx::Hash40,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
@@ -36,6 +37,121 @@ unsafe fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CV
         param_1.get_u32(),
         0
     );
+    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_Appeal_common_uniq)]
+unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1a0473b26e));
+    let mut appeal_kind = *FIGHTER_APPEAL_KIND_U;
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_APPEAL_RANDOM) {
+        let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+        if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
+            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            appeal_kind = *FIGHTER_APPEAL_KIND_U;
+        }
+        else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 {
+            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            appeal_kind = *FIGHTER_APPEAL_KIND_D;
+        }
+        else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0 {
+            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            appeal_kind = *FIGHTER_APPEAL_KIND_L;
+        }
+        else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0 {
+            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+            WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+            appeal_kind = *FIGHTER_APPEAL_KIND_R;
+        }
+    }
+    else {
+        let rand = sv_math::rand(hash40("fighter"), 3);
+        match rand {
+            0 => {
+                VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+                appeal_kind = *FIGHTER_APPEAL_KIND_U;
+            },
+            1 => {
+                VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+                appeal_kind = *FIGHTER_APPEAL_KIND_D;
+            },
+            _ => {
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+                WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+                let lr = sv_math::rand(hash40("fighter"), 2);
+                if lr == 0 {
+                    VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
+                    appeal_kind = *FIGHTER_APPEAL_KIND_R;
+                }
+                else {
+                    VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
+                    appeal_kind = *FIGHTER_APPEAL_KIND_L;
+                }
+            }
+        }
+    }
+    if param_1.get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon, L2CValue) -> L2CValue = std::mem::transmute(param_1.get_ptr());
+        callable(fighter, appeal_kind.into());
+    }
+    let motion_r = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
+    let motion_l = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
+    let mot = if !MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new_raw(motion_l)) {
+        motion_r
+    }
+    else {
+        if PostureModule::lr(fighter.module_accessor) != -1.0 {
+            motion_r
+        }
+        else {
+            motion_l
+        }
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new_raw(mot),
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f73affc96));
+    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    let log = if fighter_kind == *FIGHTER_KIND_SNAKE {
+        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_APPEAL_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
+    }
+    else if [*FIGHTER_KIND_LUIGI, *FIGHTER_KIND_GEKKOUGA].contains(&fighter_kind)
+    && appeal_kind == *FIGHTER_APPEAL_KIND_D {
+        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_APPEAL_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
+    }
+    else if [*FIGHTER_KIND_KIRBY, *FIGHTER_KIND_EDGE].contains(&fighter_kind)
+    && [*FIGHTER_APPEAL_KIND_L, *FIGHTER_APPEAL_KIND_R].contains(&appeal_kind) {
+        *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_APPEAL_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+        *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
+    }
+    else {
+        0
+    };
+    WorkModule::set_int64(fighter.module_accessor, log as i64, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
+    ControlModule::clear_command(fighter.module_accessor, false);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Appeal_Main)]
@@ -160,6 +276,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_appeal_common,
+            status_appeal_common_uniq,
             status_appeal_main
         );
     }

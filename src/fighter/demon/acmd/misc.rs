@@ -2,25 +2,25 @@ use {
     smash::{
         lua2cpp::L2CAgentBase,
         hash40,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
+        app::{lua_bind::*, sv_animcmd::*}
     },
+    custom_var::*,
     smash_script::*,
     smashline::*,
-    wubor_utils::wua_bind::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[acmd_script( agent = "demon", script = "game_appealhil", category = ACMD_GAME, low_priority )]
 unsafe fn demon_appealhil(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 40.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+    let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
+    if ControlModule::check_button_on(fighter.module_accessor, hold_button) {
         if macros::is_excute(fighter) {
             MiscModule::set_appeal_loop(
                 fighter.battle_object,
                 false,
                 hash40("appeal_hi_l_loop"),
-                40,
-                *CONTROL_PAD_BUTTON_APPEAL_HI
+                40
             );
         }
     }
@@ -29,15 +29,15 @@ unsafe fn demon_appealhil(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "demon", script = "game_appealhir", category = ACMD_GAME, low_priority )]
 unsafe fn demon_appealhir(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 46.0);
-    if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+    let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
+    if ControlModule::check_button_on(fighter.module_accessor, hold_button) {
         if macros::is_excute(fighter) {
             if macros::is_excute(fighter) {
                 MiscModule::set_appeal_loop(
                     fighter.battle_object,
                     false,
                     hash40("appeal_hi_r_loop"),
-                    46,
-                    *CONTROL_PAD_BUTTON_APPEAL_HI
+                    46
                 );
             }
         }

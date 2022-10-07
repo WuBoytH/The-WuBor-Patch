@@ -63,7 +63,7 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
     // }
     // else {
     //     let article = ArticleModule::get_article(module_accessor, *FIGHTER_LUCARIO_GENERATE_ARTICLE_AURABALL);
-    //     if article != std::ptr::null_mut::<Article>() {
+    //     if !article.is_null() {
     //         let object_id = smash::app::lua_bind::Article::get_battle_object_id(article) as u32;
     //         let object = MiscModule::get_battle_object_from_id(object_id);
     //         let auraball = sv_battle_object::module_accessor(object_id);

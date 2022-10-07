@@ -6,19 +6,11 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
 #[acmd_script( agent = "edge", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
 unsafe fn edge_specialhi(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        if !VarModule::is_flag(fighter.battle_object, edge::instance::flag::SPECIAL_HI_CANCEL) {
-            VarModule::set_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 0);
-        }
-        VarModule::off_flag(fighter.battle_object, edge::instance::flag::SPECIAL_HI_CANCEL);
-    }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DECIDED_RUSH);

@@ -219,11 +219,13 @@ pub mod donkey {
 
 pub mod edge {
     pub mod instance {
-        pub mod flag {
-            pub const SPECIAL_HI_CANCEL : i32 = 0x1100;
-        }
         pub mod int {
             pub const SPECIAL_HI_CANCEL_COUNT : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_CANCEL : i32 = 0x1100;
         }
     }
 }

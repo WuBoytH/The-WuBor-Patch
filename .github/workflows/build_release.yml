@@ -56,7 +56,7 @@ jobs:
         shell: bash
         run: |
           cd scripts && python3 create_main.py && cd ..
-      - name: Upload Plugin Artifact (Dev)
+      - name: Upload Plugin Artifact (Main)
         uses: actions/upload-artifact@v3.1.0
         with:
           name: The_WuBor_Patch

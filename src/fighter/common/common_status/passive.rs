@@ -6,29 +6,22 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     // smash_script::*,
-    wubor_utils::table_const::*
+    wubor_utils::table_const::*,
+    super::super::common_param::*
 };
 
-// #[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]
-// pub unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
-//         return false.into();
-//     }
-//     fighter.clear_lua_stack();
-//     lua_args!(fighter, hash40("speed_vec_x"));
-//     sv_information::damage_log_value(fighter.lua_state_agent);
-//     let speed_vec_x = fighter.pop_lua_stack(1).get_f32();
-//     fighter.clear_lua_stack();
-//     lua_args!(fighter, hash40("speed_vec_y"));
-//     sv_information::damage_log_value(fighter.lua_state_agent);
-//     let speed_vec_y = fighter.pop_lua_stack(1).get_f32();
-//     let length = sv_math::vec2_length(speed_vec_x, speed_vec_y);
-//     let invalid_passive_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_passive_speed"));
-//     if invalid_passive_speed <= length {
-//         return false.into();
-//     }
-//     true.into()
-// }
+#[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]
+pub unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
+        return false.into();
+    }
+    let weight = WorkModule::get_param_float(fighter.module_accessor, hash40("weight"), 0);
+    let damage = DamageModule::damage(fighter.module_accessor, 0);
+    if damage <= weight + damage::invalid_passive_damage_add {
+        return false.into();
+    }
+    true.into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]
 pub unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
@@ -192,7 +185,7 @@ unsafe fn check_tech(fighter: &mut L2CFighterCommon) -> bool {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            // is_enable_passive,
+            is_enable_passive,
             sub_check_passive_button,
             sub_check_passive_button_for_damage,
             sub_airchkpassive,

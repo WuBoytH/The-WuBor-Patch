@@ -228,21 +228,14 @@ pub unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighter
         }
         WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
     }
-    // <HDR>
-    // check_asdi(fighter);
-    if ![*FIGHTER_STATUS_KIND_DAMAGE, *FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_BURY].contains(&status_kind)
-    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE) {
-        MotionModule::set_rate(fighter.module_accessor, 1.0);
-        WorkModule::set_float(fighter.module_accessor, 1.0, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_DAMAGE_MOTION_RATE);
-    }
-    // </HDR>
     0.into()
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            ftstatusuniqprocessdamage_init_common
+            ftstatusuniqprocessdamage_init_common,
+            fighterstatusuniqprocessdamage_leave_stop
         );
     }
 }

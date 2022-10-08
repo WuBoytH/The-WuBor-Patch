@@ -9,7 +9,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFly)]
 unsafe fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !fighter.is_enable_passive().get_bool() {
+    if fighter.is_enable_passive().get_bool() {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL);
         return 1.into();
     }

@@ -28,7 +28,7 @@ pub unsafe fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]
 unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     // The basis of the new tech system, teching is now performed by having your stick tilted in
-    // any direction that *isn't* down, so neutral and down cause missed techs.
+    // any direction that *isn't* down, so neutral causes missed techs.
     // This is also why that param_1 argument goes unused, it doesn't matter to check it anymore.
 
     let stick_x = fighter.global_table[STICK_X].get_f32();
@@ -38,7 +38,7 @@ unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CV
     let passive_fb_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     let fb = passive_fb_cont_value <= stick_x.abs() && flick_x < 0xf0;
     let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-    let jump = jump_stick_y <= stick_y && flick_y < 0xf0;
+    let jump = jump_stick_y <= stick_y.abs() && flick_y < 0xf0;
     let guard_button = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
     let passive_input = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < param_1.get_i32();
     (fb || jump || guard_button || passive_input).into()

@@ -7,8 +7,39 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
+    custom_var::*,
     wubor_utils::table_const::*
 };
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Damage)]
+unsafe fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_DAMAGE_GROUND,
+        *GROUND_CORRECT_KIND_GROUND as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        0,
+        *FIGHTER_STATUS_ATTR_DAMAGE as u32,
+        0,
+        0
+    );
+    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
+    0.into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamage_init_common)]
 unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
@@ -90,7 +121,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
-pub unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, _arg2: L2CValue, arg3: L2CValue) -> L2CValue {
+unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, _arg2: L2CValue, arg3: L2CValue) -> L2CValue {
     let status_kind = StatusModule::status_kind(fighter.module_accessor);
     if !arg3.get_bool() {
         return 0.into();
@@ -234,6 +265,7 @@ pub unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighter
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_damage,
             ftstatusuniqprocessdamage_init_common,
             fighterstatusuniqprocessdamage_leave_stop
         );

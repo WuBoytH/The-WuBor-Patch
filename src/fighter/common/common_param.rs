@@ -5,8 +5,9 @@
 pub const guard_off_attack_cancel_frame : i32 = 5;
 pub const guard_off_invalid_capture_frame_add : i32 = 3;
 
-pub mod damage {
+pub mod passive {
     pub const invalid_passive_damage_add : f32 = 33.0;
+    pub const bad_passive_rate : f32 = 0.75;
 }
 
 pub mod jump {

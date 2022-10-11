@@ -1,6 +1,6 @@
 [package]
 name = "wubor"
-version = "0.15.0"
+version = "0.15.1"
 authors = ["WuBoy and Bor"]
 edition = "2018"
 

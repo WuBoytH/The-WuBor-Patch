@@ -1,6 +1,7 @@
 mod acmd;
 mod status;
 // mod agent_init;
+pub mod vl;
 
 pub fn install() {
     acmd::install();

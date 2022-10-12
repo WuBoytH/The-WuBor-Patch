@@ -8,7 +8,8 @@ use {
     },
     smashline::*,
     custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
+    wubor_utils::{vars::*, table_const::*},
+    super::super::vl
 };
 
 #[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
@@ -18,11 +19,11 @@ unsafe fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let special_n_charge_count_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("special_n_charge_count_max"));
     let max_count = special_n_charge_count_max as f32 * 30.0;
     let eruption_count = if max_count <= charge_count {
-        7
+        vl::special_n::eruption_count
     }
     else {
         let ratio = charge_count / max_count;
-        (ratio * 7.0) as i32
+        (ratio * vl::special_n::eruption_count as f32) as i32
     };
     VarModule::set_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT, eruption_count);
     0.into()

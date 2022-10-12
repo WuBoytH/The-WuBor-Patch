@@ -286,6 +286,21 @@ pub mod gaogaen {
     }
 }
 
+pub mod ike {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_N_AIR : i32 = 0x1100;
+            pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1101;
+        }
+        pub mod int {
+            pub const ERUPTION_COUNT : i32 = 0x1100;
+        }
+        pub mod float {
+            pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod jack {
     pub mod status {
         pub mod flag {

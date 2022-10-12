@@ -8,7 +8,8 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    wubor_utils::{wua_bind::*, vars::*},
+    super::super::vl
 };
 
 #[acmd_script( agent = "ike", script = "game_specialnend", category = ACMD_GAME, low_priority )]
@@ -47,7 +48,7 @@ unsafe fn ike_specialnend(fighter: &mut L2CAgentBase) {
     else {
         if macros::is_excute(fighter) {
             let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
-            let damage_add = count as f32 * 2.0;
+            let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 10.0, 0.0, 10.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 8.0, 0.0, 20.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 4.0, 0.0, 28.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -63,7 +64,7 @@ unsafe fn ike_specialnend(fighter: &mut L2CAgentBase) {
             if macros::is_excute(fighter) {
                 let eruption_pos = VarModule::get_float(fighter.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
                 let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
-                let damage_add = count as f32 * 2.0;
+                let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
                 macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 10.0, 0.0, 10.0, eruption_pos - 1.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
                 macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 8.0, 0.0, 20.0, eruption_pos - 1.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
                 macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 4.0, 0.0, 28.0, eruption_pos - 1.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -218,7 +219,9 @@ unsafe fn ike_specialnend_exp(fighter: &mut L2CAgentBase) {
 unsafe extern "C" fn ike_special_n_end_ray_check(fighter: &mut L2CAgentBase, max_count: i32) -> i32 {
     let mut counter = 0;
     let mut x_distance = 10.0;
-    for x in 0..max_count {
+    for x in 1..=max_count {
+        counter = x;
+        x_distance += 12.0;
         let pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
         ModelModule::joint_global_position_with_offset(
             fighter.module_accessor,
@@ -236,10 +239,6 @@ unsafe extern "C" fn ike_special_n_end_ray_check(fighter: &mut L2CAgentBase, max
             counter = x - 1;
             break;
         }
-        else {
-            counter = x;
-            x_distance += 12.0;
-        }
     }
     counter
 }
@@ -253,7 +252,7 @@ unsafe fn ike_specialairnend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_AIR);
         let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
-        let damage_add = count as f32 * 2.0;
+        let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0 + damage_add, 275, 70, 0, 45, 5.0, 0.0, 7.0, 8.6, Some(0.0), Some(-5.0), Some(8.6), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
     }
     wait(fighter.lua_state_agent, 3.0);

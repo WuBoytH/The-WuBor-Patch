@@ -12,10 +12,10 @@ jobs:
       image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.3.0
         with:
           python-version: '3.9'
-      - uses: actions/checkout@v2.4.2
+      - uses: actions/checkout@v3.1.0
       - name: Get Branch Name
         id: branch-name
         uses: tj-actions/branch-names@v6

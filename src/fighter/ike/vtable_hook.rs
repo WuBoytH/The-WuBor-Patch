@@ -29,8 +29,14 @@ pub unsafe extern "C" fn ike_critical_zoom(_vtable: u64, fighter: &mut Fighter, 
     }
 }
 
+#[skyline::hook(offset = 0xaf93e0)]
+pub unsafe extern "C" fn ike_special_s_dash_search_check(_vtable: u64, _fighter: &mut Fighter, _unk: u64) {
+    // nothing lmao
+}
+
 pub fn install() {
     skyline::install_hooks!(
-        ike_critical_zoom
+        ike_critical_zoom,
+        ike_special_s_dash_search_check
     );
 }

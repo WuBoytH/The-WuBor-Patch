@@ -12,6 +12,8 @@ use {
     super::super::vl
 };
 
+// Special N
+
 #[acmd_script( agent = "ike", script = "game_specialnend", category = ACMD_GAME, low_priority )]
 unsafe fn ike_specialnend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -337,9 +339,22 @@ unsafe fn ike_specialairnend_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
+// Special S
+
+#[acmd_script( agent = "ike", script = "game_specialsend", category = ACMD_GAME, low_priority )]
+unsafe fn ike_specialsend(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 1.0, -8.0);
+    let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("special_s_end"), true);
+    frame(fighter.lua_state_agent, cancel_frame);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ike_specialnend, ike_specialnend_eff, ike_specialnend_snd, ike_specialnend_exp,
-        ike_specialairnend, ike_specialairnend_eff, ike_specialairnend_snd, ike_specialairnend_exp
+        ike_specialairnend, ike_specialairnend_eff, ike_specialairnend_snd, ike_specialairnend_exp,
+
+        ike_specialsend
     );
 }

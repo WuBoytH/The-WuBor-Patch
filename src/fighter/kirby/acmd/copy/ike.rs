@@ -154,9 +154,6 @@ unsafe fn kirby_ikespecialnend_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "kirby", script = "effect_ikespecialairnend", category = ACMD_EFFECT, low_priority )]
 unsafe fn kirby_ikespecialairnend_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
-    }
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);

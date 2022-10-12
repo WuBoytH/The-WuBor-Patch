@@ -8,17 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
     steps:
-      - name: Get Branch Name
-        id: branch-name
-        uses: tj-actions/branch-names@v6
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.0
-      - uses: izhangzhihao/delete-comment@master
-        with: 
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          delete_user_name: github-actions[bot]
-          issue_number: ${{ github.event.number }}
-      - uses: actions/github-script@v6.3.2
+      - uses: actions/github-script@v3
         with:
           script: |
             const {owner, repo} = context.repo;
@@ -50,9 +40,8 @@ jobs:
             const {data: comments} = await github.issues.listComments({repo, owner, issue_number});
             const existing_comment = comments.find((c) => c.user.login === 'github-actions[bot]');
             if (existing_comment) {
-              core.info(`Updating comment ${existing_comment.id}`);
-              await github.issues.updateComment({repo, owner, comment_id: existing_comment.id, body});
-            } else {
-              core.info(`Creating a comment`);
-              await github.issues.createComment({repo, owner, issue_number, body});
+              core.info(`Deleting comment ${existing_comment.id}`);
+              await github.issues.deleteComment({repo, owner, comment_id: existing_comment.id});
             }
+            core.info(`Creating a comment`);
+            await github.issues.createComment({repo, owner, issue_number, body});

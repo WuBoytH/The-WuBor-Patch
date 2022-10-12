@@ -42,6 +42,9 @@ unsafe fn ike_specialnend(fighter: &mut L2CAgentBase) {
     else {
         if macros::is_excute(fighter) {
             let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
+            if count > vl::special_n::eruption_count_for_critical {
+                VarModule::on_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
+            }
             let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
             macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 12.0, 0.0, 10.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 10.0, 0.0, 28.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -58,6 +61,9 @@ unsafe fn ike_specialnend(fighter: &mut L2CAgentBase) {
             if macros::is_excute(fighter) {
                 let eruption_pos = VarModule::get_float(fighter.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
                 let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
+                if count > vl::special_n::eruption_count_for_critical {
+                    VarModule::on_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
+                }
                 let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
                 macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 12.0, 0.0, 10.0, eruption_pos - 1.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
                 macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 10.0, 0.0, 28.0, eruption_pos - 1.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -123,7 +129,13 @@ unsafe fn ike_specialnend_snd(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ike_special_n02"));
+        let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
+        if count > vl::special_n::eruption_count_for_critical {
+            macros::PLAY_SE(fighter, Hash40::new("vc_ike_special_n02"));
+        }
+        else {
+            macros::PLAY_SE(fighter, Hash40::new("vc_ike_special_n01"));
+        }
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -290,7 +302,7 @@ unsafe fn ike_specialairnend_snd(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_ike_special_n02"));
+        macros::PLAY_SE(fighter, Hash40::new("vc_ike_special_n01"));
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

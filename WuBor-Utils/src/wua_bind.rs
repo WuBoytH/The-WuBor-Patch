@@ -740,6 +740,18 @@ pub mod MiscModule {
             macros::FT_MOTION_RATE(fighter, (adjusted_frame + adjust_frame) / adjusted_frame);
         }
     }
+    
+    #[skyline::from_offset(0x696700)]
+    pub fn call_critical(
+        module_accessor: *mut BattleObjectModuleAccessor,
+        unk: u64,
+        unk2: i32,
+        param_struct: u64,
+        unk3: i32,
+        unk4: i32,
+        unk5: i32,
+        unk6: i32
+    ) -> u64;
 }
 
 extern "C" {

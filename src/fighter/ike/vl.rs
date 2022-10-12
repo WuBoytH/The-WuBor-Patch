@@ -7,4 +7,5 @@ pub mod special_n {
     pub const eruption_distance_add : f32 = 12.0;
     pub const ray_check_y_offset : f32 = 14.0;
     pub const ray_check_y_check : f32 = -28.0;
+    pub const eruption_count_for_critical : i32 = 5;
 }

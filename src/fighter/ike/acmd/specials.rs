@@ -341,6 +341,17 @@ unsafe fn ike_specialairnend_exp(fighter: &mut L2CAgentBase) {
 
 // Special S
 
+#[acmd_script( agent = "ike", scripts = [ "sound_specialsdash", "sound_specialairsdash" ], category = ACMD_SOUND, low_priority )]
+unsafe fn ike_specialsdash_snd(fighter: &mut L2CAgentBase) {
+    // if macros::is_excute(fighter) {
+    //     macros::PLAY_SE(fighter, Hash40::new("vc_ike_special_s01"));
+    // }
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_ike_special_s02"));
+    }
+}
+
 #[acmd_script( agent = "ike", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe fn ike_specialsend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -350,11 +361,77 @@ unsafe fn ike_specialsend(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "ike", scripts = [ "game_specialsattack", "game_specialairsattack" ], category = ACMD_GAME, low_priority )]
+unsafe fn ike_specialsattack(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0, 60, 88, 0, 70, 6.5, 0.0, 8.4, 14.8, Some(0.0), Some(8.4), Some(-2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_IKE, *ATTACK_REGION_SWORD);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_ATTACK_END);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+        JostleModule::set_status(fighter.module_accessor, true);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
+    }
+}
+
+#[acmd_script( agent = "ike", scripts = [ "effect_specialsattack", "effect_specialairsattack" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn ike_specialsattack_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("ike_sword"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        let eff = if get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            Hash40::new("ike_iaigiri_attack")
+        }
+        else {
+            Hash40::new("ike_iaigiri_attack_r")
+        };
+        macros::EFFECT_FOLLOW(fighter, eff, Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        let eff = if get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+            Hash40::new("ike_iaigiri_attack")
+        }
+        else {
+            Hash40::new("ike_iaigiri_attack_r")
+        };
+        macros::EFFECT_DETACH_KIND(fighter, eff, -1);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword"), true, true);
+    }
+}
+
+#[acmd_script( agent = "ike", scripts = [ "sound_specialsattack", "sound_specialairsattack" ], category = ACMD_SOUND, low_priority )]
+unsafe fn ike_specialsattack_snd(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_ike_special_s01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_ike_special_s02"));
+        macros::PLAY_SE(fighter, Hash40::new("se_ike_special_s03"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ike_specialnend, ike_specialnend_eff, ike_specialnend_snd, ike_specialnend_exp,
         ike_specialairnend, ike_specialairnend_eff, ike_specialairnend_snd, ike_specialairnend_exp,
 
-        ike_specialsend
+        ike_specialsdash_snd,
+        ike_specialsend,
+        ike_specialsattack, ike_specialsattack_eff, ike_specialsattack_snd
     );
 }

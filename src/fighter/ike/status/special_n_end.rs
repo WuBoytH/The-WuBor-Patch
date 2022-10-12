@@ -23,7 +23,7 @@ unsafe fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     else {
         let ratio = charge_count / max_count;
-        (ratio * vl::special_n::eruption_count as f32) as i32
+        (ratio * vl::special_n::eruption_count_max as f32) as i32
     };
     VarModule::set_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT, eruption_count);
     0.into()

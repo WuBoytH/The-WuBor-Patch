@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
     steps:
+      - name: Get Branch Name
+        id: branch-name
+        uses: tj-actions/branch-names@v6
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
       - uses: izhangzhihao/delete-comment@master
@@ -19,6 +22,6 @@ jobs:
         with:
           commit: ${{ github.event.pull_request.head.sha }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts-branch: artifacts
+          artifacts-branch: ${{ steps.branch-name.outputs.current_branch }}
           artifacts: |
             The_WuBor_Patch_PR.zip

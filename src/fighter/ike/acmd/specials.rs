@@ -19,13 +19,7 @@ unsafe fn ike_specialnend(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
-        let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
-        let eruptions = ike_special_n_end_ray_check(fighter, count);
-        if eruptions > 0 {
-            VarModule::on_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION);
-            let eruption_pos = 10.0 + (eruptions as f32 * 12.0);
-            VarModule::set_float(fighter.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION, eruption_pos);
-        }
+        ike_special_n_end_ray_check(fighter);
     }
     if VarModule::is_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
         if macros::is_excute(fighter) {
@@ -216,31 +210,36 @@ unsafe fn ike_specialnend_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-unsafe extern "C" fn ike_special_n_end_ray_check(fighter: &mut L2CAgentBase, max_count: i32) -> i32 {
+unsafe extern "C" fn ike_special_n_end_ray_check(fighter: &mut L2CAgentBase) {
+    let count = VarModule::get_int(fighter.battle_object, ike::status::int::ERUPTION_COUNT);
     let mut counter = 0;
-    let mut x_distance = 10.0;
-    for x in 1..=max_count {
+    let mut x_distance = vl::special_n::ray_check_x_offset;
+    for x in 1..=count {
         counter = x;
-        x_distance += 12.0;
+        x_distance += vl::special_n::eruption_distance_add;
         let pos = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
         ModelModule::joint_global_position_with_offset(
             fighter.module_accessor,
             Hash40::new("top"),
-            &Vector3f{x: 0.0, y: 1.0, z: x_distance},
+            &Vector3f{x: 0.0, y: vl::special_n::ray_check_y_offset, z: x_distance},
             pos,
             true
         );
         if GroundModule::ray_check(
             fighter.module_accessor,
             &Vector2f{x: pos.x, y: pos.y},
-            &Vector2f{x: 0.0, y: -2.0},
+            &Vector2f{x: 0.0, y: vl::special_n::ray_check_y_check},
             true
         ) != 1 {
             counter = x - 1;
             break;
         }
     }
-    counter
+    if counter > 0 {
+        VarModule::on_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION);
+        let eruption_pos = vl::special_n::ray_check_x_offset + (counter as f32 * vl::special_n::eruption_distance_add);
+        VarModule::set_float(fighter.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION, eruption_pos);
+    }
 }
 
 #[acmd_script( agent = "ike", script = "game_specialairnend", category = ACMD_GAME, low_priority )]
@@ -277,21 +276,6 @@ unsafe fn ike_specialairnend_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
     }
     frame(fighter.lua_state_agent, 11.0);
-    // if VarModule::is_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-    //     if macros::is_excute(fighter) {
-    //         macros::EFFECT(fighter, Hash40::new("ike_volcano_ground"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-    //         if !VarModule::is_flag(fighter.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
-    //             macros::EFFECT(fighter, Hash40::new("ike_volcano"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-    //             macros::EFFECT(fighter, Hash40::new("ike_volcano_add4"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-    //             macros::EFFECT(fighter, Hash40::new("ike_volcano_flash3_g"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-    //             macros::EFFECT(fighter, Hash40::new("ike_volcano_add2"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, true);
-    //         } 
-    //         else {
-    //             macros::EFFECT(fighter, Hash40::new("ike_volcano_max"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-    //             macros::EFFECT(fighter, Hash40::new("ike_volcano_flash_g"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-    //         }
-    //     }
-    // }
     wait(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("ike_sword2"), false, false);

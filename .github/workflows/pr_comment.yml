@@ -18,7 +18,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_user_name: github-actions[bot]
           issue_number: ${{ github.event.number }}
-      - uses: actions/github-script@v6.3.2
+      - uses: actions/github-script@v3
         with:
           script: |
             const {owner, repo} = context.repo;

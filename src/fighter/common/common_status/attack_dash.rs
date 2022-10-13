@@ -92,6 +92,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             // Checks if your dash attack should roll off or not.
             if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE) {
+                GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 // Enables gravity.
                 sv_kinetic_energy!(
                     reset_energy,
@@ -117,6 +118,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                 }
                 // Checks if you have an attack_air_dash motion_kind in your motion_list. If so, change to it.
                 if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("attack_air_dash")) {
+                    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
                     MotionModule::change_motion_inherit_frame(
                         fighter.module_accessor,
                         Hash40::new("attack_air_dash"),

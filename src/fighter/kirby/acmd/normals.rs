@@ -13,6 +13,11 @@ use {
 
 #[acmd_script( agent = "kirby", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn kirby_attackdash(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 0.0);
+    }
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 5.0);
     frame(fighter.lua_state_agent, 4.0);
@@ -27,7 +32,6 @@ unsafe fn kirby_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 33.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, kirby::status::flag::ATTACK_DASH_END);
         AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 46, 74, 0, 71, 5.5, 0.0, 5.0, 4.0, Some(0.0), Some(5.0), Some(0.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BODY);
     }
@@ -35,6 +39,10 @@ unsafe fn kirby_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, true);
         AttackModule::clear_all(fighter.module_accessor);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_DRIFT);
     }
 }
 

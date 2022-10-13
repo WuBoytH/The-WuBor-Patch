@@ -6,9 +6,31 @@ use {
         app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
     },
+    custom_var::*,
     smash_script::*,
-    smashline::*
+    smashline::*,
+    wubor_utils::vars::*
 };
+
+#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+unsafe fn buddy_attackdash(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 0.5);
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 46, 72, 0, 58, 5.2, 0.0, 5.8, 3.6, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    wait(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_DRIFT);
+    }
+}
 
 #[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn buddy_attacks3(fighter: &mut L2CAgentBase) {
@@ -158,25 +180,13 @@ unsafe fn buddy_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attackdash(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 9.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 46, 72, 0, 58, 5.2, 0.0, 5.8, 3.6, None, None, None, 1.25, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-    }
-    wait(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
+        buddy_attackdash,
         buddy_attacks3,
         buddy_attacks3hi,
         buddy_attacks3lw,
         buddy_attackhi3,
-        buddy_attacklw3,
-        buddy_attackdash
+        buddy_attacklw3
     );
 }

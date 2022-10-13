@@ -21,7 +21,7 @@ unsafe fn marth_speciallwspecials(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE);
+        VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS);
     }
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 16.0);
@@ -129,7 +129,7 @@ unsafe fn marth_speciallwspecialairs(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE);
+        VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS);
     }
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 16.0);

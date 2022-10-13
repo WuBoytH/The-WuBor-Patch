@@ -257,10 +257,22 @@ unsafe extern "C" fn marth_speciallw_specials_main_loop(fighter: &mut L2CFighter
             );
         }
     }
-    if VarModule::is_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE) {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S2_START);
-            fighter.change_status(status.into(), false.into());
+    if VarModule::is_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS) {
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0 {
+            VarModule::on_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
+            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
+            return 1.into();
+        }
+        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S2_START);
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
+            VarModule::on_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
+            fighter.change_status(status.into(), true.into());
+            return 1.into();
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {
+            VarModule::on_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
+            fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
             return 1.into();
         }
     }

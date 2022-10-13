@@ -118,6 +118,19 @@ pub mod attack_air {
     }
 }
 
+pub mod attack_dash {
+    pub mod flag {
+        pub const ENABLE_AIR_FALL : i32 = 0x1050;
+        pub const ENABLE_AIR_CONTINUE : i32 = 0x1051;
+        pub const ENABLE_AIR_DRIFT : i32 = 0x1052;
+        pub const AIR_DRIFT_ENABLED : i32 = 0x1053;
+        pub const ENABLE_AIR_LANDING : i32 = 0x1054;
+    }
+    pub mod float {
+        pub const FALL_SPEED_Y_MUL : i32 = 0x1050;
+    }
+}
+
 pub mod dash {
     pub mod flag {
         pub const IS_DASH_CANCEL : i32 = 0x1050;
@@ -344,7 +357,6 @@ pub mod ken {
 pub mod kirby {
     pub mod status {
         pub mod flag {
-            pub const ATTACK_DASH_END : i32 = 0x1150;
             pub const ATTACK_LW3_BOUNCE : i32 = 0x1150;
         }
         pub mod int {

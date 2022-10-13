@@ -23,22 +23,22 @@ unsafe fn marth_speciallwspecials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE);
     }
+    macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 16.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_DASH);
     }
-    frame(fighter.lua_state_agent, 19.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
-    wait(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
-        macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
-    }
     frame(fighter.lua_state_agent, 27.0);
     if macros::is_excute(fighter) {
+        macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_END);
     }
+    macros::FT_MOTION_RATE(fighter, 0.5);
 }
 
 #[acmd_script( agent = "marth", script = "effect_speciallwspecials", category = ACMD_EFFECT, low_priority )]
@@ -131,22 +131,22 @@ unsafe fn marth_speciallwspecialairs(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_FLASHING_BLADE);
     }
+    macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 16.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_DASH);
     }
-    frame(fighter.lua_state_agent, 19.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
-    wait(fighter.lua_state_agent, 6.0);
-    if macros::is_excute(fighter) {
-        macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
-    }
     frame(fighter.lua_state_agent, 27.0);
     if macros::is_excute(fighter) {
+        macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_END);
     }
+    macros::FT_MOTION_RATE(fighter, 0.5);
 }
 
 #[acmd_script( agent = "marth", script = "effect_speciallwspecialairs", category = ACMD_EFFECT, low_priority )]
@@ -201,6 +201,12 @@ unsafe fn marth_speciallwspecialairs_exp(fighter: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         )
     }
+}
+
+#[acmd_script( agent = "marth", script = "game_speciallwspecials2start", category = ACMD_GAME, low_priority )]
+unsafe fn marth_speciallwspecials2start(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.8);
 }
 
 #[acmd_script( agent = "marth", script = "effect_speciallwspecials2start", category = ACMD_EFFECT, low_priority )]
@@ -439,6 +445,12 @@ unsafe fn marth_speciallwspecials2end2_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "marth", script = "game_speciallwspecialairs2start", category = ACMD_GAME, low_priority )]
+unsafe fn marth_speciallwspecialairs2start(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 0.8);
+}
+
 #[acmd_script( agent = "marth", script = "effect_speciallwspecialairs2start", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_speciallwspecialairs2start_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
@@ -653,7 +665,9 @@ unsafe fn marth_speciallwspecialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
+    macros::FT_MOTION_RATE(fighter, 8.0 / 13.0);
     frame(fighter.lua_state_agent, 19.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 12.0, 80, 30, 0, 120, 4.0, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(8.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 25, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 12.0, 80, 30, 0, 120, 4.0, 0.0, 20.0, 12.0, Some(0.0), Some(7.5), Some(12.0), 1.4, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 25, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -735,10 +749,10 @@ pub fn install() {
     install_acmd_scripts!(
         marth_speciallwspecials, marth_speciallwspecials_eff, marth_speciallwspecials_snd, marth_speciallwspecials_exp,
         marth_speciallwspecialairs, marth_speciallwspecialairs_eff, marth_speciallwspecialairs_snd, marth_speciallwspecialairs_exp,
-        marth_speciallwspecials2start_eff, marth_speciallwspecials2start_snd, marth_speciallwspecials2start_exp,
+        marth_speciallwspecials2start, marth_speciallwspecials2start_eff, marth_speciallwspecials2start_snd, marth_speciallwspecials2start_exp,
         marth_speciallwspecials2loop, marth_speciallwspecials2loop_eff, marth_speciallwspecials2loop_snd, marth_speciallwspecials2loop_exp,
         marth_speciallwspecials2end2, marth_speciallwspecials2end2_eff, marth_speciallwspecials2end2_snd, marth_speciallwspecials2end2_exp,
-        marth_speciallwspecialairs2start_eff, marth_speciallwspecialairs2start_snd, marth_speciallwspecialairs2start_exp,
+        marth_speciallwspecialairs2start, marth_speciallwspecialairs2start_eff, marth_speciallwspecialairs2start_snd, marth_speciallwspecialairs2start_exp,
         marth_speciallwspecialairs2loop, marth_speciallwspecialairs2loop_eff, marth_speciallwspecialairs2loop_snd, marth_speciallwspecialairs2loop_exp,
         marth_speciallwspecialairs2end, marth_speciallwspecialairs2end_eff, marth_speciallwspecialairs2end_snd, marth_speciallwspecialairs2end_exp,
         marth_speciallwspecialhi, marth_speciallwspecialhi_eff, marth_speciallwspecialhi_snd, marth_speciallwspecialhi_exp

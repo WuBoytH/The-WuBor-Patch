@@ -63,8 +63,8 @@ std::arch::global_asm!(
     
     .section .rodata.module_name
         .word 0
-        .word 5
-        .ascii "wubor"
+        .word 3
+        .ascii "hdr"
     .section .rodata.mod0
     .global _mod_header
     _mod_header:
@@ -72,8 +72,8 @@ std::arch::global_asm!(
         .word __dynamic_start - _mod_header
         .word __bss_start - _mod_header
         .word __bss_end - _mod_header
-        .word __eh_frame_wubor_start - _mod_header
-        .word __eh_frame_wubor_end - _mod_header
+        .word __eh_frame_hdr_start - _mod_header
+        .word __eh_frame_hdr_end - _mod_header
         .word __nx_module_runtime - _mod_header // runtime-generated module object offset
     .global IS_NRO
     IS_NRO:

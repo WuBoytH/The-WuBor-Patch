@@ -63,7 +63,7 @@ std::arch::global_asm!(
     
     .section .rodata.module_name
         .word 0
-        .word 3
+        .word 5
         .ascii "wubor"
     .section .rodata.mod0
     .global _mod_header

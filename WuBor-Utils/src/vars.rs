@@ -559,7 +559,7 @@ pub mod marth {
             pub const DISABLE_STANCE_CHANGE : i32 = 0x1100;
             pub const ATTACK_3_CHANGE_MOTION : i32 = 0x1101;
             pub const ATTACK_F3_HEAVY : i32 = 0x1102;
-            pub const SPECIAL_S_FLASHING_BLADE : i32 = 0x1101;
+            pub const SPECIAL_S_ENABLE_SPECIALS : i32 = 0x1101;
             pub const SPECIAL_S_DASH : i32 = 0x1102;
             pub const SPECIAL_S_END : i32 = 0x1103;
             pub const SPECIAL_S2_FINAL_BLOW : i32 = 0x1104;

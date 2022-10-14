@@ -29,9 +29,12 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     let original_str = unsafe { skyline::from_c_str(string) };
     if original_str.contains("Ver.") {
         let version = if cfg!(feature = "pr") {
-            format!("{}-pr", env!("CARGO_PKG_VERSION"))
+            format!("{}-local", env!("CARGO_PKG_VERSION"))
         }
         else if cfg!(feature = "dev") {
+            format!("{}-pr", env!("CARGO_PKG_VERSION"))
+        }
+        else if cfg!(feature = "local") {
             format!("{}-dev", env!("CARGO_PKG_VERSION"))
         }
         else {

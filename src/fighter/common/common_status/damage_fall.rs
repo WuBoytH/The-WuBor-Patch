@@ -1,16 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
         phx::Vector3f,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    smashline::*,
     wubor_utils::table_const::*
 };
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_DAMAGE_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[skyline::hook(replace = L2CFighterCommon_status_DamageFall)]
 unsafe fn status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_DamageFall_common();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GANON_SPECIAL_S_DAMAGE_FALL_AIR) {
@@ -48,8 +47,14 @@ unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
+fn nro_hook(info: &skyline::nro::NroInfo) {
+    if info.name == "common" {
+        skyline::install_hooks!(
+            status_damagefall
+        );
+    }
+}
+
 pub fn install() {
-    install_status_scripts!(
-        status_damagefall
-    );
+    skyline::nro::add_hook(nro_hook);
 }

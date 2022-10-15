@@ -152,7 +152,7 @@ pub unsafe extern "C" fn lucario_handle_aura2(_vtable: u64, fighter: &mut Fighte
 #[skyline::hook(offset = 0xc5d580)]
 pub unsafe extern "C" fn lucario_on_grab(_vtable: u64, fighter: &mut Fighter, event: &mut LinkEvent) -> u64 {
     // param_3 + 0x10
-    if event.link_event_kind.as_u64() == hash40("capture") {
+    if event.link_event_kind.0 == hash40("capture") {
         let capture_event : &mut LinkEventCapture = std::mem::transmute(event);
         let module_accessor = fighter.battle_object.module_accessor;
         if StatusModule::status_kind(module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_S {

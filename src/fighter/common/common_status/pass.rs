@@ -124,7 +124,7 @@ unsafe fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue
                 return 1.into();
             }
             else {
-                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+                fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_LW4_START.into(), true.into());
                 return 1.into();
             }
         }

@@ -2,13 +2,11 @@ use {
     smash::{
         lua2cpp::L2CAgentBase,
         phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
+        app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },
-    custom_var::*,
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
 #[acmd_script( agent = "donkey", script = "game_attackairb", category = ACMD_GAME, low_priority )]

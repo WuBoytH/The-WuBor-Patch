@@ -7,8 +7,7 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::wua_bind::*
+    smashline::*
 };
 
 #[acmd_script( agent = "metaknight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
@@ -41,7 +40,6 @@ unsafe fn metaknight_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 13.0, 1.0);
 }
 
 #[acmd_script( agent = "metaknight", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]

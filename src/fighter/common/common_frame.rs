@@ -74,7 +74,8 @@ unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0 {
+    if VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
+    && !fighter.global_table[IS_STOP].get_bool() {
         VarModule::sub_float(fighter.battle_object, commons::instance::float::FLICK_DOWN, 1.0);
     }
 

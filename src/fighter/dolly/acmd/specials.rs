@@ -333,7 +333,6 @@ unsafe fn dolly_specialhi(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
@@ -360,6 +359,7 @@ unsafe fn dolly_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         MotionModule::set_rate(fighter.module_accessor, 1.5);
     }
 }
@@ -507,7 +507,6 @@ unsafe fn dolly_specialhicommand(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 24.0);
@@ -554,6 +553,7 @@ unsafe fn dolly_specialhicommand(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 34.0);

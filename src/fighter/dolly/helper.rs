@@ -11,16 +11,10 @@ use {
 };
 
 pub unsafe fn add_go(object: *mut BattleObject, module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
-    let status = StatusModule::status_kind(module_accessor);
-    if ![
-        *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL,
-        *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2,
-        *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-    ].contains(&status)
-    && !VarModule::is_flag(object, dolly::instance::flag::RISING_FORCE) {
+    if !VarModule::is_flag(object, dolly::status::flag::DISABLE_METER_GAIN) {
         let meter_max = 200.0;
         let meter_const = dolly::instance::float::GO_METER;
-        amount /= 0.75;
+        amount /= 1.0;
         FGCModule::update_meter(object, amount, meter_max, meter_const);
         let is_superspecial = !WorkModule::is_flag(module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL);
         dolly_check_super_special_pre(module_accessor, is_superspecial as u8);

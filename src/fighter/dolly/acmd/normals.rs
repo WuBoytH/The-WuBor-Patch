@@ -106,8 +106,11 @@ unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
         }
     }
     if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
-        macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+        if macros::is_excute(fighter) {
+            VarModule::on_flag(fighter.battle_object, dolly::status::flag::DISABLE_METER_GAIN);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+        }
     }
     frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -167,7 +170,7 @@ unsafe fn dolly_attacks3(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
+        // macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
     }
     frame(fighter.lua_state_agent, 10.0);
@@ -184,7 +187,7 @@ unsafe fn dolly_attacks3(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -278,14 +281,14 @@ unsafe fn dolly_attacks3lw(fighter: &mut L2CAgentBase) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     }
-    macros::FT_MOTION_RATE(fighter, 5.0 / 7.0);
-    frame(fighter.lua_state_agent, 6.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_XLU);
-        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
+        // macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_XLU);
     }
+    macros::FT_MOTION_RATE(fighter, 1.0 / 3.0);
     frame(fighter.lua_state_agent, 7.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 5.4, 361, 40, 1, 40, 2.2, 0.0, 9.5, 3.5, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 5.4, 361, 40, 1, 40, 2.2, 0.0, 7.0, 6.0, None, None, None, 1.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -302,7 +305,7 @@ unsafe fn dolly_attacks3lw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
-        macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
+        // macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 19.0);

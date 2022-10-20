@@ -333,7 +333,6 @@ unsafe fn dolly_specialhi(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("legr"), *HIT_STATUS_NORMAL);
@@ -360,15 +359,19 @@ unsafe fn dolly_specialhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         MotionModule::set_rate(fighter.module_accessor, 1.5);
     }
 }
 
 #[acmd_script( agent = "dolly", scripts = [ "game_specialhicommand", "game_specialairhicommand" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_specialhicommand(fighter: &mut L2CAgentBase) {
-    if !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
+    if macros::is_excute(fighter) {
+        macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+    }
+    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
         if macros::is_excute(fighter) {
-            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+            VarModule::on_flag(fighter.battle_object, dolly::status::flag::DISABLE_METER_GAIN);
         }
     }
     frame(fighter.lua_state_agent, 6.0);
@@ -507,7 +510,6 @@ unsafe fn dolly_specialhicommand(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 24.0);
@@ -554,6 +556,7 @@ unsafe fn dolly_specialhicommand(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 34.0);
@@ -913,6 +916,7 @@ unsafe fn dolly_specialairlw(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_superspecial", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_superspecial(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(fighter.battle_object, -100.0, 200.0, dolly::instance::float::GO_METER);
         dolly_check_super_special_pre(fighter.module_accessor, 0);
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 4.0, 4.0);
@@ -982,6 +986,7 @@ unsafe fn dolly_superspecial_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_superspecial2start", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_superspecial2start(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(fighter.battle_object, -100.0, 200.0, dolly::instance::float::GO_METER);
         dolly_check_super_special_pre(fighter.module_accessor, 0);
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 8);
@@ -1073,6 +1078,7 @@ unsafe fn dolly_superspecial2start_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "dolly", script = "game_superspecial2", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_superspecial2(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, dolly::status::flag::DISABLE_METER_GAIN);
         VarModule::off_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         let output = dolly_calc_special_cancel(fighter, 20.0, 73);

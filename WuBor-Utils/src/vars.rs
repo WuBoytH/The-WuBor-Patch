@@ -209,11 +209,13 @@ pub mod dolly {
     }
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_N_FEINT : i32 = 0x1100;
+            pub const DISABLE_METER_GAIN : i32 = 0x1100;
 
-            pub const SPECIAL_LW_CHECK_BREAK : i32 = 0x1100;
-            pub const SPECIAL_LW_ENABLE_BREAK : i32 = 0x1101;
-            pub const SPECIAL_LW_BREAK : i32 = 0x1102;
+            pub const SPECIAL_N_FEINT : i32 = 0x1150;
+
+            pub const SPECIAL_LW_CHECK_BREAK : i32 = 0x1150;
+            pub const SPECIAL_LW_ENABLE_BREAK : i32 = 0x1151;
+            pub const SPECIAL_LW_BREAK : i32 = 0x1152;
         }
     }
 }

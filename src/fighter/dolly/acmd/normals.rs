@@ -106,8 +106,11 @@ unsafe fn dolly_attackdash(fighter: &mut L2CAgentBase) {
         }
     }
     if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
-        macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+        if macros::is_excute(fighter) {
+            VarModule::on_flag(fighter.battle_object, dolly::status::flag::DISABLE_METER_GAIN);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
+            macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
+        }
     }
     frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);

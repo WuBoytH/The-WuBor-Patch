@@ -54,7 +54,7 @@ unsafe fn metaknight_attacks3_eff(fighter: &mut L2CAgentBase) {
         // macros::AFTER_IMAGE_OFF(fighter, 0);
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, false);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("metaknight_s2_trace"), Hash40::new("top"), 2, 8, 6, 0, 0, 70, 1.0, true);
-        macros::LAST_EFFECT_SET_RATE(fighter, 0.25);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.5);
     }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {

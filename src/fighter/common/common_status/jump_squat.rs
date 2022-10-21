@@ -43,19 +43,19 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
 unsafe fn jump_squat_check_special_jump(fighter: &mut L2CFighterCommon) {
     if VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
     || (fighter.global_table[STICK_Y].get_f32() < -0.8
-    && fighter.global_table[FLICK_Y].get_i32() < 2
+    && fighter.global_table[FLICK_Y].get_i32() < 4
     && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0) {
         VarModule::on_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
     }
     else {
         VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
     }
-    let pickel = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_PICKEL
+    let pickel = fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_PICKEL
     && [
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT,
         *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT
     ].contains(&fighter.global_table[STATUS_KIND].get_i32());
-    let kirby = fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_KIRBY
+    let kirby = fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_KIRBY
     && [
         *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N1_JUMP_SQUAT,
         *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N3_JUMP_SQUAT

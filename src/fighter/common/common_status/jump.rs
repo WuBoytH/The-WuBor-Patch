@@ -185,7 +185,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
 
 unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {
     // don't do this
-    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    let fighter_kind = fighter.global_table[KIND].get_i32();
     if [
         *FIGHTER_KIND_MARIO,
         *FIGHTER_KIND_DAISY

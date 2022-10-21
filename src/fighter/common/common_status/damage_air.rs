@@ -1,7 +1,7 @@
 use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     custom_var::*,
@@ -10,6 +10,36 @@ use {
         table_const::*
     }
 };
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_DamageAir)]
+unsafe fn status_pre_damageair(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_AIR),
+        *FIGHTER_KINETIC_TYPE_DAMAGE_AIR,
+        *GROUND_CORRECT_KIND_AIR as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        0,
+        *FIGHTER_STATUS_ATTR_DAMAGE as u32,
+        0,
+        0
+    );
+    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
+    0.into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageAir)]
 unsafe fn status_damageair(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -32,6 +62,7 @@ unsafe fn status_damageair(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_damageair,
             status_damageair
         );
     }

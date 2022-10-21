@@ -2,38 +2,33 @@ use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
         hash40,
+        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    // smash_script::*,
-    wubor_utils::table_const::*
+    smash_script::*,
+    wubor_utils::table_const::*,
+    super::super::common_param::*
 };
 
-// #[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]
-// pub unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
-//     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
-//         return false.into();
-//     }
-//     fighter.clear_lua_stack();
-//     lua_args!(fighter, hash40("speed_vec_x"));
-//     sv_information::damage_log_value(fighter.lua_state_agent);
-//     let speed_vec_x = fighter.pop_lua_stack(1).get_f32();
-//     fighter.clear_lua_stack();
-//     lua_args!(fighter, hash40("speed_vec_y"));
-//     sv_information::damage_log_value(fighter.lua_state_agent);
-//     let speed_vec_y = fighter.pop_lua_stack(1).get_f32();
-//     let length = sv_math::vec2_length(speed_vec_x, speed_vec_y);
-//     let invalid_passive_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("invalid_passive_speed"));
-//     if invalid_passive_speed <= length {
-//         return false.into();
-//     }
-//     true.into()
-// }
+#[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]
+unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
+        return false.into();
+    }
+    true.into()
+}
+
+pub unsafe fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let weight = WorkModule::get_param_float(fighter.module_accessor, hash40("weight"), 0);
+    let damage = DamageModule::damage(fighter.module_accessor, 0);
+    (weight + passive::invalid_passive_damage_add <= damage).into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]
-pub unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     // The basis of the new tech system, teching is now performed by having your stick tilted in
-    // any direction that *isn't* down, so neutral and down cause missed techs.
+    // any direction that *isn't* down, so neutral causes missed techs.
     // This is also why that param_1 argument goes unused, it doesn't matter to check it anymore.
 
     let stick_x = fighter.global_table[STICK_X].get_f32();
@@ -43,21 +38,21 @@ pub unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: 
     let passive_fb_cont_value = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("passive_fb_cont_value"));
     let fb = passive_fb_cont_value <= stick_x.abs() && flick_x < 0xf0;
     let jump_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_stick_y"));
-    let jump = jump_stick_y <= stick_y && flick_y < 0xf0;
+    let jump = jump_stick_y <= stick_y.abs() && flick_y < 0xf0;
     let guard_button = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD);
     let passive_input = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) < param_1.get_i32();
     (fb || jump || guard_button || passive_input).into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button_for_damage)]
-pub unsafe fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     // Now just calls sub_check_passive_button
 
     fighter.sub_check_passive_button(param_1)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassive)]
-pub unsafe fn sub_airchkpassive(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_airchkpassive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -88,7 +83,7 @@ pub unsafe fn sub_airchkpassive(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassive_for_damage)]
-pub unsafe fn sub_airchkpassive_for_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_airchkpassive_for_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -119,7 +114,7 @@ pub unsafe fn sub_airchkpassive_for_damage(fighter: &mut L2CFighterCommon) -> L2
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassiveWall)]
-pub unsafe fn sub_airchkpassivewall(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_airchkpassivewall(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -136,7 +131,7 @@ pub unsafe fn sub_airchkpassivewall(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassiveWallJump)]
-pub unsafe fn sub_airchkpassivewalljump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_airchkpassivewalljump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -167,7 +162,7 @@ pub unsafe fn sub_airchkpassivewalljump(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassiveCeil)]
-pub unsafe fn sub_airchkpassiveceil(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn sub_airchkpassiveceil(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -189,17 +184,99 @@ unsafe fn check_tech(fighter: &mut L2CFighterCommon) -> bool {
     fighter.sub_check_passive_button_for_damage((passive_trigger_frame * passive_trigger_frame_mul).into()).get_bool()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_uniq_process_Passive_init)]
+unsafe fn sub_uniq_process_passive_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let ret = original!()(fighter);
+    let status = StatusModule::status_kind(fighter.module_accessor);
+    if [
+        *FIGHTER_STATUS_KIND_PASSIVE_WALL,
+        *FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP,
+        *FIGHTER_STATUS_KIND_PASSIVE_CEIL
+    ].contains(&status) {
+        if is_bad_passive(fighter).get_bool() {
+            MotionModule::set_rate(fighter.module_accessor, passive::bad_passive_rate);
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+        }
+    }
+    ret
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_Passive)]
+unsafe fn status_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x219c184305));
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
+    let bad_passive = is_bad_passive(fighter).get_bool();
+    let rate = if bad_passive {
+        passive::bad_passive_rate
+    }
+    else {
+        1.0
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new("passive"),
+        0.0,
+        rate,
+        false,
+        0.0,
+        false,
+        false
+    );
+    if bad_passive {
+        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_Passive_Main as *const () as _))
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_PassiveFB)]
+unsafe fn status_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
+    notify_event_msc_cmd!(fighter, Hash40::new_raw(0x219c184305));
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
+    let lr = PostureModule::lr(fighter.module_accessor);
+    let mot = if fighter.global_table[STICK_X].get_f32() * lr < 0.0 {
+        hash40("passive_stand_b")
+    }
+    else {
+        hash40("passive_stand_f")
+    };
+    let bad_passive = is_bad_passive(fighter).get_bool();
+    let rate = if bad_passive {
+        passive::bad_passive_rate
+    }
+    else {
+        1.0
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        Hash40::new_raw(mot),
+        0.0,
+        rate,
+        false,
+        0.0,
+        false,
+        false
+    );
+    if bad_passive {
+        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_PassiveFB_Main as *const () as _))
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            // is_enable_passive,
+            is_enable_passive,
             sub_check_passive_button,
             sub_check_passive_button_for_damage,
             sub_airchkpassive,
             sub_airchkpassive_for_damage,
             sub_airchkpassivewall,
             sub_airchkpassivewalljump,
-            sub_airchkpassiveceil
+            sub_airchkpassiveceil,
+            sub_uniq_process_passive_init,
+            status_passive,
+            status_passivefb
         );
     }
 }

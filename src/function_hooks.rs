@@ -496,6 +496,16 @@ pub unsafe fn init_settings_replace(
 #[skyline::from_offset(0x3f0830)]
 pub fn some_catch(catchmodule: *mut smash_rs::app::Module);
 
+#[skyline::hook(offset = 0x3e6ce0, inline)]
+unsafe fn remove_phantoms(_: &skyline::hooks::InlineCtx) {
+  std::arch::asm!("fmov s9, 0.0");
+}
+
+// #[skyline::hook(offset = 0x3a6650)]
+// unsafe fn get_article_use_type_mask(weapon_kind: i32, entry_id: i32) -> u8 {
+//     1
+// }
+
 pub fn install() {
     unsafe{
         let text_ptr = getRegionAddress(Region::Text) as *const u8;
@@ -525,6 +535,7 @@ pub fn install() {
         play_se_remain_replace,
         play_se_no_3d_replace,
         // crit_zoom,
-        init_settings_replace
+        init_settings_replace,
+        remove_phantoms
     );
 }

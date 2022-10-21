@@ -89,7 +89,7 @@ jobs:
           file: romfs.zip
       - name: Build Release NRO (Dev)
         run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features dev
         env:
           HOME: /root
       - name: Create Release ZIP (Dev)

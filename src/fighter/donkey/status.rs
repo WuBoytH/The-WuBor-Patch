@@ -7,7 +7,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    wubor_utils::{vars::*, table_const::*},
+    wubor_utils::table_const::*,
     super::vl
 };
 
@@ -15,7 +15,7 @@ use {
 unsafe fn donkey_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
-    if !barrel_check() {
+    if !barrel_check(fighter.module_accessor) {
         if PostureModule::lr(fighter.module_accessor) == 1.0 {
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("appeal_lw_r"), 1.0, 1.0, false, 0.0, false, false);
         }
@@ -59,13 +59,13 @@ unsafe extern "C" fn donkey_specials_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 /// Checks how many barrels are on the screen.
-/// If there are more than (# of DKs in the match * # of barrels allowed per DK)
+/// If there are more than (# of owned barrels allowed)
 /// existing at a time, DK will be unable to pull out a barrel.
-pub unsafe fn barrel_check() -> bool {
-    if smash::app::lua_bind::ItemManager::get_num_of_active_item(*ITEM_KIND_BARREL) >= vl::param_special_s::barrel_count as u64 * donkey::DK_COUNT {
-        return false;
-    }
-    true
+pub unsafe fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    let itemmanager = smash_rs::app::ItemManager::instance().unwrap();
+    smash_rs::app::ItemManager::get_num_of_ownered_item(itemmanager, (*module_accessor).battle_object_id, smash_rs::app::ItemKind::Barrel)
+    <
+    vl::param_special_s::barrel_count as usize
 }
 
 pub fn install() {

@@ -3,7 +3,7 @@ use {
         lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::Hash40,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CAgent, L2CValue}
     },
     smash_script::*,
@@ -105,6 +105,37 @@ unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CA
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_LandingAttackAir)]
+unsafe fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let whiff = VarModule::is_flag(fighter.battle_object, attack_air::flag::WHIFF);
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_LANDING_ATTACK_AIR_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_LANDING_ATTACK_AIR_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_LANDING_ATTACK_AIR_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        true,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        *FIGHTER_STATUS_ATTR_INTO_DOOR as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_AIR as u32,
+        0
+    );
+    VarModule::set_flag(fighter.battle_object, attack_air::flag::WHIFF, whiff);
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_landing_attack_air_init)]
 unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
@@ -137,6 +168,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_attackair_main_common,
             bind_address_call_status_end_attackair,
             status_end_attackair,
+            status_pre_landingattackair,
             sub_landing_attack_air_init
         );
     }

@@ -3,12 +3,40 @@ use {
         lua2cpp::{L2CFighterCommon, *},
         hash40,
         phx::*,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
     custom_cancel::*,
     wubor_utils::{wua_bind::*, table_const::*}
 };
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackS3_common)]
+unsafe fn status_pre_attacks3_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        param_1.get_u32(),
+        *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_3 as u32,
+        0
+    );
+}
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackS3_Main_param)]
 unsafe fn status_attacks3_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
@@ -198,7 +226,7 @@ unsafe fn status_end_attacklw3(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            status_attacks3_main_param, status_end_attacks3,
+            status_pre_attacks3_common, status_attacks3_main_param, status_end_attacks3,
             status_attackhi3_main, status_end_attackhi3,
             status_attacklw3_main, status_end_attacklw3
         );

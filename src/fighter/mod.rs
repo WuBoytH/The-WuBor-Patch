@@ -80,6 +80,7 @@ pub mod iceclimber;
 pub mod ike;
 pub mod inkling;
 pub mod pfushigisou;
+pub mod pzenigame;
 pub mod krool;
 pub mod rockman;
 pub mod mewtwo;
@@ -173,6 +174,7 @@ pub fn install() {
     ike::install();
     inkling::install();
     pfushigisou::install();
+    pzenigame::install();
     krool::install();
     rockman::install();
     mewtwo::install();

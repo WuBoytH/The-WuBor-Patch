@@ -232,12 +232,21 @@ unsafe fn metaknight_landingairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "metaknight", script = "effect_landingairlw", category = ACMD_SOUND, low_priority )]
+unsafe fn metaknight_landingairlw_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_metaknight_special_s02_02"));
+        macros::PLAY_LANDING_SE(fighter, Hash40::new("se_metaknight_landing02"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         metaknight_attackairn,
         metaknight_attackairf,
         metaknight_attackairhi,
         metaknight_attackairlw, metaknight_attackairlw_eff, metaknight_attackairlw_snd, metaknight_attackairlw_exp,
-        metaknight_landingairlw, metaknight_landingairlw_eff
+        metaknight_landingairlw, metaknight_landingairlw_eff, metaknight_landingairlw_snd
     );
 }

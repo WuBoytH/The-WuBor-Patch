@@ -155,6 +155,14 @@ unsafe fn metaknight_attackairlw_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
     }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new("tex_metaknight_sword1"), Hash40::new("tex_metaknight_sword2"), 3, Hash40::new("haver"), 0.0, 2.0, 0.0, Hash40::new("haver"), -0.0, 16.7, 0.0, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::AFTER_IMAGE_OFF(fighter, 0);
+    }
     frame(fighter.lua_state_agent, 12.0);
     for _ in 0..12 {
         if macros::is_excute(fighter) {

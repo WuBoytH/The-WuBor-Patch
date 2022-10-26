@@ -245,6 +245,48 @@ unsafe fn metaknight_attack13_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "metaknight", script = "game_attack100", category = ACMD_GAME, low_priority )]
+unsafe fn metaknight_attack100(fighter: &mut L2CAgentBase) {
+    for _ in 0..i32::MAX {
+        frame(fighter.lua_state_agent, 1.0);
+        metaknight_attack100_internal(fighter);
+        frame(fighter.lua_state_agent, 4.0);
+        metaknight_attack100_internal(fighter);
+        frame(fighter.lua_state_agent, 7.0);
+        metaknight_attack100_internal(fighter);
+        frame(fighter.lua_state_agent, 10.0);
+        metaknight_attack100_internal(fighter);
+        frame(fighter.lua_state_agent, 13.0);
+        metaknight_attack100_internal(fighter);
+        frame(fighter.lua_state_agent, 16.0);
+        metaknight_attack100_internal(fighter);
+        frame(fighter.lua_state_agent, 19.0);
+        metaknight_attack100_internal(fighter);
+        fighter.clear_lua_stack();
+        wait_loop_clear(fighter.lua_state_agent);
+        fighter.pop_lua_stack(1);
+    }
+}
+
+#[acmd_script( agent = "metaknight", script = "game_attack100sub", category = ACMD_GAME, low_priority )]
+unsafe fn metaknight_attack100sub(fighter: &mut L2CAgentBase) {
+    metaknight_attack100_internal(fighter);
+}
+
+#[inline(always)]
+unsafe extern "C" fn metaknight_attack100_internal(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.75, 361, 30, 0, 10, 7.0, 0.0, 6.5, 8.0, Some(0.0), Some(6.5), Some(13.5), 0.5, 0.6, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 4)
+    }
+    wait(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
+    }
+}
+
 #[acmd_script( agent = "metaknight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe fn metaknight_attack100end(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -253,9 +295,9 @@ unsafe fn metaknight_attack100end(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 361, 140, 0, 60, 5.0, 0.0, 8.0, 11.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 361, 140, 0, 60, 6.0, 0.0, 8.0, 16.5, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 361, 140, 0, 60, 6.0, 0.0, 8.0, 22.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 140, 0, 60, 5.0, 0.0, 8.0, 11.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 361, 140, 0, 60, 6.0, 0.0, 8.0, 16.5, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 4.0, 361, 140, 0, 60, 6.0, 0.0, 8.0, 22.0, None, None, None, 2.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -453,6 +495,7 @@ pub fn install() {
         metaknight_attack11, metaknight_attack11_eff, metaknight_attack11_snd, metaknight_attack11_exp,
         metaknight_attack12, metaknight_attack12_eff, metaknight_attack12_snd, metaknight_attack12_exp,
         metaknight_attack13, metaknight_attack13_eff, metaknight_attack13_snd, metaknight_attack13_exp,
+        metaknight_attack100, metaknight_attack100sub,
         metaknight_attack100end, metaknight_attack100end_eff, metaknight_attack100end_snd, metaknight_attack100end_exp,
         metaknight_attackdash,
         metaknight_attacks3, metaknight_attacks3_eff, metaknight_attacks3_snd, metaknight_attacks3_exp,

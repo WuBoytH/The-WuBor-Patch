@@ -232,7 +232,7 @@ unsafe fn metaknight_landingairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_landingairlw", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "metaknight", script = "sound_landingairlw", category = ACMD_SOUND, low_priority )]
 unsafe fn metaknight_landingairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

@@ -27,7 +27,9 @@ unsafe fn lucina_specialnstart_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_specialnstart_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        FGCModule::ex_se(fighter);
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex_p4"));
+        }
     }
 }
 
@@ -174,7 +176,9 @@ unsafe fn lucina_specialairs1_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_specialairs1_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        FGCModule::ex_se(fighter);
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex_p4"));
+        }
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -408,7 +412,9 @@ unsafe fn lucina_specialhi_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_specialhi_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        FGCModule::ex_se(fighter);
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex_p4"));
+        }
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -575,7 +581,9 @@ unsafe fn lucina_specialairhi_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_specialairhi_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        FGCModule::ex_se(fighter);
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex_p4"));
+        }
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -865,7 +873,9 @@ unsafe fn lucina_lightningflash_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucina_lightningflash_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
-        FGCModule::ex_se(fighter);
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_common_waza_super_p4"));
+        }
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {

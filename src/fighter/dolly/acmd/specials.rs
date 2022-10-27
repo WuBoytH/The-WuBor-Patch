@@ -970,7 +970,9 @@ unsafe fn dolly_superspecial_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly", script = "sound_superspecial", category = ACMD_SOUND, low_priority )]
 unsafe fn dolly_superspecial_snd(fighter: &mut L2CAgentBase) {
-    FGCModule::ex_se(fighter);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_super_kof"));
+    }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial_success"));
@@ -1058,7 +1060,9 @@ unsafe fn dolly_superspecial2start_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "dolly", script = "sound_superspecial2start", category = ACMD_SOUND, low_priority )]
 unsafe fn dolly_superspecial2start_snd(fighter: &mut L2CAgentBase) {
-    FGCModule::ex_se(fighter);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_super_kof"));
+    }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_dolly_superspecial_success"));

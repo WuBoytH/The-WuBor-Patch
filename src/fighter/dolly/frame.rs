@@ -15,15 +15,15 @@ use {
 // vc_ken_special_l01 is "I hit my boiling point!"
 // vc_ken_special_l02 is "Shoryureppa"
 
-unsafe fn dolly_reset_vars(fighter: &mut L2CFighterCommon) {
-    let status = fighter.global_table[STATUS_KIND].get_i32();
-    if [
-        *FIGHTER_STATUS_KIND_DEAD,
-        *FIGHTER_STATUS_KIND_REBIRTH
-    ].contains(&status)  {
-        VarModule::set_float(fighter.battle_object, dolly::instance::float::GO_METER, 0.0);
-    }
-}
+// unsafe fn dolly_reset_vars(fighter: &mut L2CFighterCommon) {
+//     let status = fighter.global_table[STATUS_KIND].get_i32();
+//     if [
+//         *FIGHTER_STATUS_KIND_DEAD,
+//         *FIGHTER_STATUS_KIND_REBIRTH
+//     ].contains(&status)  {
+//         VarModule::set_float(fighter.battle_object, dolly::instance::float::GO_METER, 0.0);
+//     }
+// }
 
 unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
     if VarModule::get_float(fighter.battle_object, dolly::instance::float::GO_METER) >= 200.0{
@@ -99,7 +99,7 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
 #[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
 fn dolly_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        dolly_reset_vars(fighter);
+        // dolly_reset_vars(fighter);
         dolly_super_special_aura(fighter);
         dolly_super_super_cancels(fighter);
     }

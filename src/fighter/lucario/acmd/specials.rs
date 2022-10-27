@@ -82,8 +82,8 @@ unsafe fn lucario_specialnhold2_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", scripts = ["sound_specialnhold2", "sound_specialairnhold2"], category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_specialnhold2_snd(fighter: &mut L2CAgentBase) {
-    FGCModule::ex_se(fighter);
     if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
         macros::PLAY_SE(fighter, Hash40::new("vc_lucario_005"));
     }
 }
@@ -373,8 +373,8 @@ unsafe fn lucario_specials2_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "sound_specials2", category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_specials2_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
-    FGCModule::ex_se(fighter);
     if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
         macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_s03"));
     }
 }
@@ -517,8 +517,8 @@ unsafe fn lucario_specialairs2_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "sound_specialairs2", category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_specialairs2_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
-    FGCModule::ex_se(fighter);
     if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
         macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_s03"));
     }
 }
@@ -715,7 +715,9 @@ unsafe fn lucario_specialsthrow2_snd(fighter: &mut L2CAgentBase) {
         }
     }
     frame(fighter.lua_state_agent, 35.0);
-    FGCModule::ex_se(fighter);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
+    }
     frame(fighter.lua_state_agent, 55.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_lucario_004"));
@@ -919,7 +921,9 @@ unsafe fn lucario_specialairsthrow2_snd(fighter: &mut L2CAgentBase) {
         }
     }
     frame(fighter.lua_state_agent, 29.0);
-    FGCModule::ex_se(fighter);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
+    }
 }
 
 #[acmd_script( agent = "lucario", script = "expression_specialairsthrow2", category = ACMD_EXPRESSION, low_priority )]
@@ -1026,7 +1030,9 @@ unsafe fn lucario_specialhimove_eff(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "sound_specialhimove", category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_specialhimove_snd(fighter: &mut L2CAgentBase) {
     if VarModule::get_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
-        FGCModule::ex_se(fighter);
+        if macros::is_excute(fighter) {
+            macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
+        }
     }
     let curr_aura = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_CURR_AURAPOWER);
     let mid_aura = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLOAT_SE_MIDDLE_AURAPOWER);

@@ -743,10 +743,10 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
             *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW
         ) == 0 {
             let kind;
-            if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DOLLY {
+            if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_DOLLY {
                 kind = FIGHTER_DOLLY_STATUS_KIND_TURN_RUN_BACK;
             }
-            else if fighter.global_table[FIGHTER_KIND].get_i32() == *FIGHTER_KIND_DEMON {
+            else if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_DEMON {
                 kind = FIGHTER_DEMON_STATUS_KIND_TURN_RUN_BACK;
             }
             else  {

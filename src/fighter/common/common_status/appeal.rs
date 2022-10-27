@@ -129,7 +129,7 @@ unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2C
         false
     );
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f73affc96));
-    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    let fighter_kind = fighter.global_table[KIND].get_i32();
     let log = if fighter_kind == *FIGHTER_KIND_SNAKE {
         *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_APPEAL_ATTACK |
         *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |

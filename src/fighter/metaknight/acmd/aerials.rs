@@ -108,6 +108,23 @@ unsafe fn metaknight_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "metaknight", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn metaknight_attackairhi_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("metaknight_air_hi"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        EffectModule::set_disable_render_offset_last(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 11.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("metaknight_sword"), false, false);
+    }
+}
+
 #[acmd_script( agent = "metaknight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn metaknight_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -122,9 +139,18 @@ unsafe fn metaknight_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 368, 60, 0, 50, 5.0, 0.0, 0.0, 6.5, Some(0.0), Some(3.0), Some(6.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 4.0, 368, 60, 0, 50, 3.0, 0.0, 4.0, 11.45, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         AttackModule::set_vec_target_pos(
             fighter.module_accessor,
             0,
+            Hash40::new("top"),
+            &Vector2f{x: 2.5, y: -15.0},
+            7,
+            false
+        );
+        AttackModule::set_vec_target_pos(
+            fighter.module_accessor,
+            1,
             Hash40::new("top"),
             &Vector2f{x: 2.5, y: -15.0},
             7,
@@ -253,7 +279,7 @@ pub fn install() {
     install_acmd_scripts!(
         metaknight_attackairn,
         metaknight_attackairf,
-        metaknight_attackairhi,
+        metaknight_attackairhi, metaknight_attackairhi_eff,
         metaknight_attackairlw, metaknight_attackairlw_eff, metaknight_attackairlw_snd, metaknight_attackairlw_exp,
         metaknight_landingairlw, metaknight_landingairlw_eff, metaknight_landingairlw_snd
     );

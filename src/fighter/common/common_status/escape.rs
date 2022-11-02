@@ -43,7 +43,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
             );
             if [
                 *FIGHTER_KIND_NESS, *FIGHTER_KIND_LUCAS, *FIGHTER_KIND_MEWTWO
-            ].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+            ].contains(&fighter.global_table[KIND].get_i32()) {
                 let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
                 let super_jump_frame = VarModule::get_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME);
                 let ratio = super_jump_frame / 10.0;

@@ -583,6 +583,14 @@ pub mod marth {
     }
 }
 
+pub mod pickel {
+    pub mod instance {
+        pub mod int {
+            pub const MINING_PROGRESS_REAL : i32 = 0x0100;
+        }
+    }
+}
+
 pub mod pikachu {
     pub mod status {
         pub mod flag {

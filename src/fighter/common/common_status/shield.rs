@@ -107,7 +107,7 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
             let just_guard_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
             if just_guard_frame == 0 {
                 ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
-                let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) {
+                let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
                     *SHIELD_TYPE_GUARD
                 }
                 else {
@@ -552,7 +552,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
         if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON {
             EffectModule::req_screen(fighter.module_accessor, Hash40::new("just_shield_screen"), false, false, false);
         }
-        let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+        let fighter_kind = fighter.global_table[KIND].get_i32();
         let se = FighterUtil::get_just_shield_se(fighter_kind);
         SoundModule::play_se(fighter.module_accessor, se, true, false, false, false, enSEType(0));
     }
@@ -581,7 +581,7 @@ unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
         if just_frame - 1 == 0 {
             ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NONE), 0);
-            let type_of_guard = FighterUtil::get_shield_type_of_guard(fighter.global_table[FIGHTER_KIND].get_i32()) as i32;
+            let type_of_guard = FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) as i32;
             ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(type_of_guard), *FIGHTER_SHIELD_KIND_GUARD, 0);
             ReflectorModule::set_status(fighter.module_accessor, 0, ShieldStatus(*SHIELD_STATUS_NONE), *FIGHTER_REFLECTOR_GROUP_JUST_SHIELD);
         }

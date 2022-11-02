@@ -121,7 +121,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
 
 unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     // don't do this
-    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    let fighter_kind = fighter.global_table[KIND].get_i32();
     if [
         *FIGHTER_KIND_MEWTWO,
         *FIGHTER_KIND_RIDLEY
@@ -226,7 +226,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
             }
         }
         if fighter.global_table[MOTION_FRAME].get_f32() >= airdash_params.cancel_frame {
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
                     set_accel,
@@ -253,7 +253,7 @@ pub struct AirDashParams {
 unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     let attack_frame: f32;
     let cancel_frame: f32;
-    let fighter_kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    let fighter_kind = fighter.global_table[KIND].get_i32();
     if [
         *FIGHTER_KIND_MEWTWO
     ].contains(&fighter_kind) {
@@ -567,14 +567,14 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
             let speed_x_mul =
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
                 0.2
             }
             else {
                 0.65
             };
             let speed_y_mul = 
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
                 0.2
             }
             else {
@@ -609,7 +609,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0.0,
                 0.0
             );
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[FIGHTER_KIND].get_i32()) {
+            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
                     set_accel,

@@ -141,7 +141,7 @@ pub unsafe extern "C" fn lucario_special_n_joint_translate(fighter: &mut L2CFigh
 }
 
 pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CFighterCommon) {
-    let kind = fighter.global_table[FIGHTER_KIND].get_i32();
+    let kind = fighter.global_table[KIND].get_i32();
     let status = fighter.global_table[STATUS_KIND].get_i32();
     let statuses = if kind != *FIGHTER_KIND_KIRBY {
         [

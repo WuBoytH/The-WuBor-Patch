@@ -56,11 +56,10 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
                 );
             }
         }
-        if prev_status != *FIGHTER_STATUS_KIND_DAMAGE_FALL {
-            if prev_status == *FIGHTER_STATUS_KIND_TREAD_FALL {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
-            }
-            else if [
+        if prev_status != *FIGHTER_STATUS_KIND_DAMAGE_FALL
+        && prev_status != *FIGHTER_STATUS_KIND_TREAD_FALL {
+            if [
+                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
                 *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,

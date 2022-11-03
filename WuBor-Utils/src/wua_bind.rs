@@ -107,7 +107,7 @@ pub mod FGCModule {
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
         && check_cancel_window(fighter)
         && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0 {
-            VarModule::on_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            VarModule::on_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
             StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
             return true.into();
         }
@@ -723,6 +723,7 @@ pub mod MiscModule {
         false
     }
 
+    #[inline(always)]
     pub unsafe fn calc_motion_rate_from_cancel_frame(fighter: &mut L2CAgentBase, current_frame: f32, adjust_frame: f32) {
         let mot = MotionModule::motion_kind(fighter.module_accessor);
         let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(mot), true);
@@ -730,6 +731,8 @@ pub mod MiscModule {
         if adjusted_frame > 0.0
         && adjusted_frame + adjust_frame > 0.0 {
             macros::FT_MOTION_RATE(fighter, (adjusted_frame + adjust_frame) / adjusted_frame);
+            sv_animcmd::frame(fighter.lua_state_agent, cancel_frame);
+            macros::FT_MOTION_RATE(fighter, 1.0);
         }
     }
 }

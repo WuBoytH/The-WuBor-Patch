@@ -91,6 +91,7 @@ pub mod commons {
             pub const DASH_CANCEL : i32 = 0x1002;
             pub const SPECIAL_CANCEL : i32 = 0x1003;
             pub const ENABLE_AERIAL_STRING : i32 = 0x1004;
+            pub const IS_DASH_CANCEL : i32 = 0x1005;
         }
         pub mod int {
             pub const ENABLED_AERIALS : i32 = 0x1000;
@@ -133,7 +134,6 @@ pub mod attack_dash {
 
 pub mod dash {
     pub mod flag {
-        pub const IS_DASH_CANCEL : i32 = 0x1050;
         pub const DISABLE_RUN : i32 = 0x1051;
     }
 }

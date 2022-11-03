@@ -767,13 +767,13 @@ impl CustomCancelManager {
                         if dash_cancel_dir.contains(DashCancelDir::FORWARD)
                         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
                             fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
-                            VarModule::on_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+                            VarModule::on_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
                             return true;
                         }
                         if dash_cancel_dir.contains(DashCancelDir::BACKWARD)
                         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
                             fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-                            VarModule::on_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+                            VarModule::on_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
                             return true;
                         }
                     }

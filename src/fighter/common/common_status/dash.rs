@@ -13,7 +13,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Dash)]
 unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -39,13 +39,13 @@ unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL, dash_cancel);
+    VarModule::set_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -71,7 +71,7 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL, dash_cancel);
+    VarModule::set_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
@@ -86,7 +86,7 @@ unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
         0.0
     };
     // New
-    let start_rate = if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+    let start_rate = if VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL) {
         0.75
     }
     else {
@@ -108,7 +108,7 @@ unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Sub)]
 unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
     // New
-    let start_rate = if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+    let start_rate = if VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL) {
         0.75
     }
     else {
@@ -499,7 +499,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -525,13 +525,13 @@ pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL, dash_cancel);
+    VarModule::set_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
 pub unsafe fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // New
-    let start_rate = if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+    let start_rate = if VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL) {
         0.75
     }
     else {
@@ -881,9 +881,9 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
 }
 
 unsafe extern "C" fn check_dash_cancel_early_return(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL) {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
-            VarModule::off_flag(fighter.battle_object, dash::flag::IS_DASH_CANCEL);
+            VarModule::off_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
             MotionModule::set_rate(fighter.module_accessor, 1.0);
             if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);

@@ -20,7 +20,8 @@ use {
 };
 
 unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
-    if smashball::is_training_mode() {
+    if smashball::is_training_mode()
+    && fighter.global_table[KIND].get_i32() != *FIGHTER_KIND_NANA {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
         && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
             FGC_TRAINING = !FGC_TRAINING;

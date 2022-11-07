@@ -1,7 +1,12 @@
 mod acmd;
-// mod agent_init;
+pub mod status;
+mod agent_init;
+mod vtable_hook;
+pub mod vl;
 
 pub fn install() {
     acmd::install();
-    // agent_init::install();
+    status::install();
+    agent_init::install();
+    vtable_hook::install();
 }

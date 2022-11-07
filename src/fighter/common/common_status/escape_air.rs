@@ -509,6 +509,11 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
             KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_GRAVITY, boma);
             KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_CONTROL, boma);
+            sv_kinetic_energy!(
+                clear_speed_ex,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_DAMAGE
+            );
             let dir_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
             let dir_y = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
             // sv_kinetic_energy!(

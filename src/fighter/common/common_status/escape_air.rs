@@ -293,12 +293,7 @@ pub unsafe fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) 
     //     return 0.into();
     // }
 
-    let air_escape_passive_trigger_frame = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        6
-    }
-    else {
-        WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame"))
-    };
+    let air_escape_passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("air_escape_passive_trigger_frame"));
     let passive_trigger_frame_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);
     let passive_frame = air_escape_passive_trigger_frame as f32 * passive_trigger_frame_mul;
 

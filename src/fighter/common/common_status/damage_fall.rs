@@ -3,7 +3,7 @@ use {
         lua2cpp::*,
         hash40,
         phx::Vector3f,
-        app::lua_bind::*,
+        app::{lua_bind::*, *},
         lib::{lua_const::*, *}
     },
     wubor_utils::table_const::*
@@ -27,7 +27,8 @@ unsafe fn status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(status_damagefall_main as *const () as _))
 }
 
-unsafe extern "C" fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[skyline::hook(replace = L2CFighterCommon_status_DamageFall_Main)]
+unsafe fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool()
     || fighter.check_damage_fall_transition().get_bool() {
         return 0.into();

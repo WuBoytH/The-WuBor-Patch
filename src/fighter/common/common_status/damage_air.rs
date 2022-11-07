@@ -37,7 +37,6 @@ unsafe fn status_pre_damageair(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
     0.into()
 }
 

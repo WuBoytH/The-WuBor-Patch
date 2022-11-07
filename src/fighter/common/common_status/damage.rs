@@ -7,7 +7,6 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    custom_var::*,
     wubor_utils::table_const::*
 };
 
@@ -37,7 +36,6 @@ unsafe fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
     0.into()
 }
 

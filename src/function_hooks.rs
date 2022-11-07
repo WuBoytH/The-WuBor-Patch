@@ -493,8 +493,8 @@ pub unsafe fn init_settings_replace(
     )
 }
 
-#[skyline::from_offset(0x3f0830)]
-pub fn some_catch(catchmodule: *mut smash_rs::app::Module);
+// #[skyline::from_offset(0x3f0830)]
+// pub fn some_catch(catchmodule: *mut smash_rs::app::Module);
 
 // #[skyline::hook(offset = 0x3a6650)]
 // unsafe fn get_article_use_type_mask(weapon_kind: i32, entry_id: i32) -> u8 {

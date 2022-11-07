@@ -2,7 +2,7 @@ use {
     smash::{
         lua2cpp::*,
         phx::Vector3f,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::{lua_const::*, *}
     },
     wubor_utils::table_const::*

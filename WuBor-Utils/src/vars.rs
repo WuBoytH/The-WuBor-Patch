@@ -476,12 +476,15 @@ pub mod yu { // lucina
         pub mod flag {
             pub const IS_EX : i32 = 0x1100;
             pub const CAN_ONE_MORE : i32 = 0x1101;
-            pub const ATTACK_DASH_BIG_GAMBLE : i32 = 0x1102;
-            pub const SPECIAL_LW_DECIDE_ROMAN_DIREC : i32 = 0x1103;
-            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1104;
+
+            pub const ATTACK_DASH_BIG_GAMBLE : i32 = 0x1150;
+            pub const ATTACK_DASH_BIG_GAMBLE_TRANSITION : i32 = 0x1151;
+
+            pub const SPECIAL_LW_DECIDE_ROMAN_DIREC : i32 = 0x1150;
+            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1151;
         }
         pub mod float {
-            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1100;
+            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1150;
         }
     }
 

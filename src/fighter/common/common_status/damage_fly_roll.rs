@@ -11,9 +11,7 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFlyRoll)]
 unsafe fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_FLAG_DISABLE_PASSIVE) {
-        VarModule::on_flag(fighter.battle_object, damage_fly_roll::flag::DISABLE_PASSIVE);
-    }
+    let disable_passive = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_FLAG_DISABLE_PASSIVE);
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -38,6 +36,7 @@ unsafe fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
+    VarModule::set_flag(fighter.battle_object, damage_fly_roll::flag::DISABLE_PASSIVE, disable_passive);
     0.into()
 }
 

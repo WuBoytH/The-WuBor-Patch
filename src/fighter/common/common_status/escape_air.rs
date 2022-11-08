@@ -30,9 +30,8 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
         }
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         let normalize = sv_math::vec2_normalize(stickx, sticky);
-        let airdash_mul = get_airdash_mul(fighter);
-        let mut dirx = normalize.x * airdash_mul;
-        let mut diry = normalize.y * airdash_mul * 0.65;
+        let mut dirx = normalize.x;
+        let mut diry = normalize.y;
         WorkModule::set_float(fighter.module_accessor, dirx, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_X);
         WorkModule::set_float(fighter.module_accessor, diry, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_FLOAT_DIR_Y);
         let speed_x = 
@@ -527,14 +526,15 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             //     0.0
             // );
             let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
+            let airdash_mul = get_airdash_mul(fighter);
             sv_kinetic_energy!(
                 set_speed,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_STOP,
-                escape_air_slide_speed * dir_x,
-                escape_air_slide_speed * dir_y
+                escape_air_slide_speed * dir_x * airdash_mul,
+                escape_air_slide_speed * dir_y * airdash_mul * 0.65
             );
-            let brake_x = (dir_x.abs() / 1.0) * 0.15;
+            let brake_x = dir_x.abs() * 0.15;
             let brake_y: f32 = if dir_y < 0.0 {
                 0.0
             }

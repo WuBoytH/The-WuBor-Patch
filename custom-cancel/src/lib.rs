@@ -420,10 +420,8 @@ impl CustomCancelManager {
         if let Some(agent_infos) = manager.cancel_infos.get_mut(&agent) {
             let status = unsafe {StatusModule::status_kind(fighter.module_accessor)};
             if let Some(cancel_info) = agent_infos.get_mut(&status) {
-                if !fighter.global_table[IS_STOP].get_bool() {
-                    if Self::execute_cancel_inner(fighter, cancel_info) {
-                        return true;
-                    }
+                if Self::execute_cancel_inner(fighter, cancel_info) {
+                    return true;
                 }
             }
         }
@@ -431,8 +429,8 @@ impl CustomCancelManager {
     }
 
     extern "Rust" fn execute_cancel_inner(fighter: &mut L2CFighterCommon, cancel_info: &CancelInfo) -> bool {
-        if !fighter.global_table[IS_STOP].get_bool() {
-            unsafe {
+        unsafe {
+            if !fighter.global_table[IS_STOP].get_bool() {
                 if let Some(pre_func) = cancel_info.pre {
                     // println!("[CustomCancelModule] Pre Check found!");
                     if pre_func(fighter) {

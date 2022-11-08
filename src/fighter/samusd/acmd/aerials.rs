@@ -20,7 +20,7 @@ unsafe fn samusd_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if !VarModule::is_flag(fighter.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT) {
         if macros::is_excute(fighter) {
-            VarModule::on_flag(fighter.battle_object, samusd::attack_air_n::flag::START_FLOAT);
+            VarModule::on_flag(fighter.battle_object, samusd::status::flag::ATTACK_AIR_N_START_FLOAT);
         }
     }
     for _ in 0..4 {

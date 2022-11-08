@@ -128,7 +128,7 @@ move_type_again: bool) -> u64 {
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
             let object = MiscModule::get_battle_object_from_id((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
-            VarModule::on_flag(object, vars::mario::special_n::flag::FGC_CANCEL);
+            VarModule::on_flag(object, vars::mario::status::flag::SPECIAL_N_FGC_CANCEL);
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)

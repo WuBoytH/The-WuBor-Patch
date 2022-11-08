@@ -20,7 +20,6 @@ unsafe fn samusd_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn samusd_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, samusd::attack_air_n::flag::START_FLOAT);
     fighter.sub_attack_air_common(true.into());
     if !StopModule::is_stop(fighter.module_accessor) {
         samusd_attackair_substatus2(fighter);
@@ -31,7 +30,7 @@ unsafe fn samusd_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
-    && VarModule::is_flag(fighter.battle_object, samusd::attack_air_n::flag::START_FLOAT) {
+    && VarModule::is_flag(fighter.battle_object, samusd::status::flag::ATTACK_AIR_N_START_FLOAT) {
         VarModule::on_flag(fighter.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT);
         let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);

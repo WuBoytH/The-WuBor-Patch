@@ -168,34 +168,34 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     if VarModule::get_int(fighter.battle_object, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
-        VarModule::off_flag(fighter.battle_object, mario::special_lw::flag::BLJ);
+        VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_LW_BLJ);
         let dir = FGCModule::get_command_stick_direction(fighter, true);
         let speed_x : f32;
         let speed_y : f32;
         if [6, 3, 9].contains(&dir) {
             speed_x = vl::param_special_lw::long_jump_speed_strong_x;
             speed_y = vl::param_special_lw::long_jump_speed_strong_y;
-            VarModule::set_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND, mario::LONG_JUMP_S);
+            VarModule::set_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND, mario::LONG_JUMP_S);
             VarModule::off_flag(fighter.battle_object, mario::instance::flag::SPECIAL_LW_BLJ_PREV);
         }
         else if [4, 7, 1].contains(&dir) {
-            VarModule::on_flag(fighter.battle_object, mario::special_lw::flag::BLJ);
+            VarModule::on_flag(fighter.battle_object, mario::status::flag::SPECIAL_LW_BLJ);
             if VarModule::is_flag(fighter.battle_object, mario::instance::flag::SPECIAL_LW_BLJ_PREV) {
                 speed_x = -vl::param_special_lw::long_jump_speed_strong_x;
                 speed_y = 0.0;
-                VarModule::set_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND, mario::LONG_JUMP_B);
+                VarModule::set_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND, mario::LONG_JUMP_B);
             }
             else {
                 speed_x = vl::param_special_lw::long_jump_speed_weak_x;
                 speed_y = vl::param_special_lw::long_jump_speed_weak_y;
-                VarModule::set_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND, mario::LONG_JUMP_W);
+                VarModule::set_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND, mario::LONG_JUMP_W);
             }
             VarModule::on_flag(fighter.battle_object, mario::instance::flag::SPECIAL_LW_BLJ_PREV);
         }
         else {
             speed_x = vl::param_special_lw::long_jump_speed_mid_x;
             speed_y = vl::param_special_lw::long_jump_speed_mid_y;
-                VarModule::set_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND, mario::LONG_JUMP_M);
+                VarModule::set_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND, mario::LONG_JUMP_M);
             VarModule::off_flag(fighter.battle_object, mario::instance::flag::SPECIAL_LW_BLJ_PREV);
         }
         macros::SET_SPEED_EX(fighter, speed_x, speed_y, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -273,7 +273,7 @@ unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe extern "C" fn mario_speciallw_longjump_jump_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, mario::special_lw::flag::LANDING)
+    if VarModule::is_flag(fighter.battle_object, mario::status::flag::SPECIAL_LW_LANDING)
     && !fighter.sub_air_check_fall_common().get_bool() {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {

@@ -16,7 +16,7 @@ use {
 #[acmd_script( agent = "mario", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
 unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, mario::special_n::flag::FGC_CANCEL);
+        VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_N_FGC_CANCEL);
     }
     if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
         macros::FT_MOTION_RATE(fighter, 1.15);
@@ -159,26 +159,26 @@ unsafe fn mario_longjumpstart_snd(_fighter: &mut L2CAgentBase) {
 unsafe fn mario_longjump(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND) == mario::LONG_JUMP_B {
-            VarModule::on_flag(fighter.battle_object, mario::special_lw::flag::LANDING);
+        if VarModule::get_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_B {
+            VarModule::on_flag(fighter.battle_object, mario::status::flag::SPECIAL_LW_LANDING);
         }
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, mario::special_lw::flag::LANDING);
-        if [mario::LONG_JUMP_B, mario::LONG_JUMP_M].contains(&VarModule::get_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND)) {
+        VarModule::on_flag(fighter.battle_object, mario::status::flag::SPECIAL_LW_LANDING);
+        if [mario::LONG_JUMP_B, mario::LONG_JUMP_M].contains(&VarModule::get_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND)) {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND) == mario::LONG_JUMP_W {
+        if VarModule::get_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_W {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        if VarModule::get_int(fighter.battle_object, mario::special_lw::int::LONG_JUMP_KIND) == mario::LONG_JUMP_S {
+        if VarModule::get_int(fighter.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_S {
             CancelModule::enable_cancel(fighter.module_accessor);
         }
     }

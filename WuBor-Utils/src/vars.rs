@@ -138,6 +138,12 @@ pub mod dash {
     }
 }
 
+pub mod damage_fly_roll {
+    pub mod flag {
+        pub const DISABLE_PASSIVE : i32 = 0x1050;
+    }
+}
+
 pub mod guard_off {
     pub mod int {
         pub const ATTACK_CANCEL_FRAME : i32 = 0x1050;

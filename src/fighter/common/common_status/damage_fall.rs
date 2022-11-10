@@ -3,10 +3,15 @@ use {
         lua2cpp::*,
         phx::Vector3f,
         app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
+        lib::{lua_const::*, *}
     },
     wubor_utils::table_const::*
 };
+
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_DamageFall)]
+unsafe fn bind_address_call_status_damagefall(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_DamageFall()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageFall)]
 unsafe fn status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -19,15 +24,9 @@ unsafe fn status_damagefall(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageFall_Main)]
 unsafe fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.sub_transition_group_check_air_cliff().get_bool() {
-        return 0.into();
-    }
-    if fighter.sub_AirChkPassive().get_bool()
-    || fighter.sub_AirChkPassiveWall().get_bool()
-    || fighter.sub_AirChkPassiveWallJump().get_bool() {
-        return 0.into();
-    }
-    if fighter.check_damage_fall_transition().get_bool() {
+    if fighter.sub_transition_group_check_air_cliff().get_bool()
+    || fighter.check_damage_fall_transition().get_bool()
+    || fighter.sub_AirChkPassive().get_bool() {
         return 0.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN)
@@ -42,6 +41,7 @@ unsafe fn status_damagefall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            bind_address_call_status_damagefall,
             status_damagefall,
             status_damagefall_main
         );

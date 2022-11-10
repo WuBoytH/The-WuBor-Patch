@@ -28,7 +28,7 @@ unsafe fn ganon_specialn(fighter: &mut L2CAgentBase) {
         macros::SA_SET(fighter, *SITUATION_KIND_AIR);
         let og_x = PostureModule::pos_x(fighter.module_accessor);
         let og_y = PostureModule::pos_y(fighter.module_accessor);
-        VarModule::set_vec2(fighter.battle_object, ganon::status::float::START_POS, Vector2f{x: og_x, y: og_y});
+        VarModule::set_vec2(fighter.battle_object, ganon::status::float::TELEPORT_START_POS, Vector2f{x: og_x, y: og_y});
         VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
         VarModule::on_flag(fighter.battle_object, ganon::status::flag::TELEPORT_STOP);

@@ -55,9 +55,9 @@ unsafe fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
         *GROUND_CORRECT_KIND_AIR as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
+        flag_keep,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLY_INT,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_DAMAGE_FLY_FLOAT,
-        flag_keep,
         0
     );
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_NO_DROP_ITEM) {

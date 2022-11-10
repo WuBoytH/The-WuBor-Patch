@@ -37,7 +37,6 @@ unsafe fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CV
         param_1.get_u32(),
         0
     );
-    VarModule::reset(fighter.battle_object, VarModule::RESET_STATUS);
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Appeal_common_uniq)]

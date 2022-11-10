@@ -138,6 +138,12 @@ pub mod dash {
     }
 }
 
+pub mod damage_fly_roll {
+    pub mod flag {
+        pub const DISABLE_PASSIVE : i32 = 0x1050;
+    }
+}
+
 pub mod guard_off {
     pub mod int {
         pub const ATTACK_CANCEL_FRAME : i32 = 0x1050;
@@ -170,7 +176,7 @@ pub mod appeal {
 pub mod bayonetta {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_AIR_S_D_IS_BOUNCE : i32 = 0x1100;
+            pub const SPECIAL_AIR_S_D_IS_BOUNCE : i32 = 0x1150;
         }
     }
 }
@@ -178,7 +184,7 @@ pub mod bayonetta {
 pub mod chrom {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_LW_CHANGE_KINETIC : i32 = 0x1100;
+            pub const SPECIAL_LW_CHANGE_KINETIC : i32 = 0x1150;
         }
     }
 }
@@ -186,7 +192,7 @@ pub mod chrom {
 pub mod demon {
     pub mod status {
         pub mod flag {
-            pub const ATTACK_STAND_2_SPECIAL_FINISHER : i32 = 0x1100;
+            pub const ATTACK_STAND_2_SPECIAL_FINISHER : i32 = 0x1150;
         }
     }
 }
@@ -228,10 +234,6 @@ pub mod dolly_wave {
     }
 }
 
-pub mod donkey {
-    pub static mut DK_COUNT : u64 = 0;
-}
-
 pub mod edge {
     pub mod instance {
         pub mod int {
@@ -240,7 +242,7 @@ pub mod edge {
     }
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_HI_CANCEL : i32 = 0x1100;
+            pub const SPECIAL_HI_CANCEL : i32 = 0x1150;
         }
     }
 }
@@ -248,7 +250,7 @@ pub mod edge {
 pub mod eflame {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_S_ROTATE : i32 = 0x1100;
+            pub const SPECIAL_S_ROTATE : i32 = 0x1150;
         }
     }
 }
@@ -256,7 +258,7 @@ pub mod eflame {
 pub mod elight {
     pub mod instance {
         pub mod flag {
-            pub const SPECIAL_S_CANCEL : i32 = 0x0100;
+            pub const SPECIAL_S_CANCEL : i32 = 0x0150;
         }
     }
 }
@@ -272,17 +274,16 @@ pub mod falco {
 pub mod ganon {
     pub mod status {
         pub mod flag {
-            pub const TELEPORT_FEINT : i32 = 0x1100;
-            pub const TELEPORT_STOP : i32 = 0x1101;
-            pub const TELEPORT_START_GROUND : i32 = 0x1102;
+            pub const TELEPORT_FEINT : i32 = 0x1150;
+            pub const TELEPORT_STOP : i32 = 0x1151;
+            pub const TELEPORT_START_GROUND : i32 = 0x1152;
         }
         pub mod int {
-            pub const TELEPORT_STEP : i32 = 0x1100;
+            pub const TELEPORT_STEP : i32 = 0x1150;
         }
         pub mod float {
-            pub const START_POS: i32 = 0x1100;
-
-            pub const END_POS: i32 = 0x1102;
+            pub const TELEPORT_START_POS: i32 = 0x1150;
+            pub const TELEPORT_END_POS: i32 = 0x1151;
         }
     }
 
@@ -304,15 +305,15 @@ pub mod gaogaen {
 pub mod ike {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_N_AIR : i32 = 0x1100;
-            pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1101;
-            pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1102;
+            pub const SPECIAL_N_AIR : i32 = 0x1150;
+            pub const SPECIAL_N_RANGED_ERUPTION : i32 = 0x1151;
+            pub const SPECIAL_N_ENABLE_CRITICAL : i32 = 0x1152;
         }
         pub mod int {
-            pub const ERUPTION_COUNT : i32 = 0x1100;
+            pub const ERUPTION_COUNT : i32 = 0x1150;
         }
         pub mod float {
-            pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1100;
+            pub const SPECIAL_N_ERUPT_LOCATION : i32 = 0x1150;
         }
     }
 }
@@ -320,7 +321,7 @@ pub mod ike {
 pub mod jack {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_S_FEINT : i32 = 0x1100;
+            pub const SPECIAL_S_FEINT : i32 = 0x1150;
         }
     }
 }
@@ -378,7 +379,7 @@ pub mod kirby {
             pub const ATTACK_LW3_BOUNCE : i32 = 0x1150;
         }
         pub mod int {
-            pub const APPEAL_S_LOOP_COUNT : i32 = 0x1100;
+            pub const APPEAL_S_LOOP_COUNT : i32 = 0x1150;
         }
     }
 }
@@ -476,12 +477,15 @@ pub mod yu { // lucina
         pub mod flag {
             pub const IS_EX : i32 = 0x1100;
             pub const CAN_ONE_MORE : i32 = 0x1101;
-            pub const ATTACK_DASH_BIG_GAMBLE : i32 = 0x1102;
-            pub const SPECIAL_LW_DECIDE_ROMAN_DIREC : i32 = 0x1103;
-            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1104;
+
+            pub const ATTACK_DASH_BIG_GAMBLE : i32 = 0x1150;
+            pub const ATTACK_DASH_BIG_GAMBLE_TRANSITION : i32 = 0x1151;
+
+            pub const SPECIAL_LW_DECIDE_ROMAN_DIREC : i32 = 0x1150;
+            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1151;
         }
         pub mod float {
-            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1100;
+            pub const SPECIAL_LW_ROMAN_MOVE : i32 = 0x1150;
         }
     }
 
@@ -513,18 +517,15 @@ pub mod mario {
             pub const SPECIAL_LW_KIND : i32 = 0x0100;
         }
     }
-    pub mod special_n {
+    pub mod status {
         pub mod flag {
-            pub const FGC_CANCEL : i32 = 0x1100;
-        }
-    }
-    pub mod special_lw {
-        pub mod flag {
-            pub const LANDING : i32 = 0x1100;
-            pub const BLJ : i32 = 0x1101;
+            pub const SPECIAL_N_FGC_CANCEL : i32 = 0x1150;
+
+            pub const SPECIAL_LW_LANDING : i32 = 0x1150;
+            pub const SPECIAL_LW_BLJ : i32 = 0x1151;
         }
         pub mod int {
-            pub const LONG_JUMP_KIND : i32 = 0x1100;
+            pub const SPECIAL_LW_LONG_JUMP_KIND : i32 = 0x1150;
         }
     }
     pub const SPECIAL_LW_KIND_LONG_JUMP : i32 = 0;
@@ -540,7 +541,7 @@ pub mod mario {
 pub mod mariod {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_N_ENABLE_ACTIONS : i32 = 0x1100;
+            pub const SPECIAL_N_ENABLE_ACTIONS : i32 = 0x1150;
         }
     }
 }
@@ -559,19 +560,21 @@ pub mod marth {
     pub mod status {
         pub mod flag {
             pub const DISABLE_STANCE_CHANGE : i32 = 0x1100;
-            pub const ATTACK_3_CHANGE_MOTION : i32 = 0x1101;
-            pub const ATTACK_F3_HEAVY : i32 = 0x1102;
-            pub const SPECIAL_S_ENABLE_SPECIALS : i32 = 0x1101;
-            pub const SPECIAL_S_DASH : i32 = 0x1102;
-            pub const SPECIAL_S_END : i32 = 0x1103;
-            pub const SPECIAL_S2_FINAL_BLOW : i32 = 0x1104;
+
+            pub const ATTACK_3_CHANGE_MOTION : i32 = 0x1150;
+            pub const ATTACK_F3_HEAVY : i32 = 0x1151;
+
+            pub const SPECIAL_S_ENABLE_SPECIALS : i32 = 0x1150;
+            pub const SPECIAL_S_DASH : i32 = 0x1151;
+            pub const SPECIAL_S_END : i32 = 0x1152;
+            pub const SPECIAL_S2_FINAL_BLOW : i32 = 0x1153;
         }
         pub mod int {
-            pub const SPECIAL_S2_START_SITUATION : i32 = 0x1100;
-            pub const SPECIAL_S2_LOOP_COUNT : i32 = 0x1101;
+            pub const SPECIAL_S2_START_SITUATION : i32 = 0x1150;
+            pub const SPECIAL_S2_LOOP_COUNT : i32 = 0x1151;
         }
         pub mod float {
-            pub const SPECIAL_S_ANGLE : i32 = 0x1100;
+            pub const SPECIAL_S_ANGLE : i32 = 0x1150;
         }
 
         pub const STANCE_ENTER : i32 = 0;
@@ -610,9 +613,9 @@ pub mod pickel {
 pub mod pikachu {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_LW_START : i32 = 0x1100;
-            pub const SPECIAL_LW_ENABLE_LANDING : i32 = 0x1101;
-            pub const SPECIAL_LW_ENABLE_GRAVITY : i32 = 0x1102;
+            pub const SPECIAL_LW_START : i32 = 0x1150;
+            pub const SPECIAL_LW_ENABLE_LANDING : i32 = 0x1151;
+            pub const SPECIAL_LW_ENABLE_GRAVITY : i32 = 0x1152;
         }
     }
 }
@@ -620,7 +623,7 @@ pub mod pikachu {
 pub mod pikachu_dengekidama {
     pub mod status {
         pub mod flag {
-            pub const SPEED_UP : i32 = 0x1100;
+            pub const SPEED_UP : i32 = 0x1150;
         }
     }
 }
@@ -660,14 +663,11 @@ pub mod samusd {
             pub const CSHOT_ID : i32 = 0x0100;
         }
     }
-    pub mod attack_air_n {
+    pub mod status {
         pub mod flag {
-            pub const START_FLOAT : i32 = 0x1100;
-        }
-    }
-    pub mod special_lw {
-        pub mod flag {
-            pub const BOUNCE : i32 = 0x1100;
+            pub const ATTACK_AIR_N_START_FLOAT : i32 = 0x1150;
+
+            pub const SPECIAL_LW_BOUNCE : i32 = 0x1150;
         }
     }
 }
@@ -691,40 +691,38 @@ pub mod shulk {
 pub mod sonic {
     pub mod status {
         pub mod flag {
-            pub const DASH_FROM_THROW_LW : i32 = 0x1100;
+            pub const DASH_FROM_THROW_LW : i32 = 0x1150;
         }
     }
 }
 
 pub mod szerosuit {
-    pub mod special_hi {
+    pub mod status {
         pub mod flag {
-            pub const DECIDE_MOTION : i32 = 0x1100;
+            pub const SPECIAL_HI_DECIDE_MOTION : i32 = 0x1150;
         }
     }
 }
 
 pub mod toonlink {
-    pub mod attack_air_lw {
+    pub mod status {
         pub mod flag {
-            pub const BOUNCE : i32 = 0x1100;
+            pub const ATTACK_AIR_LW_BOUNCE : i32 = 0x1150;
         }
-    }
-    pub mod special_hi {
         pub mod float {
-            pub const SPIN_SPEED : i32 = 0x1100;
-            pub const SPIN_SPEED_MAX : i32 = 0x1101;
+            pub const SPECIAL_HI_SPIN_SPEED : i32 = 0x1150;
+            pub const SPECIAL_HI_SPIN_SPEED_MAX : i32 = 0x1151;
         }
     }
 }
 
 pub mod wario {
-    pub mod throw {
+    pub mod status {
         pub mod flag {
-            pub const MOVE : i32 = 0x1100;
+            pub const THROW_B_MOVE : i32 = 0x1150;
         }
         pub mod float {
-            pub const SPIN_SPEED : i32 = 0x1100;
+            pub const THROW_B_SPIN_SPEED : i32 = 0x1150;
         }
     }
 }

@@ -128,7 +128,7 @@ move_type_again: bool) -> u64 {
     if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
         if attacker_fighter_kind == *WEAPON_KIND_MARIO_FIREBALL {
             let object = MiscModule::get_battle_object_from_id((WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID)) as u32);
-            VarModule::on_flag(object, vars::mario::special_n::flag::FGC_CANCEL);
+            VarModule::on_flag(object, vars::mario::status::flag::SPECIAL_N_FGC_CANCEL);
         }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
@@ -466,14 +466,14 @@ pub unsafe fn init_settings_replace(
     arg10: i32,
 ) {
     let mut mask = 0;
-    if keep_flag == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG {
+    if keep_flag != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG {
         mask += VarModule::RESET_STATUS_FLAG;
     }
-    if keep_int == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT {
+    if keep_int != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT {
         mask += VarModule::RESET_STATUS_INT;
         mask += VarModule::RESET_STATUS_INT64;
     }
-    if keep_float == *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT {
+    if keep_float != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT {
         mask += VarModule::RESET_STATUS_FLOAT;
     }
     let object_id = (*module_accessor).battle_object_id;
@@ -493,8 +493,8 @@ pub unsafe fn init_settings_replace(
     )
 }
 
-#[skyline::from_offset(0x3f0830)]
-pub fn some_catch(catchmodule: *mut smash_rs::app::Module);
+// #[skyline::from_offset(0x3f0830)]
+// pub fn some_catch(catchmodule: *mut smash_rs::app::Module);
 
 // #[skyline::hook(offset = 0x3a6650)]
 // unsafe fn get_article_use_type_mask(weapon_kind: i32, entry_id: i32) -> u8 {

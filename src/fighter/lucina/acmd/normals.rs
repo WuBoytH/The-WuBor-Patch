@@ -182,9 +182,7 @@ unsafe fn lucina_attackdash(fighter: &mut L2CAgentBase) {
         else {
             1.0
         };
-        if ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-        && spent_meter(fighter.battle_object, false) {
-            VarModule::on_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE);
+        if VarModule::is_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.0 * ratio, 0, 40, 10, 40, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
         }
         else {
@@ -197,10 +195,7 @@ unsafe fn lucina_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(fighter.module_accessor);
-        if VarModule::is_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
-            VarModule::on_flag(fighter.battle_object, yu::instance::flag::COMMAND);
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_SPECIAL_HI, true);
-        }
+        VarModule::on_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
     }
 }
 

@@ -42,7 +42,12 @@ fn set_aerials() -> CancelInfo {
 
 fn set_specials(specials: Vec<i32>) -> CancelInfo {
     CancelInfo::new()
-        .enable_specials([*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW].to_vec())
+        .enable_specials([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
+        ].to_vec())
         .set_fgc_flags(FGCFlags::NONE)
         .set_alt_info(
             AltInfo::new()
@@ -86,6 +91,22 @@ pub fn install() {
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S3,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI3,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW3
+        ].to_vec())
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_DASH,
+        set_specials([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW_COMMAND,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
         ].to_vec())
     );
     CustomCancelManager::add_cancel_info(
@@ -160,8 +181,14 @@ pub fn install() {
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4,
-        set_specials([
-            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW
-        ].to_vec())
+        CancelInfo::new()
+        .enable_specials([*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW].to_vec())
+        .set_fgc_flags(FGCFlags::NONE)
+        .set_alt_info(
+            AltInfo::new()
+                .set_flag(yu::instance::flag::SHADOW_FRENZY)
+                .enable_specials([*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW].to_vec())
+                .set_fgc_flags(FGCFlags::NONE)
+        )
     );
 }

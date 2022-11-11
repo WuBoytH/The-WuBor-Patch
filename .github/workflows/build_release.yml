@@ -55,7 +55,7 @@ jobs:
       - name: Create Release ZIP (Main)
         shell: bash
         run: |
-          cd scripts && python create_main.py && cd ..
+          cd scripts && python3 create_main.py && cd ..
       - name: Upload Plugin Artifact (Main)
         uses: actions/upload-artifact@v3.1.0
         with:
@@ -95,7 +95,7 @@ jobs:
       - name: Create Release ZIP (Dev)
         shell: bash
         run: |
-          cd scripts && python create_dev.py && cd ..
+          cd scripts && python3 create_dev.py && cd ..
       - name: Upload Plugin Artifact (Dev)
         uses: actions/upload-artifact@v3.1.0
         with:

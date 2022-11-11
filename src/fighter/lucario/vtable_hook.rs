@@ -28,7 +28,7 @@ pub unsafe extern "C" fn lucario_check_aura2(module: u64) -> f32 {
     if WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) > 7 {
         std::process::abort();
     }
-    let object = MiscModule::get_battle_object_from_id((*module_accessor).battle_object_id);
+    let object = MiscModule::get_battle_object_from_id(module_accessor.battle_object_id);
     get_aura(object)
 }
 

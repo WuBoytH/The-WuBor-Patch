@@ -27,7 +27,7 @@ jobs:
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
     runs-on: ubuntu-latest
     container:
-      image: jugeeya/cargo-skyline:3.2.0
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4.3.0
@@ -67,7 +67,7 @@ jobs:
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
     runs-on: ubuntu-latest
     container:
-      image: jugeeya/cargo-skyline:3.2.0
+      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4.3.0

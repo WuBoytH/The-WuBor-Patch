@@ -125,6 +125,10 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
     let step = VarModule::get_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP);
     if param_1.get_bool() {
         if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL) {
+            if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON) {
+                WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
+                WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT);
+            }
             let pad_flag = fighter.global_table[PAD_FLAG].get_i32();
             if pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
                 ControlModule::clear_command(fighter.module_accessor, false);
@@ -132,11 +136,17 @@ unsafe extern "C" fn lucario_special_lw_substatus(fighter: &mut L2CFighterCommon
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ATTACK);
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
             }
-            if pad_flag & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
+            if pad_flag & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0
+            || fighter.sub_check_button_jump().get_bool()
+            || fighter.sub_check_button_frick().get_bool() {
                 ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
                 VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL);
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CHARGE_END);
+                if fighter.sub_check_button_jump().get_bool()
+                || fighter.sub_check_button_frick().get_bool() {
+                    VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL_FORCE_JUMP);
+                }
             }
         }
         if step == lucario::SPECIAL_LW_STEP_CHARGE {
@@ -250,6 +260,27 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
         lucario_special_lw_set_kinetic(fighter);
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL_FORCE_JUMP) {
+            let jump = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                true
+            }
+            else {
+                let jumps = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
+                let jumps_max = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT_MAX);
+                jumps < jumps_max
+            };
+            if jump {
+                let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                    FIGHTER_STATUS_KIND_JUMP_SQUAT
+                }
+                else {
+                    FIGHTER_STATUS_KIND_JUMP_AERIAL
+                };
+                fighter.change_status(status.into(), true.into());
+                return 0.into();
+            }
+            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_LW_CANCEL_FORCE_JUMP);
+        }
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return 0.into();
@@ -269,6 +300,11 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
         else {
             mot_g = hash40("special_lw_end");
             mot_a = hash40("special_air_lw_end");
+        }
+        let lr = PostureModule::lr(fighter.module_accessor);
+        if fighter.global_table[STICK_X].get_f32() * lr < 0.0 {
+            PostureModule::reverse_lr(fighter.module_accessor);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
         }
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
         WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);

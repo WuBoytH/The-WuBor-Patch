@@ -302,7 +302,7 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
             mot_a = hash40("special_air_lw_end");
         }
         let lr = PostureModule::lr(fighter.module_accessor);
-        if fighter.global_table[STICK_X].get_f32() * lr < 0.0 {
+        if fighter.global_table[STICK_X].get_f32() * lr < -0.5 {
             PostureModule::reverse_lr(fighter.module_accessor);
             PostureModule::update_rot_y_lr(fighter.module_accessor);
         }

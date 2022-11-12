@@ -16,7 +16,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     if smashball::is_training_mode() {
         return 1;
     }
-    let object_id = (*module_accessor).battle_object_id;
+    let object_id = module_accessor.battle_object_id;
     let object = MiscModule::get_battle_object_from_id(object_id);
     let go_meter = VarModule::get_float(object, dolly::instance::float::GO_METER);
     // println!("go_meter: {}", go_meter);

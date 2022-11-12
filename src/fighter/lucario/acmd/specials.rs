@@ -1221,6 +1221,7 @@ unsafe fn lucario_speciallwattack(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 44.0, 5.0);
 }
 
 #[acmd_script( agent = "lucario", script = "effect_speciallwattack", category = ACMD_EFFECT, low_priority )]
@@ -1314,6 +1315,7 @@ unsafe fn lucario_specialairlwattack(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 44.0, 5.0);
 }
 
 #[acmd_script( agent = "lucario", script = "effect_specialairlwattack", category = ACMD_EFFECT, low_priority )]

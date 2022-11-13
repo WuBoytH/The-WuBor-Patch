@@ -28,6 +28,7 @@ mod pass;
 mod cliff;
 mod appeal;
 mod sub_transitions;
+mod sub_fighter;
 
 pub fn install() {
     dash::install();
@@ -60,4 +61,5 @@ pub fn install() {
     cliff::install();
     appeal::install();
     sub_transitions::install();
+    sub_fighter::install();
 }

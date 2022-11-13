@@ -5,7 +5,8 @@ use {
         app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    wubor_utils::table_const::*
+    custom_var::*,
+    wubor_utils::{vars::*, table_const::*}
 };
 
 #[skyline::hook(replace = L2CFighterCommon_get_cliff_wait_hit_xlu_frame)]
@@ -48,6 +49,9 @@ unsafe fn sub_cliff_uniq_process_exit_common(fighter: &mut L2CFighterCommon, par
         if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FALL {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
         }
+        else {
+            VarModule::on_flag(fighter.battle_object, commons::instance::flag::LEDGE_INTANGIBILITY);
+        }
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF);
     if param_1.get_bool() {
@@ -55,6 +59,9 @@ unsafe fn sub_cliff_uniq_process_exit_common(fighter: &mut L2CFighterCommon, par
         GroundModule::leave_cliff(fighter.module_accessor);
         if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FALL {
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+        }
+        else {
+            VarModule::on_flag(fighter.battle_object, commons::instance::flag::LEDGE_INTANGIBILITY);
         }
     }
 }

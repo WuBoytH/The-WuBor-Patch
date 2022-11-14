@@ -391,7 +391,6 @@ unsafe fn ken_specialhicommand_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ken", script = "game_specialhireppa", category = ACMD_GAME, low_priority )]
 unsafe fn ken_specialhireppa(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
-    macros::FT_MOTION_RATE(fighter, 0.75);
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.5, 0, 10, 0, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
@@ -408,47 +407,46 @@ unsafe fn ken_specialhireppa(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 0.5, 80, 10, 30, 30, 5.5, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
     }
-    frame(fighter.lua_state_agent, 15.0);
+    frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 30.0);
+    frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 0, 10, 0, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
     }
-    frame(fighter.lua_state_agent, 31.0);
+    frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 60, 10, 0, 25, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
     }
-    frame(fighter.lua_state_agent, 34.0);
+    frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 1.0, 80, 10, 30, 30, 5.5, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 0.5, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -7.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
         AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 5.0, false);
     }
-    frame(fighter.lua_state_agent, 40.0);
+    frame(fighter.lua_state_agent, 32.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 55.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 44.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 90, 100, 90, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.1, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 90, 100, 100, 0, 4.6, 0.0, 10.0, 7.6, None, None, None, 2.1, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 1, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
     }
-    frame(fighter.lua_state_agent, 56.0);
+    frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 80, 100, 100, 0, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 1.22, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 85, 10, 0, 95, 4.6, 0.0, 14.5, 7.1, Some(0.0), Some(12.5), Some(9.1), 1.22, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 4, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
     }
-    frame(fighter.lua_state_agent, 58.0);
+    frame(fighter.lua_state_agent, 46.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_JUMP);
         macros::ATTACK(fighter, 0, 0, Hash40::new("armr"), 6.0, 70, 107, 0, 76, 6.0, 4.0, -0.4, 0.0, Some(-3.0), Some(-0.4), Some(0.0), 1.4, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_SHORYU, *ATTACK_REGION_PUNCH);
     }
-    frame(fighter.lua_state_agent, 63.0);
+    frame(fighter.lua_state_agent, 58.0);
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         AttackModule::clear_all(fighter.module_accessor);
@@ -458,75 +456,62 @@ unsafe fn ken_specialhireppa(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ken", script = "effect_specialhireppa", category = ACMD_EFFECT, low_priority )]
 unsafe fn ken_specialhireppa_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
-        if get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) >= 0.0 {
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-        }
-        else {
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -6.5, 2, 2, 5, 0, -5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -6.5, 2, 2, 5, 0, -5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-            EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
-        }
-    }
-    frame(fighter.lua_state_agent, 9.0);
+    ken_generate_shoryu_eff(fighter, true);
+    frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("ken_syoryuken_firearc"), -1);
     }
-    frame(fighter.lua_state_agent, 21.0);
+    frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("ken_syoryuken_fire"), false, true);
     }
-    frame(fighter.lua_state_agent, 30.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
-        if get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) >= 0.0 {
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-        }
-        else {
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -6.5, 2, 2, 5, 0, -5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -6.5, 2, 2, 5, 0, -5, 1, false);
-            macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
-            EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
-        }
-    }
-    frame(fighter.lua_state_agent, 34.0);
+    frame(fighter.lua_state_agent, 24.0);
+    ken_generate_shoryu_eff(fighter, true);
+    frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("ken_syoryuken_firearc"), -1);
     }
+    frame(fighter.lua_state_agent, 32.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("ken_syoryuken_fire"), false, true);
+    }
+    frame(fighter.lua_state_agent, 44.0);
+    ken_generate_shoryu_eff(fighter, false);
     frame(fighter.lua_state_agent, 46.0);
     if macros::is_excute(fighter) {
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("ken_syoryuken_firearc"), -1);
+    }
+    frame(fighter.lua_state_agent, 58.0);
+    if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("ken_syoryuken_fire"), false, true);
     }
-    frame(fighter.lua_state_agent, 55.0);
+}
+
+#[inline(always)]
+unsafe fn ken_generate_shoryu_eff(fighter: &mut L2CAgentBase, scale: bool) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("ken_syoryuken_fire"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
         if get_value_float(fighter.lua_state_agent, *SO_VAR_FLOAT_LR) >= 0.0 {
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
+            if scale {
+                macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
+            }
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), 3, 2, 2, 5, 0, 5, 1, false);
+            if scale {
+                macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
+            }
         }
         else {
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc"), Hash40::new("trans"), -6.5, 2, 2, 5, 0, -5, 1, false);
+            if scale {
+                macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
+            }
             macros::EFFECT_FOLLOW(fighter, Hash40::new("ken_syoryuken_firearc2"), Hash40::new("trans"), -6.5, 2, 2, 5, 0, -5, 1, false);
+            if scale {
+                macros::LAST_EFFECT_SET_SCALE_W(fighter, 1.0, 0.5, 1.0);
+            }
             EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
         }
-    }
-    frame(fighter.lua_state_agent, 59.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("ken_syoryuken_firearc"), -1);
-    }
-    frame(fighter.lua_state_agent, 71.0);
-    if macros::is_excute(fighter) {
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("ken_syoryuken_fire"), false, true);
     }
 }
 
@@ -537,28 +522,28 @@ unsafe fn ken_specialhireppa_snd(fighter: &mut L2CAgentBase) {
         macros::PLAY_SE(fighter, Hash40::new("vc_ken_attack01"));
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h01"));
     }
-    frame(fighter.lua_state_agent, 10.0);
+    frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h02"));
     }
-    frame(fighter.lua_state_agent, 31.0);
+    frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_ken_attack04"));
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h01"));
     }
-    frame(fighter.lua_state_agent, 35.0);
+    frame(fighter.lua_state_agent, 28.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h02"));
     }
-    frame(fighter.lua_state_agent, 50.0);
+    frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_ken_special_l02"));
     }
-    frame(fighter.lua_state_agent, 56.0);
+    frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h01"));
     }
-    frame(fighter.lua_state_agent, 60.0);
+    frame(fighter.lua_state_agent, 47.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_ken_special_h02"));
     }
@@ -584,11 +569,11 @@ unsafe fn ken_specialhireppa_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::AREA_WIND_2ND_arg10(fighter, 0, 1, 90, 8, 0.4, 0, 2, 16, 36, 80);
     }
-    frame(fighter.lua_state_agent, 30.0);
+    frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
-    frame(fighter.lua_state_agent, 31.0);
+    frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(
             fighter.module_accessor,
@@ -598,15 +583,15 @@ unsafe fn ken_specialhireppa_exp(fighter: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(fighter.lua_state_agent, 35.0);
+    frame(fighter.lua_state_agent, 28.0);
     if macros::is_excute(fighter) {
         macros::AREA_WIND_2ND_arg10(fighter, 0, 1, 90, 8, 0.4, 0, 2, 16, 36, 80);
     }
-    frame(fighter.lua_state_agent, 55.0);
+    frame(fighter.lua_state_agent, 44.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
     }
-    frame(fighter.lua_state_agent, 56.0);
+    frame(fighter.lua_state_agent, 45.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(
             fighter.module_accessor,
@@ -616,7 +601,7 @@ unsafe fn ken_specialhireppa_exp(fighter: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(fighter.lua_state_agent, 60.0);
+    frame(fighter.lua_state_agent, 49.0);
     if macros::is_excute(fighter) {
         macros::AREA_WIND_2ND_arg10(fighter, 0, 1, 90, 8, 0.4, 0, 2, 16, 36, 80);
     }

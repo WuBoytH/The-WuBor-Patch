@@ -65,6 +65,7 @@ pub mod commons {
             pub const CANCEL_ESCAPE_TO_ESCAPE_FB : i32 = 0x0006;
             pub const SUPER_JUMP : i32 = 0x0007;
             pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
+            pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
         }
         pub mod int {
             pub const TARGET_ID : i32 = 0x0000;

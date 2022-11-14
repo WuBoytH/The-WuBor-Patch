@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CAgentBase,
+        hash40,
         phx::{Hash40, Vector3f},
         app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
@@ -135,11 +136,6 @@ unsafe fn dolly_specialsfattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", scripts = [ "game_specialsbstart", "game_specialairsbstart" ], category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialsbstart(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 17.0 / 11.0);
-}
-
 #[acmd_script( agent = "dolly", script = "game_specialsbattackw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_specialsbattackw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -180,10 +176,7 @@ unsafe fn dolly_specialsbattack(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
-    macros::FT_MOTION_RATE(fighter, 5.0 / 3.0);
-    frame(fighter.lua_state_agent, 3.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 7.0);
+    frame(fighter.lua_state_agent, 9.0);
     let angle = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_S_WORK_FLAG_AIR_ATTACK) {
         68
     }
@@ -197,19 +190,19 @@ unsafe fn dolly_specialsbattack(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), output.dmg, angle, 30, 0, output.bkb, 5.0, 0.0, 16.5, 1.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 3, 0, Hash40::new("top"), output.dmg, angle, 30, 0, output.bkb, 5.0, 0.0, 8.0, 2.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 9.0);
+    frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
         let output = dolly_calc_special_cancel(fighter, 8.0, 70);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), output.dmg, angle, 30, 0, output.bkb, 5.0, 0.0, 16.0, 3.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), output.dmg, angle, 30, 0, output.bkb, 5.0, 0.0, 16.0, 3.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 10.0);
+    frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         let output = dolly_calc_special_cancel(fighter, 8.0, 70);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), output.dmg, angle, 30, 0, output.bkb, 5.0, 0.0, 15.0, 5.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), output.dmg, angle, 30, 0, output.bkb, 5.0, 0.0, 15.0, 5.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 11.0);
+    frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
         let output1 = dolly_calc_special_cancel(fighter, 10.0, 95);
         let output2 = dolly_calc_special_cancel(fighter, 10.0, 75);
@@ -218,24 +211,88 @@ unsafe fn dolly_specialsbattack(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), output1.dmg, 270, 15, 0, 95, 5.0, 0.0, 5.0, 1.0, Some(0.0), Some(8.0), Some(1.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 3, 0, Hash40::new("top"), output2.dmg, 68, 15, 0, output2.bkb, 5.0, 0.0, 5.0, 1.0, Some(0.0), Some(8.0), Some(1.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 12.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         let output1 = dolly_calc_special_cancel(fighter, 10.0, 95);
         let output2 = dolly_calc_special_cancel(fighter, 10.0, 75);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), output1.dmg, 270, 15, 0, 95, 5.0, 0.0, 11.0, 8.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), output2.dmg, 68, 15, 0, output2.bkb, 5.0, 0.0, 11.0, 8.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 13.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         let output1 = dolly_calc_special_cancel(fighter, 10.0, 95);
         let output2 = dolly_calc_special_cancel(fighter, 10.0, 75);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), output1.dmg, 270, 15, 0, 95, 5.0, 0.0, 9.0, 8.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), output2.dmg, 68, 15, 0, output2.bkb, 5.0, 0.0, 9.0, 8.5, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 8, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
     }
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         AttackModule::clear_all(fighter.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "effect_specialsbattack", category = ACMD_EFFECT, low_priority )]
+unsafe fn dolly_specialsbattack_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 5.0);
+    let alpha: f32 = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(fighter) {
+            macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("dolly_kick_arc_s_command"), Hash40::new("dolly_kick_arc_s_command"), Hash40::new("rot"), -1, -6, 0, -90, -90, 0, 1, true, *EF_FLIP_YZ);
+            EffectModule::set_disable_render_offset_last(fighter.module_accessor);
+        }
+        1.3
+    }
+    else {
+        0.9
+    };
+    let color = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
+    let eff = match color {
+        0 => hash40("dolly_kick_arc_s01"),
+        1 => hash40("dolly_kick_arc_s02"),
+        2 => hash40("dolly_kick_arc_s03"),
+        3 => hash40("dolly_kick_arc_s04"),
+        4 => hash40("dolly_kick_arc_s05"),
+        5 => hash40("dolly_kick_arc_s06"),
+        6 => hash40("dolly_kick_arc_s07"),
+        _ => hash40("dolly_kick_arc_s08")
+    };
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW_FLIP_ALPHA(fighter, Hash40::new_raw(eff), Hash40::new_raw(eff), Hash40::new("rot"), -1, -6, 0, -90, -90, 0, 1, true, *EF_FLIP_YZ, alpha)
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "sound_specialsbattack", category = ACMD_SOUND, low_priority )]
+unsafe fn dolly_specialsbattack_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
+        if macros::is_excute(fighter) {
+            macros::PLAY_STATUS(fighter, Hash40::new("se_dolly_special_sb03_command"));
+            macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_special_b02"));
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::PLAY_STATUS(fighter, Hash40::new("se_dolly_special_sb03"));
+            macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_dolly_rnd_special_b02"));
+        }
+    }
+}
+
+#[acmd_script( agent = "dolly", script = "expression_specialsbattack", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn dolly_specialsbattack_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_nohitm"),
+            0,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
     }
 }
 
@@ -1423,9 +1480,8 @@ pub fn install() {
 
         dolly_specialsfattack,
 
-        dolly_specialsbstart,
         dolly_specialsbattackw,
-        dolly_specialsbattack,
+        dolly_specialsbattack, dolly_specialsbattack_eff, dolly_specialsbattack_snd, dolly_specialsbattack_exp,
 
         dolly_specialhi,
         dolly_specialhicommand,

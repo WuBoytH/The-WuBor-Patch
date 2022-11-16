@@ -2,13 +2,13 @@ use {
     smash::{
         lua2cpp::L2CAgentBase,
         phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*},
+        app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
     },
     custom_var::*,
     smash_script::*,
     smashline::*,
-    wubor_utils::vars::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[acmd_script( agent = "pikmin", script = "game_attacks3", category = ACMD_GAME, low_priority )]
@@ -134,7 +134,7 @@ unsafe fn pikmin_attackhi3(fighter: &mut L2CAgentBase) {
         if macros::is_excute(fighter) {
             macros::ATTACK(fighter, 0, 0, Hash40::new("trans"), 0.6, 120, 100, 50, 0, 3.5, 3.0, 4.0, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
             macros::ATTACK(fighter, 1, 0, Hash40::new("trans"), 0.6, 120, 100, 50, 0, 3.5, -3.0, 4.0, 5.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
-            macros::ATTACK(fighter, 1, 0, Hash40::new("head"), 0.6, 92, 100, 20, 0, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+            macros::ATTACK(fighter, 2, 0, Hash40::new("head"), 0.6, 92, 100, 20, 0, 5.0, 3.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         }
         wait(fighter.lua_state_agent, 1.0);
         if macros::is_excute(fighter) {
@@ -152,11 +152,41 @@ unsafe fn pikmin_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "pikmin", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+unsafe fn pikmin_attackhi3_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("pikmin_attack_spin"), Hash40::new("trans"), 0, 11, 0.5, 0, 0, 0, 0.55, true);
+        macros::EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("pikmin_attack_spin"), Hash40::new("trans"), 0, 6, 0.5, 0, 0, 0, 0.7, true, 0.7);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("pikmin_attack_spin"), Hash40::new("trans"), 0, 4, 0.5, 0, 0, 0, 0.85, true, 0.5);
+    }
+}
+
+#[acmd_script( agent = "pikmin", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
+unsafe fn pikmin_attackhi3_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_pikmin_attackhard_h01"));
+    }
+    wait(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_pikmin_attackhard_h02"));
+    }
+    wait(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_pikmin_attackhard_h03"));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pikmin_attacks3, pikmin_attacks3_snd,
         pikmin_attacks3loop_eff, pikmin_attacks3loop_snd, pikmin_attacks3loop_exp,
         pikmin_attacks3end, pikmin_attacks3end_eff, pikmin_attacks3end_snd, pikmin_attacks3end_exp,
-        pikmin_attackhi3
+        pikmin_attackhi3, pikmin_attackhi3_eff, pikmin_attackhi3_snd
     );
 }

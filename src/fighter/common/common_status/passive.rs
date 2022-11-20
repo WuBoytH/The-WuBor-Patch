@@ -25,11 +25,11 @@ pub unsafe fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     (weight + passive::invalid_passive_damage_add <= damage).into()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]
-unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
-    let passive_input = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF < param_1.get_i32();
-    passive_input.into()
-}
+// #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]
+// unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+//     let passive_input = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF < param_1.get_i32();
+//     passive_input.into()
+// }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button_for_damage)]
 unsafe fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
@@ -257,7 +257,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             is_enable_passive,
-            sub_check_passive_button,
+            // sub_check_passive_button,
             sub_check_passive_button_for_damage,
             sub_airchkpassive,
             sub_airchkpassive_for_damage,

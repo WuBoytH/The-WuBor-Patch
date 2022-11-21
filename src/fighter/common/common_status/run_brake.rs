@@ -248,10 +248,9 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     let turn_run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_run_stick_x"));
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN)
-    && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_RUN_FRAME) <= 0.0
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_FLAG_TURN_RUN)
     && stick_x * lr <= turn_run_stick_x {
-        fighter.change_status(FIGHTER_STATUS_KIND_TURN_RUN.into(), true.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_TURN_RUN.into(), false.into());
         return 0.into();
     }
 

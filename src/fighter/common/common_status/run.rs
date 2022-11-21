@@ -163,7 +163,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let turn_run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_run_stick_x"));
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_TURN)
-    && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_RUN_FRAME) > 0.0
+    && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_RUN_FRAME) <= 0.0
     && stick_x * lr <= turn_run_stick_x
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && !ItemModule::is_have_item(fighter.module_accessor, 0) {
@@ -232,7 +232,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN)
-    && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_RUN_FRAME) > 0.0
+    && WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_WORK_FLOAT_RUN_FRAME) <= 0.0
     && stick_x * lr <= turn_run_stick_x {
         fighter.change_status(FIGHTER_STATUS_KIND_TURN_RUN.into(), true.into());
         return 0.into();

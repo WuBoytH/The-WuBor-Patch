@@ -150,7 +150,7 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 0.into();
     }
 
-    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_DASH)
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE)
     && ItemModule::is_have_item(fighter.module_accessor, 0)
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && {
@@ -199,14 +199,14 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 1.into();
     }
 
+    if fighter.sub_transition_group_check_ground_attack().get_bool() {
+        return 0.into();
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH)
     && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
         return 1.into();
-    }
-
-    if fighter.sub_transition_group_check_ground_attack().get_bool() {
-        return 0.into();
     }
 
     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
@@ -270,32 +270,32 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 0.into();
     }
 
-    if !MotionModule::is_end(fighter.module_accessor) {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_FLAG_STOP_SHAKE) {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-            let speed_length = sv_kinetic_energy::get_speed_length(fighter.lua_state_agent);
-            WorkModule::set_float(fighter.module_accessor, speed_length, *FIGHTER_STATUS_RUN_BRAKE_WORK_FLOAT_START_SPEED);
-            let run_brake_stop_shake_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_brake_stop_shake_speed"));
-            if speed_length < run_brake_stop_shake_speed {
-                ShakeModule::stop_kind(fighter.module_accessor, Hash40::new("brake"));
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_FLAG_STOP_SHAKE);
-            }
-            else {
-                let brake_start_speed = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_WORK_FLOAT_START_SPEED);
-                let diff = brake_start_speed - run_brake_stop_shake_speed;
-                let diff2 = speed_length - run_brake_stop_shake_speed;
-                let shake_data_brake_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("shake_data_brake_scale"));
-                let run_brake_stop_shake_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_brake_stop_shake_scale"));
-                let ratio = diff2 / diff;
-                let lerp = fighter.lerp(run_brake_stop_shake_scale.into(), 1.0_f32.into(), ratio.into()).get_f32();
-                let mul = lerp * shake_data_brake_scale;
-                ShakeModule::set_scale_kind(fighter.module_accessor, Hash40::new("brake"), mul);
-            }
-        }
-    }
-    else {
+    if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        return 0.into()
+    }
+    
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_FLAG_STOP_SHAKE) {
+        fighter.clear_lua_stack();
+        lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
+        let speed_length = sv_kinetic_energy::get_speed_length(fighter.lua_state_agent);
+        WorkModule::set_float(fighter.module_accessor, speed_length, *FIGHTER_STATUS_RUN_BRAKE_WORK_FLOAT_START_SPEED);
+        let run_brake_stop_shake_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_brake_stop_shake_speed"));
+        if speed_length < run_brake_stop_shake_speed {
+            ShakeModule::stop_kind(fighter.module_accessor, Hash40::new("brake"));
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_FLAG_STOP_SHAKE);
+        }
+        else {
+            let brake_start_speed = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_RUN_BRAKE_WORK_FLOAT_START_SPEED);
+            let diff = brake_start_speed - run_brake_stop_shake_speed;
+            let diff2 = speed_length - run_brake_stop_shake_speed;
+            let shake_data_brake_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("shake_data_brake_scale"));
+            let run_brake_stop_shake_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("run_brake_stop_shake_scale"));
+            let ratio = diff2 / diff;
+            let lerp = fighter.lerp(run_brake_stop_shake_scale.into(), 1.0_f32.into(), ratio.into()).get_f32();
+            let mul = lerp * shake_data_brake_scale;
+            ShakeModule::set_scale_kind(fighter.module_accessor, Hash40::new("brake"), mul);
+        }
     }
 
     0.into()

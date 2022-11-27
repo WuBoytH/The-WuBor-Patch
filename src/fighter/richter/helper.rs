@@ -1,0 +1,202 @@
+use {
+    smash::{
+        lua2cpp::L2CFighterCommon,
+        hash40,
+        phx::*,
+        app::{lua_bind::*, *},
+        lib::{lua_const::*, L2CValue}
+    },
+    wubor_utils::table_const::*
+};
+
+pub unsafe fn belmont_special_lw_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mot_g;
+    let mot_a;
+    if ItemModule::is_have_item(fighter.module_accessor, 0) // Usually this only checks for if you hold Simon or Richter's Holy Water
+    || ArticleModule::is_generatable(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_HOLYWATER) {
+        mot_g = hash40("special_lw");
+        mot_a = hash40("special_air_lw");
+    }
+    else {
+        mot_g = hash40("special_lw_blank");
+        mot_a = hash40("special_air_lw_blank");
+    }
+    WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION);
+    WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION_AIR);
+    let sum = KineticModule::get_sum_speed3f(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    if sum.y < 0.0 {
+        KineticModule::mul_speed(
+            fighter.module_accessor,
+            &Vector3f{x: 1.0, y: 0.0, z: 0.0},
+            *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
+        );
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(belmont_special_lw_main_loop as *const () as _))
+}
+
+unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER) {
+        if !ItemModule::is_have_item(fighter.module_accessor, 0) {
+            if !ItemModule::is_have_item(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA) {
+                ArticleModule::generate_article_have_item(
+                    fighter.module_accessor,
+                    *FIGHTER_SIMON_GENERATE_ARTICLE_HOLYWATER,
+                    *FIGHTER_HAVE_ITEM_WORK_EXTRA,
+                    Hash40::new("invalid")
+                );
+                ItemModule::set_have_item_constraint_joint(
+                    fighter.module_accessor,
+                    Hash40::new("haver"),
+                    *FIGHTER_HAVE_ITEM_WORK_EXTRA
+                );
+                let mot = MotionModule::motion_kind_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_HAVE_ITEM);
+                if mot == 0x10ba1c049e {
+                    MotionModule::remove_motion_partial(fighter.module_accessor, *FIGHTER_MOTION_PART_SET_KIND_HAVE_ITEM, false);
+                }
+            }
+        }
+        else {
+            ItemModule::set_have_item_constraint_joint(
+                fighter.module_accessor,
+                Hash40::new("haver"),
+                0
+            );
+        }
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER) {
+        let item_part = if [
+            *ITEM_KIND_SIMONHOLYWATER, *ITEM_KIND_RICHTERHOLYWATER
+        ].contains(&ItemModule::get_have_item_kind(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA)) {
+            ArticleModule::shoot_exist(
+                fighter.module_accessor,
+                *FIGHTER_SIMON_GENERATE_ARTICLE_HOLYWATER,
+                ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL),
+                false
+            );
+            *FIGHTER_HAVE_ITEM_WORK_EXTRA
+        }
+        else if ItemModule::is_have_item(fighter.module_accessor, 0) {
+            0
+        }
+        else {
+            -1
+        };
+        if item_part != -1 {
+            let angle_param;
+            let speed_param;
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                angle_param = hash40("throw_angle_ground");
+                speed_param = hash40("throw_speed_ground");
+            }
+            else {
+                angle_param = hash40("throw_angle_air");
+                speed_param = hash40("throw_speed_air");
+            }
+            let throw_angle = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), angle_param);
+            let throw_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), speed_param);
+            ItemModule::set_have_item_action(fighter.module_accessor, *ITEM_HOLYWATER_ACTION_SPECIAL_THROW, 0.0, item_part);
+            ItemModule::throw_item(
+                fighter.module_accessor,
+                throw_angle,
+                throw_speed,
+                1.0,
+                item_part,
+                true,
+                1.0
+            );
+        }
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
+    }
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
+        if fighter.sub_wait_ground_check_common(false.into()).get_bool()
+        || fighter.sub_air_check_fall_common().get_bool() {
+            return 1.into();
+        }
+    }
+    let changing = StatusModule::is_changing(fighter.module_accessor);
+    if !changing {
+        if MotionModule::is_end(fighter.module_accessor) {
+            let status = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                *FIGHTER_STATUS_KIND_WAIT
+            }
+            else {
+                *FIGHTER_STATUS_KIND_FALL
+            };
+            fighter.change_status(status.into(), false.into());
+            return 0.into();
+        }
+    }
+    let mot_g = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION);
+    let mot_a = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION_AIR);
+    belmont_mot_kinetic_helper(
+        fighter,
+        changing.into(),
+        mot_g.into(),
+        mot_a.into(),
+        FIGHTER_KINETIC_TYPE_GROUND_STOP.into(),
+        FIGHTER_KINETIC_TYPE_AIR_STOP.into(),
+        GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK.into(),
+        GROUND_CORRECT_KIND_AIR.into()
+    );
+    0.into()
+}
+
+unsafe extern "C" fn belmont_mot_kinetic_helper(
+    fighter: &mut L2CFighterCommon,
+    some_bool: L2CValue,
+    mot_g: L2CValue,
+    mot_a: L2CValue,
+    kinetic_g: L2CValue,
+    kinetic_a: L2CValue,
+    correct_g: L2CValue,
+    correct_a: L2CValue
+) -> L2CValue {
+    if !some_bool.get_bool()
+    && !StatusModule::is_situation_changed(fighter.module_accessor) {
+        return false.into();
+    }
+    let mot;
+    let kinetic;
+    let correct;
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.set_situation(SITUATION_KIND_GROUND.into());
+        mot = mot_g.get_u64();
+        kinetic = kinetic_g.get_i32();
+        correct = correct_g.get_i32();
+    }
+    else {
+        fighter.set_situation(SITUATION_KIND_AIR.into());
+        mot = mot_a.get_u64();
+        kinetic = kinetic_a.get_i32();
+        correct = correct_a.get_i32();
+    }
+    GroundModule::correct(fighter.module_accessor, GroundCorrectKind(correct));
+    if kinetic != FIGHTER_KINETIC_TYPE_NONE {
+        KineticModule::change_kinetic(fighter.module_accessor, kinetic);
+        if some_bool.get_bool() {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        else {
+            MotionModule::change_motion_inherit_frame(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                -1.0,
+                1.0,
+                0.0,
+                false,
+                false
+            );
+        }
+    }
+    true.into()
+}

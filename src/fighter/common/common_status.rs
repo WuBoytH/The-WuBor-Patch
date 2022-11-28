@@ -4,6 +4,7 @@ mod run_brake;
 mod jump_squat;
 mod jump;
 mod tread_jump;
+mod tread_fall;
 mod shield;
 mod escape;
 mod escape_air;
@@ -37,6 +38,7 @@ pub fn install() {
     jump_squat::install();
     jump::install();
     tread_jump::install();
+    tread_fall::install();
     shield::install();
     escape::install();
     escape_air::install();

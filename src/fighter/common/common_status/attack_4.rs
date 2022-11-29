@@ -81,8 +81,7 @@ unsafe fn status_attacks4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackS4)]
 unsafe fn bind_address_call_status_end_attacks4(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
-    FGCModule::reset_used_ground_normals(fighter, false);
-    0.into()
+    fighter.status_end_AttackS4()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackS4)]
@@ -113,18 +112,11 @@ unsafe fn status_attackhi4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackHi4)]
 unsafe fn bind_address_call_status_end_attackhi4(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
-    FGCModule::reset_used_ground_normals(fighter, false);
-    0.into()
+    fighter.status_end_AttackHi4()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackHi4)]
 unsafe fn status_end_attackhi4(fighter: &mut L2CFighterCommon) -> L2CValue {
-    FGCModule::reset_used_ground_normals(fighter, false);
-    0.into()
-}
-
-#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackLw4)]
-unsafe fn bind_address_call_status_end_attacklw4(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     0.into()
 }
@@ -154,6 +146,11 @@ unsafe fn status_attacklw4_main_param(fighter: &mut L2CFighterCommon, param_1: L
     if MotionModule::is_end(fighter.module_accessor) {
         fighter.change_status(param_1, false.into());
     }
+}
+
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackLw4)]
+unsafe fn bind_address_call_status_end_attacklw4(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+    fighter.status_end_AttackLw4()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackLw4)]

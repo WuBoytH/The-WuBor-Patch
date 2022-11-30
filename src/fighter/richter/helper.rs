@@ -65,9 +65,11 @@ unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER) {
+        let is_holywater;
         let item_part = if [
             *ITEM_KIND_SIMONHOLYWATER, *ITEM_KIND_RICHTERHOLYWATER
         ].contains(&ItemModule::get_have_item_kind(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA)) {
+            is_holywater = true;
             ArticleModule::shoot_exist(
                 fighter.module_accessor,
                 *FIGHTER_SIMON_GENERATE_ARTICLE_HOLYWATER,
@@ -77,9 +79,18 @@ unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon
             *FIGHTER_HAVE_ITEM_WORK_EXTRA
         }
         else if ItemModule::is_have_item(fighter.module_accessor, 0) {
+            if [
+                *ITEM_KIND_SIMONHOLYWATER, *ITEM_KIND_RICHTERHOLYWATER
+            ].contains(&ItemModule::get_have_item_kind(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA)) {
+                is_holywater = true;
+            }
+            else {
+                is_holywater = false;
+            }
             0
         }
         else {
+            is_holywater = false;
             -1
         };
         if item_part != -1 {
@@ -95,7 +106,9 @@ unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon
             }
             let throw_angle = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), angle_param);
             let throw_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), speed_param);
-            ItemModule::set_have_item_action(fighter.module_accessor, *ITEM_HOLYWATER_ACTION_SPECIAL_THROW, 0.0, item_part);
+            if is_holywater {
+                ItemModule::set_have_item_action(fighter.module_accessor, *ITEM_HOLYWATER_ACTION_SPECIAL_THROW, 0.0, item_part);
+            }
             ItemModule::throw_item(
                 fighter.module_accessor,
                 throw_angle,

@@ -190,7 +190,7 @@ unsafe extern "C" fn lucario_special_n_shoot_main_loop(fighter: &mut L2CFighterC
         let situation = fighter.global_table[SITUATION_KIND].clone();
         special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
     }
-    if !MotionModule::is_end(fighter.module_accessor){
+    if !MotionModule::is_end(fighter.module_accessor) {
         if !StatusModule::is_changing(fighter.module_accessor)
         && StatusModule::is_situation_changed(fighter.module_accessor) {
             if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING)

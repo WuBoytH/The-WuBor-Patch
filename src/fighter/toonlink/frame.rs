@@ -17,7 +17,7 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 
         // Down Air Bounce
 
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw"){
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(fighter.battle_object, toonlink::status::flag::ATTACK_AIR_LW_BOUNCE);
             }

@@ -14,7 +14,7 @@ use {
 #[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.3);
-    if macros::is_excute(fighter){
+    if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
     }
     frame(fighter.lua_state_agent, 30.0);
@@ -28,7 +28,7 @@ unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
 unsafe fn richter_specials1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.56);
-    if macros::is_excute(fighter){
+    if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_CROSS, false, 0);
     }
     frame(fighter.lua_state_agent, 13.0);
@@ -65,7 +65,7 @@ unsafe fn richter_cross_turn(weapon: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_speciallw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.3);
-    if macros::is_excute(fighter){
+    if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
     frame(fighter.lua_state_agent, 18.0);

@@ -12,7 +12,7 @@ use {
 #[fighter_frame( agent = FIGHTER_KIND_REFLET )]
 fn reflet_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if smashball::is_training_mode(){
+        if smashball::is_training_mode() {
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
             && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
                 WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_THUNDER_SWORD_CURRENT_POINT);

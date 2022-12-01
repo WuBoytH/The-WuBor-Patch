@@ -260,6 +260,7 @@ pub mod elight {
     pub mod instance {
         pub mod flag {
             pub const SPECIAL_S_CANCEL : i32 = 0x0150;
+            pub const ATTACK_AIR_LW_LANDING_ATTACK : i32 = 0x0151;
         }
     }
 }

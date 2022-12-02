@@ -78,7 +78,7 @@ unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
     }
     if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
     frame(fighter.lua_state_agent, 10.0);
@@ -121,7 +121,7 @@ unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
     }
     if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
 }
@@ -140,7 +140,7 @@ unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
     }
     if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
     frame(fighter.lua_state_agent, 9.0);
@@ -203,7 +203,7 @@ unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
     }
     if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
 }

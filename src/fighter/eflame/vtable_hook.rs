@@ -30,10 +30,9 @@ use {
 //     transition_terms::CONT_ITEM_PICKUP_HEAVY_DASH,
 // ];
 
-const EFLAME_DISABLE_GROUPS: [WorkId; 3] = [
+const EFLAME_DISABLE_GROUPS: [WorkId; 2] = [
     transition_groups::CHECK_GROUND_SPECIAL,
-    transition_groups::CHECK_AIR_SPECIAL,
-    transition_groups::CHECK_AIR_ATTACK
+    transition_groups::CHECK_AIR_SPECIAL
 ];
 
 const EFLAME_DISABLE_INDIVI: [WorkId; 10] = [

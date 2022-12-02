@@ -248,10 +248,10 @@ pub mod edge {
     }
 }
 
-pub mod eflame {
+pub mod eflame_esword {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_S_ROTATE : i32 = 0x1150;
+            pub const SHORTEN : i32 = 0x0150;
         }
     }
 }

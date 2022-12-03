@@ -13,6 +13,21 @@ use {
     }
 };
 
+#[skyline::hook(replace = L2CFighterCommon_sub_status_AttackCommon)]
+unsafe fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK {
+        WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ATTACK_WORK_INT_100_HIT_NEAR_COUNT);
+    }
+    // let combo = ComboModule::count(fighter.module_accessor) as i32;
+    // let attack_combo_max = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_max"), 0);
+    // if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD)
+    // || attack_combo_max <= combo {
+        ComboModule::reset(fighter.module_accessor);
+    // }
+    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_100);
+    WorkModule::set_int64(fighter.module_accessor, hash40("attack_11") as i64, *FIGHTER_STATUS_ATTACK_WORK_INT_ATTACK11_MOTION);
+}
+
 // The following five are reimplemented to make sure only Neutral Attack inputs
 // can trigger Jab followups.
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
@@ -267,6 +282,7 @@ pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            sub_status_attackcommon,
             attack_combo_none_uniq_chk_button,
             attack_combo_uniq_chk_button,
             attack_uniq_chk_command,

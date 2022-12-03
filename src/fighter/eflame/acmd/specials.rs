@@ -42,7 +42,7 @@ unsafe fn eflame_specials(fighter: &mut L2CAgentBase) {
 unsafe fn eflame_esword_fly(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
-        MotionModule::set_rate(weapon.module_accessor, 0.5);
+        MotionModule::set_rate(weapon.module_accessor, 0.75);
     }
     frame(weapon.lua_state_agent, 2.0);
     if macros::is_excute(weapon) {
@@ -56,7 +56,7 @@ unsafe fn eflame_esword_fly(weapon: &mut L2CAgentBase) {
 unsafe fn eflame_esword_flyflick(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
-        MotionModule::set_rate(weapon.module_accessor, 0.5);
+        MotionModule::set_rate(weapon.module_accessor, 0.75);
     }
     frame(weapon.lua_state_agent, 2.0);
     if macros::is_excute(weapon) {

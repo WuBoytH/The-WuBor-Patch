@@ -25,7 +25,7 @@ unsafe fn eflame_attackairn(fighter: &mut L2CAgentBase) {
         }
         if MotionModule::is_changing(fighter.module_accessor) {
             if macros::is_excute(fighter) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
             }
         }
     }
@@ -60,7 +60,7 @@ unsafe fn eflame_attackairn(fighter: &mut L2CAgentBase) {
         }
         if MotionModule::is_changing(fighter.module_accessor) {
             if macros::is_excute(fighter) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
             }
         }
     }
@@ -85,6 +85,12 @@ unsafe fn eflame_attackairn_eff(fighter: &mut L2CAgentBase) {
             macros::EFFECT_OFF_KIND(fighter, Hash40::new("eflame_sword_open"), true, true);
             macros::EFFECT_FOLLOW(fighter, Hash40::new("eflame_sword_beam_m2"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
             macros::LAST_EFFECT_SET_OFFSET_TO_CAMERA_FLAT(fighter, -3);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 3, 0, -30, 0, 0, 0.6, true);
+            macros::LAST_EFFECT_SET_RATE(fighter, 0.25);
         }
     }
     frame(fighter.lua_state_agent, 15.0);

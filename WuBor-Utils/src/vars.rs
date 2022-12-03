@@ -285,7 +285,7 @@ pub mod ganon {
         }
         pub mod float {
             pub const TELEPORT_START_POS: i32 = 0x1150;
-            pub const TELEPORT_END_POS: i32 = 0x1151;
+            pub const TELEPORT_END_POS: i32 = 0x1152;
         }
     }
 

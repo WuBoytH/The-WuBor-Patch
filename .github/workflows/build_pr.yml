@@ -28,6 +28,7 @@ jobs:
 
   package-pr:
     runs-on: ubuntu-latest
+    needs: build-pr
     steps:
       - name: Setup Python
         uses: actions/setup-python@v2.3.3

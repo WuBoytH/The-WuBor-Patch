@@ -6,16 +6,32 @@ on:
       - dev
 
 jobs:
-  package-pr:
+  build-pr:
     runs-on: ubuntu-latest
     container:
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: jugeeya/cargo-skyline:3.2.0
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Build Release NRO (PR)
+        run: |
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
+        env:
+          HOME: /root
+      - name: Upload Plugin Artifact (PR)
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: plugin
+          path: target/aarch64-skyline-switch/release/libwubor.nro
+
+  package-pr:
+    runs-on: ubuntu-latest
+    needs: build-pr
     steps:
       - name: Setup Python
-        uses: actions/setup-python@v4.3.0
-        with:
-          python-version: '3.9'
+        uses: actions/setup-python@v2.3.3
       - uses: actions/checkout@v3.1.0
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3.0.0
       - name: Get Branch Name
         id: branch-name
         uses: tj-actions/branch-names@v6
@@ -44,16 +60,11 @@ jobs:
           tag: dev
           # 
           file: romfs.zip
-      - name: Build Release NRO (PR)
-        run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
-        env:
-          HOME: /root
       - name: Setup Build Directory (PR)
         shell: bash
         run: |
           cd scripts && python3 create_pr.py && cd ..
-      - name: Upload Plugin Artifact (PR)
+      - name: Upload Build Artifact (PR)
         uses: actions/upload-artifact@v3.1.0
         with:
           name: The_WuBor_Patch_PR

@@ -284,7 +284,7 @@ pub mod ganon {
         }
         pub mod float {
             pub const TELEPORT_START_POS: i32 = 0x1150;
-            pub const TELEPORT_END_POS: i32 = 0x1151;
+            pub const TELEPORT_END_POS: i32 = 0x1152;
         }
     }
 
@@ -628,6 +628,28 @@ pub mod pikachu_dengekidama {
             pub const SPEED_UP : i32 = 0x1150;
         }
     }
+}
+
+pub mod pikmin {
+    pub mod instance {
+        pub mod flag {
+            pub const ATTACK_HI3_LANDING : i32 = 0x0100;
+        }
+        pub mod int {
+            pub const ATTACK_S3_LOOP_COUNT : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const ATTACK_HI3_DRIFT : i32 = 0x1150;
+        }
+        pub mod int {
+            pub const ATTACK_S3_STEP : i32 = 0x1150;
+        }
+    }
+    pub const ATTACK_S3_STEP_START : i32 = 0;
+    pub const ATTACK_S3_STEP_LOOP : i32 = 1;
+    pub const ATTACK_S3_STEP_END : i32 = 2;
 }
 
 pub mod ryu {

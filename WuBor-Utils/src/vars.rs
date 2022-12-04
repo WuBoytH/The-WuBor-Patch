@@ -630,15 +630,34 @@ pub mod pikachu_dengekidama {
     }
 }
 
-pub mod richter {
+pub mod pikmin {
     pub mod instance {
+        pub mod flag {
+            pub const ATTACK_HI3_LANDING : i32 = 0x0100;
+        }
         pub mod int {
-            pub const AXE_ID : i32 = 0x0100;
+            pub const ATTACK_S3_LOOP_COUNT : i32 = 0x0100;
         }
     }
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_LW_IGNORE_BOUNCE : i32 = 0x1150;
+            
+            pub const ATTACK_HI3_DRIFT : i32 = 0x1150;
+        }
+        pub mod int {
+            pub const ATTACK_S3_STEP : i32 = 0x1150;
+        }
+    }
+    pub const ATTACK_S3_STEP_START : i32 = 0;
+    pub const ATTACK_S3_STEP_LOOP : i32 = 1;
+    pub const ATTACK_S3_STEP_END : i32 = 2;
+}
+
+pub mod richter {
+    pub mod instance {
+        pub mod int {
+            pub const AXE_ID : i32 = 0x0100;
         }
     }
 }

@@ -7,7 +7,7 @@ on:
 
 jobs:
   get-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Get Plugin Version
@@ -25,9 +25,9 @@ jobs:
   package-main:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: jugeeya/cargo-skyline:3.2.0
     steps:
       - name: Setup Python
         uses: actions/setup-python@v2.3.3
@@ -65,10 +65,11 @@ jobs:
   package-dev:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
-      image: jugeeya/cargo-skyline:3.0.0-dkp-beta
+      image: jugeeya/cargo-skyline:3.2.0
     steps:
+      - name: Install Cargo
       - name: Setup Python
         uses: actions/setup-python@v2.3.3
         with:
@@ -103,7 +104,7 @@ jobs:
           path: The_WuBor_Patch_Dev.zip
 
   upload-main:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [ package-main, get-version ]
     steps:
       - name: Download all artifacts
@@ -132,7 +133,7 @@ jobs:
             The_WuBor_Patch/*
 
   upload-dev:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [ package-dev, get-version ]
     steps:
       - name: Delete Version Dev Build

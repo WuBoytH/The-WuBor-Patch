@@ -640,9 +640,7 @@ pub mod pikmin {
         }
     }
     pub mod status {
-        pub mod flag {
-            pub const ATTACK_AIR_LW_IGNORE_BOUNCE : i32 = 0x1150;
-            
+        pub mod flag {            
             pub const ATTACK_HI3_DRIFT : i32 = 0x1150;
         }
         pub mod int {
@@ -658,6 +656,11 @@ pub mod richter {
     pub mod instance {
         pub mod int {
             pub const AXE_ID : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const ATTACK_AIR_LW_IGNORE_BOUNCE : i32 = 0x1150;
         }
     }
 }

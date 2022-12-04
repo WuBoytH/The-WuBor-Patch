@@ -65,5 +65,5 @@ jobs:
       - name: Upload Plugin Artifact (PR)
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: The_WuBor_Patch_PR
-          path: build/
+          name: plugin
+          path: target/aarch64-skyline-switch/release/libwubor.nro

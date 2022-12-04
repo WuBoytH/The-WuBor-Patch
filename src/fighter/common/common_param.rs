@@ -18,6 +18,11 @@ pub mod jump {
     pub const super_jump_gravity : f32 = 0.27;
 }
 
+pub mod damage {
+    pub const damage_speed_up_speed_min : f32 = 3.0;
+    pub const damage_speed_up_speed_max : f32 = 6.0;
+}
+
 // Command Input Params
 
 // pub const command_input_window : i32 = 11;

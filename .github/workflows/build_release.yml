@@ -69,7 +69,6 @@ jobs:
     container:
       image: jugeeya/cargo-skyline:3.2.0
     steps:
-      - name: Install Cargo
       - name: Setup Python
         uses: actions/setup-python@v2.3.3
         with:

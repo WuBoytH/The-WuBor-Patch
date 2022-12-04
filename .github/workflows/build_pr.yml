@@ -20,8 +20,8 @@ jobs:
       - name: Upload Plugin Artifact (PR)
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: The_WuBor_Patch_PR
-          path: build/
+          name: plugin
+          path: target/aarch64-skyline-switch/release/libwubor.nro
 
   package-pr:
     runs-on: ubuntu-latest
@@ -62,8 +62,8 @@ jobs:
         shell: bash
         run: |
           cd scripts && python3 create_pr.py && cd ..
-      - name: Upload Plugin Artifact (PR)
+      - name: Upload Build Artifact (PR)
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: plugin
-          path: target/aarch64-skyline-switch/release/libwubor.nro
+          name: The_WuBor_Patch_PR
+          path: build/

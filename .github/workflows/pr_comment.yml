@@ -35,7 +35,7 @@ jobs:
             }
             let body = `Download the artifacts for this pull request:\n`;
             for (const art of artifacts) {
-              if (${art.name} == 'The_WuBor_Patch_PR') {
+              if (art.name == 'The_WuBor_Patch_PR') {
                 body += `\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)`;
               }
             }

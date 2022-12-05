@@ -49,10 +49,19 @@ unsafe fn elight_attackairn(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "elight", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
 unsafe fn elight_attackairn_eff(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("elight_attack100_hand"), Hash40::new("handl"), 1, 0.7, -0.2, 0, 0, 0, 0.37, true);
+    }
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_ALPHA(fighter, Hash40::new("elight_attack_speedline"), Hash40::new("top"), 0, 10, 3, 8, 6, 0, 0.45, true, 0.6);
         macros::FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("elight_attack100"), Hash40::new("top"), 0, 8.0, 11.5, 0, 0, 0, 0.2, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.5);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new("elight_attack100_hand"), false, true);
     }
 }
 
@@ -312,10 +321,13 @@ unsafe fn elight_attackairlw(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, elight::instance::flag::ATTACK_AIR_LW_LANDING_ATTACK);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 70, 20, 0, 75, 5.0, 0.0, 4.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
     }
-    wait(fighter.lua_state_agent, 3.0);
+    frame(fighter.lua_state_agent, 31.0);
+    if macros::is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, elight::instance::flag::ATTACK_AIR_LW_LANDING_ATTACK);
+    }
+    frame(fighter.lua_state_agent, 33.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -416,7 +428,7 @@ unsafe fn elight_landingairlw(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(fighter.battle_object, elight::instance::flag::ATTACK_AIR_LW_LANDING_ATTACK) {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
             if macros::is_excute(fighter) {
-                ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 5.0, 5.0, false, false, 0.0, false, true, false);
+                ArticleModule::add_motion_partial(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD, *WEAPON_ELIGHT_ESWORD_MOTION_PART_SET_KIND_OPEM_CLOSE, Hash40::new("to_open"), 10.0, 10.0, false, false, 0.0, false, true, false);
             }
         }
         if MotionModule::is_changing(fighter.module_accessor) {
@@ -428,7 +440,7 @@ unsafe fn elight_landingairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if VarModule::is_flag(fighter.battle_object, elight::instance::flag::ATTACK_AIR_LW_LANDING_ATTACK) {
         if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 20, 0, 75, 3.5, 0.0, 4.0, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 40, 0, 70, 4.0, 0.0, 4.5, 9.0, Some(0.0), Some(4.5), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
         }
     }
     wait(fighter.lua_state_agent, 3.0);
@@ -465,7 +477,7 @@ unsafe fn elight_landingairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if VarModule::is_flag(fighter.battle_object, elight::instance::flag::ATTACK_AIR_LW_LANDING_ATTACK) {
         if macros::is_excute(fighter) {
-            macros::EFFECT_FOLLOW(fighter, Hash40::new("elight_attack100_finish"), Hash40::new("top"), 0, 4, 8, 0, 0, 0, 0.25, true);
+            macros::EFFECT_FOLLOW(fighter, Hash40::new("elight_attack100_finish"), Hash40::new("top"), 0, 4.5, 8, 0, 0, 0, 0.35, true);
             macros::LAST_EFFECT_SET_RATE(fighter, 2.0);
         }
     }

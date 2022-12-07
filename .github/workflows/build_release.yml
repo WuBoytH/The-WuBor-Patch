@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
       - name: Build Release NRO (Main)
         run: |
-          PATH=$PATH:/root/.cargo/bin/cargo-skyline skyline build --release --no-default-features
+          cargo skyline build --release --no-default-features
         env:
           HOME: /root
       - name: Upload Plugin Artifact (Main)
@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
       - name: Build Release NRO (Dev)
         run: |
-          PATH=$PATH:/root/.cargo/bin/cargo-skyline skyline build --release --features dev
+          cargo skyline build --release --features dev
         env:
           HOME: /root
       - name: Upload Plugin Artifact (Dev)

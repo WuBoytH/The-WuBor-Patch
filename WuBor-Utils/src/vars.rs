@@ -733,10 +733,6 @@ pub mod toonlink {
         pub mod flag {
             pub const ATTACK_AIR_LW_BOUNCE : i32 = 0x1150;
         }
-        pub mod float {
-            pub const SPECIAL_HI_SPIN_SPEED : i32 = 0x1150;
-            pub const SPECIAL_HI_SPIN_SPEED_MAX : i32 = 0x1151;
-        }
     }
 }
 

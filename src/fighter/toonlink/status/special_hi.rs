@@ -8,43 +8,42 @@ use {
     },
     smash_script::*,
     smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
+    wubor_utils::table_const::*,
     super::super::vl
 };
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let spin = vl::param_special_hi::rslash_charge_max_speed;
-    VarModule::set_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED, spin);
-    VarModule::set_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED_MAX, spin);
+    // let spin = vl::param_special_hi::rslash_charge_max_speed;
+    // VarModule::set_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED, spin);
+    // VarModule::set_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED_MAX, spin);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(toonlink_specialhi_end_substatus as *const () as _));
+    // fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(toonlink_specialhi_end_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(toonlink_specialhi_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn toonlink_specialhi_end_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !StopModule::is_stop(fighter.module_accessor)
-    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-    && WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME) >= WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32 {
-        if MotionModule::frame(fighter.module_accessor) > 46.0 {
-            macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        }
-        else if MotionModule::frame(fighter.module_accessor) > 6.0 {
-            let mut spin = VarModule::get_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED);
-            let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
-            let spin_max = VarModule::get_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED_MAX);
-            spin += vl::param_special_hi::rslash_charge_max_accel * stickx;
-            if spin > spin_max {
-                spin = spin_max;
-            }
-            VarModule::set_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED, spin);
-            macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-        }
-    }
-    0.into()
-}
+// unsafe extern "C" fn toonlink_specialhi_end_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     if !StopModule::is_stop(fighter.module_accessor)
+//     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+//     && WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME) >= WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32 {
+//         if MotionModule::frame(fighter.module_accessor) > 46.0 {
+//             macros::SET_SPEED_EX(fighter, 0.0, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+//         }
+//         else if MotionModule::frame(fighter.module_accessor) > 6.0 {
+//             let mut spin = VarModule::get_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED);
+//             let stickx = ControlModule::get_stick_x(fighter.module_accessor) * PostureModule::lr(fighter.module_accessor);
+//             let spin_max = VarModule::get_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED_MAX);
+//             spin += vl::param_special_hi::rslash_charge_max_accel * stickx;
+//             if spin > spin_max {
+//                 spin = spin_max;
+//             }
+//             VarModule::set_float(fighter.battle_object, toonlink::status::float::SPECIAL_HI_SPIN_SPEED, spin);
+//             macros::SET_SPEED_EX(fighter, spin, 0.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+//         }
+//     }
+//     0.into()
+// }
 
 unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.sub_transition_group_check_air_cliff().get_bool() {
@@ -76,6 +75,51 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                             false
                         );
                         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
+                        // Calculates maximum movement speed
+                        // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+                        // KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
+                        let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
+                        let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;
+                        let ratio = hold / max_hold;
+                        sv_kinetic_energy!(
+                            reset_energy,
+                            fighter,
+                            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                            ENERGY_CONTROLLER_RESET_TYPE_FREE,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        );
+                        KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+                        let lr = PostureModule::lr(fighter.module_accessor);
+                        sv_kinetic_energy!(
+                            set_speed,
+                            fighter,
+                            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                            lr * ratio * vl::param_special_hi::rslash_charge_max_speed,
+                            0.0
+                        );
+                        sv_kinetic_energy!(
+                            set_stable_speed,
+                            fighter,
+                            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                            lr * ratio * vl::param_special_hi::rslash_charge_max_speed,
+                            0.0
+                        );
+                        sv_kinetic_energy!(
+                            set_limit_speed,
+                            fighter,
+                            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                            lr * ratio * vl::param_special_hi::rslash_charge_max_speed,
+                            0.0
+                        );
+                        sv_kinetic_energy!(
+                            controller_set_accel_x_add,
+                            fighter,
+                            vl::param_special_hi::rslash_charge_max_accel
+                        );
                     }
                     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
                     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);

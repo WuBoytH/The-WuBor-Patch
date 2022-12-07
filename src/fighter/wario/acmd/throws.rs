@@ -69,7 +69,7 @@ unsafe fn wario_throwb(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 48.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, wario::status::flag::THROW_B_MOVE);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         macros::REVERSE_LR(fighter);
         let target = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);

@@ -741,9 +741,6 @@ pub mod wario {
         pub mod flag {
             pub const THROW_B_MOVE : i32 = 0x1150;
         }
-        pub mod float {
-            pub const THROW_B_SPIN_SPEED : i32 = 0x1150;
-        }
     }
 }
 

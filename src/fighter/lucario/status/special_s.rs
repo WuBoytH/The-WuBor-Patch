@@ -58,8 +58,7 @@ unsafe extern "C" fn lucario_special_s_main_loop(fighter: &mut L2CFighterCommon)
     if !MotionModule::is_end(fighter.module_accessor) {
         if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE) {
             VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
-            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-            && lucario_drain_aura(fighter, false) {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                 WorkModule::set_int64(fighter.module_accessor, hash40("special_s2") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
                 WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s2") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
                 VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENHANCE);
@@ -117,20 +116,18 @@ unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CVal
     VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
     let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
-    let mot = if !enhance {
-        hash40("special_s_throw")
+    let mot_g;
+    let mot_a;
+    if enhance && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
+        mot_g = hash40("special_s_throw_2");
+        mot_a = hash40("special_air_s_throw_2");
     }
     else {
-        hash40("special_s_throw_2")
+        mot_g = hash40("special_s_throw");
+        mot_a = hash40("special_air_s_throw");
     };
-    WorkModule::set_int64(fighter.module_accessor, mot as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
-    let mot = if !enhance {
-        hash40("special_air_s_throw")
-    }
-    else {
-        hash40("special_air_s_throw_2")
-    };
-    WorkModule::set_int64(fighter.module_accessor, mot as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
+    WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
+    WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
 
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_INT_FRAME);
     lucario_special_s_throw_set_kinetic(fighter);

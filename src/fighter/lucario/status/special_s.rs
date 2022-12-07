@@ -224,7 +224,7 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
         let request_throw = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_REQUEST_THROW);
         if !throw_done {
             if request_throw {
-                let mut event = crate::function_hooks::LinkEventThrow::new_l2c_table();
+                let mut event = crate::system::func_links::LinkEventThrow::new_l2c_table();
                 event["link_event_kind_"].assign(&L2CValue::Hash40(Hash40::new("throw")));
                 let callable: extern "C" fn() -> *mut smash::app::LinkEvent = std::mem::transmute(event["new_instance_lua_"].get_ptr());
                 let link_event = callable();

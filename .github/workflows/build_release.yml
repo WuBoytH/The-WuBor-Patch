@@ -22,50 +22,17 @@ jobs:
       version: ${{ steps.plugin-version.outputs.app_version }}
       branch: ${{ steps.branch-name.outputs.current_branch }}
 
-  build-main:
+  package-main:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
     runs-on: ubuntu-20.04
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
-      - uses: actions/checkout@v3.1.0
-      - name: Build Release NRO (Main)
-        run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --no-default-features
-        env:
-          HOME: /root
-      - name: Upload Plugin Artifact (Main)
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: plugin
-          path: target/aarch64-skyline-switch/release/libwubor.nro
-
-  build-dev:
-    needs: get-version
-    if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
-    runs-on: ubuntu-20.04
-    container:
-      image: jugeeya/cargo-skyline:3.2.0-no-dkp
-    steps:
-      - uses: actions/checkout@v3.1.0
-      - name: Build Release NRO (Dev)
-        run: |
-          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features dev
-        env:
-          HOME: /root
-      - name: Upload Plugin Artifact (Dev)
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: plugin
-          path: target/aarch64-skyline-switch/release/libwubor.nro
-
-  upload-main:
-    runs-on: ubuntu-20.04
-    needs: [ build-main, get-version ]
-    steps:
       - name: Setup Python
-        uses: actions/setup-python@v2.3.3
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: '3.9'
       - uses: actions/checkout@v3.1.0
       - name: Download ROMFS
         # You may pin to the exact commit or the version.
@@ -80,12 +47,67 @@ jobs:
           tag: ${{needs.get-version.outputs.branch}}
           # 
           file: romfs.zip
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.0
+      - name: Build Release NRO (Main)
+        run: |
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --no-default-features
+        env:
+          HOME: /root
       - name: Create Release ZIP (Main)
         shell: bash
         run: |
           cd scripts && python3 create_main.py && cd ..
+      - name: Upload Plugin Artifact (Main)
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: The_WuBor_Patch
+          path: The_WuBor_Patch.zip
+
+  package-dev:
+    needs: get-version
+    if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
+    runs-on: ubuntu-20.04
+    container:
+      image: jugeeya/cargo-skyline:3.2.0-no-dkp
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: '3.9'
+      - uses: actions/checkout@v3.1.0
+      - name: Download ROMFS
+        # You may pin to the exact commit or the version.
+        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
+        uses: i3h/download-release-asset@v1.3.2
+        with:
+          # 
+          owner: WuBoytH
+          # 
+          repo: WuBor-Romfs
+          # 
+          tag: ${{needs.get-version.outputs.branch}}
+          # 
+          file: romfs.zip
+      - name: Build Release NRO (Dev)
+        run: |
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features dev
+        env:
+          HOME: /root
+      - name: Create Release ZIP (Dev)
+        shell: bash
+        run: |
+          cd scripts && python3 create_dev.py && cd ..
+      - name: Upload Plugin Artifact (Dev)
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: The_WuBor_Patch_Dev
+          path: The_WuBor_Patch_Dev.zip
+
+  upload-main:
+    runs-on: ubuntu-20.04
+    needs: [ package-main, get-version ]
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3.0.0
       - name: Create Main Draft Release
         uses: softprops/action-gh-release@v0.1.14
         env:
@@ -105,33 +127,11 @@ jobs:
             Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
-            The_WuBor_Patch.zip
+            The_WuBor_Patch/*
   upload-dev:
     runs-on: ubuntu-20.04
-    needs: [ build-dev, get-version ]
+    needs: [ package-dev, get-version ]
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v2.3.3
-      - uses: actions/checkout@v3.1.0
-      - name: Download ROMFS
-        # You may pin to the exact commit or the version.
-        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
-        uses: i3h/download-release-asset@v1.3.2
-        with:
-          # 
-          owner: WuBoytH
-          # 
-          repo: WuBor-Romfs
-          # 
-          tag: ${{needs.get-version.outputs.branch}}
-          # 
-          file: romfs.zip
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.0
-      - name: Create Release ZIP (Dev)
-        shell: bash
-        run: |
-          cd scripts && python3 create_dev.py && cd ..
       - name: Delete Version Dev Build
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
@@ -139,6 +139,8 @@ jobs:
           tag_name: ${{needs.get-version.outputs.version}}-dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3.0.0
       - name: Create Dev Prerelease
         uses: softprops/action-gh-release@v0.1.14
         env:
@@ -158,4 +160,4 @@ jobs:
             Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
             Extract `The_WuBor_Patch_Dev.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
-            The_WuBor_Patch_Dev.zip
+            The_WuBor_Patch_Dev/*

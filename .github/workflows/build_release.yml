@@ -7,7 +7,7 @@ on:
 
 jobs:
   get-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Get Plugin Version
@@ -25,14 +25,14 @@ jobs:
   build-main:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Build Release NRO (Main)
         run: |
-          cargo skyline build --release --no-default-features
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --no-default-features
         env:
           HOME: /root
       - name: Upload Plugin Artifact (Main)
@@ -44,14 +44,14 @@ jobs:
   build-dev:
     needs: get-version
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Build Release NRO (Dev)
         run: |
-          cargo skyline build --release --features dev
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features dev
         env:
           HOME: /root
       - name: Upload Plugin Artifact (Dev)
@@ -61,7 +61,7 @@ jobs:
           path: target/aarch64-skyline-switch/release/libwubor.nro
 
   upload-main:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [ build-main, get-version ]
     steps:
       - name: Setup Python
@@ -97,20 +97,17 @@ jobs:
           prerelease: false
           body: >
             Full release of the latest version. DO NOT PUBLISH UNTIL THIS BODY HAS BEEN UPDATED.
-
             [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
             [You can view all changes up to a specific version here.](https://drive.google.com/drive/folders/1zIqkVWlZWb56ar7UqRTECYUVuBfqW0v1?usp=sharing)
             
             ## Installation
             
             Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
-
             Extract `The_WuBor_Patch.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
             The_WuBor_Patch.zip
-
   upload-dev:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [ build-dev, get-version ]
     steps:
       - name: Setup Python
@@ -153,14 +150,12 @@ jobs:
           prerelease: true
           body: >
             Nightly built off of ${{needs.get-version.outputs.version}}-dev/${{github.sha}}.
-
             [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
             These will be updated to match the most recent dev build (this one!).
             
             ## Installation
             
             Remove the `ultimate/mods/The WuBor Patch` folder, if you have one already.
-
             Extract `The_WuBor_Patch_Dev.zip` to the root of the SD card. The plugin should be included in `ultimate/mods/The WuBor Patch/`
           files: >
             The_WuBor_Patch_Dev.zip

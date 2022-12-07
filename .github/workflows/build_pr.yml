@@ -7,14 +7,14 @@ on:
 
 jobs:
   build-pr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Build Release NRO (PR)
         run: |
-          cargo skyline build --release --features pr
+          PATH=$PATH:/root/.cargo/bin:/opt/devkitpro/devkitA64/bin /root/.cargo/bin/cargo-skyline skyline build --release --features pr
         env:
           HOME: /root
       - name: Upload Plugin Artifact (PR)
@@ -24,7 +24,7 @@ jobs:
           path: target/aarch64-skyline-switch/release/libwubor.nro
 
   package-pr:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build-pr
     steps:
       - name: Setup Python

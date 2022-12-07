@@ -16,7 +16,7 @@
 )]
 
 use skyline::libc::c_char;
-mod function_hooks;
+pub mod system;
 mod fighter;
 mod custom_vars;
 
@@ -87,7 +87,7 @@ std::arch::global_asm!(
 
 #[no_mangle]
 pub extern "C" fn main() {
-    function_hooks::install();
+    system::install();
     fighter::install();
     custom_vars::install();
     skyline::install_hooks!(change_version_string_hook);

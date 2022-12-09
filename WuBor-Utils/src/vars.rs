@@ -248,6 +248,15 @@ pub mod edge {
     }
 }
 
+pub mod element {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_LW_OUT_ATTACK : i32 = 0x0150;
+            pub const SPECIAL_LW_OUT_ATTACK_FALL : i32 = 0x0151;
+        }
+    }
+}
+
 pub mod eflame_esword {
     pub mod status {
         pub mod flag {

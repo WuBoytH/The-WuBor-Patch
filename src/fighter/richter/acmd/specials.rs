@@ -13,7 +13,7 @@ use {
 
 #[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 0.6);
+    macros::FT_MOTION_RATE(fighter, 0.7);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
     }

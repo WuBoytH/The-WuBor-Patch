@@ -93,7 +93,7 @@ unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, firs
             air_accel_x_add * out_accel_x_mul
         );
         if !CancelModule::is_enable_cancel(fighter.module_accessor)
-        || !VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL) {
+        && !VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL) {
             KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             let mut out_speed_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("out_speed_y_mul"));
             let mut out_accel_y_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("out_accel_y_mul"));
@@ -233,8 +233,8 @@ unsafe fn element_special_lw_out_main_loop(fighter: &mut L2CFighterCommon) -> L2
         }
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR
-    && cancel
-    || VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL)
+    && (cancel
+    || VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL))
     && !KineticModule::is_enable_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
         KineticModule::enable_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);

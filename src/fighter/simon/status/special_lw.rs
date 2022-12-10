@@ -12,8 +12,13 @@ unsafe fn simon_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_lw_main_inner(fighter)
 }
 
+#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn simon_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    belmont_special_lw_end_inner(fighter)
+}
+
 pub fn install() {
     install_status_scripts!(
-        simon_special_lw_main
+        simon_special_lw_main, simon_special_lw_end
     );
 }

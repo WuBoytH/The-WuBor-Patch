@@ -4,7 +4,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    super::super::helper::*
+    crate::fighter::belmont::status::special_lw::*
 };
 
 #[status_script(agent = "richter", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

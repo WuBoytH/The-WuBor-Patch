@@ -91,6 +91,7 @@ pub mod rosetta;
 pub mod roy;
 pub mod simon;
 pub mod younglink;
+pub mod belmont;
 
 pub fn install() {
     common::install();

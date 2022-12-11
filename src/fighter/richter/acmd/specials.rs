@@ -42,6 +42,13 @@ unsafe fn richter_specialn_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter", scripts = ["game_specialnblank", "game_specialairnblank"], category = ACMD_GAME, low_priority )]
+unsafe fn richter_specialnblank(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 0.7);
+    frame(fighter.lua_state_agent, 30.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
 #[acmd_script( agent = "richter_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
 unsafe fn richter_axe_fly(weapon: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
@@ -155,6 +162,7 @@ pub fn install() {
     install_acmd_scripts!(
         richter_specialn,
         richter_specialn_exp,
+        richter_specialnblank,
         richter_axe_fly,
         richter_specials1,
         richter_cross_fly,

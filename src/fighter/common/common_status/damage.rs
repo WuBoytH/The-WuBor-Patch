@@ -182,7 +182,7 @@ unsafe fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32,
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
-unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, _arg2: L2CValue, arg3: L2CValue) -> L2CValue {
+unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue) -> L2CValue {
     // <WuBor>
     ShakeModule::stop(fighter.module_accessor);
     // </WuBor>

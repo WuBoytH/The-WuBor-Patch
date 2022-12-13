@@ -19,8 +19,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
-    if FighterUtil::is_valid_just_shield(fighter.module_accessor)
-    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_COMMON_GUARD != 0 {
+    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
         let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
         let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
@@ -31,8 +30,6 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
         }
         fighter.FighterStatusGuard__set_just_shield_scale();
     }
-    ControlModule::reset_trigger(fighter.module_accessor);
-    ControlModule::clear_command(fighter.module_accessor, false);
     // Also Original, but moved down
     let hit_stop_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x20d241cd64u64);
     ShieldModule::set_hit_stop_mul(fighter.module_accessor, hit_stop_mul);

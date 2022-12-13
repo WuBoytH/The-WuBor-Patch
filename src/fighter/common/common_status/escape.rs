@@ -56,32 +56,32 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
                 );
             }
         }
-        if prev_status != *FIGHTER_STATUS_KIND_DAMAGE_FALL
-        && prev_status != *FIGHTER_STATUS_KIND_TREAD_FALL {
-            if [
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-                *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
-            ].contains(&prev_status) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_AIR);
-                sv_kinetic_energy!(
-                    controller_set_accel_x_mul,
-                    fighter,
-                    0.0
-                );
-                sv_kinetic_energy!(
-                    controller_set_accel_x_add,
-                    fighter,
-                    0.0
-                );
-            }
+        if [
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
+        ].contains(&prev_status) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_AIR);
+            sv_kinetic_energy!(
+                controller_set_accel_x_mul,
+                fighter,
+                0.0
+            );
+            sv_kinetic_energy!(
+                controller_set_accel_x_add,
+                fighter,
+                0.0
+            );
         }
-        else {
+        if [
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+            *FIGHTER_STATUS_KIND_TREAD_FALL
+        ].contains(&prev_status) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {

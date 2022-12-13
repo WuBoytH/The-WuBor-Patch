@@ -126,6 +126,7 @@ unsafe fn demon_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
+        HitModule::set_hit_stop_mul(fighter.module_accessor, 1.5, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
     }
     macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 12.0);
@@ -192,6 +193,7 @@ unsafe fn demon_attacklw4(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         damage!(fighter, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_NORMAL, 0);
+        HitModule::set_hit_stop_mul(fighter.module_accessor, 1.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(fighter.module_accessor);
     }

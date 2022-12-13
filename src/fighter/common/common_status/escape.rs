@@ -34,7 +34,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         || VarModule::is_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
         }
-        else if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
+        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
             sv_kinetic_energy!(
                 set_accel,
                 fighter,

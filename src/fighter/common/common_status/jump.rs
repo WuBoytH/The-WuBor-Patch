@@ -17,25 +17,6 @@ use {
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
-    // let energy_ids = [
-    //     *FIGHTER_KINETIC_ENERGY_ID_MOTION,
-    //     *FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-    //     *FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-    //     *FIGHTER_KINETIC_ENERGY_ID_STOP,
-    //     *FIGHTER_KINETIC_ENERGY_ID_DAMAGE,
-    //     *FIGHTER_KINETIC_ENERGY_ID_ENV_WIND,
-    //     *FIGHTER_KINETIC_ENERGY_ID_GROUND_MOVEMENT,
-    //     *FIGHTER_KINETIC_ENERGY_ID_JOSTLE,
-    //     *FIGHTER_KINETIC_ENERGY_ID_CONTROL_NO_STOP,
-    //     *FIGHTER_KINETIC_ENERGY_ID_DAMAGE_NO_STOP,
-    //     *FIGHTER_KINETIC_ENERGY_ID_STOP_NO_STOP
-    // ];
-    // for id in energy_ids {
-    //     fighter.clear_lua_stack();
-    //     lua_args!(fighter, id);
-    //     let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-    //     println!("ID: {}, Speed X: {}", id, speed_x);
-    // }
     if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
         let base_speed_x;
         let mut speed_x;

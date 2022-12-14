@@ -44,7 +44,7 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
         && fighter.sub_check_command_guard().get_bool() {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), false.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
             return true.into();
         }
     }

@@ -11,8 +11,7 @@ use {
     wubor_utils::{
         vars::*,
         table_const::*
-    },
-    super::super::common_param
+    }
 };
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_common_initStatus_common)]
@@ -34,54 +33,32 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         || VarModule::is_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
         }
-        else if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
+        if [
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
+            *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
+            *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
+        ].contains(&prev_status) {
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_AIR);
             sv_kinetic_energy!(
-                set_accel,
+                controller_set_accel_x_mul,
                 fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -common_param::jump::super_jump_gravity
+                0.0
             );
-            if [
-                *FIGHTER_KIND_NESS, *FIGHTER_KIND_LUCAS, *FIGHTER_KIND_MEWTWO
-            ].contains(&fighter.global_table[KIND].get_i32()) {
-                let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-                let super_jump_frame = VarModule::get_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME);
-                let ratio = super_jump_frame / 10.0;
-                let floaty_bastard_mul = 1.0 - (0.36 * ratio);
-                sv_kinetic_energy!(
-                    set_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    speed_y * floaty_bastard_mul
-                );
-            }
+            sv_kinetic_energy!(
+                controller_set_accel_x_add,
+                fighter,
+                0.0
+            );
         }
-        if prev_status != *FIGHTER_STATUS_KIND_DAMAGE_FALL
-        && prev_status != *FIGHTER_STATUS_KIND_TREAD_FALL {
-            if [
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_LR,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_U,
-                *FIGHTER_STATUS_KIND_DAMAGE_FLY_REFLECT_D,
-                *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY
-            ].contains(&prev_status) {
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_AIR);
-                sv_kinetic_energy!(
-                    controller_set_accel_x_mul,
-                    fighter,
-                    0.0
-                );
-                sv_kinetic_energy!(
-                    controller_set_accel_x_add,
-                    fighter,
-                    0.0
-                );
-            }
-        }
-        else {
+        if [
+            *FIGHTER_STATUS_KIND_DAMAGE_FALL,
+            *FIGHTER_STATUS_KIND_TREAD_FALL
+        ].contains(&prev_status) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_PREV_STATUS_PASSIVE_GROUND);
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {

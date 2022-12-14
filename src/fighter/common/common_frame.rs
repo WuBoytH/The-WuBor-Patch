@@ -9,14 +9,8 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    super::{
-        // command_inputs::*,
-        common_fgc::*
-    },
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
+    super::{common_fgc::*, common_param},
+    wubor_utils::{vars::*, table_const::*}
 };
 
 unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
@@ -88,7 +82,8 @@ unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
+    && VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
         let super_jump_frame = VarModule::get_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME);
         if fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 - super_jump_frame {
             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
@@ -100,6 +95,19 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
             );
             VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
             VarModule::set_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME, 0.0);
+        }
+        else {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+            let gravity_accel = sv_kinetic_energy::get_accel_y(fighter.lua_state_agent);
+            if gravity_accel != -common_param::jump::super_jump_gravity {
+                sv_kinetic_energy!(
+                    set_accel,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    -common_param::jump::super_jump_gravity
+                );
+            }
         }
     }
 }

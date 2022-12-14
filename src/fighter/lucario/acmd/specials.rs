@@ -250,7 +250,10 @@ unsafe fn lucario_specials(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 2.0, 5.0);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 1.6);
     frame(fighter.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
     }
@@ -357,7 +360,6 @@ unsafe fn lucario_specials2_eff(fighter: &mut L2CAgentBase) {
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 7.0);
-    FGCModule::ex_flash(fighter);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -4.5, 0, 0, 0, 0, 0, 1.0, 0, 0, 0, 0, 0, 0, false);
     }
@@ -374,7 +376,6 @@ unsafe fn lucario_specials2_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_specials2_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
         macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_s03"));
     }
 }
@@ -397,6 +398,10 @@ unsafe fn lucario_specialairs(fighter: &mut L2CAgentBase) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 9.0, 5.0);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 1.6);
+    frame(fighter.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
@@ -503,8 +508,6 @@ unsafe fn lucario_specialairs2_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_hakkei_aura"), Hash40::new("haver"), 0, 0, 0.5, 0, 0, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 7.0);
-    FGCModule::ex_flash(fighter);
     frame(fighter.lua_state_agent, 8.0);
     for _ in 0..4 {
         if macros::is_excute(fighter) {
@@ -518,7 +521,6 @@ unsafe fn lucario_specialairs2_eff(fighter: &mut L2CAgentBase) {
 unsafe fn lucario_specialairs2_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
         macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_s03"));
     }
 }
@@ -554,6 +556,7 @@ unsafe fn lucario_specialsthrow(fighter: &mut L2CAgentBase) {
         macros::ATK_HIT_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, Hash40::new("throw"), target, target_group, target_no);
         macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 27.0, -5.0);
 }
 
 #[acmd_script( agent = "lucario", script = "effect_specialsthrow", category = ACMD_EFFECT, low_priority )]
@@ -856,6 +859,7 @@ unsafe fn lucario_specialairsthrow_exp(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialairsthrow2", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialairsthrow2(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
+        lucario_drain_aura(fighter, false);
         macros::WHOLE_HIT(fighter, *HIT_STATUS_INVINCIBLE);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 80, 50, 40, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 6.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -866,7 +870,6 @@ unsafe fn lucario_specialairsthrow2(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 29.0);
     if macros::is_excute(fighter) {
-        lucario_drain_aura(fighter, false);
         let target = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
         let target_group = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_GROUP);
         let target_no = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_HIT_NO);
@@ -883,6 +886,7 @@ unsafe fn lucario_specialairsthrow2(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "effect_specialairsthrow2", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucario_specialairsthrow2_eff(fighter: &mut L2CAgentBase) {
+    FGCModule::ex_flash(fighter);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     }
@@ -891,12 +895,13 @@ unsafe fn lucario_specialairsthrow2_eff(fighter: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_bflash_l"), Hash40::new("handl"), 0.5, 0, 0, 0, 0, 180, 1, true);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("lucario_bflash_r"), Hash40::new("handr"), 0.5, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(fighter.lua_state_agent, 29.0);
-    FGCModule::ex_flash(fighter);
 }
 
 #[acmd_script( agent = "lucario", script = "sound_specialairsthrow2", category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_specialairsthrow2_snd(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
+    }
     frame(fighter.lua_state_agent, 23.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE_REMAIN(fighter, Hash40::new("vc_lucario_005"));
@@ -919,10 +924,6 @@ unsafe fn lucario_specialairsthrow2_snd(fighter: &mut L2CAgentBase) {
             macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_s01"));
             macros::PLAY_SE(fighter, Hash40::new("se_lucario_special_s02_l"));
         }
-    }
-    frame(fighter.lua_state_agent, 29.0);
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex"));
     }
 }
 

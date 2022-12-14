@@ -10,29 +10,29 @@ use {
 
 // We want to disable teching while getting footstooled.
 
-#[skyline::hook(replace = L2CFighterCommon_status_TreadFall)]
-unsafe fn status_treadfall(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !MotionModule::motion_kind(fighter.module_accessor) == 0xd88a289d5
-    || MotionModule::is_end(fighter.module_accessor) {
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new_raw(0x9b5c6425d),
-            0.0,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
-    }
-    // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB);
-    // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE);
-    if !StopModule::is_stop(fighter.module_accessor) {
-        fighter.sub_tread_fall_uniq_check();
-    }
-    fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_tread_fall_uniq_check as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TreadFall_Main as *const () as _))
-}
+// #[skyline::hook(replace = L2CFighterCommon_status_TreadFall)]
+// unsafe fn status_treadfall(fighter: &mut L2CFighterCommon) -> L2CValue {
+//     if !MotionModule::motion_kind(fighter.module_accessor) == 0xd88a289d5
+//     || MotionModule::is_end(fighter.module_accessor) {
+//         MotionModule::change_motion(
+//             fighter.module_accessor,
+//             Hash40::new_raw(0x9b5c6425d),
+//             0.0,
+//             1.0,
+//             false,
+//             0.0,
+//             false,
+//             false
+//         );
+//     }
+//     // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE_FB);
+//     // WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE);
+//     if !StopModule::is_stop(fighter.module_accessor) {
+//         fighter.sub_tread_fall_uniq_check();
+//     }
+//     fighter.global_table[SUB_STATUS2].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_tread_fall_uniq_check as *const () as _));
+//     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_TreadFall_Main as *const () as _))
+// }
 
 #[skyline::hook(replace = L2CFighterCommon_status_TreadFall_Main)]
 unsafe fn status_treadfall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -79,7 +79,7 @@ unsafe fn status_treadfall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
-            status_treadfall,
+            // status_treadfall,
             status_treadfall_main
         );
     }

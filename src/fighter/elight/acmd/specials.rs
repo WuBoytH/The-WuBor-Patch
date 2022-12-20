@@ -5,8 +5,10 @@ use {
         app::{lua_bind::*, sv_animcmd::*},
         lib::lua_const::*
     },
+    custom_var::*,
     smash_script::*,
-    smashline::*
+    smashline::*,
+    wubor_utils::vars::*
 };
 
 #[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME, low_priority )]

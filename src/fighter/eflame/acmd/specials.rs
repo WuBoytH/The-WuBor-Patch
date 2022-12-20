@@ -45,16 +45,13 @@ unsafe fn eflame_esword_fly(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
         MotionModule::set_rate(weapon.module_accessor, 0.75);
+        VarModule::on_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
     frame(weapon.lua_state_agent, 2.0);
     if macros::is_excute(weapon) {
         // Exists so it can be reflected
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.0, 0, 0, 0, 0, 2.5, 0.0, -1.5, -3.0, Some(0.0), Some(-1.5), Some(2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, 0, -1.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 0.0, 0, 0, 0, 0, 4.5, 0.0, -1.5, -2.0, Some(0.0), Some(-1.5), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, 0, -1.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
-    }
-    frame(weapon.lua_state_agent, 10.0);
-    if macros::is_excute(weapon) {
-        VarModule::on_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
 }
 
@@ -63,16 +60,13 @@ unsafe fn eflame_esword_flyflick(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
         MotionModule::set_rate(weapon.module_accessor, 0.75);
+        VarModule::on_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
     frame(weapon.lua_state_agent, 2.0);
     if macros::is_excute(weapon) {
         // Exists so it can be reflected
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.0, 0, 0, 0, 0, 2.5, 0.0, -1.5, -3.0, Some(0.0), Some(-1.5), Some(2.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, 0, -1.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
         macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 0.0, 0, 0, 0, 0, 4.5, 0.0, -1.5, -2.0, Some(0.0), Some(-1.5), Some(5.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, true, 0, -1.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_SWORD);
-    }
-    frame(weapon.lua_state_agent, 10.0);
-    if macros::is_excute(weapon) {
-        VarModule::on_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
 }
 

@@ -16,7 +16,8 @@ fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
         if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY
         && VarModule::is_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN)
         && ControlModule::check_button_on(weapon.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            weapon.change_status(WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_ROTATE.into(), false.into());
+            MotionModule::set_frame(weapon.module_accessor, 20.0, false);
+            VarModule::off_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
         }
     }
 }

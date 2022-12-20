@@ -260,7 +260,7 @@ pub mod element {
 pub mod eflame_esword {
     pub mod status {
         pub mod flag {
-            pub const SHORTEN : i32 = 0x0150;
+            pub const ENABLE_EARLY_SPIN : i32 = 0x0150;
         }
     }
 }

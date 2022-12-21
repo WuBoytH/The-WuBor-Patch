@@ -35,11 +35,11 @@ unsafe fn elight_attackairn(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL);
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL);
     }
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {

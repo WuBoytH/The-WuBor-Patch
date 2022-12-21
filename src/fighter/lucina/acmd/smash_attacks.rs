@@ -13,7 +13,7 @@ use {
     },
 };
 
-#[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn lucina_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -38,7 +38,7 @@ unsafe fn lucina_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn lucina_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);

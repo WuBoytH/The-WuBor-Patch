@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "kirby", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn kirby_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
@@ -46,7 +46,7 @@ unsafe fn kirby_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "kirby", script = "effect_attackdash", category = ACMD_EFFECT )]
 unsafe fn kirby_attackdash_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -78,7 +78,7 @@ unsafe fn kirby_attackdash_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn kirby_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -96,7 +96,7 @@ unsafe fn kirby_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "kirby", script = "effect_attacklw3", category = ACMD_EFFECT )]
 unsafe fn kirby_attacklw3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {

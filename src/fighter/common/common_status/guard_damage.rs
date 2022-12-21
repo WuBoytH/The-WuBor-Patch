@@ -145,7 +145,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
         let shield_setoff_speed_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_mul"));
         let shield_setoff_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_setoff_speed_max"));
         let shield_lr = -WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_LR);
-        let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(0.0, shield_setoff_speed_max);
+        let setoff_speed = (shield_setoff_speed_mul * shield_stiff_frame * shield_lr).clamp(-shield_setoff_speed_max, shield_setoff_speed_max);
         // println!("setoff_speed: {}", setoff_speed);
         let setoff_mul_indirect = if sv_battle_object::category(object_id as u32) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
             0.5

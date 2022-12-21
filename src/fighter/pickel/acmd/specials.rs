@@ -9,7 +9,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "pickel", script = "game_specialsride", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel", script = "game_specialsride", category = ACMD_GAME )]
 unsafe fn pickel_specialsride(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -20,7 +20,7 @@ unsafe fn pickel_specialsride(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "pickel", script = "game_specialairsride", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel", script = "game_specialairsride", category = ACMD_GAME )]
 unsafe fn pickel_specialairsride(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -30,7 +30,7 @@ unsafe fn pickel_specialairsride(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "pickel_trolley", script = "game_specialsdrivepartial", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel_trolley", script = "game_specialsdrivepartial", category = ACMD_GAME )]
 unsafe fn pickel_specialsdrivepartial(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         AttackModule::clear_all(weapon.module_accessor);
@@ -40,7 +40,7 @@ unsafe fn pickel_specialsdrivepartial(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME )]
 unsafe fn pickel_specialsdriveemptypartial(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         AttackModule::clear_all(weapon.module_accessor);

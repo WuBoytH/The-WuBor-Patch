@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*,
 };
 
-#[acmd_script( agent = "mario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn mario_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -46,7 +46,7 @@ unsafe fn mario_attackairn(fighter: &mut L2CAgentBase) {
 }
 
 // Reimplement F.Air Hold as a variable
-#[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
     let spike;
     frame(fighter.lua_state_agent, 5.0);
@@ -100,7 +100,7 @@ unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_attackairf", category = ACMD_EFFECT )]
 unsafe fn mario_attackairf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     let spike = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK);
@@ -118,7 +118,7 @@ unsafe fn mario_attackairf_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "mario", script = "expression_attackairf", category = ACMD_EXPRESSION )]
 unsafe fn mario_attackairf_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -130,7 +130,7 @@ unsafe fn mario_attackairf_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_landingairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_landingairf", category = ACMD_GAME )]
 unsafe fn mario_landingairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -139,7 +139,7 @@ unsafe fn mario_landingairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn mario_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -162,7 +162,7 @@ unsafe fn mario_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn mario_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 6.0/9.0);
@@ -190,7 +190,7 @@ unsafe fn mario_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_attackairlw", category = ACMD_EFFECT )]
 unsafe fn mario_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -242,7 +242,7 @@ unsafe fn mario_attackairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_attackairlw", category = ACMD_SOUND )]
 unsafe fn mario_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -251,7 +251,7 @@ unsafe fn mario_attackairlw_snd(fighter: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "mario", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "mario", script = "expression_attackairlw", category = ACMD_EXPRESSION )]
 unsafe fn mario_attackairlw_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -263,7 +263,7 @@ unsafe fn mario_attackairlw_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_landingairlw", category = ACMD_GAME )]
 unsafe fn mario_landingairlw(_fighter: &mut L2CAgentBase) {
 }
 

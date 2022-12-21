@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME )]
 unsafe fn dedede_speciallwmax(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 14);

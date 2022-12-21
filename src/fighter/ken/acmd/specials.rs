@@ -11,7 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[acmd_script( agent = "ken", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialsstart", category = ACMD_GAME )]
 unsafe fn ken_specialsstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
@@ -39,7 +39,7 @@ unsafe fn ken_specialsstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specials", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specials", category = ACMD_GAME )]
 unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
@@ -108,7 +108,7 @@ unsafe fn ken_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialairsstart", category = ACMD_GAME )]
 unsafe fn ken_specialairsstart(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
@@ -145,7 +145,7 @@ unsafe fn ken_specialairsstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialairs", category = ACMD_GAME )]
 unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
@@ -212,7 +212,7 @@ unsafe fn ken_specialairs(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialhi", category = ACMD_GAME )]
 unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
@@ -286,7 +286,7 @@ unsafe fn ken_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialhicommand", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialhicommand", category = ACMD_GAME )]
 unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let ratio;
@@ -360,7 +360,7 @@ unsafe fn ken_specialhicommand(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "sound_specialhicommand", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "ken", script = "sound_specialhicommand", category = ACMD_SOUND )]
 unsafe fn ken_specialhicommand_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -388,7 +388,7 @@ unsafe fn ken_specialhicommand_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialhireppa", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialhireppa", category = ACMD_GAME )]
 unsafe fn ken_specialhireppa(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -453,7 +453,7 @@ unsafe fn ken_specialhireppa(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "effect_specialhireppa", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "ken", script = "effect_specialhireppa", category = ACMD_EFFECT )]
 unsafe fn ken_specialhireppa_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     ken_generate_shoryu_eff(fighter, true);
@@ -515,7 +515,7 @@ unsafe fn ken_generate_shoryu_eff(fighter: &mut L2CAgentBase, scale: bool) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "sound_specialhireppa", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "ken", script = "sound_specialhireppa", category = ACMD_SOUND )]
 unsafe fn ken_specialhireppa_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -549,7 +549,7 @@ unsafe fn ken_specialhireppa_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "expression_specialhireppa", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "ken", script = "expression_specialhireppa", category = ACMD_EXPRESSION )]
 unsafe fn ken_specialhireppa_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -607,7 +607,7 @@ unsafe fn ken_specialhireppa_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", scripts = ["game_specialairhi", "game_specialairhicommand"], category = ACMD_GAME )]
 unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     if VarModule::is_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER) {
@@ -675,7 +675,7 @@ unsafe fn ken_specialhiair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_speciallwstepf", category = ACMD_GAME )]
 unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     let special_lw_type = VarModule::get_int(fighter.battle_object, ken::instance::int::SPECIAL_LW_TYPE);
     frame(fighter.lua_state_agent, 4.0);
@@ -780,7 +780,7 @@ unsafe fn ken_speciallwstepf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_specialairlwstepf", category = ACMD_GAME )]
 unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     let special_lw_type = VarModule::get_int(fighter.battle_object, ken::instance::int::SPECIAL_LW_TYPE);
     frame(fighter.lua_state_agent, 4.0);
@@ -888,7 +888,7 @@ unsafe fn ken_specialairlwstepf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken_hadoken", script = "game_movew", category = ACMD_GAME )]
 unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
@@ -908,7 +908,7 @@ unsafe fn ken_hadoken_movew(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_hadoken", script = "game_movem", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken_hadoken", script = "game_movem", category = ACMD_GAME )]
 unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
@@ -928,7 +928,7 @@ unsafe fn ken_hadoken_movem(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken_hadoken", script = "game_moves", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken_hadoken", script = "game_moves", category = ACMD_GAME )]
 unsafe fn ken_hadoken_moves(weapon: &mut L2CAgentBase) {
     let mut property = "collision_attr_normal";
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;

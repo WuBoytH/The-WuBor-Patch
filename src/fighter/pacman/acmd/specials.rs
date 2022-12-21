@@ -8,7 +8,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "pacman", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pacman", script = "game_specialhistart", category = ACMD_GAME )]
 unsafe fn pacman_specialhistart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_TRAMPOLINE_JUMP) {

@@ -8,7 +8,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME )]
 unsafe fn zelda_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -20,7 +20,7 @@ unsafe fn zelda_specialsstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME )]
 unsafe fn zelda_specialsend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);

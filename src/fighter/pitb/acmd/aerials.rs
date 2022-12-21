@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "pitb", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pitb", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn pitb_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -30,7 +30,7 @@ unsafe fn pitb_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pitb", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn pitb_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -60,7 +60,7 @@ unsafe fn pitb_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pitb", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn pitb_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {

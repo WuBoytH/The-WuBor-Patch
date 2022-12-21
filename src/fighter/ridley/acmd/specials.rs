@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "ridley", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ridley", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME )]
 unsafe fn ridley_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

@@ -10,7 +10,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[acmd_script( agent = "robot", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "robot", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME )]
 unsafe fn robot_appealhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 38.0);
     let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME )]
 unsafe fn kirby_specialsstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
@@ -20,7 +20,7 @@ unsafe fn kirby_specialsstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1);
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME )]
 unsafe fn kirby_specialairsstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
@@ -28,7 +28,7 @@ unsafe fn kirby_specialairsstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 9.0 / 17.0);
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", script = "game_specialairs", category = ACMD_GAME )]
 unsafe fn kirby_specialairs(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
@@ -55,7 +55,7 @@ unsafe fn kirby_specialairs(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairss", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", script = "game_specialairss", category = ACMD_GAME )]
 unsafe fn kirby_specialairss(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
@@ -82,7 +82,7 @@ unsafe fn kirby_specialairss(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
 unsafe fn kirby_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0);

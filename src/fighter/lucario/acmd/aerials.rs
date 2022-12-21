@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn lucario_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -47,7 +47,7 @@ unsafe fn lucario_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucario", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn lucario_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -73,7 +73,7 @@ unsafe fn lucario_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucario", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn lucario_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.09);
@@ -101,7 +101,7 @@ unsafe fn lucario_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucario", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn lucario_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 1.0, 4.0, 4.0, 4.0);
@@ -131,7 +131,7 @@ unsafe fn lucario_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn lucario_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(fighter.module_accessor, 3.0, 3.0, 8.0, 2.0);

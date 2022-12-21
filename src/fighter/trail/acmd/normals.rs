@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "trail", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "trail", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn trail_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -78,7 +78,7 @@ unsafe fn trail_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "trail", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn trail_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {

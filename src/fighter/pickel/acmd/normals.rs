@@ -9,7 +9,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "pickel", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn pickel_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -73,7 +73,7 @@ unsafe fn pickel_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn pickel_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -164,7 +164,7 @@ unsafe fn pickel_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pickel", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn pickel_attackhi3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);

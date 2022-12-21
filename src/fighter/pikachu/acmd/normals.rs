@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "pikachu", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikachu", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn pikachu_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -30,7 +30,7 @@ unsafe fn pikachu_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikachu", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn pikachu_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -44,7 +44,7 @@ unsafe fn pikachu_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikachu", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn pikachu_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {

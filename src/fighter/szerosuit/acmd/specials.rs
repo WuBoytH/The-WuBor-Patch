@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "szerosuit", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "game_specialhi", category = ACMD_GAME )]
 unsafe fn szerosuit_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -67,7 +67,7 @@ unsafe fn szerosuit_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "game_specialhi2", category = ACMD_GAME )]
 unsafe fn szerosuit_specialhi2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
@@ -102,7 +102,7 @@ unsafe fn szerosuit_specialhi2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "effect_specialhi2", category = ACMD_EFFECT )]
 unsafe fn szerosuit_specialhi2_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
@@ -122,7 +122,7 @@ unsafe fn szerosuit_specialhi2_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_specialhi2", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "sound_specialhi2", category = ACMD_SOUND )]
 unsafe fn szerosuit_specialhi2_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
@@ -130,7 +130,7 @@ unsafe fn szerosuit_specialhi2_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_specialhi2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "expression_specialhi2", category = ACMD_EXPRESSION )]
 unsafe fn szerosuit_specialhi2_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {
@@ -152,7 +152,7 @@ unsafe fn szerosuit_specialhi2_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "game_specialairhi", category = ACMD_GAME )]
 unsafe fn szerosuit_specialairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -208,7 +208,7 @@ unsafe fn szerosuit_specialairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "game_specialairhi2", category = ACMD_GAME )]
 unsafe fn szerosuit_specialairhi2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {
@@ -243,7 +243,7 @@ unsafe fn szerosuit_specialairhi2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_specialairhi2", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "effect_specialairhi2", category = ACMD_EFFECT )]
 unsafe fn szerosuit_specialairhi2_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 25.0);
     if macros::is_excute(fighter) {
@@ -263,7 +263,7 @@ unsafe fn szerosuit_specialairhi2_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_specialairhi2", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "sound_specialairhi2", category = ACMD_SOUND )]
 unsafe fn szerosuit_specialairhi2_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
@@ -271,7 +271,7 @@ unsafe fn szerosuit_specialairhi2_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_specialairhi2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "expression_specialairhi2", category = ACMD_EXPRESSION )]
 unsafe fn szerosuit_specialairhi2_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 42.0);
     if macros::is_excute(fighter) {

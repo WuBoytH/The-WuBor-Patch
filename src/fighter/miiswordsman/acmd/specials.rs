@@ -9,7 +9,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "miiswordsman", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "miiswordsman", script = "game_specialhi3", category = ACMD_GAME )]
 unsafe fn miisword_specialhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -41,7 +41,7 @@ unsafe fn miisword_specialhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_specialairhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "miiswordsman", script = "game_specialairhi3", category = ACMD_GAME )]
 unsafe fn miisword_specialairhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {

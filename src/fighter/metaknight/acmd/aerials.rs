@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "metaknight", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn metaknight_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -35,7 +35,7 @@ unsafe fn metaknight_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn metaknight_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -78,7 +78,7 @@ unsafe fn metaknight_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn metaknight_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.25);
@@ -108,7 +108,7 @@ unsafe fn metaknight_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "metaknight", script = "effect_attackairhi", category = ACMD_EFFECT )]
 unsafe fn metaknight_attackairhi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -125,7 +125,7 @@ unsafe fn metaknight_attackairhi_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn metaknight_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -175,7 +175,7 @@ unsafe fn metaknight_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "metaknight", script = "effect_attackairlw", category = ACMD_EFFECT )]
 unsafe fn metaknight_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -202,7 +202,7 @@ unsafe fn metaknight_attackairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "metaknight", script = "sound_attackairlw", category = ACMD_SOUND )]
 unsafe fn metaknight_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
@@ -211,7 +211,7 @@ unsafe fn metaknight_attackairlw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "metaknight", script = "expression_attackairlw", category = ACMD_EXPRESSION )]
 unsafe fn metaknight_attackairlw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(
@@ -244,7 +244,7 @@ unsafe fn metaknight_attackairlw_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_landingairlw", category = ACMD_GAME )]
 unsafe fn metaknight_landingairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -258,7 +258,7 @@ unsafe fn metaknight_landingairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_landingairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "metaknight", script = "effect_landingairlw", category = ACMD_EFFECT )]
 unsafe fn metaknight_landingairlw_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 2.5, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -266,7 +266,7 @@ unsafe fn metaknight_landingairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_landingairlw", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "metaknight", script = "sound_landingairlw", category = ACMD_SOUND )]
 unsafe fn metaknight_landingairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

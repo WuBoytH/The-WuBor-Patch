@@ -6,27 +6,15 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    smash_script::*,
     smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::helper::*,
-    crate::fighter::common::common_param
+    wubor_utils::table_const::*,
+    super::helper::*
 };
 
 #[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pickel_attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if pickel_attack_que(fighter).get_bool() {
         return 0.into();
-    }
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
-    && VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
-        sv_kinetic_energy!(
-            set_accel,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-            -common_param::jump::super_jump_gravity
-        );
     }
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PICKEL_INSTANCE_WORK_ID_INT_ATTACK_FRAME);
     let mut generate = false;

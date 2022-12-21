@@ -11,7 +11,7 @@ use {
 };
 
 // Temporary, for debug purposes
-#[acmd_script( agent = "lucario", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "lucario", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME )]
 unsafe fn lucario_appealhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {

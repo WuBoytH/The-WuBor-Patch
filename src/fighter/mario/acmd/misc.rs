@@ -10,7 +10,7 @@ use {
     super::super::helper::*
 };
 
-#[acmd_script( agent = "mario_pump", script = "effect_start", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario_pump", script = "effect_start", category = ACMD_EFFECT )]
 unsafe fn mario_pump_start_eff(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         bonker_vis(weapon.module_accessor);
@@ -18,7 +18,7 @@ unsafe fn mario_pump_start_eff(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario_pump", script = "effect_light", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario_pump", script = "effect_light", category = ACMD_EFFECT )]
 unsafe fn mario_pump_light_eff(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         bonker_vis(weapon.module_accessor);

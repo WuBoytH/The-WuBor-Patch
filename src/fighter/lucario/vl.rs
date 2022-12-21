@@ -10,6 +10,6 @@ pub mod aurapower {
 }
 
 pub mod special_lw {
-    pub const CHARGE_FRAME : f32 = 80.0;
+    pub const CHARGE_FRAME : f32 = 60.0;
     pub const CHARGE_FRAME_SUBSEQUENT_MUL : f32 = 0.2;
 }

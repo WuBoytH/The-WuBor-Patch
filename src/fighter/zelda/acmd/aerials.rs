@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn zelda_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -47,7 +47,7 @@ unsafe fn zelda_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn zelda_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.625);
@@ -78,7 +78,7 @@ unsafe fn zelda_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "zelda", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn zelda_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -107,7 +107,7 @@ unsafe fn zelda_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn zelda_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

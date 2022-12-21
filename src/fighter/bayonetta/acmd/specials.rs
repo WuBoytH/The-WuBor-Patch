@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "bayonetta", script = "game_specialairsu", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "bayonetta", script = "game_specialairsu", category = ACMD_GAME )]
 unsafe fn bayonetta_specialairsu(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
@@ -70,7 +70,7 @@ unsafe fn bayonetta_specialairsu(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "effect_specialairsu", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "bayonetta", script = "effect_specialairsu", category = ACMD_EFFECT )]
 unsafe fn bayonetta_specialairsu_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
@@ -89,7 +89,7 @@ unsafe fn bayonetta_specialairsu_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_specialairsd", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "bayonetta", script = "game_specialairsd", category = ACMD_GAME )]
 unsafe fn bayonetta_specialairsd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
@@ -128,7 +128,7 @@ unsafe fn bayonetta_specialairsd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "bayonetta", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME )]
 unsafe fn bayonetta_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

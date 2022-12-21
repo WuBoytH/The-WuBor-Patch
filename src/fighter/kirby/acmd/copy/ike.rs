@@ -12,7 +12,7 @@ use {
     crate::fighter::ike::vl
 };
 
-#[acmd_script( agent = "kirby", script = "effect_ikespecialnend", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "kirby", script = "effect_ikespecialnend", category = ACMD_EFFECT )]
 unsafe fn kirby_ikespecialnend_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -51,7 +51,7 @@ unsafe fn kirby_ikespecialnend_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_ikespecialnend", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "kirby", script = "sound_ikespecialnend", category = ACMD_SOUND )]
 unsafe fn kirby_ikespecialnend_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -98,7 +98,7 @@ unsafe fn kirby_ikespecialnend_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_ikespecialnend", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "kirby", script = "expression_ikespecialnend", category = ACMD_EXPRESSION )]
 unsafe fn kirby_ikespecialnend_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -152,7 +152,7 @@ unsafe fn kirby_ikespecialnend_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_ikespecialairnend", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "kirby", script = "effect_ikespecialairnend", category = ACMD_EFFECT )]
 unsafe fn kirby_ikespecialairnend_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -165,7 +165,7 @@ unsafe fn kirby_ikespecialairnend_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_ikespecialairnend", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "kirby", script = "sound_ikespecialairnend", category = ACMD_SOUND )]
 unsafe fn kirby_ikespecialairnend_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -185,7 +185,7 @@ unsafe fn kirby_ikespecialairnend_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_ikespecialairnend", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "kirby", script = "expression_ikespecialairnend", category = ACMD_EXPRESSION )]
 unsafe fn kirby_ikespecialairnend_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);

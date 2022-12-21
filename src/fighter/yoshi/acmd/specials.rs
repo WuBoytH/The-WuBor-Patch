@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "yoshi", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "yoshi", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME )]
 unsafe fn yoshi_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.1);
@@ -44,7 +44,7 @@ unsafe fn yoshi_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi", script = "game_specialsloop", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "yoshi", script = "game_specialsloop", category = ACMD_GAME )]
 unsafe fn yoshi_specialsloop(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 10.0, 80, 50, 0, 43, 5.5, 0.0, 5.6, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 32, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);

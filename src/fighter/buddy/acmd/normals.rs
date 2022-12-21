@@ -12,7 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn buddy_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
@@ -32,7 +32,7 @@ unsafe fn buddy_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn buddy_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -63,7 +63,7 @@ unsafe fn buddy_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "buddy", script = "game_attacks3hi", category = ACMD_GAME )]
 unsafe fn buddy_attacks3hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -94,7 +94,7 @@ unsafe fn buddy_attacks3hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "buddy", script = "game_attacks3lw", category = ACMD_GAME )]
 unsafe fn buddy_attacks3lw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -125,7 +125,7 @@ unsafe fn buddy_attacks3lw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "buddy", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn buddy_attackhi3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::HIT_NO(fighter, 12, *HIT_STATUS_NORMAL);
@@ -166,7 +166,7 @@ unsafe fn buddy_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "buddy", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn buddy_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn szerosuit_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -45,7 +45,7 @@ unsafe fn szerosuit_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "szerosuit", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn szerosuit_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn dedede_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 32.0);
     if macros::is_excute(fighter) {

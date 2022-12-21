@@ -79,7 +79,7 @@ unsafe fn littlemac_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn littlemac_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -105,7 +105,7 @@ unsafe fn littlemac_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn littlemac_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

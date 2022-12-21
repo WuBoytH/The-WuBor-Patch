@@ -11,7 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[acmd_script( agent = "pikmin", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikmin", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn pikmin_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -37,7 +37,7 @@ unsafe fn pikmin_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikmin", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn pikmin_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     for _ in 0..3 {
@@ -57,7 +57,7 @@ unsafe fn pikmin_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "pikmin", script = "expression_attackdash", category = ACMD_EXPRESSION )]
 unsafe fn pikmin_attackdash_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 3, true);
@@ -82,12 +82,12 @@ unsafe fn pikmin_attackdash_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikmin", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn pikmin_attacks3(_fighter: &mut L2CAgentBase) {
     // Blank
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attacks3", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "pikmin", script = "sound_attacks3", category = ACMD_SOUND )]
 unsafe fn pikmin_attacks3_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -95,21 +95,21 @@ unsafe fn pikmin_attacks3_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "effect_attacks3loop", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "pikmin", script = "effect_attacks3loop", category = ACMD_EFFECT )]
 unsafe fn pikmin_attacks3loop_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("pikmin_punch_spin"), Hash40::new("top"), -3, 6, -2, -192, 4, 68, 0.85, true);
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attacks3loop", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "pikmin", script = "sound_attacks3loop", category = ACMD_SOUND )]
 unsafe fn pikmin_attacks3loop_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_pikmin_attackhard_s01"));
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "expression_attacks3loop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "pikmin", script = "expression_attacks3loop", category = ACMD_EXPRESSION )]
 unsafe fn pikmin_attacks3loop_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_R);
@@ -123,7 +123,7 @@ unsafe fn pikmin_attacks3loop_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attacks3end", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikmin", script = "game_attacks3end", category = ACMD_GAME )]
 unsafe fn pikmin_attacks3end(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -149,7 +149,7 @@ unsafe fn pikmin_attacks3end(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "effect_attacks3end", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "pikmin", script = "effect_attacks3end", category = ACMD_EFFECT )]
 unsafe fn pikmin_attacks3end_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -166,14 +166,14 @@ unsafe fn pikmin_attacks3end_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attacks3end", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "pikmin", script = "sound_attacks3end", category = ACMD_SOUND )]
 unsafe fn pikmin_attacks3end_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_pikmin_attackhard_s02"));
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "expression_attacks3end", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "pikmin", script = "expression_attacks3end", category = ACMD_EXPRESSION )]
 unsafe fn pikmin_attacks3end_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_R, 5);
@@ -195,7 +195,7 @@ unsafe fn pikmin_attacks3end_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikmin", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn pikmin_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -224,7 +224,7 @@ unsafe fn pikmin_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "pikmin", script = "effect_attackhi3", category = ACMD_EFFECT )]
 unsafe fn pikmin_attackhi3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -238,7 +238,7 @@ unsafe fn pikmin_attackhi3_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "pikmin", script = "sound_attackhi3", category = ACMD_SOUND )]
 unsafe fn pikmin_attackhi3_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -254,7 +254,7 @@ unsafe fn pikmin_attackhi3_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pikmin", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn pikmin_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {

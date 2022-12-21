@@ -225,7 +225,7 @@ unsafe fn eflame_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn eflame_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -291,7 +291,7 @@ unsafe fn eflame_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn eflame_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -351,7 +351,7 @@ unsafe fn eflame_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn eflame_attackairlw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.333);
     frame(fighter.lua_state_agent, 5.0);

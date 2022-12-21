@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "mario", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attacks4", category = ACMD_GAME )]
 unsafe fn mario_attacks4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -31,7 +31,7 @@ unsafe fn mario_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_attacks4", category = ACMD_EFFECT )]
 unsafe fn mario_attacks4_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -48,7 +48,7 @@ unsafe fn mario_attacks4_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_attacks4", category = ACMD_SOUND )]
 unsafe fn mario_attacks4_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -57,7 +57,7 @@ unsafe fn mario_attacks4_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attacks4hi", category = ACMD_GAME )]
 unsafe fn mario_attacks4hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -79,7 +79,7 @@ unsafe fn mario_attacks4hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks4hi", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_attacks4hi", category = ACMD_EFFECT )]
 unsafe fn mario_attacks4hi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -96,7 +96,7 @@ unsafe fn mario_attacks4hi_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attacks4hi", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_attacks4hi", category = ACMD_SOUND )]
 unsafe fn mario_attacks4hi_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -105,7 +105,7 @@ unsafe fn mario_attacks4hi_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_attacks4lw", category = ACMD_GAME )]
 unsafe fn mario_attacks4lw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -127,7 +127,7 @@ unsafe fn mario_attacks4lw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks4lw", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_attacks4lw", category = ACMD_EFFECT )]
 unsafe fn mario_attacks4lw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -144,7 +144,7 @@ unsafe fn mario_attacks4lw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attacks4lw", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_attacks4lw", category = ACMD_SOUND )]
 unsafe fn mario_attacks4lw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {

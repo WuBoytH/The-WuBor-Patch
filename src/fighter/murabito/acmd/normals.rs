@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "murabito", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "murabito", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn murabito_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);    
     macros::FT_MOTION_RATE(fighter, 0.75);
@@ -27,7 +27,7 @@ unsafe fn murabito_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "murabito", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn murabito_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, false, -1);
@@ -52,7 +52,7 @@ unsafe fn murabito_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "murabito", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn murabito_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME )]
 unsafe fn shulk_specials(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
@@ -25,7 +25,7 @@ unsafe fn shulk_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME )]
 unsafe fn shulk_specialairsfall(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("swordr"), 10.0, 361, 80, 0, 30, 3.5, 7.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -47,7 +47,7 @@ unsafe fn shulk_specialairsfall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME )]
 unsafe fn shulk_speciallwattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -70,7 +70,7 @@ unsafe fn shulk_speciallwattack(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.8);
 }
 
-#[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME )]
 unsafe fn shulk_speciallwf(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.8);
     frame(fighter.lua_state_agent, 25.0);

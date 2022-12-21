@@ -7,7 +7,7 @@ use {
     },
     smashline::*,
     custom_cancel::*,
-    crate::fighter::common::common_fgc::*
+    crate::fighter::common::fgc::*
 };
 
 #[fighter_reset]

@@ -4,7 +4,7 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    super::common_param::*,
+    super::param::*,
     wubor_utils::{
         wua_bind::*,
         vars::*

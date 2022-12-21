@@ -9,7 +9,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    super::{common_fgc::*, common_param},
+    super::{fgc::*, param},
     wubor_utils::{vars::*, table_const::*}
 };
 
@@ -100,12 +100,12 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
             let gravity_accel = sv_kinetic_energy::get_accel_y(fighter.lua_state_agent);
-            if gravity_accel != -common_param::jump::super_jump_gravity {
+            if gravity_accel != -param::jump::super_jump_gravity {
                 sv_kinetic_energy!(
                     set_accel,
                     fighter,
                     FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    -common_param::jump::super_jump_gravity
+                    -param::jump::super_jump_gravity
                 );
             }
         }

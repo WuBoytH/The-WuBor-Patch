@@ -4,7 +4,7 @@ use {
         lib::lua_const::*
     },
     custom_cancel::*,
-    crate::fighter::common::common_fgc::*
+    crate::fighter::common::fgc::*
 };
 
 pub fn install() {

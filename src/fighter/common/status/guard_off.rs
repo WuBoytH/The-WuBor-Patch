@@ -12,7 +12,7 @@ use {
         vars::*,
         table_const::*
     },
-    super::super::common_param::*,
+    super::super::param::*,
 };
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]

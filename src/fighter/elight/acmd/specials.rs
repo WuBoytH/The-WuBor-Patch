@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME )]
 unsafe fn elight_specialn(fighter: &mut L2CAgentBase) {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(fighter) {
@@ -173,7 +173,7 @@ unsafe fn elight_specialn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_specialairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_specialairn", category = ACMD_GAME )]
 unsafe fn elight_specialairn(fighter: &mut L2CAgentBase) {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(fighter) {
@@ -341,7 +341,7 @@ unsafe fn elight_specialairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialn2", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_specialn2", category = ACMD_GAME )]
 unsafe fn elight_specialn2(fighter: &mut L2CAgentBase) {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(fighter) {
@@ -548,7 +548,7 @@ unsafe fn elight_specialn2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialairn2", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_specialairn2", category = ACMD_GAME )]
 unsafe fn elight_specialairn2(fighter: &mut L2CAgentBase) {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(fighter) {
@@ -747,7 +747,7 @@ unsafe fn elight_specialairn2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_speciallwattack", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_speciallwattack", category = ACMD_GAME )]
 unsafe fn elight_speciallwattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -794,7 +794,7 @@ unsafe fn elight_speciallwattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_speciallwattack", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "elight", script = "effect_speciallwattack", category = ACMD_EFFECT )]
 unsafe fn elight_speciallwattack_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("elight_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -833,7 +833,7 @@ unsafe fn elight_speciallwattack_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "elight", script = "sound_speciallwattack", category = ACMD_SOUND )]
 unsafe fn elight_speciallwattack_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -850,7 +850,7 @@ unsafe fn elight_speciallwattack_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "expression_speciallwattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "elight", script = "expression_speciallwattack", category = ACMD_EXPRESSION )]
 unsafe fn elight_speciallwattack_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -888,7 +888,7 @@ unsafe fn elight_speciallwattack_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialairlwattack", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_specialairlwattack", category = ACMD_GAME )]
 unsafe fn elight_specialairlwattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -927,7 +927,7 @@ unsafe fn elight_specialairlwattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_specialairlwattack", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "elight", script = "effect_specialairlwattack", category = ACMD_EFFECT )]
 unsafe fn elight_specialairlwattack_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("elight_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -962,7 +962,7 @@ unsafe fn elight_specialairlwattack_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "elight", script = "sound_specialairlwattack", category = ACMD_SOUND )]
 unsafe fn elight_specialairlwattack_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -975,7 +975,7 @@ unsafe fn elight_specialairlwattack_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "expression_specialairlwattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "elight", script = "expression_specialairlwattack", category = ACMD_EXPRESSION )]
 unsafe fn elight_specialairlwattack_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);

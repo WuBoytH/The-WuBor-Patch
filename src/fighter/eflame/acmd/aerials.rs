@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "eflame", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn eflame_attackairn(fighter: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(fighter.lua_state_agent, 3.0);
@@ -70,7 +70,7 @@ unsafe fn eflame_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "eflame", script = "effect_attackairn", category = ACMD_EFFECT )]
 unsafe fn eflame_attackairn_eff(fighter: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(fighter.lua_state_agent, 6.0);
@@ -102,7 +102,7 @@ unsafe fn eflame_attackairn_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "eflame", script = "sound_attackairn", category = ACMD_SOUND )]
 unsafe fn eflame_attackairn_snd(fighter: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(fighter.lua_state_agent, 10.0);
@@ -121,7 +121,7 @@ unsafe fn eflame_attackairn_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "eflame", script = "expression_attackairn", category = ACMD_EXPRESSION )]
 unsafe fn eflame_attackairn_exp(fighter: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(fighter.lua_state_agent, 10.0);
@@ -153,7 +153,7 @@ unsafe fn eflame_attackairn_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn eflame_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

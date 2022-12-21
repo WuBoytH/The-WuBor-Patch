@@ -4,7 +4,7 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
-    crate::fighter::common::common_status::dash::*
+    crate::fighter::common::status::dash::*
 };
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]

@@ -30,7 +30,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         let length = sv_math::vec2_length(stick_x, stick_y);
         let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
         if escape_air_slide_stick <= length
-        || VarModule::is_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
+        || VarModule::is_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
         }
         if [
@@ -174,7 +174,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
     }
     let escape_penalty_max_count = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("escape_penalty_max_count"));
     let mut part1 = used_escape / escape_penalty_max_count as f32;
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB) {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB) {
         part1 = 1.0;
     }
     if part1 >= 0.0 {
@@ -186,9 +186,9 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
         part1 = 0.0;
     }
     let final_motion_rate;
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB) {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB) {
         final_motion_rate = 1.0 / (penalty_motion_rate * escape_penalty_max_count as f32 + 1.0);
-        VarModule::off_flag(fighter.battle_object, commons::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB);
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB);
     }
     else {
         let part2 = penalty_motion_rate * used_escape;
@@ -232,13 +232,13 @@ unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             let cat = fighter.global_table[CMD_CAT1].get_i32();
             if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_F != 0 {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-                VarModule::on_flag(fighter.battle_object, commons::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB);
+                VarModule::on_flag(fighter.battle_object, fighter::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB);
                 fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
                 return 0.into();
             }
             if cat & *FIGHTER_PAD_CMD_CAT1_FLAG_ESCAPE_B != 0 {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
-                VarModule::on_flag(fighter.battle_object, commons::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB);
+                VarModule::on_flag(fighter.battle_object, fighter::instance::flag::CANCEL_ESCAPE_TO_ESCAPE_FB);
                 fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
                 return 0.into();
             }

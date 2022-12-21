@@ -13,8 +13,8 @@ use {
 
 unsafe extern "C" fn toonlink_attackair_pre(fighter: &mut L2CFighterCommon) -> bool {
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
-        VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, 0b01111);
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::ENABLE_AERIAL_STRING);
+        VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, 0b01111);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::ENABLE_AERIAL_STRING);
     }
     false
 }

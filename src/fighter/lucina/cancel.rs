@@ -60,7 +60,7 @@ fn set_specials(specials: Vec<i32>) -> CancelInfo {
 unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon) -> bool {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     let mut flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-    VarModule::on_flag(fighter.battle_object, commons::status::flag::ENABLE_AERIAL_STRING);
+    VarModule::on_flag(fighter.battle_object, fighter::status::flag::ENABLE_AERIAL_STRING);
     if mot == hash40("attack_air_n") {
         FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
     }
@@ -77,7 +77,7 @@ unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon
         flags = 0b00000;
         FGCModule::disable_aerial(fighter, ATTACK_AIR_LW_MASK);
     }
-    VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, flags);
+    VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, flags);
     false
 }
 

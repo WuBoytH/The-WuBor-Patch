@@ -11,7 +11,7 @@ use {
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn sonic_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
+    let dash_cancel = VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,7 +37,7 @@ unsafe fn sonic_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL, dash_cancel);
+    VarModule::set_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 

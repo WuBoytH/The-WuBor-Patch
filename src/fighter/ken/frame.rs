@@ -23,7 +23,7 @@ unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::set_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
         VarModule::off_flag(fighter.battle_object, ken::instance::flag::V_TRIGGER);
-        VarModule::set_int(fighter.battle_object, commons::instance::int::TARGET_ID, 0);
+        VarModule::set_int(fighter.battle_object, fighter::instance::int::TARGET_ID, 0);
     }
 }
 

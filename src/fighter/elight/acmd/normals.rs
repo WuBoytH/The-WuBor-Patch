@@ -15,7 +15,7 @@ use {
 unsafe fn elight_attack100end(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.0, 40, 90, 0, 80, 8.0, 0.0, 10.0, 12.0, Some(0.0), Some(10.0), Some(18.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_MAGIC);
     }
     frame(fighter.lua_state_agent, 8.0);
@@ -24,7 +24,7 @@ unsafe fn elight_attack100end(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL);
     }
 }
 
@@ -88,7 +88,7 @@ unsafe fn elight_attacks3(fighter: &mut L2CAgentBase) {
     }
     macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 10.0);
-    let angle = if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+    let angle = if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
         361
     }
     else {

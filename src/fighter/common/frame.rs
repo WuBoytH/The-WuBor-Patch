@@ -35,56 +35,56 @@ unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
     }
     if FighterUtil::is_hp_mode(fighter.module_accessor)
     && !smashball::is_training_mode() {
-        VarModule::on_flag(fighter.battle_object, commons::instance::flag::IS_FGC);
+        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
         FGC_TRAINING = false;
     }
     else if FGC_TRAINING {
-        VarModule::on_flag(fighter.battle_object, commons::instance::flag::IS_FGC);
+        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
     }
     else {
-        VarModule::off_flag(fighter.battle_object, commons::instance::flag::IS_FGC);
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
     }
 }
 
 unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
     let frame = fighter.global_table[MOTION_FRAME].get_f32();
-    let hit_frame = VarModule::get_float(fighter.battle_object, commons::status::float::HIT_FRAME);
+    let hit_frame = VarModule::get_float(fighter.battle_object, fighter::status::float::HIT_FRAME);
 
     if frame < hit_frame {
-        VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, 0.0);
+        VarModule::set_float(fighter.battle_object, fighter::status::float::HIT_FRAME, 0.0);
     }
 
     if hit_frame == 0.0 {
         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-            VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, frame);
+            VarModule::set_float(fighter.battle_object, fighter::status::float::HIT_FRAME, frame);
         }
     }
     
     if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)
     && frame != hit_frame {
-        VarModule::set_float(fighter.battle_object, commons::status::float::HIT_FRAME, frame);
+        VarModule::set_float(fighter.battle_object, fighter::status::float::HIT_FRAME, frame);
     }
 }
 
 unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_float(fighter.battle_object, commons::instance::float::FLICK_DOWN) > 0.0
+    if VarModule::get_float(fighter.battle_object, fighter::instance::float::FLICK_DOWN) > 0.0
     && !fighter.global_table[IS_STOP].get_bool() {
-        VarModule::sub_float(fighter.battle_object, commons::instance::float::FLICK_DOWN, 1.0);
+        VarModule::sub_float(fighter.battle_object, fighter::instance::float::FLICK_DOWN, 1.0);
     }
 
     if fighter.global_table[STICK_Y].get_f32() < -0.8
     && fighter.global_table[FLICK_Y].get_i32() < 4
     && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0 {
-        VarModule::set_float(fighter.battle_object, commons::instance::float::FLICK_DOWN, 5.0);
+        VarModule::set_float(fighter.battle_object, fighter::instance::float::FLICK_DOWN, 5.0);
     }
 }
 
 unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
-    && VarModule::is_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP) {
-        let super_jump_frame = VarModule::get_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME);
+    && VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
+        let super_jump_frame = VarModule::get_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME);
         if fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 - super_jump_frame {
             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
             sv_kinetic_energy!(
@@ -93,8 +93,8 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
                 -air_accel_y
             );
-            VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
-            VarModule::set_float(fighter.battle_object, commons::instance::float::SUPER_JUMP_FRAME, 0.0);
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+            VarModule::set_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME, 0.0);
         }
         else {
             fighter.clear_lua_stack();

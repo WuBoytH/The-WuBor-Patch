@@ -18,7 +18,7 @@ unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_N_FGC_CANCEL);
     }
-    if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+    if !VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
         macros::FT_MOTION_RATE(fighter, 1.15);
     }
     frame(fighter.lua_state_agent, 14.0);
@@ -308,7 +308,7 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     let kbg : i32;
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let object = MiscModule::get_battle_object_from_id(otarget_id);
-    if VarModule::is_flag(object, commons::instance::flag::IS_FGC) {
+    if VarModule::is_flag(object, fighter::instance::flag::IS_FGC) {
         angle = 80;
         bkb = 90;
         kbg = 0;
@@ -323,7 +323,7 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
         AttackModule::enable_safe_pos(weapon.module_accessor);
     }
     frame(weapon.lua_state_agent, 5.0);
-    if !VarModule::is_flag(object, commons::instance::flag::IS_FGC) {
+    if !VarModule::is_flag(object, fighter::instance::flag::IS_FGC) {
         if macros::is_excute(weapon) {
             macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 5.0, 361, 15, 0, 28, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_FIREBALL, *ATTACK_REGION_NONE);
         }

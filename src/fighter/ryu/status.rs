@@ -151,7 +151,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL) {
         FGCModule::jump_cancel_check_hit(fighter, false);
     }
     0.into()

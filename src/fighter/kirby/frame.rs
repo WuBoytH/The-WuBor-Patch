@@ -23,7 +23,7 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_KIRBY_STATUS_KIND_GAOGAEN_SPECIAL_N
-        && VarModule::is_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL)
+        && VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL)
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IS_STOP].get_bool() {
@@ -32,10 +32,10 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
 
         // Give Kirby back Dark Deception if he is on the ground or grabbing ledge.
 
-        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N)
+        if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N)
         && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND) {
-            VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N);
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N);
         }
 
         // Taunt Movement

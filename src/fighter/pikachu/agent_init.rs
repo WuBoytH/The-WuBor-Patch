@@ -10,7 +10,7 @@ use {
 };
 
 pub unsafe extern "C" fn pikachu_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_LW) {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW) {
         return 0.into();
     }
     1.into()
@@ -18,7 +18,7 @@ pub unsafe extern "C" fn pikachu_special_lw_uniq(fighter: &mut L2CFighterCommon)
 
 pub unsafe extern "C" fn pikachu_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
-        VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_LW);
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW);
     }
     0.into()
 }

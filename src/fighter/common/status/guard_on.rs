@@ -94,7 +94,7 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
             }
         }
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_SHIELD_LOCK) {
-            let shield_dec1 = if !VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+            let shield_dec1 = if !VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
                 WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_dec1"))
             }
             else {

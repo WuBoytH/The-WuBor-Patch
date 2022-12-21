@@ -156,7 +156,7 @@ unsafe extern "C" fn trail_attackairn_main_loop(fighter: &mut L2CFighterCommon) 
             if cont {
                 if !only_jabs(fighter) {
                     let flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-                    VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, flags);
+                    VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, flags);
                     if aerial_cancel_common(fighter).get_bool() {
                         return 1.into();
                     }

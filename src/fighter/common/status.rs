@@ -4,6 +4,7 @@ mod run_brake;
 mod jump_squat;
 mod jump;
 mod tread_jump;
+// mod tread_fall;
 mod guard_on;
 mod guard;
 mod guard_off;
@@ -40,6 +41,7 @@ pub fn install() {
     jump_squat::install();
     jump::install();
     tread_jump::install();
+    // tread_fall::install();
     guard_on::install();
     guard::install();
     guard_off::install();

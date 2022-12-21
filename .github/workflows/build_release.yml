@@ -132,13 +132,13 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [ package-dev, get-version ]
     steps:
-      - name: Delete Version Dev Build
-        uses: dev-drprasad/delete-tag-and-release@v0.2.0
-        with:
-          delete_release: true
-          tag_name: ${{needs.get-version.outputs.version}}-dev
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Delete Version Dev Build
+      #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
+      #   with:
+      #     delete_release: true
+      #     tag_name: ${{needs.get-version.outputs.version}}-dev
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
         uses: actions/download-artifact@v3.0.0
       - name: Create Dev Prerelease

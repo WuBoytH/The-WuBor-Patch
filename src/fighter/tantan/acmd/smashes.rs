@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "tantan", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "tantan", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn tantan_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -53,7 +53,7 @@ unsafe fn tantan_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "tantan_beam", script = "game_bigshoot", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "tantan_beam", script = "game_bigshoot", category = ACMD_GAME )]
 unsafe fn tantan_beam_bigshoot(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 9.0, 361, 70, 0, 65, 2.8, 0.0, 0.0, 4.0, Some(0.0), Some(0.0), Some(30.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);

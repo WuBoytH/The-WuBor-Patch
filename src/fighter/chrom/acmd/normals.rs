@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "chrom", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "chrom", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn chrom_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -34,7 +34,7 @@ unsafe fn chrom_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "chrom", script = "effect_attack11", category = ACMD_EFFECT )]
 unsafe fn chrom_attack11_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -47,7 +47,7 @@ unsafe fn chrom_attack11_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "chrom", script = "sound_attack11", category = ACMD_SOUND )]
 unsafe fn chrom_attack11_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -55,7 +55,7 @@ unsafe fn chrom_attack11_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "chrom", script = "expression_attack11", category = ACMD_EXPRESSION )]
 unsafe fn chrom_attack11_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -70,7 +70,7 @@ unsafe fn chrom_attack11_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "chrom", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn chrom_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -88,7 +88,7 @@ unsafe fn chrom_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "chrom", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn chrom_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {

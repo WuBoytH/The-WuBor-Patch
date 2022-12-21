@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn master_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -37,7 +37,7 @@ unsafe fn master_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn master_attacklw3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
@@ -62,7 +62,7 @@ unsafe fn master_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn master_sword_attacklw3(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         WorkModule::set_float(weapon.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);

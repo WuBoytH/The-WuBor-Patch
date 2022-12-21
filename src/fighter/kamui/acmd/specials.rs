@@ -11,7 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME )]
 unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -35,7 +35,7 @@ unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME )]
 unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, 0);
@@ -53,7 +53,7 @@ unsafe fn kamui_speciallwhit(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME )]
 unsafe fn kamui_waterdragon_speciallwhit(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 26.0);
     if macros::is_excute(fighter) {

@@ -2,7 +2,6 @@ use {
     smash::{
         lua2cpp::{L2CFighterCommon, *},
         hash40,
-        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
@@ -177,145 +176,11 @@ unsafe fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32,
 }
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
-unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, _arg2: L2CValue, arg3: L2CValue) -> L2CValue {
-    let status_kind = StatusModule::status_kind(fighter.module_accessor);
-    if !arg3.get_bool() {
-        return 0.into();
-    }
-    // Disable hitlag shake (not SDI) once hitlag is over
-    // Prevents "smoke farts" from kb smoke
-    // <HDR>
+unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue) -> L2CValue {
+    // <WuBor>
     ShakeModule::stop(fighter.module_accessor);
-    // </HDR>
-    let hashmap = fighter.local_func__fighter_status_damage_2();
-    // vanilla ASDI routine (only runs for paralyze/crumple attacks)
-    if hashmap["absolute_"].get_bool() {
-        fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay(hashmap);
-    }
-    FighterUtil::cheer_damage(fighter.module_accessor);
-    fighter.check_ryu_final_damage_03(true.into());
-    let release_action = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
-    if release_action == *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_GROUND_TO_AIR {
-        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
-        let situation = fighter.global_table[SITUATION_KIND].clone();
-        fighter.global_table[PREV_SITUATION_KIND].assign(&situation);
-        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
-        GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DAMAGE_FLY_AIR);
-    }
-    WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_STOP_RELEASE_ACTION_NONE, *FIGHTER_STATUS_DAMAGE_WORK_INT_STOP_RELEASE_ACTION);
-    let mut damage_motion_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
-    let mut start_frame = 0.0;
-    if damage_motion_kind == hash40("damage_fly_roll") {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINISH_CAMERA_TARGET) {
-            damage_motion_kind = hash40("damage_fly_n");
-        }
-    }
-    let damage_lr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
-    if damage_lr != 0.0 {
-        if damage_lr * PostureModule::lr(fighter.module_accessor) >= 0.0
-        || [*FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
-            PostureModule::set_lr(fighter.module_accessor, damage_lr);
-            PostureModule::update_rot_y_lr(fighter.module_accessor);
-            WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
-        }
-        else {
-            let mut cont = false;
-            if status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY {
-                if damage_motion_kind != hash40("wall_damage") {
-                    if MotionModule::motion_kind(fighter.module_accessor) == hash40("wall_damage") {
-                        cont = false;
-                    }
-                    else {
-                        cont = true;
-                    }
-                }
-                else {
-                    cont = true;
-                }
-            }
-            if !cont {
-                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
-                    let lr = PostureModule::lr(fighter.module_accessor);
-                    TurnModule::set_turn(fighter.module_accessor, Hash40::new("back_damage"), lr, false, false, true);
-                    PostureModule::reverse_lr(fighter.module_accessor);
-                    let back_damage_effective_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("back_damage_effective_frame"));
-                    WorkModule::set_int(fighter.module_accessor, back_damage_effective_frame, *FIGHTER_INSTANCE_WORK_ID_INT_BACK_DAMAGE_EFFECTIVE_FRAME);
-                }
-                else {
-                    WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
-                }
-            }
-            else {
-                WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
-            }
-        }
-    }
-    if damage_motion_kind != hash40("invalid") {
-        if damage_motion_kind == hash40("wall_damage") {
-            start_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("wall_damage_start_frame"));
-            if MotionModule::is_flag_start_1_frame_from_motion_kind(fighter.module_accessor, Hash40::new("wall_damage")) {
-                start_frame -= 1.0;
-            }
-        }
-        if status_kind == *FIGHTER_STATUS_KIND_DAMAGE_FLY {
-            if fighter.global_table[DAMAGE_MOTION_KIND_CALLBACK].get_bool() {
-                let callable: extern "C" fn(&mut L2CFighterCommon, L2CValue) -> L2CValue = std::mem::transmute(fighter.global_table[DAMAGE_MOTION_KIND_CALLBACK].get_ptr());
-                damage_motion_kind = callable(fighter, damage_motion_kind.into()).get_u64();
-            }
-        }
-        MotionModule::change_motion(
-            fighter.module_accessor,
-            Hash40::new_raw(damage_motion_kind),
-            start_frame,
-            1.0,
-            false,
-            0.0,
-            false,
-            false
-        );
-        if status_kind != *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL {
-            if [*FIGHTER_STATUS_KIND_DAMAGE_AIR, *FIGHTER_STATUS_KIND_DAMAGE_FLY, *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR].contains(&status_kind) {
-                let is_pierce = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_TO_PIERCE);
-                fighter.set_damage_motion_rate(damage_motion_kind.into(), start_frame.into(), is_pierce.into());
-                let damage_fly_angle_compose = fighter.sub_FighterStatusDamage_get_damage_fly_angle_compose().get_i32();
-                let damage_fly_angle = FighterUtil::set_damage_fly_angle(fighter.module_accessor, 0.0, 1.0, 360.0, MotionNodeRotateCompose{_address: damage_fly_angle_compose as u8});
-                WorkModule::set_float(fighter.module_accessor, damage_fly_angle, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_ROT_ANGLE);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_ROLL_SET_ANGLE);
-                WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
-                return 0.into();
-            }
-        }
-        else {
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINISH_CAMERA_TARGET) {
-                let damage_fly_angle_compose = fighter.sub_FighterStatusDamage_get_damage_fly_angle_compose().get_i32();
-                let damage_fly_angle = FighterUtil::set_damage_fly_angle(fighter.module_accessor, 0.0, 1.0, 180.0, MotionNodeRotateCompose{_address: damage_fly_angle_compose as u8});
-                WorkModule::set_float(fighter.module_accessor, damage_fly_angle, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_ROT_ANGLE);
-                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_ROLL_SET_ANGLE);
-            }
-            let mut cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(damage_motion_kind), true);
-            if cancel_frame <= 0.0 {
-                cancel_frame = MotionModule::end_frame(fighter.module_accessor);
-            }
-            let reaction_frame_mul_speed_up = fighter.reaction_frame_mul_speed_up().get_f32();
-            if 0.0 < reaction_frame_mul_speed_up {
-                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_FINISH_CAMERA_TARGET) {
-                    let something = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x255c556cd3);
-                    let mut frame = reaction_frame_mul_speed_up - something;
-                    frame %= cancel_frame;
-                    if 0.0 < frame {
-                        MotionModule::set_frame(fighter.module_accessor, frame, true);
-                    }
-                }
-                else {
-                    let rate = cancel_frame / reaction_frame_mul_speed_up;
-                    MotionModule::set_rate(fighter.module_accessor, rate);
-                }
-            }
-        }
-        WorkModule::set_int64(fighter.module_accessor, hash40("invalid") as i64, *FIGHTER_STATUS_DAMAGE_WORK_INT_MOTION_KIND);
-    }
-    0.into()
+    // </WuBor>
+    original!()(fighter, arg2, arg3)
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

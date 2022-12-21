@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "demon", script = "game_catchattack", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_catchattack", category = ACMD_GAME )]
 unsafe fn demon_pummel(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -21,7 +21,7 @@ unsafe fn demon_pummel(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
-#[acmd_script( agent = "demon", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_throwlw", category = ACMD_GAME )]
 unsafe fn demon_throwlw(fighter: &mut L2CAgentBase) {
     if !smash_rs::app::FighterCutInManager::is_vr_mode() {
         if smash_rs::app::FighterCutInManager::is_one_on_one_including_thrown(&*(fighter.module_accessor as *const smash_rs::app::BattleObjectModuleAccessor)) {
@@ -67,7 +67,7 @@ unsafe fn demon_throwlw(fighter: &mut L2CAgentBase) {
         macros::CAM_ZOOM_OUT(fighter);
     }
 }
-#[acmd_script( agent = "demon", script = "game_catchcommand", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_catchcommand", category = ACMD_GAME )]
 unsafe fn demon_catchcommand(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

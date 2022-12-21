@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "daisy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "daisy", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn daisy_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -34,7 +34,7 @@ unsafe fn daisy_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn daisy_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
@@ -61,7 +61,7 @@ unsafe fn daisy_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "daisy", script = "effect_attackairlw", category = ACMD_EFFECT )]
 unsafe fn daisy_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
@@ -79,7 +79,7 @@ unsafe fn daisy_attackairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "daisy", script = "sound_attackairlw", category = ACMD_SOUND )]
 unsafe fn daisy_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
@@ -96,7 +96,7 @@ unsafe fn daisy_attackairlw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "daisy", script = "expression_attackairlw", category = ACMD_EXPRESSION )]
 unsafe fn daisy_attackairlw_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {

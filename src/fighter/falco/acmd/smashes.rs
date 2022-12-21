@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "falco", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "falco", script = "game_attackhi4", category = ACMD_GAME )]
 unsafe fn falco_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -62,7 +62,7 @@ unsafe fn falco_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME )]
 unsafe fn falco_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

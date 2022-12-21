@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "metaknight", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME )]
 unsafe fn metaknight_specialnstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
@@ -17,7 +17,7 @@ unsafe fn metaknight_specialnstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "metaknight", scripts = ["effect_specialnstart", "effect_specialairnstart"], category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "metaknight", scripts = ["effect_specialnstart", "effect_specialairnstart"], category = ACMD_EFFECT )]
 unsafe fn metaknight_specialnstart_eff(fighter: &mut L2CAgentBase) {
     WorkModule::set_int(fighter.module_accessor, 8, *FIGHTER_METAKNIGHT_STATUS_SPECIAL_N_SPIN_WORK_INT_EFFECT_START_FRAME);
     frame(fighter.lua_state_agent, 10.0);
@@ -26,7 +26,7 @@ unsafe fn metaknight_specialnstart_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_specialnspin", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_specialnspin", category = ACMD_GAME )]
 unsafe fn metaknight_specialnspin(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 14.0, 55, 44, 0, 90, 9.0, 0.0, 8.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
@@ -39,7 +39,7 @@ unsafe fn metaknight_specialnspin(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_specialhiloop", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "metaknight", script = "game_specialhiloop", category = ACMD_GAME )]
 unsafe fn metaknight_specialhiloop(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);

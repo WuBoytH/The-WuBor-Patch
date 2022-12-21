@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "eflame", script = "game_attack100end", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attack100end", category = ACMD_GAME )]
 unsafe fn eflame_attack100end(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -28,7 +28,7 @@ unsafe fn eflame_attack100end(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -90,7 +90,7 @@ unsafe fn eflame_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "eflame", script = "game_attackhi3", category = ACMD_GAME )]
 unsafe fn eflame_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);

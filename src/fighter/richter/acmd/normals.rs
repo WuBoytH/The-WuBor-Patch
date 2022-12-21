@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "richter", script = "game_attack100end", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "richter", script = "game_attack100end", category = ACMD_GAME )]
 unsafe fn richter_attack100end(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

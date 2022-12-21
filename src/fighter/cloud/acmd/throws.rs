@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME )]
 unsafe fn cloud_catch(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {

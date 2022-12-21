@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "master", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "master", script = "game_escapeairslide", category = ACMD_GAME )]
 unsafe fn master_escapeairslide(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

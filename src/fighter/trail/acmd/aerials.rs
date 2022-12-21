@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "trail", script = "game_attackairn3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "trail", script = "game_attackairn3", category = ACMD_GAME )]
 unsafe fn trail_attackairn3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -33,7 +33,7 @@ unsafe fn trail_attackairn3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "trail", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn trail_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -62,7 +62,7 @@ unsafe fn trail_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "trail", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn trail_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -103,7 +103,7 @@ unsafe fn trail_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "trail", script = "game_landingairlw", category = ACMD_GAME )]
 unsafe fn trail_landingairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

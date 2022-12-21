@@ -10,7 +10,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "pitb", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pitb", script = "game_throwlw", category = ACMD_GAME )]
 unsafe fn pitb_throwlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

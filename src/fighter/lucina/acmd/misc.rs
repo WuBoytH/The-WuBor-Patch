@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT )]
 unsafe fn lucina_run_eff(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(fighter.lua_state_agent, 4.0);
@@ -34,7 +34,7 @@ unsafe fn lucina_run_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND )]
 unsafe fn lucina_run_snd(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(fighter.lua_state_agent, 5.0);
@@ -59,7 +59,7 @@ unsafe fn lucina_run_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_run", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "lucina", script = "expression_run", category = ACMD_EXPRESSION )]
 unsafe fn lucina_run_exp(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         if macros::is_excute(fighter) {

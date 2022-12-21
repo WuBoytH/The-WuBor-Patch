@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "demon", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack11", category = ACMD_GAME )]
 unsafe fn demon_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -36,7 +36,7 @@ unsafe fn demon_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack13", category = ACMD_GAME )]
 unsafe fn demon_attack13(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -60,7 +60,7 @@ unsafe fn demon_attack13(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack14", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack14", category = ACMD_GAME )]
 unsafe fn demon_attack14(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -83,7 +83,7 @@ unsafe fn demon_attack14(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack15", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack15", category = ACMD_GAME )]
 unsafe fn demon_attack15(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -108,7 +108,7 @@ unsafe fn demon_attack15(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack16", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack16", category = ACMD_GAME )]
 unsafe fn demon_attack16(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -144,7 +144,7 @@ unsafe fn demon_attack16(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack17", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack17", category = ACMD_GAME )]
 unsafe fn demon_attack17(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -167,7 +167,7 @@ unsafe fn demon_attack17(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack18", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack18", category = ACMD_GAME )]
 unsafe fn demon_attack18(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -192,7 +192,7 @@ unsafe fn demon_attack18(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack19", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack19", category = ACMD_GAME )]
 unsafe fn demon_attack19(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -216,7 +216,7 @@ unsafe fn demon_attack19(fighter: &mut L2CAgentBase) {
 
 // Twin Fangs Stature Smash
 
-#[acmd_script( agent = "demon", script = "game_attack142", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attack142", category = ACMD_GAME )]
 unsafe fn demon_attack142(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.8);
@@ -251,7 +251,7 @@ unsafe fn demon_attack142(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "effect_attack142", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "demon", script = "effect_attack142", category = ACMD_EFFECT )]
 unsafe fn demon_attack142_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("null"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -268,7 +268,7 @@ unsafe fn demon_attack142_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "sound_attack142", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "demon", script = "sound_attack142", category = ACMD_SOUND )]
 unsafe fn demon_attack142_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
@@ -277,7 +277,7 @@ unsafe fn demon_attack142_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_attack142", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "demon", script = "expression_attack142", category = ACMD_EXPRESSION )]
 unsafe fn demon_attack142_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

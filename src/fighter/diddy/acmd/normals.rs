@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "diddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "diddy", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn diddy_attackdash(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);

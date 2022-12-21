@@ -13,7 +13,7 @@ use {
     super::super::vl
 };
 
-#[acmd_script( agent = "mario", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME )]
 unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_N_FGC_CANCEL);
@@ -27,7 +27,7 @@ unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = [ "game_specials", "game_specialairs" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", scripts = [ "game_specials", "game_specialairs" ], category = ACMD_GAME )]
 unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::set_float(fighter.module_accessor, 9.0, *FIGHTER_MARIO_STATUS_SPECIAL_S_WORK_ID_FLOAT_REFLECT_MOTION_FRAME);
@@ -67,7 +67,7 @@ unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_specials", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_specials", category = ACMD_EFFECT )]
 unsafe fn mario_specials_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -80,7 +80,7 @@ unsafe fn mario_specials_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_specialairs", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_specialairs", category = ACMD_EFFECT )]
 unsafe fn mario_specialairs_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -93,7 +93,7 @@ unsafe fn mario_specialairs_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_specialhi", category = ACMD_GAME )]
 unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 3.0);
@@ -151,11 +151,11 @@ unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_speciallwstart", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_speciallwstart", category = ACMD_SOUND )]
 unsafe fn mario_longjumpstart_snd(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "mario", script = "game_speciallwlight", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_speciallwlight", category = ACMD_GAME )]
 unsafe fn mario_longjump(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -184,39 +184,39 @@ unsafe fn mario_longjump(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_speciallwlight", category = ACMD_SOUND )]
 unsafe fn mario_longjump_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("vc_mario_009"));
     }
 }
 
-#[acmd_script( agent = "mario", script = "expression_speciallwlight", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "mario", script = "expression_speciallwlight", category = ACMD_EXPRESSION )]
 unsafe fn mario_longjump_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_jump"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_speciallwhold", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_speciallwhold", category = ACMD_SOUND )]
 unsafe fn mario_longjumpland_snd(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "mario", script = "effect_speciallwhold", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_speciallwhold", category = ACMD_EFFECT )]
 unsafe fn mario_longjumpland_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke_s"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-#[acmd_script( agent = "mario", script = "expression_speciallwhold", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "mario", script = "expression_speciallwhold", category = ACMD_EXPRESSION )]
 unsafe fn mario_longjumpland_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specialairlwstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_specialairlwstart", category = ACMD_GAME )]
 unsafe fn mario_groundpoundstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -224,7 +224,7 @@ unsafe fn mario_groundpoundstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_specialairlwstart", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_specialairlwstart", category = ACMD_SOUND )]
 unsafe fn mario_groundpoundstart_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -232,18 +232,18 @@ unsafe fn mario_groundpoundstart_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specialairlwlight", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_specialairlwlight", category = ACMD_GAME )]
 unsafe fn mario_groundpoundfall(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 16.0, 30, 50, 0, 50, 5.0, 0.0, 2.8, -2.0, Some(0.0), Some(2.8), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_HIP);
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_specialairlwlight", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_specialairlwlight", category = ACMD_SOUND )]
 unsafe fn mario_groundpoundfall_snd(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "mario", script = "expression_specialairlwlight", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "mario", script = "expression_specialairlwlight", category = ACMD_EXPRESSION )]
 unsafe fn mario_groundpoundfall_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackl"), 0);
@@ -254,15 +254,15 @@ unsafe fn mario_groundpoundfall_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specialairlwheavy", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_specialairlwheavy", category = ACMD_GAME )]
 unsafe fn mario_groundpoundcancel(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "mario", script = "sound_specialairlwheavy", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_specialairlwheavy", category = ACMD_SOUND )]
 unsafe fn mario_groundpoundcancel_snd(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "mario", script = "game_specialairlwhold", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", script = "game_specialairlwhold", category = ACMD_GAME )]
 unsafe fn mario_groundpoundland(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 30.0 / 25.0);
     frame(fighter.lua_state_agent, 1.0);
@@ -275,21 +275,21 @@ unsafe fn mario_groundpoundland(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_specialairlwhold", category = ACMD_SOUND, low_priority )]
+#[acmd_script( agent = "mario", script = "sound_specialairlwhold", category = ACMD_SOUND )]
 unsafe fn mario_groundpoundland_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_mario_special_l03"));
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_specialairlwhold", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "mario", script = "effect_specialairlwhold", category = ACMD_EFFECT )]
 unsafe fn mario_groundpoundland_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-#[acmd_script( agent = "mario", script = "expression_specialairlwhold", category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "mario", script = "expression_specialairlwhold", category = ACMD_EXPRESSION )]
 unsafe fn mario_groundpoundland_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_impact"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -301,7 +301,7 @@ unsafe fn mario_groundpoundland_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario_fireball", script = "game_regular", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario_fireball", script = "game_regular", category = ACMD_GAME )]
 unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
     let angle : u64;
     let bkb : i32;

@@ -178,6 +178,41 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
     0.88
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_EscapeAir)]
+unsafe fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_escape_air_common();
+    let is_slide = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+    let mot = if is_slide {
+        Hash40::new("escape_air_slide")
+    }
+    else {
+        Hash40::new("escape_air")
+    };
+    MotionModule::change_motion(
+        fighter.module_accessor,
+        mot,
+        0.0,
+        1.0,
+        false,
+        0.0,
+        false,
+        false
+    );
+    if !is_slide {
+        let rate_penalty = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
+        let add_xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
+        if 0 < add_xlu {
+            let xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
+            let some = xlu - add_xlu;
+            let ratio = xlu as f32 / some as f32;
+            let inverse = 1.0 / ratio;
+            let rate = inverse * rate_penalty;
+            MotionModule::set_rate(fighter.module_accessor, rate);
+        }
+    }
+    fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_EscapeAir_Main as *const () as _))
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
 unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
@@ -619,6 +654,11 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusUniqProcessEscapeAir_calc_param)]
+pub unsafe fn fighterstatusuniqprocessescapeair_calc_param(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
 unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
@@ -696,10 +736,12 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             setup_escape_air_slide_common,
+            status_escapeair,
             sub_escape_air_common_main,
             sub_escape_air_common_strans_main,
             sub_escape_air_uniq,
             exec_escape_air_slide,
+            fighterstatusuniqprocessescapeair_calc_param,
             status_end_escapeair
         );
     }

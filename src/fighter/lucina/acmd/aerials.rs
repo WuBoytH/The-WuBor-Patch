@@ -29,7 +29,7 @@ unsafe fn lucina_attackairn(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneer"), 4.5 * ratio, 51, 70, 0, 40, 3.5, 5.5, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("kneer"), 4.5 * ratio, 51, 70, 0, 40, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 2, 0, Hash40::new("kneel"), 4.5 * ratio, 51, 70, 0, 40, 3.0, 1.5, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -38,7 +38,7 @@ unsafe fn lucina_attackairn(fighter: &mut L2CAgentBase) {
     wait(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
 }
 
@@ -110,7 +110,7 @@ unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -118,7 +118,7 @@ unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
@@ -180,7 +180,7 @@ unsafe fn lucina_attackairb(fighter: &mut L2CAgentBase) {
         1.0
     };
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 9.0 * ratio, 361, 70, 0, 55, 2.0, 0.0, 4.5, 14.5, Some(0.0), Some(6.0), Some(14.5), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 9.0 * ratio, 361, 70, 0, 55, 2.5, 0.0, 6.5, 12.0, Some(0.0), Some(8.0), Some(12.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 9.0 * ratio, 361, 70, 0, 55, 3.0, 0.0, 10.0, 9.0, Some(0.0), Some(10.5), Some(9.0), 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -209,7 +209,7 @@ unsafe fn lucina_attackairb(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 32.0);
     if macros::is_excute(fighter) {
@@ -286,7 +286,7 @@ unsafe fn lucina_attackairhi(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 1, 0, Hash40::new("armr"), 7.0 * ratio, 59, 48, 0, 40, 3.0, 0.0, 1.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 2, 0, Hash40::new("colonells"), 7.0 * ratio, 59, 48, 0, 40, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(fighter, 3, 0, Hash40::new("sword1"), 7.0 * ratio, 59, 48, 0, 40, 3.5, 1.0, 0.0, 6.7, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        VarModule::on_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
@@ -294,7 +294,7 @@ unsafe fn lucina_attackairhi(fighter: &mut L2CAgentBase) {
     }
     wait(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(fighter.lua_state_agent, 31.0);
     if macros::is_excute(fighter) {

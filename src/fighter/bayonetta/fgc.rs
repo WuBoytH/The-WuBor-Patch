@@ -21,7 +21,7 @@ pub unsafe extern "C" fn disable_during_bullet_arts(fighter: &mut L2CFighterComm
 pub unsafe extern "C" fn bayo_disable_aerials(fighter: &mut L2CFighterCommon) -> bool {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     let flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-    VarModule::on_flag(fighter.battle_object, commons::status::flag::ENABLE_AERIAL_STRING);
+    VarModule::on_flag(fighter.battle_object, fighter::status::flag::ENABLE_AERIAL_STRING);
     if mot == hash40("attack_air_n") {
         FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
     }
@@ -37,7 +37,7 @@ pub unsafe extern "C" fn bayo_disable_aerials(fighter: &mut L2CFighterCommon) ->
     else if mot == hash40("attack_air_lw") {
         FGCModule::disable_aerial(fighter, ATTACK_AIR_LW_MASK);
     }
-    VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, flags);
+    VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, flags);
     disable_during_bullet_arts(fighter)
 }
 

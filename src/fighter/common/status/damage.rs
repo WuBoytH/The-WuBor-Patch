@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     wubor_utils::table_const::*,
-    super::super::common_param
+    super::super::param
 };
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Damage)]
@@ -123,8 +123,8 @@ unsafe fn fighterstatusdamage_init_damage_speed_up_by_speed(
     angle: L2CValue,
     some_bool: L2CValue
 ) {
-    let factor_min = common_param::damage::damage_speed_up_speed_min;
-    let factor_max = common_param::damage::damage_speed_up_speed_max;
+    let factor_min = param::damage::damage_speed_up_speed_min;
+    let factor_max = param::damage::damage_speed_up_speed_max;
     let speed_up_mag = WorkModule::get_param_int(fighter.module_accessor, hash40("battle_object"), hash40("damage_fly_speed_up_max_mag")) as f32;
     if !check_damage_speed_up_by_speed(fighter.module_accessor, factor.get_f32())
     && !some_bool.get_bool() {
@@ -159,8 +159,13 @@ unsafe fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModul
     let log = DamageModule::damage_log(module_accessor);
     if log != 0 {
         let log = log as *mut u8;
-        !(speed <= common_param::damage::damage_speed_up_speed_min || *log.add(0x8f) != 0 || *log.add(0x92) != 0
-        || *log.add(0x93) != 0 || *log.add(0x98) != 0)
+        if speed <= param::damage::damage_speed_up_speed_min || *log.add(0x8f) != 0 || *log.add(0x92) != 0
+        || *log.add(0x93) != 0 || *log.add(0x98) != 0 {
+            false
+        }
+        else {
+            true
+        }
     }
     else {
         false

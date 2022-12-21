@@ -14,7 +14,7 @@ use {
         cancels::*,
         table_const::*
     },
-    super::super::common::common_status::attack::*
+    super::super::common::status::attack::*
 };
 
 #[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

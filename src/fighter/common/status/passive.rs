@@ -8,7 +8,7 @@ use {
     },
     smash_script::*,
     wubor_utils::table_const::*,
-    super::super::common_param::*
+    super::super::param::*
 };
 
 #[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]

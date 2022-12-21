@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "pitb", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pitb", script = "game_attacks3", category = ACMD_GAME )]
 unsafe fn pitb_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -21,7 +21,7 @@ unsafe fn pitb_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "pitb", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn pitb_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "elight", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_escapeairslide", category = ACMD_GAME )]
 unsafe fn elight_escapeairslide(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
@@ -22,7 +22,7 @@ unsafe fn elight_escapeairslide(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_escapeairslideforesight", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "elight", script = "game_escapeairslideforesight", category = ACMD_GAME )]
 unsafe fn elight_escapeairslideforesight(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

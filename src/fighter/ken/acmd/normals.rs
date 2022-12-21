@@ -13,7 +13,7 @@ use {
 
 // Make Quick Step (non-prox light f tilt) have step kick properties
 
-#[acmd_script( agent = "ken", script = "game_attacks3w", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_attacks3w", category = ACMD_GAME )]
 unsafe fn ken_attacks3w(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -55,7 +55,7 @@ unsafe fn ken_attacks3w(fighter: &mut L2CAgentBase) {
 
 // Nerfed damage on Inazuma Kick, but increased combo potential
 
-#[acmd_script( agent = "ken", script = "game_attackcommand3", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "ken", script = "game_attackcommand3", category = ACMD_GAME )]
 unsafe fn ken_attackcommand3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);

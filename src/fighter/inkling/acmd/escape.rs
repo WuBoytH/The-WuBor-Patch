@@ -10,7 +10,7 @@ use {
     super::super::helper::*
 };
 
-#[acmd_script( agent = "inkling", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "inkling", script = "game_escapeairslide", category = ACMD_GAME )]
 unsafe fn inkling_escapeairslide(fighter: &mut L2CAgentBase) {
     inkling_generate_squid_helper(fighter);
     frame(fighter.lua_state_agent, 6.0);

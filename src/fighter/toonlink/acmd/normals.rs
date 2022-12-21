@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME )]
 unsafe fn toonlink_attackdash(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.7);
     frame(fighter.lua_state_agent, 8.0);

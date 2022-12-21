@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gekkouga", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn gekkouga_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -37,7 +37,7 @@ unsafe fn gekkouga_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gekkouga", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn gekkouga_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     macros::FT_MOTION_RATE(fighter, 0.8);
@@ -64,7 +64,7 @@ unsafe fn gekkouga_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gekkouga", script = "game_attackairb", category = ACMD_GAME )]
 unsafe fn gekkouga_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

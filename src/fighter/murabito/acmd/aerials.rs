@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "murabito", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "murabito", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn murabito_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

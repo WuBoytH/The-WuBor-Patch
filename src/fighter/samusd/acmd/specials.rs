@@ -13,7 +13,7 @@ use {
     super::super::vl
 };
 
-#[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME )]
 unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 23.0 / 14.0);
     frame(fighter.lua_state_agent, 2.0);
@@ -35,7 +35,7 @@ unsafe fn samusd_specialnstart(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_special", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_special", category = ACMD_GAME )]
 unsafe fn samusd_special(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.667);
@@ -46,7 +46,7 @@ unsafe fn samusd_special(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialair", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_specialair", category = ACMD_GAME )]
 unsafe fn samusd_specialair(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.667);
@@ -61,7 +61,7 @@ unsafe fn samusd_specialair(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specials", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_specials", category = ACMD_GAME )]
 unsafe fn samusd_specials(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.667);
@@ -72,7 +72,7 @@ unsafe fn samusd_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_specialairs", category = ACMD_GAME )]
 unsafe fn samusd_specialairs(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.667);
@@ -87,7 +87,7 @@ unsafe fn samusd_specialairs(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_specialhi", category = ACMD_GAME )]
 unsafe fn samusd_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
@@ -142,7 +142,7 @@ unsafe fn samusd_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_speciallw", category = ACMD_GAME )]
 unsafe fn samusd_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -188,7 +188,7 @@ unsafe fn samusd_speciallw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd", script = "game_specialairlw", category = ACMD_GAME )]
 unsafe fn samusd_specialairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
     if macros::is_excute(fighter) {
@@ -226,7 +226,7 @@ unsafe fn samusd_specialairlw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[acmd_script( agent = "samusd", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "samusd", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT )]
 unsafe fn samusd_speciallw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -238,7 +238,7 @@ unsafe fn samusd_speciallw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd_cshot", script = "game_shoot", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd_cshot", script = "game_shoot", category = ACMD_GAME )]
 unsafe fn samusd_cshot_shoot(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 9.0, 85, 20, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
@@ -247,11 +247,11 @@ unsafe fn samusd_cshot_shoot(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME )]
 unsafe fn samusd_missile_homing(_weapon: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "samusd_missile", script = "game_hburst", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd_missile", script = "game_hburst", category = ACMD_GAME )]
 unsafe fn samusd_missile_hburst(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 8.0, 30, 25, 0, 45, 15.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
@@ -264,7 +264,7 @@ unsafe fn samusd_missile_hburst(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME )]
 unsafe fn samusd_supermissile_ready(_weapon: &mut L2CAgentBase) {
 }
 

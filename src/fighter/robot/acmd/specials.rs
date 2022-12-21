@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "robot", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "robot", script = "game_specialairsend", category = ACMD_GAME )]
 unsafe fn robot_specialairsend(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {

@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME )]
 unsafe fn gaogaen_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -181,7 +181,7 @@ unsafe fn gaogaen_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME )]
 unsafe fn gaogaen_specialairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -325,7 +325,7 @@ unsafe fn gaogaen_specialairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialsstart", category = ACMD_GAME )]
 unsafe fn gaogaen_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -372,7 +372,7 @@ unsafe fn gaogaen_specialsstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairsstart", category = ACMD_GAME )]
 unsafe fn gaogaen_specialairsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -420,7 +420,7 @@ unsafe fn gaogaen_specialairsstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME )]
 unsafe fn gaogaen_specialsshoulder(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
@@ -465,7 +465,7 @@ unsafe fn gaogaen_specialsshoulder(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME )]
 unsafe fn gaogaen_specialairsshoulder(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         damage!(fighter, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
@@ -510,7 +510,7 @@ unsafe fn gaogaen_specialairsshoulder(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME )]
 unsafe fn gaogaen_specialslariat(fighter: &mut L2CAgentBase) {
     if VarModule::get_int(fighter.battle_object, gaogaen::instance::int::REVENGE) > 0 {
         let mut dmg = 8.0 + ((1.0/7.0) * DamageModule::damage(fighter.module_accessor, 0));
@@ -582,7 +582,7 @@ unsafe fn gaogaen_specialslariat(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME )]
 unsafe fn gaogaen_specialairhifall(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -616,7 +616,7 @@ unsafe fn gaogaen_specialairhifall(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhifall2", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", script = "game_specialairhifall2", category = ACMD_GAME )]
 unsafe fn gaogaen_specialairhifall_2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -650,7 +650,7 @@ unsafe fn gaogaen_specialairhifall_2(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME )]
 unsafe fn gaogaen_speciallwstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::set_int(fighter.battle_object, gaogaen::instance::int::REVENGE, 0);

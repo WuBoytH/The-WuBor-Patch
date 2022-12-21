@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "packun", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "packun", script = "game_attackairn", category = ACMD_GAME )]
 unsafe fn packun_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -38,7 +38,7 @@ unsafe fn packun_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "packun", script = "game_attackairf", category = ACMD_GAME )]
 unsafe fn packun_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -62,7 +62,7 @@ unsafe fn packun_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "packun", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn packun_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -92,7 +92,7 @@ unsafe fn packun_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "packun", script = "game_attackairlw", category = ACMD_GAME )]
 unsafe fn packun_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

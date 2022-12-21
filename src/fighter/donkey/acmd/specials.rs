@@ -8,7 +8,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "donkey", script = "game_specials", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "donkey", script = "game_specials", category = ACMD_GAME )]
 unsafe fn donkey_specials(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
@@ -19,7 +19,7 @@ unsafe fn donkey_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "donkey", script = "game_specialairs", category = ACMD_GAME )]
 unsafe fn donkey_specialairs(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 30.0/19.0);

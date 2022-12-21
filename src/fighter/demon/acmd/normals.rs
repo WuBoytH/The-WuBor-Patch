@@ -8,7 +8,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "demon", script = "game_attacklw3cancel", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "demon", script = "game_attacklw3cancel", category = ACMD_GAME )]
 unsafe fn demon_attacklw3cancel(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);

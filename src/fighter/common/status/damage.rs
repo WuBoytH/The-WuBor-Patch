@@ -159,7 +159,7 @@ unsafe fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModul
     let log = DamageModule::damage_log(module_accessor);
     if log != 0 {
         let log = log as *mut u8;
-        !(speed <= common_param::damage::damage_speed_up_speed_min || *log.add(0x8f) != 0 || *log.add(0x92) != 0
+        !(speed <= param::damage::damage_speed_up_speed_min || *log.add(0x8f) != 0 || *log.add(0x92) != 0
         || *log.add(0x93) != 0 || *log.add(0x98) != 0)
     }
     else {

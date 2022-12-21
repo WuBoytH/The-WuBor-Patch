@@ -20,9 +20,6 @@ pub unsafe fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2C
     }
     let is_attack = element_is_change_attack(fighter.module_accessor);
     VarModule::set_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK, is_attack);
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND && is_attack {
-        VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_LW);
-    }
     let cond = lua_bind::FighterManager::is_result_mode(singletons::FighterManager());
     WorkModule::set_flag(fighter.module_accessor, cond, *FIGHTER_ELEMENT_STATUS_SPECIAL_LW_IS_RESULT);
     element_special_lw_out_mot_helper(fighter, true);
@@ -63,13 +60,18 @@ unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, firs
             );
         }
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
-        let kinetic = if is_attack {
-            *FIGHTER_KINETIC_TYPE_MOTION_FALL
+        if is_attack {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_FALL);
+            sv_kinetic_energy!(
+                set_speed_mul,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                1.2
+            );
         }
         else {
-            *FIGHTER_KINETIC_TYPE_FALL
-        };
-        KineticModule::change_kinetic(fighter.module_accessor, kinetic);
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        }
         let out_speed_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("out_speed_x_mul"));
         let out_accel_x_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("out_accel_x_mul"));
         let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
@@ -177,30 +179,27 @@ unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, firs
                 false
             );
         }
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         if is_attack {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
             sv_kinetic_energy!(
-                reset_energy,
+                set_speed_mul,
                 fighter,
                 FIGHTER_KINETIC_ENERGY_ID_MOTION,
-                ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
+                1.1
+            );
+        }
+        else {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
+            let out_brake_x_ground = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("out_brake_x_ground"));
+            sv_kinetic_energy!(
+                set_brake,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_STOP,
+                out_brake_x_ground,
                 0.0
             );
-            KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         }
-        let out_brake_x_ground = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("out_brake_x_ground"));
-        sv_kinetic_energy!(
-            set_brake,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_STOP,
-            out_brake_x_ground,
-            0.0
-        );
     }
 }
 

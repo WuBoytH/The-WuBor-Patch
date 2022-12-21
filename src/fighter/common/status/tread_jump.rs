@@ -62,11 +62,23 @@ unsafe fn sub_tread_jump_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_end_TreadJump)]
+unsafe fn status_end_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let tread_jump_disable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("tread_jump_disable_frame"));
+    WorkModule::set_int(fighter.module_accessor, tread_jump_disable_frame, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME);
+    // if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_JUMP {
+    //     let tread_jump_after_xlu_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("tread_jump_after_xlu_frame"));
+    //     HitModule::set_xlu_frame_global(fighter.module_accessor, tread_jump_after_xlu_frame, 0);
+    // }
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_treadjump,
-            sub_tread_jump_uniq_check
+            sub_tread_jump_uniq_check,
+            status_end_treadjump
         );
     }
 }

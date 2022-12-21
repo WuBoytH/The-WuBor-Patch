@@ -9,7 +9,7 @@ use {
     wubor_utils::table_const::*,
     custom_status::*,
     custom_var::*,
-    crate::fighter::common::common_status::attack::only_jabs,
+    crate::fighter::common::status::attack::only_jabs,
     wubor_utils::vars::*
 };
 

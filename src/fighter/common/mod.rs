@@ -1,19 +1,19 @@
-mod common_frame;
-pub mod common_status;
+mod frame;
+pub mod status;
 mod agent_status;
 pub mod agent_inits;
-pub mod common_param;
+pub mod param;
 // pub mod command_inputs;
-pub mod common_fgc;
-mod common_vtable;
+pub mod fgc;
+mod vtable_hook;
 // mod energy;
 
 pub fn install() {
-    common_frame::install();
-    common_status::install();
+    frame::install();
+    status::install();
     // agent_inits::install();
     agent_status::install();
-    common_fgc::install();
-    common_vtable::install();
+    fgc::install();
+    vtable_hook::install();
     // energy::install();
 }

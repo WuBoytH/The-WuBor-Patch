@@ -9,7 +9,7 @@ use {
     custom_var::*,
     custom_cancel::*,
     wubor_utils::vars::*,
-    crate::fighter::common::common_fgc::*
+    crate::fighter::common::fgc::*
 };
 
 unsafe extern "C" fn elight_attackair_set_cancels(fighter: &mut L2CFighterCommon) -> bool {

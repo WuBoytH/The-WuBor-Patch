@@ -14,7 +14,7 @@ use {
         vars::*,
         table_const::*
     },
-    super::super::common::common_status::dash::*,
+    super::super::common::status::dash::*,
     super::helper::*
 };
 

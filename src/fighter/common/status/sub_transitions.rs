@@ -11,7 +11,7 @@ use {
         wua_bind::*,
         table_const::*
     },
-    crate::fighter::common::common_status::attack::only_jabs
+    crate::fighter::common::status::attack::only_jabs
 };
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]

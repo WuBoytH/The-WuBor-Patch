@@ -67,7 +67,7 @@ pub mod FGCModule {
 
     /// A utility function that just checks if you're within the cancel window or not.
     pub unsafe fn check_cancel_window(fighter: &mut L2CFighterCommon) -> bool {
-        let hit_frame = VarModule::get_float(fighter.battle_object, commons::status::float::HIT_FRAME);
+        let hit_frame = VarModule::get_float(fighter.battle_object, fighter::status::float::HIT_FRAME);
         let motion_frame = fighter.global_table[MOTION_FRAME].get_f32();
         motion_frame - hit_frame <= 10.0 && !fighter.global_table[IS_STOP].get_bool() && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     }
@@ -107,7 +107,7 @@ pub mod FGCModule {
         || (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) && dash_on_block))
         && check_cancel_window(fighter)
         && ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & cat != 0 {
-            VarModule::on_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
+            VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
             StatusModule::change_status_request_from_script(fighter.module_accessor, status, true);
             return true.into();
         }
@@ -122,7 +122,7 @@ pub mod FGCModule {
         && check_cancel_window(fighter))
         || whiff {
             if airdash_cancel_common(fighter, sit.into()).get_bool() {
-                VarModule::on_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+                VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
                 return true.into();
             }
         }
@@ -297,11 +297,11 @@ pub mod FGCModule {
     /// Disables a grounded attack. Used for cancel systems with complex cancel trees.
     pub unsafe fn disable_ground_normal(fighter: &mut L2CFighterCommon, ground_normal_mask: i32) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let mut used_ground_normals = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS);
+            let mut used_ground_normals = VarModule::get_int(fighter.battle_object, fighter::instance::int::USED_GROUND_NORMALS);
             if used_ground_normals & ground_normal_mask == 0 {
                 used_ground_normals += ground_normal_mask;
             }
-            VarModule::set_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS, used_ground_normals);
+            VarModule::set_int(fighter.battle_object, fighter::instance::int::USED_GROUND_NORMALS, used_ground_normals);
         }
     }
 
@@ -309,7 +309,7 @@ pub mod FGCModule {
     /// Used for cancel systems with complex cancel trees.
     pub unsafe fn set_used_ground_normal_transition_terms(fighter: &mut L2CFighterCommon) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let used_mask = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS);
+            let used_mask = VarModule::get_int(fighter.battle_object, fighter::instance::int::USED_GROUND_NORMALS);
             if used_mask & ATTACK_N_MASK != 0 {
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK);
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING);
@@ -362,27 +362,27 @@ pub mod FGCModule {
             *FIGHTER_STATUS_KIND_ATTACK_LW4_HOLD,
             *FIGHTER_STATUS_KIND_ATTACK_LW4
         ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-            VarModule::set_int(fighter.battle_object, commons::instance::int::USED_GROUND_NORMALS, 0);
+            VarModule::set_int(fighter.battle_object, fighter::instance::int::USED_GROUND_NORMALS, 0);
         }
     }
 
     /// Disables an aerial. Used for characters who can cancel aerials into other aerials.
     pub unsafe fn disable_aerial(fighter: &mut L2CFighterCommon, aerial_mask: i32) {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let mut used_aerials = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_AERIALS);
+            let mut used_aerials = VarModule::get_int(fighter.battle_object, fighter::instance::int::USED_AERIALS);
             if used_aerials & aerial_mask == 0 {
                 used_aerials += aerial_mask;
             }
-            VarModule::set_int(fighter.battle_object, commons::instance::int::USED_AERIALS, used_aerials);
+            VarModule::set_int(fighter.battle_object, fighter::instance::int::USED_AERIALS, used_aerials);
         }
     }
 
     /// Checks if certain aerials are enabled.
     pub unsafe fn check_enabled_aerial(fighter: &mut L2CFighterCommon) -> bool {
-        if VarModule::is_flag(fighter.battle_object, commons::status::flag::ENABLE_AERIAL_STRING)
+        if VarModule::is_flag(fighter.battle_object, fighter::status::flag::ENABLE_AERIAL_STRING)
         && !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            let enabled_mask = VarModule::get_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS);
-            let used_mask = VarModule::get_int(fighter.battle_object, commons::instance::int::USED_AERIALS);
+            let enabled_mask = VarModule::get_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS);
+            let used_mask = VarModule::get_int(fighter.battle_object, fighter::instance::int::USED_AERIALS);
             let attack_air_kind = ControlModule::get_attack_air_kind(fighter.module_accessor);
             let aerial_flag;
             match attack_air_kind {
@@ -400,7 +400,7 @@ pub mod FGCModule {
 
     /// Resets your aerial cancel string, enabling all aerials again.
     pub unsafe fn reset_used_aerials(fighter: &mut L2CFighterCommon) {
-        VarModule::set_int(fighter.battle_object, commons::instance::int::USED_AERIALS, 0);
+        VarModule::set_int(fighter.battle_object, fighter::instance::int::USED_AERIALS, 0);
     }
 
     /// Handles adding or subtracting meter.

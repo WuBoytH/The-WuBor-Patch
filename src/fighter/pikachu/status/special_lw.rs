@@ -50,7 +50,7 @@ unsafe fn pikachu_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_START);
-    VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_LW);
+    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_jump"),

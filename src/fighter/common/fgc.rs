@@ -15,7 +15,7 @@ use {
 };
 
 pub unsafe fn fgc_frame(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
         if !MiscModule::is_damage_check(fighter.module_accessor, false) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ESCAPE_XLU_START_1F);
         }
@@ -37,7 +37,7 @@ pub unsafe fn fgc_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub unsafe extern "C" fn ftilt_dash_attack(fighter: &mut L2CFighterCommon) -> bool {
-    if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
         FGCModule::cancel_exceptions(fighter, *FIGHTER_STATUS_KIND_ATTACK_DASH, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3, true).get_bool()
     }
     else {

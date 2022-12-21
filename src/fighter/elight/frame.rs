@@ -26,7 +26,7 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
             MotionModule::set_frame(fighter.module_accessor, 25.0, false);
         }
 
-        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC) {
+        if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
             if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_ELIGHT_STATUS_KIND_SPECIAL_S_FORWARD {
                 if MotionModule::frame(fighter.module_accessor) >= 11.0
                 && MotionModule::frame(fighter.module_accessor) < 32.0 {

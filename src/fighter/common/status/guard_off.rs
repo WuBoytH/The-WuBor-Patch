@@ -99,7 +99,7 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) 
         if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
             VarModule::inc_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME);
             if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) == guard_off_attack_cancel_frame {
-                VarModule::on_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL);
+                VarModule::on_flag(fighter.battle_object, fighter::instance::flag::GUARD_OFF_ATTACK_CANCEL);
             }
         }
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) > 0 {
@@ -166,7 +166,7 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
                 }
             }
         }
-        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL) {
+        if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::GUARD_OFF_ATTACK_CANCEL) {
             if fighter.sub_transition_group_check_ground_item().get_bool()
             || fighter.sub_transition_group_check_ground_catch().get_bool()
             || fighter.sub_transition_group_check_ground_special().get_bool()
@@ -191,7 +191,7 @@ unsafe fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: 1.0, y: 1.0, z: 1.0});
     WorkModule::unable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        VarModule::off_flag(fighter.battle_object, commons::instance::flag::GUARD_OFF_ATTACK_CANCEL);
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::GUARD_OFF_ATTACK_CANCEL);
     }
     0.into()
 }

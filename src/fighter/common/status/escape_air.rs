@@ -19,14 +19,14 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     let mut stickx = param_1.get_f32();
     let mut sticky = param_2.get_f32();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
+        if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
             let length = sv_math::vec2_length(stickx, sticky);
             let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
             if length < escape_air_slide_stick {
                 stickx = 1.0 * PostureModule::lr(fighter.module_accessor);
                 sticky = 0.0;
             }
-            VarModule::off_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
         }
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         let normalize = sv_math::vec2_normalize(stickx, sticky);
@@ -727,7 +727,7 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
             );
         }
     }
-    VarModule::off_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+    VarModule::off_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
     fighter.status_end_Jump();
     0.into()
 }

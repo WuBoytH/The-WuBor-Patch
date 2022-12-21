@@ -219,3 +219,21 @@ pub unsafe fn sp_diff_checker(module_accessor: *mut BattleObjectModuleAccessor) 
         sp_gauge_handler(module_accessor, false);
     }
 }
+
+pub unsafe fn handle_slow(
+    object: *mut BattleObject,
+    defender_boma: *mut BattleObjectModuleAccessor
+) {
+    let slow_mul;
+    let frames;
+    if VarModule::is_flag(object, yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
+        slow_mul = vl::param_special_lw::onemore_slowdown_mul;
+        frames = vl::param_special_lw::onemore_slowdown_frame;
+        SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    else {
+        slow_mul = vl::param_special_lw::onemore_slowdown_mul_on_hit;
+        frames = vl::param_special_lw::onemore_slowdown_frame_on_hit;
+        SlowModule::set(defender_boma, 0, slow_mul, frames, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+}

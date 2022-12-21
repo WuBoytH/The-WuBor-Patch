@@ -15,10 +15,10 @@ use {
 #[fighter_frame( agent = FIGHTER_KIND_GANON )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        if VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N)
+        if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N)
         && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF
         || StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND) {
-            VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_N);
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N);
         }
 
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW

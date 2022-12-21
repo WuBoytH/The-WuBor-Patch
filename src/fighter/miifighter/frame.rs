@@ -11,7 +11,7 @@ use {
 
 unsafe fn miifighter_fgc_exception(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_MIIFIGHTER_STATUS_KIND_SPECIAL_S1_END
-    && VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC)
+    && VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC)
     && MotionModule::frame(fighter.module_accessor) > 27.0 {
         let situation = fighter.global_table[SITUATION_KIND].get_i32();
         if special_cancel_common(fighter, situation.into(), [

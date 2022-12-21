@@ -46,7 +46,7 @@ unsafe extern "C" fn miifighter_attack_pre(fighter: &mut L2CFighterCommon) -> bo
 unsafe extern "C" fn miifighter_attackair_pre(fighter: &mut L2CFighterCommon) -> bool {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     let flags = ATTACK_AIR_N_MASK + ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-    VarModule::on_flag(fighter.battle_object, commons::status::flag::ENABLE_AERIAL_STRING);
+    VarModule::on_flag(fighter.battle_object, fighter::status::flag::ENABLE_AERIAL_STRING);
     if mot == hash40("attack_air_n") {
         FGCModule::disable_aerial(fighter, ATTACK_AIR_N_MASK);
     }
@@ -62,7 +62,7 @@ unsafe extern "C" fn miifighter_attackair_pre(fighter: &mut L2CFighterCommon) ->
     else {
         FGCModule::disable_aerial(fighter, ATTACK_AIR_LW_MASK);
     }
-    VarModule::set_int(fighter.battle_object, commons::status::int::ENABLED_AERIALS, flags);
+    VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, flags);
     false
 }
 

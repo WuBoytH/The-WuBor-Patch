@@ -160,7 +160,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
                 macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
             }
-            let target_id = VarModule::get_int(fighter.battle_object, commons::instance::int::TARGET_ID) as u32;
+            let target_id = VarModule::get_int(fighter.battle_object, fighter::instance::int::TARGET_ID) as u32;
             if sv_battle_object::is_active(target_id) {
                 let target_boma = sv_battle_object::module_accessor(target_id);
                 SlowModule::set(
@@ -214,7 +214,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             VarModule::on_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_CAMERA);
         }
         if VarModule::get_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER) >= 0.0 {
-            let target_id = VarModule::get_int(fighter.battle_object, commons::instance::int::TARGET_ID) as u32;
+            let target_id = VarModule::get_int(fighter.battle_object, fighter::instance::int::TARGET_ID) as u32;
             let ryu_x = VarModule::get_float(fighter.battle_object, ryu::instance::float::RYU_X);
             let ryu_y = VarModule::get_float(fighter.battle_object, ryu::instance::float::RYU_Y);
             let target_x = VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_X);

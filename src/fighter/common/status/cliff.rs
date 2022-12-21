@@ -50,7 +50,7 @@ unsafe fn sub_cliff_uniq_process_exit_common(fighter: &mut L2CFighterCommon, par
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
         }
         else {
-            VarModule::on_flag(fighter.battle_object, commons::instance::flag::LEDGE_INTANGIBILITY);
+            VarModule::on_flag(fighter.battle_object, fighter::instance::flag::LEDGE_INTANGIBILITY);
         }
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCH_CLIFF);
@@ -61,7 +61,7 @@ unsafe fn sub_cliff_uniq_process_exit_common(fighter: &mut L2CFighterCommon, par
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
         }
         else {
-            VarModule::on_flag(fighter.battle_object, commons::instance::flag::LEDGE_INTANGIBILITY);
+            VarModule::on_flag(fighter.battle_object, fighter::instance::flag::LEDGE_INTANGIBILITY);
         }
     }
 }

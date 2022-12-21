@@ -15,7 +15,7 @@ use {
 #[acmd_script( agent = "daisy", script = "game_specialsjump", category = ACMD_GAME )]
 unsafe fn daisy_specialsjump(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
         JostleModule::set_status(fighter.module_accessor, false);
         macros::SEARCH(fighter, 0, 0, Hash40::new("hip"), 3.5, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
     }

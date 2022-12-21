@@ -16,7 +16,7 @@ use {
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_s") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
@@ -105,7 +105,7 @@ unsafe fn lucario_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
     }
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW {
-        VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
     }
     0.into()
 }

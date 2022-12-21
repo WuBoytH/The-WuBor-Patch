@@ -18,7 +18,7 @@ pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterComm
     || status == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::off_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR);
         VarModule::off_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA);
-        VarModule::off_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
         if ![
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_LANDING_LIGHT,
@@ -34,7 +34,7 @@ pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterComm
 }
 
 pub unsafe extern "C" fn lucario_special_s_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    (!VarModule::is_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_S)).into()
+    (!VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S)).into()
 }
 
 #[fighter_reset]

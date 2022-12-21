@@ -53,7 +53,7 @@ pub const ATTACK_S4_MASK : i32 = 0b0010000;
 pub const ATTACK_HI4_MASK : i32 = 0b0100000;
 pub const ATTACK_LW4_MASK : i32 = 0b1000000;
 
-pub mod commons {
+pub mod fighter {
     pub mod instance {
         pub mod flag {
             pub const DISABLE_SPECIAL_N : i32 = 0x0000;

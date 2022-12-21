@@ -441,7 +441,7 @@ impl CustomCancelManager {
                 let shield = AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD);
                 let cancel_window = FGCModule::check_cancel_window(fighter);
                 let situation = fighter.global_table[SITUATION_KIND].get_i32();
-                let fgc = VarModule::is_flag(fighter.battle_object, commons::instance::flag::IS_FGC);
+                let fgc = VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
 
                 // Input Priority
 
@@ -498,7 +498,7 @@ impl CustomCancelManager {
                     };
 
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::SPECIAL_CANCEL)
+                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL)
                     }
                     else {
                         cancel_window
@@ -563,7 +563,7 @@ impl CustomCancelManager {
                     };
                     
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL)
+                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
                     }
                     else {
                         cancel_window
@@ -620,7 +620,7 @@ impl CustomCancelManager {
                     };
                     
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::JUMP_CANCEL)
+                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL)
                     }
                     else {
                         cancel_window
@@ -677,7 +677,7 @@ impl CustomCancelManager {
                     };
                     
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::NORMAL_CANCEL)
+                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
                     }
                     else {
                         cancel_window
@@ -755,7 +755,7 @@ impl CustomCancelManager {
                     };
                     
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::DASH_CANCEL)
+                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
                     }
                     else {
                         cancel_window
@@ -765,13 +765,13 @@ impl CustomCancelManager {
                         if dash_cancel_dir.contains(DashCancelDir::FORWARD)
                         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
                             fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
-                            VarModule::on_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
+                            VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
                             return true;
                         }
                         if dash_cancel_dir.contains(DashCancelDir::BACKWARD)
                         && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
                             fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-                            VarModule::on_flag(fighter.battle_object, commons::status::flag::IS_DASH_CANCEL);
+                            VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
                             return true;
                         }
                     }
@@ -828,7 +828,7 @@ impl CustomCancelManager {
                     };
                     
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, commons::status::flag::DASH_CANCEL)
+                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
                     }
                     else {
                         cancel_window
@@ -836,7 +836,7 @@ impl CustomCancelManager {
                     
                     if condition && flag_check
                     && airdash_cancel_common(fighter, situation.into()).get_bool() {
-                        VarModule::on_flag(fighter.battle_object, commons::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+                        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
                         return true;
                     }
                 }

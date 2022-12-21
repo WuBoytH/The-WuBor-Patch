@@ -95,7 +95,7 @@ unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 22.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
-        VarModule::on_flag(fighter.battle_object, commons::instance::flag::DISABLE_SPECIAL_HI);
+        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
     }
     frame(fighter.lua_state_agent, 32.0);
     if macros::is_excute(fighter) {

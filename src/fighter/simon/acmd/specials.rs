@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "simon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "simon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME )]
 unsafe fn simon_specialn(fighter: &mut L2CAgentBase) {
     // macros::FT_MOTION_RATE(fighter, 0.7);
     // if macros::is_excute(fighter) {
@@ -25,7 +25,7 @@ unsafe fn simon_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
+#[acmd_script( agent = "simon", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION )]
 unsafe fn simon_specialn_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

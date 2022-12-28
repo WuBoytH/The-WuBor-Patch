@@ -343,17 +343,18 @@ unsafe extern "C" fn marth_speciallw_specials_dash_main(fighter: &mut L2CFighter
             FIGHTER_KINETIC_ENERGY_ID_MOTION,
             angle
         );
-        sv_kinetic_energy!(
-            set_speed_mul,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            0.9
-        );
     }
     else {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
+    sv_kinetic_energy!(
+        set_speed_mul,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        1.2,
+        1.2
+    );
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_specials_dash_main_loop as *const () as _))
 }
 

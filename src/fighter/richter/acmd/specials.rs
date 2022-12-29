@@ -14,14 +14,10 @@ use {
 #[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME )]
 unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.7);
-    // if macros::is_excute(fighter) {
-    //     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, false, 0);
-    // }
     frame(fighter.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, richter::status::flag::SPECIAL_N_SHOOT);
-        // ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
     }
 }
 

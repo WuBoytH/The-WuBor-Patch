@@ -55,11 +55,11 @@ unsafe fn simon_attacks3(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "simon", script = "game_attacklw3", category = ACMD_GAME )]
 unsafe fn simon_attacklw3(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 9.0);
+    frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::SEARCH(fighter, 0, 0, Hash40::new("top"), 2.5, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(34.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
     }
-    frame(fighter.lua_state_agent, 11.0);
+    frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
         let object = sv_system::battle_object(fighter.lua_state_agent) as *mut BattleObject;
@@ -91,11 +91,11 @@ unsafe fn simon_attacklw3(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "simon", script = "effect_attacklw3", category = ACMD_EFFECT )]
 unsafe fn simon_attacklw3_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 7.0);
+    frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
         macros::FOOT_EFFECT(fighter, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
     }
-    frame(fighter.lua_state_agent, 11.0);
+    frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("simon_whip_straight"), Hash40::new("haver"), 0, 0, 0, 4, 30, 4, 0.98, true);
     }
@@ -110,7 +110,7 @@ unsafe fn simon_attacklw3_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_simon_attackhard_s01"));
     }
-    frame(fighter.lua_state_agent, 9.0);
+    frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_simon_rnd_attack"));
     }
@@ -121,7 +121,7 @@ unsafe fn simon_attacklw3_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
-    frame(fighter.lua_state_agent, 9.0);
+    frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
         ControlModule::set_rumble(
             fighter.module_accessor,
@@ -131,7 +131,7 @@ unsafe fn simon_attacklw3_exp(fighter: &mut L2CAgentBase) {
             *BATTLE_OBJECT_ID_INVALID as u32
         );
     }
-    frame(fighter.lua_state_agent, 11.0);
+    frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
     }
@@ -162,7 +162,7 @@ unsafe fn simon_whip_attacklw3(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "simon_whip", script = "effect_attacklw3", category = ACMD_EFFECT )]
 unsafe fn simon_whip_attacklw3_eff(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 10.0);
+    frame(weapon.lua_state_agent, 11.0);
     if macros::is_excute(weapon) {
         weapon.clear_lua_stack();
         let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
@@ -176,7 +176,7 @@ unsafe fn simon_whip_attacklw3_eff(weapon: &mut L2CAgentBase) {
         macros::LAST_EFFECT_SET_RATE(weapon, 1.3);
         macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(weapon.lua_state_agent, 14.0);
+    frame(weapon.lua_state_agent, 15.0);
     if macros::is_excute(weapon) {
         weapon.clear_lua_stack();
         let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;

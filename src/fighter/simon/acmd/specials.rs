@@ -2,13 +2,13 @@ use {
     smash::{
         lua2cpp::L2CAgentBase,
         phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*},
+        app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
     },
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[acmd_script( agent = "simon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME )]
@@ -36,9 +36,24 @@ unsafe fn simon_specialn_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "simon_axe", script = "game_fly", category = ACMD_GAME )]
+unsafe fn simon_axe_fly(weapon: &mut L2CAgentBase) {
+    let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+    if sv_battle_object::is_active(owner_id)
+    && sv_battle_object::kind(owner_id) == *FIGHTER_KIND_SIMON {
+        let object = MiscModule::get_battle_object_from_id(owner_id);
+        VarModule::set_int(object, simon::instance::int::AXE_ID, weapon.battle_object_id as i32);
+    }
+    if macros::is_excute(weapon) {
+        macros::ATTACK(weapon, 0, 0, Hash40::new("axe"), 15.0, 74, 75, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 8, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 0, 1.1);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         simon_specialn,
-        simon_specialn_exp
+        simon_specialn_exp,
+        simon_axe_fly
     );
 }

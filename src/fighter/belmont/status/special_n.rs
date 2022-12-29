@@ -51,9 +51,15 @@ pub unsafe fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2
 unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, simon::status::flag::SPECIAL_N_SHOOT) {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
+            let angle = if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SIMON {
+                45.0
+            }
+            else {
+                69.420
+            };
             ItemModule::throw_item(
                 fighter.module_accessor,
-                60.0,
+                angle,
                 2.4,
                 1.0,
                 0,

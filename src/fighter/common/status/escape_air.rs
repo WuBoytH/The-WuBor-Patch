@@ -584,6 +584,63 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 brake_x,
                 brake_y
             );
+
+            // Effects
+
+            let angle = dir_y.atan2(dir_x).to_degrees();
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let hip = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+            ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), hip);
+            let pos = Vector3f{
+                x: 0.0,
+                y: -10.0 * dir_y + hip.y,
+                z: -10.0 * dir_x
+            };
+            let pos2 = Vector3f{
+                x: 10.0 * dir_x * lr,
+                y: hip.y,
+                z: 0.0
+            };
+            let rot = Vector3f{x: 0.0, y: -30.0, z: 90.0 + angle};
+            let whirlwind;
+            let rot2;
+            if lr > 0.0 {
+                whirlwind = Hash40::new("sys_whirlwind_r");
+                rot2 = Vector3f{x: 0.0, y: 0.0, z: 180.0 + angle};
+            }
+            else {
+                whirlwind = Hash40::new("sys_whirlwind_l");
+                rot2 = Vector3f{x: 0.0, y: 0.0, z: angle};
+            }
+            EffectModule::req_on_joint(
+                fighter.module_accessor,
+                whirlwind,
+                Hash40::new("top"),
+                &pos,
+                &rot,
+                0.75,
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                false,
+                0,
+                0,
+                0
+            );
+            let line = EffectModule::req_on_joint(
+                fighter.module_accessor,
+                Hash40::new("sys_attack_speedline"),
+                Hash40::new("top"),
+                &pos2,
+                &rot2,
+                0.85,
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                false,
+                0,
+                0,
+                0
+            ) as u32;
+            EffectModule::set_rate(fighter.module_accessor, line, 0.25);
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
             fighter.clear_lua_stack();

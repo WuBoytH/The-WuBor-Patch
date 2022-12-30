@@ -316,11 +316,13 @@ unsafe extern "C" fn marth_speciallw_specials_dash_pre(fighter: &mut L2CFighterC
 }
 
 unsafe extern "C" fn marth_speciallw_specials_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
+    let stick_y = fighter.global_table[STICK_Y].get_f32();
+    let stick_y_threshold = 0.5;
+    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND
+    || stick_y >= stick_y_threshold {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR_ANGLE);
-        let stick_y = fighter.global_table[STICK_Y].get_f32();
         let mut angle : f32;
-        let stick_y_threshold = 0.5;
         if stick_y >= stick_y_threshold {
             angle = 15.0;
         }
@@ -341,16 +343,18 @@ unsafe extern "C" fn marth_speciallw_specials_dash_main(fighter: &mut L2CFighter
             FIGHTER_KINETIC_ENERGY_ID_MOTION,
             angle
         );
-        sv_kinetic_energy!(
-            set_speed_mul,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            0.9
-        );
     }
     else {
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     }
+    sv_kinetic_energy!(
+        set_speed_mul,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        1.2,
+        1.2
+    );
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_speciallw_specials_dash_main_loop as *const () as _))
 }
 

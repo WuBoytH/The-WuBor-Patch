@@ -162,6 +162,26 @@ unsafe fn simon_attackairflw(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "simon", scripts = [ "sound_attackairf", "sound_attackairfhi", "sound_attackairflw" ], category = ACMD_SOUND )]
+unsafe fn simon_attackairf_snd(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_simon_whip_holding"));
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_simon_attackair_h01"));
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::STOP_SE(fighter, Hash40::new("se_simon_attackair_h01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_simon_attackair_h02"));
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_simon_rnd_attack"));
+    }
+}
+
 #[acmd_script( agent = "simon", script = "game_attackairhi", category = ACMD_GAME )]
 unsafe fn simon_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -353,6 +373,7 @@ pub fn install() {
         simon_attackairf,
         simon_attackairfhi,
         simon_attackairflw,
+        simon_attackairf_snd,
         simon_attackairhi,
         simon_attackairlw, simon_attackairlw_eff, simon_attackairlw_snd, simon_attackairlw_exp,
         simon_whip_attackairlw, simon_whip_attackairlw_eff

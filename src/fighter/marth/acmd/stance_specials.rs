@@ -33,7 +33,9 @@ unsafe fn marth_speciallwspecials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
+    macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 27.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_END);
@@ -141,7 +143,9 @@ unsafe fn marth_speciallwspecialairs(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_XLU);
     }
+    macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 27.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         macros::WHOLE_HIT(fighter, *HIT_STATUS_NORMAL);
         VarModule::on_flag(fighter.battle_object, marth::status::flag::SPECIAL_S_END);

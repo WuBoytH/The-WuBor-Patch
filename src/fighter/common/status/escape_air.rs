@@ -591,41 +591,41 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             let lr = PostureModule::lr(fighter.module_accessor);
             let hip = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
             ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), hip);
-            let pos = Vector3f{
-                x: 0.0,
-                y: -10.0 * dir_y + hip.y,
-                z: -10.0 * dir_x
-            };
+            // let pos = Vector3f{
+            //     x: 0.0,
+            //     y: -10.0 * dir_y + hip.y,
+            //     z: -10.0 * dir_x
+            // };
             let pos2 = Vector3f{
                 x: 10.0 * dir_x * lr,
                 y: hip.y,
                 z: 0.0
             };
-            let rot = Vector3f{x: 0.0, y: -30.0, z: 90.0 + angle};
-            let whirlwind;
+            // let rot = Vector3f{x: 0.0, y: -30.0, z: 90.0 + angle};
+            // let whirlwind;
             let rot2;
             if lr > 0.0 {
-                whirlwind = Hash40::new("sys_whirlwind_r");
+                // whirlwind = Hash40::new("sys_whirlwind_r");
                 rot2 = Vector3f{x: 0.0, y: 0.0, z: 180.0 + angle};
             }
             else {
-                whirlwind = Hash40::new("sys_whirlwind_l");
+                // whirlwind = Hash40::new("sys_whirlwind_l");
                 rot2 = Vector3f{x: 0.0, y: 0.0, z: angle};
             }
-            EffectModule::req_on_joint(
-                fighter.module_accessor,
-                whirlwind,
-                Hash40::new("top"),
-                &pos,
-                &rot,
-                0.75,
-                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
-                false,
-                0,
-                0,
-                0
-            );
+            // EffectModule::req_on_joint(
+            //     fighter.module_accessor,
+            //     whirlwind,
+            //     Hash40::new("top"),
+            //     &pos,
+            //     &rot,
+            //     0.75,
+            //     &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            //     &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            //     false,
+            //     0,
+            //     0,
+            //     0
+            // );
             let line = EffectModule::req_on_joint(
                 fighter.module_accessor,
                 Hash40::new("sys_attack_speedline"),

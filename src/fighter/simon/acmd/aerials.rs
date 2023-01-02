@@ -50,7 +50,7 @@ unsafe fn simon_attackairf(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 361, 55, 0, 80, 5.5, 0.0, 10.5, 8.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         search!(fighter, MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -101,7 +101,7 @@ unsafe fn simon_attackairfhi(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 361, 55, 0, 80, 5.5, 0.0, 16.0, 7.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         search!(fighter, MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
@@ -152,7 +152,7 @@ unsafe fn simon_attackairflw(fighter: &mut L2CAgentBase) {
         macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 361, 55, 0, 80, 5.5, 0.0, 9.0, 9.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         search!(fighter, MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }

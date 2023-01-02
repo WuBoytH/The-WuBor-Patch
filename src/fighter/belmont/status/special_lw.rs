@@ -66,11 +66,13 @@ unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER) {
+        let item_kind = ItemModule::get_have_item_kind(fighter.module_accessor, 0);
+        let item_kind_extra = ItemModule::get_have_item_kind(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA);
         let is_holywater;
         let item_part = if [
             *ITEM_KIND_SIMONHOLYWATER, *ITEM_KIND_RICHTERHOLYWATER
-        ].contains(&ItemModule::get_have_item_kind(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA)) {
-            is_holywater = true;
+        ].contains(&item_kind_extra) {
+            is_holywater = item_kind_extra == *ITEM_KIND_RICHTERHOLYWATER;
             ArticleModule::shoot_exist(
                 fighter.module_accessor,
                 *FIGHTER_SIMON_GENERATE_ARTICLE_HOLYWATER,
@@ -80,14 +82,7 @@ unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon
             *FIGHTER_HAVE_ITEM_WORK_EXTRA
         }
         else if ItemModule::is_have_item(fighter.module_accessor, 0) {
-            if [
-                *ITEM_KIND_SIMONHOLYWATER, *ITEM_KIND_RICHTERHOLYWATER
-            ].contains(&ItemModule::get_have_item_kind(fighter.module_accessor, *FIGHTER_HAVE_ITEM_WORK_EXTRA)) {
-                is_holywater = true;
-            }
-            else {
-                is_holywater = false;
-            }
+            is_holywater = item_kind == *ITEM_KIND_RICHTERHOLYWATER;
             0
         }
         else {

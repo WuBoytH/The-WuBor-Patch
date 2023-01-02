@@ -169,12 +169,12 @@ unsafe fn simon_attackairf_snd(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_simon_attackair_h01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_simon_attackair_b01"));
     }
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
-        macros::STOP_SE(fighter, Hash40::new("se_simon_attackair_h01"));
-        macros::PLAY_SE(fighter, Hash40::new("se_simon_attackair_h02"));
+        macros::STOP_SE(fighter, Hash40::new("se_simon_attackair_b01"));
+        macros::PLAY_SE(fighter, Hash40::new("se_simon_attackair_b02"));
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {

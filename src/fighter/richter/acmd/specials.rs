@@ -97,19 +97,6 @@ unsafe fn richter_cross_turn(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
-unsafe fn richter_speciallw(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 1.3);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
-    }
-    frame(fighter.lua_state_agent, 18.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
-    }
-}
-
 #[acmd_script( agent = "richter", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME )]
 unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
@@ -154,6 +141,19 @@ unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
+unsafe fn richter_speciallw(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 1.3);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
+    }
+    frame(fighter.lua_state_agent, 18.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         richter_specialn,
@@ -163,7 +163,7 @@ pub fn install() {
         richter_specials1,
         richter_cross_fly,
         richter_cross_turn,
-        richter_speciallw,
-        richter_specialhi
+        richter_specialhi,
+        richter_speciallw
     );
 }

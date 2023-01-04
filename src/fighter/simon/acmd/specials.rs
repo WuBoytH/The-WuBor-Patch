@@ -50,10 +50,22 @@ unsafe fn simon_axe_fly(weapon: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "simon", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
+unsafe fn simon_speciallw(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
+    }
+    frame(fighter.lua_state_agent, 20.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_SHOOT_HOLYWATER);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         simon_specialn,
         simon_specialn_exp,
-        simon_axe_fly
+        simon_axe_fly,
+        simon_speciallw
     );
 }

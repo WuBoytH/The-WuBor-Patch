@@ -24,11 +24,11 @@ pub unsafe fn belmont_special_lw_main_inner(fighter: &mut L2CFighterCommon) -> L
     }
     WorkModule::set_int64(fighter.module_accessor, mot_g as i64, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION);
     WorkModule::set_int64(fighter.module_accessor, mot_a as i64, *FIGHTER_SIMON_STATUS_SPECIAL_LW_INT_MOTION_AIR);
-    let sum = KineticModule::get_sum_speed3f(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    if sum.y < 0.0 {
+    let sum = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+    if sum < 0.0 {
         KineticModule::mul_speed(
             fighter.module_accessor,
-            &Vector3f{x: 1.0, y: 0.0, z: 0.0},
+            &Vector3f{x: 1.0, y: 0.0, z: 1.0},
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
     }

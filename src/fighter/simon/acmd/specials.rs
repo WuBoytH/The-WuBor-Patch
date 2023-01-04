@@ -101,7 +101,7 @@ unsafe fn simon_speciallw_snd(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "simon", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION )]
 unsafe fn simon_speciallw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
-        slope(*MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {

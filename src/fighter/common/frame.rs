@@ -47,7 +47,7 @@ unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
-    let frame = fighter.global_table[MOTION_FRAME].get_f32();
+    let frame = fighter.global_table[STATUS_FRAME].get_f32();
     let hit_frame = VarModule::get_float(fighter.battle_object, fighter::status::float::HIT_FRAME);
 
     if frame < hit_frame {
@@ -85,7 +85,7 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
     && VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         let super_jump_frame = VarModule::get_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME);
-        if fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 - super_jump_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() >= 9.0 - super_jump_frame {
             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
             sv_kinetic_energy!(
                 set_accel,

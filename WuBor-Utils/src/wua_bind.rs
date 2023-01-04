@@ -68,7 +68,7 @@ pub mod FGCModule {
     /// A utility function that just checks if you're within the cancel window or not.
     pub unsafe fn check_cancel_window(fighter: &mut L2CFighterCommon) -> bool {
         let hit_frame = VarModule::get_float(fighter.battle_object, fighter::status::float::HIT_FRAME);
-        let motion_frame = fighter.global_table[MOTION_FRAME].get_f32();
+        let motion_frame = fighter.global_table[STATUS_FRAME].get_f32();
         motion_frame - hit_frame <= 10.0 && !fighter.global_table[IS_STOP].get_bool() && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     }
 

@@ -88,7 +88,7 @@ unsafe extern "C" fn edge_special_hi_end_main_loop(fighter: &mut L2CFighterCommo
             let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
             let rotate_back_begin_frame = edge_special_hi_param_int_helper(fighter, hash40("rotate_back_begin_frame").into(), charged_rush.into()).get_i32();
             let rotate_back_end_frame = edge_special_hi_param_int_helper(fighter, hash40("rotate_back_end_frame").into(), charged_rush.into()).get_i32();
-            let frame = fighter.global_table[MOTION_FRAME].get_f32();
+            let frame = fighter.global_table[STATUS_FRAME].get_f32();
             if rotate_back_begin_frame as f32 <= frame {
                 let mut diff = rotate_back_end_frame - rotate_back_begin_frame;
                 if diff <= 0 {

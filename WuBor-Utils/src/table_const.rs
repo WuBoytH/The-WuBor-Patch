@@ -13,8 +13,8 @@ pub const PREV_STATUS_KIND:                i32 = 0xA;
 pub const STATUS_KIND:                     i32 = 0xB;
 pub const STATUS_COUNT:                    i32 = 0xC;
  
-pub const MOTION_FRAME:                    i32 = 0xE;
-pub const MOTION_FRAME_NO_INTERP:          i32 = 0xF;
+pub const STATUS_FRAME:                    i32 = 0xE;
+pub const STATUS_FRAME_NO_INTERP:          i32 = 0xF;
  
 pub const SUB_STATUS3:                     i32 = 0x13;
 pub const SUB_STATUS2:                     i32 = 0x14;

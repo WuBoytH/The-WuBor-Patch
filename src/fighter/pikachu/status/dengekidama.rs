@@ -37,7 +37,7 @@ unsafe fn pikachu_dengekidama_regular_main(weapon: &mut L2CWeaponCommon) -> L2CV
 unsafe extern "C" fn pikachu_dengekidama_regular_main_loop(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let frame_min = vl::dengekidama::FRAME_MIN;
     let frame_max = vl::dengekidama::FRAME_MAX;
-    let frame = weapon.global_table[MOTION_FRAME].get_f32();
+    let frame = weapon.global_table[STATUS_FRAME].get_f32();
     if (frame_min..=frame_max).contains(&frame) {
         let frame_range = frame_max - frame_min;
         let ratio = (frame - frame_min) / frame_range;

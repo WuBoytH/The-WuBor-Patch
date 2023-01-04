@@ -132,7 +132,7 @@ unsafe extern "C" fn kirby_lucario_special_n_hold_main_loop(fighter: &mut L2CFig
         return 0.into();
     }
     let max_charge_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("max_charge_frame"));
-    let charge = fighter.global_table[MOTION_FRAME].get_f32();
+    let charge = fighter.global_table[STATUS_FRAME].get_f32();
     if charge >= max_charge_frame + 4.0 {
         fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_SHOOT.into(), false.into());
     }

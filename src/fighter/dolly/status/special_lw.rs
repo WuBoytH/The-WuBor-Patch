@@ -283,7 +283,7 @@ unsafe extern "C" fn dolly_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
             return 0.into();
         }
-        let frame = fighter.global_table[MOTION_FRAME].get_f32() as i32;
+        let frame = fighter.global_table[STATUS_FRAME].get_f32() as i32;
         let start_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_INT_START_FRAME);
         let attack_no_landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), hash40("attack_no_landing_frame"));
         if frame + start_frame >= attack_no_landing_frame {

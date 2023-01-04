@@ -111,7 +111,7 @@ unsafe extern "C" fn edge_special_hi_main_loop(fighter: &mut L2CFighterCommon) -
     edge_special_hi_set_dir_handle(fighter, normalize["x"].clone(), normalize["y"].clone());
     let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
     let param = edge_special_hi_param_int_helper(fighter, hash40("rot_decide_frame").into(), charged_rush.into()).get_i32();
-    if param as f32 <= fighter.global_table[MOTION_FRAME].get_f32() {
+    if param as f32 <= fighter.global_table[STATUS_FRAME].get_f32() {
         WorkModule::set_float(fighter.module_accessor, normalize["x"].get_f32(), *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_X);
         WorkModule::set_float(fighter.module_accessor, normalize["y"].get_f32(), *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_DIR_Y);
         if 0.125 < fighter.global_table[STICK_X].get_f32().abs() {
@@ -140,7 +140,7 @@ unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCom
     let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
     let rot_decide_frame = edge_special_hi_param_int_helper(fighter, hash40("rot_decide_frame").into(), charged_rush.into()).get_i32();
     let rot_end_frame = edge_special_hi_param_int_helper(fighter, hash40("rot_end_frame").into(), charged_rush.into()).get_i32();
-    let frame = fighter.global_table[MOTION_FRAME].get_f32();
+    let frame = fighter.global_table[STATUS_FRAME].get_f32();
     let diff = rot_end_frame - rot_decide_frame;
     let ratio = (frame - rot_decide_frame as f32) / diff as f32;
     let clamp = ratio.clamp(0.0, 1.0);
@@ -163,7 +163,7 @@ unsafe extern "C" fn edge_special_hi_main_loop_shift(fighter: &mut L2CFighterCom
 
 unsafe extern "C" fn edge_special_hi_set_accel(fighter: &mut L2CFighterCommon) {
     let start_stop_y_frame_air = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("start_stop_y_frame_air"));
-    if start_stop_y_frame_air as f32 <= fighter.global_table[MOTION_FRAME].get_f32() + 1.0 {
+    if start_stop_y_frame_air as f32 <= fighter.global_table[STATUS_FRAME].get_f32() + 1.0 {
         let start_gravity = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("start_gravity"));
         sv_kinetic_energy!(
             set_accel,

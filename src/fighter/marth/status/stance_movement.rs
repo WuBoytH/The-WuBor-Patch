@@ -107,7 +107,7 @@ unsafe extern "C" fn marth_speciallw_dash_b_main(fighter: &mut L2CFighterCommon)
 unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         let cancel = CancelModule::is_enable_cancel(fighter.module_accessor);
-        if fighter.global_table[MOTION_FRAME].get_f32() >= vl::param_stance::dash_attack_cancel_frame
+        if fighter.global_table[STATUS_FRAME].get_f32() >= vl::param_stance::dash_attack_cancel_frame
         || cancel {
             if marth_stance_cancel_helper(fighter).get_bool() {
                 return 1.into();

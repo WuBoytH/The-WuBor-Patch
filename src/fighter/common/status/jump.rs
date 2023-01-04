@@ -186,7 +186,7 @@ unsafe fn get_super_jump_mod(fighter: &mut L2CFighterCommon) -> f32 {
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_Main)]
 unsafe fn status_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP)
-    && fighter.global_table[MOTION_FRAME].get_f32() >= 9.0 {
+    && fighter.global_table[STATUS_FRAME].get_f32() >= 9.0 {
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
         sv_kinetic_energy!(
             set_accel,
@@ -250,7 +250,7 @@ unsafe fn status_end_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
             let status = fighter.global_table[STATUS_KIND].get_i32();
             if status == *FIGHTER_STATUS_KIND_ATTACK_AIR
             || status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                let frame = fighter.global_table[MOTION_FRAME].get_f32();
+                let frame = fighter.global_table[STATUS_FRAME].get_f32();
                 VarModule::set_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME, frame);
             }
             else {

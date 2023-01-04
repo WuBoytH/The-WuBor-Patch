@@ -385,7 +385,7 @@ unsafe extern "C" fn samusd_speciallw_air_main_loop(fighter: &mut L2CFighterComm
     if samusd_speciallw_air_is_end_helper(fighter).get_i32() == 1 {
         return 1.into();
     }
-    if fighter.global_table[MOTION_FRAME].get_f32() >= 1.0 {
+    if fighter.global_table[STATUS_FRAME].get_f32() >= 1.0 {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             if AttackModule::is_attack(fighter.module_accessor, 0, false) {
                 WorkModule::set_float(fighter.module_accessor, vl::param_special_lw::landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);

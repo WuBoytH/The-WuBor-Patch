@@ -206,7 +206,7 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
         ].contains(&MotionModule::motion_kind(fighter.module_accessor)) {
             // Original logic but now within an else statement, so the taunt actions take priority.
-            let motion_frame = fighter.global_table[MOTION_FRAME].get_f32();
+            let motion_frame = fighter.global_table[STATUS_FRAME].get_f32();
             if motion_frame >= 2.0 {
                 let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
                 if 0 < attack_kind {

@@ -117,7 +117,7 @@ pub unsafe extern "C" fn dolly_final_cancel(fighter: &mut L2CFighterCommon, situ
 
 pub unsafe extern "C" fn dolly_attack_start_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor)
-    && fighter.global_table[MOTION_FRAME].get_f32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame")) as f32
+    && fighter.global_table[STATUS_FRAME].get_f32() <= WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame")) as f32
     && dolly_kara_cancel(fighter).get_bool() {
         return 1.into();
     }

@@ -40,7 +40,7 @@ unsafe extern "C" fn marth_speciallw_hit_main_loop(fighter: &mut L2CFighterCommo
             marth_speciallw_hit_mot_helper(fighter);
         }
     }
-    let frame = fighter.global_table[MOTION_FRAME].get_f32();
+    let frame = fighter.global_table[STATUS_FRAME].get_f32();
     if frame > 1.0
     && !CancelModule::is_enable_cancel(fighter.module_accessor) {
         CancelModule::enable_cancel(fighter.module_accessor);

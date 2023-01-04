@@ -236,7 +236,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE)
     && !CancelModule::is_enable_cancel(fighter.module_accessor) {
         let airdash_params = get_airdash_params(fighter);
-        if fighter.global_table[MOTION_FRAME].get_f32() >= airdash_params.attack_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.attack_frame {
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
@@ -248,7 +248,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
                 return true.into();
             }
         }
-        if fighter.global_table[MOTION_FRAME].get_f32() >= airdash_params.cancel_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.cancel_frame {
             if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
@@ -584,6 +584,63 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 brake_x,
                 brake_y
             );
+
+            // Effects
+
+            let angle = dir_y.atan2(dir_x).to_degrees();
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let hip = &mut Vector3f{x: 0.0, y: 0.0, z: 0.0};
+            ModelModule::joint_global_offset_from_top(fighter.module_accessor, Hash40::new("hip"), hip);
+            // let pos = Vector3f{
+            //     x: 0.0,
+            //     y: -10.0 * dir_y + hip.y,
+            //     z: -10.0 * dir_x
+            // };
+            let pos2 = Vector3f{
+                x: 10.0 * dir_x * lr,
+                y: hip.y,
+                z: 0.0
+            };
+            // let rot = Vector3f{x: 0.0, y: -30.0, z: 90.0 + angle};
+            // let whirlwind;
+            let rot2;
+            if lr > 0.0 {
+                // whirlwind = Hash40::new("sys_whirlwind_r");
+                rot2 = Vector3f{x: 0.0, y: 0.0, z: 180.0 + angle};
+            }
+            else {
+                // whirlwind = Hash40::new("sys_whirlwind_l");
+                rot2 = Vector3f{x: 0.0, y: 0.0, z: angle};
+            }
+            // EffectModule::req_on_joint(
+            //     fighter.module_accessor,
+            //     whirlwind,
+            //     Hash40::new("top"),
+            //     &pos,
+            //     &rot,
+            //     0.75,
+            //     &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            //     &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+            //     false,
+            //     0,
+            //     0,
+            //     0
+            // );
+            let line = EffectModule::req_on_joint(
+                fighter.module_accessor,
+                Hash40::new("sys_attack_speedline"),
+                Hash40::new("top"),
+                &pos2,
+                &rot2,
+                0.85,
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                &Vector3f{x: 0.0, y: 0.0, z: 0.0},
+                false,
+                0,
+                0,
+                0
+            ) as u32;
+            EffectModule::set_rate(fighter.module_accessor, line, 0.25);
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
             fighter.clear_lua_stack();

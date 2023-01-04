@@ -85,7 +85,7 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
 unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
-    && fighter.global_table[MOTION_FRAME].get_f32() < 8.0 {
+    && fighter.global_table[STATUS_FRAME].get_f32() < 8.0 {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_ENABLE_SUPER_SPECIAL) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);

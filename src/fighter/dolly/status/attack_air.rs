@@ -46,7 +46,7 @@ unsafe extern "C" fn dolly_attackair_main_loop(fighter: &mut L2CFighterCommon) -
     if dolly_attack_start_cancel(fighter).get_i32() == 1 {
         return 1.into();
     }
-    let frame = fighter.global_table[MOTION_FRAME].get_f32();
+    let frame = fighter.global_table[STATUS_FRAME].get_f32();
     let attack_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_private"), hash40("attack_start_cancel_frame")) as f32;
     if frame == attack_cancel_frame {
         let mot = MotionModule::motion_kind(fighter.module_accessor);

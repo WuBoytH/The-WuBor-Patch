@@ -129,7 +129,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
-        if fighter.global_table[MOTION_FRAME].get_f32() == jump_squat_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() == jump_squat_frame {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         }
     }
@@ -184,7 +184,7 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, param_1:
         return;
     }
     let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
-    if fighter.global_table[MOTION_FRAME].get_f32() <= jump_squat_frame {
+    if fighter.global_table[STATUS_FRAME].get_f32() <= jump_squat_frame {
         if !WorkModule::is_flag(fighter.module_accessor, param_1.get_i32()) {
             let stick_y = fighter.global_table[STICK_Y].get_f32();
             let jump_neutral_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("jump_neutral_y"));
@@ -238,7 +238,7 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
     }
     else {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON)
-        && 1.0 <= fighter.global_table[MOTION_FRAME].get_f32() {
+        && 1.0 <= fighter.global_table[STATUS_FRAME].get_f32() {
             FighterControlModuleImpl::reserve_on_attack_button(fighter.module_accessor);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FLAG_RESERVE_ATTACK_BUTTON_ON);
         }

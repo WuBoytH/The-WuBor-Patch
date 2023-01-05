@@ -22,7 +22,7 @@ jobs:
       - name: Download ROMFS
         id: pr-romfs
         continue-on-error: true
-        uses: i3h/download-release-asset@v1.3.2
+        uses: i3h/download-release-asset@v1.3.3
         with:
           # 
           owner: WuBoytH
@@ -34,7 +34,7 @@ jobs:
           file: romfs.zip
       - name: Download ROMFS (Backup)
         if: steps.pr-romfs.outcome == 'failure'
-        uses: i3h/download-release-asset@v1.3.2
+        uses: i3h/download-release-asset@v1.3.3
         with:
           # 
           owner: WuBoytH

@@ -22,28 +22,20 @@ jobs:
       - name: Download ROMFS
         id: pr-romfs
         continue-on-error: true
-        uses: i3h/download-release-asset@v1.3.3
+        uses: dsaltares/fetch-gh-release-asset@master
         with:
-          # 
-          owner: WuBoytH
-          # 
-          repo: WuBor-Romfs
-          # 
-          tag: ${{ steps.branch-name.outputs.current_branch }}
-          # 
-          file: romfs.zip
+          repo: 'WuBoytH/WuBor-Romfs'
+          version: 'tags/${{ steps.branch-name.outputs.current_branch }}'
+          file: 'romfs.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Download ROMFS (Backup)
         if: steps.pr-romfs.outcome == 'failure'
-        uses: i3h/download-release-asset@v1.3.3
+        uses: dsaltares/fetch-gh-release-asset@master
         with:
-          # 
-          owner: WuBoytH
-          # 
-          repo: WuBor-Romfs
-          # 
-          tag: dev
-          # 
-          file: romfs.zip
+          repo: 'WuBoytH/WuBor-Romfs'
+          version: 'tags/dev'
+          file: 'romfs.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (PR)
         run: |
           cargo skyline build --release --features pr

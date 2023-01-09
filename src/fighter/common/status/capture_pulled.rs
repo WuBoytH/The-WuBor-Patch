@@ -65,18 +65,18 @@ unsafe fn capturepulledcommon_main(fighter: &mut L2CFighterCommon) {
     }
     let mot = if VarModule::is_flag(fighter.battle_object, captured::flag::FORCE_PALM) {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
-        WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND) as u64
+        WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND)
     }
     else if situation == *SITUATION_KIND_GROUND {
         fighter.FighterStatusCaptrue_set_correct_ground();
-        WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND) as u64
+        WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND)
     }
     else {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_FLAG_AIR);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCHED_BUTTERFLYNET) {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CATCHED_PICKEL) {
-                WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND) as u64
+                WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND)
             }
             else {
                 let offset = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_OFFSET);
@@ -84,7 +84,7 @@ unsafe fn capturepulledcommon_main(fighter: &mut L2CFighterCommon) {
             }
         }
         else {
-            WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND) as u64
+            WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND)
         }
     };
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_FLAG_FIRST) {

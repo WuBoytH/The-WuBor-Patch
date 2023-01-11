@@ -350,7 +350,7 @@ unsafe fn simon_whip_attackairlw_eff(weapon: &mut L2CAgentBase) {
                 true
             );
         }
-        macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_straight"), Hash40::new("hookshot3"), -6, 0, 0, 180, 50, -90, 1.1, true);
+        macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_straight"), Hash40::new("hookshot3"), -6, 0, 0, 180, 50, 90, 1.1, true);
         macros::EFFECT_FOLLOW_ALPHA(weapon, Hash40::new("simon_whip_light"), Hash40::new("hookshot10"), 0, 0, 0, 0, 0, 0, 1, true, 0.65);
         macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_light_s"), Hash40::new("hookshot3"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);

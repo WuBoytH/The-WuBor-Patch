@@ -288,7 +288,7 @@ unsafe fn simon_attacklw3_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
-        macros::EFFECT_FOLLOW(fighter, Hash40::new("simon_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.98, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("simon_whip_straight"), Hash40::new("haver"), 0, 0, 0, 0, 90, 0, 0.98, true);
     }
 }
 

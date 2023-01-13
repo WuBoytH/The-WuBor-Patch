@@ -35,18 +35,12 @@ jobs:
           python-version: '3.9'
       - uses: actions/checkout@v3.1.0
       - name: Download ROMFS
-        # You may pin to the exact commit or the version.
-        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
-        uses: i3h/download-release-asset@v1.3.2
+        uses: dsaltares/fetch-gh-release-asset@master
         with:
-          # 
-          owner: WuBoytH
-          # 
-          repo: WuBor-Romfs
-          # 
-          tag: ${{needs.get-version.outputs.branch}}
-          # 
-          file: romfs.zip
+          repo: 'WuBoytH/WuBor-Romfs'
+          version: 'tags/${{needs.get-version.outputs.branch}}'
+          file: 'romfs.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (Main)
         run: |
           cargo skyline build --release --no-default-features
@@ -75,18 +69,12 @@ jobs:
           python-version: '3.9'
       - uses: actions/checkout@v3.1.0
       - name: Download ROMFS
-        # You may pin to the exact commit or the version.
-        # uses: i3h/download-release-asset@6a9870c8f1c561f9e67550d6177c31c2b1c49fef
-        uses: i3h/download-release-asset@v1.3.2
+        uses: dsaltares/fetch-gh-release-asset@master
         with:
-          # 
-          owner: WuBoytH
-          # 
-          repo: WuBor-Romfs
-          # 
-          tag: ${{needs.get-version.outputs.branch}}
-          # 
-          file: romfs.zip
+          repo: 'WuBoytH/WuBor-Romfs'
+          version: 'tags/${{needs.get-version.outputs.branch}}'
+          file: 'romfs.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (Dev)
         run: |
           cargo skyline build --release --features dev

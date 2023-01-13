@@ -3,29 +3,31 @@ use {
         lua2cpp::L2CFighterCommon,
         phx::*,
         app::*,
-        lib::lua_const::*
+        lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_cancel::*,
-    super::fgc::*
+    wubor_utils::table_const::*,
+    crate::fighter::element::fgc::*
 };
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+#[fighter_reset]
+fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if ![*FIGHTER_KIND_EFLAME, *FIGHTER_KIND_ELIGHT].contains(&fighter_kind) {
+        if fighter_kind != *FIGHTER_KIND_EFLAME {
             return;
         }
         let agent = (*fighter.battle_object).agent_kind_hash;
         element_fgc(agent);
+        fighter.global_table[CHECK_AIR_ITEM_THROW_UNIQ].assign(&L2CValue::Bool(false));
+        fighter.global_table[FALL_BRAKE_UNIQ].assign(&L2CValue::Bool(false));
     }
 }
 
 pub fn install() {
     CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_eflame"));
-    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_elight"));
-    install_agent_init_callbacks!(
-        agent_init
+    install_agent_resets!(
+        agent_reset
     );
 }

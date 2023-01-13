@@ -82,6 +82,47 @@ unsafe fn sub_transition_group_check_ground_catch(fighter: &mut L2CFighterCommon
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_item)]
+unsafe fn sub_transition_group_check_ground_item(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE)
+        && ItemModule::is_have_item(fighter.module_accessor, 0)
+        && {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_NO_THROW);
+            sv_module_access::item(fighter.lua_state_agent);
+            !fighter.pop_lua_stack(1).get_bool()
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+            return true.into();
+        }
+        if fighter.global_table[CMD_CAT3].get_i32() & *FIGHTER_PAD_CMD_CAT3_FLAG_ITEM_LIGHT_THROW_ALL != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
+        && {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_THROW);
+            sv_module_access::item(fighter.lua_state_agent);
+            fighter.pop_lua_stack(1).get_bool()
+        }
+        || {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, MA_MSC_ITEM_CHECK_HAVE_ITEM_TRAIT, ITEM_TRAIT_FLAG_SHOOT);
+            sv_module_access::item(fighter.lua_state_agent);
+            if fighter.pop_lua_stack(1).get_bool() {
+                ItemModule::get_shoot_item_bullet(fighter.module_accessor, 0) <= 0
+            }
+            else {
+                false
+            }
+        } {
+            fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+            return true.into();
+        }
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_attack)]
 unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].get_bool() {
@@ -448,6 +489,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_jump_mini_attack,
             sub_transition_group_check_ground_guard,
             sub_transition_group_check_ground_catch,
+            sub_transition_group_check_ground_item,
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_ground,
             sub_transition_group_check_air_attack,

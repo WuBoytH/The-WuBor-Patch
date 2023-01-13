@@ -125,7 +125,6 @@ pub fn install() {
     richter::install();
     eflame::install();
     elight::install();
-    element::install();
     falco::install();
     purin::install();
     ken::install();

@@ -77,11 +77,7 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackAir)]
 unsafe fn bind_address_call_status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
-    if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
-        FGCModule::reset_used_aerials(fighter);
-    }
-    fighter.status_end_Jump();
-    0.into()
+    fighter.status_end_AttackAir()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackAir)]

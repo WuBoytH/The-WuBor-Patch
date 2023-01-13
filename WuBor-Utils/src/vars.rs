@@ -248,10 +248,19 @@ pub mod edge {
     }
 }
 
-pub mod eflame {
+pub mod element {
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_S_ROTATE : i32 = 0x1150;
+            pub const SPECIAL_LW_OUT_ATTACK : i32 = 0x0150;
+            pub const SPECIAL_LW_OUT_ATTACK_FALL : i32 = 0x0151;
+        }
+    }
+}
+
+pub mod eflame_esword {
+    pub mod status {
+        pub mod flag {
+            pub const ENABLE_EARLY_SPIN : i32 = 0x0150;
         }
     }
 }
@@ -260,6 +269,7 @@ pub mod elight {
     pub mod instance {
         pub mod flag {
             pub const SPECIAL_S_CANCEL : i32 = 0x0150;
+            pub const ATTACK_AIR_LW_LANDING_ATTACK : i32 = 0x0151;
         }
     }
 }

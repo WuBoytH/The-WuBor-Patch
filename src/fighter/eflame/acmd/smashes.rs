@@ -23,7 +23,7 @@ unsafe fn eflame_attacks4(fighter: &mut L2CAgentBase) {
     }
     if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
     if macros::is_excute(fighter) {
@@ -84,7 +84,7 @@ unsafe fn eflame_attacks4(fighter: &mut L2CAgentBase) {
     }
     if MotionModule::is_changing(fighter.module_accessor) {
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_ADD_PARTIAL_MTION_SWORD_WHEN_CHANGEING);
         }
     }
 }

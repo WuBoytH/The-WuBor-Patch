@@ -217,30 +217,7 @@ unsafe fn status_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_Jump)]
 unsafe fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
-        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-            let status = fighter.global_table[STATUS_KIND].get_i32();
-            if status == *FIGHTER_STATUS_KIND_ATTACK_AIR
-            || status == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-                let frame = fighter.global_table[MOTION_FRAME].get_f32();
-                VarModule::set_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME, frame);
-            }
-            else {
-                let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-                sv_kinetic_energy!(
-                    set_speed,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    speed_y * 0.69
-                );
-                VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
-            }
-        }
-        else {
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
-        }
-    }
-    0.into()
+    fighter.status_end_Jump()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_Jump)]

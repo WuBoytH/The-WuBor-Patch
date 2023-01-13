@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "pikachu", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "pikachu", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_attackairn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     if macros::is_excute(fighter) {
@@ -41,7 +41,7 @@ unsafe fn pikachu_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "pikachu", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -70,7 +70,7 @@ unsafe fn pikachu_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "effect_attackairb" , category = ACMD_EFFECT )]
+#[acmd_script( agent = "pikachu", script = "effect_attackairb" , category = ACMD_EFFECT, low_priority )]
 unsafe fn pikachu_attackairb_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -83,7 +83,7 @@ unsafe fn pikachu_attackairb_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "sound_attackairb", category = ACMD_SOUND )]
+#[acmd_script( agent = "pikachu", script = "sound_attackairb", category = ACMD_SOUND, low_priority )]
 unsafe fn pikachu_attackairb_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -93,7 +93,7 @@ unsafe fn pikachu_attackairb_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "expression_attackairb", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "pikachu", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn pikachu_attackairb_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -115,11 +115,11 @@ unsafe fn pikachu_attackairb_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_landingairb", category = ACMD_GAME )]
+#[acmd_script( agent = "pikachu", script = "game_landingairb", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_landingairb(_fighter: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "pikachu", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

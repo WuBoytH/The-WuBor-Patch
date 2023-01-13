@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "palutena", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn palutena_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.6);
@@ -36,7 +36,7 @@ unsafe fn palutena_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn palutena_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.75);
@@ -63,7 +63,7 @@ unsafe fn palutena_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn palutena_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {

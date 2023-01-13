@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "kamui", script = "game_attack12", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attack12(fighter: &mut L2CAgentBase) {
     let mut rehit = 0;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -45,7 +45,7 @@ unsafe fn kamui_attack12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attack13", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attack13(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -82,7 +82,7 @@ unsafe fn kamui_attack13(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attacks3(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -116,7 +116,7 @@ unsafe fn kamui_attacks3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.87);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackhi3(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -162,7 +162,7 @@ unsafe fn kamui_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attacklw3(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {

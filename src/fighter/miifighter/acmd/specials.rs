@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "miifighter", script = "game_specials3dash", category = ACMD_GAME )]
+#[acmd_script( agent = "miifighter", script = "game_specials3dash", category = ACMD_GAME, low_priority )]
 unsafe fn miifighter_specials3dash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -39,7 +39,7 @@ unsafe fn miifighter_specials3dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", script = "game_specialairs3dash", category = ACMD_GAME )]
+#[acmd_script( agent = "miifighter", script = "game_specialairs3dash", category = ACMD_GAME, low_priority )]
 unsafe fn miifighter_specialairs3dash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -74,7 +74,7 @@ unsafe fn miifighter_specialairs3dash(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.6);
 }
 
-#[acmd_script( agent = "miifighter", script = "game_specialhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "miifighter", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
 unsafe fn miifighter_specialhi3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);

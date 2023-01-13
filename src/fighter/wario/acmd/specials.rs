@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "wario", scripts = [ "game_specialnopenwait", "game_specialairnopenwait" ], category = ACMD_GAME )]
+#[acmd_script( agent = "wario", scripts = [ "game_specialnopenwait", "game_specialairnopenwait" ], category = ACMD_GAME, low_priority )]
 unsafe fn wario_specialnopenwait(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -34,7 +34,7 @@ unsafe fn wario_specialnopenwait(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = [ "game_specialnbite", "game_specialairnbite" ], category = ACMD_GAME )]
+#[acmd_script( agent = "wario", scripts = [ "game_specialnbite", "game_specialairnbite" ], category = ACMD_GAME, low_priority )]
 unsafe fn wario_specialnbite(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(fighter.lua_state_agent, 21.0);
@@ -53,7 +53,7 @@ unsafe fn wario_specialnbite(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME )]
+#[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
 unsafe fn wario_speciallwsr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
@@ -66,7 +66,7 @@ unsafe fn wario_speciallwsr(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwmr", "game_specialairlwmr"], category = ACMD_GAME )]
+#[acmd_script( agent = "wario", scripts = ["game_speciallwmr", "game_specialairlwmr"], category = ACMD_GAME, low_priority )]
 unsafe fn wario_speciallwmr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -86,7 +86,7 @@ unsafe fn wario_speciallwmr(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME )]
+#[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME, low_priority )]
 unsafe fn wario_speciallwlr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.6);
@@ -105,7 +105,7 @@ unsafe fn wario_speciallwlr(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME )]
+#[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME, low_priority )]
 unsafe fn wario_speciallwflyr(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

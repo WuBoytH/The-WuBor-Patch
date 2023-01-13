@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "ike", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "ike", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn ike_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.0);

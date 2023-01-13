@@ -11,7 +11,7 @@ use {
     // wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME )]
+#[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn samus_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
@@ -66,7 +66,7 @@ unsafe fn samus_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "samus_cshot", script = "game_shoot", category = ACMD_GAME )]
+// #[acmd_script( agent = "samus_cshot", script = "game_shoot", category = ACMD_GAME, low_priority )]
 // unsafe fn samus_cshot_shoot(weapon: &mut L2CAgentBase) {
 //     if macros::is_excute(weapon) {
 //         let angle = WorkModule::get_float(weapon.module_accessor, WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_ANGLE);

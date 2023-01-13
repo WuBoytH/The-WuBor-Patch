@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "chrom", script = "game_specialairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "chrom", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 21.0);
     if macros::is_excute(fighter) {
@@ -24,7 +24,7 @@ unsafe fn chrom_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_specialairlw", category = ACMD_EFFECT )]
+#[acmd_script( agent = "chrom", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
 unsafe fn chrom_speciallw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -36,7 +36,7 @@ unsafe fn chrom_speciallw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_specialairlw", category = ACMD_SOUND )]
+#[acmd_script( agent = "chrom", script = "sound_specialairlw", category = ACMD_SOUND, low_priority )]
 unsafe fn chrom_speciallw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
@@ -44,7 +44,7 @@ unsafe fn chrom_speciallw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_specialairlw", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "chrom", script = "expression_specialairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn chrom_speciallw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -59,7 +59,7 @@ unsafe fn chrom_speciallw_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_speciallwhit", category = ACMD_GAME )]
+#[acmd_script( agent = "chrom", script = "game_speciallwhit", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_speciallwhit(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 8.0, 65, 115, 0, 65, 10.0, 0.0, 6.0, 11.0, Some(0.0), Some(11.0), Some(11.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
@@ -85,7 +85,7 @@ unsafe fn chrom_speciallwhit(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_speciallwhit", category = ACMD_EFFECT )]
+#[acmd_script( agent = "chrom", script = "effect_speciallwhit", category = ACMD_EFFECT, low_priority )]
 unsafe fn chrom_speciallwhit_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("chrom_tenku_landing"), Hash40::new("top"), 0, 0, 10, 70, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
@@ -100,7 +100,7 @@ unsafe fn chrom_speciallwhit_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_speciallwhit", category = ACMD_SOUND )]
+#[acmd_script( agent = "chrom", script = "sound_speciallwhit", category = ACMD_SOUND, low_priority )]
 unsafe fn chrom_speciallwhit_snd(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_kick_hit_l"));
@@ -116,7 +116,7 @@ unsafe fn chrom_speciallwhit_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_speciallwhit", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "chrom", script = "expression_speciallwhit", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn chrom_speciallwhit_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);

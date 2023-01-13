@@ -9,7 +9,7 @@ use {
     wubor_utils::vars::*,
 };
 
-#[acmd_script( agent = "dolly", scripts = [ "game_appealhir", "game_appealhil" ], category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", scripts = [ "game_appealhir", "game_appealhil" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_appealhi(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         macros::FT_MOTION_RATE(fighter, 0.8);
@@ -23,7 +23,7 @@ unsafe fn dolly_appealhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", scripts = [ "game_appeallwr", "game_appeallwl" ], category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", scripts = [ "game_appeallwr", "game_appeallwl" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_appeallw(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         macros::FT_MOTION_RATE(fighter, 0.8);
@@ -37,7 +37,7 @@ unsafe fn dolly_appeallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", scripts = [ "game_appealsr", "game_appealsl" ], category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", scripts = [ "game_appealsr", "game_appealsl" ], category = ACMD_GAME, low_priority )]
 unsafe fn dolly_appeals(fighter: &mut L2CAgentBase) {
     if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
         macros::FT_MOTION_RATE(fighter, 0.8);

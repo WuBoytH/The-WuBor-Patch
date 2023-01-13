@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn ridley_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -60,7 +60,7 @@ unsafe fn ridley_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe fn ridley_landingairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

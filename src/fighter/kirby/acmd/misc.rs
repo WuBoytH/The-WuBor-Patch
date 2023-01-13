@@ -13,7 +13,7 @@ use {
     super::super::vl
 };
 
-#[acmd_script( agent = "kirby", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME )]
+#[acmd_script( agent = "kirby", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
 unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
@@ -64,7 +64,7 @@ unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "effect_appealsl", "effect_appealsr" ], category = ACMD_EFFECT )]
+#[acmd_script( agent = "kirby", scripts = [ "effect_appealsl", "effect_appealsr" ], category = ACMD_EFFECT, low_priority )]
 unsafe fn kirby_appeals_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -80,7 +80,7 @@ unsafe fn kirby_appeals_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "sound_appealsl", "sound_appealsr" ], category = ACMD_SOUND )]
+#[acmd_script( agent = "kirby", scripts = [ "sound_appealsl", "sound_appealsr" ], category = ACMD_SOUND, low_priority )]
 unsafe fn kirby_appeals_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -104,7 +104,7 @@ unsafe fn kirby_appeals_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "expression_appealsl", "expression_appealsr" ], category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "kirby", scripts = [ "expression_appealsl", "expression_appealsr" ], category = ACMD_EXPRESSION, low_priority )]
 unsafe fn kirby_appeals_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -141,7 +141,7 @@ unsafe fn kirby_appeals_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_appealsloop", category = ACMD_EFFECT )]
+#[acmd_script( agent = "kirby", script = "effect_appealsloop", category = ACMD_EFFECT, low_priority )]
 unsafe fn kirby_appealsloop_eff(fighter: &mut L2CAgentBase) {
     for x in 0..i32::MAX {
         if macros::is_excute(fighter) {
@@ -157,7 +157,7 @@ unsafe fn kirby_appealsloop_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_appealsloop", category = ACMD_SOUND )]
+#[acmd_script( agent = "kirby", script = "sound_appealsloop", category = ACMD_SOUND, low_priority )]
 unsafe fn kirby_appealsloop_snd(fighter: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(fighter.lua_state_agent, 4.0);
@@ -181,7 +181,7 @@ unsafe fn kirby_appealsloop_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_appealsloop", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "kirby", script = "expression_appealsloop", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn kirby_appealsloop_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

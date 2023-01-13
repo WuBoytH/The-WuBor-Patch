@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "ganon", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "ganon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_attacks4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -37,7 +37,7 @@ unsafe fn ganon_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "ganon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_attackhi4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -59,7 +59,7 @@ unsafe fn ganon_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "ganon", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_attacklw4(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));

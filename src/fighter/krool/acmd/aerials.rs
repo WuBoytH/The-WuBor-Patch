@@ -9,7 +9,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "krool", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "krool", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn krool_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn koopa_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(fighter, 1.5);

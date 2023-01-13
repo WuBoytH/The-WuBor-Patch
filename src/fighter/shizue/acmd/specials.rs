@@ -9,11 +9,11 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "shizue_clayrocket", script = "game_ready", category = ACMD_GAME )]
+#[acmd_script( agent = "shizue_clayrocket", script = "game_ready", category = ACMD_GAME, low_priority )]
 unsafe fn shizue_clayrocket_ready(_weapon: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "shizue_clayrocket", script = "game_fly", category = ACMD_GAME )]
+#[acmd_script( agent = "shizue_clayrocket", script = "game_fly", category = ACMD_GAME, low_priority )]
 unsafe fn shizue_clayrocket_fly(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 8.0);
     if macros::is_excute(weapon) {
@@ -25,7 +25,7 @@ unsafe fn shizue_clayrocket_fly(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue_clayrocket", script = "game_burst", category = ACMD_GAME )]
+#[acmd_script( agent = "shizue_clayrocket", script = "game_burst", category = ACMD_GAME, low_priority )]
 unsafe fn shizue_clayrocket_burst(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 10.0, 60, 70, 10, 50, 17.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_BOMB);

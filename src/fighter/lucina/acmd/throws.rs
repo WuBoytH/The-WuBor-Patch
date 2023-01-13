@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         if VarModule::is_flag(fighter.battle_object, yu::instance::flag::HEROIC_GRAB) {

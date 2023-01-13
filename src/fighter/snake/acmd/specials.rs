@@ -3,7 +3,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME )]
+#[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
 unsafe fn snake_cypher_detach(_fighter: &mut L2CAgentBase) {
 }
 

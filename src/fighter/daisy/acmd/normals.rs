@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_attack12(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -25,7 +25,7 @@ unsafe fn daisy_attack12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -56,7 +56,7 @@ unsafe fn daisy_attackdash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -79,7 +79,7 @@ unsafe fn daisy_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -92,7 +92,7 @@ unsafe fn daisy_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "bayonetta", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "bayonetta", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -45,7 +45,7 @@ unsafe fn bayonetta_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attack100end", category = ACMD_GAME )]
+#[acmd_script( agent = "bayonetta", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attack100end(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2bfb02b69a), true);
@@ -92,7 +92,7 @@ unsafe fn bayonetta_attack100end(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attacks32", category = ACMD_GAME )]
+#[acmd_script( agent = "bayonetta", script = "game_attacks32", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attacks32(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
@@ -130,7 +130,7 @@ unsafe fn bayonetta_attacks32(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attacks33", category = ACMD_GAME )]
+#[acmd_script( agent = "bayonetta", script = "game_attacks33", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attacks33(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
@@ -163,7 +163,7 @@ unsafe fn bayonetta_attacks33(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "bayonetta", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -194,7 +194,7 @@ unsafe fn bayonetta_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "bayonetta", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     // if macros::is_excute(fighter) {

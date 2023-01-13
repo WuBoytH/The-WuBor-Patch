@@ -11,7 +11,7 @@ use {
     super::super::helper::*
 };
 
-#[acmd_script( agent = "marth", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "marth", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn marth_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -31,7 +31,7 @@ unsafe fn marth_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attack11", category = ACMD_EFFECT )]
+#[acmd_script( agent = "marth", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_attack11_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -45,7 +45,7 @@ unsafe fn marth_attack11_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attack12", category = ACMD_GAME )]
+#[acmd_script( agent = "marth", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn marth_attack12(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -60,7 +60,7 @@ unsafe fn marth_attack12(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attack12", category = ACMD_EFFECT )]
+#[acmd_script( agent = "marth", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_attack12_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -74,7 +74,7 @@ unsafe fn marth_attack12_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "marth", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -89,7 +89,7 @@ unsafe fn marth_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacks3", category = ACMD_EFFECT )]
+#[acmd_script( agent = "marth", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_attacks3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -103,7 +103,7 @@ unsafe fn marth_attacks3_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "marth", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -134,7 +134,7 @@ unsafe fn marth_attackhi3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attackhi3", category = ACMD_EFFECT )]
+#[acmd_script( agent = "marth", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_attackhi3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -148,7 +148,7 @@ unsafe fn marth_attackhi3_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "marth", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -163,7 +163,7 @@ unsafe fn marth_attacklw3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacklw3", category = ACMD_EFFECT )]
+#[acmd_script( agent = "marth", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_attacklw3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {

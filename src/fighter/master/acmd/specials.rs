@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn master_speciallw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 3.0);
@@ -59,7 +59,7 @@ unsafe fn master_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_specialairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn master_specialairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.0, 3.0);

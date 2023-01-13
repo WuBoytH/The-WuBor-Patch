@@ -10,7 +10,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "jack", script = "game_throwf", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_throwf", category = ACMD_GAME, low_priority )]
 unsafe fn jack_throwf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let damage = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
@@ -34,7 +34,7 @@ unsafe fn jack_throwf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_throwb", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_throwb", category = ACMD_GAME, low_priority )]
 unsafe fn jack_throwb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let damage = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
@@ -58,7 +58,7 @@ unsafe fn jack_throwb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_throwhi", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_throwhi", category = ACMD_GAME, low_priority )]
 unsafe fn jack_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let damage = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
@@ -82,7 +82,7 @@ unsafe fn jack_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn jack_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         let damage = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {

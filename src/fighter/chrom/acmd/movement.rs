@@ -8,7 +8,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME )]
+#[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_dash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -16,7 +16,7 @@ unsafe fn chrom_dash(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_turndash", category = ACMD_GAME )]
+#[acmd_script( agent = "chrom", script = "game_turndash", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_turndash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

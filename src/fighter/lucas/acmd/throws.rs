@@ -10,7 +10,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "lucas", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 80, 40, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "murabito", script = "game_escapeairslide", category = ACMD_GAME )]
+#[acmd_script( agent = "murabito", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn murabito_escapeairslide(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

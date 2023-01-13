@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn master_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);

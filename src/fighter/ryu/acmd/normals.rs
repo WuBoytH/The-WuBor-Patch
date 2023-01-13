@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "ryu", script = "game_attackhi3s", category = ACMD_GAME )]
+#[acmd_script( agent = "ryu", script = "game_attackhi3s", category = ACMD_GAME, low_priority )]
 unsafe fn ryu_attackhi3s(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);

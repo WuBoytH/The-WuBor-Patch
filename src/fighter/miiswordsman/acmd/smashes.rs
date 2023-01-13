@@ -9,7 +9,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "miiswordsman", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn miisword_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 2.0/3.0);

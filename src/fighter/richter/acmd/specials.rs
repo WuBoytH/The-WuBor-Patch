@@ -11,7 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME )]
+#[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.7);
     frame(fighter.lua_state_agent, 30.0);
@@ -21,7 +21,7 @@ unsafe fn richter_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "richter", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
 unsafe fn richter_specialn_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -38,14 +38,14 @@ unsafe fn richter_specialn_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", scripts = ["game_specialnblank", "game_specialairnblank"], category = ACMD_GAME )]
+#[acmd_script( agent = "richter", scripts = ["game_specialnblank", "game_specialairnblank"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialnblank(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.7);
     frame(fighter.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "richter_axe", script = "game_fly", category = ACMD_GAME )]
+#[acmd_script( agent = "richter_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
 unsafe fn richter_axe_fly(weapon: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     if sv_battle_object::is_active(owner_id)
@@ -59,7 +59,7 @@ unsafe fn richter_axe_fly(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME )]
+#[acmd_script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specials1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 1.56);
@@ -81,7 +81,7 @@ unsafe fn richter_specials1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_cross", script = "game_fly", category = ACMD_GAME )]
+#[acmd_script( agent = "richter_cross", script = "game_fly", category = ACMD_GAME, low_priority )]
 unsafe fn richter_cross_fly(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("rot"), 8.0, 90, 60, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
@@ -89,7 +89,7 @@ unsafe fn richter_cross_fly(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_cross", script = "game_turn", category = ACMD_GAME )]
+#[acmd_script( agent = "richter_cross", script = "game_turn", category = ACMD_GAME, low_priority )]
 unsafe fn richter_cross_turn(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("rot"), 8.0, 90, 60, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
@@ -97,7 +97,7 @@ unsafe fn richter_cross_turn(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME )]
+#[acmd_script( agent = "richter", scripts = ["game_specialhi", "game_specialairhi"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -141,7 +141,7 @@ unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME )]
+#[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_speciallw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.3);
     if macros::is_excute(fighter) {

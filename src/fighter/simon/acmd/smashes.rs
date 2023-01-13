@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "simon", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "simon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn simon_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -51,7 +51,7 @@ unsafe fn simon_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacks4hi", category = ACMD_GAME )]
+#[acmd_script( agent = "simon", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe fn simon_attacks4hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -93,7 +93,7 @@ unsafe fn simon_attacks4hi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacks4lw", category = ACMD_GAME )]
+#[acmd_script( agent = "simon", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
 unsafe fn simon_attacks4lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -135,7 +135,7 @@ unsafe fn simon_attacks4lw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "simon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn simon_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.2);
@@ -182,7 +182,7 @@ unsafe fn simon_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "simon", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn simon_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

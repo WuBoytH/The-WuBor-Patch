@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "dolly", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -39,7 +39,7 @@ unsafe fn dolly_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);

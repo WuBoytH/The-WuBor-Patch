@@ -9,7 +9,7 @@ use {
     smashline::*,
 };
 
-#[acmd_script( agent = "pit", script = "game_specialsend", category = ACMD_GAME )]
+#[acmd_script( agent = "pit", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe fn pit_specialsend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
@@ -25,7 +25,7 @@ unsafe fn pit_specialsend(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialairsend", category = ACMD_GAME )]
+#[acmd_script( agent = "pit", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
 unsafe fn pit_specialairsend(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         shield!(fighter, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);

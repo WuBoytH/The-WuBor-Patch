@@ -9,6 +9,73 @@ use {
     smashline::*
 };
 
+#[acmd_script( agent = "richter", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+unsafe fn richter_attackairn(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+    frame(fighter.lua_state_agent, 35.0);
+    if macros::is_excute(fighter) {
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+unsafe fn richter_attackairn_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 4, 0, 0, 0, 0.6, true);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 0, -180, 140, -25, 1.1, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 1.4);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+unsafe fn richter_attackairn_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_s"));
+    }
+    frame(fighter.lua_state_agent, 11.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
+        macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
+    }
+}
+
+#[acmd_script( agent = "richter", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn richter_attackairn_exp(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_nohits"),
+            4,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_nohitm"),
+            0,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+}
+
 #[acmd_script( agent = "richter", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn richter_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -494,6 +561,7 @@ unsafe fn richter_landingairlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        richter_attackairn, richter_attackairn_eff, richter_attackairn_snd, richter_attackairn_exp,
         richter_attackairf,
         richter_attackairfhi,
         richter_attackairflw,

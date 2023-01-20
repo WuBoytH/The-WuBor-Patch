@@ -29,6 +29,22 @@ unsafe fn status_end_attackxx4start(fighter: &mut L2CFighterCommon) {
     attack_4_reset_ground_normals(fighter);
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_smash_hold_uniq)]
+unsafe fn sub_smash_hold_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    if param_1.get_bool() {
+        if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_SMASH_LOOP_FRAME) {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_SMASH_LOOP_FRAME);
+            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_SMASH_LOOP_FRAME) == 0 {
+                physics!(fighter, *MA_MSC_CMD_PHYSICS_STOP_CHARGE);
+            }
+        }
+        else {
+            WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_SMASH_HOLD_KEEP_FRAME);
+        }
+    }
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackS4Hold)]
 unsafe fn status_end_attacks4hold(fighter: &mut L2CFighterCommon) -> L2CValue {
     attack_4_hold(fighter);
@@ -180,6 +196,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_end_attackxx4start,
+            sub_smash_hold_uniq,
             status_end_attacks4hold, status_end_attackhi4hold, status_end_attacklw4hold,
             status_attacks4_main, bind_address_call_status_end_attacks4, status_end_attacks4,
             status_attackhi4_main, bind_address_call_status_end_attackhi4, status_end_attackhi4,

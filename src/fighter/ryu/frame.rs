@@ -1,10 +1,10 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
-        phx::{Hash40, Vector3f, Vector2f},
+        phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
@@ -279,7 +279,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_RYU )]
+#[fighter_frame( agent = FIGHTER_KIND_RYU, main )]
 fn ryu_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         ryu_reset_vars(fighter);

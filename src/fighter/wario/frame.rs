@@ -1,8 +1,8 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
 };
@@ -22,7 +22,7 @@ unsafe fn wario_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_WARIO )]
+#[fighter_frame( agent = FIGHTER_KIND_WARIO, main )]
 fn wario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         wario_training_tools(fighter);

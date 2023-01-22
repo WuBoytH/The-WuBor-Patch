@@ -1,8 +1,8 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
@@ -14,7 +14,7 @@ use {
     super::helper::*,
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SHIZUE )]
+#[fighter_frame( agent = FIGHTER_KIND_SHIZUE, main )]
 fn shizue_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.battle_object, shizue::instance::flag::FIRE_ROCKET_ANYTIME) {

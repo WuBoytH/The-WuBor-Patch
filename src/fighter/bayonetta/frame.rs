@@ -1,15 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
-        phx::{Hash40, Vector3f},
+        phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_BAYONETTA )]
+#[fighter_frame( agent = FIGHTER_KIND_BAYONETTA, main )]
 fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME);

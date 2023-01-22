@@ -1,23 +1,16 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
-        phx::Hash40,
+        phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*,
-        table_const::*
-    },
-    super::{
-        vl,
-        helper::*
-    },
+    wubor_utils::{wua_bind::*, vars::*, table_const::*},
+    super::{vl, helper::*}
 };
 
 unsafe fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {
@@ -258,7 +251,7 @@ unsafe fn lucina_heroic_bravery_grab(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCINA )]
+#[fighter_frame( agent = FIGHTER_KIND_LUCINA, main )]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         lucina_reset_vars(fighter);

@@ -1,9 +1,9 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
@@ -11,7 +11,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
+#[fighter_frame( agent = FIGHTER_KIND_TOONLINK, main )]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 

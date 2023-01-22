@@ -1,14 +1,14 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     wubor_utils::cancels::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_JACK )]
+#[fighter_frame( agent = FIGHTER_KIND_JACK, main )]
 fn jack_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)

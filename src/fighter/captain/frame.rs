@@ -1,9 +1,9 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Hash40,
+        lua2cpp::*,
+        phx::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*
@@ -60,14 +60,14 @@ use {
 //     FGCModule::cancel_system(fighter, status, allowed_cancels);
 // }
 
-// #[fighter_frame( agent = FIGHTER_KIND_CAPTAIN )]
+// #[fighter_frame( agent = FIGHTER_KIND_CAPTAIN, main )]
 // fn captain_frame(fighter: &mut L2CFighterCommon) {
 //     unsafe {
         
 //     }
 // }
 
-// #[weapon_frame( agent = WEAPON_KIND_CAPTAIN_FALCONPUNCH )]
+// #[weapon_frame( agent = WEAPON_KIND_CAPTAIN_FALCONPUNCH, main )]
 // fn captain_falconpunch_frame(weapon: &mut L2CFighterBase) {
 //     unsafe {
         

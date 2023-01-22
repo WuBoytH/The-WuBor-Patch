@@ -1,8 +1,8 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
-        phx::Vector3f,
+        phx::*,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
@@ -13,36 +13,27 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-unsafe fn fgc_setup(fighter: &mut L2CFighterCommon) {
-    if smashball::is_training_mode()
-    && fighter.global_table[KIND].get_i32() != *FIGHTER_KIND_NANA {
-        if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-        && ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
-            FGC_TRAINING = !FGC_TRAINING;
-            if !FGC_TRAINING {
-                let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-                let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-                let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_flame")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-                EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 5.0);
-            }
-            else {
-                let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
-                let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
-                let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_flame")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
-                EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 5.0, 0.0, 0.0);
+unsafe fn training_fgc_setup(fighter: &mut L2CFighterCommon) {
+    if smashball::is_training_mode() {
+        if fighter.global_table[KIND].get_i32() != *FIGHTER_KIND_NANA {
+            if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
+            && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
+                FGC_TRAINING = !FGC_TRAINING;
+                if !FGC_TRAINING {
+                    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_flame")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                    EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 0.0, 0.0, 5.0);
+                }
+                else {
+                    let pos = Vector3f{x: 0.0, y: 13.0, z: 0.0};
+                    let rot = Vector3f{x: 0.0, y: 90.0, z: 0.0};
+                    let onemoreeff: u32 = EffectModule::req_follow(fighter.module_accessor, smash::phx::Hash40{hash: hash40("sys_flame")}, smash::phx::Hash40{hash: hash40("top")}, &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
+                    EffectModule::set_rgb(fighter.module_accessor, onemoreeff, 5.0, 0.0, 0.0);
+                }
             }
         }
-    }
-    if FighterUtil::is_hp_mode(fighter.module_accessor)
-    && !smashball::is_training_mode() {
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
-        FGC_TRAINING = false;
-    }
-    else if FGC_TRAINING {
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
-    }
-    else {
-        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
+        VarModule::set_flag(fighter.battle_object, fighter::instance::flag::IS_FGC, FGC_TRAINING);
     }
 }
 
@@ -85,7 +76,7 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
     && VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         let super_jump_frame = VarModule::get_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME);
-        if fighter.global_table[STATUS_FRAME].get_f32() >= 9.0 - super_jump_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() >= 10.0 - super_jump_frame {
             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
             sv_kinetic_energy!(
                 set_accel,
@@ -113,14 +104,16 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
 }
 
 // Use this for general per-frame fighter-level hooks
-#[fighter_frame_callback]
+#[fighter_frame_callback( main )]
 fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        fgc_setup(fighter);
-        fgc_frame(fighter);
-        hit_cancel_frame_set(fighter);
-        special_jump_stick_flick(fighter);
-        super_jump_gravity(fighter);
+        if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+            training_fgc_setup(fighter);
+            fgc_frame(fighter);
+            hit_cancel_frame_set(fighter);
+            special_jump_stick_flick(fighter);
+            super_jump_gravity(fighter);
+        }
     }
 }
 

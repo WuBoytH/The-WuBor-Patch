@@ -1,9 +1,9 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Hash40,
+        lua2cpp::*,
+        phx::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
@@ -96,7 +96,7 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_DOLLY )]
+#[fighter_frame( agent = FIGHTER_KIND_DOLLY, main )]
 fn dolly_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         // dolly_reset_vars(fighter);

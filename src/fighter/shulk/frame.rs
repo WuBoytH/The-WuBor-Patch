@@ -1,16 +1,16 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::{Hash40, Vector3f},
+        lua2cpp::*,
+        phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SHULK )]
+#[fighter_frame( agent = FIGHTER_KIND_SHULK, main )]
 fn shulk_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         

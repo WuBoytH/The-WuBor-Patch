@@ -5,7 +5,7 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    smashline::*,
+    // smashline::*,
     custom_var::*,
     custom_cancel::*,
     wubor_utils::{
@@ -112,23 +112,4 @@ pub fn generic_attack4(agent: Hash40) {
             info
         );
     }
-}
-
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if CustomCancelManager::initialize_agent((*fighter.battle_object).agent_kind_hash) {
-            let agent = (*fighter.battle_object).agent_kind_hash;
-            generic_attack(agent);
-            generic_attackair(agent);
-            generic_attack3(agent);
-            generic_attack4(agent);
-        }
-    }
-}
-
-pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
 }

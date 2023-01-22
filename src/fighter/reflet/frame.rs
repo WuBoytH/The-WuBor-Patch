@@ -1,15 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
         app::{lua_bind::*, smashball},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     wubor_utils::wua_bind::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_REFLET )]
+#[fighter_frame( agent = FIGHTER_KIND_REFLET, main )]
 fn reflet_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smashball::is_training_mode() {

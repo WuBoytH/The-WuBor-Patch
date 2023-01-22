@@ -1,11 +1,14 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
+        app::*,
         lib::L2CValue
     },
-    // smashline::*,
     custom_var::*,
-    wubor_utils::vars::*
+    custom_cancel::*,
+    smashline::*,
+    wubor_utils::vars::*,
+    super::fgc::*
 };
 
 // #[macro_export]
@@ -101,3 +104,25 @@ pub unsafe extern "C" fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -
 //         fighter_reset
 //     );
 // }
+
+#[fighter_init]
+fn agent_init(fighter: &mut L2CFighterCommon) {
+    unsafe {
+        if CustomCancelManager::initialize_agent((*fighter.battle_object).agent_kind_hash) {
+            let agent = (*fighter.battle_object).agent_kind_hash;
+            generic_attack(agent);
+            generic_attackair(agent);
+            generic_attack3(agent);
+            generic_attack4(agent);
+        }
+        if FighterUtil::is_hp_mode(fighter.module_accessor) {
+            VarModule::on_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
+        }
+    }
+}
+
+pub fn install() {
+    install_agent_init_callbacks!(
+        agent_init
+    );
+}

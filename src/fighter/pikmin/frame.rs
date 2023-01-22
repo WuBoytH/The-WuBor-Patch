@@ -1,9 +1,9 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Vector3f,
+        lua2cpp::*,
+        phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     wubor_utils::table_const::*
@@ -57,7 +57,7 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PIKMIN )]
+#[fighter_frame( agent = FIGHTER_KIND_PIKMIN, main )]
 fn pikmin_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         pikmin_antenna_indicator(fighter);

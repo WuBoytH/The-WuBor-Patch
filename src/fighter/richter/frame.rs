@@ -1,18 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_RICHTER )]
+#[fighter_frame( agent = FIGHTER_KIND_RICHTER, main )]
 fn richter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI)

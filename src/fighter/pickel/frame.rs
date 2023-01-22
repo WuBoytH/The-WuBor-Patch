@@ -1,8 +1,8 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
@@ -30,7 +30,7 @@ unsafe fn pickel_sync_mining_pattern(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PICKEL )]
+#[fighter_frame( agent = FIGHTER_KIND_PICKEL, main )]
 fn pickel_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         pickel_sync_mining_pattern(fighter);

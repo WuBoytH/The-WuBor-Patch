@@ -54,7 +54,8 @@ unsafe fn richter_axe_fly(weapon: &mut L2CAgentBase) {
         VarModule::set_int(object, richter::instance::int::AXE_ID, weapon.battle_object_id as i32);
     }
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("axe"), 6.0, 70, 75, 0, 75, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("axe"), 9.0, 130, 30, 0, 80, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
+        AttackModule::set_add_reaction_frame_revised(weapon.module_accessor, 0, 5.0, false);
         macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 0, 1.1);
     }
 }
@@ -62,7 +63,7 @@ unsafe fn richter_axe_fly(weapon: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME, low_priority )]
 unsafe fn richter_specials1(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 1.56);
+    macros::FT_MOTION_RATE(fighter, 1.2);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_CROSS, false, 0);
     }
@@ -84,16 +85,16 @@ unsafe fn richter_specials1(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "richter_cross", script = "game_fly", category = ACMD_GAME, low_priority )]
 unsafe fn richter_cross_fly(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("rot"), 8.0, 90, 60, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(weapon, 1, 0, Hash40::new("rot"), 8.0, 90, 60, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
     }
 }
 
 #[acmd_script( agent = "richter_cross", script = "game_turn", category = ACMD_GAME, low_priority )]
 unsafe fn richter_cross_turn(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("rot"), 8.0, 90, 60, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(weapon, 1, 0, Hash40::new("rot"), 8.0, 90, 60, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(weapon, 0, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 12, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
     }
 }
 

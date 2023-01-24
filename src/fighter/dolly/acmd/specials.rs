@@ -1017,7 +1017,7 @@ unsafe fn dolly_superspecial_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_attack_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
     }
     frame(fighter.lua_state_agent, 18.0);
     if macros::is_excute(fighter) {
@@ -1100,7 +1100,7 @@ unsafe fn dolly_superspecial2start_eff(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_attack_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
         macros::EFFECT_FLW_POS_NO_STOP(fighter, Hash40::new("dolly_buster_punch"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, false);
         macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("dolly_buster_dash"), Hash40::new("top"), 0, 0, -8, 0, 0, 0, 1, false);
         EffectModule::enable_sync_init_pos_last(fighter.module_accessor);

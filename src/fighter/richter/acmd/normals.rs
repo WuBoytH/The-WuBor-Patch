@@ -11,22 +11,141 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "richter", script = "game_attack100end", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attack100end(fighter: &mut L2CAgentBase) {
-    wait(fighter.lua_state_agent, 3.0);
+#[acmd_script( agent = "richter", script = "game_attack11", category = ACMD_GAME, low_priority )]
+unsafe fn richter_attack11(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.5, 55, 115, 0, 80, 7.5, 0.0, 7.5, 12.0, Some(0.0), Some(7.5), Some(13.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RICHTER_WHIP, *ATTACK_REGION_WHIP);
-        VarModule::on_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL);
-        VarModule::on_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 4.0, 361, 20, 0, 40, 4.0, 4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 4.0, 361, 20, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 8.0, false);
+        AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 8.0, false);
+    }
+    macros::FT_MOTION_RATE(fighter, 5.0 / 9.0);
+    wait(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+    }
+    frame(fighter.lua_state_agent, 14.0);
+    macros::FT_MOTION_RATE(fighter, 1.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    }
+    frame(fighter.lua_state_agent, 21.0);
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
+    }
+    frame(fighter.lua_state_agent, 24.0);
+    if macros::is_excute(fighter) {
+        VarModule::off_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+unsafe fn richter_attack11_eff(fighter: &mut L2CAgentBase) {
+    // frame(fighter.lua_state_agent, 4.0);
+    // if macros::is_excute(fighter) {
+    //     macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 4, 0, 0, 0, 0.6, true);
+    // }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 0, -180, 140, -25, 1.1, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.75);
+        macros::LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.3);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
+unsafe fn richter_attack11_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_s"));
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
+        macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
+    }
+}
+
+#[acmd_script( agent = "richter", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn richter_attack11_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_nohits"),
+            4,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "game_attack12", category = ACMD_GAME, low_priority )]
+unsafe fn richter_attack12(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 5.0, 20, 20, 0, 80, 4.0, 4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 5.0, 20, 20, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 5.0, 20, 20, 0, 80, 3.0, 0.0, 8.0, 6.0, Some(0.0), Some(8.0), Some(14.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    wait(fighter.lua_state_agent, 10.0);
+}
+
+#[acmd_script( agent = "richter", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
+unsafe fn richter_attack12_eff(fighter: &mut L2CAgentBase) {
+    // frame(fighter.lua_state_agent, 4.0);
+    // if macros::is_excute(fighter) {
+    //     macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 4, 0, 0, 0, 0.6, true);
+    // }
+    frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL);
-        VarModule::off_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 4, 20, -90, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_RATE(fighter, 0.75);
+        macros::LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.4, 0.3);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
+unsafe fn richter_attack12_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
+    }
+}
+
+#[acmd_script( agent = "richter", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn richter_attack12_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(
+            fighter.module_accessor,
+            Hash40::new("rbkind_nohits"),
+            4,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+    frame(fighter.lua_state_agent, 9.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
     }
 }
 
@@ -237,7 +356,8 @@ unsafe fn richter_attacklw32(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        richter_attack100end,
+        richter_attack11, richter_attack11_eff, richter_attack11_snd, richter_attack11_exp,
+        richter_attack12, richter_attack12_eff, richter_attack12_snd, richter_attack12_exp,
         richter_attacks3,
         richter_whip_attacks3,
         richter_attackhi3,

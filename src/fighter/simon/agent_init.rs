@@ -6,6 +6,7 @@ use {
     },
     custom_var::*,
     smashline::*,
+    crate::fighter::belmont::agent_init::*,
     wubor_utils::{vars::*, table_const::*}
 };
 
@@ -20,6 +21,7 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
         fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Bool(false));
         fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].assign(&L2CValue::Bool(false));
         fighter.global_table[CHECK_AIR_ITEM_THROW_UNIQ].assign(&L2CValue::Bool(false));
+        fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(belmont_guard_cont_pre as *const () as _));
     }
 }
 

@@ -59,10 +59,10 @@ unsafe fn richter_attack11_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
         macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_s"));
+        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
     }
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SEQUENCE(fighter, Hash40::new("seq_richter_rnd_attack"));
         macros::PLAY_SE(fighter, Hash40::new("se_common_punch_kick_swing_m"));
     }
 }

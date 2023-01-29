@@ -48,15 +48,6 @@ unsafe fn mario_attacks4_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
-unsafe fn mario_attacks4_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 14.0);
-    if macros::is_excute(fighter) {
-        macros::STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-        macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
-    }
-}
-
 #[acmd_script( agent = "mario", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe fn mario_attacks4hi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -93,15 +84,6 @@ unsafe fn mario_attacks4hi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    }
-}
-
-#[acmd_script( agent = "mario", script = "sound_attacks4hi", category = ACMD_SOUND, low_priority )]
-unsafe fn mario_attacks4hi_snd(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 14.0);
-    if macros::is_excute(fighter) {
-        macros::STOP_SE(fighter, Hash40::new("se_common_smash_start"));
-        macros::PLAY_SE(fighter, Hash40::new("vc_mario_attack05"));
     }
 }
 
@@ -144,8 +126,8 @@ unsafe fn mario_attacks4lw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attacks4lw", category = ACMD_SOUND, low_priority )]
-unsafe fn mario_attacks4lw_snd(fighter: &mut L2CAgentBase) {
+#[acmd_script( agent = "mario", scripts = [ "sound_attacks4", "sound_attacks4hi", "sound_attacks4lw" ], category = ACMD_SOUND, low_priority )]
+unsafe fn mario_attacks4_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::STOP_SE(fighter, Hash40::new("se_common_smash_start"));
@@ -153,10 +135,41 @@ unsafe fn mario_attacks4lw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", scripts = [ "expression_attacks4", "expression_attacks4hi", "expression_attacks4lw" ], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn mario_attacks4_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_NONE, 3);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    execute(fighter.lua_state_agent, 8.0);
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_SMASH_SMASH_HOLD_TO_ATTACK) {
+        if macros::is_excute(fighter) {
+            ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+        }
+    }
+    frame(fighter.lua_state_agent, 15.0);
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackll"), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohit_l"), 16, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 40.0);
+    if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
-        mario_attacks4, mario_attacks4_eff, mario_attacks4_snd,
-        mario_attacks4hi, mario_attacks4hi_eff, mario_attacks4hi_snd,
-        mario_attacks4lw, mario_attacks4lw_eff, mario_attacks4lw_snd
+        mario_attacks4, mario_attacks4_eff,
+        mario_attacks4hi, mario_attacks4hi_eff,
+        mario_attacks4lw, mario_attacks4lw_eff,
+        mario_attacks4_snd,
+        mario_attacks4_exp
     );
 }

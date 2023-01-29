@@ -93,6 +93,31 @@ unsafe fn mario_specialairs_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "mario", scripts = [ "expression_specials", "expression_specialairs" ], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn expression_specials(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_R);
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 2);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitl"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        macros::AREA_WIND_2ND_arg10(fighter, 0, 1, 0, 300, 0.5, 12, 10, 30, 20, 50);
+    }
+    frame(fighter.lua_state_agent, 23.0);
+    if macros::is_excute(fighter) {
+        AreaModule::erase_wind(fighter.module_accessor, 0);
+    }
+}
+
 #[acmd_script( agent = "mario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -337,7 +362,7 @@ unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mario_specialn,
-        mario_specials, mario_specials_eff, mario_specialairs_eff,
+        mario_specials, mario_specials_eff, mario_specialairs_eff, expression_specials,
         mario_specialhi,
         mario_longjumpstart_snd,
         mario_longjump, mario_longjump_snd, mario_longjump_exp,

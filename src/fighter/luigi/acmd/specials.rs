@@ -115,6 +115,25 @@ unsafe fn luigi_specialsend_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "luigi", scripts = ["expression_specialsend", "expression_specialairsend"], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn luigi_specialsend_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn luigi_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
@@ -251,7 +270,7 @@ pub fn install() {
     install_acmd_scripts!(
         luigi_specialsstart,
         luigi_specialshold, luigi_specialshold_eff,
-        luigi_specialsend, luigi_sspecialairend, luigi_specialsend_snd,
+        luigi_specialsend, luigi_sspecialairend, luigi_specialsend_snd, luigi_specialsend_exp,
         luigi_specialhi,
         luigi_specialairhi,
         luigi_speciallw,

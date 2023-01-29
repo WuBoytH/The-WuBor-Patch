@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CAgentBase,
+        hash40,
         phx::Hash40,
         app::{lua_bind::*, sv_animcmd::*, *},
         lib::lua_const::*
@@ -48,7 +49,6 @@ unsafe fn mario_attackairn(fighter: &mut L2CAgentBase) {
 // Reimplement F.Air Hold as a variable
 #[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
-    let spike;
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -58,11 +58,10 @@ unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 10.0);
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-        spike = true;
+        VarModule::on_flag(fighter.battle_object, mario::status::flag::ATTACK_AIR_F_HOLD);
         macros::FT_MOTION_RATE(fighter, 17.0 / 3.0);
     }
     else {
-        spike = false;
         macros::FT_MOTION_RATE(fighter, 1.0 / 3.0);
     }
     frame(fighter.lua_state_agent, 13.0);
@@ -70,7 +69,7 @@ unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     let angle : u64;
     let sound;
-    if spike {
+    if VarModule::is_flag(fighter.battle_object, mario::status::flag::ATTACK_AIR_F_HOLD) {
         angle = 290;
         sound = *ATTACK_SOUND_LEVEL_L;
     }
@@ -102,10 +101,8 @@ unsafe fn mario_attackairf(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "mario", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn mario_attackairf_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 10.0);
-    let spike = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK);
     frame(fighter.lua_state_agent, 12.0);
-    if spike {
+    if VarModule::is_flag(fighter.battle_object, mario::status::flag::ATTACK_AIR_F_HOLD) {
         if macros::is_excute(fighter) {
             macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
@@ -125,8 +122,14 @@ unsafe fn mario_attackairf_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
-        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attackm"), 0);
-        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        let rumble = if VarModule::is_flag(fighter.battle_object, mario::status::flag::ATTACK_AIR_F_HOLD) {
+            hash40("rbkind_attackl")
+        }
+        else {
+            hash40("rbkind_attackm")
+        };
+        macros::RUMBLE_HIT(fighter, Hash40::new_raw(rumble), 0);
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new_raw(rumble), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }
 

@@ -146,6 +146,27 @@ unsafe fn samusd_attackdash_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "samusd", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn samusd_attackdash_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_attacks"), 0);
+    }
+    for _ in 0..5 {
+        if macros::is_excute(fighter) {
+            ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohits"), 2, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+        wait(fighter.lua_state_agent, 3.0);
+    }
+    frame(fighter.lua_state_agent, 26.0);
+    if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
+    }
+}
+
 #[acmd_script( agent = "samusd", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
@@ -279,7 +300,7 @@ pub fn install() {
     install_acmd_scripts!(
         samusd_attack11,
         samusd_attack12, samusd_attack12_eff, samusd_attack12_exp, samusd_attack12_snd,
-        samusd_attackdash, samusd_attackdash_eff,
+        samusd_attackdash, samusd_attackdash_eff, samusd_attackdash_exp,
         samusd_attacks3, samusd_attacks3hi, samusd_attacks3lw,
         samusd_attackhi3, samusd_attackhi3_eff, samusd_attackhi3_snd, samusd_attackhi3_exp,
         samusd_attacklw3

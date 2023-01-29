@@ -531,6 +531,8 @@ pub mod mario {
     }
     pub mod status {
         pub mod flag {
+            pub const ATTACK_AIR_F_HOLD : i32 = 0x1150;
+            
             pub const SPECIAL_N_FGC_CANCEL : i32 = 0x1150;
 
             pub const SPECIAL_LW_LANDING : i32 = 0x1150;

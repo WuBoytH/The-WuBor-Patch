@@ -8,7 +8,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::vars::*
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 #[acmd_script( agent = "richter", script = "game_attack11", category = ACMD_GAME, low_priority )]
@@ -38,6 +38,7 @@ unsafe fn richter_attack11(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
     }
+    MiscModule::calc_motion_rate_from_cancel_frame(fighter, 24.0, -4.0);
 }
 
 #[acmd_script( agent = "richter", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
@@ -90,6 +91,7 @@ unsafe fn richter_attack11_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "richter", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe fn richter_attack12(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 5.0, 20, 20, 0, 80, 4.0, 4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -147,6 +149,7 @@ unsafe fn richter_attack12_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "richter", script = "game_attack12f", category = ACMD_GAME, low_priority )]
 unsafe fn richter_attack12f(fighter: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(fighter, 1.0);
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 8.0, 74, 20, 0, 90, 4.0, 4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

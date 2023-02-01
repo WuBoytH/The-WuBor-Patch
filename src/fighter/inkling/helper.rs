@@ -8,6 +8,7 @@ use {
     smash_script::*
 };
 
+#[inline(always)]
 pub unsafe fn inkling_generate_squid_helper(fighter: &mut L2CAgentBase) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INKLING_INSTANCE_WORK_ID_FLAG_EXIST_SQUID) {
         if macros::is_excute(fighter) {

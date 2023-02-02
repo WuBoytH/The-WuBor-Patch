@@ -162,6 +162,8 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_PACMAN,
         *FIGHTER_KIND_KEN,
         *FIGHTER_KIND_KAMUI,
+        *FIGHTER_KIND_SIMON,
+        *FIGHTER_KIND_RICHTER,
         *FIGHTER_KIND_KROOL,
         *FIGHTER_KIND_SHIZUE,
         *FIGHTER_KIND_GAOGAEN,

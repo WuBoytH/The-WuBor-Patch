@@ -765,6 +765,8 @@ pub mod toonlink {
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_LW_BOUNCE : i32 = 0x1150;
+
+            pub const SPECIAL_HI_MOVE : i32 = 0x1150;
         }
     }
 }
@@ -773,6 +775,7 @@ pub mod wario {
     pub mod status {
         pub mod flag {
             pub const THROW_B_MOVE : i32 = 0x1150;
+            pub const THROW_B_CONTROL_RESET : i32 = 0x1151;
         }
     }
 }

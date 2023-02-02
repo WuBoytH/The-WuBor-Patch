@@ -131,7 +131,6 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
         }
         let touch_flag = GroundModule::get_touch_moment_flag(weapon.module_accessor);
         if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB)
-        && VarModule::is_flag(weapon.battle_object, lucario_auraball::status::flag::FROM_AIR)
         && touch_flag & (*GROUND_TOUCH_FLAG_DOWN | *GROUND_TOUCH_FLAG_RIGHT | *GROUND_TOUCH_FLAG_LEFT) as u64 != 0
         && MotionModule::motion_kind(weapon.module_accessor) != hash40("explosion") {
             MotionModule::change_motion(
@@ -213,12 +212,7 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
     let length = sv_math::vec2_length(x_val, y_val);
     if 0.0 < length {
         let atan = x_val.atan2(y_val).abs();
-        let deactivate_angle = if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
-            0.0
-        }
-        else {
-            WorkModule::get_param_float(weapon.module_accessor, hash40("param_auraball"), hash40("deactivate_angle"))
-        };
+        let deactivate_angle = WorkModule::get_param_float(weapon.module_accessor, hash40("param_auraball"), hash40("deactivate_angle"));
         let rad = deactivate_angle.to_radians();
         let angle = std::f32::consts::PI - rad;
         if rad < atan && atan < angle {

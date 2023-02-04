@@ -21,6 +21,7 @@ unsafe fn demon_pummel(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
     }
 }
+
 #[acmd_script( agent = "demon", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn demon_throwlw(fighter: &mut L2CAgentBase) {
     if !smash_rs::app::FighterCutInManager::is_vr_mode() {
@@ -67,6 +68,7 @@ unsafe fn demon_throwlw(fighter: &mut L2CAgentBase) {
         macros::CAM_ZOOM_OUT(fighter);
     }
 }
+
 #[acmd_script( agent = "demon", script = "game_catchcommand", category = ACMD_GAME, low_priority )]
 unsafe fn demon_catchcommand(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);

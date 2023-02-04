@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    wubor_utils::wua_bind::*
 };
 
 #[acmd_script( agent = "metaknight", script = "game_throwf", category = ACMD_GAME, low_priority )]

@@ -6,8 +6,7 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
 #[acmd_script( agent = "mariod", script = "game_throwb", category = ACMD_GAME, low_priority )]

@@ -7,7 +7,7 @@ use {
     },
     smash_script::*,
     smashline::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    wubor_utils::wua_bind::*
 };
 
 #[acmd_script( agent = "richter", script = "game_throwb", category = ACMD_GAME, low_priority )]

@@ -4,7 +4,7 @@ mod throws;
 mod aerials;
 mod specials;
 mod escape;
-// mod misc;
+mod misc;
 
 pub fn install() {
     normals::install();
@@ -13,5 +13,5 @@ pub fn install() {
     aerials::install();
     specials::install();
     escape::install();
-    // misc::install();
+    misc::install();
 }

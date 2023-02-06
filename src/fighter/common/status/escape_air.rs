@@ -619,6 +619,8 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0
             ) as u32;
             EffectModule::set_rate(fighter.module_accessor, line, 0.5);
+
+            SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_airdash"), true, false, false, false, enSEType(0));
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
             fighter.clear_lua_stack();

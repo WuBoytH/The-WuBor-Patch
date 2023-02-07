@@ -141,7 +141,7 @@ unsafe extern "C" fn lucario_special_hi_rush_main_loop(fighter: &mut L2CFighterC
             let normalize = sv_math::vec2_normalize(normal_x, normal_y);
             let dot = sv_math::vec2_dot(normalize.x, normalize.y, speed_x, speed_y);
             // println!("normal x: {}, normal y: {}, normalize x: {}, normalize y: {}, dot: {}", normal_x, normal_y, normalize.x, normalize.y, dot);
-            if dot.signum() > 0.0 {
+            if 0.00001 < dot {
                 fighter.set_situation(SITUATION_KIND_AIR.into());
                 GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
             }

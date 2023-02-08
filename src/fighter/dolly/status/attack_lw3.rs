@@ -57,7 +57,7 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
         ).get_bool() {
             let count = VarModule::get_int(fighter.battle_object, dolly::instance::int::D_TILT_CHAIN_COUNT);
             let mot = match count {
-                1 => Hash40::new("attack_lw3_2"),
+                1 => Hash40::new("attack_lw32"),
                 _ => Hash40::new("attack_lw3")
             };
             MotionModule::change_motion(

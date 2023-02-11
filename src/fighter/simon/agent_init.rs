@@ -4,10 +4,9 @@ use {
         app::*,
         lib::{lua_const::*, L2CValue}
     },
-    custom_var::*,
     smashline::*,
     crate::fighter::belmont::agent_init::*,
-    wubor_utils::{vars::*, table_const::*}
+    wubor_utils::table_const::*
 };
 
 #[fighter_reset]
@@ -25,22 +24,8 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_init]
-fn fighter_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_SIMON {
-            return;
-        }
-        VarModule::set_int(fighter.battle_object, richter::instance::int::AXE_ID, *BATTLE_OBJECT_ID_INVALID);
-    }
-}
-
 pub fn install() {
     install_agent_resets!(
         agent_reset
-    );
-    install_agent_init_callbacks!(
-        fighter_init
     );
 }

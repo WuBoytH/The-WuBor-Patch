@@ -26,7 +26,7 @@ unsafe fn simon_attackdash(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_attackdash_eff(fighter: &mut L2CAgentBase) {
+unsafe fn simon_attackdash_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -417,7 +417,7 @@ unsafe fn simon_whip_attacklw3_eff(weapon: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        simon_attackdash,
+        simon_attackdash, simon_attackdash_exp,
         simon_attacks3,
         simon_attacks3hi,
         simon_attacks3lw,

@@ -1,10 +1,10 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
-        phx::Hash40,
+        phx::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
@@ -12,11 +12,11 @@ use {
     wubor_utils::vars::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_MARIO )]
+#[fighter_frame( agent = FIGHTER_KIND_MARIO, main )]
 fn mario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw"){
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
                 macros::PLAY_SE(fighter, Hash40::new("se_mario_attackair_l02"));
                 let speedx = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) * PostureModule::lr(fighter.module_accessor);

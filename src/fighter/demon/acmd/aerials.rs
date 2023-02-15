@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "demon", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "demon", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn demon_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -39,7 +39,7 @@ unsafe fn demon_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "demon", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn demon_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -83,7 +83,7 @@ unsafe fn demon_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_landingairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "demon", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe fn demon_landingairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::SET_SPEED_EX(fighter, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

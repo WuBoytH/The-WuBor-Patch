@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "chrom", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "chrom", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -31,7 +31,7 @@ unsafe fn chrom_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "chrom", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -53,7 +53,7 @@ unsafe fn chrom_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attackairlw", category = ACMD_EFFECT )]
+#[acmd_script( agent = "chrom", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe fn chrom_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -65,7 +65,7 @@ unsafe fn chrom_attackairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attackairlw", category = ACMD_SOUND )]
+#[acmd_script( agent = "chrom", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
 unsafe fn chrom_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -77,7 +77,7 @@ unsafe fn chrom_attackairlw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attackairlw", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "chrom", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn chrom_attackairlw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));

@@ -131,7 +131,6 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
         }
         let touch_flag = GroundModule::get_touch_moment_flag(weapon.module_accessor);
         if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB)
-        && VarModule::is_flag(weapon.battle_object, lucario_auraball::status::flag::FROM_AIR)
         && touch_flag & (*GROUND_TOUCH_FLAG_DOWN | *GROUND_TOUCH_FLAG_RIGHT | *GROUND_TOUCH_FLAG_LEFT) as u64 != 0
         && MotionModule::motion_kind(weapon.module_accessor) != hash40("explosion") {
             MotionModule::change_motion(
@@ -202,15 +201,13 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
     }
     let mut x_val = 0.0;
     let mut y_val = 0.0;
-    if !GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
-        if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32) {
-            x_val = GroundModule::get_touch_normal_x_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
-            y_val = GroundModule::get_touch_normal_y_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
-        }
-    }
-    else {
+    if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32) {
         x_val = GroundModule::get_touch_normal_x_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
         y_val = GroundModule::get_touch_normal_y_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32);
+    }
+    else if GroundModule::is_touch(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32) {
+        x_val = GroundModule::get_touch_normal_x_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
+        y_val = GroundModule::get_touch_normal_y_consider_gravity(weapon.module_accessor, *GROUND_TOUCH_FLAG_UP as u32);
     }
     let length = sv_math::vec2_length(x_val, y_val);
     if 0.0 < length {

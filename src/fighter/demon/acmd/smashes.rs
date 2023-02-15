@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "demon", scripts = [ "game_attacks4", "game_attacks4transform" ], category = ACMD_GAME )]
+#[acmd_script( agent = "demon", scripts = [ "game_attacks4", "game_attacks4transform" ], category = ACMD_GAME, low_priority )]
 unsafe fn demon_attacks4(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     frame(fighter.lua_state_agent, 1.0);
@@ -65,7 +65,7 @@ unsafe fn demon_attacks4(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", scripts = [ "game_attackhi4", "game_attackhi4transform" ], category = ACMD_GAME )]
+#[acmd_script( agent = "demon", scripts = [ "game_attackhi4", "game_attackhi4transform" ], category = ACMD_GAME, low_priority )]
 unsafe fn demon_attackhi4(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     frame(fighter.lua_state_agent, 7.0);
@@ -116,7 +116,7 @@ unsafe fn demon_attackhi4(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", scripts = [ "game_attacklw4", "game_attacklw4transform" ], category = ACMD_GAME )]
+#[acmd_script( agent = "demon", scripts = [ "game_attacklw4", "game_attacklw4transform" ], category = ACMD_GAME, low_priority )]
 unsafe fn demon_attacklw4(fighter: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(fighter.module_accessor, true, 10.0);
     frame(fighter.lua_state_agent, 3.0);

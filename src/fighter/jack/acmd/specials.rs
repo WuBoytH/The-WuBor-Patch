@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "jack", script = "game_specials1", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 14.0 / 9.0);
     frame(fighter.lua_state_agent, 8.0);
@@ -66,7 +66,7 @@ unsafe fn jack_specials1(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "effect_specials1", category = ACMD_EFFECT )]
+#[acmd_script( agent = "jack", script = "effect_specials1", category = ACMD_EFFECT, low_priority )]
 unsafe fn jack_specials1_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -96,7 +96,7 @@ unsafe fn jack_specials1_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "sound_specials1", category = ACMD_SOUND )]
+#[acmd_script( agent = "jack", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
 unsafe fn jack_specials1_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -108,7 +108,7 @@ unsafe fn jack_specials1_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "expression_specials1", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "jack", script = "expression_specials1", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn jack_specials1_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -126,7 +126,7 @@ unsafe fn jack_specials1_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairs1", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialairs1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 14.0 / 9.0);
     frame(fighter.lua_state_agent, 8.0);
@@ -163,7 +163,7 @@ unsafe fn jack_specialairs1(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
 }
 
-#[acmd_script( agent = "jack", script = "effect_specialairs1", category = ACMD_EFFECT )]
+#[acmd_script( agent = "jack", script = "effect_specialairs1", category = ACMD_EFFECT, low_priority )]
 unsafe fn jack_specialairs1_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -176,7 +176,7 @@ unsafe fn jack_specialairs1_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "sound_specialairs1", category = ACMD_SOUND )]
+#[acmd_script( agent = "jack", script = "sound_specialairs1", category = ACMD_SOUND, low_priority )]
 unsafe fn jack_specialairs1_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -188,7 +188,7 @@ unsafe fn jack_specialairs1_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "expression_specialairs1", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "jack", script = "expression_specialairs1", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn jack_specialairs1_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
@@ -206,7 +206,7 @@ unsafe fn jack_specialairs1_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "jack", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, -1);
@@ -281,7 +281,7 @@ unsafe fn jack_specialairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_specialhithrow", "game_specialairhithrow" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_specialhithrow", "game_specialairhithrow" ], category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialhithrow(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, -1);
@@ -312,7 +312,7 @@ unsafe fn jack_specialhithrow(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn jack_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
@@ -330,7 +330,7 @@ unsafe fn jack_speciallw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME )]
+#[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME, low_priority )]
 unsafe fn jack_speciallwcounter(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

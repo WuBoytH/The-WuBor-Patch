@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "szerosuit", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "szerosuit", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attack11(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -37,7 +37,7 @@ unsafe fn szerosuit_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "szerosuit", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 2.5);
@@ -62,7 +62,7 @@ unsafe fn szerosuit_attacks3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks3hi", category = ACMD_GAME )]
+#[acmd_script( agent = "szerosuit", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacks3hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 2.5);
@@ -88,7 +88,7 @@ unsafe fn szerosuit_attacks3hi(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks3lw", category = ACMD_GAME )]
+#[acmd_script( agent = "szerosuit", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacks3lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 2.5);
@@ -114,7 +114,7 @@ unsafe fn szerosuit_attacks3lw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "szerosuit", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn szerosuit_attacklw3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 4.0);

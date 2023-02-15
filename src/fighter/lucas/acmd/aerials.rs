@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -40,7 +40,7 @@ unsafe fn lucas_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -65,7 +65,7 @@ unsafe fn lucas_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -103,7 +103,7 @@ unsafe fn lucas_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -129,7 +129,7 @@ unsafe fn lucas_attackairhi(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucas", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucas_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

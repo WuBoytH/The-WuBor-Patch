@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "shizue", script = "game_attack11", category = ACMD_GAME )]
+#[acmd_script( agent = "shizue", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn shizue_attack11(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_PICOPICOHAMMER, false, -1);
@@ -37,7 +37,7 @@ unsafe fn shizue_attack11(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "shizue", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn shizue_attacks3(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_SHIZUE_GENERATE_ARTICLE_UMBRELLA, false, -1);
@@ -62,7 +62,7 @@ unsafe fn shizue_attacks3(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "shizue", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn shizue_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

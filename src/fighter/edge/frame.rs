@@ -1,15 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_EDGE )]
+#[fighter_frame( agent = FIGHTER_KIND_EDGE, main )]
 fn edge_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let status = fighter.global_table[STATUS_KIND].get_i32();

@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "kamui", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackairf(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -78,7 +78,7 @@ unsafe fn kamui_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "effect_attackairf", category = ACMD_EFFECT )]
+#[acmd_script( agent = "kamui", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn kamui_attackairf_eff(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -107,7 +107,7 @@ unsafe fn kamui_attackairf_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackairb(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -141,7 +141,7 @@ unsafe fn kamui_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "kamui", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackairhi(fighter: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(fighter.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {

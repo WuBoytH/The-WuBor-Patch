@@ -11,7 +11,7 @@ use {
     // wubor_utils::vars::*
 };
 
-// #[acmd_script( agent = "samus", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME )]
+// #[acmd_script( agent = "samus", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME, low_priority )]
 // unsafe fn samus_attacks3(fighter: &mut L2CAgentBase) {
 //     frame(fighter.lua_state_agent, 10.0);
 //     if macros::is_excute(fighter) {
@@ -28,7 +28,7 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", script = "effect_attacks3", category = ACMD_EFFECT )]
+// #[acmd_script( agent = "samus", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
 // unsafe fn samus_attacks3_eff(fighter: &mut L2CAgentBase) {
 //     frame(fighter.lua_state_agent, 10.0);
 //     if macros::is_excute(fighter) {
@@ -51,7 +51,7 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", script = "effect_attacks3hi", category = ACMD_EFFECT )]
+// #[acmd_script( agent = "samus", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
 // unsafe fn samus_attacks3hi_eff(fighter: &mut L2CAgentBase) {
 //     frame(fighter.lua_state_agent, 10.0);
 //     if macros::is_excute(fighter) {
@@ -74,7 +74,7 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", script = "effect_attacks3lw", category = ACMD_EFFECT )]
+// #[acmd_script( agent = "samus", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
 // unsafe fn samus_attacks3lw_eff(fighter: &mut L2CAgentBase) {
 //     frame(fighter.lua_state_agent, 10.0);
 //     if macros::is_excute(fighter) {
@@ -97,12 +97,12 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", scripts = [ "sound_attacks3", "sound_attacks3hi", "sound_attacks3lw" ], category = ACMD_SOUND )]
+// #[acmd_script( agent = "samus", scripts = [ "sound_attacks3", "sound_attacks3hi", "sound_attacks3lw" ], category = ACMD_SOUND, low_priority )]
 // unsafe fn samus_attacks3_snd(_fighter: &mut L2CAgentBase) {
     
 // }
 
-// #[acmd_script( agent = "samus", scripts = [ "expression_attacks3", "expression_attacks3hi", "expression_attacks3lw" ], category = ACMD_EXPRESSION )]
+// #[acmd_script( agent = "samus", scripts = [ "expression_attacks3", "expression_attacks3hi", "expression_attacks3lw" ], category = ACMD_EXPRESSION, low_priority )]
 // unsafe fn samus_attacks3_exp(fighter: &mut L2CAgentBase) {
 //     if macros::is_excute(fighter) {
 //         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -113,7 +113,7 @@ use {
 //     }
 // }
 
-#[acmd_script( agent = "samus", script = "game_attackhi3" , category = ACMD_GAME )]
+#[acmd_script( agent = "samus", script = "game_attackhi3" , category = ACMD_GAME, low_priority )]
 unsafe fn samus_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -144,7 +144,7 @@ unsafe fn samus_attackhi3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "samus", script = "effect_attackhi3" , category = ACMD_EFFECT )]
+#[acmd_script( agent = "samus", script = "effect_attackhi3" , category = ACMD_EFFECT, low_priority )]
 unsafe fn samus_attackhi3_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -164,7 +164,7 @@ unsafe fn samus_attackhi3_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "sound_attackhi3" , category = ACMD_SOUND )]
+#[acmd_script( agent = "samus", script = "sound_attackhi3" , category = ACMD_SOUND, low_priority )]
 unsafe fn samus_attackhi3_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -180,7 +180,7 @@ unsafe fn samus_attackhi3_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "expression_attackhi3" , category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "samus", script = "expression_attackhi3" , category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samus_attackhi3_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

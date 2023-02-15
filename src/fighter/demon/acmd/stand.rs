@@ -11,7 +11,7 @@ use {
 
 // Spinning Demon Finisher
 
-#[acmd_script( agent = "demon", script = "game_attackstand24", category = ACMD_GAME )]
+#[acmd_script( agent = "demon", script = "game_attackstand24", category = ACMD_GAME, low_priority )]
 unsafe fn demon_attackstand24(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 13.0);
     if macros::is_excute(fighter) {
@@ -28,7 +28,7 @@ unsafe fn demon_attackstand24(fighter: &mut L2CAgentBase) {
 
 // Spinning Demon 1 Finisher
 
-#[acmd_script( agent = "demon", script = "game_attackstand2f", category = ACMD_GAME )]
+#[acmd_script( agent = "demon", script = "game_attackstand2f", category = ACMD_GAME, low_priority )]
 unsafe fn demon_attackstand2f(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 2.0);
     frame(fighter.lua_state_agent, 4.0);
@@ -44,7 +44,7 @@ unsafe fn demon_attackstand2f(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "effect_attackstand2f", category = ACMD_EFFECT )]
+#[acmd_script( agent = "demon", script = "effect_attackstand2f", category = ACMD_EFFECT, low_priority )]
 unsafe fn demon_attackstand2f_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -62,7 +62,7 @@ unsafe fn demon_attackstand2f_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "sound_attackstand2f", category = ACMD_SOUND )]
+#[acmd_script( agent = "demon", script = "sound_attackstand2f", category = ACMD_SOUND, low_priority )]
 unsafe fn demon_attackstand2f_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
@@ -71,7 +71,7 @@ unsafe fn demon_attackstand2f_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_attackstand2f", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "demon", script = "expression_attackstand2f", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn demon_attackstand2f_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

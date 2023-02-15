@@ -1,10 +1,10 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
-        phx::Vector3f,
+        phx::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
@@ -12,7 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SAMUSD )]
+#[fighter_frame( agent = FIGHTER_KIND_SAMUSD, main )]
 fn samusd_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
     

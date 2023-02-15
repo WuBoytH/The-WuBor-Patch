@@ -3,14 +3,14 @@ use {
         lua2cpp::*,
         phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     custom_var::*,
     smashline::*,
     wubor_utils::vars::*
 };
 
-#[weapon_frame( agent = WEAPON_KIND_EFLAME_ESWORD )]
+#[weapon_frame( agent = WEAPON_KIND_EFLAME_ESWORD, main )]
 fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY

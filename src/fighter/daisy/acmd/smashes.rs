@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "daisy", script = "game_attacks4hi", category = ACMD_GAME )]
+#[acmd_script( agent = "daisy", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_game_attacks4hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "popo", script = "game_escapeairslide", category = ACMD_GAME )]
+#[acmd_script( agent = "popo", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn popo_escapeairslide(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
@@ -22,7 +22,7 @@ unsafe fn popo_escapeairslide(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "game_escapeairslide_nana", category = ACMD_GAME )]
+#[acmd_script( agent = "popo", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
 unsafe fn popo_escapeairslide_nana(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
@@ -35,7 +35,7 @@ unsafe fn popo_escapeairslide_nana(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_escapeairslide", category = ACMD_GAME )]
+#[acmd_script( agent = "nana", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn nana_escapeairslide(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
@@ -48,7 +48,7 @@ unsafe fn nana_escapeairslide(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_escapeairslide_nana", category = ACMD_GAME )]
+#[acmd_script( agent = "nana", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
 unsafe fn nana_escapeairslide_nana(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

@@ -1,15 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_DEDEDE )]
+#[fighter_frame( agent = FIGHTER_KIND_DEDEDE, main )]
 fn dedede_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 

@@ -1,8 +1,8 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
@@ -13,7 +13,7 @@ use {
     }
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_GAOGAEN )]
+#[fighter_frame( agent = FIGHTER_KIND_GAOGAEN, main )]
 fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         

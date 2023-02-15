@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "mariod", scripts = [ "game_attacks4", "game_attacks4hi", "game_attacks4lw" ], category = ACMD_GAME )]
+#[acmd_script( agent = "mariod", scripts = [ "game_attacks4", "game_attacks4hi", "game_attacks4lw" ], category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -26,7 +26,7 @@ unsafe fn mariod_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "mariod", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     execute(fighter.lua_state_agent, 7.0);
@@ -51,7 +51,7 @@ unsafe fn mariod_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "mariod", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn mariod_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {

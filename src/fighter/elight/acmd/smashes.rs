@@ -10,7 +10,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "elight", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {

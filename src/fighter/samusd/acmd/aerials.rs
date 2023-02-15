@@ -12,7 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "samusd", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attackairn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -46,7 +46,7 @@ unsafe fn samusd_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackairn", category = ACMD_EFFECT )]
+#[acmd_script( agent = "samusd", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
 unsafe fn samusd_attackairn_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 2.5, true);
@@ -76,7 +76,7 @@ unsafe fn samusd_attackairn_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "sound_attackairn", category = ACMD_SOUND )]
+#[acmd_script( agent = "samusd", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
 unsafe fn samusd_attackairn_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -89,7 +89,7 @@ unsafe fn samusd_attackairn_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackairn", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "samusd", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samusd_attackairn_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -107,7 +107,7 @@ unsafe fn samusd_attackairn_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attackairf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -128,7 +128,7 @@ unsafe fn samusd_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackairf", category = ACMD_EFFECT )]
+#[acmd_script( agent = "samusd", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn samusd_attackairf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     let mut effect = 0;
@@ -152,7 +152,7 @@ unsafe fn samusd_attackairf_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "sound_attackairf", category = ACMD_SOUND )]
+#[acmd_script( agent = "samusd", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
 unsafe fn samusd_attackairf_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -164,7 +164,7 @@ unsafe fn samusd_attackairf_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackairf", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "samusd", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samusd_attackairf_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
@@ -185,7 +185,7 @@ unsafe fn samusd_attackairf_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -213,7 +213,7 @@ unsafe fn samusd_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attackairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
@@ -242,7 +242,7 @@ unsafe fn samusd_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT )]
+#[acmd_script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
 unsafe fn samusd_attackairhi_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("samusd_win3_aura"), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
@@ -264,7 +264,7 @@ unsafe fn samusd_attackairhi_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackairhi", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "samusd", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samusd_attackairhi_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 8);
@@ -279,7 +279,7 @@ unsafe fn samusd_attackairhi_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "samusd", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attackairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {

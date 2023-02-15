@@ -1,16 +1,16 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
     wubor_utils::vars::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_ELIGHT )]
+#[fighter_frame( agent = FIGHTER_KIND_ELIGHT, main )]
 fn elight_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_hi_jump") {

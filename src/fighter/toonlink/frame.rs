@@ -1,9 +1,9 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         hash40,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
@@ -11,13 +11,13 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_TOONLINK )]
+#[fighter_frame( agent = FIGHTER_KIND_TOONLINK, main )]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         // Down Air Bounce
 
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw"){
+        if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
             if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
                 VarModule::on_flag(fighter.battle_object, toonlink::status::flag::ATTACK_AIR_LW_BOUNCE);
             }

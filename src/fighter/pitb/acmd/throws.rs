@@ -6,11 +6,10 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
-#[acmd_script( agent = "pitb", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "pitb", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn pitb_throwlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

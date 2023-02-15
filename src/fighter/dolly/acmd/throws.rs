@@ -6,11 +6,10 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*,
+    smashline::*
 };
 
-#[acmd_script( agent = "dolly", script = "game_throwf", category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", script = "game_throwf", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_throwf(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 350, 15, 0, 85, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -35,7 +34,7 @@ unsafe fn dolly_throwf(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "dolly", script = "effect_throwf", category = ACMD_EFFECT )]
+#[acmd_script( agent = "dolly", script = "effect_throwf", category = ACMD_EFFECT, low_priority )]
 unsafe fn dolly_throwf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {
@@ -53,7 +52,7 @@ unsafe fn dolly_throwf_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_throwf", category = ACMD_SOUND )]
+#[acmd_script( agent = "dolly", script = "sound_throwf", category = ACMD_SOUND, low_priority )]
 unsafe fn dolly_throwf_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -66,7 +65,7 @@ unsafe fn dolly_throwf_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "expression_throwf", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "dolly", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn dolly_throwf_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
@@ -93,7 +92,7 @@ unsafe fn dolly_throwf_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_throwb", category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", script = "game_throwb", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_throwb(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 350, 15, 0, 85, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -119,7 +118,7 @@ unsafe fn dolly_throwb(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "dolly", script = "effect_throwb", category = ACMD_EFFECT )]
+#[acmd_script( agent = "dolly", script = "effect_throwb", category = ACMD_EFFECT, low_priority )]
 unsafe fn dolly_throwb_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
@@ -137,7 +136,7 @@ unsafe fn dolly_throwb_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_throwb", category = ACMD_SOUND )]
+#[acmd_script( agent = "dolly", script = "sound_throwb", category = ACMD_SOUND, low_priority )]
 unsafe fn dolly_throwb_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -150,7 +149,7 @@ unsafe fn dolly_throwb_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "expression_throwb", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "dolly", script = "expression_throwb", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn dolly_throwb_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         fighter.clear_lua_stack();
@@ -177,7 +176,7 @@ unsafe fn dolly_throwb_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_throwhi", category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", script = "game_throwhi", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_throwhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 1.0, 84, 66, 0, 78, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -202,7 +201,7 @@ unsafe fn dolly_throwhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "dolly", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 8.0, 100, 46, 0, 52, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);

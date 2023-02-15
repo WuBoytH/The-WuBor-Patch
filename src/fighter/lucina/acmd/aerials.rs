@@ -12,7 +12,7 @@ use {
     super::super::{vl, helper::*},
 };
 
-#[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_attackairn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 4.0);
     if macros::is_excute(fighter) {
@@ -42,7 +42,7 @@ unsafe fn lucina_attackairn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attackairn", category = ACMD_EFFECT )]
+#[acmd_script( agent = "lucina", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_attackairn_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -54,7 +54,7 @@ unsafe fn lucina_attackairn_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackairn", category = ACMD_SOUND )]
+#[acmd_script( agent = "lucina", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_attackairn_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {
@@ -62,7 +62,7 @@ unsafe fn lucina_attackairn_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackairn", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "lucina", script = "sound_attackairn", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn lucina_attackairn_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -80,7 +80,7 @@ unsafe fn lucina_attackairn_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -126,7 +126,7 @@ unsafe fn lucina_attackairf(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attackairf", category = ACMD_EFFECT )]
+#[acmd_script( agent = "lucina", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_attackairf_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -138,7 +138,7 @@ unsafe fn lucina_attackairf_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackairf", category = ACMD_SOUND )]
+#[acmd_script( agent = "lucina", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_attackairf_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -147,7 +147,7 @@ unsafe fn lucina_attackairf_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attackairf", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "lucina", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn lucina_attackairf_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -166,7 +166,7 @@ unsafe fn lucina_attackairf_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairb", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_attackairb(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -217,7 +217,7 @@ unsafe fn lucina_attackairb(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attackairb", category = ACMD_EFFECT )]
+#[acmd_script( agent = "lucina", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_attackairb_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -229,7 +229,7 @@ unsafe fn lucina_attackairb_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackairb", category = ACMD_SOUND )]
+#[acmd_script( agent = "lucina", script = "sound_attackairb", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_attackairb_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 9.0);
     if macros::is_excute(fighter) {
@@ -242,7 +242,7 @@ unsafe fn lucina_attackairb_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attackairb", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "lucina", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn lucina_attackairb_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -261,7 +261,7 @@ unsafe fn lucina_attackairb_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_attackairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 3.0);
@@ -302,7 +302,7 @@ unsafe fn lucina_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucina", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_attackairlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
@@ -340,7 +340,7 @@ unsafe fn lucina_attackairlw(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attackairlw", category = ACMD_EFFECT )]
+#[acmd_script( agent = "lucina", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_attackairlw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -348,7 +348,7 @@ unsafe fn lucina_attackairlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackairlw", category = ACMD_SOUND )]
+#[acmd_script( agent = "lucina", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
 unsafe fn lucina_attackairlw_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
@@ -357,7 +357,7 @@ unsafe fn lucina_attackairlw_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attackairlw", category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "lucina", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn lucina_attackairlw_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::set_attack_reference_joint_id(fighter.module_accessor, Hash40::new("toel"), AttackDirectionAxis(*ATTACK_DIRECTION_X), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_Z));

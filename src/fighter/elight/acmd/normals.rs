@@ -11,7 +11,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "elight", script = "game_attack100end", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attack100end(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -28,7 +28,7 @@ unsafe fn elight_attack100end(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attackdash(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -71,7 +71,7 @@ unsafe fn elight_attackdash(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.75);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -127,7 +127,7 @@ unsafe fn elight_attacks3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
@@ -206,7 +206,7 @@ unsafe fn elight_attackhi3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn elight_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.5);

@@ -12,7 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[acmd_script( agent = "eflame", scripts = [ "game_specials", "game_specialairs", "game_specialsflick", "game_specialairsflick" ], category = ACMD_GAME )]
+#[acmd_script( agent = "eflame", scripts = [ "game_specials", "game_specialairs", "game_specialsflick", "game_specialairsflick" ], category = ACMD_GAME, low_priority )]
 unsafe fn eflame_specials(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
@@ -40,7 +40,7 @@ unsafe fn eflame_specials(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", scripts = [ "game_flyl", "game_flyr" ], category = ACMD_GAME )]
+#[acmd_script( agent = "eflame_esword", scripts = [ "game_flyl", "game_flyr" ], category = ACMD_GAME, low_priority )]
 unsafe fn eflame_esword_fly(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
@@ -59,7 +59,7 @@ unsafe fn eflame_esword_fly(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", scripts = [ "game_flyflickl", "game_flyflickr" ], category = ACMD_GAME )]
+#[acmd_script( agent = "eflame_esword", scripts = [ "game_flyflickl", "game_flyflickr" ], category = ACMD_GAME, low_priority )]
 unsafe fn eflame_esword_flyflick(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
@@ -78,7 +78,7 @@ unsafe fn eflame_esword_flyflick(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", script = "game_rotate", category = ACMD_GAME )]
+#[acmd_script( agent = "eflame_esword", script = "game_rotate", category = ACMD_GAME, low_priority )]
 unsafe fn eflame_esword_rotate(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         AttackModule::disable_tip(weapon.module_accessor);
@@ -164,9 +164,9 @@ unsafe fn eflame_esword_rotate(weapon: &mut L2CAgentBase) {
             false,
             *BATTLE_OBJECT_ID_INVALID as u32
         );
-        macros::ATTACK(weapon, 1, 0, Hash40::new("sword1"), 10.0, 65, 100, 0, 35, 3.5, 5.0, 0.0, 0.0, None, None, None, 1.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
-        macros::ATTACK(weapon, 2, 0, Hash40::new("sword1"), 10.0, 65, 100, 0, 35, 3.5, 9.0, 0.0, 0.0, None, None, None, 1.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
-        macros::ATTACK(weapon, 3, 0, Hash40::new("sword1"), 10.0, 65, 100, 0, 35, 3.5, 11.0, 0.0, 0.0, None, None, None, 1.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        macros::ATTACK(weapon, 1, 0, Hash40::new("sword1"), 10.0, 65, 50, 0, 35, 3.5, 5.0, 0.0, 0.0, None, None, None, 1.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        macros::ATTACK(weapon, 2, 0, Hash40::new("sword1"), 10.0, 65, 50, 0, 35, 3.5, 9.0, 0.0, 0.0, None, None, None, 1.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
+        macros::ATTACK(weapon, 3, 0, Hash40::new("sword1"), 10.0, 65, 50, 0, 35, 3.5, 11.0, 0.0, 0.0, None, None, None, 1.3, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
         macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 1, 2.0);
         macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 2, 2.0);
         macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 3, 2.0);
@@ -182,7 +182,7 @@ unsafe fn eflame_esword_rotate(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", script = "effect_rotate", category = ACMD_EFFECT )]
+#[acmd_script( agent = "eflame_esword", script = "effect_rotate", category = ACMD_EFFECT, low_priority )]
 unsafe fn eflame_esword_rotate_eff(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::EFFECT_FOLLOW(weapon, Hash40::new("eflame_blazeend_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
@@ -213,7 +213,7 @@ unsafe fn eflame_esword_rotate_eff(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", scripts = [ "game_reflectedl", "game_reflectedr" ], category = ACMD_GAME )]
+#[acmd_script( agent = "eflame_esword", scripts = [ "game_reflectedl", "game_reflectedr" ], category = ACMD_GAME, low_priority )]
 unsafe fn eflame_esword_reflected(weapon: &mut L2CAgentBase) {
     frame(weapon.lua_state_agent, 0.0);
     if macros::is_excute(weapon) {
@@ -227,7 +227,7 @@ unsafe fn eflame_esword_reflected(weapon: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "game_speciallwattack", "game_specialairlwattack" ], category = ACMD_GAME )]
+#[acmd_script( agent = "eflame", scripts = [ "game_speciallwattack", "game_specialairlwattack" ], category = ACMD_GAME, low_priority )]
 unsafe fn eflame_speciallwattack(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
@@ -281,7 +281,7 @@ unsafe fn eflame_speciallwattack(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "effect_speciallwattack", "effect_specialairlwattack" ], category = ACMD_EFFECT )]
+#[acmd_script( agent = "eflame", scripts = [ "effect_speciallwattack", "effect_specialairlwattack" ], category = ACMD_EFFECT, low_priority )]
 unsafe fn eflame_speciallwattack_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW(fighter, Hash40::new("eflame_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -346,7 +346,7 @@ unsafe fn eflame_speciallwattack_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_speciallwattack", category = ACMD_SOUND )]
+#[acmd_script( agent = "eflame", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
 unsafe fn eflame_speciallwattack_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -370,7 +370,7 @@ unsafe fn eflame_speciallwattack_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_specialairlwattack", category = ACMD_SOUND )]
+#[acmd_script( agent = "eflame", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
 unsafe fn eflame_specialairlwattack_snd(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {
@@ -390,7 +390,7 @@ unsafe fn eflame_specialairlwattack_snd(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "expression_speciallwattack", "expression_specialairlwattack" ], category = ACMD_EXPRESSION )]
+#[acmd_script( agent = "eflame", scripts = [ "expression_speciallwattack", "expression_specialairlwattack" ], category = ACMD_EXPRESSION, low_priority )]
 unsafe fn eflame_speciallwattack_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

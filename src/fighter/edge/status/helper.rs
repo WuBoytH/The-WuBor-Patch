@@ -99,6 +99,11 @@ pub unsafe extern "C" fn edge_special_hi_cancel(fighter: &mut L2CFighterCommon) 
             VarModule::set_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 2);
             return true.into();
         }
+        WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+        if fighter.sub_transition_group_check_air_escape().get_bool() {
+            VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+            return true.into();
+        }
     }
     false.into()
 }

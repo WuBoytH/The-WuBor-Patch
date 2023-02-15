@@ -10,7 +10,7 @@ use {
     wubor_utils::wua_bind::*
 };
 
-#[acmd_script( agent = "krool", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "krool", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn krool_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
     if macros::is_excute(fighter) {
@@ -32,7 +32,7 @@ unsafe fn krool_attacks4(fighter: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(fighter, 22.0, -7.0);
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks4hi", category = ACMD_GAME )]
+#[acmd_script( agent = "krool", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe fn krool_attacks4hi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {
@@ -50,7 +50,7 @@ unsafe fn krool_attacks4hi(fighter: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(fighter, 22.0, -7.0);
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks4lw", category = ACMD_GAME )]
+#[acmd_script( agent = "krool", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
 unsafe fn krool_attacks4lw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 19.0);
     if macros::is_excute(fighter) {

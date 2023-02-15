@@ -1,8 +1,8 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         app::lua_bind::*,
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smashline::*,
     custom_var::*,
@@ -26,7 +26,7 @@ unsafe fn miifighter_fgc_exception(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_MIIFIGHTER )]
+#[fighter_frame( agent = FIGHTER_KIND_MIIFIGHTER, main )]
 fn miifighter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         miifighter_fgc_exception(fighter);

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_attacks4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -30,7 +30,7 @@ unsafe fn gaogaen_attacks4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
@@ -55,7 +55,7 @@ unsafe fn gaogaen_attackhi4(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attacklw4", category = ACMD_GAME )]
+#[acmd_script( agent = "gaogaen", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe fn gaogaen_attacklw4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

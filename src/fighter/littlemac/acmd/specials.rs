@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "littlemac", script = "game_specialhistart", category = ACMD_GAME )]
+#[acmd_script( agent = "littlemac", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
 unsafe fn littlemac_specialhistart(fighter: &mut L2CAgentBase) {
     //frame(fighter.lua_state_agent, 1.0);
     //macros::FT_MOTION_RATE(fighter, 2.0);

@@ -6,9 +6,10 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    custom_var::*,
     smash_script::*,
     smashline::*,
-    wubor_utils::table_const::*,
+    wubor_utils::{vars::*, table_const::*},
     super::super::vl
 };
 
@@ -50,9 +51,6 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                         );
                         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_END_FLAG_FIRST);
                         // Calculates maximum movement speed
-                        let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
-                        let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;
-                        let ratio = hold / max_hold;
                         sv_kinetic_energy!(
                             reset_energy,
                             fighter,
@@ -64,6 +62,9 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                             0.0,
                             0.0
                         );
+                        let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
+                        let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;
+                        let ratio = hold / max_hold;
                         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
                         let lr = PostureModule::lr(fighter.module_accessor);
                         sv_kinetic_energy!(
@@ -72,25 +73,6 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
                             lr * ratio * vl::param_special_hi::rslash_charge_max_speed,
                             0.0
-                        );
-                        sv_kinetic_energy!(
-                            set_stable_speed,
-                            fighter,
-                            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                            lr * ratio * vl::param_special_hi::rslash_charge_max_speed,
-                            0.0
-                        );
-                        sv_kinetic_energy!(
-                            set_limit_speed,
-                            fighter,
-                            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                            lr * ratio * vl::param_special_hi::rslash_charge_max_speed,
-                            0.0
-                        );
-                        sv_kinetic_energy!(
-                            controller_set_accel_x_add,
-                            fighter,
-                            vl::param_special_hi::rslash_charge_max_accel
                         );
                     }
                     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
@@ -275,8 +257,37 @@ unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon
     0.into()
 }
 
+#[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, toonlink::status::flag::SPECIAL_HI_MOVE) {
+        let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
+        let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;
+        let ratio = hold / max_hold;
+        sv_kinetic_energy!(
+            set_stable_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ratio * vl::param_special_hi::rslash_charge_max_speed,
+            0.0
+        );
+        sv_kinetic_energy!(
+            set_limit_speed,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+            ratio * vl::param_special_hi::rslash_charge_max_speed,
+            0.0
+        );
+        sv_kinetic_energy!(
+            controller_set_accel_x_add,
+            fighter,
+            vl::param_special_hi::rslash_charge_max_accel
+        );
+    }
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
-        toonlink_specialhi_end_main
+        toonlink_specialhi_end_main, toonlink_specialhi_end_exec
     );
 }

@@ -1,18 +1,15 @@
 use {
     smash::{
-        lua2cpp::L2CFighterCommon,
+        lua2cpp::*,
         // hash40,
-        phx::{Hash40, Vector3f},
+        phx::*,
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        lib::{lua_const::*, *}
     },
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
+    wubor_utils::{wua_bind::*, vars::*}
 };
 
 // Notes:
@@ -190,7 +187,7 @@ unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KEN )]
+#[fighter_frame( agent = FIGHTER_KIND_KEN, main )]
 fn ken_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         ken_reset_vars(fighter);

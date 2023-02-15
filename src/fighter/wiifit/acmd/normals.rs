@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "wiifit", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "wiifit", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn wiifit_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
@@ -36,7 +36,7 @@ unsafe fn wiifit_attacks3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "wiifit", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn wiifit_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
@@ -61,7 +61,7 @@ unsafe fn wiifit_attackhi3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attacklw3", category = ACMD_GAME )]
+#[acmd_script( agent = "wiifit", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn wiifit_attacklw3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

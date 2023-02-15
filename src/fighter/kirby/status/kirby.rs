@@ -41,6 +41,7 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("jump_b"), 22.0, 31.0 / 20.0, false, 0.0, false, false);
             macros::SET_SPEED_EX(fighter, -0.5, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             AttackModule::clear_all(fighter.module_accessor);
+            FighterControlModuleImpl::update_attack_air_kind(fighter.module_accessor, true);
             VarModule::on_flag(fighter.battle_object, kirby::status::flag::ATTACK_LW3_BOUNCE);
         }
         return fighter.status_AttackLw3_Main();

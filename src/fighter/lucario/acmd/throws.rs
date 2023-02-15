@@ -6,11 +6,10 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
+    smashline::*
 };
 
-#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME )]
+#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_throwlw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);

@@ -9,7 +9,7 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "link", script = "game_attacks3", category = ACMD_GAME )]
+#[acmd_script( agent = "link", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn link_attacks3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
@@ -30,7 +30,7 @@ unsafe fn link_attacks3(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
-#[acmd_script( agent = "link", script = "game_attackhi3", category = ACMD_GAME )]
+#[acmd_script( agent = "link", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn link_attackhi3(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 8.0);
     if macros::is_excute(fighter) {

@@ -9,13 +9,13 @@ use {
     smashline::*
 };
 
-#[acmd_script( agent = "falco", script = "game_specialsstart", category = ACMD_GAME )]
+#[acmd_script( agent = "falco", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe fn falco_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 0.88);
 }
 
-#[acmd_script( agent = "falco", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME )]
+#[acmd_script( agent = "falco", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn falco_speciallw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {

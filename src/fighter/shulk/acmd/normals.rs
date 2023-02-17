@@ -37,6 +37,6 @@ unsafe fn shulk_attack11(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        shulk_attack11,
+        shulk_attack11
     );
 }

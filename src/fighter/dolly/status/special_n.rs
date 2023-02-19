@@ -12,6 +12,14 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
+#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn dolly_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    let ret = original!(fighter);
+    VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
+    ret
+}
+
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_n").into());
@@ -121,12 +129,12 @@ unsafe extern "C" fn dolly_specialn_main_loop(fighter: &mut L2CFighterCommon) ->
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
-        dolly_specialn_main, dolly_specialn_end,
+        dolly_specialn_pre, dolly_specialn_main, dolly_specialn_end,
     );
 }

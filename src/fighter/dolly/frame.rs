@@ -91,7 +91,7 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         }
         if dolly_check_special_command(fighter).get_bool() {
-            VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+            VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
         }
     }
 }

@@ -42,7 +42,7 @@ unsafe extern "C" fn dolly_attacks3_main_loop(fighter: &mut L2CFighterCommon) ->
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
                 true
             ).get_bool()) {
-                VarModule::on_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+                VarModule::on_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
                 return 1.into();
             }
         }
@@ -131,8 +131,8 @@ unsafe extern "C" fn dolly_attacks3_mtrans_param(fighter: &mut L2CFighterCommon,
     }
     let mot;
     let stick_dir = ControlModule::get_stick_dir(fighter.module_accessor);
-    let force_hi = VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+    let force_hi = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     let attack_s3_stick_dir_hi = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_hi"));
     let attack_s3_stick_dir_lw = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_s3_stick_dir_lw"));
     if attack_s3_stick_dir_hi < stick_dir

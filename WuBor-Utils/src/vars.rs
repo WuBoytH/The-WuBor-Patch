@@ -196,9 +196,7 @@ pub mod demon {
 pub mod dolly {
     pub mod instance {
         pub mod flag {
-            pub const IS_SPECIAL_CANCEL : i32 = 0x0100;
-            pub const ATTACK_DASH_COMMAND : i32 = 0x0101;
-            pub const RISING_FORCE : i32 = 0x0102;
+            pub const RISING_FORCE : i32 = 0x0100;
         }
         pub mod int {
             pub const D_TILT_CHAIN_COUNT : i32 = 0x0100;
@@ -212,6 +210,9 @@ pub mod dolly {
     pub mod status {
         pub mod flag {
             pub const DISABLE_METER_GAIN : i32 = 0x1100;
+            pub const IS_SPECIAL_CANCEL : i32 = 0x1101;
+
+            pub const ATTACK_DASH_COMMAND : i32 = 0x1150;
 
             pub const SPECIAL_N_FEINT : i32 = 0x1150;
 

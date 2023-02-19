@@ -44,7 +44,6 @@ pub unsafe extern "C" fn dolly_hit_cancel(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, situation: L2CValue) -> L2CValue {
-    
     let terms = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S,
@@ -95,7 +94,7 @@ pub unsafe extern "C" fn dolly_special_cancel(fighter: &mut L2CFighterCommon, si
         }
     }
     if ret.get_bool() {
-        VarModule::on_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+        VarModule::on_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     }
     ret
 }
@@ -166,7 +165,7 @@ pub struct SpecialCancelStats {
 }
 
 pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
-    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         dmg *= vl::param_private::special_cancel_damage_mul;
         bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
     }

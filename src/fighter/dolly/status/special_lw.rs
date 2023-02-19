@@ -23,10 +23,11 @@ unsafe fn dolly_speciallw_command_pre(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 unsafe extern "C" fn dolly_speciallw_pre_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_LW);
     }
-    let attr = if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL)
+    let attr = if VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL)
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         0
     }
@@ -58,6 +59,7 @@ unsafe extern "C" fn dolly_speciallw_pre_main(fighter: &mut L2CFighterCommon) ->
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
+    VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     0.into()
 }
 
@@ -228,7 +230,7 @@ unsafe fn dolly_speciallw_command_end(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe extern "C" fn dolly_speciallw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK {
-        VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     }
     0.into()
 }
@@ -304,7 +306,7 @@ unsafe fn dolly_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue
     };
     let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), param);
     WorkModule::set_float(fighter.module_accessor, landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     0.into()
 }
 

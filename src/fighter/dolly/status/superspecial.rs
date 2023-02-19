@@ -11,9 +11,25 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn dolly_superspecial_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    let ret = original!(fighter);
+    VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
+    ret
+}
+
+#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn dolly_superspecial2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    let ret = original!(fighter);
+    VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
+    ret
+}
+
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_superspecial_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     dolly_superspecial_main_helper(fighter, hash40("param_super_special").into());
     let eff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SUPER_SPECIAL_WORK_INT_SCREEN_EFFECT_COUNT);
     if 0 < eff_count {
@@ -39,7 +55,7 @@ unsafe extern "C" fn dolly_superspecial_main_helper(fighter: &mut L2CFighterComm
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_superspecial2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW {
-        VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
         ArticleModule::remove_exist(
             fighter.module_accessor,
             *FIGHTER_DOLLY_GENERATE_ARTICLE_FIRE,
@@ -68,14 +84,14 @@ unsafe fn dolly_superspecial2_blow_end(fighter: &mut L2CFighterCommon) -> L2CVal
     else {
         VarModule::on_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE);
     }
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     0.into()
 }
 
 pub fn install() {
     install_status_scripts!(
-        dolly_superspecial_end,
-        dolly_superspecial2_end,
+        dolly_superspecial_pre, dolly_superspecial_end,
+        dolly_superspecial2_pre, dolly_superspecial2_end,
         dolly_superspecial2_blow_end
     );
 }

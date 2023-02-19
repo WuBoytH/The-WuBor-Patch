@@ -1180,7 +1180,7 @@ unsafe fn dolly_wave_normalw(weapon: &mut L2CAgentBase) {
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    && VarModule::is_flag(object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         VarModule::on_flag(weapon.battle_object, dolly_wave::instance::flag::FROM_CANCEL);
     }
     if macros::is_excute(weapon) {
@@ -1218,7 +1218,7 @@ unsafe fn dolly_wave_normal(weapon: &mut L2CAgentBase) {
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    && VarModule::is_flag(object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         VarModule::on_flag(weapon.battle_object, dolly_wave::instance::flag::FROM_CANCEL);
     }
     if macros::is_excute(weapon) {
@@ -1256,7 +1256,7 @@ unsafe fn dolly_wave_normalairw(weapon: &mut L2CAgentBase) {
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    && VarModule::is_flag(object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         VarModule::on_flag(weapon.battle_object, dolly_wave::instance::flag::FROM_CANCEL);
     }
     if macros::is_excute(weapon) {
@@ -1348,7 +1348,7 @@ unsafe fn dolly_wave_normalair(weapon: &mut L2CAgentBase) {
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    && VarModule::is_flag(object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         VarModule::on_flag(weapon.battle_object, dolly_wave::instance::flag::FROM_CANCEL);
     }
     if macros::is_excute(weapon) {
@@ -1422,7 +1422,7 @@ unsafe fn dolly_burst_superspecial(weapon: &mut L2CAgentBase) {
     let object = MiscModule::get_battle_object_from_id(otarget_id);
     if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
     && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    && VarModule::is_flag(object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         VarModule::on_flag(weapon.battle_object, dolly_wave::instance::flag::FROM_CANCEL);
     }
     if macros::is_excute(weapon) {

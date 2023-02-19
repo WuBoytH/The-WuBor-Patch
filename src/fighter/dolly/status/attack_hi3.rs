@@ -23,7 +23,7 @@ unsafe fn dolly_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x3a40337e2c), *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16 - 1);
     }
     fighter.status_AttackHi3_Common(mot.into(), mot.into());
-    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL) {
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
     }
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -36,7 +36,7 @@ unsafe fn dolly_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn dolly_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0 {
         if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE
-        && !VarModule::is_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL) {
+        && !VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL) {
             if dolly_attack_start_cancel(fighter).get_i32() == 1 {
                 return 1.into();
             }

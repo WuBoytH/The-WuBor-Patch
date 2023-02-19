@@ -20,12 +20,6 @@ unsafe extern "C" fn dolly_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2C
     false.into()
 }
 
-unsafe extern "C" fn dolly_check_ground_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
-    VarModule::off_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND);
-    false.into()
-}
-
 pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_check_super_special_command(fighter).get_bool() {
         return true.into();
@@ -44,7 +38,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        VarModule::on_flag(fighter.battle_object, dolly::instance::flag::ATTACK_DASH_COMMAND);
+        VarModule::on_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND);
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
         return true.into();
     }
@@ -238,9 +232,6 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             return;
         }
         fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
-        fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
-        fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
-        fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_attack_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
         fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
         fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));

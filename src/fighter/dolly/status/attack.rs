@@ -64,7 +64,7 @@ unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
                 *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3,
                 true
             ).get_bool()) {
-                VarModule::on_flag(fighter.battle_object, dolly::instance::flag::IS_SPECIAL_CANCEL);
+                VarModule::on_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
                 return 1.into();
             }
         }

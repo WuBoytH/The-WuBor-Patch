@@ -6,11 +6,9 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
+    custom_var::*,
     smash_script::*,
-    wubor_utils::{
-        wua_bind::*,
-        table_const::*
-    },
+    wubor_utils::{vars::*, wua_bind::*, table_const::*},
     crate::fighter::common::status::attack::only_jabs
 };
 
@@ -483,6 +481,46 @@ unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterComm
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_cliff)]
+unsafe fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut early_end = false;
+    if fighter.global_table[CHECK_AIR_CLIFF_LASSO_UNIQ].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_CLIFF_LASSO_UNIQ].get_ptr());
+        early_end = callable(fighter).get_bool()
+    }
+    if !early_end {
+        if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+            // println!("air!");
+            if GroundModule::can_entry_cliff(fighter.module_accessor) != 0 {
+                // println!("can entry cliff");
+                let stick_y = fighter.global_table[STICK_Y].get_f32();
+                let cliff_catch_cancel_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("cliff_catch_cancel_stick_y"));
+                if cliff_catch_cancel_stick_y < stick_y {
+                    // println!("not canceling!");
+                    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH) {
+                        // println!("transition term");
+                        if GroundModule::is_status_cliff(fighter.module_accessor)
+                        || VarModule::is_flag(fighter.battle_object, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK) {
+                            // println!("is status cliff");
+                            if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME) == 0 {
+                                // println!("cliff frame passed");
+                                WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE);
+                                fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE.into(), true.into());
+                                return true.into();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE) {
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_CLIFF_CATCH_MOVE);
+            StatusModule::delete_status_request_from_script(fighter.module_accessor);
+        }
+    }
+    false.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -493,7 +531,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_ground,
             sub_transition_group_check_air_attack,
-            sub_transition_group_check_air_tread_jump
+            sub_transition_group_check_air_tread_jump,
+            sub_transition_group_check_air_cliff
         );
     }
 }

@@ -165,6 +165,7 @@ unsafe fn chrom_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn chrom_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    VarModule::on_flag(fighter.battle_object, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_lw"),
@@ -175,18 +176,14 @@ unsafe fn chrom_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false
     );
-    WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH);
     fighter.sub_shift_status_main(L2CValue::Ptr(chrom_speciallw_loop as *const () as _))
 }
 
 unsafe extern "C" fn chrom_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH)
-        && GroundModule::can_entry_cliff(fighter.module_accessor) != 0 {
-            fighter.change_status(FIGHTER_STATUS_KIND_CLIFF_CATCH_MOVE.into(), false.into());
-        }
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
     }
-    else {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
     }
     0.into()

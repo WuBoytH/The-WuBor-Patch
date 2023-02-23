@@ -63,6 +63,7 @@ unsafe extern "C" fn demon_attackcombo_main_mot_helper(fighter: &mut L2CFighterC
     let val = count.get_i32();
     WorkModule::set_int(fighter.module_accessor, val, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_KIND_NONE, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
     let mot = match val {
         2 => hash40("attack_13"),
@@ -105,10 +106,10 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
         next_status = demon_attackcombo_main_loop_helper_first(fighter, next_status);
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS) {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
         let combo_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
         if combo_count == 2 {
             if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_1 != 0 {
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS);
                 MotionModule::change_motion(
                     fighter.module_accessor,
                     Hash40::new("attack_14_2"),
@@ -138,34 +139,34 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
             return 0.into();
         }
     }
-    if !MotionModule::is_end(fighter.module_accessor) {
-        return 0.into();
-    }
-    if next_status != *FIGHTER_STATUS_KIND_NONE {
-        if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO {
-            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
-            return 0.into();
+    if MotionModule::is_end(fighter.module_accessor) {
+        if next_status != *FIGHTER_STATUS_KIND_NONE {
+            if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO {
+                fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+            }
+            fighter.change_status(next_status.into(), true.into());
         }
-        fighter.change_status(next_status.into(), true.into());
-    }
-    else {
-        fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        else {
+            fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
+        }
     }
     0.into()
 }
 
 unsafe extern "C" fn demon_attackcombo_main_loop_helper_first(fighter: &mut L2CFighterCommon, next_status: i32) -> i32 {
     let combo_step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
-    let mut status = next_status;
-    if combo_step != 4 {
+    let mut status = if combo_step != 4 {
         if combo_step == 6
         || combo_step == 7 {
-            status = demon_attackcombo_main_loop_helper_second(fighter, status);
+            demon_attackcombo_main_loop_helper_second(fighter, next_status)
+        }
+        else {
+            next_status
         }
     }
     else {
-        status = demon_attackcombo_main_loop_helper_second(fighter, status);
-    }
+        demon_attackcombo_main_loop_helper_second(fighter, next_status)
+    };
     if status == *FIGHTER_STATUS_KIND_NONE
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
     && only_jabs(fighter)

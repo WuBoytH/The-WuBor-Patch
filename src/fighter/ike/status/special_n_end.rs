@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::super::vl
-};
+use crate::imports::status_imports::*;
+use super::super::vl;
 
 #[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {

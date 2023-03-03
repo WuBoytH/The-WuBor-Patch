@@ -1,10 +1,4 @@
-use {
-    smash::lua2cpp::L2CAgentBase,
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "falco", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority)]
 unsafe fn falco_appeallw(fighter: &mut L2CAgentBase) {

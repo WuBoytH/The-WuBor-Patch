@@ -1,15 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    wubor_utils::table_const::*,
-    super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::helper::*;
 
 #[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pickel_attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {

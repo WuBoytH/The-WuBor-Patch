@@ -1,14 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    wubor_utils::vars::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "toonlink", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn toonlink_throwlw(fighter: &mut L2CAgentBase) {

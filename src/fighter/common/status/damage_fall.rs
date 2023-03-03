@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::Vector3f,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, *}
-    },
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_DamageFall)]
 unsafe fn bind_address_call_status_damagefall(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {

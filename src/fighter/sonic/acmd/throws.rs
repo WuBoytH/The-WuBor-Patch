@@ -1,17 +1,6 @@
 use smash::app::lua_bind;
 
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::*,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "sonic", script = "game_throwf", category = ACMD_GAME, low_priority )]
 unsafe fn sonic_throwf(fighter: &mut L2CAgentBase) {

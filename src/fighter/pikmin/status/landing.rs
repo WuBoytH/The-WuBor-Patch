@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn pikmin_landinglight_init(fighter: &mut L2CFighterCommon) -> L2CValue {

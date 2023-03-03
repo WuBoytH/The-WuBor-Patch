@@ -1,16 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {

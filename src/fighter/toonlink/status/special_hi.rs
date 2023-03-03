@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    smash_script::*,
-    smashline::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::super::vl
-};
+use crate::imports::status_imports::*;
+use super::super::vl;
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {

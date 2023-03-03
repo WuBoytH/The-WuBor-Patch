@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_get_cliff_wait_hit_xlu_frame)]
 unsafe fn get_cliff_wait_hit_xlu_frame(fighter: &mut L2CFighterCommon) -> L2CValue {

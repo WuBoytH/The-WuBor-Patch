@@ -1,15 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::Hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    wubor_utils::{wua_bind::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "ridley_breath", status = WEAPON_RIDLEY_BREATH_STATUS_KIND_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ridley_breath_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {

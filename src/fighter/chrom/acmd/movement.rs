@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME, low_priority )]
 unsafe fn chrom_dash(fighter: &mut L2CAgentBase) {

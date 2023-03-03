@@ -1,14 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_RunBrake)]
 unsafe fn status_pre_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {

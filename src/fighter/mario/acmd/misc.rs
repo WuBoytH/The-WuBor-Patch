@@ -1,14 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::Hash40,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    super::super::helper::*
-};
+use crate::imports::acmd_imports::*;
+use super::super::helper::*;
 
 #[acmd_script( agent = "mario_pump", script = "effect_start", category = ACMD_EFFECT, low_priority )]
 unsafe fn mario_pump_start_eff(weapon: &mut L2CAgentBase) {

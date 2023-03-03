@@ -1,12 +1,5 @@
-use {
-    smash::{
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, *}
-    },
-    smash_script::*,
-    crate::system::func_links
-};
+use crate::imports::status_imports::*;
+use crate::system::func_links;
 
 pub static mut RICHTER_HOLYWATER : usize = 0x758e00;
 

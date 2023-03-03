@@ -1,11 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    super::super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::super::helper::*;
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn mario_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {

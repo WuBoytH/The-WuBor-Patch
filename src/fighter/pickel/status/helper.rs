@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 pub unsafe extern "C" fn pickel_attack_que(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();

@@ -1,16 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::*,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_var::*,
-    custom_cancel::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {

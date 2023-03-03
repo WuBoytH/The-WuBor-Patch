@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        phx::*,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 // We want to disable teching while getting footstooled.
 

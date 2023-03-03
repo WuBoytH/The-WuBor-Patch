@@ -1,15 +1,5 @@
 // #![allow(improper_ctypes)]
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 // extern "C" {
 //     #[link_name = "\u{1}_ZN3app8lua_bind32GroundModule__get_touch_pos_implEPNS_26BattleObjectModuleAccessorEj"]

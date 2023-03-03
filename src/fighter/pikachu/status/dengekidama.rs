@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::super::vl
-};
+use crate::imports::status_imports::*;
+use super::super::vl;
 
 #[status_script(agent = "pikachu_dengekidama", status = WEAPON_PIKACHU_DENGEKIDAMA_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pikachu_dengekidama_regular_main(weapon: &mut L2CWeaponCommon) -> L2CValue {

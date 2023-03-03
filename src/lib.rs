@@ -20,6 +20,8 @@ pub mod system;
 mod fighter;
 mod custom_vars;
 
+mod imports;
+
 extern "C" {
     fn change_version_string(arg: u64, string: *const c_char);
 }

@@ -154,6 +154,15 @@ pub unsafe fn shadow_id(module_accessor: *mut BattleObjectModuleAccessor) -> boo
     color == 6 || color == 7
 }
 
+pub unsafe fn get_damage_mul(module_accessor: *mut BattleObjectModuleAccessor) -> f32 {
+    if shadow_id(module_accessor) {
+        vl::param_private::shadow_type_attack_mul
+    }
+    else {
+        1.0
+    }
+}
+
 pub unsafe fn sp_glow_handler(module_accessor: *mut BattleObjectModuleAccessor) {
     let onemoreeff: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handr"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;
     let onemoreeff2: u32 = EffectModule::req_follow(module_accessor, Hash40::new("sys_damage_elec"), smash::phx::Hash40::new("handl"), &Vector3f {x: 1.0, y: 0.0, z: 0.0}, &ZERO_VECTOR, 0.3, true, 0, 0, 0, 0, 0, true, true) as u32;

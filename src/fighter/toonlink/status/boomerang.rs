@@ -1,15 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::Hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "toonlink_boomerang", status = WN_LINK_BOOMERANG_STATUS_KIND_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn toonlink_boomerang_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {

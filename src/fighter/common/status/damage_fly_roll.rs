@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFlyRoll)]
 unsafe fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {

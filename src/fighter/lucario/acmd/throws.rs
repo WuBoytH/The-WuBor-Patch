@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::{Hash40, Vector3f},
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_throwlw(fighter: &mut L2CAgentBase) {

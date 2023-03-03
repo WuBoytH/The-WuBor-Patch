@@ -1,14 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*
-};
+use crate::imports::acmd_imports::*;
 
 // Temporary, for debug purposes
 #[acmd_script( agent = "lucario", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]

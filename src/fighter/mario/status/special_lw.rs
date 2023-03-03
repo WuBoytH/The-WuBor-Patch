@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    super::super::vl
-};
+use crate::imports::status_imports::*;
+use super::super::vl;
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn mario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {

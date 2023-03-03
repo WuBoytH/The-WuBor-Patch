@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::super::{helper::*, vl}
-};
+use crate::imports::status_imports::*;
+use super::super::{vl, helper::*};
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

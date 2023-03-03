@@ -1,15 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::helper::*;
 
 pub unsafe fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot_g;

@@ -1,19 +1,5 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::{Hash40, Vector3f},
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    },
-    super::super::param::*,
-};
+use crate::imports::status_imports::*;
+use super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]
 unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -96,9 +82,9 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_off_uniq)]
 unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
-        if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) < guard_off_attack_cancel_frame {
+        if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) < param::shield::guard_off_attack_cancel_frame {
             VarModule::inc_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME);
-            if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) == guard_off_attack_cancel_frame {
+            if VarModule::get_int(fighter.battle_object, guard_off::int::ATTACK_CANCEL_FRAME) == param::shield::guard_off_attack_cancel_frame {
                 VarModule::on_flag(fighter.battle_object, fighter::instance::flag::GUARD_OFF_ATTACK_CANCEL);
             }
         }

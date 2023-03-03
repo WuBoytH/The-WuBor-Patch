@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    custom_status::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::helper::*;
 
 // Jab/Tilt common pre function
 

@@ -1,12 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    crate::fighter::ryu::helper::*
-};
+use crate::imports::status_imports::*;
+use crate::fighter::ryu::helper::*;
 
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn ken_specials_init(fighter: &mut L2CFighterCommon) -> L2CValue {

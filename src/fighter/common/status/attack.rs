@@ -1,17 +1,4 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::Hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_cancel::*,
-    wubor_utils::{
-        wua_bind::*,
-        table_const::*
-    }
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_AttackCommon)]
 unsafe fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {

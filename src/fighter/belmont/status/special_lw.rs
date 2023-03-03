@@ -1,14 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*,
-    super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::helper::*;
 
 pub unsafe fn belmont_special_lw_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(

@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,11 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 pub mod special_s {
     use super::*;

@@ -1,15 +1,4 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CAgent, L2CValue}
-    },
-    custom_var::*,
-    custom_cancel::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_uniq_process_init)]
 unsafe fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {

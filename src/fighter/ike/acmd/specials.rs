@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::*,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*},
-    super::super::vl
-};
+use crate::imports::acmd_imports::*;
+use super::super::vl;
 
 // Special N
 

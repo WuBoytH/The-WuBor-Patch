@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    smash_script::*,
-    wubor_utils::{vars::*, wua_bind::*, table_const::*},
-    crate::fighter::common::status::attack::only_jabs
-};
+use crate::imports::status_imports::*;
+use crate::fighter::common::status::attack::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
 unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFighterCommon) -> L2CValue {

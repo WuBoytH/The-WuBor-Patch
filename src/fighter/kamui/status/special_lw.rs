@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    wubor_utils::table_const::*
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn kamui_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {

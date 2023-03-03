@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 pub unsafe extern "C" fn edge_special_hi_param_int_helper(fighter: &mut L2CFighterCommon, hash: L2CValue, charged_rush: L2CValue) -> L2CValue {
     let param = edge_special_hi_param_helper_inner(hash, charged_rush).get_u64();

@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    wubor_utils::table_const::*,
-    custom_status::*,
-    custom_var::*,
-    crate::fighter::common::status::attack::only_jabs,
-    wubor_utils::vars::*
-};
+use crate::imports::status_imports::*;
+use crate::fighter::common::status::attack::*;
 
 pub unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {

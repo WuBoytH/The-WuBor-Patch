@@ -1,19 +1,5 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CAgent, L2CValue}
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    },
-    super::super::param
-};
+use crate::imports::status_imports::*;
+use super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {

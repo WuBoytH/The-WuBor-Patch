@@ -1,11 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "toonlink", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn toonlink_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,20 +1,6 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    wubor_utils::table_const::*,
-    custom_status::*,
-    custom_var::*,
-    wubor_utils::vars::*,
-    super::{
-        helper::*,
-        super::vl
-    }
-};
+use crate::imports::status_imports::*;
+use super::super::vl;
+use super::helper::*;
 
 // Note to self: Implement PARRY_XLU when dash anims are done
 

@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        app::sv_animcmd::*,
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "demon", script = "game_attacklw3cancel", category = ACMD_GAME, low_priority )]
 unsafe fn demon_attacklw3cancel(fighter: &mut L2CAgentBase) {

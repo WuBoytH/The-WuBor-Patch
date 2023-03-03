@@ -1,7 +1,4 @@
-use {
-    smash::lua2cpp::L2CAgentBase,
-    smashline::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
 unsafe fn snake_cypher_detach(_fighter: &mut L2CAgentBase) {

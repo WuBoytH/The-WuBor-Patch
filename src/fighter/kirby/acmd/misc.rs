@@ -1,17 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*},
-    super::super::vl
-};
+use crate::imports::acmd_imports::*;
+use super::super::vl;
 
 #[acmd_script( agent = "kirby", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
 unsafe fn kirby_appeals(fighter: &mut L2CAgentBase) {

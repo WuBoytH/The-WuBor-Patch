@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::sv_animcmd::*
-    },
-    smash_script::*,
-    smashline::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "dolly", script = "sound_guarddamage", category = ACMD_SOUND, low_priority )]
 unsafe fn dolly_guarddamage_snd(fighter: &mut L2CAgentBase) {

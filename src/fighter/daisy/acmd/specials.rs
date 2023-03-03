@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::{Hash40, Vector2f},
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*,
-    super::super::vl
-};
+use crate::imports::acmd_imports::*;
+use super::super::vl;
 
 #[acmd_script( agent = "daisy", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_specialsjump(fighter: &mut L2CAgentBase) {

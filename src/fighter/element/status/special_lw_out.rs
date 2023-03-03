@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon},
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    custom_var::*,
-    smash_script::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::super::change_helper::*
-};
+use crate::imports::status_imports::*;
+use super::super::change_helper::*;
 
 pub unsafe fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {

@@ -1,12 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    wubor_utils::table_const::*,
-    super::attack::only_jabs,
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack3_uniq_check_param)]
 unsafe fn sub_attack3_uniq_check_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, is_attack_lw3: L2CValue, is_button: L2CValue) {

@@ -1,15 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*}
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_specialsjump(fighter: &mut L2CAgentBase) {

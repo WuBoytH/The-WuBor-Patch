@@ -1,10 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "eflame", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn eflame_escapeair_main(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,11 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*
-};
+use crate::imports::status_imports::*;
 
 #[status_script(agent = "metaknight", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn metaknight_attacks3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {

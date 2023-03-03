@@ -1,14 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    wubor_utils::wua_bind::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "metaknight", script = "game_throwf", category = ACMD_GAME, low_priority )]
 unsafe fn metaknight_throwf(fighter: &mut L2CAgentBase) {

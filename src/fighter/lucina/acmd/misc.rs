@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::Hash40,
-        app::{sv_animcmd::*, lua_bind::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
 unsafe fn lucina_run_eff(fighter: &mut L2CAgentBase) {

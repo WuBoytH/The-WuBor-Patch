@@ -1,12 +1,5 @@
-use {
-    smash::{
-        lua2cpp::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    wubor_utils::table_const::*,
-    super::super::change_helper::*
-};
+use crate::imports::status_imports::*;
+use super::super::change_helper::*;
 
 extern "C" {
     #[link_name = "\u{1}_ZN3app29FighterElementLinkEventChange13new_l2c_tableEv"]

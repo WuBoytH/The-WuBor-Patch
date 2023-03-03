@@ -1,15 +1,4 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::Hash40,
-        app::{lua_bind::*, sv_animcmd::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    smash_script::*,
-    smashline::*,
-    wubor_utils::{wua_bind::*, vars::*}
-};
+use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "pikmin", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe fn pikmin_attack11(fighter: &mut L2CAgentBase) {

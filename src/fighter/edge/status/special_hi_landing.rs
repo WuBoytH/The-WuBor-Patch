@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::helper::*;
 
 #[allow(non_snake_case)]
 extern "C" {

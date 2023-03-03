@@ -1,16 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CAgentBase,
-        phx::*,
-        app::{lua_bind::*, sv_animcmd::*},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::vars::*,
-    crate::fighter::ike::vl
-};
+use crate::imports::acmd_imports::*;
+use crate::fighter::ike::vl;
 
 #[acmd_script( agent = "kirby", script = "effect_ikespecialnend", category = ACMD_EFFECT, low_priority )]
 unsafe fn kirby_ikespecialnend_eff(fighter: &mut L2CAgentBase) {

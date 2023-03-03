@@ -1,13 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
-};
+use crate::imports::status_imports::*;
 
 // #[skyline::hook(replace = L2CFighterCommon_status_pre_CapturePulled)]
 // unsafe fn status_pre_capturepulled(fighter: &mut L2CFighterCommon) -> L2CValue {

@@ -1,22 +1,6 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    wubor_utils::table_const::*,
-    custom_status::*,
-    custom_var::*,
-    wubor_utils::vars::*,
-    super::{
-        helper::*,
-        super::vl
-    }
-};
+use crate::imports::status_imports::*;
+use super::super::vl;
+use super::helper::*;
 
 #[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn marth_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {

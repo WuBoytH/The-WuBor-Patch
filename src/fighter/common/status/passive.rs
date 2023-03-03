@@ -1,15 +1,5 @@
-use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    wubor_utils::table_const::*,
-    super::super::param::*
-};
+use crate::imports::status_imports::*;
+use super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]
 unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -22,7 +12,7 @@ unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub unsafe fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     let weight = WorkModule::get_param_float(fighter.module_accessor, hash40("weight"), 0);
     let damage = DamageModule::damage(fighter.module_accessor, 0);
-    (weight + passive::invalid_passive_damage_add <= damage).into()
+    (weight + param::passive::invalid_passive_damage_add <= damage).into()
 }
 
 // #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]

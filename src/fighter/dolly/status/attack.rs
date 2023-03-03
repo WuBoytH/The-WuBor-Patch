@@ -1,15 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        hash40,
-        app::lua_bind::*,
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    super::super::helper::*
-};
+use crate::imports::status_imports::*;
+use super::super::helper::*;
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {

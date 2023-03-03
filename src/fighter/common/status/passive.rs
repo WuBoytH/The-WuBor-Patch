@@ -174,48 +174,20 @@ unsafe fn check_tech(fighter: &mut L2CFighterCommon) -> bool {
     fighter.sub_check_passive_button_for_damage((passive_trigger_frame * passive_trigger_frame_mul).into()).get_bool()
 }
 
-#[skyline::hook(replace = L2CFighterCommon_sub_uniq_process_Passive_init)]
-unsafe fn sub_uniq_process_passive_init(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!()(fighter);
-    let status = StatusModule::status_kind(fighter.module_accessor);
-    if [
-        *FIGHTER_STATUS_KIND_PASSIVE_WALL,
-        *FIGHTER_STATUS_KIND_PASSIVE_WALL_JUMP,
-        *FIGHTER_STATUS_KIND_PASSIVE_CEIL
-    ].contains(&status) {
-        if is_bad_passive(fighter).get_bool() {
-            MotionModule::set_rate(fighter.module_accessor, passive::bad_passive_rate);
-            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-            HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
-        }
-    }
-    ret
-}
-
 #[skyline::hook(replace = L2CFighterCommon_status_Passive)]
 unsafe fn status_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x219c184305));
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
-    let bad_passive = is_bad_passive(fighter).get_bool();
-    let rate = if bad_passive {
-        passive::bad_passive_rate
-    }
-    else {
-        1.0
-    };
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("passive"),
         0.0,
-        rate,
+        1.0,
         false,
         0.0,
         false,
         false
     );
-    if bad_passive {
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-    }
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_Passive_Main as *const () as _))
 }
 
@@ -230,26 +202,16 @@ unsafe fn status_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
     else {
         hash40("passive_stand_f")
     };
-    let bad_passive = is_bad_passive(fighter).get_bool();
-    let rate = if bad_passive {
-        passive::bad_passive_rate
-    }
-    else {
-        1.0
-    };
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new_raw(mot),
         0.0,
-        rate,
+        1.0,
         false,
         0.0,
         false,
         false
     );
-    if bad_passive {
-        HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-    }
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_PassiveFB_Main as *const () as _))
 }
 
@@ -264,7 +226,6 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_airchkpassivewall,
             sub_airchkpassivewalljump,
             sub_airchkpassiveceil,
-            sub_uniq_process_passive_init,
             status_passive,
             status_passivefb
         );

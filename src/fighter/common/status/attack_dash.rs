@@ -64,13 +64,12 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
         }
     }
-    // This block checks if you want to enable air drift. This code will only run once, and only while in the air,
-    // but it enables another flag that will be checked when your situation changes and renable the right kinetic type there.
-    if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_DRIFT)
+    // This block checks if you want to enable gravity. This code will only run once, and only while in the air,
+    // but it enables another flag that will be checked when your situation changes and renable gravity there.
+    if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_GRAVITY)
     && situation != *SITUATION_KIND_GROUND {
-        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_DRIFT);
-        VarModule::on_flag(fighter.battle_object, attack_dash::flag::AIR_DRIFT_ENABLED);
-        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_GRAVITY);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::GRAVITY_ENABLED);
         let fall_mul = VarModule::get_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL);
         if fall_mul.signum() != -1.0 {
             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
@@ -125,9 +124,8 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                         false
                     );
                 }
-                // The previously mentioned flag that's only checked when your situation changes.
-                if VarModule::is_flag(fighter.battle_object, attack_dash::flag::AIR_DRIFT_ENABLED) {
-                    KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
+                // The previously mentioned flags that's only checked when your situation changes.
+                if VarModule::is_flag(fighter.battle_object, attack_dash::flag::GRAVITY_ENABLED) {
                     let fall_mul = VarModule::get_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL);
                     if fall_mul.signum() != -1.0 {
                         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
@@ -145,7 +143,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     L2CValue::I32(*FIGHTER_STATUS_KIND_FALL),
                     L2CValue::Bool(false)
                 );
-                return L2CValue::I32(0);
+                return 0.into();
             }
         }
         else {
@@ -168,7 +166,8 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     false,
                     false
                 );
-                KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+                KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+                KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             }
         }
     }

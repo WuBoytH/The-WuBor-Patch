@@ -24,9 +24,9 @@ unsafe fn richter_attack11(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
     }
     frame(fighter.lua_state_agent, 24.0);
-    if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
-    }
+    // if macros::is_excute(fighter) {
+    //     VarModule::off_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
+    // }
     MiscModule::calc_motion_rate_from_cancel_frame(fighter, 24.0, -4.0);
 }
 

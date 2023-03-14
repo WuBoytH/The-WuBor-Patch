@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "koopajr", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn koopajr_escapeairslide(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
     }

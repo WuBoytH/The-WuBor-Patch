@@ -94,9 +94,12 @@ pub fn install() {
 
     // Disables a check that causes pushing Special to not bring up the Arts switcher.
     skyline::patching::Patch::in_text(0x1165844).data(0x37000140u32);
-    
+
     // Disables a weird check that forces you to go into wait/fall while holding Special, probably for the Art Wheel
     skyline::patching::Patch::in_text(0x1167150).data(0x14000499u32);
+
+    // Disables a check that delays the art being selected by holding Special
+    skyline::patching::Patch::in_text(0x1165db4).data(0x14000004u32);
 
     skyline::install_hooks!(
         shulk_check_valid_arts_statuses,

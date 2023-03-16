@@ -31,6 +31,7 @@ pub fn install() {
         CancelInfo::new()
             .enable_specials([].to_vec())
             .enable_jump_cancel(CancelType::HIT)
+            .jump_cancel_require_flag()
             .set_fgc_flags(FGCFlags::NONE)
     );
 }

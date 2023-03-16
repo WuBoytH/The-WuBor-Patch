@@ -9,7 +9,7 @@ use {
 pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) -> u64 {
     let module_accessor = (*fighter).battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
-    if [
+    u64::from([
         *FIGHTER_STATUS_KIND_WAIT,
         *FIGHTER_STATUS_KIND_WALK,
         *FIGHTER_STATUS_KIND_DASH,
@@ -75,12 +75,7 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) 
         *FIGHTER_STATUS_KIND_KILLER_JUMP,
         *FIGHTER_STATUS_KIND_SAVING_DAMAGE_FLY,
         *FIGHTER_STATUS_KIND_SAVING_DAMAGE_AIR
-    ].contains(&status) {
-        1
-    }
-    else {
-        0
-    }
+    ].contains(&status))
 }
 
 #[skyline::hook(offset = 0x1171c70)]

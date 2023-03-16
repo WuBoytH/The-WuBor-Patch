@@ -155,7 +155,9 @@ unsafe fn chrom_attackairlw_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        chrom_attackairn,
         chrom_attackairf,
+        chrom_attackairhi,
         chrom_attackairlw, chrom_attackairlw_eff, chrom_attackairlw_snd, chrom_attackairlw_exp
     );
 }

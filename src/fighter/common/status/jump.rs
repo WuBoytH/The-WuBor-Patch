@@ -251,4 +251,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
+
+    // Removes Accelerated Fullhops Jumps
+    skyline::patching::Patch::in_text(0x6d2158).data(0x52800015u32);
 }

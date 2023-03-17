@@ -72,36 +72,36 @@ unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
-    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
-    && VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
-        let super_jump_frame = VarModule::get_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME);
-        if fighter.global_table[STATUS_FRAME].get_f32() >= 10.0 - super_jump_frame {
-            let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
-            sv_kinetic_energy!(
-                set_accel,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                -air_accel_y
-            );
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
-            VarModule::set_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME, 0.0);
-        }
-        else {
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-            let gravity_accel = sv_kinetic_energy::get_accel_y(fighter.lua_state_agent);
-            if gravity_accel != -param::jump::super_jump_gravity {
-                sv_kinetic_energy!(
-                    set_accel,
-                    fighter,
-                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                    -param::jump::super_jump_gravity
-                );
-            }
-        }
-    }
-}
+// unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
+//     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI)
+//     && VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
+//         let super_jump_frame = VarModule::get_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME);
+//         if fighter.global_table[STATUS_FRAME].get_f32() >= 10.0 - super_jump_frame {
+//             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
+//             sv_kinetic_energy!(
+//                 set_accel,
+//                 fighter,
+//                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+//                 -air_accel_y
+//             );
+//             VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+//             VarModule::set_float(fighter.battle_object, fighter::instance::float::SUPER_JUMP_FRAME, 0.0);
+//         }
+//         else {
+//             fighter.clear_lua_stack();
+//             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
+//             let gravity_accel = sv_kinetic_energy::get_accel_y(fighter.lua_state_agent);
+//             if gravity_accel != -param::jump::super_jump_gravity {
+//                 sv_kinetic_energy!(
+//                     set_accel,
+//                     fighter,
+//                     FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+//                     -param::jump::super_jump_gravity
+//                 );
+//             }
+//         }
+//     }
+// }
 
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback( main )]
@@ -112,7 +112,7 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
             fgc_frame(fighter);
             hit_cancel_frame_set(fighter);
             special_jump_stick_flick(fighter);
-            super_jump_gravity(fighter);
+            // super_jump_gravity(fighter);
         }
     }
 }

@@ -316,7 +316,7 @@ unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterComm
                 callable(fighter).get_bool()
             }
             else {
-                false
+                true
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
@@ -330,7 +330,7 @@ unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterComm
                 callable(fighter).get_bool()
             }
             else {
-                false
+                true
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
@@ -344,7 +344,7 @@ unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterComm
                 callable(fighter).get_bool()
             }
             else {
-                false
+                true
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
@@ -367,7 +367,7 @@ unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterComm
                     callable(fighter).get_bool()
                 }
                 else {
-                    false
+                    true
                 };
                 if cont {
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
@@ -502,7 +502,7 @@ unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon)
                 callable(fighter).get_bool()
             }
             else {
-                false
+                true
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
@@ -516,7 +516,7 @@ unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon)
                 callable(fighter).get_bool()
             }
             else {
-                false
+                true
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
@@ -530,7 +530,7 @@ unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon)
                 callable(fighter).get_bool()
             }
             else {
-                false
+                true
             };
             if cont {
                 fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
@@ -553,7 +553,7 @@ unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon)
                     callable(fighter).get_bool()
                 }
                 else {
-                    false
+                    true
                 };
                 if cont {
                     fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());

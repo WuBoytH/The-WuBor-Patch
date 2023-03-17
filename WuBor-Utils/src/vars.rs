@@ -740,14 +740,6 @@ pub mod shizue {
     }
 }
 
-pub mod shulk {
-    pub mod instance {
-        pub mod float {
-            pub const BURST_COOLDOWN : i32 = 0x0100;
-        }
-    }
-}
-
 pub mod sonic {
     pub mod status {
         pub mod flag {

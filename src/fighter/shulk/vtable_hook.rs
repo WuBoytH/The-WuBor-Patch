@@ -78,13 +78,20 @@ pub unsafe extern "C" fn shulk_on_attack(vtable: u64, fighter: *mut Fighter, log
     let module_accessor = (*fighter).battle_object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     if WorkModule::is_flag(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE)
-    && WorkModule::get_int(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE) == *FIGHTER_SHULK_MONAD_TYPE_JUMP
-    && status - 0x1E2 < 3 || status == *FIGHTER_STATUS_KIND_SPECIAL_S && log.collision_kind == 1 {
-        let opponent_object = MiscModule::get_battle_object_from_id(log.opponent_object_id);
-        if !opponent_object.is_null()
-        && sv_battle_object::category(log.opponent_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            VarModule::on_flag(opponent_object, fighter::instance::flag::PURGED);
-            VarModule::set_int(opponent_object, fighter::instance::int::PURGED_TIMER, 300);
+    && WorkModule::get_int(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE) == *FIGHTER_SHULK_MONAD_TYPE_JUMP {
+        if [
+            *FIGHTER_STATUS_KIND_SPECIAL_S,
+            *FIGHTER_SHULK_STATUS_KIND_SPECIAL_S_JUMP,
+            *FIGHTER_SHULK_STATUS_KIND_SPECIAL_S_FALL,
+            *FIGHTER_SHULK_STATUS_KIND_SPECIAL_S_LANDING
+        ].contains(&status)
+        && log.collision_kind == 1 {
+            let opponent_object = MiscModule::get_battle_object_from_id(log.opponent_object_id);
+            if !opponent_object.is_null()
+            && sv_battle_object::category(log.opponent_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                VarModule::on_flag(opponent_object, fighter::instance::flag::PURGED);
+                VarModule::set_int(opponent_object, fighter::instance::int::PURGED_TIMER, 300);
+            }
         }
     }
     original!()(vtable, fighter, log)

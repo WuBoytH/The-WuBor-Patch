@@ -3,7 +3,7 @@ use {
         lua2cpp::*,
         phx::*,
         app::{lua_bind::*, *},
-        lib::{lua_const::*, *}
+        lib::lua_const::*
     },
     smashline::*,
     wubor_utils::table_const::*

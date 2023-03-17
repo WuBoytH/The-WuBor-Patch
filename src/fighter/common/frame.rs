@@ -104,6 +104,9 @@ unsafe fn super_jump_gravity(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn purged_handler(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_REBIRTH {
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::PURGED);
+    }
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
         let eff = VarModule::get_int(fighter.battle_object, fighter::instance::int::PURGED_EFF_HANDLE) as u32;
         if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {

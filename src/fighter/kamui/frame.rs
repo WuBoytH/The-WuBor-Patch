@@ -3,7 +3,7 @@ use {
         lua2cpp::*,
         phx::Hash40,
         app::lua_bind::*,
-        lib::{lua_const::*, *}
+        lib::lua_const::*
     },
     smash_script::*,
     smashline::*,

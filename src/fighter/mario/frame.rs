@@ -4,7 +4,7 @@ use {
         hash40,
         phx::*,
         app::lua_bind::*,
-        lib::{lua_const::*, *}
+        lib::lua_const::*
     },
     smash_script::*,
     smashline::*,

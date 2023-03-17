@@ -16,6 +16,8 @@ mod handle_damage;
 mod sound;
 pub mod func_links;
 mod fighter_util;
+mod menu;
+mod music;
 
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
@@ -45,6 +47,8 @@ pub fn install() {
     handle_damage::install();
     sound::install();
     fighter_util::install();
+    menu::install();
+    music::install();
     // Removes Phantom Hits
     skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
 }

@@ -2,7 +2,7 @@ use {
     smash::{
         lua2cpp::*,
         app::lua_bind::*,
-        lib::{lua_const::*, *}
+        lib::lua_const::*
     },
     smashline::*,
     custom_var::*,

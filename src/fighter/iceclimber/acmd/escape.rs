@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "popo", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn popo_escapeairslide(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
     }
@@ -15,7 +15,7 @@ unsafe fn popo_escapeairslide(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "popo", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
 unsafe fn popo_escapeairslide_nana(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
     }
@@ -28,7 +28,7 @@ unsafe fn popo_escapeairslide_nana(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "nana", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn nana_escapeairslide(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
     }
@@ -41,7 +41,7 @@ unsafe fn nana_escapeairslide(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "nana", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
 unsafe fn nana_escapeairslide_nana(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 17.0);
+    frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
     }

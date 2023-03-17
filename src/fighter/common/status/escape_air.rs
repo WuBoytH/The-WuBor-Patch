@@ -1,5 +1,13 @@
 use crate::imports::status_imports::*;
 
+enum AirDashTier {
+    Average,
+    Bad,
+    Good,
+    Great,
+    Teleport
+}
+
 #[skyline::hook(replace = L2CFighterCommon_setup_escape_air_slide_common)]
 pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
     let mut stickx = param_1.get_f32();
@@ -93,14 +101,18 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     }
 }
 
-unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
+unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
     // don't do this
     let fighter_kind = fighter.global_table[KIND].get_i32();
     if [
-        *FIGHTER_KIND_MEWTWO,
         *FIGHTER_KIND_RIDLEY
     ].contains(&fighter_kind) {
-        return 1.0;
+        return AirDashTier::Great;
+    }
+    if [
+        *FIGHTER_KIND_MEWTWO
+    ].contains(&fighter_kind) {
+        return AirDashTier::Teleport;
     }
     if [
         *FIGHTER_KIND_DONKEY,
@@ -123,7 +135,7 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_BUDDY,
         *FIGHTER_KIND_TANTAN
         ].contains(&fighter_kind) {
-        return 0.94;
+        return AirDashTier::Good;
     }
     if [
         *FIGHTER_KIND_SAMUS,
@@ -161,9 +173,9 @@ unsafe fn get_airdash_mul(fighter: &mut L2CFighterCommon) -> f32 {
         *FIGHTER_KIND_DEMON,
         *FIGHTER_KIND_TRAIL
     ].contains(&fighter_kind) {
-        return 0.82
+        return AirDashTier::Bad
     }
-    0.88
+    AirDashTier::Average
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_EscapeAir)]
@@ -550,7 +562,13 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             //     0.0
             // );
             let escape_air_slide_speed = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("escape_air_slide_speed"));
-            let airdash_mul = get_airdash_mul(fighter);
+            let airdash_mul = match get_airdash_tier(fighter) {
+                AirDashTier::Bad => 0.79,
+                AirDashTier::Good => 0.93,
+                AirDashTier::Great => 1.0,
+                AirDashTier::Teleport => 1.0,
+                _ => 0.86
+            };
             sv_kinetic_energy!(
                 set_speed,
                 fighter,
@@ -609,29 +627,29 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
             SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_airdash"), true, false, false, false, enSEType(0));
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY) {
+            let tier = get_airdash_tier(fighter);
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
             fighter.clear_lua_stack();
             lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
             let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-            let speed_x_mul =
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
-                0.2
-            }
-            else {
-                0.65
+            let speed_x_mul = match tier {
+                AirDashTier::Teleport => 0.2,
+                AirDashTier::Bad => 0.60,
+                AirDashTier::Good => 0.70,
+                AirDashTier::Great => 0.75,
+                _ => 0.65
             };
-            let speed_y_mul = 
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
-                0.2
-            }
-            else {
-                if speed_y < 0.0 {
-                    1.0
-                }
-                else {
-                    0.5
+            let speed_y_mul = match tier {
+                AirDashTier::Teleport => 0.2,
+                _ => {
+                    if speed_y < 0.0 {
+                        1.0
+                    }
+                    else {
+                        0.5
+                    }
                 }
             };
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
@@ -645,6 +663,34 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0.0,
                 0.0,
                 0.0
+            );
+            let speed_x_limit = match tier {
+                AirDashTier::Teleport | AirDashTier::Bad => 0.8,
+                AirDashTier::Good | AirDashTier::Great => 1.0,
+                _ => 0.9
+            };
+            sv_kinetic_energy!(
+                set_stable_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                speed_x_limit
+            );
+            sv_kinetic_energy!(
+                set_limit_speed,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+                speed_x_limit
+            );
+            let speed_x_accel = 0.02;
+            sv_kinetic_energy!(
+                controller_set_accel_x_add,
+                fighter,
+                speed_x_accel
+            );
+            sv_kinetic_energy!(
+                controller_set_accel_x_mul,
+                fighter,
+                speed_x_accel
             );
             sv_kinetic_energy!(enable, fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             sv_kinetic_energy!(

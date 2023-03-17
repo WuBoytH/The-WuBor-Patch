@@ -1,9 +1,4 @@
-use {
-    smash::{
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    }
-};
+use crate::imports::status_imports::*;
 
 #[skyline::hook(offset = 0x116a3b0)]
 pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) -> u64 {
@@ -78,6 +73,56 @@ pub unsafe extern "C" fn shulk_check_valid_arts_statuses(fighter: *mut Fighter) 
     ].contains(&status))
 }
 
+#[skyline::hook(offset = 0x116db90)]
+pub unsafe extern "C" fn shulk_on_attack(vtable: u64, fighter: *mut Fighter, log: &mut CollisionLogScuffed) -> u64 {
+    let module_accessor = (*fighter).battle_object.module_accessor;
+    let status = StatusModule::status_kind(module_accessor);
+    if WorkModule::is_flag(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_FLAG_SPECIAL_N_ACTIVE)
+    && WorkModule::get_int(module_accessor, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE) == *FIGHTER_SHULK_MONAD_TYPE_JUMP
+    && status - 0x1E2 < 3 || status == *FIGHTER_STATUS_KIND_SPECIAL_S && log.collision_kind == 1 {
+        let opponent_object = MiscModule::get_battle_object_from_id(log.opponent_object_id);
+        if !opponent_object.is_null()
+        && sv_battle_object::category(log.opponent_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+            VarModule::on_flag(opponent_object, fighter::instance::flag::PURGED);
+            VarModule::set_int(opponent_object, fighter::instance::int::PURGED_TIMER, 300);
+        }
+    }
+    original!()(vtable, fighter, log)
+}
+
+#[repr(C)]
+pub struct CollisionLogScuffed {
+    next_log: *const u64,
+    end_log: *const u64,
+    location: smash_rs::cpp::simd::Vector3,
+    x20: u32,
+    opponent_object_id: u32,
+    x28: u8,
+    x29: u8,
+    x2a: u8,
+    x2b: u8,
+    x2c: u8,
+    x2d: u8,
+    x2e: u8,
+    collision_kind: u8,
+    receiver_part_id: u8,
+    collider_part_id: u8,
+    receiver_id: u8,
+    collider_id: u8,
+    x34: u8,
+    x35: bool,
+    x36: u8,
+    x37: u8,
+    x38: u8,
+    x39: u8,
+    x3a: u8,
+    x3b: u8,
+    x3c: u8,
+    x3d: u8,
+    x3e: u8,
+    x3f: u8
+}
+
 #[skyline::hook(offset = 0x1171c70)]
 pub unsafe extern "C" fn shulk_shield_art_hit_decrease(_vtable: u64, _fighter: *mut Fighter, _something: u64) {
     // nothing lol
@@ -98,6 +143,7 @@ pub fn install() {
 
     skyline::install_hooks!(
         shulk_check_valid_arts_statuses,
+        shulk_on_attack,
         shulk_shield_art_hit_decrease
     );
 }

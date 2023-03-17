@@ -293,6 +293,92 @@ unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommo
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_special)]
+unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+        return false.into();
+    }
+    if fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if fighter.sub_transition_group_check_special_command().get_bool() {
+            return true.into();
+        }
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_HI_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_HI_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                false
+            };
+            if !cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                false
+            };
+            if !cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                false
+            };
+            if !cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, Hash40::new_raw(0x229a8a3811));
+                sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+                    return true.into();
+                }
+            }
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
+                let cont = if fighter.global_table[CHECK_SPECIAL_N_UNIQ].get_bool() {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_N_UNIQ].get_ptr());
+                    callable(fighter).get_bool()
+                }
+                else {
+                    false
+                };
+                if !cont {
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
+                    return true.into();
+                }
+            }
+        }
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground)]
 unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_squat_wait: L2CValue) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -388,6 +474,92 @@ unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) 
         && FGCModule::check_enabled_aerial(fighter) {
             fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_AIR.into(), true.into());
             return true.into();
+        }
+    }
+    false.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_special)]
+unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+        return false.into();
+    }
+    if fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
+        if fighter.sub_transition_group_check_special_command().get_bool() {
+            return true.into();
+        }
+        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_HI_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_HI_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                false
+            };
+            if !cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_S_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                false
+            };
+            if !cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_S.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0
+        && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
+            let cont = if fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_bool() {
+                let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_LW_UNIQ].get_ptr());
+                callable(fighter).get_bool()
+            }
+            else {
+                false
+            };
+            if !cont {
+                fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_LW.into(), true.into());
+                return true.into();
+            }
+        }
+        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N != 0 {
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL) {
+                fighter.clear_lua_stack();
+                lua_args!(fighter, Hash40::new_raw(0x229a8a3811));
+                sv_battle_object::notify_event_msc_cmd(fighter.lua_state_agent);
+                if fighter.pop_lua_stack(1).get_bool() {
+                    fighter.change_status(FIGHTER_STATUS_KIND_FINAL.into(), true.into());
+                    return true.into();
+                }
+            }
+            if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
+                let cont = if fighter.global_table[CHECK_SPECIAL_N_UNIQ].get_bool() {
+                    let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_N_UNIQ].get_ptr());
+                    callable(fighter).get_bool()
+                }
+                else {
+                    false
+                };
+                if !cont {
+                    fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_N.into(), true.into());
+                    return true.into();
+                }
+            }
         }
     }
     false.into()
@@ -510,6 +682,22 @@ unsafe fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_special_command)]
+unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+        return false.into();
+    }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND) {
+        if fighter.global_table[CHECK_SPECIAL_COMMAND].get_bool() {
+            let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_SPECIAL_COMMAND].get_ptr());
+            if callable(fighter).get_bool() {
+                return true.into();
+            }
+        }
+    }
+    false.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -518,10 +706,13 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_catch,
             sub_transition_group_check_ground_item,
             sub_transition_group_check_ground_attack,
+            sub_transition_group_check_ground_special,
             sub_transition_group_check_ground,
             sub_transition_group_check_air_attack,
+            sub_transition_group_check_air_special,
             sub_transition_group_check_air_tread_jump,
-            sub_transition_group_check_air_cliff
+            sub_transition_group_check_air_cliff,
+            sub_transition_group_check_special_command
         );
     }
 }

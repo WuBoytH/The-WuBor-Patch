@@ -98,18 +98,18 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         let stick_x = stick_x * lr * -1.0;
         if stick_x <= jump_neutral_x {
             if !mini_jump {
-                mot = Hash40::new("jump_f");
+                mot = hash40("jump_f");
             }
             else {
-                mot = Hash40::new("jump_f_mini");
+                mot = hash40("jump_f_mini");
             }
         }
         else {
             if !mini_jump {
-                mot = Hash40::new("jump_b");
+                mot = hash40("jump_b");
             }
             else {
-                mot = Hash40::new("jump_b_mini");
+                mot = hash40("jump_b_mini");
             }
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_RABBIT_CAP) {
@@ -125,17 +125,17 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
         }
     }
     else {
-        mot = Hash40::new("jump_f_mini");
+        mot = hash40("jump_f_mini");
     }
     let ret = if param_1.get_u64() != hash40("invalid") {
         param_1.get_u64()
     }
     else {
-        0
+        mot
     };
     MotionModule::change_motion(
         fighter.module_accessor,
-        mot,
+        Hash40::new_raw(ret),
         0.0,
         1.0,
         false,

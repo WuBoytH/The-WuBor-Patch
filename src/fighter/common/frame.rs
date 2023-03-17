@@ -136,7 +136,7 @@ unsafe fn purged_handler(fighter: &mut L2CFighterCommon) {
     else {
         let eff = VarModule::get_int(fighter.battle_object, fighter::instance::int::PURGED_EFF_HANDLE) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, eff) {
-            EffectModule::kill(fighter.module_accessor, eff, true, true);
+            EffectModule::kill(fighter.module_accessor, eff, false, false);
         }
     }
 }

@@ -21,7 +21,7 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
         ].contains(&param_type) {
             let mut mul = 1.0;
             if VarModule::is_flag(object, vars::fighter::instance::flag::SUPER_JUMP) {
-                mul *= 1.2;
+                mul *= 1.4;
             }
             return ret * mul;
         }

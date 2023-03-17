@@ -176,9 +176,28 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
+// Removes Accelerated Full Hops except for specific statuses.
+#[skyline::hook(offset = 0x6d2158, inline)]
+unsafe fn jump_momentum_initial_jump_check(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    let object_id = (*module_accessor).battle_object_id;
+    let category = sv_battle_object::category(object_id);
+    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        let kind = sv_battle_object::kind(object_id);
+        let status = StatusModule::status_kind(module_accessor);
+        let sonic = kind == *FIGHTER_KIND_SONIC && status == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP;
+        let rockman = kind == *FIGHTER_KIND_ROCKMAN && status == *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP;
+        if !sonic && !rockman {
+            *ctx.registers[21].w.as_mut() = 0;
+        }
+    }
+}
+
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
 
-    // Removes Accelerated Fullhops Jumps
-    skyline::patching::Patch::in_text(0x6d2158).data(0x52800015u32);
+    // skyline::patching::Patch::in_text(0x6d2158).data(0x52800015u32);
+    skyline::install_hooks!(
+        jump_momentum_initial_jump_check
+    );
 }

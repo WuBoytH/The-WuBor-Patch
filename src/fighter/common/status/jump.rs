@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 use super::super::param;
-use std::arch::asm;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
@@ -177,29 +176,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     }
 }
 
-#[skyline::hook(offset = 0x6d2158, inline)]
-unsafe fn jump_momentum_initial_jump_check(ctx: &mut skyline::hooks::InlineCtx) {
-    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
-    let object_id = (*module_accessor).battle_object_id;
-    let category = sv_battle_object::category(object_id);
-    if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-        let kind = sv_battle_object::kind(object_id);
-        let status = StatusModule::status_kind(module_accessor);
-        let sonic = kind == *FIGHTER_KIND_SONIC && status == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_HI_JUMP;
-        let rockman = kind == *FIGHTER_KIND_ROCKMAN && status == *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_HI_JUMP;
-        if !sonic && !rockman {
-            asm!("mov w21, #0x0");
-        }
-    }
-    asm!("cmp w21, #0x6")
-}
-
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
 
-    // Removes Accelerated Full Hops except for specific statuses.
-    skyline::patching::Patch::in_text(0x6d2158).nop();
-    skyline::install_hooks!(
-        jump_momentum_initial_jump_check
-    );
+    // Removes Accelerated Full Hops.
+    skyline::patching::Patch::in_text(0x6d2158).data(0x52800015u32);
 }

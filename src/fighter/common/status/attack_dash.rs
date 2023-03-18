@@ -207,13 +207,13 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         stick_x * lr <= turn_run_stick_x
     }
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    && ItemModule::is_have_item(fighter.module_accessor, 0) {
+    && !ItemModule::is_have_item(fighter.module_accessor, 0) {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_TURN.into(), true.into());
         return 0.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH)
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD)
-    && ItemModule::is_have_item(fighter.module_accessor, 0) {
+    && !ItemModule::is_have_item(fighter.module_accessor, 0) {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
         return 0.into();
     }

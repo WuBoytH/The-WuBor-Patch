@@ -150,7 +150,7 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         !fighter.pop_lua_stack(1).get_bool()
     } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-        return 0.into();
+        return 1.into();
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE_DASH)
@@ -163,7 +163,7 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         !fighter.pop_lua_stack(1).get_bool()
     } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW_DASH.into(), false.into());
-        return 0.into();
+        return 1.into();
     }
 
     if fighter.sub_transition_group_check_ground_catch().get_bool()
@@ -176,7 +176,7 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
     && fighter.sub_check_command_squat().get_bool() {
         fighter.change_status(FIGHTER_STATUS_KIND_SQUAT.into(), true.into());
-        return 1.into();
+        return 0.into();
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH) && {
@@ -186,7 +186,7 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.pop_lua_stack(1).get_bool()
     } && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_SWING_DASH.into(), true.into());
-        return 1.into();
+        return 0.into();
     }
 
     if fighter.sub_transition_group_check_ground_attack().get_bool() {
@@ -196,7 +196,7 @@ unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH)
     && pad_flag & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
-        return 1.into();
+        return 0.into();
     }
 
     if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0

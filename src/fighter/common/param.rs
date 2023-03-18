@@ -13,8 +13,6 @@ pub mod jump {
     pub const special_jump_control_mul : f32 = 0.5;
     pub const hyper_hop_air_speed_x_stable_mul : f32 = 1.45;
     pub const super_jump_speed_x_mul : f32 = 0.8;
-    pub const super_jump_speed_y_init : f32 = 1.825;
-    pub const super_jump_gravity : f32 = 0.27;
 }
 
 pub mod damage {

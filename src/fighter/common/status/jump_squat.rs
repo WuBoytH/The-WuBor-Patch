@@ -36,19 +36,6 @@ unsafe fn jump_squat_check_special_jump(fighter: &mut L2CFighterCommon) {
     else {
         VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
     }
-    // let pickel = fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_PICKEL
-    // && [
-    //     *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N1_JUMP_SQUAT,
-    //     *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_N3_JUMP_SQUAT
-    // ].contains(&fighter.global_table[STATUS_KIND].get_i32());
-    // let kirby = fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_KIRBY
-    // && [
-    //     *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N1_JUMP_SQUAT,
-    //     *FIGHTER_KIRBY_STATUS_KIND_PICKEL_SPECIAL_N3_JUMP_SQUAT
-    // ].contains(&fighter.global_table[STATUS_KIND].get_i32());
-    // if pickel || kirby {
-    //     VarModule::off_flag(fighter.battle_object, commons::instance::flag::SUPER_JUMP);
-    // }
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_common)]

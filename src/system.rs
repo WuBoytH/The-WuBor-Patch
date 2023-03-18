@@ -49,6 +49,7 @@ pub fn install() {
     fighter_util::install();
     menu::install();
     music::install();
+    
     // Removes Phantom Hits
     skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);
 }

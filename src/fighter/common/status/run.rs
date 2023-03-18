@@ -92,11 +92,11 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
-        return 1.into();
+        return 0.into();
     }
 
     if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
-        return 1.into();
+        return 0.into();
     }
 
     let stick_x = fighter.global_table[STICK_X].get_f32();
@@ -121,7 +121,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         if throw {
             fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
-            return 1.into();
+            return 0.into();
         }
     }
 
@@ -134,7 +134,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.pop_lua_stack(1).get_bool()
     } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW_DASH.into(), false.into());
-        return 1.into();
+        return 0.into();
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE_DASH)
@@ -147,7 +147,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         !fighter.pop_lua_stack(1).get_bool()
     } {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW_DASH.into(), false.into());
-        return 1.into();
+        return 0.into();
     }
 
     let turn_run_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("turn_run_stick_x"));
@@ -158,14 +158,14 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && !ItemModule::is_have_item(fighter.module_accessor, 0) {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_TURN.into(), true.into());
-        return 1.into();
+        return 0.into();
     }
 
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_CATCH_DASH)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
     && !ItemModule::is_have_item(fighter.module_accessor, 0) {
         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), true.into());
-        return 1.into();
+        return 0.into();
     }
 
     if fighter.sub_transition_group_check_ground_guard().get_bool() {
@@ -184,7 +184,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.pop_lua_stack(1).get_bool()
     } && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_ITEM_SWING_DASH.into(), false.into());
-        return 1.into();
+        return 0.into();
     }
 
     if fighter.sub_transition_specialflag_hoist().get_bool() {
@@ -195,7 +195,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
     && fighter.sub_check_command_squat().get_bool() {
         fighter.change_status(FIGHTER_STATUS_KIND_SQUAT.into(), true.into());
-        return 1.into();
+        return 0.into();
     }
 
     if fighter.global_table[CHECK_ATTACK_HI4_UNIQ].get_bool() && {

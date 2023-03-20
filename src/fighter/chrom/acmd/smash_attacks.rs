@@ -222,11 +222,9 @@ unsafe fn chrom_attacklw4_eff(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "chrom", script = "sound_attacklw4", category = ACMD_SOUND, low_priority )]
 unsafe fn chrom_attacklw4_snd(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("vc_chrom_special_s01"));
-    }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
+        macros::PLAY_SE(fighter, Hash40::new("vc_chrom_special_s01"));
         macros::PLAY_SE(fighter, Hash40::new("se_chrom_special_s04l"));
     }
     frame(fighter.lua_state_agent, 10.0);

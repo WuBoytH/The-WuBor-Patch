@@ -179,12 +179,14 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
     // && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
     //     VarModule::on_flag(fighter.battle_object, yu::status::flag::CAN_ONE_MORE);
     // }
-    if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
-    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
-        VarModule::on_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
-    }
-    else {
-        VarModule::off_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_STATUS_KIND_SPECIAL_LW {
+        if !WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
+        && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
+            VarModule::on_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, yu::instance::flag::ROMAN_ON_HIT);
+        }
     }
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if status == *FIGHTER_STATUS_KIND_THROW

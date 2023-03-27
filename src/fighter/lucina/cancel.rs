@@ -127,6 +127,36 @@ pub fn install() {
     );
     CustomCancelManager::add_cancel_info(
         agent,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        set_specials([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
+        ].to_vec())
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        set_specials([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
+        ].to_vec())
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
+        set_specials([
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
+            *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
+        ].to_vec())
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,
         set_aerials()
     );

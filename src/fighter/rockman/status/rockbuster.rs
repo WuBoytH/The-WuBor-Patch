@@ -5,6 +5,7 @@ mod shoot_jump_squat;
 mod shoot_jump;
 mod shoot_air;
 mod shoot_landing;
+pub mod helper;
 
 pub fn install() {
     shoot_wait::install();

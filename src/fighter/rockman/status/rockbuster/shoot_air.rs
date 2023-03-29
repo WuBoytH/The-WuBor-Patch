@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use super::super::helper::*;
+use super::helper::*;
 
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn rockman_rockbuster_shoot_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {

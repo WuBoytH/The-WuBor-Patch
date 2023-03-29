@@ -257,6 +257,7 @@ unsafe fn rockman_attacks3_exp(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
         ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_lands_hv"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
     }
 }

@@ -21,14 +21,14 @@ unsafe fn rockman_rockbuster_shoot_walk_main(fighter: &mut L2CFighterCommon) -> 
             FIGHTER_STATUS_WALK_WORK_FLOAT_SPEED.into(),
             1.0f32.into(),
             false.into(),
-            hash40("attack_s3_fast").into(),
-            hash40("attack_s3_middle").into(),
-            hash40("attack_s3_slow").into()
+            hash40("buster_walk_fast").into(),
+            hash40("buster_walk_middle").into(),
+            hash40("buster_walk_slow").into()
         );
         fighter.init_walk_motion(
-            hash40("attack_s3_fast").into(),
-            hash40("attack_s3_middle").into(),
-            hash40("attack_s3_slow").into(),
+            hash40("buster_walk_fast").into(),
+            hash40("buster_walk_middle").into(),
+            hash40("buster_walk_slow").into(),
             FIGHTER_STATUS_WALK_WORK_FLOAT_SPEED.into(),
             1.0f32.into()
         );
@@ -54,9 +54,9 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_main_loop(fighter: &mut L2CFi
         true.into()
     );
     fighter.set_walk_motion(
-        hash40("attack_s3_fast").into(),
-        hash40("attack_s3_middle").into(),
-        hash40("attack_s3_slow").into(),
+        hash40("buster_walk_fast").into(),
+        hash40("buster_walk_middle").into(),
+        hash40("buster_walk_slow").into(),
         FIGHTER_STATUS_WALK_WORK_FLOAT_SPEED.into(),
         1.0f32.into(),
         L2CValue::Ptr(rockman_rockbuster_walk_mot_helper as *const () as _)
@@ -135,15 +135,15 @@ unsafe extern "C" fn rockman_rockbuster_walk_mot_helper(_fighter: &mut L2CFighte
     let curr = curr_mot.get_u64();
     let walk = walk_mot.get_u64();
     if curr == hash40("walk_fast")
-    && walk == hash40("attack_s3_fast") {
+    && walk == hash40("buster_walk_fast") {
         return true.into();
     }
     if curr == hash40("walk_middle")
-    && walk == hash40("attack_s3_middle") {
+    && walk == hash40("buster_walk_middle") {
         return true.into();
     }
     if curr == hash40("walk_slow")
-    && walk == hash40("attack_s3_slow") {
+    && walk == hash40("buster_walk_slow") {
         return true.into();
     }
     false.into()

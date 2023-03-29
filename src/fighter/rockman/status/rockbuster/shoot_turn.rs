@@ -21,7 +21,7 @@ unsafe fn rockman_rockbuster_shoot_turn_main(fighter: &mut L2CFighterCommon) -> 
     WorkModule::set_int(fighter.module_accessor, 4, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     MotionModule::change_motion(
         fighter.module_accessor,
-        Hash40::new("attack1_turn"),
+        Hash40::new("buster_wait_turn"),
         0.0,
         1.0,
         false,
@@ -58,7 +58,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_main_loop(fighter: &mut L2CFi
             let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("attack1"));
             MotionModule::change_motion_inherit_frame(
                 fighter.module_accessor,
-                Hash40::new("attack1"),
+                Hash40::new("buster_wait"),
                 end_frame,
                 1.0,
                 0.0,

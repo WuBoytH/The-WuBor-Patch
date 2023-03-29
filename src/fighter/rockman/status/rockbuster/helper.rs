@@ -162,37 +162,37 @@ pub unsafe fn rockman_rockbuster_change_motion_helper(
     let step = step.get_i32();
     if is_walk.get_bool() {
         if step == 1 {
-            mot = hash40("attack_s3_start");
+            mot = hash40("buster_walk_start");
         }
         else if step == 2 {
-            mot = hash40("attack_s3");
+            mot = hash40("buster_walk");
             fix_shoulder = true;
         }
         else if step == 3 {
-            mot = hash40("attack_s3_end");
+            mot = hash40("buster_walk_end");
         }
     }
     else {
         if !is_air.get_bool() {
             if step == 1 {
-                mot = hash40("attack1_start");
+                mot = hash40("buster_wait_start");
             }
             else if step == 2 {
-                mot = hash40("attack1");
+                mot = hash40("buster_wait");
             }
             else if step == 3 {
-                mot = hash40("attack1_end");
+                mot = hash40("buster_wait_end");
             }
         }
         else {
             if step == 1 {
-                mot = hash40("attack_air_n_start");
+                mot = hash40("buster_air_start");
             }
             else if step == 2 {
-                mot = hash40("attack_air_n");
+                mot = hash40("buster_air");
             }
             else if step == 3 {
-                mot = hash40("attack_air_n_end");
+                mot = hash40("buster_air_end");
             }
         }
     }

@@ -40,6 +40,8 @@ unsafe fn rockman_attackairn_snd(fighter: &mut L2CAgentBase) {
 unsafe fn rockman_attackairn_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 5);
     }
     frame(fighter.lua_state_agent, 7.0);
     if macros::is_excute(fighter) {

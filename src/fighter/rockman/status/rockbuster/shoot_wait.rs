@@ -35,7 +35,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFi
             else {
                 FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR
             };
-            fighter.change_status(status.into(), true.into());
+            fighter.change_status(status.into(), false.into());
             return 0.into();
         }
         if fighter.sub_check_button_jump().get_bool()

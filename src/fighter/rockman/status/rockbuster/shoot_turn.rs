@@ -1,6 +1,41 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
+#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn rockman_rockbuster_shoot_turn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_TURN,
+        *GROUND_CORRECT_KIND_GROUND_OTTOTTO as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        true,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N
+        ) as u64,
+        (
+            *FIGHTER_STATUS_ATTR_SCALE_KINETIC_ENERGY |
+            *FIGHTER_STATUS_ATTR_INTO_DOOR
+        ) as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        0
+    );
+    0.into()
+}
+
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn rockman_rockbuster_shoot_turn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     rockman_rockbuster_main_helper(fighter, false.into(), false.into(), false.into(), true.into());
@@ -85,6 +120,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_main_loop(fighter: &mut L2CFi
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_turn_main
+        rockman_rockbuster_shoot_turn_pre, rockman_rockbuster_shoot_turn_main
     );
 }

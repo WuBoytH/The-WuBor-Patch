@@ -1,6 +1,57 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
+#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn rockman_rockbuster_shoot_walk_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    let keep_flag;
+    let keep_int;
+    let keep_float;
+    if prev_status == *FIGHTER_STATUS_KIND_WALK {
+        keep_flag = *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG;
+        keep_int = *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT;
+        keep_float = *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT;
+    }
+    else {
+        keep_flag = *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG;
+        keep_int = *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT;
+        keep_float = *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT;
+    }
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_OTTOTTO as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        keep_flag,
+        keep_int,
+        keep_float,
+        *FS_SUCCEEDS_KEEP_VISIBILITY
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N |
+            *FIGHTER_LOG_MASK_FLAG_SHOOT
+        ) as u64,
+        (
+            *FIGHTER_STATUS_ATTR_SCALE_KINETIC_ENERGY |
+            *FIGHTER_STATUS_ATTR_INTO_DOOR |
+            *FIGHTER_STATUS_ATTR_DISABLE_JUMP_BOARD_EFFECT
+        ) as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        0
+    );
+    0.into()
+}
+
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn rockman_rockbuster_shoot_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
@@ -151,6 +202,6 @@ unsafe extern "C" fn rockman_rockbuster_walk_mot_helper(_fighter: &mut L2CFighte
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_walk_main
+        rockman_rockbuster_shoot_walk_pre, rockman_rockbuster_shoot_walk_main
     );
 }

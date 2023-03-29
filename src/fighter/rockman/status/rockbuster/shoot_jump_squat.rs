@@ -1,6 +1,42 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
+#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn rockman_rockbuster_shoot_jump_squat_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_OTTOTTO as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        *FS_SUCCEEDS_KEEP_VISIBILITY
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N |
+            *FIGHTER_LOG_MASK_FLAG_SHOOT
+        ) as u64,
+        (
+            *FIGHTER_STATUS_ATTR_SCALE_KINETIC_ENERGY |
+            *FIGHTER_STATUS_ATTR_INTO_DOOR
+        ) as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        0
+    );
+    0.into()
+}
+
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn rockman_rockbuster_shoot_jump_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_jump_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
@@ -73,6 +109,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_main_loop(fighter: &mut
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_jump_squat_main
+        rockman_rockbuster_shoot_jump_squat_pre, rockman_rockbuster_shoot_jump_squat_main
     );
 }

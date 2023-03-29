@@ -1,6 +1,64 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
+#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+unsafe fn rockman_rockbuster_shoot_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let mut status_data_arg = 0;
+    let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
+    if step != 0 {
+        status_data_arg = 0;
+    }
+    let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
+    let was_rockbuster_status = rockman_rockbuster_pre_helper(prev_status.into()).get_bool();
+    let fs_succeeds_add = if was_rockbuster_status || prev_status == *FIGHTER_STATUS_KIND_ATTACK_AIR {
+        *FS_SUCCEEDS_KEEP_SLOPE
+    }
+    else {
+        0
+    };
+    let status_attr_add = if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_N {
+        fighter.sub_status_pre_SpecialNCommon();
+        *FIGHTER_STATUS_ATTR_START_TURN
+    }
+    else {
+        0
+    };
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_OTTOTTO as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        *FS_SUCCEEDS_KEEP_VISIBILITY | fs_succeeds_add
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        (
+            *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
+            *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_N |
+            *FIGHTER_LOG_MASK_FLAG_SHOOT
+        ) as u64,
+        (
+            *FIGHTER_STATUS_ATTR_SCALE_KINETIC_ENERGY |
+            *FIGHTER_STATUS_ATTR_INTO_DOOR |
+            *FIGHTER_STATUS_ATTR_DISABLE_JUMP_BOARD_EFFECT |
+            status_attr_add
+        ) as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_N as u32,
+        status_data_arg
+    );
+    0.into()
+}
+
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn rockman_rockbuster_shoot_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -90,6 +148,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFi
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_wait_main
+        rockman_rockbuster_shoot_wait_pre, rockman_rockbuster_shoot_wait_main
     );
 }

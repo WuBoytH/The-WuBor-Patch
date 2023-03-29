@@ -1,5 +1,20 @@
 use crate::imports::status_imports::*;
 
+pub unsafe fn rockman_rockbuster_pre_helper(
+    prev_status: L2CValue
+) -> L2CValue {
+    [
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WAIT,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_WALK_BRAKE,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR,
+        *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_LANDING
+    ].contains(&prev_status.get_i32()).into()
+}
+
 pub unsafe fn rockman_rockbuster_main_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
@@ -115,7 +130,12 @@ pub unsafe fn rockman_rockbuster_main_loop_helper(
 pub unsafe fn rockman_rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT);
-    if step != 1 || count != 0 && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN {
+    if step == 1
+    && count == 0
+    && fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN {
+        return true.into();
+    }
+    else {
         if step == 1 || step == 2 {
             if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_SHOOT)
             && count < 2 {

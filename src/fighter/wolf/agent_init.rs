@@ -6,8 +6,7 @@ use {
         lib::lua_const::*
     },
     smashline::*,
-    custom_cancel::*,
-    crate::fighter::common::fgc::*
+    custom_cancel::*
 };
 
 #[fighter_reset]
@@ -18,9 +17,6 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
             return;
         }
         let agent = Hash40::new("fighter_kind_wolf");
-        CustomCancelManager::initialize_agent(agent);
-        generic_attack(agent);
-        generic_attackair(agent);
         CustomCancelManager::add_cancel_info(
             agent,
             *FIGHTER_STATUS_KIND_ATTACK_HI3,
@@ -31,10 +27,7 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
                     *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
                 ].to_vec())
                 .enable_jump_cancel(CancelType::HIT)
-                .set_fgc_flags(FGCFlags::NORMAL | FGCFlags::SPECIAL | FGCFlags::AERIAL | FGCFlags::DASH | FGCFlags::AIRDASH)
         );
-        generic_attack3(agent);
-        generic_attack4(agent);
     }
 }
 

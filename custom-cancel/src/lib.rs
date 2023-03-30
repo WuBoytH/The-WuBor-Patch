@@ -31,16 +31,6 @@ bitflags! {
         const FORWARD  = 0b01;
         const BACKWARD = 0b10;
     }
-    pub struct FGCFlags: i32 {
-        const NONE    = 0b000000;
-        const NORMAL  = 0b000001;
-        const AERIAL  = 0b000010;
-        const SPECIAL = 0b000100;
-        const JUMP    = 0b001000;
-        const DASH    = 0b010000;
-        const AIRDASH = 0b100000;
-        const ALL     = 0b111111;
-    }
 }
 
 pub struct CancelInfo {
@@ -60,7 +50,6 @@ pub struct CancelInfo {
     pub dash_cancel_direction: DashCancelDir,
     pub airdash_cancel: CancelType,
     pub airdash_cancel_require_flag: bool,
-    pub fgc_flags: FGCFlags,
     pub alt_info: Option<AltInfo>,
     pub exception: Option<CancelFunc>
 }
@@ -70,7 +59,7 @@ impl CancelInfo {
         CancelInfo {
             pre: None,
             normals: vec![0; 0],
-            normal_cancel: CancelType::HIT | CancelType::BLOCK,
+            normal_cancel: CancelType::NONE,
             normal_cancel_require_flag: false,
             specials: [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
@@ -86,7 +75,7 @@ impl CancelInfo {
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
             ].to_vec(),
-            special_cancel: CancelType::HIT | CancelType::BLOCK,
+            special_cancel: CancelType::NONE,
             special_cancel_require_flag: false,
             jump_cancel: CancelType::NONE,
             jump_cancel_require_flag: false,
@@ -97,7 +86,6 @@ impl CancelInfo {
             dash_cancel_direction: DashCancelDir::FORWARD,
             airdash_cancel: CancelType::NONE,
             airdash_cancel_require_flag: false,
-            fgc_flags: FGCFlags::ALL,
             alt_info: None,
             exception: None
         }
@@ -108,6 +96,11 @@ impl CancelInfo {
         self
     }
 
+    pub fn enable_normal_cancel(mut self, normal_cancel: CancelType) -> Self {
+        self.normal_cancel = normal_cancel;
+        self
+    }
+
     pub fn enable_normals(mut self, normals: Vec<i32>) -> Self {
         self.normals = normals;
         self
@@ -115,6 +108,11 @@ impl CancelInfo {
 
     pub fn normal_cancel_require_flag(mut self) -> Self {
         self.normal_cancel_require_flag = true;
+        self
+    }
+
+    pub fn enable_special_cancel(mut self, special_cancel: CancelType) -> Self {
+        self.special_cancel = special_cancel;
         self
     }
 
@@ -170,11 +168,6 @@ impl CancelInfo {
 
     pub fn airdash_cancel_require_flag(mut self) -> Self {
         self.airdash_cancel_require_flag = true;
-        self
-    }
-
-    pub fn set_fgc_flags(mut self, fgc_flags: FGCFlags) -> Self {
-        self.fgc_flags = fgc_flags;
         self
     }
 
@@ -206,8 +199,7 @@ pub struct AltInfo {
     pub dash_cancel_require_flag: bool,
     pub dash_cancel_direction: DashCancelDir,
     pub airdash_cancel: CancelType,
-    pub airdash_cancel_require_flag: bool,
-    pub fgc_flags: FGCFlags,
+    pub airdash_cancel_require_flag: bool
 }
 
 impl AltInfo {
@@ -215,7 +207,7 @@ impl AltInfo {
         AltInfo {
             flag: 0x0000,
             normals: vec![0; 0],
-            normal_cancel: CancelType::HIT | CancelType::BLOCK,
+            normal_cancel: CancelType::NONE,
             normal_cancel_require_flag: false,
             specials: [
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N,
@@ -231,7 +223,7 @@ impl AltInfo {
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
                 *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
             ].to_vec(),
-            special_cancel: CancelType::HIT | CancelType::BLOCK,
+            special_cancel: CancelType::NONE,
             special_cancel_require_flag: false,
             jump_cancel: CancelType::NONE,
             jump_cancel_require_flag: false,
@@ -241,13 +233,17 @@ impl AltInfo {
             dash_cancel_require_flag: false,
             dash_cancel_direction: DashCancelDir::FORWARD,
             airdash_cancel: CancelType::NONE,
-            airdash_cancel_require_flag: false,
-            fgc_flags: FGCFlags::ALL
+            airdash_cancel_require_flag: false
         }
     }
 
     pub fn set_flag(mut self, flag: i32) -> Self {
         self.flag = flag;
+        self
+    }
+
+    pub fn enable_normal_cancel(mut self, normal_cancel: CancelType) -> Self {
+        self.normal_cancel = normal_cancel;
         self
     }
 
@@ -258,6 +254,11 @@ impl AltInfo {
 
     pub fn normal_cancel_require_flag(mut self) -> Self {
         self.normal_cancel_require_flag = true;
+        self
+    }
+
+    pub fn enable_special_cancel(mut self, special_cancel: CancelType) -> Self {
+        self.special_cancel = special_cancel;
         self
     }
 
@@ -315,11 +316,6 @@ impl AltInfo {
         self.airdash_cancel_require_flag = true;
         self
     }
-
-    pub fn set_fgc_flags(mut self, fgc_flags: FGCFlags) -> Self {
-        self.fgc_flags = fgc_flags;
-        self
-    }
 }
 
 lazy_static! {
@@ -327,14 +323,12 @@ lazy_static! {
 }
 
 pub struct CustomCancelManager {
-    pub hp_values: HashMap<Hash40, f32>,
     pub cancel_infos: HashMap<Hash40, HashMap<i32, CancelInfo>>
 }
 
 impl CustomCancelManager {
     pub(crate) fn new() -> Self {
         Self {
-            hp_values: HashMap::new(),
             cancel_infos: HashMap::new()
         }
     }
@@ -395,24 +389,6 @@ impl CustomCancelManager {
         false
     }
 
-    #[export_name = "CustomCancelManager__add_hp_value"]
-    pub extern "Rust" fn add_hp_value(agent: Hash40, hp: f32) {
-        let mut manager = CUSTOM_CANCEL_MANAGER.write();
-        if let Some(_hp_value) = manager.hp_values.insert(agent, hp) {
-            // println!("[CustomCancelManager] Overwriting {:#x}'s Old HP Value {} with {}", agent.hash, _hp_value, hp);
-        }
-    }
-
-    #[export_name = "CustomCancelManager__get_hp_value"]
-    pub extern "Rust" fn get_hp_value(agent: Hash40) -> f32 {
-        let mut manager = CUSTOM_CANCEL_MANAGER.write();
-        if let Some(hp_value) = manager.hp_values.get(&agent) {
-            // println!("[CustomCancelManager] Getting {:#x}'s HP Value {}", agent.hash, hp_value);
-            return *hp_value;
-        }
-        0.0
-    }
-
     #[export_name = "CustomCancelManager__execute_cancel"]
     pub extern "Rust" fn execute_cancel(fighter: &mut L2CFighterCommon) -> bool {
         let mut manager = CUSTOM_CANCEL_MANAGER.write();
@@ -441,138 +417,121 @@ impl CustomCancelManager {
                 let shield = AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD);
                 let cancel_window = FGCModule::check_cancel_window(fighter);
                 let situation = fighter.global_table[SITUATION_KIND].get_i32();
-                let fgc = VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC);
 
                 // Input Priority
 
                 // Special Cancel
 
-                let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::SPECIAL) {
-                    fgc
-                }
-                else {
-                    true
-                };
-                if check_fgc {
-                    let special_cancel = cancel_info.special_cancel;
-                    
-                    let mut specials = cancel_info.specials.clone();
+                let special_cancel = cancel_info.special_cancel;
+                
+                let mut specials = cancel_info.specials.clone();
 
-                    let condition =
-                    if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        let alt_cancel = alt_enable.special_cancel;
-                        if alt_cancel.contains(CancelType::WHIFF)
-                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
-                        || (alt_cancel.contains(CancelType::HIT) && hit) {
-                            specials = alt_enable.specials.clone();
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else if special_cancel.contains(CancelType::WHIFF)
-                    || (special_cancel.contains(CancelType::BLOCK) && shield)
-                    || (special_cancel.contains(CancelType::HIT) && hit) {
+                let condition =
+                if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    let alt_cancel = alt_enable.special_cancel;
+                    if alt_cancel.contains(CancelType::WHIFF)
+                    || (alt_cancel.contains(CancelType::BLOCK) && shield)
+                    || (alt_cancel.contains(CancelType::HIT) && hit) {
+                        specials = alt_enable.specials.clone();
                         true
                     }
                     else {
                         false
-                    };
+                    }
+                }
+                else if special_cancel.contains(CancelType::WHIFF)
+                || (special_cancel.contains(CancelType::BLOCK) && shield)
+                || (special_cancel.contains(CancelType::HIT) && hit) {
+                    true
+                }
+                else {
+                    false
+                };
 
-                    let require_flag = if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        alt_enable.special_cancel_require_flag
-                    }
-                    else {
-                        cancel_info.special_cancel_require_flag
-                    };
+                let require_flag = if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    alt_enable.special_cancel_require_flag
+                }
+                else {
+                    cancel_info.special_cancel_require_flag
+                };
 
-                    let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL)
-                    }
-                    else {
-                        cancel_window
-                    };
-                    
-                    if flag_check && condition
-                    && special_cancel_common(fighter, situation.into(), specials).get_bool() {
-                        return true;
-                    }
+                let flag_check = if require_flag {
+                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL)
+                }
+                else {
+                    cancel_window
+                };
+                
+                if flag_check && condition
+                && special_cancel_common(fighter, situation.into(), specials).get_bool() {
+                    return true;
                 }
 
                 // Normal Cancel
 
-                let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::NORMAL) {
-                    fgc
-                }
-                else {
-                    true
-                };
-                if check_fgc {
-                    let normal_cancel = cancel_info.normal_cancel;
+                let normal_cancel = cancel_info.normal_cancel;
 
-                    let mut normals = cancel_info.normals.clone();
-                    
-                    let condition =
-                    if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        let alt_cancel = alt_enable.normal_cancel;
-                        if alt_cancel.contains(CancelType::WHIFF)
-                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
-                        || (alt_cancel.contains(CancelType::HIT) && hit) {
-                            normals = alt_enable.normals.clone();
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else if normal_cancel.contains(CancelType::WHIFF)
-                    || (normal_cancel.contains(CancelType::BLOCK) && shield)
-                    || (normal_cancel.contains(CancelType::HIT) && hit) {
+                let mut normals = cancel_info.normals.clone();
+                
+                let condition =
+                if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    let alt_cancel = alt_enable.normal_cancel;
+                    if alt_cancel.contains(CancelType::WHIFF)
+                    || (alt_cancel.contains(CancelType::BLOCK) && shield)
+                    || (alt_cancel.contains(CancelType::HIT) && hit) {
+                        normals = alt_enable.normals.clone();
                         true
                     }
                     else {
                         false
-                    };
+                    }
+                }
+                else if normal_cancel.contains(CancelType::WHIFF)
+                || (normal_cancel.contains(CancelType::BLOCK) && shield)
+                || (normal_cancel.contains(CancelType::HIT) && hit) {
+                    true
+                }
+                else {
+                    false
+                };
 
-                    let require_flag = if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        alt_enable.normal_cancel_require_flag
-                    }
-                    else {
-                        cancel_info.normal_cancel_require_flag
-                    };
-                    
-                    let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
-                    }
-                    else {
-                        cancel_window
-                    };
-                    
-                    if flag_check && condition
-                    && normal_cancel_common(fighter, normals).get_bool() {
-                        return true;
-                    }
+                let require_flag = if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    alt_enable.normal_cancel_require_flag
+                }
+                else {
+                    cancel_info.normal_cancel_require_flag
+                };
+                
+                let flag_check = if require_flag {
+                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
+                }
+                else {
+                    cancel_window
+                };
+                
+                if flag_check && condition
+                && normal_cancel_common(fighter, normals).get_bool() {
+                    return true;
                 }
 
                 // Aerial Cancel
@@ -629,217 +588,185 @@ impl CustomCancelManager {
                     condition && flag_check
                 };
 
-                let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::AERIAL) {
-                    fgc
-                }
-                else {
-                    true
-                };
-                if check_fgc {
-                    let aerial_cancel = cancel_info.aerial_cancel;
+                let aerial_cancel = cancel_info.aerial_cancel;
 
-                    let condition =
-                    if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        let alt_cancel = alt_enable.aerial_cancel;
-                        if alt_cancel.contains(CancelType::WHIFF)
-                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
-                        || (alt_cancel.contains(CancelType::HIT) && hit) {
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else if aerial_cancel.contains(CancelType::WHIFF)
-                    || (aerial_cancel.contains(CancelType::BLOCK) && shield)
-                    || (aerial_cancel.contains(CancelType::HIT) && hit) {
+                let condition =
+                if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    let alt_cancel = alt_enable.aerial_cancel;
+                    if alt_cancel.contains(CancelType::WHIFF)
+                    || (alt_cancel.contains(CancelType::BLOCK) && shield)
+                    || (alt_cancel.contains(CancelType::HIT) && hit) {
                         true
                     }
                     else {
                         false
-                    };
+                    }
+                }
+                else if aerial_cancel.contains(CancelType::WHIFF)
+                || (aerial_cancel.contains(CancelType::BLOCK) && shield)
+                || (aerial_cancel.contains(CancelType::HIT) && hit) {
+                    true
+                }
+                else {
+                    false
+                };
 
-                    let require_flag = if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        alt_enable.aerial_cancel_require_flag
-                    }
-                    else {
-                        cancel_info.aerial_cancel_require_flag
-                    };
-                    
-                    let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
-                    }
-                    else {
-                        cancel_window
-                    };
+                let require_flag = if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    alt_enable.aerial_cancel_require_flag
+                }
+                else {
+                    cancel_info.aerial_cancel_require_flag
+                };
+                
+                let flag_check = if require_flag {
+                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
+                }
+                else {
+                    cancel_window
+                };
 
-                    if flag_check && condition
-                    && aerial_cancel_common_revised(fighter, can_jump).get_bool() {
-                        return true;
-                    }
+                if flag_check && condition
+                && aerial_cancel_common_revised(fighter, can_jump).get_bool() {
+                    return true;
                 }
 
                 // Jump Cancel
 
-                let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::JUMP) {
-                    fgc
-                }
-                else {
-                    true
-                };
-                if check_fgc {
-                    if can_jump
-                    && jump_cancel_common(fighter, situation.into()).get_bool() {
-                        return true;
-                    }
+                if can_jump
+                && jump_cancel_common(fighter, situation.into()).get_bool() {
+                    return true;
                 }
 
                 // Dash Cancel
-                
-                let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::DASH) {
-                    fgc
-                }
-                else {
-                    true
-                };
-                if check_fgc {
-                    let dash_cancel = cancel_info.dash_cancel;
-                    let dash_cancel_dir = cancel_info.dash_cancel_direction;
 
-                    let condition =
-                    if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        let alt_cancel = alt_enable.dash_cancel;
-                        if alt_cancel.contains(CancelType::WHIFF)
-                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
-                        || (alt_cancel.contains(CancelType::HIT) && hit) {
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else if dash_cancel.contains(CancelType::WHIFF)
-                    || (dash_cancel.contains(CancelType::BLOCK) && shield)
-                    || (dash_cancel.contains(CancelType::HIT) && hit) {
+                let dash_cancel = cancel_info.dash_cancel;
+                let dash_cancel_dir = cancel_info.dash_cancel_direction;
+
+                let condition =
+                if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    let alt_cancel = alt_enable.dash_cancel;
+                    if alt_cancel.contains(CancelType::WHIFF)
+                    || (alt_cancel.contains(CancelType::BLOCK) && shield)
+                    || (alt_cancel.contains(CancelType::HIT) && hit) {
                         true
                     }
                     else {
                         false
-                    };
+                    }
+                }
+                else if dash_cancel.contains(CancelType::WHIFF)
+                || (dash_cancel.contains(CancelType::BLOCK) && shield)
+                || (dash_cancel.contains(CancelType::HIT) && hit) {
+                    true
+                }
+                else {
+                    false
+                };
 
-                    let require_flag = if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        alt_enable.dash_cancel_require_flag
+                let require_flag = if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    alt_enable.dash_cancel_require_flag
+                }
+                else {
+                    cancel_info.dash_cancel_require_flag
+                };
+                
+                let flag_check = if require_flag {
+                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
+                }
+                else {
+                    cancel_window
+                };
+                
+                if condition && flag_check {
+                    if dash_cancel_dir.contains(DashCancelDir::FORWARD)
+                    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
+                        VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
+                        return true;
                     }
-                    else {
-                        cancel_info.dash_cancel_require_flag
-                    };
-                    
-                    let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
-                    }
-                    else {
-                        cancel_window
-                    };
-                    
-                    if condition && flag_check {
-                        if dash_cancel_dir.contains(DashCancelDir::FORWARD)
-                        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
-                            fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
-                            VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
-                            return true;
-                        }
-                        if dash_cancel_dir.contains(DashCancelDir::BACKWARD)
-                        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
-                            fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-                            VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
-                            return true;
-                        }
+                    if dash_cancel_dir.contains(DashCancelDir::BACKWARD)
+                    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
+                        fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
+                        VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
+                        return true;
                     }
                 }
 
                 // Air Dash Cancel
 
+                let airdash_cancel = cancel_info.airdash_cancel;
                 
-                let check_fgc = if cancel_info.fgc_flags.contains(FGCFlags::AIRDASH) {
-                    fgc
-                }
-                else {
-                    true
-                };
-                if check_fgc {
-                    let airdash_cancel = cancel_info.airdash_cancel;
-                    
-                    let condition =
-                    if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        let alt_cancel = alt_enable.airdash_cancel;
-                        if alt_cancel.contains(CancelType::WHIFF)
-                        || (alt_cancel.contains(CancelType::BLOCK) && shield)
-                        || (alt_cancel.contains(CancelType::HIT) && hit) {
-                            true
-                        }
-                        else {
-                            false
-                        }
-                    }
-                    else if airdash_cancel.contains(CancelType::WHIFF)
-                    || (airdash_cancel.contains(CancelType::BLOCK) && shield)
-                    || (airdash_cancel.contains(CancelType::HIT) && hit) {
+                let condition =
+                if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    let alt_cancel = alt_enable.airdash_cancel;
+                    if alt_cancel.contains(CancelType::WHIFF)
+                    || (alt_cancel.contains(CancelType::BLOCK) && shield)
+                    || (alt_cancel.contains(CancelType::HIT) && hit) {
                         true
                     }
                     else {
                         false
-                    };
-
-                    let require_flag = if cancel_info.alt_info.is_some()
-                    && {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
-                    } {
-                        let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        alt_enable.airdash_cancel_require_flag
-                    }
-                    else {
-                        cancel_info.airdash_cancel_require_flag
-                    };
-                    
-                    let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
-                    }
-                    else {
-                        cancel_window
-                    };
-                    
-                    if condition && flag_check
-                    && airdash_cancel_common(fighter, situation.into()).get_bool() {
-                        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
-                        return true;
                     }
                 }
+                else if airdash_cancel.contains(CancelType::WHIFF)
+                || (airdash_cancel.contains(CancelType::BLOCK) && shield)
+                || (airdash_cancel.contains(CancelType::HIT) && hit) {
+                    true
+                }
+                else {
+                    false
+                };
+
+                let require_flag = if cancel_info.alt_info.is_some()
+                && {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                } {
+                    let alt_enable = cancel_info.alt_info.as_ref().unwrap();
+                    alt_enable.airdash_cancel_require_flag
+                }
+                else {
+                    cancel_info.airdash_cancel_require_flag
+                };
+                
+                let flag_check = if require_flag {
+                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
+                }
+                else {
+                    cancel_window
+                };
+                
+                if condition && flag_check
+                && airdash_cancel_common(fighter, situation.into()).get_bool() {
+                    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+                    return true;
+                }
+
                 if let Some(exception_func) = cancel_info.exception {
                     // println!("[CustomCancelModule] Exception found!");
                     if exception_func(fighter) {

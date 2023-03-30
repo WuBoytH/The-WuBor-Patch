@@ -13,47 +13,49 @@ use {
 
 fn set_normals(normals: Vec<i32>) -> CancelInfo {
     CancelInfo::new()
+        .enable_normal_cancel(CancelType::HIT | CancelType::BLOCK)
         .enable_normals(normals.clone())
-        .set_fgc_flags(FGCFlags::NONE)
+        .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
         .set_alt_info(
             AltInfo::new()
                 .set_flag(yu::instance::flag::SHADOW_FRENZY)
+                .enable_normal_cancel(CancelType::HIT | CancelType::BLOCK)
                 .enable_normals(normals)
+                .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
                 .enable_jump_cancel(CancelType::HIT | CancelType::BLOCK)
-                .set_fgc_flags(FGCFlags::NONE)
         )
 }
 
 fn set_aerials() -> CancelInfo {
     CancelInfo::new()
         .pre_function(lucina_attackair_set_cancels)
+        .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
         .enable_aerials(CancelType::HIT | CancelType::BLOCK)
         .enable_jump_cancel(CancelType::HIT)
         .jump_cancel_require_flag()
-        .set_fgc_flags(FGCFlags::NONE)
         .set_alt_info(
             AltInfo::new()
                 .set_flag(yu::instance::flag::SHADOW_FRENZY)
+                .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
                 .enable_aerials(CancelType::HIT | CancelType::BLOCK)
                 .enable_jump_cancel(CancelType::HIT | CancelType::BLOCK)
-                .set_fgc_flags(FGCFlags::NONE)
         )
 }
 
 fn set_specials(specials: Vec<i32>) -> CancelInfo {
     CancelInfo::new()
+        .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
         .enable_specials([
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL2,
             *FIGHTER_STATUS_TRANSITION_TERM_ID_FINAL
         ].to_vec())
-        .set_fgc_flags(FGCFlags::NONE)
         .set_alt_info(
             AltInfo::new()
                 .set_flag(yu::instance::flag::SHADOW_FRENZY)
+                .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
                 .enable_specials(specials)
-                .set_fgc_flags(FGCFlags::NONE)
         )
 }
 
@@ -83,7 +85,6 @@ unsafe extern "C" fn lucina_attackair_set_cancels(fighter: &mut L2CFighterCommon
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_lucina");
-    CustomCancelManager::add_hp_value(agent, 155.0);
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK,
@@ -212,13 +213,13 @@ pub fn install() {
         agent,
         *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4,
         CancelInfo::new()
+        .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
         .enable_specials([*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW].to_vec())
-        .set_fgc_flags(FGCFlags::NONE)
         .set_alt_info(
             AltInfo::new()
                 .set_flag(yu::instance::flag::SHADOW_FRENZY)
+                .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
                 .enable_specials([*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW].to_vec())
-                .set_fgc_flags(FGCFlags::NONE)
         )
     );
 }

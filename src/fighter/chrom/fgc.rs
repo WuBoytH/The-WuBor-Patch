@@ -17,21 +17,21 @@ pub fn install() {
             agent,
             *x,
             CancelInfo::new()
+                .enable_normal_cancel(CancelType::HIT | CancelType::BLOCK)
                 .enable_normals([
                     *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_S4_START,
                     *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
                     *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START
                 ].to_vec())
-                .set_fgc_flags(FGCFlags::NONE)
         );
     }
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,
         CancelInfo::new()
+            .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
             .enable_specials([].to_vec())
             .enable_jump_cancel(CancelType::HIT)
             .jump_cancel_require_flag()
-            .set_fgc_flags(FGCFlags::NONE)
     );
 }

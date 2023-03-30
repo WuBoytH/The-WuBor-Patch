@@ -1,15 +1,12 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        phx::*,
         app::*,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_var::*,
-    custom_cancel::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::fgc
+    wubor_utils::{vars::*, table_const::*}
 };
 
 unsafe extern "C" fn mario_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -27,13 +24,10 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
             return;
         }
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(mario_speciallw_pre as *const () as _));
-        fgc::install();
     }
 }
 
 pub fn install() {
-    let agent = Hash40::new("fighter_kind_mario");
-    CustomCancelManager::initialize_agent(agent);
     install_agent_reset!(
         agent_reset
     );

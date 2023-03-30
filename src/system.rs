@@ -6,7 +6,6 @@ use {
     }
 };
 
-mod fgc_reset;
 mod init_settings;
 mod get_val;
 mod get_param;
@@ -38,7 +37,6 @@ pub fn install() {
             NOTIFY_LOG_EVENT_COLLISION_HIT_OFFSET = offset;
         }
     }
-    fgc_reset::install();
     init_settings::install();
     get_val::install();
     get_param::install();

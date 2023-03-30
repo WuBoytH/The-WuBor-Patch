@@ -32,7 +32,6 @@ pub static NOTIFY_LOG_EVENT_COLLISION_HIT_SEARCH_CODE: &[u8] = &[
 
 // Common
 pub const ZERO_VECTOR : Vector3f = Vector3f { x: 0.0, y: 0.0, z: 0.0 };
-pub static mut FGC_TRAINING : bool = false;
 
 pub const ATTACK_AIR_N_MASK : i32 = 0b00001;
 pub const ATTACK_AIR_F_MASK : i32 = 0b00010;
@@ -56,7 +55,7 @@ pub mod fighter {
             pub const DISABLE_SPECIAL_HI : i32 = 0x0002;
             pub const DISABLE_SPECIAL_LW : i32 = 0x0003;
             pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x0004;
-            pub const IS_FGC : i32 = 0x0005;
+            // pub const IS_FGC : i32 = 0x0005;
             pub const CANCEL_ESCAPE_TO_ESCAPE_FB : i32 = 0x0006;
             pub const SUPER_JUMP : i32 = 0x0007;
             pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
@@ -271,8 +270,7 @@ pub mod eflame_esword {
 pub mod elight {
     pub mod instance {
         pub mod flag {
-            pub const SPECIAL_S_CANCEL : i32 = 0x0150;
-            pub const ATTACK_AIR_LW_LANDING_ATTACK : i32 = 0x0151;
+            pub const ATTACK_AIR_LW_LANDING_ATTACK : i32 = 0x0150;
         }
     }
 }
@@ -535,8 +533,6 @@ pub mod mario {
     pub mod status {
         pub mod flag {
             pub const ATTACK_AIR_F_HOLD : i32 = 0x1150;
-            
-            pub const SPECIAL_N_FGC_CANCEL : i32 = 0x1150;
 
             pub const SPECIAL_LW_LANDING : i32 = 0x1150;
             pub const SPECIAL_LW_BLJ : i32 = 0x1151;

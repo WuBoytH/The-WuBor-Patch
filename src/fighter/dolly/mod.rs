@@ -2,7 +2,6 @@ mod acmd;
 mod frame;
 mod status;
 pub mod agent_init;
-pub mod fgc;
 pub mod helper;
 pub mod vl;
 pub mod vtable_hook;

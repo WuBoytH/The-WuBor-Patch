@@ -2,7 +2,6 @@ mod acmd;
 mod status;
 mod frame;
 mod agent_init;
-pub mod fgc;
 mod vtable_hook;
 
 pub fn install() {

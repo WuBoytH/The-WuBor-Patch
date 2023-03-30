@@ -1,15 +1,12 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        phx::*,
         app::*,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
     custom_var::*,
-    custom_cancel::*,
-    wubor_utils::{vars::*, table_const::*},
-    super::fgc
+    wubor_utils::{vars::*, table_const::*}
 };
 
 pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -46,12 +43,10 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
         }
         fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(lucario_special_s_uniq as *const () as _));
         fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(lucario_status_end_control as *const () as _));
-        fgc::install();
     }
 }
 
 pub fn install() {
-    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucario"));
     install_agent_resets!(
         agent_reset
     );

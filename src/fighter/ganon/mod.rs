@@ -3,7 +3,6 @@ mod frame;
 mod status;
 mod agent_init;
 pub mod helper;
-pub mod fgc;
 // mod vtable_hook;
 
 pub fn install() {

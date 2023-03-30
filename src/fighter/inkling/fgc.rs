@@ -3,8 +3,7 @@ use {
         phx::*,
         lib::lua_const::*
     },
-    custom_cancel::*,
-    crate::fighter::common::fgc::*
+    custom_cancel::*
 };
 
 pub fn install() {
@@ -15,9 +14,5 @@ pub fn install() {
         CancelInfo::new()
             .enable_airdash_cancel(CancelType::HIT)
             .airdash_cancel_require_flag()
-            .set_fgc_flags(FGCFlags::ALL - FGCFlags::AIRDASH)
     );
-    generic_attack(agent);
-    generic_attack3(agent);
-    generic_attack4(agent);
 }

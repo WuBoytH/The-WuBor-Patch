@@ -83,25 +83,6 @@ move_type_again: bool) -> u64 {
                 VarModule::on_flag(defender_object, ryu::instance::flag::SECRET_SENSATION);
             }
         }
-        else if defender_fighter_kind == *FIGHTER_KIND_SHULK {
-            if attacker_cat == *BATTLE_OBJECT_CATEGORY_FIGHTER
-            || attacker_cat == *BATTLE_OBJECT_CATEGORY_ENEMY {
-                VarModule::set_int(defender_object, fighter::instance::int::TARGET_ID, attacker_object_id as i32);
-            }
-            else if attacker_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
-                let otarget_id = WorkModule::get_int(attacker_boma, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-                let oboma = sv_battle_object::module_accessor(otarget_id);
-                if utility::get_category(&mut *oboma) != *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                    VarModule::set_int(defender_object, fighter::instance::int::TARGET_ID, 0)
-                }
-                else {
-                    VarModule::set_int(defender_object, fighter::instance::int::TARGET_ID, otarget_id as i32);
-                }
-            }
-            else {
-                VarModule::set_int(defender_object, fighter::instance::int::TARGET_ID, 0)
-            }
-        }
     }
     original!()(fighter_manager, attacker_object_id, defender_object_id, move_type, arg5, move_type_again)
 }

@@ -1,3 +1,5 @@
+// Preserved to remind myself I made reverse beat in Smash
+
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
@@ -68,7 +70,6 @@ unsafe extern "C" fn miifighter_attackair_pre(fighter: &mut L2CFighterCommon) ->
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_miifighter");
-    CustomCancelManager::add_hp_value(agent, 188.0);
     for x in [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_S3,

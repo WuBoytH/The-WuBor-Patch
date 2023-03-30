@@ -8,7 +8,7 @@ unsafe fn kirby_specialsstart(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 15.0);
-    macros::FT_MOTION_RATE(fighter, 1);
+    macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
 #[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
@@ -82,7 +82,7 @@ unsafe fn kirby_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 19.0);
-    macros::FT_MOTION_RATE(fighter, 1);
+    macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
 pub fn install() {

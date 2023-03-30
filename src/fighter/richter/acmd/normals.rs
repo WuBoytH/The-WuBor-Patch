@@ -6,8 +6,8 @@ unsafe fn richter_attack11(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("kneel"), 4.0, 361, 20, 0, 40, 4.0, 4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(fighter, 1, 0, Hash40::new("kneel"), 4.0, 361, 20, 0, 40, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 3.0, false);
-        AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 3.0, false);
+        AttackModule::set_add_reaction_frame(fighter.module_accessor, 0, 7.0, false);
+        AttackModule::set_add_reaction_frame(fighter.module_accessor, 1, 7.0, false);
     }
     macros::FT_MOTION_RATE(fighter, 5.0 / 9.0);
     wait(fighter.lua_state_agent, 4.0);
@@ -24,9 +24,9 @@ unsafe fn richter_attack11(fighter: &mut L2CAgentBase) {
         VarModule::on_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
     }
     frame(fighter.lua_state_agent, 24.0);
-    if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
-    }
+    // if macros::is_excute(fighter) {
+    //     VarModule::off_flag(fighter.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
+    // }
     MiscModule::calc_motion_rate_from_cancel_frame(fighter, 24.0, -4.0);
 }
 
@@ -198,6 +198,40 @@ unsafe fn richter_attack12f_exp(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 33.0);
     if macros::is_excute(fighter) {
         slope!(fighter, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 5);
+    }
+}
+
+#[acmd_script( agent = "richter", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+unsafe fn richter_attackdash(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 0.0);
+    }
+    for _ in 0..5 {
+        if macros::is_excute(fighter) {
+            macros::ATTACK(fighter, 2, 0, Hash40::new("top"), 2.0, 10, 10, 0, 55, 4.0, 0.0, 13.0, 6.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+            macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 2.0, 367, 10, 0, 70, 4.0, 0.0, 13.0, -6.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 2.0, 40, 10, 0, 50, 4.0, 0.0, 4.0, 6.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+            macros::ATTACK(fighter, 3, 0, Hash40::new("top"), 2.0, 367, 10, 0, 70, 4.0, 0.0, 4.0, -6.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+        }
+        wait(fighter.lua_state_agent, 2.0);
+        if macros::is_excute(fighter) {
+            AttackModule::clear_all(fighter.module_accessor);
+        }
+        wait(fighter.lua_state_agent, 1.0);
+    }
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 3.5, 47, 105, 0, 80, 11.5, 0.0, 8.8, 0.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_WHIP);
+    }
+    wait(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 1.0);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_GRAVITY);
     }
 }
 
@@ -423,6 +457,7 @@ pub fn install() {
         richter_attack11, richter_attack11_eff, richter_attack11_snd, richter_attack11_exp,
         richter_attack12, richter_attack12_eff, richter_attack12_snd, richter_attack12_exp,
         richter_attack12f, richter_attack12f_eff, richter_attack12f_snd, richter_attack12f_exp,
+        richter_attackdash,
         richter_attacks3, richter_attacks3_eff,
         richter_whip_attacks3,
         richter_attackhi3,

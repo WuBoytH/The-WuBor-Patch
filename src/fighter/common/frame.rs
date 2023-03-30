@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::*,
+        phx::*,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },

@@ -17,11 +17,11 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
     if category == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         let object = MiscModule::get_battle_object_from_id(module_accessor.battle_object_id);
         if [
-            hash40("jump_y")
+            hash40("jump_speed_y")
         ].contains(&param_type) {
             let mut mul = 1.0;
             if VarModule::is_flag(object, vars::fighter::instance::flag::SUPER_JUMP) {
-                mul *= 1.4;
+                mul *= 1.2;
             }
             return ret * mul;
         }

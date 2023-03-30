@@ -30,8 +30,8 @@ unsafe fn kirby_attackdash(fighter: &mut L2CAgentBase) {
         AttackModule::clear_all(fighter.module_accessor);
         VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
         VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
-        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
-        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_DRIFT);
+        VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 1.0);
+        VarModule::on_flag(fighter.battle_object, attack_dash::flag::ENABLE_GRAVITY);
     }
 }
 

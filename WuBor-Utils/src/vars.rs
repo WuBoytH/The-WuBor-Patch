@@ -126,8 +126,8 @@ pub mod attack_dash {
     pub mod flag {
         pub const ENABLE_AIR_FALL : i32 = 0x1050;
         pub const ENABLE_AIR_CONTINUE : i32 = 0x1051;
-        pub const ENABLE_AIR_DRIFT : i32 = 0x1052;
-        pub const AIR_DRIFT_ENABLED : i32 = 0x1053;
+        pub const ENABLE_GRAVITY : i32 = 0x1052;
+        pub const GRAVITY_ENABLED : i32 = 0x1053;
         pub const ENABLE_AIR_LANDING : i32 = 0x1054;
     }
     pub mod float {

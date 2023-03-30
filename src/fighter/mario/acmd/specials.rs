@@ -1,17 +1,6 @@
 use crate::imports::acmd_imports::*;
 use super::super::vl;
 
-#[acmd_script( agent = "mario", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
-unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_N_FGC_CANCEL);
-    }
-    frame(fighter.lua_state_agent, 14.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_FIREBALL, false, -1);
-    }
-}
-
 #[acmd_script( agent = "mario", scripts = [ "game_specials", "game_specialairs" ], category = ACMD_GAME, low_priority )]
 unsafe fn mario_specials(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
@@ -313,7 +302,6 @@ unsafe fn mario_groundpoundland_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_specialn,
         mario_specials, mario_specials_eff, mario_specialairs_eff, expression_specials,
         mario_specialhi,
         mario_longjumpstart_snd,

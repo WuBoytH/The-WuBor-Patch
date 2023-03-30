@@ -6,9 +6,6 @@ unsafe fn mario_specialn(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_N_FGC_CANCEL);
     }
-    if !VarModule::is_flag(fighter.battle_object, fighter::instance::flag::IS_FGC) {
-        macros::FT_MOTION_RATE(fighter, 1.15);
-    }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_FIREBALL, false, -1);
@@ -314,39 +311,6 @@ unsafe fn mario_groundpoundland_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario_fireball", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn mario_fireball_regular(weapon: &mut L2CAgentBase) {
-    let angle : u64;
-    let bkb : i32;
-    let kbg : i32;
-    let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let object = MiscModule::get_battle_object_from_id(otarget_id);
-    if VarModule::is_flag(object, fighter::instance::flag::IS_FGC) {
-        angle = 80;
-        bkb = 90;
-        kbg = 0;
-    }
-    else {
-        angle = 361;
-        bkb = 35;
-        kbg = 20;
-    }
-    if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 5.0, angle, kbg, 0, bkb, 2.4, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_FIREBALL, *ATTACK_REGION_NONE);
-        AttackModule::enable_safe_pos(weapon.module_accessor);
-    }
-    frame(weapon.lua_state_agent, 5.0);
-    if !VarModule::is_flag(object, fighter::instance::flag::IS_FGC) {
-        if macros::is_excute(weapon) {
-            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 5.0, 361, 15, 0, 28, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_FIREBALL, *ATTACK_REGION_NONE);
-        }
-    }
-    frame(weapon.lua_state_agent, 30.0);
-    if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 4.0, 361, 10, 0, 22, 2.0, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_MARIO_FIREBALL, *ATTACK_REGION_NONE);
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         mario_specialn,
@@ -358,7 +322,6 @@ pub fn install() {
         mario_groundpoundstart, mario_groundpoundstart_snd,
         mario_groundpoundfall, mario_groundpoundfall_snd, mario_groundpoundfall_exp,
         mario_groundpoundcancel, mario_groundpoundcancel_snd,
-        mario_groundpoundland, mario_groundpoundland_snd, mario_groundpoundland_eff, mario_groundpoundland_exp,
-        mario_fireball_regular
+        mario_groundpoundland, mario_groundpoundland_snd, mario_groundpoundland_eff, mario_groundpoundland_exp
     );
 }

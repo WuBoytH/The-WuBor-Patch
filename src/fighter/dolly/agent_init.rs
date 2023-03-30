@@ -1,15 +1,13 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        // phx::Hash40,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    // smash_script::*,
     smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*},
-    super::{fgc::*, helper::*}
+    super::helper::*
 };
 
 unsafe extern "C" fn dolly_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -236,7 +234,6 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
         fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
         // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
-        fighter.global_table["fgc_func"].assign(&L2CValue::Ptr(dolly_fgc as *const () as _));
     }
 }
 

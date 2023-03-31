@@ -182,24 +182,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_walk_main_loop(fighter: &mut L2CFi
     0.into()
 }
 
-unsafe extern "C" fn rockman_rockbuster_walk_mot_helper(_fighter: &mut L2CFighterCommon, walk_mot: L2CValue, curr_mot: L2CValue) -> L2CValue {
-    let curr = curr_mot.get_u64();
-    let walk = walk_mot.get_u64();
-    if curr == hash40("walk_fast")
-    && walk == hash40("buster_walk_fast") {
-        return true.into();
-    }
-    if curr == hash40("walk_middle")
-    && walk == hash40("buster_walk_middle") {
-        return true.into();
-    }
-    if curr == hash40("walk_slow")
-    && walk == hash40("buster_walk_slow") {
-        return true.into();
-    }
-    false.into()
-}
-
 pub fn install() {
     install_status_scripts!(
         rockman_rockbuster_shoot_walk_pre, rockman_rockbuster_shoot_walk_main

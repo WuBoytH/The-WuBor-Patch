@@ -1,3 +1,4 @@
+mod walk;
 mod attack;
 mod attack_s3;
 mod attack_air;
@@ -8,6 +9,7 @@ mod special_lw;
 pub mod helper;
 
 pub fn install() {
+    walk::install();
     attack::install();
     attack_s3::install();
     attack_air::install();

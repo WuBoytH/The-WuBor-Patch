@@ -22,78 +22,122 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                         Hash40::new_raw(0x2435e7c874),
                         0
                     );
-                    ArticleModule::remove_exist(module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_LEAFSHIELD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+                    ArticleModule::remove(module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_LEAFSHIELD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
                     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
                 }
-                else if ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
-                    StatusModule::change_status_request(module_accessor, *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_LW_SHOOT, false);
+                else if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW)
+                && ControlModule::get_button(module_accessor) >> 1 & 1 != 0 {
+                    StatusModule::change_status_request(module_accessor, *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_LW_SHOOT, true);
                 }
             }
         }
     }
-    let leafshield = WorkModule::is_flag(module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
-    WorkModule::off_flag(module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
     original!()(vtable, fighter);
-    WorkModule::set_flag(module_accessor, leafshield, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD);
 }
 
-// const ROCKMAN_DISABLE_GROUPS: [WorkId; 4] = [
-//     transition_groups::CHECK_GROUND_SPECIAL,
-//     transition_groups::CHECK_AIR_SPECIAL,
-//     transition_groups::CHECK_GROUND_ESCAPE,
-//     transition_groups::CHECK_AIR_ESCAPE,
-// ];
+#[skyline::hook(offset = 0x1083bcc, inline)]
+unsafe fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
+}
 
-// const ROCKMAN_DISABLE_INDIVI: [WorkId; 2] = [
-//     transition_terms::CONT_ATTACK_DASH,
-//     transition_terms::CONT_LADDER_ATTACK
-// ];
+#[skyline::hook(offset = 0x10838c0, inline)]
+unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
+    let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
+    FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
+}
 
-// #[skyline::hook(replace = FighterSpecializer_Rockman::set_leafshield)]
-// unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleObjectModuleAccessor, set_shield: bool) {
-//     // let groups = [
-//     //     *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL,
-//     //     // *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM,
-//     //     // *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH,
-//     //     // *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK,
-//     //     *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ESCAPE,
-//     //     // *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_GUARD,
-//     //     // *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK,
-//     //     *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE
-//     // ];
-//     // let individual = [
-//     //     *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH
-//     // ];
-//     let work = (*module_accessor).work();
-//     work.set_flag(set_shield, work_ids::fighter::rockman::instance::SPECIAL_LW_LEAFSHIELD);
-//     work.set_flag(set_shield, work_ids::fighter::rockman::instance::SPECIAL_LW_ENABLE_SHOOT);
-//     if !set_shield {
-//         for x in ROCKMAN_DISABLE_GROUPS.iter() {
-//             work.unable_transition_term_forbid_group_indivi(*x);
-//         }
-//         for x in ROCKMAN_DISABLE_INDIVI.iter() {
-//             work.unable_transition_term_forbid_indivi(*x);
-//         }
-//         // WorkModule::enable_transition_term_forbid(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW);
-//         // if StatusModule::status_kind(module_accessor) < 0x27 {
-//         //     for x in groups.iter() {
-//         //         WorkModule::enable_transition_term_group(module_accessor, *x);
-//         //     }
-//         // }
-//     }
-//     else {
-//         for x in ROCKMAN_DISABLE_GROUPS.iter() {
-//             work.enable_transition_term_forbid_group_indivi( *x);
-//         }
-//         for x in ROCKMAN_DISABLE_INDIVI.iter() {
-//             work.enable_transition_term_forbid_indivi(*x);
-//         }
-//     }
-// }
+const ROCKMAN_DISABLE_GROUPS: [WorkId; 2] = [
+    // transition_groups::CHECK_GROUND_SPECIAL,
+    // transition_groups::CHECK_AIR_SPECIAL,
+    transition_groups::CHECK_GROUND_ESCAPE,
+    transition_groups::CHECK_AIR_ESCAPE,
+];
+
+const ROCKMAN_DISABLE_INDIVI: [WorkId; 8] = [
+    transition_terms::CONT_DASH,
+    transition_terms::CONT_TURN_DASH,
+    transition_terms::CONT_ATTACK_DASH,
+    transition_terms::CONT_ATTACK_HI4_START,
+    transition_terms::CONT_ATTACK_LW4_START,
+    transition_terms::CONT_SPECIAL_N,
+    transition_terms::CONT_SPECIAL_S,
+    transition_terms::CONT_SPECIAL_HI
+];
+
+#[skyline::hook(replace = FighterSpecializer_Rockman::set_leafshield)]
+unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleObjectModuleAccessor, set_shield: bool) {
+    let work = (*module_accessor).work();
+    work.set_flag(set_shield, work_ids::fighter::rockman::instance::SPECIAL_LW_LEAFSHIELD);
+    work.set_flag(set_shield, work_ids::fighter::rockman::instance::SPECIAL_LW_ENABLE_SHOOT);
+    if !set_shield {
+        work.set_int(0, work_ids::fighter::rockman::instance::SPECIAL_LW_HOLD_FRAME);
+        for x in ROCKMAN_DISABLE_GROUPS.iter() {
+            work.unable_transition_term_forbid_group(*x);
+        }
+        for x in ROCKMAN_DISABLE_INDIVI.iter() {
+            work.unable_transition_term_forbid(*x);
+        }
+        // work.enable_transition_term_forbid(transition_terms::CONT_SPECIAL_LW);
+        if (*module_accessor).status().status_kind() < 0x27 {
+            for x in ROCKMAN_DISABLE_GROUPS.iter() {
+                work.enable_transition_term_group(*x);
+            }
+            for x in ROCKMAN_DISABLE_INDIVI.iter() {
+                work.enable_transition_term(*x);
+            }
+        }
+    }
+    else {
+        let hold_frame = work.get_param_int(smash_rs::phx::Hash40::new("param_special_lw"), smash_rs::phx::Hash40::new("hold_frame"));
+        work.set_int(hold_frame, work_ids::fighter::rockman::instance::SPECIAL_LW_HOLD_FRAME);
+        for x in ROCKMAN_DISABLE_GROUPS.iter() {
+            work.enable_transition_term_forbid_group(*x);
+        }
+        for x in ROCKMAN_DISABLE_INDIVI.iter() {
+            work.enable_transition_term_forbid(*x);
+        }
+    }
+}
 
 pub fn install() {
+    // Forces the original Leaf Shield handler to not run so we can run the custon one.
+    skyline::patching::Patch::in_text(0x107ea84).data(0x1400001E);
+    // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
+    skyline::patching::Patch::in_text(0x107ff4c).data(0x14000007);
+
+    // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
+    // Disable
+    skyline::patching::Patch::in_text(0x1083bcc).nop();
+    skyline::patching::Patch::in_text(0x1083bec).nop();
+    skyline::patching::Patch::in_text(0x1083c08).nop();
+    skyline::patching::Patch::in_text(0x1083c1c).nop();
+    skyline::patching::Patch::in_text(0x1083c30).nop();
+    skyline::patching::Patch::in_text(0x1083c4c).nop();
+    skyline::patching::Patch::in_text(0x1083c60).nop();
+    skyline::patching::Patch::in_text(0x1083c74).nop();
+    skyline::patching::Patch::in_text(0x1083c88).nop();
+    skyline::patching::Patch::in_text(0x1083c9c).nop();
+    skyline::patching::Patch::in_text(0x1083cb0).nop();
+    skyline::patching::Patch::in_text(0x1083cc4).nop();
+    // Enable
+    skyline::patching::Patch::in_text(0x10838c0).nop();
+    skyline::patching::Patch::in_text(0x10838e0).nop();
+    skyline::patching::Patch::in_text(0x1083908).nop();
+    skyline::patching::Patch::in_text(0x1083924).nop();
+    skyline::patching::Patch::in_text(0x1083938).nop();
+    skyline::patching::Patch::in_text(0x108394c).nop();
+    skyline::patching::Patch::in_text(0x1083968).nop();
+    skyline::patching::Patch::in_text(0x108397c).nop();
+    skyline::patching::Patch::in_text(0x1083990).nop();
+    skyline::patching::Patch::in_text(0x10839a4).nop();
+    skyline::patching::Patch::in_text(0x10839b8).nop();
+    skyline::patching::Patch::in_text(0x10839cc).nop();
+
     skyline::install_hooks!(
         rockman_vtable_func,
-        // set_leafshield
+        rockman_do_leafshield_things_disable,
+        rockman_do_leafshield_things_enable,
+        set_leafshield
     );
 }

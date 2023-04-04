@@ -15,6 +15,7 @@ unsafe fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
     }
+    fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),

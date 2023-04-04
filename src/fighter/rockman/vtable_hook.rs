@@ -41,9 +41,9 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
         || (
             VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING)
             && ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
-        )
-        && !VarModule::is_flag(object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE) {
-            if VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING) {
+        ) {
+            if VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING)
+            && !VarModule::is_flag(object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE) {
                 let pad_flag = ControlModule::get_pad_flag(module_accessor);
                 if pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE == 0 {
                     VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING);
@@ -129,7 +129,6 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
         return false;
     }
     ![
-        *FIGHTER_STATUS_KIND_REBIRTH,
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_MISS_FOOT,
         *FIGHTER_STATUS_KIND_STANDBY,
@@ -137,6 +136,7 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
         *FIGHTER_STATUS_KIND_GUARD,
         *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
         *FIGHTER_STATUS_KIND_GUARD_OFF,
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_STATUS_KIND_SPECIAL_LW,
         *FIGHTER_STATUS_KIND_FINAL,
         *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_LW_SHOOT,

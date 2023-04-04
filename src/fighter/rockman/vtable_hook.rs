@@ -1,9 +1,11 @@
 use crate::imports::status_imports::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
+use super::vl;
 
 #[skyline::hook(offset = 0x107e950)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
-    let module_accessor = (fighter.battle_object).module_accessor;
+    let object = &mut fighter.battle_object;
+    let module_accessor = object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
     if (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
@@ -31,8 +33,118 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                 }
             }
         }
+
+        // New stuff for Charge Shot
+
+        if !rockman_valid_charging_state(module_accessor)
+        || WorkModule::is_flag(module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)
+        || (
+            VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING)
+            && ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW)
+        )
+        && !VarModule::is_flag(object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE) {
+            if VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING) {
+                let pad_flag = ControlModule::get_pad_flag(module_accessor);
+                if pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE == 0 {
+                    VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING);
+                    VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX);
+                    SoundModule::stop_se(module_accessor, Hash40::new("se_rockman_smash_s02"), 0);
+                    VarModule::set_int(object, rockman::instance::int::CHARGE_SHOT_FRAME, 0);
+                    let eff_handle = VarModule::get_int(object, rockman::instance::int::CHARGE_SHOT_EFF_HANDLE) as u32;
+                    if EffectModule::is_exist_effect(module_accessor, eff_handle) {
+                        EffectModule::kill(module_accessor, eff_handle, true, true);
+                    }
+                }
+            }
+        }
+        else if !VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING) {
+            if ControlModule::check_button_on(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
+                VarModule::on_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING);
+            }
+        }
+        else {
+            let charge_frame = VarModule::get_int(object, rockman::instance::int::CHARGE_SHOT_FRAME);
+            if charge_frame < vl::private::CHARGE_SHOT_MAX_FRAME + 1
+            && !VarModule::is_flag(object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE) {
+                VarModule::inc_int(object, rockman::instance::int::CHARGE_SHOT_FRAME);
+            }
+            let charge_frame = VarModule::get_int(object, rockman::instance::int::CHARGE_SHOT_FRAME);
+            if charge_frame == vl::private::CHARGE_SHOT_MAX_FRAME {
+                FighterUtil::flash_eye_info(module_accessor);
+                EffectModule::req_follow(
+                    module_accessor,
+                    Hash40::new("rockman_chargeshot_max"),
+                    Hash40::new("handl"),
+                    &Vector3f{x: 1.0, y: 0.0, z: 0.0},
+                    &ZERO_VECTOR,
+                    1.0,
+                    false,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    false,
+                    false
+                );
+            }
+            if charge_frame == vl::private::CHARGE_SHOT_CLEAR_INPUT_FRAME {
+                ControlModule::clear_command_one(module_accessor, 0, *FIGHTER_PAD_CMD_CAT1_SPECIAL_N);
+            }
+            if charge_frame > vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME {
+                if !VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
+                    SoundModule::play_se(module_accessor, Hash40::new("se_rockman_smash_s02"), true, false, false, false, enSEType(0));
+                    EffectModule::req_follow(
+                        module_accessor,
+                        Hash40::new("rockman_chargeshot_hold"),
+                        Hash40::new("handl"),
+                        &Vector3f{x: 1.0, y: 0.0, z: 0.0},
+                        &ZERO_VECTOR,
+                        0.4,
+                        false,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        false,
+                        false
+                    );
+                    let eff_handle = EffectModule::get_last_handle(module_accessor) as u32;
+                    // EffectModule::set_rate(module_accessor, eff_handle, 0.5);
+                    VarModule::set_int(object, rockman::instance::int::CHARGE_SHOT_EFF_HANDLE, eff_handle as i32);
+                    VarModule::on_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX);
+                }
+            }
+        }
     }
     original!()(vtable, fighter);
+}
+
+unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+    if CancelModule::is_enable_cancel(module_accessor) {
+        return true;
+    }
+    if MiscModule::is_damage_check(module_accessor, false) {
+        return false;
+    }
+    ![
+        *FIGHTER_STATUS_KIND_REBIRTH,
+        *FIGHTER_STATUS_KIND_DEAD,
+        *FIGHTER_STATUS_KIND_MISS_FOOT,
+        *FIGHTER_STATUS_KIND_STANDBY,
+        *FIGHTER_STATUS_KIND_GUARD_ON,
+        *FIGHTER_STATUS_KIND_GUARD,
+        *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
+        *FIGHTER_STATUS_KIND_GUARD_OFF,
+        *FIGHTER_STATUS_KIND_SPECIAL_LW,
+        *FIGHTER_STATUS_KIND_FINAL,
+        *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_LW_SHOOT,
+        *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_INHALE,
+        *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_SCENE01,
+        *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_SCENE02,
+        *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_END
+    ].contains(&StatusModule::status_kind(module_accessor))
 }
 
 #[skyline::hook(offset = 0x1083bcc, inline)]

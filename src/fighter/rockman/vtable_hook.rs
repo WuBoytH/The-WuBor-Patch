@@ -45,7 +45,8 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             if VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING)
             && !VarModule::is_flag(object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE) {
                 let pad_flag = ControlModule::get_pad_flag(module_accessor);
-                if pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE == 0 {
+                if !VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX)
+                && pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE == 0 {
                     VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING);
                     VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX);
                     SoundModule::stop_se(module_accessor, Hash40::new("se_rockman_smash_s02"), 0);

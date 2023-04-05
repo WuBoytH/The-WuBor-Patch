@@ -70,19 +70,21 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
 
 unsafe fn appeal_motion_uniq_handler(fighter: &mut L2CFighterCommon) -> bool {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
+    let check_basic_taunts = [
+        hash40("appeal_hi_l"),
+        hash40("appeal_hi_r"),
+        hash40("appeal_s_l"),
+        hash40("appeal_s_r"),
+        hash40("appeal_lw_l"),
+        hash40("appeal_lw_r")
+    ].contains(&mot);
+    let kind = fighter.global_table[KIND].get_i32();
     let hi = ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI);
     let lw = ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW);
     let s = ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L);
-    if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SNAKE {
+    if kind == *FIGHTER_KIND_SNAKE {
         if MotionModule::is_end(fighter.module_accessor) {
-            if [
-                hash40("appeal_hi_l"),
-                hash40("appeal_hi_r"),
-                hash40("appeal_s_l"),
-                hash40("appeal_s_r"),
-                hash40("appeal_lw_l"),
-                hash40("appeal_lw_r")
-            ].contains(&mot) {
+            if check_basic_taunts {
                 MotionModule::change_motion(
                     fighter.module_accessor,
                     Hash40::new("appeal_wait"),
@@ -116,14 +118,7 @@ unsafe fn appeal_motion_uniq_handler(fighter: &mut L2CFighterCommon) -> bool {
         }
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_MOVE_END)
-    && ![
-        hash40("appeal_hi_l"),
-        hash40("appeal_hi_r"),
-        hash40("appeal_s_l"),
-        hash40("appeal_s_r"),
-        hash40("appeal_lw_l"),
-        hash40("appeal_lw_r")
-    ].contains(&mot) {
+    && !check_basic_taunts {
         let lr = PostureModule::lr(fighter.module_accessor);
         let mot = if hi {
             if lr >= 0.0 {

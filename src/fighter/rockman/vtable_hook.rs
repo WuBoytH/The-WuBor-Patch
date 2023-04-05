@@ -128,6 +128,11 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
     if MiscModule::is_damage_check(module_accessor, false) {
         return false;
     }
+    let status = StatusModule::status_kind(module_accessor);
+    if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR
+    && WorkModule::is_flag(module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+        return true;
+    }
     ![
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_MISS_FOOT,
@@ -152,7 +157,7 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
         *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_SCENE01,
         *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_SCENE02,
         *FIGHTER_ROCKMAN_STATUS_KIND_FINAL_END
-    ].contains(&StatusModule::status_kind(module_accessor))
+    ].contains(&status)
 }
 
 #[skyline::hook(offset = 0x1083bcc, inline)]

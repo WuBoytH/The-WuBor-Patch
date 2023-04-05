@@ -62,48 +62,30 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
         }
     }
     else {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_MOVE_END)
-        && ![
-            hash40("appeal_hi_l"),
-            hash40("appeal_hi_r"),
-            hash40("appeal_s_l"),
-            hash40("appeal_s_r"),
-            hash40("appeal_lw_l"),
-            hash40("appeal_lw_r")
-        ].contains(&mot) {
-            let lr = PostureModule::lr(fighter.module_accessor);
-            let cat2 = fighter.global_table[CMD_CAT2].get_i32();
-            let mot = if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
-                if lr >= 0.0 {
-                    hash40("appeal_hi_r")
-                }
-                else {
-                    hash40("appeal_hi_l")
-                }
-            }
-            else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 {
-                if lr >= 0.0 {
-                    hash40("appeal_lw_r")
-                }
-                else {
-                    hash40("appeal_lw_l")
-                }
-            }
-            else if cat2 & (*FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L) != 0 {
-                if lr >= 0.0 {
-                    hash40("appeal_s_r")
-                }
-                else {
-                    hash40("appeal_s_l")
-                }
-            }
-            else {
-                hash40("invalid")
-            };
-            if mot != hash40("invalid") {
+        if appeal_motion_uniq_handler(fighter) {
+            fighter.sub_wait_motion(false.into());
+        }
+    }
+}
+
+unsafe fn appeal_motion_uniq_handler(fighter: &mut L2CFighterCommon) -> bool {
+    let mot = MotionModule::motion_kind(fighter.module_accessor);
+    let hi = ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI);
+    let lw = ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW);
+    let s = ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_R) || ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L);
+    if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SNAKE {
+        if MotionModule::is_end(fighter.module_accessor) {
+            if [
+                hash40("appeal_hi_l"),
+                hash40("appeal_hi_r"),
+                hash40("appeal_s_l"),
+                hash40("appeal_s_r"),
+                hash40("appeal_lw_l"),
+                hash40("appeal_lw_r")
+            ].contains(&mot) {
                 MotionModule::change_motion(
                     fighter.module_accessor,
-                    Hash40::new_raw(mot),
+                    Hash40::new("appeal_wait"),
                     0.0,
                     1.0,
                     false,
@@ -111,10 +93,80 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
                     false,
                     false
                 );
+                return false;
             }
         }
-        fighter.sub_wait_motion(false.into());
+        if mot == hash40("appeal_wait") {
+            if hi || lw || s {
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new("appeal_end"),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
+                );
+                return false;
+            }
+        }
+        if mot == hash40("appeal_end") {
+            return true;
+        }
     }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_MOVE_END)
+    && ![
+        hash40("appeal_hi_l"),
+        hash40("appeal_hi_r"),
+        hash40("appeal_s_l"),
+        hash40("appeal_s_r"),
+        hash40("appeal_lw_l"),
+        hash40("appeal_lw_r")
+    ].contains(&mot) {
+        let lr = PostureModule::lr(fighter.module_accessor);
+        let mot = if hi {
+            if lr >= 0.0 {
+                hash40("appeal_hi_r")
+            }
+            else {
+                hash40("appeal_hi_l")
+            }
+        }
+        else if lw {
+            if lr >= 0.0 {
+                hash40("appeal_lw_r")
+            }
+            else {
+                hash40("appeal_lw_l")
+            }
+        }
+        else if s {
+            if lr >= 0.0 {
+                hash40("appeal_s_r")
+            }
+            else {
+                hash40("appeal_s_l")
+            }
+        }
+        else {
+            hash40("invalid")
+        };
+        if mot != hash40("invalid") {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new_raw(mot),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+            return false;
+        }
+    }
+    true
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {

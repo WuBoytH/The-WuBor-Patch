@@ -62,6 +62,57 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
         }
     }
     else {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_MOVE_END)
+        && ![
+            hash40("appeal_hi_l"),
+            hash40("appeal_hi_r"),
+            hash40("appeal_s_l"),
+            hash40("appeal_s_r"),
+            hash40("appeal_lw_l"),
+            hash40("appeal_lw_r")
+        ].contains(&mot) {
+            let lr = PostureModule::lr(fighter.module_accessor);
+            let cat2 = fighter.global_table[CMD_CAT2].get_i32();
+            let mot = if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
+                if lr >= 0.0 {
+                    hash40("appeal_hi_r")
+                }
+                else {
+                    hash40("appeal_hi_l")
+                }
+            }
+            else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 {
+                if lr >= 0.0 {
+                    hash40("appeal_lw_r")
+                }
+                else {
+                    hash40("appeal_lw_l")
+                }
+            }
+            else if cat2 & (*FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L) != 0 {
+                if lr >= 0.0 {
+                    hash40("appeal_s_r")
+                }
+                else {
+                    hash40("appeal_s_l")
+                }
+            }
+            else {
+                hash40("invalid")
+            };
+            if mot != hash40("invalid") {
+                MotionModule::change_motion(
+                    fighter.module_accessor,
+                    Hash40::new_raw(mot),
+                    0.0,
+                    1.0,
+                    false,
+                    0.0,
+                    false,
+                    false
+                );
+            }
+        }
         fighter.sub_wait_motion(false.into());
     }
 }

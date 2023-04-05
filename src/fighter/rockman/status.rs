@@ -7,6 +7,7 @@ mod special_n;
 mod rockbuster;
 mod special_s;
 mod special_lw;
+mod rebirth;
 pub mod helper;
 
 pub fn install() {
@@ -19,4 +20,5 @@ pub fn install() {
     rockbuster::install();
     special_s::install();
     special_lw::install();
+    rebirth::install();
 }

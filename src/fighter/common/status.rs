@@ -31,6 +31,7 @@ mod landing;
 mod pass;
 mod cliff;
 mod appeal;
+mod rebirth;
 mod sub_transitions;
 mod sub_fighter;
 
@@ -68,6 +69,7 @@ pub fn install() {
     pass::install();
     cliff::install();
     appeal::install();
+    rebirth::install();
     sub_transitions::install();
     sub_fighter::install();
 }

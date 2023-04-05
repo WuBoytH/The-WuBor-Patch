@@ -5,6 +5,7 @@ mod attack_air;
 mod ladder_attack;
 mod special_n;
 mod rockbuster;
+mod special_s;
 mod special_lw;
 pub mod helper;
 
@@ -16,5 +17,6 @@ pub fn install() {
     ladder_attack::install();
     special_n::install();
     rockbuster::install();
+    special_s::install();
     special_lw::install();
 }

@@ -93,8 +93,13 @@ unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
+#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
-        rockman_special_n_pre, rockman_special_n_main
+        rockman_special_n_pre, rockman_special_n_main, rockman_special_n_end
     );
 }

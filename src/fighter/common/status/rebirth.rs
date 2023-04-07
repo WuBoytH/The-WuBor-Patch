@@ -21,6 +21,7 @@ unsafe fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
         false,
         false
     );
+    HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_OFF), 0);
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_rebirth_uniq_check(false.into());
     }
@@ -59,6 +60,7 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
                 false,
                 false
             );
+            // HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_OFF), 0);
         }
     }
     else {

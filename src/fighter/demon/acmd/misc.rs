@@ -22,14 +22,12 @@ unsafe fn demon_appealhir(fighter: &mut L2CAgentBase) {
     let hold_button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(fighter.module_accessor, hold_button) {
         if macros::is_excute(fighter) {
-            if macros::is_excute(fighter) {
-                MiscModule::set_appeal_loop(
-                    fighter.battle_object,
-                    false,
-                    hash40("appeal_hi_r_loop"),
-                    46
-                );
-            }
+            MiscModule::set_appeal_loop(
+                fighter.battle_object,
+                false,
+                hash40("appeal_hi_r_loop"),
+                46
+            );
         }
     }
 }

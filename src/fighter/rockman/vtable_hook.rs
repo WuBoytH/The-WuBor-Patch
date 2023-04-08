@@ -75,10 +75,10 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
                 EffectModule::req_follow(
                     module_accessor,
                     Hash40::new("rockman_chargeshot_max"),
-                    Hash40::new("handl"),
-                    &Vector3f{x: 1.0, y: 0.0, z: 0.0},
+                    Hash40::new("hip"),
                     &ZERO_VECTOR,
-                    1.0,
+                    &ZERO_VECTOR,
+                    0.75,
                     false,
                     0,
                     0,

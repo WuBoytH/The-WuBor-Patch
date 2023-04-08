@@ -5,6 +5,7 @@ mod attack_air;
 mod ladder_attack;
 mod special_n;
 mod rockbuster;
+mod chargeshot;
 mod special_s;
 mod special_lw;
 mod rebirth;
@@ -18,6 +19,7 @@ pub fn install() {
     ladder_attack::install();
     special_n::install();
     rockbuster::install();
+    chargeshot::install();
     special_s::install();
     special_lw::install();
     rebirth::install();

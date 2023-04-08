@@ -37,6 +37,29 @@ unsafe fn rockman_specialn_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "rockman_chargeshot", script = "game_regular", category = ACMD_GAME, low_priority )]
+unsafe fn rockman_chargeshot_regular(weapon: &mut L2CAgentBase) {
+    if macros::is_excute(weapon) {
+        let is_charge_max = 1.0 <= WorkModule::get_float(weapon.module_accessor, *WEAPON_ROCKMAN_CHARGESHOT_INSTANCE_WORK_ID_FLOAT_HOLD_RATE);
+        let damage;
+        let bkb;
+        let kbg;
+        if is_charge_max {
+            damage = 15.0;
+            bkb = 40;
+            kbg = 90;
+        }
+        else {
+            damage = 9.0;
+            bkb = 50;
+            kbg = 85;
+        }
+        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), damage, 361, kbg, 0, bkb, 2.6, 0.0, 0.0, 0.0, None, None, None, 0.3, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 0, 0.32);
+        AttackModule::enable_safe_pos(weapon.module_accessor);
+    }
+}
+
 #[acmd_script( agent = "rockman", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn rockman_speciallw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 5.0);
@@ -60,6 +83,7 @@ unsafe fn rockman_specialairlw(fighter: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         rockman_specialn, rockman_specialn_eff,
+        rockman_chargeshot_regular,
         rockman_speciallw,
         rockman_specialairlw
     );

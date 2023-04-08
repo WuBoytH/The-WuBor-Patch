@@ -55,8 +55,31 @@ unsafe fn shulk_attackairb_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "shulk", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        VisibilityModule::set_int64(fighter.module_accessor, hash40("body") as i64, hash40("body_monad_hand") as i64);
+    }
+    frame(fighter.lua_state_agent, 17.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(fighter.lua_state_agent, 18.0);
+    if macros::is_excute(fighter) {
+        macros::RUMBLE_HIT(fighter, Hash40::new("rbkind_pierces"), 0);
+    }
+    frame(fighter.lua_state_agent, 60.0);
+    if macros::is_excute(fighter) {
+        ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
-        shulk_attackairb, shulk_attackairb_eff
+        shulk_attackairb, shulk_attackairb_eff, shulk_attackairb_exp
     );
 }

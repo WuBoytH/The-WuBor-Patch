@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../style.css">
 
     </head>
     <body>
@@ -36,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -148,10 +149,10 @@
 <h2 id="air-dash"><a class="header" href="#air-dash">Air Dash</a></h2>
 <p>Directional Air Dodging is now Air Dashing. They have no intangibility, are cancellable into attacks on frame 15, and are fully actionable on frame 30, all with one exception. Vertical Air Dash distance is significantly less than horizontal Air Dash distance.</p>
 <p>Air Dashes are grouped into “tiers”, with each tier affecting Air Dash distance. A character's Air Dash Tier is listed alongside their changelist.</p>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: center">Bad</th><th style="text-align: center">Average</th><th style="text-align: center">Good</th><th style="text-align: center">Great</th></tr></thead><tbody>
 </tbody></table>
-</div></div>
+</div></datatable>
 <p>As the sole exception, Mewtwo specifically teleports for his Air Dash. This has the furthest base Air Dash distance, but it halts most of Mewtwo’s momentum once it’s finished, so the total distance is around Good tier. It cancels into attacks on frame 25, and into other actions on frame 36, however it is fully intangible while Mewtwo is invisible.</p>
 <h2 id="hyper-hop-and-super-jump"><a class="header" href="#hyper-hop-and-super-jump">Hyper Hop and Super Jump</a></h2>
 <p>Flicking the stick down and jumping from the ground will perform a special jump, which changes depending on if you Short Hop or Full Hop.</p>

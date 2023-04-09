@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../style.css">
 
     </head>
     <body>
@@ -36,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "../../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -147,29 +148,39 @@
                         <h1 id="samus"><a class="header" href="#samus">Samus</a></h1>
 <p><em>More changes are coming soon. For now, “all I got was this lousy Up Tilt”.</em></p>
 <h2 id="stats"><a class="header" href="#stats">Stats</a></h2>
-<p>Air Dash Tier: Bad</p>
-<p>Fall Soeed: 1.33 &gt; 1.4</p>
-<p>Fast Fall Speed: 2.128 &gt; 2.24</p>
-<p>Run Speed: 1.654 &gt; 1.777</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Bad</td></tr>
+<tr><td style="text-align: left">Fall Speed</td><td style="text-align: left">1.33</td><td style="text-align: left"><buff>1.4</buff></td></tr>
+<tr><td style="text-align: left">Fast Fall Speed</td><td style="text-align: left">2.128</td><td style="text-align: left"><buff>2.24</buff></td></tr>
+<tr><td style="text-align: left">Run Speed</td><td style="text-align: left">1.654</td><td style="text-align: left"><buff>1.777</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h2 id="moveset"><a class="header" href="#moveset">Moveset</a></h2>
 <h3 id="normals"><a class="header" href="#normals">Normals</a></h3>
-<h4 id="forward-tilt"><a class="header" href="#forward-tilt">Forward Tilt</a></h4>
-<ul>
-<li>[+] FAF reduced (40 &gt; 36)</li>
-</ul>
 <h4 id="up-tilt"><a class="header" href="#up-tilt">Up Tilt</a></h4>
-<ul>
-<li>[+] Hitbox activity increased (8 - 12 &gt; 8 - 13).</li>
-</ul>
-<h3 id="aerials"><a class="header" href="#aerials">Aerials</a></h3>
-<h4 id="neutral-air"><a class="header" href="#neutral-air">Neutral Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
-<h4 id="back-air"><a class="header" href="#back-air">Back Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
+<p><ovhl>Now performs a three-shot burst diagonally upwards.</ovhl></p>
+<p>First Two Hitboxes:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th></tr></thead><tbody>
+<tr><td style="text-align: left">F10 - 12<br>F16 - 18</td><td style="text-align: left">2</td></tr>
+</tbody></table>
+</div></datatable>
+<p>These two hitboxes keep the opponent in place to set up for the final hitbox.</p>
+<p>Final Hitbox:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">F22 - 24</td><td style="text-align: left">8</td><td style="text-align: left">55</td><td style="text-align: left">50</td><td style="text-align: left">92</td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="specials"><a class="header" href="#specials">Specials</a></h3>
+<h4 id="up-special---screw-attack"><a class="header" href="#up-special---screw-attack">Up Special - Screw Attack</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">4</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 
                     </main>
 

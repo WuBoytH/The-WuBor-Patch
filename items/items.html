@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../style.css">
 
     </head>
     <body>
@@ -36,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -146,11 +147,9 @@
                     <main>
                         <h1 id="items"><a class="header" href="#items">Items</a></h1>
 <h2 id="barrels"><a class="header" href="#barrels">Barrels</a></h2>
-<ul>
-<li>[-] Random Explosion damage reduced (22 &gt; 6).</li>
-<li>[-] Shield Damage reduced (5 &gt; ??).</li>
-<li>[-] Increased Barrel's hurtbox size (8u &gt; 10u).</li>
-</ul>
+<p><nerf>Random Explosion damage reduced (22 &gt; 6).<br>
+Shield Damage reduced (5 &gt; ??).<br>
+Increased Barrel's hurtbox size (8u &gt; 10u).</nerf></p>
 
                     </main>
 

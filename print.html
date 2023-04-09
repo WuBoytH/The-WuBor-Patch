@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="style.css">
 
     </head>
     <body>
@@ -37,7 +38,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -225,7 +226,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>Intangibility gets cleared if you are no longer in the falling or jumping states.</li>
 </ul>
 <p>In addition, the Ledge Intangibility formula has been changed:</p>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Ledge Grab Invuln (Inactionable)</td><td style="text-align: left">19</td><td style="text-align: left">19 (Unchanged)</td></tr>
 <tr><td style="text-align: left">Invuln from Airtime</td><td style="text-align: left">Up to 60 Frames</td><td style="text-align: left">Up to 30 Frames</td></tr>
@@ -233,7 +234,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <tr><td style="text-align: left">Min. Potential Intangibility</td><td style="text-align: left">4 Frames</td><td style="text-align: left">11 Frames</td></tr>
 <tr><td style="text-align: left">Max. Potential Intangibility</td><td style="text-align: left">123 Frames</td><td style="text-align: left">79 Frames</td></tr>
 </tbody></table>
-</div></div>
+</div></datatable>
 <p>This means an immediate ledge grab, from something like a ledge trump for example, at 0% will give you 30 invulnerable frames to work with. At maximum, from being off stage for 5 seconds and being at 0%, you will have 60 invulnerable frames to work with. While this seems like a lot, this scenario is very unlikely.</p>
 <p>On the other hand, being at around 120% and immediately grabbing the ledge will give the minimum 11 frames of invulnerability, which should be enough to go for an immediate edge guard, but not much else.</p>
 <h2 id="jab"><a class="header" href="#jab">Jab</a></h2>
@@ -259,10 +260,10 @@ For example:</p>
 <h2 id="air-dash"><a class="header" href="#air-dash">Air Dash</a></h2>
 <p>Directional Air Dodging is now Air Dashing. They have no intangibility, are cancellable into attacks on frame 15, and are fully actionable on frame 30, all with one exception. Vertical Air Dash distance is significantly less than horizontal Air Dash distance.</p>
 <p>Air Dashes are grouped into “tiers”, with each tier affecting Air Dash distance. A character's Air Dash Tier is listed alongside their changelist.</p>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: center">Bad</th><th style="text-align: center">Average</th><th style="text-align: center">Good</th><th style="text-align: center">Great</th></tr></thead><tbody>
 </tbody></table>
-</div></div>
+</div></datatable>
 <p>As the sole exception, Mewtwo specifically teleports for his Air Dash. This has the furthest base Air Dash distance, but it halts most of Mewtwo’s momentum once it’s finished, so the total distance is around Good tier. It cancels into attacks on frame 25, and into other actions on frame 36, however it is fully intangible while Mewtwo is invisible.</p>
 <h2 id="hyper-hop-and-super-jump"><a class="header" href="#hyper-hop-and-super-jump">Hyper Hop and Super Jump</a></h2>
 <p>Flicking the stick down and jumping from the ground will perform a special jump, which changes depending on if you Short Hop or Full Hop.</p>
@@ -310,249 +311,273 @@ Both Hyper Hops and Super Jumps cut your horizontal control in half.</li>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="character-changes"><a class="header" href="#character-changes">Character Changes</a></h1>
 <h2 id="legend"><a class="header" href="#legend">Legend</a></h2>
-<p>[+] - Buffs</p>
-<p>[-] - Nerfs</p>
-<p>[*] - Rework or Overhaul</p>
-<p>[!] - A Funny Easter Egg</p>
-<p>Echo Fighters are located next to their base fighter.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Color</th><th style="text-align: left">Meaning</th></tr></thead><tbody>
+<tr><td style="text-align: left"><buff>Green</buff></td><td style="text-align: left">Buff</td></tr>
+<tr><td style="text-align: left"><nerf>Red</nerf></td><td style="text-align: left">Nerf</td></tr>
+<tr><td style="text-align: left"><ovhl>Light Blue</ovhl></td><td style="text-align: left">Rework/Overhaul</td></tr>
+<tr><td style="text-align: left"><funny>Yellow</funny></td><td style="text-align: left">A Funny</td></tr>
+</tbody></table>
+</div></datatable>
+<p>Echo Fighters are located next to their base fighter in the list.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mario"><a class="header" href="#mario">Mario</a></h1>
 <p><em>It’s still criminal that they haven’t updated Mario since Brawl. It’s time for us to do it. Mario now can use several of his iconic acrobatics to traverse the battlefield as an expert platformer.</em></p>
 <h2 id="stats"><a class="header" href="#stats">Stats</a></h2>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Average</td></tr>
 </tbody></table>
-</div></div>
+</div></datatable>
 <h2 id="moveset"><a class="header" href="#moveset">Moveset</a></h2>
 <h3 id="smash-attacks"><a class="header" href="#smash-attacks">Smash Attacks</a></h3>
-<h4 id="forward-smash"><a class="header" href="#forward-smash">Forward Smash:</a></h4>
-<ul>
-<li>[*] Now performs a sideways hammer swing that can be angled.</li>
-</ul>
+<h4 id="forward-smash"><a class="header" href="#forward-smash">Forward Smash</a></h4>
+<p><ovhl>Now performs a sideways hammer swing that can be angled.</ovhl></p>
 <h3 id="aerials-1"><a class="header" href="#aerials-1">Aerials</a></h3>
-<h4 id="forward-air"><a class="header" href="#forward-air">Forward Air:</a></h4>
-<ul>
-<li>[+] Startup reduced (16 &gt; 14).</li>
-<li>[-] No longer spikes.</li>
-<li>[*] Holding Attack has Mario delay the attack for 16 frames.</li>
-<li>[*] If delayed, the entirety of Forward Air now spikes.</li>
-</ul>
+<h4 id="forward-air"><a class="header" href="#forward-air">Forward Air</a></h4>
+<p><ovhl>Now uses his hammer to perform an overhead swing downwards.</ovhl><br>
+<ovhl>Holding Attack has Mario delay the attack for 16 frames and turns it into a spike.</ovhl><br></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Uncharged</td><td style="text-align: left"><strong>14</strong></td><td style="text-align: left">12</td><td style="text-align: left"><strong>361</strong></td><td style="text-align: left">30</td><td style="text-align: left">80</td></tr>
+<tr><td style="text-align: left">Charged</td><td style="text-align: left"><strong>30</strong></td><td style="text-align: left">12</td><td style="text-align: left"><strong>290</strong></td><td style="text-align: left">30</td><td style="text-align: left">80</td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="up-air"><a class="header" href="#up-air">Up Air</a></h4>
-<ul>
-<li>[-] Startup increased (4 &gt; 5).</li>
-<li>[-] Angle Adjusted (75 &gt; 72).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th><th style="text-align: left">Angle</th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">4</td><td style="text-align: left">75</td><td style="text-align: left">31</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>5</nerf></td><td style="text-align: left"><nerf>72</nerf></td><td style="text-align: left"><nerf>32</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="down-air"><a class="header" href="#down-air">Down Air</a></h4>
-<ul>
-<li>[*] Now performs the spin jump from Super Mario World.</li>
-<li>[*] Mario stomps on the opponent up to three times.</li>
-<li>[*] Stomping an opponent causes Mario to bounce.</li>
-<li>[*] The final launching hit sends outwards.</li>
-<li>[*] FAF 63, soon after the final launching hit connects.</li>
-</ul>
+<p><ovhl>Now performs the spin jump from Super Mario World.</ovhl><br>
+<ovhl>Mario stomps on the opponent up to three times.</ovhl><br>
+<ovhl>Stomping an opponent causes Mario to bounce.</ovhl><br></p>
+<p>Early Hitbox:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Rehit Rate</th></tr></thead><tbody>
+<tr><td style="text-align: left">F6 - 31</td><td style="text-align: left">4</td><td style="text-align: left">15 Frames</td></tr>
+</tbody></table>
+</div></datatable>
+<p>If the opponent is standing on the ground, it will keep them in place.<br>
+If the opponent is in the air, it will push them slightly outwards.</p>
+<p>Ending Hitbox:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">F32 - 52</td><td style="text-align: left">4</td><td style="text-align: left">40</td><td style="text-align: left">60</td><td style="text-align: left">90</td></tr>
+</tbody></table>
+</div></datatable>
+<p>The opponent is launched in the direction Mario was facing when starting the attack.</p>
+<p>FAF: 60</p>
 <h3 id="specials"><a class="header" href="#specials">Specials</a></h3>
 <h4 id="side-special---galaxy-spin"><a class="header" href="#side-special---galaxy-spin">Side Special - Galaxy Spin</a></h4>
-<ul>
-<li>[*] Now performs the spin from Super Mario Galaxy.</li>
-<li>[*] Functions similarly to Cape but with a launching hitbox instead of the turnaround effect.</li>
-<li>[*] There is a strong hitbox in front of Mario at the beginning of the move. The rest of the attack as a weaker hitbox.</li>
-<li>[*] Strong Startup Hitbox:
-<ul>
-<li>Frame 10 to 12</li>
-<li>10 Damage</li>
-<li>361 Angle</li>
-<li>65 BKB</li>
-<li>65 KBG</li>
-</ul>
-</li>
-<li>[*] Weak Lingering Hitbox:
-<ul>
-<li>Frame 10 to 27</li>
-<li>5 Damage</li>
-<li>361 Angle</li>
-<li>65 BKB</li>
-<li>50 KBG</li>
-</ul>
-</li>
-<li>[-] Still reflects projectiles, but with a smaller window (9 - 20 &gt; 10 - 14).</li>
-<li>[-] Ledge Grab frame increased (15 &gt; 28).</li>
-<li>[+] FAF increased (36 &gt; 35).</li>
-</ul>
+<p><ovhl>Now performs the spin from Super Mario Galaxy.</ovhl><br>
+<ovhl>Functions similarly to Cape but with a launching hitbox instead of the turnaround effect.</ovhl><br>
+<ovhl>There is a strong hitbox in front of Mario at the beginning of the move. The rest of the attack as a weaker hitbox.</ovhl><br>
+Strong Startup Hitbox:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">F10 - 12</td><td style="text-align: left">10</td><td style="text-align: left">361</td><td style="text-align: left">65</td><td style="text-align: left">65</td></tr>
+</tbody></table>
+</div></datatable>
+<p>Weak Lingering Hitbox:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">F10 - 27</td><td style="text-align: left">5</td><td style="text-align: left">361</td><td style="text-align: left">65</td><td style="text-align: left">50</td></tr>
+</tbody></table>
+</div></datatable>
+<p>Still reflects projectiles, but with a smaller window (9 - 20 &gt; 10 - 14).<br>
+Ledge Grab frame: 28.<br>
+FAF: 35</p>
 <h4 id="up-special---super-jump-punch"><a class="header" href="#up-special---super-jump-punch">Up Special - Super Jump Punch</a></h4>
-<ul>
-<li>[-] Startup increased (3 &gt; 6).</li>
-<li>[-] Intangibility frames adjusted (3 - 7 &gt; 5 &gt; 9).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th><th style="text-align: left">Intangibility</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">3</td><td style="text-align: left">F3 - 7</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>6</nerf></td><td style="text-align: left"><nerf>F6 - 9</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="down-special-ground---long-jump"><a class="header" href="#down-special-ground---long-jump">Down Special (Ground) - Long Jump</a></h4>
-<ul>
-<li>[*] Now performs the Long Jump from Super Mario 64.</li>
-<li>[*] The distance traveled by a Long Jump depends on the direction the stick is held during Long Jump's startup.</li>
-<li>[*] Mario can cancel Long Jump into other actions shortly after leaving the ground.</li>
-<li>[!] Mario can perform some (in)famous backwards movement through interesting momentum manipulation.</li>
-</ul>
+<ovhl>
+Now performs the Long Jump from Super Mario 64.<br>
+The distance traveled by a Long Jump depends on the direction the stick is held during Long Jump's startup.<br>
+Mario can cancel Long Jump into other actions shortly after leaving the ground.</ovhl><br>
+<funny>Mario can perform some (in)famous backwards movement through interesting momentum manipulation.</funny>
 <h4 id="down-special-air---ground-pound"><a class="header" href="#down-special-air---ground-pound">Down Special (Air) - Ground Pound</a></h4>
-<ul>
-<li>[*] Now performs the Ground Pound from New Super Mario Bros.</li>
-<li>[*] Mario stalls in the air before dropping down.</li>
-<li>[*] Can only grab ledges in front of Mario.</li>
-<li>[*] Can be canceled if the hitbox hasn't connected with anything by tilting the stick upwards.</li>
-<li>[*] Falling Hitbox:
-<ul>
-<li>Frame 19 until Landing.</li>
-<li>16 Damage</li>
-<li>30 Angle</li>
-<li>50 BKB</li>
-<li>50 KBG</li>
-</ul>
-</li>
-<li>[*] Landing Hitbox:
-<ul>
-<li>Active for 1 frame.</li>
-<li>6 Damage</li>
-<li>30 Angle</li>
-<li>60 BKB</li>
-<li>50 KBG</li>
-<li>30 FAF</li>
-</ul>
-</li>
-</ul>
+<p><ovhl>Now performs the Ground Pound from New Super Mario Bros.<br>
+Mario stalls in the air before dropping down.<br>
+Can <strong>only</strong> grab ledges in front of Mario.<br>
+Can be canceled after Mario starts falling by tilting the stick upwards <strong>only if</strong> the hitbox hasn't connected with anything.</ovhl><br>
+Falling Hitbox:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">F19 - Landing</td><td style="text-align: left">16</td><td style="text-align: left">30</td><td style="text-align: left">50</td><td style="text-align: left">50</td></tr>
+</tbody></table>
+</div>
+<p>Landing Hitbox:</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Landing Frame Only</td><td style="text-align: left">6</td><td style="text-align: left">30</td><td style="text-align: left">60</td><td style="text-align: left">50</td></tr>
+</tbody></table>
+</div>
+<p>FAF: Landing + 30</p>
 <h3 id="grabsthrows"><a class="header" href="#grabsthrows">Grabs/Throws</a></h3>
-<h4 id="down-throw"><a class="header" href="#down-throw">Down Throw:</a></h4>
-<ul>
-<li>[-] KBG increased (90 &gt; 110).</li>
-</ul>
+<h4 id="down-throw"><a class="header" href="#down-throw">Down Throw</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">90</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>110</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="donkey-kong"><a class="header" href="#donkey-kong">Donkey Kong</a></h1>
-<p><em>We were buffing the first member of the DK crew anyway, so we decided to finally give him the good old DK Barrel. And it’s… pretty powerful. Heck, even giving DK a <em>nerfed</em> form of the barrel item was a massive buff. But we nerfed his weight and didn’t compensate, and his recovery and disadvantage are still garbage, so… Just learn the counterplay.</em></p>
+<p><em>We were buffing the first member of the DK crew anyway, so we decided to finally give him the good old DK Barrel. And it’s… pretty powerful. Heck, even giving DK a</em> nerfed <em>form of the barrel item was a massive buff. But we nerfed his weight and didn’t compensate, and his recovery and disadvantage are still garbage, so… Just learn the counterplay.</em></p>
 <h2 id="stats-1"><a class="header" href="#stats-1">Stats</a></h2>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Good</td></tr>
-<tr><td style="text-align: left">Weight</td><td style="text-align: left">127</td><td style="text-align: left">120</td></tr>
+<tr><td style="text-align: left">Weight</td><td style="text-align: left">127</td><td style="text-align: left"><nerf>120</nerf></td></tr>
 </tbody></table>
-</div></div>
+</div></datatable>
 <h2 id="moveset-1"><a class="header" href="#moveset-1">Moveset</a></h2>
 <h3 id="normals"><a class="header" href="#normals">Normals</a></h3>
 <h4 id="jab-2"><a class="header" href="#jab-2">Jab 2</a></h4>
-<ul>
-<li>[+] FAF reduced (32 &gt; 25).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">31</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>25</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="dash-attack"><a class="header" href="#dash-attack">Dash Attack</a></h4>
-<ul>
-<li>[*] Now rolls off of ledges.</li>
-<li>[*] Donkey Kong falls at half the usual rate until Dash Attack finishes.</li>
-</ul>
+<p><ovhl>Now rolls off of ledges.<br>
+Donkey Kong falls at half the usual rate until Dash Attack finishes.</ovhl></p>
 <h4 id="forward-tilt"><a class="header" href="#forward-tilt">Forward Tilt</a></h4>
-<ul>
-<li>[+] FAF reduced (34 &gt; 31).</li>
-<li>[+] Damage increased by 2.
-<ul>
-<li>Non-Tilted: 8 &gt; 10.</li>
-<li>Tilted: 9 &gt; 11.</li>
-</ul>
-</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage<br>(Side/Hi/Lw)</th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">8/9/9</td><td style="text-align: left">34</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>10/11/11</buff></td><td style="text-align: left"><buff>31</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="up-tilt"><a class="header" href="#up-tilt">Up Tilt</a></h4>
-<ul>
-<li>[+] FAF reduced (39 &gt; 35).</li>
-<li>[+] Damage increased by 1.
-<ul>
-<li>Shoulder Hitbox: 8 &gt; 9.</li>
-<li>Elbow Hitbox: 9 &gt; 10.</li>
-<li>Hand Hitbox: 10 &gt; 11.</li>
-</ul>
-</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage<br>(Shoulder/Elbow/Hand)</th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">8/9/10</td><td style="text-align: left">39</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>9/10/11</buff></td><td style="text-align: left"><buff>35</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="down-tilt"><a class="header" href="#down-tilt">Down Tilt</a></h4>
-<ul>
-<li>[*] Angle adjusted (70 &gt; 55).</li>
-<li>[*] BKB increased (10 &gt; 30).</li>
-<li>[*] KBG reduced (120 &gt; 100).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">70</td><td style="text-align: left">10</td><td style="text-align: left">120</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><ovhl>55</ovhl></td><td style="text-align: left"><ovhl>30</ovhl></td><td style="text-align: left"><ovhl>100</ovhl></td></tr>
+</tbody></table>
+</div></datatable>
 <h3 id="aerials-2"><a class="header" href="#aerials-2">Aerials</a></h3>
 <h4 id="neutral-air"><a class="header" href="#neutral-air">Neutral Air</a></h4>
-<ul>
-<li>[+] FAF reduced (39 &gt; 35).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">39</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>35</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="forward-air-1"><a class="header" href="#forward-air-1">Forward Air</a></h4>
-<ul>
-<li>[+] Landing Lag reduced (17 &gt; 15).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">17</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>15</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="back-air"><a class="header" href="#back-air">Back Air</a></h4>
-<ul>
-<li>[-] Damage reduced.
-<ul>
-<li>Early Hit: 13 &gt; 11.</li>
-<li>Late Hit: 11 &gt; 7.</li>
-</ul>
-</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage (Early/Late)</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">13/11</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>11/7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <h3 id="specials-1"><a class="header" href="#specials-1">Specials</a></h3>
 <h4 id="side-special---barrel-pull"><a class="header" href="#side-special---barrel-pull">Side Special - Barrel Pull</a></h4>
-<ul>
-<li>[*] Donkey Kong now pulls out a barrel.
-<ul>
-<li>Ground Pull: Frame 20.</li>
-<li>Air Pull: Frame 31.</li>
-</ul>
-</li>
-<li>[*] Only 1 barrel can be pulled by Donkey Kong at a time. If he tries to pull another, he will perform a Down Taunt instead.</li>
-<li>See <a href="characters/64/../../items/items.html#barrels">Barrels</a> for more information.</li>
-</ul>
+<p><ovhl>Donkey Kong now pulls out a barrel.</ovhl></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Barrel Pull Frame</th></tr></thead><tbody>
+<tr><td style="text-align: left">Ground</td><td style="text-align: left">20</td></tr>
+<tr><td style="text-align: left">Air</td><td style="text-align: left">31</td></tr>
+</tbody></table>
+</div></datatable>
+<p><ovhl>Only 1 barrel can be pulled by Donkey Kong at a time. If he tries to pull another, he will perform a Down Taunt instead.</ovhl><br>
+<ovhl>See <a href="characters/64/../../items/items.html#barrels">Barrels</a> for more information.</ovhl></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="link"><a class="header" href="#link">Link</a></h1>
 <p><em>The Master Sword deserves to be a safer weapon than Link’s legs. Just saying.</em></p>
 <h2 id="stats-2"><a class="header" href="#stats-2">Stats</a></h2>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Average</td></tr>
-<tr><td style="text-align: left">Air Speed</td><td style="text-align: left">0.924</td><td style="text-align: left">0.966</td></tr>
-<tr><td style="text-align: left">Gravity</td><td style="text-align: left">0.096</td><td style="text-align: left">0.108</td></tr>
+<tr><td style="text-align: left">Air Speed</td><td style="text-align: left">0.924</td><td style="text-align: left"><buff>0.966</buff></td></tr>
+<tr><td style="text-align: left">Gravity</td><td style="text-align: left">0.096</td><td style="text-align: left"><buff>0.108</buff></td></tr>
 </tbody></table>
-</div></div>
+</div></datatable>
 <h2 id="moveset-2"><a class="header" href="#moveset-2">Moveset</a></h2>
 <h3 id="normals-1"><a class="header" href="#normals-1">Normals</a></h3>
 <h4 id="forward-tilt-1"><a class="header" href="#forward-tilt-1">Forward Tilt</a></h4>
-<ul>
-<li>[+] FAF reduced (40 &gt; 36)</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">40</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>36</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="up-tilt-1"><a class="header" href="#up-tilt-1">Up Tilt</a></h4>
-<ul>
-<li>[+] Hitbox activity increased (8 - 12 &gt; 8 - 13).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Hitbox Duration<br>(Start - End)</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">8 - 12</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>8 - 13</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h3 id="aerials-3"><a class="header" href="#aerials-3">Aerials</a></h3>
 <h4 id="neutral-air-1"><a class="header" href="#neutral-air-1">Neutral Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">6</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="back-air-1"><a class="header" href="#back-air-1">Back Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">6</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="samus"><a class="header" href="#samus">Samus</a></h1>
 <p><em>More changes are coming soon. For now, “all I got was this lousy Up Tilt”.</em></p>
 <h2 id="stats-3"><a class="header" href="#stats-3">Stats</a></h2>
-<p>Air Dash Tier: Bad</p>
-<p>Fall Soeed: 1.33 &gt; 1.4</p>
-<p>Fast Fall Speed: 2.128 &gt; 2.24</p>
-<p>Run Speed: 1.654 &gt; 1.777</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Bad</td></tr>
+<tr><td style="text-align: left">Fall Speed</td><td style="text-align: left">1.33</td><td style="text-align: left"><buff>1.4</buff></td></tr>
+<tr><td style="text-align: left">Fast Fall Speed</td><td style="text-align: left">2.128</td><td style="text-align: left"><buff>2.24</buff></td></tr>
+<tr><td style="text-align: left">Run Speed</td><td style="text-align: left">1.654</td><td style="text-align: left"><buff>1.777</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h2 id="moveset-3"><a class="header" href="#moveset-3">Moveset</a></h2>
 <h3 id="normals-2"><a class="header" href="#normals-2">Normals</a></h3>
-<h4 id="forward-tilt-2"><a class="header" href="#forward-tilt-2">Forward Tilt</a></h4>
-<ul>
-<li>[+] FAF reduced (40 &gt; 36)</li>
-</ul>
 <h4 id="up-tilt-2"><a class="header" href="#up-tilt-2">Up Tilt</a></h4>
-<ul>
-<li>[+] Hitbox activity increased (8 - 12 &gt; 8 - 13).</li>
-</ul>
-<h3 id="aerials-4"><a class="header" href="#aerials-4">Aerials</a></h3>
-<h4 id="neutral-air-2"><a class="header" href="#neutral-air-2">Neutral Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
-<h4 id="back-air-2"><a class="header" href="#back-air-2">Back Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
+<p><ovhl>Now performs a three-shot burst diagonally upwards.</ovhl></p>
+<p>First Two Hitboxes:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th></tr></thead><tbody>
+<tr><td style="text-align: left">F10 - 12<br>F16 - 18</td><td style="text-align: left">2</td></tr>
+</tbody></table>
+</div></datatable>
+<p>These two hitboxes keep the opponent in place to set up for the final hitbox.</p>
+<p>Final Hitbox:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">F22 - 24</td><td style="text-align: left">8</td><td style="text-align: left">55</td><td style="text-align: left">50</td><td style="text-align: left">92</td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="specials-2"><a class="header" href="#specials-2">Specials</a></h3>
+<h4 id="up-special---screw-attack"><a class="header" href="#up-special---screw-attack">Up Special - Screw Attack</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">4</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dark-samus"><a class="header" href="#dark-samus">Dark Samus</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="yoshi"><a class="header" href="#yoshi">Yoshi</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="kirby"><a class="header" href="#kirby">Kirby</a></h1>
@@ -639,11 +664,9 @@ Both Hyper Hops and Super Jumps cut your horizontal control in half.</li>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="yu-narukami"><a class="header" href="#yu-narukami">Yu Narukami</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="items"><a class="header" href="#items">Items</a></h1>
 <h2 id="barrels"><a class="header" href="#barrels">Barrels</a></h2>
-<ul>
-<li>[-] Random Explosion damage reduced (22 &gt; 6).</li>
-<li>[-] Shield Damage reduced (5 &gt; ??).</li>
-<li>[-] Increased Barrel's hurtbox size (8u &gt; 10u).</li>
-</ul>
+<p><nerf>Random Explosion damage reduced (22 &gt; 6).<br>
+Shield Damage reduced (5 &gt; ??).<br>
+Increased Barrel's hurtbox size (8u &gt; 10u).</nerf></p>
 
                     </main>
 

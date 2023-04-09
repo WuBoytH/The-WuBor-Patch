@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../style.css">
 
     </head>
     <body>
@@ -36,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "../../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -147,32 +148,44 @@
                         <h1 id="link"><a class="header" href="#link">Link</a></h1>
 <p><em>The Master Sword deserves to be a safer weapon than Link’s legs. Just saying.</em></p>
 <h2 id="stats"><a class="header" href="#stats">Stats</a></h2>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Average</td></tr>
-<tr><td style="text-align: left">Air Speed</td><td style="text-align: left">0.924</td><td style="text-align: left">0.966</td></tr>
-<tr><td style="text-align: left">Gravity</td><td style="text-align: left">0.096</td><td style="text-align: left">0.108</td></tr>
+<tr><td style="text-align: left">Air Speed</td><td style="text-align: left">0.924</td><td style="text-align: left"><buff>0.966</buff></td></tr>
+<tr><td style="text-align: left">Gravity</td><td style="text-align: left">0.096</td><td style="text-align: left"><buff>0.108</buff></td></tr>
 </tbody></table>
-</div></div>
+</div></datatable>
 <h2 id="moveset"><a class="header" href="#moveset">Moveset</a></h2>
 <h3 id="normals"><a class="header" href="#normals">Normals</a></h3>
 <h4 id="forward-tilt"><a class="header" href="#forward-tilt">Forward Tilt</a></h4>
-<ul>
-<li>[+] FAF reduced (40 &gt; 36)</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">FAF</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">40</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>36</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="up-tilt"><a class="header" href="#up-tilt">Up Tilt</a></h4>
-<ul>
-<li>[+] Hitbox activity increased (8 - 12 &gt; 8 - 13).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Hitbox Duration<br>(Start - End)</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">8 - 12</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>8 - 13</buff></td></tr>
+</tbody></table>
+</div></datatable>
 <h3 id="aerials"><a class="header" href="#aerials">Aerials</a></h3>
 <h4 id="neutral-air"><a class="header" href="#neutral-air">Neutral Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">6</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 <h4 id="back-air"><a class="header" href="#back-air">Back Air</a></h4>
-<ul>
-<li>[-] Landing Lag increased (6 &gt; 7).</li>
-</ul>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">6</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
 
                     </main>
 

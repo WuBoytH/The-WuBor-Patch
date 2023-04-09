@@ -29,6 +29,7 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../style.css">
 
     </head>
     <body>
@@ -36,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -220,7 +221,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>Intangibility gets cleared if you are no longer in the falling or jumping states.</li>
 </ul>
 <p>In addition, the Ledge Intangibility formula has been changed:</p>
-<div style="display: flex; justify-content: left;">
+<datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Ledge Grab Invuln (Inactionable)</td><td style="text-align: left">19</td><td style="text-align: left">19 (Unchanged)</td></tr>
 <tr><td style="text-align: left">Invuln from Airtime</td><td style="text-align: left">Up to 60 Frames</td><td style="text-align: left">Up to 30 Frames</td></tr>
@@ -228,7 +229,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <tr><td style="text-align: left">Min. Potential Intangibility</td><td style="text-align: left">4 Frames</td><td style="text-align: left">11 Frames</td></tr>
 <tr><td style="text-align: left">Max. Potential Intangibility</td><td style="text-align: left">123 Frames</td><td style="text-align: left">79 Frames</td></tr>
 </tbody></table>
-</div></div>
+</div></datatable>
 <p>This means an immediate ledge grab, from something like a ledge trump for example, at 0% will give you 30 invulnerable frames to work with. At maximum, from being off stage for 5 seconds and being at 0%, you will have 60 invulnerable frames to work with. While this seems like a lot, this scenario is very unlikely.</p>
 <p>On the other hand, being at around 120% and immediately grabbing the ledge will give the minimum 11 frames of invulnerability, which should be enough to go for an immediate edge guard, but not much else.</p>
 <h2 id="jab"><a class="header" href="#jab">Jab</a></h2>

@@ -18,4 +18,4 @@ Top Blast Zone reduced by 20 units.
 
 ## Yggdrasil's Altar
 
-Only the tri-play layout will appear and it appears shortly after the match starts, before the main platform takes off.
+Only the tri-plat layout will appear and it appears shortly after the match starts, before the main platform takes off.

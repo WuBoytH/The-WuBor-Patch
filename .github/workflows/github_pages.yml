@@ -22,6 +22,6 @@ jobs:
       - run: mdbook build ./wubor-changelog/ && mdbook test ./wubor-changelog
 
       - name: Deploy
-        ses: JamesIves/github-pages-deploy-action@4.1.7
+        uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           folder: ./wubor-changelog/book

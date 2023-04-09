@@ -10,8 +10,7 @@
   - [Stages](./stages.md)
   - [Intended Stage List](./stages/stage_list.md)
 
-- [Character Changes]()
-  - [Legend](./characters/legend.md)
+- [Character Changes](./characters/legend.md)
   - [Smash 64 Characters]()
     - [Mario](./characters/64/mario.md)
     - [Donkey Kong](./characters/64/donkey.md)

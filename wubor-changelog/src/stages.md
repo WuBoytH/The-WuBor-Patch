@@ -20,4 +20,4 @@ Top Blast Zone reduced by 20 units.
 
 Only the tri-plat layout will appear and it appears shortly after the match starts, before the main platform takes off.
 
-In addition, the tri-play layout is now inverted, with the side platforms higher than the center platform.
+In addition, the tri-plat layout is now inverted, with the side platforms higher than the center platform.

@@ -45,7 +45,7 @@ No longer forces a short hop. Release the jump button to perform a Short Hop, or
 * All Spot Dodges stale at the same rate.
 * On the last frame of invulnerability, Spot Dodge can be canceled into a fully-staled roll with frame 1 intangibility.
 
-## Direction Air Dodge
+## Directional Air Dodge
 
 [See New Mechanics/Air Dash](./mechanics.md#air-dash)
 

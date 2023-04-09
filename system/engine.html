@@ -158,6 +158,8 @@
 <h2 id="jump-squat"><a class="header" href="#jump-squat">Jump Squat</a></h2>
 <p>All jump squats have been increased from 3 to 4 frames (except for Kazuya, who is unchanged).
 Up Smash is no longer prioritized when attempting to perform a buffered Up Air.</p>
+<h2 id="jumping"><a class="header" href="#jumping">Jumping</a></h2>
+<p>Jumping no longer has accelerated rising momentum, matching the momentum from previous games.</p>
 <h2 id="short-hop-aerial-macro"><a class="header" href="#short-hop-aerial-macro">Short Hop Aerial Macro</a></h2>
 <p>No longer forces a short hop. Release the jump button to perform a Short Hop, or hold it to Full Hop.</p>
 <h2 id="shield"><a class="header" href="#shield">Shield</a></h2>
@@ -167,7 +169,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>Parrying has been moved to Shield Startup instead of Shield Release.</li>
 <li>The Parry window was reduced from 5 to 3 frames.
 <ul>
-<li>These two changes should make it possible, but difficult to parry multi-hit moves.</li>
+<li>These two changes should make it possible, but difficult to parry multi-hit moves, as many slower multi-hits will require manual represses of Shield.</li>
 </ul>
 </li>
 <li>Shield Pushback was also increased by roughly 1.3x.
@@ -191,7 +193,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>All Spot Dodges stale at the same rate.</li>
 <li>On the last frame of invulnerability, Spot Dodge can be canceled into a fully-staled roll with frame 1 intangibility.</li>
 </ul>
-<h2 id="direction-air-dodge"><a class="header" href="#direction-air-dodge">Direction Air Dodge</a></h2>
+<h2 id="directional-air-dodge"><a class="header" href="#directional-air-dodge">Directional Air Dodge</a></h2>
 <p><a href="./mechanics.html#air-dash">See New Mechanics/Air Dash</a></p>
 <h2 id="platform-dropping-in-shield"><a class="header" href="#platform-dropping-in-shield">Platform Dropping in Shield</a></h2>
 <p>It is not possible to Shield Drop on a Platform either by tilting down the Control Stick, like in previous Smash titles, or by pressing Taunt.</p>
@@ -204,16 +206,18 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>Special Fall/Freefall Landing</li>
 <li>Taunt</li>
 </ul>
+<h2 id="geting-launched"><a class="header" href="#geting-launched">Geting Launched</a></h2>
+<ul>
+<li>The spinning knockback animation no longer is randomly applied, instead being applied at a consistent <code>character weight + 33</code> damage threshold, meant to signify average kill percent.</li>
+<li>Balloon Knockback has been reworked so that it applies based on Launch Speed instead of total Hitstun frames.</li>
+<li>Directional Influence has been increased (9.74 degrees/0.17 radians &gt; 12.0321 degrees/0.21 radians).</li>
+<li>Launch Speed Influence has been removed.</li>
+</ul>
 <h2 id="teching"><a class="header" href="#teching">Teching</a></h2>
 <ul>
 <li>The tap tech window has been increased from 12 to 20.</li>
 <li>The tap window now applies to all states where it is possible tech.</li>
 <li>Untechables no longer exist except for on moves where it is purposefully impossible to tech.</li>
-</ul>
-<h2 id="geting-launched"><a class="header" href="#geting-launched">Geting Launched</a></h2>
-<ul>
-<li>The spinning knockback animation no longer is randomly applied, instead being applied at a consistent <code>character weight + 33</code> damage threshold, meant to signify average kill percent.</li>
-<li>Balloon Knockback has been reworked so that it applies based on Launch Speed instead of total Hitstun frames.</li>
 </ul>
 <h2 id="ledges"><a class="header" href="#ledges">Ledges</a></h2>
 <ul>
@@ -235,8 +239,7 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <h2 id="jab"><a class="header" href="#jab">Jab</a></h2>
 <p>Only Neutral Attack inputs will be valid when performing Jab combos. Pressing Tilts, Smash attacks, etc. will not count as a Jab input.</p>
 <h2 id="aerials"><a class="header" href="#aerials">Aerials</a></h2>
-<p>Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did not connect with anything. This does not apply to moves that only generate projectiles.
-For example:</p>
+<p>Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did not connect with anything. This does not apply to moves that only generate projectiles. For example:</p>
 <ul>
 <li>Mario presses Neutral Air.
 <ul>
@@ -251,6 +254,9 @@ For example:</p>
 </ul>
 </li>
 </ul>
+<h2 id="respawning"><a class="header" href="#respawning">Respawning</a></h2>
+<p>Instead of already being in your idle animation, characters now start laying down, only to get up before the platform stops moving. (Did you know this was a thing in Smash 64?)</p>
+<p>In addition, it is now possible to Taunt while on the respawn platform.</p>
 
                     </main>
 

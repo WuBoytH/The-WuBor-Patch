@@ -80,7 +80,7 @@ It is now possible to slip off of ledges during the following states:
 
 In addition, the Ledge Intangibility formula has been changed:
 
-<div style="display: flex; justify-content: left;">
+<datatable>
 
 |                                  | Vanilla         | WuBor           |
 |:-------------------------------- |:--------------- |:--------------- |
@@ -90,7 +90,7 @@ In addition, the Ledge Intangibility formula has been changed:
 | Min. Potential Intangibility     | 4 Frames        | 11 Frames       |
 | Max. Potential Intangibility     | 123 Frames      | 79 Frames       |
 
-</div>
+</datatable>
 
 This means an immediate ledge grab, from something like a ledge trump for example, at 0% will give you 30 invulnerable frames to work with. At maximum, from being off stage for 5 seconds and being at 0%, you will have 60 invulnerable frames to work with. While this seems like a lot, this scenario is very unlikely.
 

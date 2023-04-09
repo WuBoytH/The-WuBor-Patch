@@ -51,7 +51,7 @@ No longer forces a short hop. Release the jump button to perform a Short Hop, or
 
 ## Directional Air Dodge
 
-[See New Mechanics/Air Dash](./mechanics.md#air-dash)
+See [Air Dash](./mechanics.md#air-dash)
 
 ## Platform Dropping in Shield
 
@@ -121,3 +121,4 @@ Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did no
 Instead of already being in your idle animation, characters now start laying down, only to get up before the platform stops moving. (Did you know this was a thing in Smash 64?)
 
 In addition, it is now possible to Taunt while on the respawn platform.
+* Due to… surprising complexity, Sora’s Up Taunt will not produce any effects.

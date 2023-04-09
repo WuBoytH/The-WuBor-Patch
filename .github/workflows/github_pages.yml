@@ -19,8 +19,7 @@ jobs:
         with:
           mdbook-version: 'latest'
 
-      - run: |
-          cd wubor-changelog && mdbook build && cd ..
+      - run: mdbook build ./wubor-changelog/ && mdbook test ./wubor-changelog
 
       - name: Deploy
         ses: JamesIves/github-pages-deploy-action@4.1.7

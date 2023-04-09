@@ -1,0 +1,15 @@
+[book]
+authors = ["WuBoytH"]
+language = "en"
+multilingual = false
+src = "src"
+title = "The WuBor Patch Complete Changelog"
+
+[output.html]
+site-url = "/wubor-changelog/"
+default-theme = "ayu"
+copy-fonts = true
+
+[output.html.fold]
+enable = true
+level = 0

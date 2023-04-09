@@ -20,7 +20,7 @@ jobs:
           mdbook-version: 'latest'
 
       - run: |
-        cd wubor-changelog && mdbook build && cd ..
+          cd wubor-changelog && mdbook build && cd ..
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

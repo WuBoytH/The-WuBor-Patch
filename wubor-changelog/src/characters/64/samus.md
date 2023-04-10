@@ -8,9 +8,9 @@
 |                 | Vanilla | WuBor              |
 |:--------------- |:------- |:------------------ |
 | Air Dash Tier   | N/A     | Bad                |
+| Run Speed       | 1.654   | <buff>1.777</buff> |
 | Fall Speed      | 1.33    | <buff>1.4</buff>   |
 | Fast Fall Speed | 2.128   | <buff>2.24</buff>  |
-| Run Speed       | 1.654   | <buff>1.777</buff> |
 
 </datatable>
 
@@ -47,11 +47,13 @@ Final Hitbox:
 
 #### Up Special - Screw Attack
 
+<nerf>Only the Grounded version was adjusted</nerf>
+
 <datatable>
 
-|         | Startup        |
-|:------- |:-------------- |
-| Vanilla | 4              |
-| WuBor   | <nerf>7</nerf> |
+|         | Startup        | Intangibility        |
+|:------- |:-------------- |:-------------------- |
+| Vanilla | 4              | F3 - 7               |
+| WuBor   | <nerf>7</nerf> | <nerf>F6 - 10</nerf> |
 
 </datatable>

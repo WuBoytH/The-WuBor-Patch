@@ -3,28 +3,57 @@
 
 ## Stats
 
-Air Dash Tier: Bad
+<datatable>
 
-Fall Soeed: 1.33 > 1.4
+|                 | Vanilla | WuBor              |
+|:--------------- |:------- |:------------------ |
+| Air Dash Tier   | N/A     | Bad                |
+| Run Speed       | 1.654   | <buff>1.777</buff> |
+| Fall Speed      | 1.33    | <buff>1.4</buff>   |
+| Fast Fall Speed | 2.128   | <buff>2.24</buff>  |
 
-Fast Fall Speed: 2.128 > 2.24
-
-Run Speed: 1.654 > 1.777
+</datatable>
 
 ## Moveset
 
 ### Normals
 
-#### Forward Tilt
-* [+] FAF reduced (40 > 36)
-
 #### Up Tilt
-* [+] Hitbox activity increased (8 - 12 > 8 - 13).
+<ovhl>Now performs a three-shot burst diagonally upwards.</ovhl>
 
-### Aerials
+First Two Hitboxes:
 
-#### Neutral Air
-* [-] Landing Lag increased (6 > 7).
+<datatable>
 
-#### Back Air
-* [-] Landing Lag increased (6 > 7).
+| Hitbox Duration      | Damage |
+|:-------------------- |:------ |
+| F10 - 12<br>F16 - 18 | 2      |
+
+</datatable>
+
+These two hitboxes keep the opponent in place to set up for the final hitbox.
+
+Final Hitbox:
+
+<datatable>
+
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:----- |:-------------- |:---------------- |
+| F22 - 24        | 8      | 55    | 50             | 92               |
+
+</datatable>
+
+### Specials
+
+#### Up Special - Screw Attack
+
+<nerf>Only the Grounded version was adjusted</nerf>
+
+<datatable>
+
+|         | Startup        | Intangibility        |
+|:------- |:-------------- |:-------------------- |
+| Vanilla | 4              | F3 - 7               |
+| WuBor   | <nerf>7</nerf> | <nerf>F6 - 10</nerf> |
+
+</datatable>

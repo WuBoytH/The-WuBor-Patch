@@ -4,92 +4,155 @@
 
 ## Stats
 
-<div style="display: flex; justify-content: left;">
+<datatable>
 
 |               | Vanilla | WuBor   |
 |:------------- |:------- |:------- |
 | Air Dash Tier | N/A     | Average |
 
-</div>
+</datatable>
 
 ## Moveset
 
 ### Smash Attacks
 
-#### Forward Smash:
-* [*] Now performs a sideways hammer swing that can be angled.
+#### Forward Smash
+<ovhl>Now performs a sideways hammer swing that can be angled.</ovhl>
 
 ### Aerials
 
-#### Forward Air:
-* [+] Startup reduced (16 > 14).
-* [-] No longer spikes.
-* [*] Holding Attack has Mario delay the attack for 16 frames.
-* [*] If delayed, the entirety of Forward Air now spikes.
+#### Forward Air
+<ovhl>Now uses his hammer to perform an overhead swing downwards.</ovhl><br>
+<ovhl>Holding Attack has Mario delay the attack for 16 frames and turns it into a spike.</ovhl><br>
+
+<datatable>
+
+|           | Startup | Damage | Angle   | Base Knockback | Knockback Growth |
+|:--------- |:------- |:------ |:------- |:-------------- |:---------------- |
+| Uncharged | **14**  | 12     | **361** | 30             | 80               |
+| Charged   | **30**  | 12     | **290** | 30             | 80               |
+
+</datatable>
 
 #### Up Air
-* [-] Startup increased (4 > 5).
-* [-] Angle Adjusted (75 > 72).
+
+<datatable>
+
+|         | Startup        | Angle           | FAF             |
+|:------- |:-------------- |:--------------- |:--------------- |
+| Vanilla | 4              | 75              | 31              |
+| WuBor   | <nerf>5</nerf> | <nerf>72</nerf> | <nerf>32</nerf> |
+
+</datatable>
 
 #### Down Air
-* [*] Now performs the spin jump from Super Mario World.
-* [*] Mario stomps on the opponent up to three times.
-* [*] Stomping an opponent causes Mario to bounce.
-* [*] The final launching hit sends outwards.
-* [*] FAF 63, soon after the final launching hit connects.
+<ovhl>Now performs the spin jump from Super Mario World.</ovhl><br>
+<ovhl>Mario stomps on the opponent up to three times.</ovhl><br>
+<ovhl>Stomping an opponent causes Mario to bounce.</ovhl><br>
+
+Early Hitbox:
+
+<datatable>
+
+| Hitbox Duration | Damage | Rehit Rate |
+|:--------------- |:------ |:---------- |
+| F6 - 31         | 4      | 15 Frames  |
+
+</datatable>
+
+If the opponent is standing on the ground, it will keep them in place.<br>
+If the opponent is in the air, it will push them slightly outwards.
+
+Ending Hitbox:
+
+<datatable>
+
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:----- |:-------------- |:---------------- |
+| F32 - 52        | 4      | 40    | 60             | 90               |
+
+</datatable>
+
+The opponent is launched in the direction Mario was facing when starting the attack.
+
+FAF: 60
 
 ### Specials
 
 #### Side Special - Galaxy Spin
-* [*] Now performs the spin from Super Mario Galaxy.
-* [*] Functions similarly to Cape but with a launching hitbox instead of the turnaround effect.
-* [*] There is a strong hitbox in front of Mario at the beginning of the move. The rest of the attack as a weaker hitbox.
-* [*] Strong Startup Hitbox:
-  * Frame 10 to 12
-  * 10 Damage
-  * 361 Angle
-  * 65 BKB
-  * 65 KBG
-* [*] Weak Lingering Hitbox:
-  * Frame 10 to 27
-  * 5 Damage
-  * 361 Angle
-  * 65 BKB
-  * 50 KBG
-* [-] Still reflects projectiles, but with a smaller window (9 - 20 > 10 - 14).
-* [-] Ledge Grab frame increased (15 > 28).
-* [+] FAF increased (36 > 35).
+<ovhl>Now performs the spin from Super Mario Galaxy.</ovhl><br>
+<ovhl>Functions similarly to Cape but with a launching hitbox instead of the turnaround effect.</ovhl><br>
+<ovhl>There is a strong hitbox in front of Mario at the beginning of the move. The rest of the attack as a weaker hitbox.</ovhl><br>
+Strong Startup Hitbox:
+
+<datatable>
+
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:----- |:-------------- |:---------------- |
+| F10 - 12        | 10     | 361   | 65             | 65               |
+
+</datatable>
+
+Weak Lingering Hitbox:
+
+<datatable>
+
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:----- |:-------------- |:---------------- |
+| F10 - 27        | 5      | 361   | 65             | 50               |
+
+</datatable>
+
+Still reflects projectiles, but with a smaller window (9 - 20 > 10 - 14).<br>
+Ledge Grab frame: 28.<br>
+FAF: 35
 
 #### Up Special - Super Jump Punch
-* [-] Startup increased (3 > 6).
-* [-] Intangibility frames adjusted (3 - 7 > 5 > 9).
+
+<datatable>
+
+|         | Startup        | Intangibility       |
+|:------- |:-------------- |:------------------- |
+| Vanilla | 3              | F3 - 7              |
+| WuBor   | <nerf>6</nerf> | <nerf>F6 - 9</nerf> |
+
+</datatable>
 
 #### Down Special (Ground) - Long Jump
-* [*] Now performs the Long Jump from Super Mario 64.
-* [*] The distance traveled by a Long Jump depends on the direction the stick is held during Long Jump's startup.
-* [*] Mario can cancel Long Jump into other actions shortly after leaving the ground.
-* [!] Mario can perform some (in)famous backwards movement through interesting momentum manipulation.
+<ovhl>
+Now performs the Long Jump from Super Mario 64.<br>
+The distance traveled by a Long Jump depends on the direction the stick is held during Long Jump's startup.<br>
+Mario can cancel Long Jump into other actions shortly after leaving the ground.</ovhl><br>
+<funny>Mario can perform some (in)famous backwards movement through interesting momentum manipulation.</funny>
 
 #### Down Special (Air) - Ground Pound
-* [*] Now performs the Ground Pound from New Super Mario Bros.
-* [*] Mario stalls in the air before dropping down.
-* [*] Can only grab ledges in front of Mario.
-* [*] Can be canceled if the hitbox hasn't connected with anything by tilting the stick upwards.
-* [*] Falling Hitbox:
-  * Frame 19 until Landing.
-  * 16 Damage
-  * 30 Angle
-  * 50 BKB
-  * 50 KBG
-* [*] Landing Hitbox:
-  * Active for 1 frame.
-  * 6 Damage
-  * 30 Angle
-  * 60 BKB
-  * 50 KBG
-  * 30 FAF
+<ovhl>Now performs the Ground Pound from New Super Mario Bros.<br>
+Mario stalls in the air before dropping down.<br>
+Can **only** grab ledges in front of Mario.<br>
+Can be canceled after Mario starts falling by tilting the stick upwards **only if** the hitbox hasn't connected with anything.</ovhl><br>
+Falling Hitbox:
+
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:----- |:-------------- |:---------------- |
+| F19 - Landing   | 16     | 30    | 50             | 50               |
+
+Landing Hitbox:
+
+| Hitbox Duration    | Damage | Angle | Base Knockback | Knockback Growth |
+|:------------------ |:------ |:----- |:-------------- |:---------------- |
+| Landing Frame Only | 6      | 30    | 60             | 50               |
+
+FAF: Landing + 30
 
 ### Grabs/Throws
 
-#### Down Throw:
-* [-] KBG increased (90 > 110).
+#### Down Throw
+
+<datatable>
+
+|         | Knockback Growth |
+|:------- |:---------------- |
+| Vanilla | 90               |
+| WuBor   | <nerf>110</nerf> |
+
+</datatable>

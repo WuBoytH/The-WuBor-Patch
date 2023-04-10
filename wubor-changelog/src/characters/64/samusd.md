@@ -192,10 +192,10 @@ Autocancel Window: 42+
 
 <datatable>
 
-|         | Damage               | Angle           | Base Knockback        | Knockback Growth |
-|:------- |:-------------------- |:--------------- |:--------------------- |:---------------- |
-| Vanilla | 12/14/9              | 361             | 30/42/20              | 98/98/90         |
-| WuBor   | <nerf>12/12/9</nerf> | <ovhl>80</ovhl> | <ovhl>30/30/20</ovhl> | <ovhl>90</ovhl>  |
+|         | Damage               | Base Knockback        | Knockback Growth |
+|:------- |:-------------------- |:--------------------- |:---------------- |
+| Vanilla | 12/14/9              | 30/42/20              | 98/98/90         |
+| WuBor   | <nerf>12/12/9</nerf> | <ovhl>30/30/20</ovhl> | <ovhl>90</ovhl>  |
 
 </datatable>
 

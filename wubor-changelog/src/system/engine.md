@@ -37,6 +37,7 @@ No longer forces a short hop. Release the jump button to perform a Short Hop, or
 ## Grab
 
 * The Grab Lockout Timer no longer exists.
+* Grab-techs are now active throughout the entire startup of grab, not just while the grab box is currently active.
 * All non-standard Grabs can no longer be grab-teched.
 * It is now possible to buffer Dash and Pivot Grabs.
 * You can manually Grab-Release an opponent by pressing Taunt.

@@ -60,7 +60,7 @@ Donkey Kong falls at half the usual rate until Dash Attack finishes.</ovhl>
 
 |         | Angle           | Base Knockback  | Knockback Growth |
 |:------- |:--------------- |:--------------- |:---------------- |
-| Vanilla | 70              | 10              | 120              |
+| Vanilla | 361             | 10              | 120              |
 | WuBor   | <ovhl>55</ovhl> | <ovhl>30</ovhl> | <ovhl>100</ovhl> |
 
 </datatable>

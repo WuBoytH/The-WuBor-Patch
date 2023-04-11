@@ -25,7 +25,7 @@
 
 |         | FAF            | Landing Lag    |
 |:------- |:-------------- |:-------------- |
-| Vanilla | 44             | 5              |
+| Vanilla | 33             | 5              |
 | WuBor   | <nerf>44</nerf>| <nerf>7</nerf> |
 
 </datatable>

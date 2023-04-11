@@ -56,7 +56,7 @@ Early Hitbox:
 
 | Hitbox Duration | Damage | Rehit Rate |
 |:--------------- |:------ |:---------- |
-| F6 - 31         | 4      | 15 Frames  |
+| 6 - 31          | 4      | 15 Frames  |
 
 </datatable>
 
@@ -69,7 +69,7 @@ Ending Hitbox:
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| F32 - 52        | 4      | 40    | 60             | 90               |
+| 32 - 52         | 4      | 40    | 60             | 90               |
 
 </datatable>
 
@@ -89,7 +89,7 @@ Strong Startup Hitbox:
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| F10 - 12        | 10     | 361   | 65             | 65               |
+| 10 - 12         | 10     | 361   | 65             | 65               |
 
 </datatable>
 
@@ -99,7 +99,7 @@ Weak Lingering Hitbox:
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| F10 - 27        | 5      | 361   | 65             | 50               |
+| 10 - 27         | 5      | 361   | 65             | 50               |
 
 </datatable>
 
@@ -113,8 +113,8 @@ FAF: 35
 
 |         | Startup        | Intangibility       |
 |:------- |:-------------- |:------------------- |
-| Vanilla | 3              | F3 - 7              |
-| WuBor   | <nerf>6</nerf> | <nerf>F6 - 9</nerf> |
+| Vanilla | 3              | 3 - 7              |
+| WuBor   | <nerf>6</nerf> | <nerf>6 - 9</nerf> |
 
 </datatable>
 
@@ -134,7 +134,7 @@ Falling Hitbox:
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| F19 - Landing   | 16     | 30    | 50             | 50               |
+| 19 - Landing    | 16     | 30    | 50             | 50               |
 
 Landing Hitbox:
 

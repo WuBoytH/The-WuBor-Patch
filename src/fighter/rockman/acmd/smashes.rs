@@ -22,6 +22,10 @@ unsafe fn rockman_attacks4(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "rockman", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
 unsafe fn rockman_attacks4_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 9, 3, 90, -90, -40, 1.0, true, *EF_FLIP_YZ);
@@ -100,9 +104,17 @@ unsafe fn rockman_attacks4hi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "rockman", script = "effect_attacks4hi", category = ACMD_EFFECT, low_priority )]
 unsafe fn rockman_attacks4hi_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
     frame(fighter.lua_state_agent, 14.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), -2.5, 0, 3, -80, 0, 10, 1, true, *EF_FLIP_YZ);
+    }
+    frame(fighter.lua_state_agent, 32.0);
+    if macros::is_excute(fighter) {
+        macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
@@ -175,6 +187,10 @@ unsafe fn rockman_attacks4lw(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "rockman", script = "effect_attacks4lw", category = ACMD_EFFECT, low_priority )]
 unsafe fn rockman_attacks4lw_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        macros::FOOT_EFFECT(fighter, Hash40::new("sys_sliding_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
+    }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_FOLLOW_FLIP(fighter, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), -2, 1.5, -7, 0, 8, -5, 1, true, *EF_FLIP_YZ);

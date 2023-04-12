@@ -105,11 +105,17 @@ unsafe fn rockman_specialairlw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.0);
 }
 
+#[acmd_script( agent = "rockman_leafshield", scripts = [ "game_shield", "game_shieldreverse" ], category = ACMD_GAME, low_priority )]
+unsafe fn rockman_leafshield_shield(_weapon: &mut L2CAgentBase) {
+    
+}
+
 pub fn install() {
     install_acmd_scripts!(
         rockman_specialn, rockman_specialn_eff, rockman_specialn_snd, rockman_specialn_exp,
         rockman_chargeshot_regular,
         rockman_speciallw,
-        rockman_specialairlw
+        rockman_specialairlw,
+        rockman_leafshield_shield
     );
 }

@@ -1,11 +1,7 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "rockman", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "rockman", scripts = [ "game_busterchargeshot", "game_busterairchargeshot" ], category = ACMD_GAME, low_priority )]
 unsafe fn rockman_specialn(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
-    }
     frame(fighter.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(fighter, 1.0 / 8.0);
     frame(fighter.lua_state_agent, 19.0);
@@ -16,15 +12,13 @@ unsafe fn rockman_specialn(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
+#[acmd_script( agent = "rockman", scripts = [ "effect_busterchargeshot", "effect_busterairchargeshot" ], category = ACMD_EFFECT, low_priority )]
 unsafe fn rockman_specialn_eff(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 3.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     frame(fighter.lua_state_agent, 6.0);
     if macros::is_excute(fighter) {
-        // macros::EFFECT_FOLLOW(fighter, Hash40::new("rockman_chargeshot_hold"), Hash40::new("handl"), 4, 0, 0, 0, 0, 0, 1, true);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("rockman_chargeshot_elec"), Hash40::new("havel"), 0, 0, -1.5, 0, 0, 0, 1, true);
     }
     frame(fighter.lua_state_agent, 11.0);
@@ -34,6 +28,37 @@ unsafe fn rockman_specialn_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+}
+
+#[acmd_script( agent = "rockman", scripts = [ "sound_busterchargeshot", "sound_busterairchargeshot" ], category = ACMD_SOUND, low_priority )]
+unsafe fn rockman_specialn_snd(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        macros::STOP_SE(fighter, Hash40::new("se_rockman_smash_s02"));
+    }
+}
+
+#[acmd_script( agent = "rockman", scripts = [ "expression_busterchargeshot", "expression_busterairchargeshot" ], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn rockman_specialn_exp(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_ROCKBUSTER, 5);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
+        slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
+    }
+    frame(fighter.lua_state_agent, 19.0);
+    if WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_HOLD_RATE) < 1.0 {
+        if macros::is_excute(fighter) {
+            macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);
+            ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_beams"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
+    }
+    else {
+        if macros::is_excute(fighter) {
+            macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_M);
+            ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_beaml"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+        }
     }
 }
 
@@ -82,7 +107,7 @@ unsafe fn rockman_specialairlw(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_specialn, rockman_specialn_eff,
+        rockman_specialn, rockman_specialn_eff, rockman_specialn_snd, rockman_specialn_exp,
         rockman_chargeshot_regular,
         rockman_speciallw,
         rockman_specialairlw

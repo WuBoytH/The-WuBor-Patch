@@ -1,10 +1,9 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn rockman_check_special_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE != 0
+    if VarModule::is_flag(fighter.battle_object, rockman::instance::flag::CHARGE_SHOT_RELEASE)
     && VarModule::is_flag(fighter.battle_object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
-        let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(cat1 | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N));
+        fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N));
     }
     false.into()
 }

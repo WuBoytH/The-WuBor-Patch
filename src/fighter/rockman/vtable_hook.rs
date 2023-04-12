@@ -45,10 +45,23 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             if VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING)
             && !VarModule::is_flag(object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE) {
                 let pad_flag = ControlModule::get_pad_flag(module_accessor);
+                if pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE != 0
+                && !VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_RELEASE) {
+                    VarModule::set_int(object, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME, vl::private::CHARGE_SHOT_RELEASE_FRAME);
+                    VarModule::on_flag(object, rockman::instance::flag::CHARGE_SHOT_RELEASE);
+                }
+                else if VarModule::get_int(object, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME) >= 0 {
+                    VarModule::dec_int(object, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME);
+                }
                 if !VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX)
-                || pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE == 0 {
+                || (
+                    VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_RELEASE)
+                    && VarModule::get_int(object, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME) == 0
+                ) {
                     VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_CHARGING);
                     VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX);
+                    VarModule::off_flag(object, rockman::instance::flag::CHARGE_SHOT_RELEASE);
+                    VarModule::set_int(object, rockman::instance::int::CHARGE_SHOT_RELEASE_FRAME, 0);
                     SoundModule::stop_se(module_accessor, Hash40::new("se_rockman_smash_s02"), 0);
                     VarModule::set_int(object, rockman::instance::int::CHARGE_SHOT_FRAME, 0);
                     let eff_handle = VarModule::get_int(object, rockman::instance::int::CHARGE_SHOT_EFF_HANDLE) as u32;

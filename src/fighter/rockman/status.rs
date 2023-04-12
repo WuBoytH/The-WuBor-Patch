@@ -1,6 +1,7 @@
 mod walk;
 mod attack;
 mod attack_s3;
+mod attack_s4;
 mod attack_air;
 mod ladder_attack;
 mod special_n;
@@ -15,6 +16,7 @@ pub fn install() {
     walk::install();
     attack::install();
     attack_s3::install();
+    attack_s4::install();
     attack_air::install();
     ladder_attack::install();
     special_n::install();

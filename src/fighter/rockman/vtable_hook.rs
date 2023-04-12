@@ -130,10 +130,6 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
         return false;
     }
     let status = StatusModule::status_kind(module_accessor);
-    if status == *FIGHTER_STATUS_KIND_ESCAPE_AIR
-    && WorkModule::is_flag(module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        return true;
-    }
     ![
         *FIGHTER_STATUS_KIND_DEAD,
         *FIGHTER_STATUS_KIND_MISS_FOOT,

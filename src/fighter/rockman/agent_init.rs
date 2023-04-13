@@ -12,6 +12,14 @@ unsafe extern "C" fn rockman_special_lw_uniq(fighter: &mut L2CFighterCommon) -> 
     (!WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)).into()
 }
 
+unsafe extern "C" fn rockman_check_air_escape_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
+        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+    }
+    false.into()
+}
+
 #[fighter_reset]
 fn agent_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -24,6 +32,7 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
         fighter.global_table[DASH_COMMON_UNIQ].assign(&false.into());
         fighter.global_table[RUN_MAIN_UNIQ].assign(&false.into());
         fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].assign(&false.into());
+        fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].assign(&L2CValue::Ptr(rockman_check_air_escape_uniq as *const () as _));
         fighter.global_table[GUARD_CONT_UNIQ].assign(&false.into());
         fighter.global_table[TURN_UNIQ].assign(&false.into());
         fighter.global_table[FALL_BRAKE_UNIQ].assign(&false.into());

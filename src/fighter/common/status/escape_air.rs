@@ -1,5 +1,8 @@
+#![allow(dead_code)]
+
 use crate::imports::status_imports::*;
 
+#[derive(PartialEq)]
 enum AirDashTier {
     Average,
     Bad,
@@ -110,11 +113,6 @@ unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
         return AirDashTier::Great;
     }
     if [
-        *FIGHTER_KIND_MEWTWO
-    ].contains(&fighter_kind) {
-        return AirDashTier::Teleport;
-    }
-    if [
         *FIGHTER_KIND_DONKEY,
         *FIGHTER_KIND_KIRBY,
         *FIGHTER_KIND_CAPTAIN,
@@ -123,6 +121,7 @@ unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
         *FIGHTER_KIND_MARIOD,
         *FIGHTER_KIND_PICHU,
         *FIGHTER_KIND_FALCO,
+        *FIGHTER_KIND_MEWTWO,
         *FIGHTER_KIND_CHROM,
         *FIGHTER_KIND_METAKNIGHT,
         *FIGHTER_KIND_PIT,
@@ -249,7 +248,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
             }
         }
         if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.cancel_frame {
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
+            if get_airdash_tier(fighter) == AirDashTier::Teleport {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
                     set_accel,
@@ -276,10 +275,7 @@ pub struct AirDashParams {
 unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     let attack_frame: f32;
     let cancel_frame: f32;
-    let fighter_kind = fighter.global_table[KIND].get_i32();
-    if [
-        *FIGHTER_KIND_MEWTWO
-    ].contains(&fighter_kind) {
+    if get_airdash_tier(fighter) == AirDashTier::Teleport {
         attack_frame = 24.0;
         cancel_frame = 34.0;
     }
@@ -704,7 +700,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0.0,
                 0.0
             );
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
+            if get_airdash_tier(fighter) == AirDashTier::Teleport {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
                     set_accel,

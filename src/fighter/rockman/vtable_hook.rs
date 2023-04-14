@@ -185,10 +185,12 @@ const LEAFSHIELD_DISABLE_GROUPS: [WorkId; 6] = [
     transition_groups::CHECK_AIR_CLIFF
 ];
 
-const LEAFSHIELD_DISABLE_INDIVI: [WorkId; 6] = [
+const LEAFSHIELD_DISABLE_INDIVI: [WorkId; 8] = [
     // transition_terms::CONT_DASH,
     // transition_terms::CONT_TURN_DASH,
     transition_terms::CONT_ATTACK_DASH,
+    transition_terms::CONT_CATCH_DASH,
+    transition_terms::CONT_CATCH_TURN,
     // transition_terms::CONT_ATTACK_HI4_START,
     // transition_terms::CONT_ATTACK_LW4_START,
     transition_terms::CONT_SPECIAL_N,

@@ -102,10 +102,10 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_control)]
 unsafe fn sub_status_guard_off_main_common_control(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    // if !fighter.sub_transition_group_check_ground_jump().get_bool() {
-    //     return false.into();
+    // if fighter.sub_transition_group_check_ground_jump().get_bool() {
+    //     return true.into();
     // }
-    true.into()
+    false.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_GuardOff)]

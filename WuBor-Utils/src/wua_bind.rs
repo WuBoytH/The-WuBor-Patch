@@ -121,8 +121,8 @@ pub mod FGCModule {
         || (on_block && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD)))
         && check_cancel_window(fighter))
         || whiff {
+            VarModule::on_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
             if airdash_cancel_common(fighter, sit.into()).get_bool() {
-                VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
                 return true.into();
             }
         }

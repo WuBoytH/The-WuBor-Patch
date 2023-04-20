@@ -3,30 +3,62 @@
 
 ## Stats
 
-<div style="display: flex; justify-content: left;">
+<datatable>
 
-|               | Vanilla | WuBor   |
-|:------------- |:------- |:------- |
-| Air Dash Tier | N/A     | Average |
-| Air Speed     | 0.924   | 0.966   |
-| Gravity       | 0.096   | 0.108   |
+|               | Vanilla | WuBor              |
+|:------------- |:------- |:------------------ |
+| Air Dash Tier | N/A     | Average            |
+| Air Speed     | 0.924   | <buff>0.966</buff> |
+| Gravity       | 0.096   | <buff>0.108</buff> |
 
-</div>
+</datatable>
 
 ## Moveset
 
 ### Normals
 
 #### Forward Tilt
-* [+] FAF reduced (40 > 36)
+
+<datatable>
+
+|         | FAF             |
+|:------- |:--------------- |
+| Vanilla | 40              |
+| WuBor   | <buff>36</buff> |
+
+</datatable>
 
 #### Up Tilt
-* [+] Hitbox activity increased (8 - 12 > 8 - 13).
+
+<datatable>
+
+|         | Hitbox Duration     |
+|:------- |:------------------- |
+| Vanilla | 8 - 12              |
+| WuBor   | <buff>8 - 13</buff> |
+
+</datatable>
 
 ### Aerials
 
 #### Neutral Air
-* [-] Landing Lag increased (6 > 7).
+
+<datatable>
+
+|         | Landing Lag    |
+|:------- |:-------------- |
+| Vanilla | 6              |
+| WuBor   | <nerf>7</nerf> |
+
+</datatable>
 
 #### Back Air
-* [-] Landing Lag increased (6 > 7).
+
+<datatable>
+
+|         | Landing Lag    |
+|:------- |:-------------- |
+| Vanilla | 6              |
+| WuBor   | <nerf>7</nerf> |
+
+</datatable>

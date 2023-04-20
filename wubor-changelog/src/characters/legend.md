@@ -2,12 +2,15 @@
 
 ## Legend
 
-[+] - Buffs
+<datatable>
 
-[-] - Nerfs
+| Color                   | Meaning         |
+|:----------------------- | :-------------- |
+| <buff>Green</buff>      | Buff            |
+| <nerf>Red</nerf>        | Nerf            |
+| <ovhl>Light Blue</ovhl> | Rework/Overhaul |
+| <funny>Yellow</funny>   | A Funny         |
 
-[*] - Rework or Overhaul
+</datatable>
 
-[!] - A Funny Easter Egg
-
-Echo Fighters are located next to their base fighter.
+Echo Fighters are located next to their base fighter in the list.

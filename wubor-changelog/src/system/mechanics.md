@@ -2,18 +2,16 @@
 
 ## Air Dash
 
-Directional Air Dodging is now Air Dashing. They have no intangibility, are cancellable into attacks on frame 15, and are fully actionable on frame 30, all with one exception. Vertical Air Dash distance is significantly less than horizontal Air Dash distance.
+Directional Air Dodging is now Air Dashing. They have no intangibility, are cancellable into attacks on frame 15, and are fully actionable on frame 30. Vertical Air Dash distance is significantly less than horizontal Air Dash distance.
 
 Air Dashes are grouped into “tiers”, with each tier affecting Air Dash distance. A character's Air Dash Tier is listed alongside their changelist.
 
-<div style="display: flex; justify-content: left;">
+<datatable>
 
 | Bad | Average | Good | Great |
 |:---:|:-------:|:----:|:-----:|
 
-</div>
-
-As the sole exception, Mewtwo specifically teleports for his Air Dash. This has the furthest base Air Dash distance, but it halts most of Mewtwo’s momentum once it’s finished, so the total distance is around Good tier. It cancels into attacks on frame 25, and into other actions on frame 36, however it is fully intangible while Mewtwo is invisible.
+</datatable>
 
 ## Hyper Hop and Super Jump
 

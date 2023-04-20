@@ -218,6 +218,33 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
     }
 }
 
+#[skyline::hook(replace = L2CFighterCommon_uniq_process_JumpSquat_exec_status_param)]
+unsafe fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    if !param_1.get_bool() {
+        fighter.sub_jump_squat_uniq_check_sub(FIGHTER_STATUS_JUMP_FLAG_BUTTON.into());
+        fighter.sub_jump_squat_uniq_check_sub_mini_attack();
+    }
+    else {
+        let callable: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(param_1.get_ptr());
+        callable(fighter);
+    }
+    let mot = MotionModule::motion_kind(fighter.module_accessor);
+    let frame = MotionModule::frame(fighter.module_accessor);
+    let update_rate = MotionModule::update_rate(fighter.module_accessor);
+    let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(mot));
+    if end_frame <= frame + update_rate {
+        StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), false);
+        let situation = fighter.global_table[SITUATION_KIND].get_i32();
+        fighter.global_table[PREV_SITUATION_KIND].assign(&L2CValue::I32(situation));
+        fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
+        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
+        // Is responsible for telling the game to accelerate your full hops
+        // WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
+        KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
+        WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
+    }
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_JumpSquat)]
 unsafe fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
@@ -235,6 +262,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_jumpsquat_common,
             status_jumpsquat_main,
             sub_jump_squat_uniq_check_sub,
+            uniq_process_jumpsquat_exec_status_param,
             sub_jump_squat_uniq_check_sub_mini_attack
         );
     }

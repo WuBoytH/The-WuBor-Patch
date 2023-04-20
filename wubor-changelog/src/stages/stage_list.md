@@ -4,6 +4,8 @@ The current intended stage lists is as follows:
 
 ### Singles
 
+<datatable>
+
 | Starters          | Counterpicks |
 | ----------------- |:------------:|
 | Small Battlefield | Battlefield  |
@@ -12,7 +14,11 @@ The current intended stage lists is as follows:
 | Northern Cave     |
 | WarioWare, Inc.   |
 
+</datatable>
+
 ### Doubles
+
+<datatable>
 
 | Starters             | Counterpicks      |
 | -------------------- |:-----------------:|
@@ -21,3 +27,5 @@ The current intended stage lists is as follows:
 | Wily Castle          |
 | Town & City          |
 | Pokémon Stadium 2    |
+
+</datatable>

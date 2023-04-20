@@ -1,0 +1,20 @@
+buff {
+    color: #3f9f65
+}
+
+nerf {
+    color: #ba0d0d
+}
+
+ovhl {
+    color: #34b5b9
+}
+
+funny {
+    color: #ecb753
+}
+
+datatable {
+    display: flex;
+    justify-content: left;
+}

@@ -149,7 +149,8 @@ pub unsafe fn escape_air_slide_end_inner(fighter: &mut L2CFighterCommon) -> L2CV
 
 #[common_status_script( status = FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, condition = LUA_SCRIPT_STATUS_FUNC_CALC_PARAM )]
 unsafe fn escape_air_slide_calc_param(fighter: &mut L2CFighterCommon) -> L2CValue {
-    fighter.FighterStatusUniqProcessEscapeAir_calc_param()
+    FighterWorkModuleImpl::calc_escape_air_slide_param(fighter.module_accessor, 0.0);
+    0.into()
 }
 
 pub fn install() {

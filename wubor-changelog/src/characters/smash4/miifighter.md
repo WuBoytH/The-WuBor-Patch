@@ -1,1 +1,1 @@
-# Mii Fighter
+# Mii Brawler

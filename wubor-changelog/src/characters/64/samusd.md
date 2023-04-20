@@ -57,9 +57,9 @@ Multihits:
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End)           | Damage | Angle |
+| Hitbox Duration           | Damage | Angle |
 |:------------------------------------------ |:------ |:----- |
-| F8 - 9<br>F11 - 12<br>F14 - 15<br>F17 - 18 | 1.8    | 367   |
+| 8 - 9<br>11 - 12<br>14 - 15<br>17 - 18 | 1.8    | 367   |
 
 </datatable>
 
@@ -67,9 +67,9 @@ Final Hitbox:
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End) | Damage | Angle | Base Knockback | Knockback Growth |
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:-------------------------------- |:------ |:----- |:-------------- |:---------------- |
-| F20 - 21                         | 5      | 72    | 120            | 40               |
+| 20 - 21                         | 5      | 72    | 120            | 40               |
 
 </datatable>
 
@@ -92,9 +92,9 @@ FAF: 50
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End) | Damage | Angle | Base Knockback | Knockback Growth |
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:-------------------------------- |:------ |:----- |:-------------- |:---------------- |
-| F10 - 12                         | 8      | 78    | 50             | 110              |
+| 10 - 12                         | 8      | 78    | 50             | 110              |
 
 </datatable>
 
@@ -150,9 +150,9 @@ The Multihit hitbox barely surrounds Dark Samus.
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End)           | Damage | Angle |
+| Hitbox Duration           | Damage | Angle |
 |:------------------------------------------ |:------ |:----- |
-| F8 - 9<br>F15 - 16<br>F23 - 24<br>F31 - 32 | 1      | 367   |
+| 8 - 9<br>15 - 16<br>23 - 24<br>31 - 32 | 1      | 367   |
 
 </datatable>
 
@@ -162,9 +162,9 @@ Has the same placement as the multihit hitbox, except slightly larger.
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End) | Damage | Angle | Base Knockback | Knockback Growth |
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:-------------------------------- |:------ |:----- |:-------------- |:---------------- |
-| F38 - 39                         | 4      | 361   | 40             | 135              |
+| 38 - 39                         | 4      | 361   | 40             | 135              |
 
 </datatable>
 
@@ -177,9 +177,9 @@ Autocancel Window: 56+
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End) | Damage | Angle | Base Knockback | Knockback Growth |
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:-------------------------------- |:------ |:----- |:-------------- |:---------------- |
-| F10 - 14                         | 12     | 53    | 40             | 100              |
+| 10 - 14                         | 12     | 53    | 40             | 100              |
 
 </datatable>
 
@@ -207,10 +207,10 @@ Autocancel Window: 42+
 
 <datatable>
 
-| Hitbox Duration<br>(Start - End) | Damage | Angle | Base Knockback | Knockback Growth |
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:-------------------------------- |:------ |:----- |:-------------- |:---------------- |
-| F10 - 13                         | 8      | 66    | 20             | 96               |
-| F14 - 15                         | 8      | 30    | 12             | 80               |
+| 10 - 13                         | 8      | 66    | 20             | 96               |
+| 14 - 15                         | 8      | 30    | 12             | 80               |
 
 </datatable>
 
@@ -284,8 +284,8 @@ Homing Missile now homes in more accurately.</ovhl>
 
 |         | Startup        | Intangibility        |
 |:------- |:-------------- |:-------------------- |
-| Vanilla | 4              | F3 - 7               |
-| WuBor   | <nerf>7</nerf> | <nerf>F6 - 10</nerf> |
+| Vanilla | 4              | 3 - 7               |
+| WuBor   | <nerf>7</nerf> | <nerf>6 - 10</nerf> |
 
 </datatable>
 
@@ -300,6 +300,6 @@ If Dark Samus lands while the hitbox is active, it will take 24 frames of landin
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth | FAF |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |:--- |
-| F33 - 56        | 8      | 45    | 70             | 30               | 60  |
+| 33 - 56        | 8      | 45    | 70             | 30               | 60  |
 
 </datatable>

@@ -25,9 +25,9 @@ First Two Hitboxes:
 
 <datatable>
 
-| Hitbox Duration      | Damage |
-|:-------------------- |:------ |
-| F10 - 12<br>F16 - 18 | 2      |
+| Hitbox Duration    | Damage |
+|:------------------ |:------ |
+| 10 - 12<br>16 - 18 | 2      |
 
 </datatable>
 
@@ -39,7 +39,7 @@ Final Hitbox:
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| F22 - 24        | 8      | 55    | 50             | 92               |
+| 22 - 24         | 8      | 55    | 50             | 92               |
 
 </datatable>
 
@@ -53,7 +53,7 @@ Final Hitbox:
 
 |         | Startup        | Intangibility        |
 |:------- |:-------------- |:-------------------- |
-| Vanilla | 4              | F3 - 7               |
-| WuBor   | <nerf>7</nerf> | <nerf>F6 - 10</nerf> |
+| Vanilla | 4              | 3 - 7               |
+| WuBor   | <nerf>7</nerf> | <nerf>6 - 10</nerf> |
 
 </datatable>

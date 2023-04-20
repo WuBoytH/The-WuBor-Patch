@@ -32,10 +32,10 @@
 
 <datatable>
 
-|         | Hitbox Duration<br>(Start - End) |
-|:------- |:-------------------------------- |
-| Vanilla | 8 - 12                           |
-| WuBor   | <buff>8 - 13</buff>              |
+|         | Hitbox Duration     |
+|:------- |:------------------- |
+| Vanilla | 8 - 12              |
+| WuBor   | <buff>8 - 13</buff> |
 
 </datatable>
 

@@ -761,10 +761,11 @@ impl CustomCancelManager {
                     cancel_window
                 };
                 
-                if condition && flag_check
-                && airdash_cancel_common(fighter, situation.into()).get_bool() {
-                    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
-                    return true;
+                if condition && flag_check {
+                    VarModule::on_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
+                    if airdash_cancel_common(fighter, situation.into()).get_bool() {
+                        return true;
+                    }
                 }
 
                 if let Some(exception_func) = cancel_info.exception {

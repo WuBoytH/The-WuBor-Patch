@@ -1,5 +1,8 @@
+#![allow(dead_code)]
+
 use crate::imports::status_imports::*;
 
+#[derive(PartialEq)]
 enum AirDashTier {
     Average,
     Bad,
@@ -12,15 +15,12 @@ enum AirDashTier {
 pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
     let mut stickx = param_1.get_f32();
     let mut sticky = param_2.get_f32();
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-        if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE) {
-            let length = sv_math::vec2_length(stickx, sticky);
-            let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
-            if length < escape_air_slide_stick {
-                stickx = 1.0 * PostureModule::lr(fighter.module_accessor);
-                sticky = 0.0;
-            }
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
+        let length = sv_math::vec2_length(stickx, sticky);
+        let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
+        if length < escape_air_slide_stick {
+            stickx = 1.0 * PostureModule::lr(fighter.module_accessor);
+            sticky = 0.0;
         }
         StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
         let normalize = sv_math::vec2_normalize(stickx, sticky);
@@ -110,11 +110,6 @@ unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
         return AirDashTier::Great;
     }
     if [
-        *FIGHTER_KIND_MEWTWO
-    ].contains(&fighter_kind) {
-        return AirDashTier::Teleport;
-    }
-    if [
         *FIGHTER_KIND_DONKEY,
         *FIGHTER_KIND_KIRBY,
         *FIGHTER_KIND_CAPTAIN,
@@ -123,6 +118,7 @@ unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
         *FIGHTER_KIND_MARIOD,
         *FIGHTER_KIND_PICHU,
         *FIGHTER_KIND_FALCO,
+        *FIGHTER_KIND_MEWTWO,
         *FIGHTER_KIND_CHROM,
         *FIGHTER_KIND_METAKNIGHT,
         *FIGHTER_KIND_PIT,
@@ -181,16 +177,9 @@ unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
 #[skyline::hook(replace = L2CFighterCommon_status_EscapeAir)]
 unsafe fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_escape_air_common();
-    let is_slide = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
-    let mot = if is_slide {
-        Hash40::new("escape_air_slide")
-    }
-    else {
-        Hash40::new("escape_air")
-    };
     MotionModule::change_motion(
         fighter.module_accessor,
-        mot,
+        Hash40::new("escape_air"),
         0.0,
         1.0,
         false,
@@ -198,17 +187,15 @@ unsafe fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false
     );
-    if !is_slide {
-        let rate_penalty = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
-        let add_xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
-        if 0 < add_xlu {
-            let xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
-            let some = xlu - add_xlu;
-            let ratio = xlu as f32 / some as f32;
-            let inverse = 1.0 / ratio;
-            let rate = inverse * rate_penalty;
-            MotionModule::set_rate(fighter.module_accessor, rate);
-        }
+    let rate_penalty = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_FLOAT_MOTION_RATE_PENALTY);
+    let add_xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
+    if 0 < add_xlu {
+        let xlu = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_HIT_XLU_FRAME);
+        let some = xlu - add_xlu;
+        let ratio = xlu as f32 / some as f32;
+        let inverse = 1.0 / ratio;
+        let rate = inverse * rate_penalty;
+        MotionModule::set_rate(fighter.module_accessor, rate);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_EscapeAir_Main as *const () as _))
 }
@@ -233,7 +220,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
             return true.into();
         }
     }
-    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE)
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
     && !CancelModule::is_enable_cancel(fighter.module_accessor) {
         let airdash_params = get_airdash_params(fighter);
         if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.attack_frame {
@@ -249,7 +236,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
             }
         }
         if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.cancel_frame {
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
+            if get_airdash_tier(fighter) == AirDashTier::Teleport {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
                     set_accel,
@@ -276,10 +263,7 @@ pub struct AirDashParams {
 unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     let attack_frame: f32;
     let cancel_frame: f32;
-    let fighter_kind = fighter.global_table[KIND].get_i32();
-    if [
-        *FIGHTER_KIND_MEWTWO
-    ].contains(&fighter_kind) {
+    if get_airdash_tier(fighter) == AirDashTier::Teleport {
         attack_frame = 24.0;
         cancel_frame = 34.0;
     }
@@ -323,7 +307,7 @@ pub unsafe fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) 
 
     // // early return if airdashing
 
-    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+    // if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
     //     return 0.into();
     // }
 
@@ -397,7 +381,7 @@ pub unsafe fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_uniq)]
 pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool() {
-        let slide = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE);
+        let slide = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE;
         let escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         let item_air_catch_frame_escape = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("item_air_catch_frame_escape"));
         if escape_frame <= item_air_catch_frame_escape {
@@ -411,10 +395,10 @@ pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CVa
                 }
             }
         }
-        if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR {
-            if slide {
-                fighter.exec_escape_air_slide();
-            }
+        if slide {
+            fighter.exec_escape_air_slide();
+        }
+        else {
             let xlu_start = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_ADD_XLU_START_FRAME);
             if 0 < xlu_start {
                 if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU) {
@@ -470,7 +454,7 @@ pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CVa
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_KINE_FALL);
-            if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
+            if !fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
                 fighter.sub_fighter_cliff_check(L2CValue::Void());
             }
         }
@@ -704,7 +688,7 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
                 0.0,
                 0.0
             );
-            if [*FIGHTER_KIND_MEWTWO].contains(&fighter.global_table[KIND].get_i32()) {
+            if get_airdash_tier(fighter) == AirDashTier::Teleport {
                 let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                 sv_kinetic_energy!(
                     set_accel,
@@ -733,43 +717,8 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_FALL
     || status == *FIGHTER_STATUS_KIND_LANDING {
-        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE) {
-            let landing_frame_escape_air_slide = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide"));
-            let landing_frame_escape_air_slide_max = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_frame_escape_air_slide_max"));
-            let frame = MotionModule::frame(fighter.module_accessor);
-            let end_frame = MotionModule::end_frame(fighter.module_accessor);
-            let frame_ratio = frame / end_frame;
-            let landing_frame = fighter.lerp(landing_frame_escape_air_slide.into(), landing_frame_escape_air_slide_max.into(), frame_ratio.into()).get_f32();
-            WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-            let escape_air_slide_landing_speed_max = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_landing_speed_max")) * 0.75;
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-            let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
-            let landing_speed_mul_escape_air_slide = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("landing_speed_mul_escape_air_slide"));
-            let mut landing_speed = speed_x * landing_speed_mul_escape_air_slide;
-            fighter.clear_lua_stack();
-            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
-            let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
-            if escape_air_slide_landing_speed_max < landing_speed.abs() {
-                if landing_speed < 0.0 {
-                    landing_speed = -escape_air_slide_landing_speed_max;
-                }
-                else {
-                    landing_speed = escape_air_slide_landing_speed_max;
-                }
-            }
-            sv_kinetic_energy!(
-                set_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_STOP,
-                landing_speed,
-                speed_y
-            );
-        }
-        else {
-            let landing_frame_escape_air = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("landing_frame_escape_air"));
-            WorkModule::set_float(fighter.module_accessor, landing_frame_escape_air as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-        }
+        let landing_frame_escape_air = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("landing_frame_escape_air"));
+        WorkModule::set_float(fighter.module_accessor, landing_frame_escape_air as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         if status == *FIGHTER_STATUS_KIND_LANDING {
             if !MotionModule::is_end(fighter.module_accessor) {
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_TURN);
@@ -796,8 +745,6 @@ unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
             );
         }
     }
-    VarModule::off_flag(fighter.battle_object, fighter::instance::flag::FORCE_ESCAPE_AIR_SLIDE);
-    fighter.status_end_Jump();
     0.into()
 }
 

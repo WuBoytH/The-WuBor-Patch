@@ -8,7 +8,9 @@ title = "The WuBor Patch Complete Changelog"
 [output.html]
 site-url = "/wubor-changelog/"
 default-theme = "ayu"
+preferred-dark-theme = "ayu"
 copy-fonts = true
+additional-css = ["style.css"]
 
 [output.html.fold]
 enable = true

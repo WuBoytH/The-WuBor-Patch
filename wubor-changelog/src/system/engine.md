@@ -70,8 +70,10 @@ It is now possible to slip off of ledges during the following states:
 ## Geting Launched
 
 * The spinning knockback animation no longer is randomly applied, instead being applied at a consistent `character weight + 33` damage threshold, meant to signify average kill percent.
-* Balloon Knockback has been reworked so that it applies based on Launch Speed instead of total Hitstun frames.
-* Directional Influence has been increased (9.74 degrees/0.17 radians > 12.0321 degrees/0.21 radians).
+* Balloon Knockback has been reworked.
+  * Balloon Knockback now applies based on Launch Speed instead of total Hitstun frames.
+  * Maximum Balloon Knockback magitude has been reduced (6 > 4), making it have less of, but still a noticable effect.
+* Directional Influence has been increased (9.74 degrees / 0.17 radians > 12.0321 degrees / 0.21 radians).
 * Launch Speed Influence has been removed.
 
 ## Teching

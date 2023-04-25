@@ -16,7 +16,7 @@ pub mod jump {
 }
 
 pub mod damage {
-    pub const damage_speed_up_speed_min : f32 = 3.0;
+    pub const damage_speed_up_speed_min : f32 = 3.5;
     pub const damage_speed_up_speed_max : f32 = 6.0;
 }
 

@@ -235,6 +235,17 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
     }
 }
 
+// #[skyline::hook(offset = 0x1085d40)]
+// pub unsafe extern "C" fn rockman_airshooter_init(article: &mut smash::app::Article, fighter: &mut smash::app::FighterModuleAccessor) -> u64 {
+//     let ret = original!()(article, fighter);
+//     println!("Initializing Air Shooter");
+//     let object_id = fighter.battle_object_module_accessor.battle_object_id;
+//     let object = MiscModule::get_battle_object_from_id(object_id);
+//     let num = VarModule::get_int(object, rockman::status::int::AIR_SHOOTER_NUM);
+//     VarModule::set_int(&mut article.battle_object as *mut BattleObject, rockman_airshooter::instance::int::NUM, num);
+//     ret
+// }
+
 pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
     skyline::patching::Patch::in_text(0x107ea84).data(0x1400001E);
@@ -273,6 +284,7 @@ pub fn install() {
         rockman_vtable_func,
         rockman_do_leafshield_things_disable,
         rockman_do_leafshield_things_enable,
-        set_leafshield
+        set_leafshield,
+        // rockman_airshooter_init
     );
 }

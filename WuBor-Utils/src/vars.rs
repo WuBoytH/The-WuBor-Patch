@@ -697,6 +697,22 @@ pub mod rockman {
         pub mod flag {
             pub const CHARGE_SHOT_KEEP_CHARGE : i32 = 0x1100;
         }
+        pub mod int {
+            pub const AIR_SHOOTER_NUM : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod rockman_airshooter {
+    pub mod instance {
+        pub mod int {
+            pub const NUM : i32 = 0x1100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const MOVE : i32 = 0x1100;
+        }
     }
 }
 

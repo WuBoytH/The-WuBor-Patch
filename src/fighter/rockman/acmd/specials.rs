@@ -3,8 +3,8 @@ use crate::imports::acmd_imports::*;
 #[acmd_script( agent = "rockman", scripts = [ "game_busterchargeshot", "game_busterairchargeshot" ], category = ACMD_GAME, low_priority )]
 unsafe fn rockman_specialn(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 11.0);
-    macros::FT_MOTION_RATE(fighter, 1.0 / 8.0);
-    frame(fighter.lua_state_agent, 19.0);
+    macros::FT_MOTION_RATE(fighter, 1.0 / 7.0);
+    frame(fighter.lua_state_agent, 18.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CHARGESHOT, false, -1);
@@ -47,7 +47,7 @@ unsafe fn rockman_specialn_exp(fighter: &mut L2CAgentBase) {
         slope!(fighter, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
-    frame(fighter.lua_state_agent, 19.0);
+    frame(fighter.lua_state_agent, 18.0);
     if WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_HOLD_RATE) < 1.0 {
         if macros::is_excute(fighter) {
             macros::QUAKE(fighter, *CAMERA_QUAKE_KIND_S);

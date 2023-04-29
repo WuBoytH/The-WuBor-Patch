@@ -8,9 +8,20 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_JUMP_MINI_ATTACK].get_ptr());
             return callable(fighter);
         }
-        // Disable the grab button from being used to perform the "short hop aerial macro"
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        let check_grab = if
+            [
+                *FIGHTER_STATUS_KIND_GUARD_ON,
+                *FIGHTER_STATUS_KIND_GUARD,
+                *FIGHTER_STATUS_KIND_GUARD_OFF,
+                *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
+            ].contains(&fighter.global_table[STATUS_KIND_INTERRUPT].get_i32()) {
+            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
+        }
+        else {
+            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+        };
+        if check_grab
         && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
         && fighter.sub_check_button_jump().get_bool() {
             fighter.change_status_jump_mini_attack(false.into());
@@ -30,9 +41,9 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
             }
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
-        && fighter.sub_check_command_guard().get_bool()
-        && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+        && fighter.sub_check_command_guard().get_bool() {
+            let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), clear_buffer.into());
             return true.into();
         }
     }

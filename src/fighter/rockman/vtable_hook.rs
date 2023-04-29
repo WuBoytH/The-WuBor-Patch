@@ -8,8 +8,9 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
     let module_accessor = object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
-    if (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
-    && !StopModule::is_stop(module_accessor) && !SlowModule::is_skip(module_accessor) {
+    let is_not_slow = (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 0)
+    && !StopModule::is_stop(module_accessor) && !SlowModule::is_skip(module_accessor);
+    if is_not_slow {
         if ![
             *FIGHTER_STATUS_KIND_SPECIAL_LW,
             *FIGHTER_ROCKMAN_STATUS_KIND_SPECIAL_LW_SHOOT
@@ -46,8 +47,7 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
             }
         }
         else {
-            let pad_flag = ControlModule::get_pad_flag(module_accessor);
-            if pad_flag & *FIGHTER_PAD_FLAG_SPECIAL_RELEASE != 0 {
+            if ControlModule::check_button_off(module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW) {
                 if !VarModule::is_flag(object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
                     rockman_kill_charge(module_accessor, object);
                 }

@@ -9,20 +9,19 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
             return callable(fighter);
         }
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        let check_grab = if
+        let check_attack_input = if
             [
                 *FIGHTER_STATUS_KIND_GUARD_ON,
                 *FIGHTER_STATUS_KIND_GUARD,
                 *FIGHTER_STATUS_KIND_GUARD_OFF,
                 *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
             ].contains(&fighter.global_table[STATUS_KIND_INTERRUPT].get_i32()) {
-            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
+            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
         }
         else {
-            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
+            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
         };
-        if check_grab
-        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        if check_attack_input
         && fighter.sub_check_button_jump().get_bool() {
             fighter.change_status_jump_mini_attack(false.into());
             return true.into();

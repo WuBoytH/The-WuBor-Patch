@@ -20,10 +20,6 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.
 
 Jumping no longer has accelerated rising momentum, matching the momentum from previous games.
 
-## Short Hop Aerial Macro
-
-No longer forces a short hop. Release the jump button to perform a Short Hop, or hold it to Full Hop.
-
 ## Shield
 
 * It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
@@ -115,19 +111,52 @@ This means an immediate ledge grab, from something like a ledge trump for exampl
 
 On the other hand, being at around 120% and immediately grabbing the ledge will give the minimum 11 frames of invulnerability, which should be enough to go for an immediate edge guard, but not much else.
 
+## Stale-Move Negation
+
+Staling has been overhauled. The queue has been effectively shortened from 9 to 7, Freshness Bonus was removed, and many values have been reworked.<br>
+The values shown in the following table are multipliers to the move's base damage that get added during damage calculation.<br>
+If a move is in multiple places in the Stale Move list, all slots are added together.
+
+<datatable>
+
+| Stale Move Slot     | Vanilla    | WuBor    |
+|:------------------- |:---------- |:-------- |
+| 0 (Freshness Bonus) | + 0.05x    | + 0.0x   |
+| 1                   | - 0.09x    | - 0.125x |
+| 2                   | - 0.08545x | - 0.1x   |
+| 3                   | - 0.07635x | - 0.075x |
+| 4                   | - 0.0679x  | - 0.05x  |
+| 5                   | - 0.05945x | - 0.05x  |
+| 6                   | - 0.05053x | - 0.05x  |
+| 7                   | - 0.04255x | - 0.05x  |
+| 8                   | - 0.03345x | - 0.0x   |
+| 9                   | - 0.025x   | - 0.0x   |
+
+</datatable>
+
+## Rage
+
+Removed.
+
+## Attack Canceling
+
+Removed.
+
 ## Jab
 
 Only Neutral Attack inputs will be valid when performing Jab combos. Pressing Tilts, Smash attacks, etc. will not count as a Jab input.
 
 ## Aerials
 
-Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did not connect with anything. This does not apply to moves that only generate projectiles. For example:
-* Mario presses Neutral Air.
-  * If Mario lands before a hitbox is generated, he takes 8 frames of landing lag.
-  * If Mario generates a hitbox, does not hit anything, and lands, he takes 12 frames of landing lag.
-  * If Mario hits a fighter or a Shield before landing, he takes 8 frames of landing lag.
-* Mega Man presses Up Air.
-  * Because Mega Man does not generate a hitbox that's directly connected to him, he will always take 20 frames of landing lag.
+* Pressing Jump and Attack at the same time no longer forces a short hop aerial.
+* Short Hop Aerials no longer deal less damage than usual.
+* Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did not connect with anything. This does not apply to moves that only generate projectiles. For example:
+  * Mario presses Neutral Air.
+    * If Mario lands before a hitbox is generated, he takes 8 frames of landing lag.
+    * If Mario generates a hitbox, does not hit anything, and lands, he takes 12 frames of landing lag.
+    * If Mario hits a fighter or a Shield before landing, he takes 8 frames of landing lag.
+  * Mega Man presses Up Air.
+    * Because Mega Man does not generate a hitbox that's directly connected to him, he will always take 20 frames of landing lag.
 
 ## Respawning
 

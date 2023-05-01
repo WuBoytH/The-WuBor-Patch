@@ -1,13 +1,5 @@
 use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*,
-    custom_status::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
+    crate::imports::status_imports::*,
     super::status::helper::*
 };
 
@@ -53,6 +45,29 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].assign(&L2CValue::Ptr(marth_check_ground_special_pre as *const () as _));
         fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(marth_check_air_special_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(marth_speciallw_pre as *const () as _));
+        marth_fgc();
+        
+    }
+}
+
+fn marth_fgc() {
+    let agent = Hash40::new("fighter_kind_marth");
+    CustomCancelManager::initialize_agent(agent);
+    let statuses = [
+        *FIGHTER_STATUS_KIND_ATTACK,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        *FIGHTER_STATUS_KIND_ATTACK_HI3,
+        *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_AIR
+    ];
+    for x in statuses.iter() {
+        CustomCancelManager::add_cancel_info(
+            agent,
+            *x,
+            CancelInfo::new()
+                .enable_special_cancel(CancelType::HIT | CancelType::BLOCK)
+                .enable_specials([*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW].to_vec())
+        );
     }
 }
 

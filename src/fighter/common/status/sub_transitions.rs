@@ -8,10 +8,20 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_JUMP_MINI_ATTACK].get_ptr());
             return callable(fighter);
         }
-        // Disable the grab button from being used to perform the "short hop aerial macro"
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0
-        && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        let check_attack_input = if
+            [
+                *FIGHTER_STATUS_KIND_GUARD_ON,
+                *FIGHTER_STATUS_KIND_GUARD,
+                *FIGHTER_STATUS_KIND_GUARD_OFF,
+                *FIGHTER_STATUS_KIND_GUARD_DAMAGE,
+            ].contains(&fighter.global_table[STATUS_KIND_INTERRUPT].get_i32()) {
+            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0 || cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        }
+        else {
+            cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0 && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
+        };
+        if check_attack_input
         && fighter.sub_check_button_jump().get_bool() {
             fighter.change_status_jump_mini_attack(false.into());
             return true.into();
@@ -31,7 +41,8 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
         && fighter.sub_check_command_guard().get_bool() {
-            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), true.into());
+            let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
+            fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), clear_buffer.into());
             return true.into();
         }
     }
@@ -393,6 +404,36 @@ unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) 
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_escape)]
+unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].get_bool() {
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].get_ptr());
+        if callable(fighter).get_bool() {
+            return true.into();
+        }
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR
+    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
+        let stick_x = fighter.global_table[STICK_X].get_f32();
+        let stick_y = fighter.global_table[STICK_Y].get_f32();
+        let length = sv_math::vec2_length(stick_x, stick_y);
+        let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
+        let cancel = !CancelModule::is_enable_cancel(fighter.module_accessor) && VarModule::is_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
+        let status = if escape_air_slide_stick <= length
+        || cancel {
+            FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
+        }
+        else {
+            FIGHTER_STATUS_KIND_ESCAPE_AIR
+        };
+        fighter.change_status(status.into(), true.into());
+        return true.into();
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
 unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_bool() {
@@ -520,6 +561,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_transition_group_check_ground_attack,
             sub_transition_group_check_ground,
             sub_transition_group_check_air_attack,
+            sub_transition_group_check_air_escape,
             sub_transition_group_check_air_tread_jump,
             sub_transition_group_check_air_cliff
         );

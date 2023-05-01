@@ -1,7 +1,6 @@
 #![allow(non_upper_case_globals)]
 
 pub mod shield {
-    pub const guard_off_attack_cancel_frame : i32 = 5;
     pub const guard_off_invalid_capture_frame_add : i32 = 3;
 }
 
@@ -16,7 +15,7 @@ pub mod jump {
 }
 
 pub mod damage {
-    pub const damage_speed_up_speed_min : f32 = 3.0;
+    pub const damage_speed_up_speed_min : f32 = 3.5;
     pub const damage_speed_up_speed_max : f32 = 6.0;
 }
 

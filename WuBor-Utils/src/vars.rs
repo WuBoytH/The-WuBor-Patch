@@ -54,11 +54,11 @@ pub mod fighter {
             pub const DISABLE_SPECIAL_S : i32 = 0x0001;
             pub const DISABLE_SPECIAL_HI : i32 = 0x0002;
             pub const DISABLE_SPECIAL_LW : i32 = 0x0003;
-            pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x0004;
+            // pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x0004;
             // pub const IS_FGC : i32 = 0x0005;
             pub const CANCEL_ESCAPE_TO_ESCAPE_FB : i32 = 0x0006;
             pub const SUPER_JUMP : i32 = 0x0007;
-            pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
+            // pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
             pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
         }
         pub mod int {
@@ -88,6 +88,7 @@ pub mod fighter {
             pub const ENABLE_AERIAL_STRING : i32 = 0x1004;
             pub const IS_DASH_CANCEL : i32 = 0x1005;
             pub const SKIP_IS_STATUS_CLIFF_CHECK : i32 = 0x1006;
+            pub const FORCE_ESCAPE_AIR_SLIDE_IN_STATUS : i32 = 0x1007;
         }
         pub mod int {
             pub const ENABLED_AERIALS : i32 = 0x1000;
@@ -137,12 +138,6 @@ pub mod dash {
 pub mod damage_fly_roll {
     pub mod flag {
         pub const DISABLE_PASSIVE : i32 = 0x1050;
-    }
-}
-
-pub mod guard_off {
-    pub mod int {
-        pub const ATTACK_CANCEL_FRAME : i32 = 0x1050;
     }
 }
 

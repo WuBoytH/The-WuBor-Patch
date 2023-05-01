@@ -160,8 +160,6 @@
 Up Smash is no longer prioritized when attempting to perform a buffered Up Air.</p>
 <h2 id="jumping"><a class="header" href="#jumping">Jumping</a></h2>
 <p>Jumping no longer has accelerated rising momentum, matching the momentum from previous games.</p>
-<h2 id="short-hop-aerial-macro"><a class="header" href="#short-hop-aerial-macro">Short Hop Aerial Macro</a></h2>
-<p>No longer forces a short hop. Release the jump button to perform a Short Hop, or hold it to Full Hop.</p>
 <h2 id="shield"><a class="header" href="#shield">Shield</a></h2>
 <ul>
 <li>It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).</li>
@@ -258,10 +256,35 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 </div></datatable>
 <p>This means an immediate ledge grab, from something like a ledge trump for example, at 0% will give you 30 invulnerable frames to work with. At maximum, from being off stage for 5 seconds and being at 0%, you will have 60 invulnerable frames to work with. While this seems like a lot, this scenario is very unlikely.</p>
 <p>On the other hand, being at around 120% and immediately grabbing the ledge will give the minimum 11 frames of invulnerability, which should be enough to go for an immediate edge guard, but not much else.</p>
+<h2 id="stale-move-negation"><a class="header" href="#stale-move-negation">Stale-Move Negation</a></h2>
+<p>Staling has been overhauled. The queue has been effectively shortened from 9 to 7, Freshness Bonus was removed, and many values have been reworked.<br>
+The values shown in the following table are multipliers to the move's base damage that get added during damage calculation.<br>
+If a move is in multiple places in the Stale Move list, all slots are added together.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Stale Move Slot</th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">0 (Freshness Bonus)</td><td style="text-align: left">+ 0.05x</td><td style="text-align: left">+ 0.0x</td></tr>
+<tr><td style="text-align: left">1</td><td style="text-align: left">- 0.09x</td><td style="text-align: left">- 0.125x</td></tr>
+<tr><td style="text-align: left">2</td><td style="text-align: left">- 0.08545x</td><td style="text-align: left">- 0.1x</td></tr>
+<tr><td style="text-align: left">3</td><td style="text-align: left">- 0.07635x</td><td style="text-align: left">- 0.075x</td></tr>
+<tr><td style="text-align: left">4</td><td style="text-align: left">- 0.0679x</td><td style="text-align: left">- 0.05x</td></tr>
+<tr><td style="text-align: left">5</td><td style="text-align: left">- 0.05945x</td><td style="text-align: left">- 0.05x</td></tr>
+<tr><td style="text-align: left">6</td><td style="text-align: left">- 0.05053x</td><td style="text-align: left">- 0.05x</td></tr>
+<tr><td style="text-align: left">7</td><td style="text-align: left">- 0.04255x</td><td style="text-align: left">- 0.05x</td></tr>
+<tr><td style="text-align: left">8</td><td style="text-align: left">- 0.03345x</td><td style="text-align: left">- 0.0x</td></tr>
+<tr><td style="text-align: left">9</td><td style="text-align: left">- 0.025x</td><td style="text-align: left">- 0.0x</td></tr>
+</tbody></table>
+</div></datatable>
+<h2 id="rage"><a class="header" href="#rage">Rage</a></h2>
+<p>Removed.</p>
+<h2 id="attack-canceling"><a class="header" href="#attack-canceling">Attack Canceling</a></h2>
+<p>Removed.</p>
 <h2 id="jab"><a class="header" href="#jab">Jab</a></h2>
 <p>Only Neutral Attack inputs will be valid when performing Jab combos. Pressing Tilts, Smash attacks, etc. will not count as a Jab input.</p>
 <h2 id="aerials"><a class="header" href="#aerials">Aerials</a></h2>
-<p>Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did not connect with anything. This does not apply to moves that only generate projectiles. For example:</p>
+<ul>
+<li>Pressing Jump and Attack at the same time no longer forces a short hop aerial.</li>
+<li>Short Hop Aerials no longer deal less damage than usual.</li>
+<li>Aerial Landing Lag is increased by 4 frames if you generated a hitbox and did not connect with anything. This does not apply to moves that only generate projectiles. For example:
 <ul>
 <li>Mario presses Neutral Air.
 <ul>
@@ -273,6 +296,8 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>Mega Man presses Up Air.
 <ul>
 <li>Because Mega Man does not generate a hitbox that's directly connected to him, he will always take 20 frames of landing lag.</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -33,6 +33,7 @@ No longer forces a short hop. Release the jump button to perform a Short Hop, or
 * Shield Pushback was also increased by roughly 1.3x.
   * Shield Pushback while Parrying was reduced to 0.
 * Shield Release frames were reduced from 11 frames to 5.
+* It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).
 
 ## Out-of-Shield
 Out-of-Shield options have been significantly changed.

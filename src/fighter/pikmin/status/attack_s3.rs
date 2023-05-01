@@ -46,7 +46,7 @@ unsafe extern "C" fn pikmin_attacks3_main_loop(fighter: &mut L2CFighterCommon) -
             }
         }
         if 1 == jump_attack_frame {
-            if fighter.global_table[IS_STOP].get_bool()
+            if !fighter.global_table[IS_STOP].get_bool()
             && WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND) > 0 {
                 let log = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
                 FighterStatusModuleImpl::reset_log_action_info(fighter.module_accessor, log);

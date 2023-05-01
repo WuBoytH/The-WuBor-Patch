@@ -12,17 +12,17 @@ pub const STATUS_KIND_INTERRUPT:           i32 = 0x9;
 pub const PREV_STATUS_KIND:                i32 = 0xA;
 pub const STATUS_KIND:                     i32 = 0xB;
 pub const STATUS_COUNT:                    i32 = 0xC;
- 
+
 pub const STATUS_FRAME:                    i32 = 0xE;
 pub const STATUS_FRAME_NO_INTERP:          i32 = 0xF;
- 
+
 pub const SUB_STATUS3:                     i32 = 0x13;
 pub const SUB_STATUS2:                     i32 = 0x14;
 pub const SUB_STATUS:                      i32 = 0x15;
 pub const SITUATION_KIND:                  i32 = 0x16;
 pub const PREV_SITUATION_KIND:             i32 = 0x17;
 pub const PREV_STATUS_FRAME:               i32 = 0x18;
- 
+
 pub const STICK_X:                         i32 = 0x1A;
 pub const STICK_Y:                         i32 = 0x1B;
 pub const FLICK_X:                         i32 = 0x1C;

@@ -612,7 +612,6 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
         return true.into();
     }
 
-
     if fighter.sub_transition_group_check_special_command().get_bool() {
         return 1.into();
     }

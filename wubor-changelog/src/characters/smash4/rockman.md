@@ -102,7 +102,7 @@ Up Angle: Mega Punt
 
 FAF: 54
 
-Up Angle: Mega Bunt
+Down Angle: Mega Bunt
 
 <datatable>
 

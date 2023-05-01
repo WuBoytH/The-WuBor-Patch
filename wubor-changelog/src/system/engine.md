@@ -134,6 +134,10 @@ If a move is in multiple places in the Stale Move list, all slots are added toge
 
 </datatable>
 
+## 1v1 Damage Multiplier
+
+Removed.
+
 ## Rage
 
 Removed.

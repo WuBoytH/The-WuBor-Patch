@@ -17,7 +17,7 @@
 ### Normals
 
 #### Jabs - Mega Combination
-<ovhl>Since Mega Buster got moves to Neutral Special, Mega Man has a new set of jabs.</ovhl>
+<ovhl>Since Mega Buster got moved to Neutral Special, Mega Man has a new set of jabs.</ovhl>
 
 Jab 1: Rock Corkscrew <br>
 (Inner/Outer), if applicable

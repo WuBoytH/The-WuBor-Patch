@@ -27,12 +27,22 @@ No longer forces a short hop. Release the jump button to perform a Short Hop, or
 ## Shield
 
 * It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
-* You can no longer directly use Up Special while in Shield.
 * Parrying has been moved to Shield Startup instead of Shield Release.
 * The Parry window was reduced from 5 to 3 frames.
   * These two changes should make it possible, but difficult to parry multi-hit moves, as many slower multi-hits will require manual represses of Shield.
 * Shield Pushback was also increased by roughly 1.3x.
   * Shield Pushback while Parrying was reduced to 0.
+* Shield Release frames were reduced from 11 frames to 5.
+* It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).
+
+## Out-of-Shield
+Out-of-Shield options have been significantly changed.
+
+* You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
+  * Spotdodges and Rolls can still be directly performed.
+  * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.
+* Using the C-Stick will drop shield and perform whatever the C-Stick is bound to.
+  * Performing angled Tilts or Smash Attacks will require moving the left stick up or down after inputting the C-Stick horizontally.
 
 ## Grab
 

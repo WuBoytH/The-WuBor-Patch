@@ -2,7 +2,7 @@
 
 ## Air Dash
 
-Directional Air Dodging is now Air Dashing. They have no intangibility, are cancellable into attacks on frame 15, and are fully actionable on frame 30. Vertical Air Dash distance is significantly less than horizontal Air Dash distance.
+Directional Air Dodging is now Air Dashing. They have no intangibility, are cancellable into attacks on frame 15, and are fully actionable on frame 30. Vertical Air Dash distance is significantly less than horizontal Air Dash distance. Landing with an Air Dash has 7 frames of Landing Lag.
 
 Air Dashes are grouped into “tiers”, with each tier affecting Air Dash distance. A character's Air Dash Tier is listed alongside their changelist.
 

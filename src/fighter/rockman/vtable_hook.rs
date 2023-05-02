@@ -280,6 +280,9 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x10839b8).nop();
     skyline::patching::Patch::in_text(0x10839cc).nop();
 
+    // Patches which status to compare to for Metal Blade.
+    skyline::patching::Patch::in_text(0x1080264).data(0x7107741F);
+
     skyline::install_hooks!(
         rockman_vtable_func,
         rockman_do_leafshield_things_disable,

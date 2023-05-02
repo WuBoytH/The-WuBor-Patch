@@ -167,10 +167,10 @@ Acceleration: 0.07 > 0.1
 
 <datatable>
 
-| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth | Rehit Rate |
-|:--------------- |:------ |:----- |:-------------- |:---------------- |:---------- |
-| 1 - 29          | 0.75   | 367   | N/A            | N/A              | 3          |
-| 30+             | 4      | 92    | 90             | 50               | 0          |
+| Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth | Rehit Rate | Blockstun Multiplier |
+|:--------------- |:------ |:----- |:-------------- |:---------------- |:---------- |:-------------------- |
+| 1 - 29          | 0.75   | 367   | N/A            | N/A              | 3          | 0.5x                 |
+| 30+             | 4      | 92    | 90             | 50               | 0          | 0.5x                 |
 
 </datatable>
 

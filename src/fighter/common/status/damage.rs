@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 use crate::imports::status_imports::*;
 use super::super::param;
 
@@ -166,7 +168,7 @@ unsafe fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32,
     fighter.lerp((1.0).into(), (angle_rate * 0.01).into(), ratio.into()).get_f32()
 }
 
-#[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
 unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, arg2: L2CValue, arg3: L2CValue) -> L2CValue {
     // <WuBor>
     ShakeModule::stop(fighter.module_accessor);
@@ -174,12 +176,18 @@ unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterComm
     original!()(fighter, arg2, arg3)
 }
 
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusDamage__requestVectorAdjustEffect)]
+unsafe fn fighterstatusdamage__requestvectoradjusteffect(_fighter: &mut L2CFighterCommon, _arg1: L2CValue, _arg2: L2CValue, _arg3: L2CValue, _arg4: L2CValue, _arg5: L2CValue, _arg6: L2CValue,) {
+    // nothing lmao
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_damage,
             ftstatusuniqprocessdamage_init_common,
-            fighterstatusuniqprocessdamage_leave_stop
+            fighterstatusuniqprocessdamage_leave_stop,
+            fighterstatusdamage__requestvectoradjusteffect
         );
     }
 }

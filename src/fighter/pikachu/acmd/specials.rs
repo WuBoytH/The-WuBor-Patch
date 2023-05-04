@@ -196,7 +196,6 @@ unsafe fn pikachu_speciallw_eff(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("pikachu_elec"), false, false);
         macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pikachu_kaminari_hit2"), Hash40::new("top"), 0, -2, 0, 0, 90, 0, 0.7, true);
-        macros::EFFECT_FOLLOW_NO_STOP(fighter, Hash40::new("pikachu_kaminari_hit"), Hash40::new("top"), 0, -5, 0, 0, 90, 0, 0.7, true);
     }
     for _ in 0..4 {
         if macros::is_excute(fighter) {
@@ -215,7 +214,6 @@ unsafe fn pikachu_speciallw_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 46.0);
     if macros::is_excute(fighter) {
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("pikachu_kaminari_hit2"), true, true);
-        macros::EFFECT_OFF_KIND(fighter, Hash40::new("pikachu_kaminari_hit"), true, true);
     }
 }
 

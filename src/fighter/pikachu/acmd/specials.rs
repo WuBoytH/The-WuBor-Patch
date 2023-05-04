@@ -169,14 +169,11 @@ unsafe fn pikachu_speciallw(fighter: &mut L2CAgentBase) {
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_CLOUD, false, -1);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     }
-    macros::FT_MOTION_RATE(fighter, 24.0 / 16.0);
-    frame(fighter.lua_state_agent, 35.0);
+    frame(fighter.lua_state_agent, 36.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
     }
-    frame(fighter.lua_state_agent, 46.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 69.0);
+    frame(fighter.lua_state_agent, 67.0);
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }

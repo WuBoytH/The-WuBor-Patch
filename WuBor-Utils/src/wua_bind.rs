@@ -734,6 +734,18 @@ pub mod MiscModule {
             macros::FT_MOTION_RATE(fighter, 1.0);
         }
     }
+
+    #[inline(always)]
+    pub unsafe fn calc_motion_rate_from_end_frame(fighter: &mut L2CAgentBase, current_frame: f32, adjust_frame: f32) {
+        let end_frame = MotionModule::end_frame(fighter.module_accessor);
+        let adjusted_frame = end_frame - current_frame;
+        if adjusted_frame > 0.0
+        && adjusted_frame + adjust_frame > 0.0 {
+            macros::FT_MOTION_RATE(fighter, (adjusted_frame + adjust_frame) / adjusted_frame);
+            sv_animcmd::frame(fighter.lua_state_agent, end_frame);
+            macros::FT_MOTION_RATE(fighter, 1.0);
+        }
+    }
     
     #[skyline::from_offset(0x696700)]
     pub fn call_critical(

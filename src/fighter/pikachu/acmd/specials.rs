@@ -121,6 +121,29 @@ unsafe fn pikachu_dengekidama_regular(weapon: &mut L2CAgentBase) {
     }
 }
 
+// Actually Side Speceial Lmao
+
+#[acmd_script( agent = "pikachu", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
+unsafe fn pikachu_specialhistart(fighter: &mut L2CAgentBase) {
+    MiscModule::calc_motion_rate_from_end_frame(fighter, 0.0, 4.0);
+}
+
+#[acmd_script( agent = "pikachu", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
+unsafe fn pikachu_specialhi1(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("neck"), 2.0, 70, 50, 0, 20, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+}
+
+#[acmd_script( agent = "pikachu", scripts = [ "game_specialhi2", "game_specialairhi2" ], category = ACMD_GAME, low_priority )]
+unsafe fn pikachu_specialhi2(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        macros::ATTACK(fighter, 0, 0, Hash40::new("neck"), 3.0, 70, 150, 0, 20, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+}
+
 #[acmd_script( agent = "pikachu", script = "game_speciallwstrike", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_speciallwstrike(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 10.0);
@@ -228,6 +251,9 @@ pub fn install() {
     install_acmd_scripts!(
         pikachu_specialn, pikachu_specialn_eff, pikachu_specialairn_eff, pikachu_specialn_snd, pikachu_specialn_exp,
         pikachu_dengekidama_regular,
+        pikachu_specialhistart,
+        pikachu_specialhi1,
+        pikachu_specialhi2,
         pikachu_speciallwstrike, pikachu_speciallwstrike_eff, pikachu_speciallwstrike_snd, pikachu_speciallwstrike_exp
     );
 }

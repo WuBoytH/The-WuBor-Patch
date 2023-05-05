@@ -164,12 +164,12 @@ unsafe fn pikachu_speciallw(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 368, 60, 0, 55, 9.0, 0.0, 3.0, 0.0, None, None, None, 0.25, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         AttackModule::set_vec_target_pos(fighter.module_accessor, 0, Hash40::new("top"), &Vector2f{x: 0.0, y: -20.0}, 6, false);
-        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_CLOUD, false, -1);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     }
     frame(fighter.lua_state_agent, 36.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_CLOUD, false, -1);
     }
     frame(fighter.lua_state_agent, 56.0);
     if macros::is_excute(fighter) {
@@ -243,7 +243,6 @@ unsafe fn pikachu_speciallw_exp(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "pikachu_cloud", script = "game_regular", category = ACMD_GAME, low_priority )]
 unsafe fn pikachu_cloud_regular(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 3.0);
     if macros::is_excute(weapon) {
         WorkModule::on_flag(weapon.module_accessor, *WEAPON_PIKACHU_CLOUD_INSTANCE_WORK_ID_FLAG_ACTIVATE_KAMINARI);
     }

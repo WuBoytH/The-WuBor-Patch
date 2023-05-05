@@ -187,7 +187,7 @@ Body Hitbox
 
 Thunderbolts
 
-The thunderbolts will begin to spawn on frame 34 regardless of if Pikachu is in hitstop.
+The thunderbolts will begin to spawn on frame 34.
 
 <datatable>
 

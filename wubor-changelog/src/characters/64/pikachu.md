@@ -181,24 +181,25 @@ Body Hitbox
 
 | Hitbox Duration | Damage |
 |:--------------- |:------ |
-| 35 - 38         | 4      |
+| 31 - 35         | 4      |
 
 </datatable>
 
 Thunderbolts
 
-The thunderbolts will begin to spawn on frame 38 regardless of if Pikachu is in hitstop.
+The thunderbolts will begin to spawn on frame 34 regardless of if Pikachu is in hitstop.
 
 <datatable>
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| 2+              | 8      | 60    | 55             | 60               |
+| 2+              | 8      | 52    | 55             | 70               |
 
 </datatable>
 
-Transitions into Special Fall after use.<br>
-Can grab ledge on frame 69+.
+Transitions into normal Fall after use.<br>
+FAF: 54
+Can grab ledge on frame 54+.
 
 #### Down Special - Iron Tail
 

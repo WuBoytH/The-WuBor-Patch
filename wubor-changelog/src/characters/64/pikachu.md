@@ -173,7 +173,7 @@ Quick Attack can only move horizontally first, but can go in any direction after
 #### Up Special - Thunder
 
 <ovhl>Pikachu now jumps up and fires Thunder straight down below him.<br>
-Pikachu has a body hitbox that attempts to send the opponent below Pikachu to set up into the thunderbolts.</ovhl>
+Pikachu has two body hitboxes that attempt to send the opponent below Pikachu to set up into the thunderbolts.</ovhl>
 
 Body Hitbox
 
@@ -181,6 +181,7 @@ Body Hitbox
 
 | Hitbox Duration | Damage |
 |:--------------- |:------ |
+| 11 - 18         | 2      |
 | 31 - 35         | 4      |
 
 </datatable>
@@ -193,13 +194,13 @@ The thunderbolts will begin to spawn on frame 34.
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| 2+              | 8      | 52    | 55             | 70               |
+| 1+              | 8      | 70    | 85             | 17               |
 
 </datatable>
 
 Transitions into normal Fall after use.<br>
 FAF: 54
-Can grab ledge on frame 54+.
+Can grab ledge before frame 18 and after frame 54.
 
 #### Down Special - Iron Tail
 
@@ -211,7 +212,7 @@ Can grab ledge on frame 54+.
 
 | Hitbox Duration | Damage | Angle  | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:------ |:-------------- |:---------------- |
-| 20              | 15     | 277/30 | 75/40          | 30/60            |
+| 20 - 22         | 15     | 277/30 | 75/40          | 30/60            |
 
 </datatable>
 

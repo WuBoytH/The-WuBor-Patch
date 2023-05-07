@@ -68,8 +68,8 @@ unsafe fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValu
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_X);
-        WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_Y);
+        // WorkModule::set_float(fighter.module_accessor, lr, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_X);
+        // WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_Y);
         0.into()
     }
     else {

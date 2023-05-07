@@ -159,14 +159,14 @@ Electro Ball also gains power the faster it travels.</ovhl>
 #### Side Special - Quick Attack
 
 <ovhl>Quick Attack has been moved to Side Special.<br>
-Quick Attack can only move horizontally first, but can go in any direction afterwards.</ovhl>
+The first Quick Attack can only be angled 20 degrees up and down, but can go in any direction afterwards.</ovhl>
 
 <datatable>
 
-|         | Startup         |
-|:------- |:--------------- |
-| Vanilla | 16              |
-| WuBor   | <nerf>20</nerf> |
+|         | Startup         | Quick Attack 2 BKB/KBG |
+|:------- |:--------------- |:---------------------- |
+| Vanilla | 16              | 20/150                 |
+| WuBor   | <nerf>20</nerf> | <ovhl>75/95</ovhl>     |
 
 </datatable>
 

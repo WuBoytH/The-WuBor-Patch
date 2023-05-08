@@ -248,9 +248,9 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
 
 pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
-    skyline::patching::Patch::in_text(0x107ea84).data(0x1400001E);
+    skyline::patching::Patch::in_text(0x107ea84).data(0x1400001Eu32);
     // Removes the check that forces the removal of Leaf Shield if you are not within certain statuses.
-    skyline::patching::Patch::in_text(0x107ff4c).data(0x14000007);
+    skyline::patching::Patch::in_text(0x107ff4c).data(0x14000007u32);
 
     // Disable's the manual checks so it can use FighterSpecializer_Rockman::is_leafshield instead.
     // Disable
@@ -281,7 +281,7 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x10839cc).nop();
 
     // Patches which status to compare to for Metal Blade.
-    skyline::patching::Patch::in_text(0x1080264).data(0x7107741F);
+    skyline::patching::Patch::in_text(0x1080264).data(0x7107741Fu32);
 
     skyline::install_hooks!(
         rockman_vtable_func,

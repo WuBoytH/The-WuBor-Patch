@@ -96,6 +96,35 @@ unsafe fn status_end_attacks3(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackHi3)]
+unsafe fn status_pre_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_3 as u32,
+        0
+    );
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_AttackHi3_Main)]
 unsafe fn status_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
@@ -141,6 +170,34 @@ unsafe fn status_end_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     }
     0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackLw3_common)]
+unsafe fn status_pre_attacklw3_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        param_1.get_i32() as u32,
+        *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_3 as u32,
+        0
+    );
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackLw3_Main)]
@@ -217,8 +274,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_attacks3_common, status_attacks3_main_param, status_end_attacks3,
-            status_attackhi3_main, status_end_attackhi3,
-            status_attacklw3_main, status_end_attacklw3
+            status_pre_attackhi3, status_attackhi3_main, status_end_attackhi3,
+            status_pre_attacklw3_common, status_attacklw3_main, status_end_attacklw3
         );
     }
 }

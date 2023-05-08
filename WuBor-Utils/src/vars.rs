@@ -679,6 +679,43 @@ pub mod simon {
     pub use super::richter::*;
 }
 
+pub mod rockman {
+    pub mod instance {
+        pub mod flag {
+            pub const CHARGE_SHOT_CHARGING : i32 = 0x0100;
+            pub const CHARGE_SHOT_PLAYED_FX : i32 = 0x0101;
+            pub const CHARGE_SHOT_RELEASE : i32 = 0x0102;
+        }
+        pub mod int {
+            pub const CHARGE_SHOT_FRAME : i32 = 0x0100;
+            pub const CHARGE_SHOT_EFF_HANDLE : i32 = 0x0101;
+            pub const CHARGE_SHOT_SND_HANDLE : i32 = 0x0102;
+            pub const CHARGE_SHOT_RELEASE_FRAME : i32 = 0x0103;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const CHARGE_SHOT_KEEP_CHARGE : i32 = 0x1100;
+        }
+        pub mod int {
+            pub const AIR_SHOOTER_NUM : i32 = 0x1100;
+        }
+    }
+}
+
+pub mod rockman_airshooter {
+    pub mod instance {
+        pub mod int {
+            pub const NUM : i32 = 0x1100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const MOVE : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod ryu {
     pub mod instance {
         pub mod flag {

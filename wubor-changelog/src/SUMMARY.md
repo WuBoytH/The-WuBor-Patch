@@ -28,7 +28,7 @@
   - [Melee Characters]()
     - [Peach](./characters/melee/peach.md)
     - [Daisy](./characters/melee/daisy.md)
-    - [Bowser](./characters/melee/bowser.md)
+    - [Bowser](./characters/melee/koopa.md)
     - [Ice Climbers](./characters/melee/iceclimbers.md)
     - [Sheik](./characters/melee/sheik.md)
     - [Zelda](./characters/melee/zelda.md)

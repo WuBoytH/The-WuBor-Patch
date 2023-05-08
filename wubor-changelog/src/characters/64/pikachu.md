@@ -113,6 +113,8 @@ Landing Lag: 13
 
 #### Down Air
 
+<nerf>The landing hitbox only appears if Down Air had a hitbox while landing.</nerf>
+
 <datatable>
 
 |         | Landing Lag     |

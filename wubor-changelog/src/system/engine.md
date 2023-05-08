@@ -150,6 +150,11 @@ Removed.
 
 Removed.
 
+## Sliding Normals
+
+All grounded normals (Jab, Tilts, Smash Attacks) will carry your momentum from your previous action.
+* The exception is Forward Smash, which will not carry momentum if performed during the initial frames of Dash.
+
 ## Jab
 
 Only Neutral Attack inputs will be valid when performing Jab combos. Pressing Tilts, Smash attacks, etc. will not count as a Jab input.

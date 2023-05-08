@@ -157,7 +157,7 @@ unsafe fn rockman_attackairb(fighter: &mut L2CAgentBase) {
 // }
 
 #[acmd_script( agent = "rockman_airshooter", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn game_regular(weapon: &mut L2CAgentBase) {
+unsafe fn rockman_airshooter_regular(weapon: &mut L2CAgentBase) {
     if macros::is_excute(weapon) {
         macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.75, 367, 100, 70, 0, 5.0, 0.0, 3.0, 0.0, None, None, None, 0.2, 0.7, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 3, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
         macros::ATK_SET_SHIELD_SETOFF_MUL(weapon, 0, 0.5);
@@ -180,6 +180,6 @@ pub fn install() {
         rockman_attackairf,
         rockman_attackairb,
         // rockman_attackairhi,
-        game_regular
+        rockman_airshooter_regular
     );
 }

@@ -1,6 +1,7 @@
 use {
     smash::{
         lua2cpp::*,
+        phx::*,
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
@@ -44,6 +45,47 @@ unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
     }
 }
 
+unsafe fn purged_handler(fighter: &mut L2CFighterCommon) {
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_REBIRTH {
+        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::PURGED);
+    }
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+        let eff = VarModule::get_int(fighter.battle_object, fighter::instance::int::PURGED_EFF_HANDLE) as u32;
+        if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            EffectModule::req_follow(
+                fighter.module_accessor,
+                Hash40::new("sys_aura_light"),
+                Hash40::new("hip"),
+                &ZERO_VECTOR,
+                &ZERO_VECTOR,
+                4.0,
+                false,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false
+            );
+            let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
+            EffectModule::set_rate(fighter.module_accessor, eff, 0.8);
+            EffectModule::set_rgb(fighter.module_accessor, eff, 0.0, 1.0, 0.0);
+            VarModule::set_int(fighter.battle_object, fighter::instance::int::PURGED_EFF_HANDLE, eff as i32);
+        }
+        VarModule::dec_int(fighter.battle_object, fighter::instance::int::PURGED_TIMER);
+        if VarModule::get_int(fighter.battle_object, fighter::instance::int::PURGED_TIMER) <= 0 {
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::PURGED);
+        }
+    }
+    else {
+        let eff = VarModule::get_int(fighter.battle_object, fighter::instance::int::PURGED_EFF_HANDLE) as u32;
+        if EffectModule::is_exist_effect(fighter.module_accessor, eff) {
+            EffectModule::kill(fighter.module_accessor, eff, false, false);
+        }
+    }
+}
+
 // Use this for general per-frame fighter-level hooks
 #[fighter_frame_callback( main )]
 fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
@@ -51,6 +93,7 @@ fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
         if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
             hit_cancel_frame_set(fighter);
             special_jump_stick_flick(fighter);
+            purged_handler(fighter);
         }
     }
 }

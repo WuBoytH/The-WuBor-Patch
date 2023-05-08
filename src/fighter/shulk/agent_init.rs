@@ -1,7 +1,7 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::{lua_bind::WorkModule, *},
+        app::*,
         lib::{lua_const::*, L2CValue}
     },
     smashline::*,
@@ -16,7 +16,6 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_SHULK {
             return;
         }
-        WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_NONE, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(speciallw_pre_generic as *const () as _));
     }
 }

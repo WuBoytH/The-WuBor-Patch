@@ -60,11 +60,17 @@ pub mod fighter {
             pub const SUPER_JUMP : i32 = 0x0007;
             // pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
             pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
+
+            pub const PURGED : i32 = 0x000A;
         }
         pub mod int {
             pub const TARGET_ID : i32 = 0x0000;
             pub const USED_GROUND_NORMALS : i32 = 0x0001;
             pub const USED_AERIALS : i32 = 0x0002;
+
+            pub const PURGED_TIMER : i32 = 0x0003;
+            pub const PURGED_EFF_HANDLE : i32 = 0x0004;
+
             // pub const CUSTOM_COMMAND_236_STEP : i32 = 0x0003;
             // pub const CUSTOM_COMMAND_236_TIMER : i32 = 0x0004;
             // pub const CUSTOM_COMMAND_214_STEP : i32 = 0x0005;
@@ -758,14 +764,6 @@ pub mod shizue {
     pub mod instance {
         pub mod flag {
             pub const FIRE_ROCKET_ANYTIME : i32 = 0x0100;
-        }
-    }
-}
-
-pub mod shulk {
-    pub mod instance {
-        pub mod float {
-            pub const BURST_COOLDOWN : i32 = 0x0100;
         }
     }
 }

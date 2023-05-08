@@ -1,5 +1,34 @@
 use crate::imports::status_imports::*;
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Attack)]
+unsafe fn status_pre_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        0,
+        *FIGHTER_POWER_UP_ATTACK_BIT_ATTACK_1 as u32,
+        0
+    );
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_status_AttackCommon)]
 unsafe fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK {
@@ -269,6 +298,7 @@ pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_attack,
             sub_status_attackcommon,
             attack_combo_none_uniq_chk_button,
             attack_combo_uniq_chk_button,

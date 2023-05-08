@@ -60,11 +60,14 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
     let guard_off_cancel_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_cancel_frame"));
     WorkModule::set_int(fighter.module_accessor, guard_off_cancel_frame, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
-    let anim_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("guard_off"), true);
-    let mut motion_rate = 1.0;
-    if 0.0 < guard_off_cancel_frame as f32
-    && 0.0 < anim_cancel_frame {
-        motion_rate = anim_cancel_frame / guard_off_cancel_frame as f32;
+    // let anim_cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new("guard_off"), true);
+    let motion_rate = 1.0;
+    // if 0.0 < guard_off_cancel_frame as f32
+    // && 0.0 < anim_cancel_frame {
+    //     motion_rate = anim_cancel_frame / guard_off_cancel_frame as f32;
+    // }
+    if VarModule::is_flag(fighter.battle_object, guard::flag::ADD_BUFFER) {
+        ControlModule::set_command_life_extend(fighter.module_accessor, guard_off_cancel_frame as u8);
     }
     let guard_off_enable_shield_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_enable_shield_frame"));
     let disable_guard_escape_frame = guard_off_cancel_frame + guard_off_enable_shield_frame;

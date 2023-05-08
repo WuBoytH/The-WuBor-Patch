@@ -32,6 +32,99 @@ unsafe fn sub_smash_hold_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackS4Start)]
+unsafe fn status_pre_attacks4start(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let kinetic = if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_DASH {
+        *FIGHTER_KINETIC_TYPE_MOTION
+    }
+    else {
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP
+    };
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        kinetic,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_4_START_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_4_START_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_ATTACK_4_START_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        0,
+        0,
+        0
+    );
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackHi4Start_common)]
+unsafe fn status_pre_attackhi4start_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        0,
+        param_1.get_i32() as u32,
+        0
+    );
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_AttackLw4Start)]
+unsafe fn status_pre_attacklw4start(fighter: &mut L2CFighterCommon) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_KEEP as u64,
+        0,
+        0,
+        0
+    );
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackS4Hold)]
 unsafe fn status_end_attacks4hold(fighter: &mut L2CFighterCommon) -> L2CValue {
     attack_4_hold(fighter);
@@ -184,6 +277,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             status_end_attackxx4start,
             sub_smash_hold_uniq,
+            status_pre_attacks4start, status_pre_attackhi4start_common, status_pre_attacklw4start,
             status_end_attacks4hold, status_end_attackhi4hold, status_end_attacklw4hold,
             status_attacks4_main, bind_address_call_status_end_attacks4, status_end_attacks4,
             status_attackhi4_main, bind_address_call_status_end_attackhi4, status_end_attackhi4,

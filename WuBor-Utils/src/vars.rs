@@ -110,6 +110,23 @@ pub mod weapon {
     }
 }
 
+pub mod appeal {
+    pub mod flag {
+        pub const HOLD : i32 = 0x1050;
+        pub const LOOP : i32 = 0x1051;
+        pub const ENABLE_ACTION : i32 = 0x1052;
+    }
+    pub mod int {
+        pub const HOLD_BUTTON : i32 = 0x1050;
+        pub const ACTION_BUTTON : i32 = 0x1051;
+        pub const RESTART_FRAME : i32 = 0x1052;
+    }
+    pub mod int64 {
+        pub const ACTION_MOT : i32 = 0x1050;
+        pub const LOOP_MOT : i32 = 0x1051;
+    }
+}
+
 pub mod attack_air {
     pub mod flag {
         pub const WHIFF : i32 = 0x1050;
@@ -129,9 +146,9 @@ pub mod attack_dash {
     }
 }
 
-pub mod dash {
+pub mod captured {
     pub mod flag {
-        pub const DISABLE_RUN : i32 = 0x1051;
+        pub const FORCE_PALM : i32 = 0x1050;
     }
 }
 
@@ -141,26 +158,15 @@ pub mod damage_fly_roll {
     }
 }
 
-pub mod captured {
+pub mod dash {
     pub mod flag {
-        pub const FORCE_PALM : i32 = 0x1050;
+        pub const DISABLE_RUN : i32 = 0x1051;
     }
 }
 
-pub mod appeal {
+pub mod guard {
     pub mod flag {
-        pub const HOLD : i32 = 0x1050;
-        pub const LOOP : i32 = 0x1051;
-        pub const ENABLE_ACTION : i32 = 0x1052;
-    }
-    pub mod int {
-        pub const HOLD_BUTTON : i32 = 0x1050;
-        pub const ACTION_BUTTON : i32 = 0x1051;
-        pub const RESTART_FRAME : i32 = 0x1052;
-    }
-    pub mod int64 {
-        pub const ACTION_MOT : i32 = 0x1050;
-        pub const LOOP_MOT : i32 = 0x1051;
+        pub const ADD_BUFFER : i32 = 0x1050;
     }
 }
 

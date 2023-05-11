@@ -129,62 +129,11 @@ unsafe fn pikachu_attackairhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_attackairlw(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-    frame(fighter.lua_state_agent, 14.0);
-    if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK);
-        macros::ATTACK(fighter, 0, 0, Hash40::new("neck"), 13.0, 270, 86, 0, 16, 5.5, 2.5, -1.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
-    }
-    frame(fighter.lua_state_agent, 16.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("neck"), 12.0, 361, 84, 0, 20, 5.7, 2.5, -1.3, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
-    }
-    wait(fighter.lua_state_agent, 11.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-        VarModule::off_flag(fighter.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK);
-    }
-    wait(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-    }
-}
-
-#[acmd_script( agent = "pikachu", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_landingairlw(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 1.0);
-    if VarModule::is_flag(fighter.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK) {
-        if macros::is_excute(fighter) {
-            macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 4.0, 361, 100, 0, 50, 4.0, 0.0, 4.0, -6.0, Some(0.0), Some(4.0), Some(6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_HEAD);
-        }
-    }
-    wait(fighter.lua_state_agent, 2.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
-    }
-}
-
-#[acmd_script( agent = "pikachu", script = "effect_landingairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn pikachu_landingairlw_eff(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        macros::LANDING_EFFECT(fighter, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        if VarModule::is_flag(fighter.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK) {
-            macros::EFFECT(fighter, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-        }
-    }
-}
-
 pub fn install() {
     install_acmd_scripts!(
         pikachu_attackairn,
         pikachu_attackairb, pikachu_attackairb_eff, pikachu_attackairb_snd, pikachu_attackairb_exp,
         pikachu_landingairb,
-        pikachu_attackairhi,
-        pikachu_attackairlw,
-        pikachu_landingairlw, pikachu_landingairlw_eff
+        pikachu_attackairhi
     );
 }

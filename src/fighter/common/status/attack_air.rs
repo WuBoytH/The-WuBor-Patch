@@ -81,6 +81,7 @@ unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CA
 #[skyline::hook(replace = L2CFighterCommon_status_pre_LandingAttackAir)]
 unsafe fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValue {
     let whiff = VarModule::is_flag(fighter.battle_object, attack_air::flag::WHIFF);
+    let enable_landing_attack = VarModule::is_flag(fighter.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK);
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -106,6 +107,7 @@ unsafe fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValu
         0
     );
     VarModule::set_flag(fighter.battle_object, attack_air::flag::WHIFF, whiff);
+    VarModule::set_flag(fighter.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK, enable_landing_attack);
     0.into()
 }
 

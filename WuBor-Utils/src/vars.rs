@@ -130,6 +130,7 @@ pub mod appeal {
 pub mod attack_air {
     pub mod flag {
         pub const WHIFF : i32 = 0x1050;
+        pub const ENABLE_LANDING_ATTACK : i32 = 0x1051;
     }
 }
 
@@ -258,14 +259,6 @@ pub mod eflame_esword {
     pub mod status {
         pub mod flag {
             pub const ENABLE_EARLY_SPIN : i32 = 0x0150;
-        }
-    }
-}
-
-pub mod elight {
-    pub mod instance {
-        pub mod flag {
-            pub const ATTACK_AIR_LW_LANDING_ATTACK : i32 = 0x0150;
         }
     }
 }

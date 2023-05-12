@@ -18,13 +18,14 @@ jobs:
       - name: Get Branch Name
         id: branch-name
         uses: tj-actions/branch-names@v6
-    outputs:
-      version: ${{ steps.plugin-version.outputs.app_version }}
-      branch: ${{ steps.branch-name.outputs.current_branch }}
+      - name: Set Outputs
+        run: |
+          echo "VERSION=${{ steps.plugin-version.outputs.app_version }}" >> "$GITHUB_ENV"
+          echo "BRANCH=${{ steps.branch-name.outputs.current_branch }}" >> "$GITHUB_ENV"
 
   package-main:
     needs: get-version
-    if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
+    if: ${{ contains(env.BRANCH, 'dev') != true }}
     runs-on: ubuntu-20.04
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
@@ -38,7 +39,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'WuBoytH/WuBor-Romfs'
-          version: 'tags/${{needs.get-version.outputs.branch}}'
+          version: 'tags/${{env.BRANCH}}'
           file: 'romfs.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (Main)
@@ -58,7 +59,7 @@ jobs:
 
   package-dev:
     needs: get-version
-    if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
+    if: ${{ contains(env.BRANCH, 'dev') }}
     runs-on: ubuntu-20.04
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
@@ -72,7 +73,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: 'WuBoytH/WuBor-Romfs'
-          version: 'tags/${{needs.get-version.outputs.branch}}'
+          version: 'tags/${{env.BRANCH}}'
           file: 'romfs.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Release NRO (Dev)
@@ -101,8 +102,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{needs.get-version.outputs.version}}
-          name: ${{needs.get-version.outputs.version}}
+          tag_name: ${{env.VERSION}}
+          name: ${{env.VERSION}}
           draft: true
           prerelease: false
           body: >
@@ -124,7 +125,7 @@ jobs:
       #   uses: dev-drprasad/delete-tag-and-release@v0.2.0
       #   with:
       #     delete_release: true
-      #     tag_name: ${{needs.get-version.outputs.version}}-dev
+      #     tag_name: ${{env.VERSION}}-dev
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
@@ -134,12 +135,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{needs.get-version.outputs.version}}-dev
-          name: ${{needs.get-version.outputs.version}}-dev
+          tag_name: ${{env.VERSION}}-dev
+          name: ${{env.VERSION}}-dev
           draft: false
           prerelease: true
           body: >
-            Nightly built off of ${{needs.get-version.outputs.version}}-dev/${{github.sha}}.
+            Nightly built off of ${{env.VERSION}}-dev/${{github.sha}}.
             [You can view the changelogs for a specific version here.](https://drive.google.com/drive/folders/1yjnSZ5ZIBclAStsjJV1ODlBnJ3FYUaoD?usp=sharing)
             These will be updated to match the most recent dev build (this one!).
             

@@ -5,9 +5,10 @@
 
 <datatable>
 
-|               | Vanilla | WuBor   |
-|:------------- |:------- |:------- |
-| Air Dash Tier | N/A     | Average |
+|               | Vanilla | WuBor             |
+|:------------- |:------- |:----------------- |
+| Air Dash Tier | N/A     | Average           |
+| Run Speed     | 2.167   | <nerf>2.02</nerf> |
 
 </datatable>
 
@@ -78,3 +79,14 @@ If this hitbox connects, Blade Beam does not spawn.</ovhl>
 Blade Beam Spawn Frame: 26<br>
 Blade Beam Speed (Ground and Air): 1.8<br>
 FAF: 48
+
+#### Down Special - Limit Charge
+
+<datatable>
+
+|         | Run Speed Multiplier |
+|:------- |:-------------------- |
+| Vanilla | 1.1x                 |
+| WuBor   | <buff>1.15x</buff>   |
+
+</datatable>

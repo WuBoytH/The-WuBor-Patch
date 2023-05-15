@@ -59,6 +59,17 @@
 
 </datatable>
 
+#### Down Tilt
+
+<datatable>
+
+|         | Hitbox Placement           |
+|:------- |:-------------------------- |
+| Vanilla | Y=1.3, Z=17.5              |
+| WuBor   | <buff>Y=1.0, Z=19.5</buff> |
+
+</datatable>
+
 #### Up Smash
 
 <datatable>

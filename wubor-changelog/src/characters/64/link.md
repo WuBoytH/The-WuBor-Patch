@@ -17,6 +17,26 @@
 
 ### Normals
 
+#### Jab 3
+
+<datatable>
+
+|         | FAF             |
+|:------- |:--------------- |
+| Vanilla | 35              |
+| WuBor   | <buff>28</buff> |
+
+</datatable>
+
+#### Dash Attack
+
+<datatable>
+ 
+|         | Damage          |Angle            | KBG             | BKB             |
+|:------- |:--------------- |:--------------- |:--------------- |:--------------- |
+| Vanilla | 14/13/12        | 45/50/55        | 85/77           | 85/70           |
+| WuBor   | <buff>14</buff> | <ovhl>50</ovhl> | <buff>85</buff> | <buff>85</buff> |
+
 #### Forward Tilt
 
 <datatable>
@@ -39,6 +59,15 @@
 
 </datatable>
 
+#### Up Smash
+
+<datatable>
+
+|         | Startup        | Damage (Final Hit) |
+|:------- |:-------------- |:------------------ |
+| Vanilla | 10             | 11/10/9            |
+| WuBor   | <buff>8</buff> | <buff>10</buff>    |
+
 ### Aerials
 
 #### Neutral Air
@@ -49,6 +78,17 @@
 |:------- |:-------------- |
 | Vanilla | 6              |
 | WuBor   | <nerf>7</nerf> |
+
+</datatable>
+
+#### Forward Air
+
+<datatable>
+
+|         | Startup         |
+|:------- |:--------------- |
+| Vanilla | 16              |
+| WuBor   | <buff>14</buff> |
 
 </datatable>
 

@@ -30,6 +30,14 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
   * Shield Pushback while Parrying was reduced to 0.
 * Shield Release frames were reduced from 11 frames to 5.
 * It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).
+* The natural Shield HP decrease was increased from 0.15 HP/frame to 0.18 HP/frame.
+* Shields can no longer be tilted.
+* The Shield + B or Shield + Shield lock macro no longer exists.
+* Shield no longer shrinks when it loses HP, instead turning more transparent while remaining the same size.
+  * Yoshi's Shield still fades to black, but it stops before turning black completely.
+* The smoke emitted from Shield no longer exists...
+  * ... except when Shield HP reaches approximately 40%, the smoke returns.
+* It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
 
 ## Out-of-Shield
 Out-of-Shield options have been significantly changed.

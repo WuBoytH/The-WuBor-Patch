@@ -270,7 +270,7 @@ unsafe fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighter
     if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
         let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
         let ratio_sub = shield_hp / shield_low_hp;
-        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.0, 1.0);
+        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.02, 1.0);
         EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
     }
     if shield_hp <= shield_low_hp
@@ -297,7 +297,7 @@ unsafe fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _
     if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
         let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
         let ratio_sub = shield_hp / shield_low_hp;
-        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.0, 1.0);
+        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.02, 1.0);
         EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
     }
     if shield_hp <= shield_low_hp

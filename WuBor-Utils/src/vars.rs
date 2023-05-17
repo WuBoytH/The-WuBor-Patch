@@ -165,6 +165,13 @@ pub mod dash {
     }
 }
 
+pub mod escape_air {
+    pub mod flag {
+        pub const SLIDE_ENABLE_ATTACK : i32 = 0x1050;
+        pub const SLIDE_ENABLE_CANCEL : i32 = 0x1051;
+    }
+}
+
 pub mod guard {
     pub mod flag {
         pub const ADD_BUFFER : i32 = 0x1050;

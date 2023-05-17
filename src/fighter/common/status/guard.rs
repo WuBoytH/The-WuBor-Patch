@@ -68,7 +68,8 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
     let can_act = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME) <= 0;
-    let check_guard_hold = fighter.check_guard_hold().get_bool();
+    // let check_guard_hold = fighter.check_guard_hold().get_bool();
+    let check_guard_hold = false;
     // if !check_guard_hold {
     //     if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
     //         return true.into();

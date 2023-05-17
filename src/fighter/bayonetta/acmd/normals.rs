@@ -85,6 +85,7 @@ unsafe fn bayonetta_attack100end(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_attacks32(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
+        AttackModule::clear_inflict_kind_status(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -123,6 +124,7 @@ unsafe fn bayonetta_attacks32(fighter: &mut L2CAgentBase) {
 unsafe fn bayonetta_attacks33(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         VarModule::off_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL);
+        AttackModule::clear_inflict_kind_status(fighter.module_accessor);
     }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {

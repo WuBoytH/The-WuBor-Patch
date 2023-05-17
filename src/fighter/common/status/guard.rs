@@ -5,6 +5,7 @@ use crate::imports::status_imports::*;
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Guard)]
 unsafe fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID);
+    let shield_low_smoke = VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE);
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,6 +31,7 @@ unsafe fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
         0
     );
     VarModule::set_int(fighter.battle_object, guard::int::SHIELD_EFF_ID, shield_eff);
+    VarModule::set_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE, shield_low_smoke);
     0.into()
 }
 

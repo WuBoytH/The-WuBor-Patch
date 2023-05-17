@@ -1,5 +1,36 @@
 use crate::imports::status_imports::*;
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_GuardOff)]
+unsafe fn status_pre_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let buffer = VarModule::is_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_OFF_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_OFF_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_OFF_FLOAT,
+        0
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        0,
+        *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY as u32,
+        0,
+        0
+    );
+    VarModule::set_flag(fighter.battle_object, guard::flag::ADD_BUFFER, buffer);
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]
 unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
     // Original, except we're using NONE OF IT HAHAHAHAHHAHA
@@ -121,6 +152,7 @@ unsafe fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_guardoff,
             sub_ftstatusuniqprocessguardoff_initstatus,
             status_guardoff_common,
             sub_guard_off_uniq,

@@ -1,4 +1,37 @@
+#![allow(non_snake_case)]
+
 use crate::imports::status_imports::*;
+
+#[skyline::hook(replace = L2CFighterCommon_status_pre_Guard)]
+unsafe fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID);
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_FLOAT,
+        *FS_SUCCEEDS_KEEP_VISIBILITY
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        0,
+        *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY as u32,
+        0,
+        0
+    );
+    VarModule::set_int(fighter.battle_object, guard::int::SHIELD_EFF_ID, shield_eff);
+    0.into()
+}
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont_pre)]
 unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
@@ -163,6 +196,26 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]
+unsafe fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+    // Shield Breaks no longer happen if you just hold Shield
+    // let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+    // if shield_hp < 0.0 {
+    //     fighter.change_status(FIGHTER_STATUS_KIND_SHIELD_BREAK_FLY.into(), false.into());
+    //     return true.into();
+    // }
+    if ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
+        let min_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
+        if min_frame <= 0 {
+            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+                fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), true.into());
+                return true.into();
+            }
+        }
+    }
+    false.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_check_guard_attack_special_hi)]
 unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_hold: L2CValue) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
@@ -204,12 +257,67 @@ unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_ho
     false.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardFunc_updateShield)]
+unsafe fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighterCommon, _param_1: L2CValue) {
+    // There used to be code here for shield tilting, but nope not anymore
+    let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+    let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
+    let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+    let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
+    let shield_low_hp = shield_max * 0.4;
+    if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
+        let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
+        let ratio_sub = shield_hp / shield_low_hp;
+        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.0, 1.0);
+        EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+    }
+    if shield_hp <= shield_low_hp
+    && !VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE) {
+        macros::EFFECT_FLW_POS(fighter, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
+        VarModule::on_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE);
+    }
+}
+
+#[skyline::hook(replace = L2CFighterCommon_bind_address_call_FighterStatusGuard__set_shield_scale)]
+unsafe fn bind_address_call_fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent, param_1: L2CValue) -> L2CValue {
+    fighter.FighterStatusGuard__set_shield_scale(param_1)
+}
+
+#[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__set_shield_scale)]
+unsafe fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
+    // There used to be code here for shield tilting, but nope not anymore
+    let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+    let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+    ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
+    let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+    let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
+    let shield_low_hp = shield_max * 0.4;
+    if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
+        let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
+        let ratio_sub = shield_hp / shield_low_hp;
+        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.0, 1.0);
+        EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+    }
+    if shield_hp <= shield_low_hp
+    && !VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE) {
+        macros::EFFECT_FLW_POS(fighter, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
+        VarModule::on_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE);
+    }
+    0.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_guard,
             sub_guard_cont_pre,
             sub_guard_cont,
-            check_guard_attack_special_hi
+            status_guard_main_common,
+            check_guard_attack_special_hi,
+            sub_ftstatusuniqprocessguardfunc_updateshield,
+            bind_address_call_fighterstatusguard__set_shield_scale,
+            fighterstatusguard__set_shield_scale
         );
     }
 }

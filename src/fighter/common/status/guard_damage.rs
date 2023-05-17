@@ -1,6 +1,66 @@
 use crate::imports::status_imports::*;
 use super::super::param;
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_GuardDamage)]
+unsafe fn status_pre_guarddamage(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID);
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        *FIGHTER_KINETIC_TYPE_MOTION,
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_DAMAGE_FLAG,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_DAMAGE_INT,
+        *FIGHTER_STATUS_WORK_KEEP_FLAG_GUARD_DAMAGE_FLOAT,
+        *FS_SUCCEEDS_KEEP_VISIBILITY
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        false,
+        *FIGHTER_TREADED_KIND_NO_REAC,
+        false,
+        false,
+        false,
+        0,
+        *FIGHTER_STATUS_ATTR_DISABLE_SHIELD_RECOVERY as u32,
+        0,
+        0
+    );
+    VarModule::set_int(fighter.battle_object, guard::int::SHIELD_EFF_ID, shield_eff);
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus)]
+unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+    fighter.sub_ftStatusUniqProcessGuardDamage_initStatus_Inner();
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        let prev_shield_scale_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME);
+        let shield_hp_const = if 0 < prev_shield_scale_frame {
+            *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD
+        }
+        else {
+            *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD
+        };
+        let shield_hp = WorkModule::get_float(fighter.module_accessor, shield_hp_const);
+        let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
+        let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+        if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
+            let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
+            let shield_low_hp = shield_max * 0.4;
+            let ratio = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
+            let alpha = 0.85 * ratio.clamp(0.0, 1.0) + 0.15;
+            EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+        }
+    }
+    else {
+        fighter.FighterStatusGuard__set_just_shield_scale();
+    }
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
 unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
     let shield_power = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER);
@@ -177,8 +237,13 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
         if param_1.get_bool() {
             let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
             let prev_shield_scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
-            let shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
-            let shield_scale = fighter.FighterStatusGuard__calc_shield_scale(shield.into()).get_f32();
+            let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+            let shield_scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+            let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
+            let shield_low_hp = shield_max * 0.4;
+            let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
+            let ratio_sub = shield_hp / shield_low_hp;
+            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.0, 1.0);
             EffectModule::req_follow(
                 fighter.module_accessor,
                 Hash40::new_raw(0x12c9377e3d),
@@ -198,7 +263,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
             let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
             let team_color = FighterUtil::get_team_color(boma);
             let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("shield_effect_color"));
-            EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+            EffectModule::set_alpha_last(fighter.module_accessor, alpha);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
                 Hash40::new_raw(0x12be304eab),
@@ -216,6 +281,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
                 true
             );
             EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+            EffectModule::set_alpha_last(fighter.module_accessor, alpha);
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
@@ -234,6 +300,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
                 true
             );
             EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
+            EffectModule::set_alpha_last(fighter.module_accessor, alpha);
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
             if handle != 0 {
                 let diff = (shield_scale / prev_shield_scale) * 0.1;
@@ -381,13 +448,41 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_execStatus_common)]
+unsafe fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighter: &mut L2CFighterCommon) {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+        let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
+        let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+        ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
+        let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+        let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
+        let shield_low_hp = shield_max * 0.4;
+        if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
+            let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
+            let ratio_sub = shield_hp / shield_low_hp;
+            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.0, 1.0);
+            EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+        }
+        if shield_hp <= shield_low_hp
+        && !VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE) {
+            macros::EFFECT_FLW_POS(fighter, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
+            VarModule::on_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE);
+        }
+    }
+    else {
+        fighter.FighterStatusGuard__set_just_shield_scale();
+    }
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_guarddamage,
             sub_ftstatusuniqprocessguarddamage_initstatus_inner,
             status_guarddamage_common,
             sub_guarddamageuniq,
-            status_guarddamage_main
+            status_guarddamage_main,
+            sub_ftstatusuniqprocessguarddamage_execstatus_common
         );
     }
 }

@@ -20,7 +20,7 @@ pub mod status_imports {
             lua2cpp::*,
             hash40,
             phx::*,
-            app::{lua_bind::*, *},
+            app::{lua_bind::*, sv_animcmd::*, *},
             lib::{lua_const::*, L2CValue, L2CAgent}
         },
         smash_script::*,

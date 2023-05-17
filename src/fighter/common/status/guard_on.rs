@@ -113,12 +113,36 @@ unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1
     if status != *FIGHTER_STATUS_KIND_GUARD
     && (status != *FIGHTER_STATUS_KIND_GUARD_DAMAGE
     || WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD)) {
-        effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0xafae75f05), true, true);
-        effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new_raw(0x10da0b43c8), true, true);
+        effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield"), true, true);
+        effect!(fighter, MA_MSC_CMD_EFFECT_EFFECT_OFF_KIND, Hash40::new("sys_shield_smoke"), true, true);
     }
     else if !param_1.get_bool() {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
     }
+}
+
+#[skyline::hook(replace = L2CFighterAnimcmdEffectCommon_effect_GuardOnCommon)]
+unsafe fn effect_guardoncommon(fighter: &mut L2CFighterAnimcmdEffectCommon) -> L2CValue {
+    let agent = &mut fighter.agent;
+    agent.clear_lua_stack();
+    is_excute(agent.lua_state_agent);
+    let excute = agent.pop_lua_stack(1).get_bool();
+    if excute {
+        // agent.clear_lua_stack();
+        // lua_args!(agent, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
+        // EFFECT_FLW_POS(agent.lua_state_agent);
+        let color = {
+            agent.clear_lua_stack();
+            lua_args!(agent, FT_VAR_INT_TEAM_COLOR);
+            get_value_int(agent.lua_state_agent, *FT_VAR_INT_TEAM_COLOR)
+        };
+        agent.clear_lua_stack();
+        lua_args!(agent, Hash40::new("sys_shield"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.1, false, 0, color);
+        EFFECT_FOLLOW_arg12(agent.lua_state_agent);
+        let eff_id = EffectModule::get_last_handle(agent.module_accessor) as u32;
+        VarModule::set_int(agent.battle_object, guard::int::SHIELD_EFF_ID, eff_id as i32);
+    }
+    0.into()
 }
 
 fn nro_hook(info: &skyline::nro::NroInfo) {
@@ -127,7 +151,8 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             sub_ftstatusuniqprocessguardon_initstatus_common,
             sub_guard_on_uniq,
             sub_status_end_guard_on_common,
-            sub_status_guard_on_common
+            sub_status_guard_on_common,
+            effect_guardoncommon
         );
     }
 }

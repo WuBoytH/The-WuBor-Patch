@@ -245,7 +245,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
             let shield_low_hp = shield_max * 0.4;
             let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
             let ratio_sub = shield_hp / shield_low_hp;
-            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.02, 1.0);
+            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + (0.15 * ratio_sub).clamp(0.02, 0.15);
             EffectModule::req_follow(
                 fighter.module_accessor,
                 Hash40::new_raw(0x12c9377e3d),
@@ -462,7 +462,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighter: &mut L2C
         if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
             let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
             let ratio_sub = shield_hp / shield_low_hp;
-            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + 0.15 * ratio_sub.clamp(0.02, 1.0);
+            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + (0.15 * ratio_sub).clamp(0.02, 0.15);
             EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
         }
         if shield_hp <= shield_low_hp

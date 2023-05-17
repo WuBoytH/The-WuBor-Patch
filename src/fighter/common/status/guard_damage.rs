@@ -241,11 +241,6 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
             let prev_shield_scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
             let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
             let shield_scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
-            let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
-            let shield_low_hp = shield_max * 0.4;
-            let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
-            let ratio_sub = shield_hp / shield_low_hp;
-            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + (0.15 * ratio_sub).clamp(0.02, 0.15);
             EffectModule::req_follow(
                 fighter.module_accessor,
                 Hash40::new_raw(0x12c9377e3d),
@@ -265,7 +260,6 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
             let boma = fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut BattleObjectModuleAccessor;
             let team_color = FighterUtil::get_team_color(boma);
             let effect_team_color = FighterUtil::get_effect_team_color(EColorKind(team_color as i32), Hash40::new("shield_effect_color"));
-            EffectModule::set_alpha_last(fighter.module_accessor, alpha);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
                 Hash40::new_raw(0x12be304eab),
@@ -283,7 +277,6 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
                 true
             );
             EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
-            EffectModule::set_alpha_last(fighter.module_accessor, alpha);
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE2_EFFECT_HANDLE);
             let handle = EffectModule::req_follow(
                 fighter.module_accessor,
@@ -302,7 +295,6 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
                 true
             );
             EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
-            EffectModule::set_alpha_last(fighter.module_accessor, alpha);
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
             if handle != 0 {
                 let diff = (shield_scale / prev_shield_scale) * 0.1;

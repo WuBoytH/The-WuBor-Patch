@@ -50,43 +50,16 @@ jobs:
         with:
           name: The_WuBor_Patch_PR
           path: build/
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJSON(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJSON(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJSON(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJSON(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJSON(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
       - name: Comment PR Artifact Link
         uses: actions/github-script@v6.4.1
         with:
           script: |
             const {owner, repo} = context.repo;
-            const run_id = ${{github.events.push.commits.id}};
+            const run_id = ${{github.events.pull_request.id}};
             const issue_number = ${{github.event.number}};
-            const data = await github.rest.actions.listWorkflowRunArtifacts({owner, repo, run_id});
-            if (!data.artifacts) {
-              return core.error('No artifacts found');
-            }
+            const {data: {artifacts}} = await github.rest.actions.listWorkflowRunArtifacts({owner, repo, run_id});
             let body = 'Download the artifacts for this pull request:\n';
-            for (const art of data.artifacts) {
+            for (const art of artifacts) {
               if (art.name == 'The_WuBor_Patch_PR') {
                 body += '\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)';
               }

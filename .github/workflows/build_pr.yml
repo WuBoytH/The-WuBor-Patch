@@ -11,56 +11,52 @@ jobs:
     container:
       image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
-      - name: Setup Python
-        uses: actions/setup-python@v4.3.0
-        with:
-          python-version: '3.9'
-      - uses: actions/checkout@v3.1.0
-      - name: Get Branch Name
-        id: branch-name
-        uses: tj-actions/branch-names@v6
-      - name: Download ROMFS
-        id: pr-romfs
-        continue-on-error: true
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'WuBoytH/WuBor-Romfs'
-          version: 'tags/${{ steps.branch-name.outputs.current_branch }}'
-          file: 'romfs.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Download ROMFS (Backup)
-        if: steps.pr-romfs.outcome == 'failure'
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'WuBoytH/WuBor-Romfs'
-          version: 'tags/dev'
-          file: 'romfs.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Release NRO (PR)
-        run: |
-          cargo skyline build --release --features pr
-        env:
-          HOME: /root
-      - name: Setup Build Directory (PR)
-        shell: bash
-        run: |
-          cd scripts && python3 create_pr.py && cd ..
-      - name: Upload Plugin Artifact (PR)
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: The_WuBor_Patch_PR
-          path: build/
+      # - name: Setup Python
+      #   uses: actions/setup-python@v4.3.0
+      #   with:
+      #     python-version: '3.9'
+      # - uses: actions/checkout@v3.1.0
+      # - name: Get Branch Name
+      #   id: branch-name
+      #   uses: tj-actions/branch-names@v6
+      # - name: Download ROMFS
+      #   id: pr-romfs
+      #   continue-on-error: true
+      #   uses: dsaltares/fetch-gh-release-asset@master
+      #   with:
+      #     repo: 'WuBoytH/WuBor-Romfs'
+      #     version: 'tags/${{ steps.branch-name.outputs.current_branch }}'
+      #     file: 'romfs.zip'
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Download ROMFS (Backup)
+      #   if: steps.pr-romfs.outcome == 'failure'
+      #   uses: dsaltares/fetch-gh-release-asset@master
+      #   with:
+      #     repo: 'WuBoytH/WuBor-Romfs'
+      #     version: 'tags/dev'
+      #     file: 'romfs.zip'
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Build Release NRO (PR)
+      #   run: |
+      #     cargo skyline build --release --features pr
+      #   env:
+      #     HOME: /root
+      # - name: Setup Build Directory (PR)
+      #   shell: bash
+      #   run: |
+      #     cd scripts && python3 create_pr.py && cd ..
+      # - name: Upload Plugin Artifact (PR)
+      #   uses: actions/upload-artifact@v3.1.0
+      #   with:
+      #     name: The_WuBor_Patch_PR
+      #     path: build/
       - uses: actions/github-script@v6.4.1
         with:
           script: |
             const {owner, repo} = context.repo;
-            echo "Gotten Owner and Repo";
             const run_id = ${{github.event.workflow_run.id}};
-            echo "Gotten workflow run id";
             const issue_number = ${{github.event.number}};
-            echo "Gotten issue number";
             const {data: {artifacts}} = await github.actions.listWorkflowRunArtifacts({owner, repo, run_id});
-            echo "Gotten artifacts";
             if (!artifacts.length) {
               return core.error(`No artifacts found`);
             }

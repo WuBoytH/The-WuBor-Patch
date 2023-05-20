@@ -55,7 +55,7 @@ jobs:
         with:
           script: |
             const {owner, repo} = context.repo;
-            const run_id = ${{github.events.pull_request.id}};
+            const run_id = ${{github.events.push.commits.id}};
             const issue_number = ${{github.event.number}};
             const data = await github.rest.actions.listWorkflowRunArtifacts({owner, repo, run_id});
             if (!data.artifacts) {

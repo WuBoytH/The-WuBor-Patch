@@ -56,7 +56,7 @@ jobs:
             const {owner, repo} = context.repo;
             const run_id = ${{github.event.workflow_run.id}};
             const pull_head_sha = '${{github.event.workflow_run.head_sha}}';
-            const issue_number = ${{github.event.number}}
+            const issue_number = ${{github.event.number}};
             if (issue_number) {
               core.info(`Using pull request ${issue_number}`);
             } else {

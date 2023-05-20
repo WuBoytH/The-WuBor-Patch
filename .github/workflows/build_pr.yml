@@ -59,14 +59,14 @@ jobs:
             core.info('Got workflow id');
             const issue_number = ${{github.event.number}};
             core.info('Got issue number');
-            const {data: {artifacts}} = await github.actions.listWorkflowRunArtifacts({owner, repo, run_id});
+            const data = await github.actions.listWorkflowRunArtifacts({owner, repo, run_id});
             core.info('Got workflow run artifacts (pre error)');
-            if (!artifacts.length) {
+            if (!data.artifacts.length) {
               return core.error('No artifacts found');
             }
             core.info('Got workflow run artifacts (post error)');
             let body = 'Download the artifacts for this pull request:\n';
-            for (const art of artifacts) {
+            for (const art of data.artifacts) {
               if (art.name == 'The_WuBor_Patch_PR') {
                 body += '\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)';
               }

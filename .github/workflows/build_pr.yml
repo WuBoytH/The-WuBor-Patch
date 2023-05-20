@@ -50,22 +50,16 @@ jobs:
       #   with:
       #     name: The_WuBor_Patch_PR
       #     path: build/
-      - uses: actions/github-script@v6.4.1
+      - uses: actions/github-script@v3
         with:
           script: |
-            const owner = '${{github.repository_owner}}';
-            const repo = '${{github.event.repository.name}}';
-            core.info('Got owner and repo');
+            const {owner, repo} = context.repo;
             const run_id = ${{github.run_id}};
-            core.info('Got workflow id');
             const issue_number = ${{github.event.number}};
-            core.info('Got issue number');
             const data = await github.actions.listWorkflowRunArtifacts({owner, repo, run_id});
-            core.info('Got workflow run artifacts (pre error)');
             if (!data.artifacts.length) {
               return core.error('No artifacts found');
             }
-            core.info('Got workflow run artifacts (post error)');
             let body = 'Download the artifacts for this pull request:\n';
             for (const art of data.artifacts) {
               if (art.name == 'The_WuBor_Patch_PR') {

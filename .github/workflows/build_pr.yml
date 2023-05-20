@@ -57,7 +57,7 @@ jobs:
             const run_id = ${{github.run_id}};
             const issue_number = ${{github.event.number}};
             const data = await github.rest.actions.listWorkflowRunArtifacts({owner, repo, run_id});
-            if (!data.artifacts.length) {
+            if (!data.artifacts) {
               return core.error('No artifacts found');
             }
             let body = 'Download the artifacts for this pull request:\n';

@@ -34,9 +34,8 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 * Shields can no longer be tilted.
 * The Shield + B or Shield + Shield lock macro no longer exists.
 * Shield no longer shrinks when it loses HP, instead turning more transparent while remaining the same size.
-  * Yoshi's Shield still fades to black, but it stops before turning black completely.
-* The smoke emitted from Shield no longer exists...
-  * ... except when Shield HP reaches approximately 40%, the smoke returns.
+* When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
+  * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
 * It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
 
 ## Out-of-Shield

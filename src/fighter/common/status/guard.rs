@@ -272,8 +272,9 @@ unsafe fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighter
     if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
         let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
         let ratio_sub = shield_hp / shield_low_hp;
-        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + (0.15 * ratio_sub).clamp(0.02, 0.15);
+        let alpha = 0.6 * ratio_main.clamp(0.0, 1.0) + 0.4;
         EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+        EffectModule::set_rgb(fighter.module_accessor, shield_eff, 1.0, ratio_sub.clamp(0.0, 1.0), ratio_sub.clamp(0.0, 1.0));
     }
     if shield_hp <= shield_low_hp
     && !VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE) {
@@ -299,8 +300,9 @@ unsafe fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _
     if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
         let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
         let ratio_sub = shield_hp / shield_low_hp;
-        let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + (0.15 * ratio_sub).clamp(0.02, 0.15);
+        let alpha = 0.6 * ratio_main.clamp(0.0, 1.0) + 0.4;
         EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+        EffectModule::set_rgb(fighter.module_accessor, shield_eff, 1.0, ratio_sub.clamp(0.0, 1.0), ratio_sub.clamp(0.0, 1.0));
     }
     if shield_hp <= shield_low_hp
     && !VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE) {

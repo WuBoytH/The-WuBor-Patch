@@ -53,8 +53,8 @@ jobs:
       - uses: actions/github-script@v6.4.1
         with:
           script: |
-            const owner = ${{github.repository_owner}};
-            const repo = ${{github.repository}};
+            const owner = ${{github.repository.owner}};
+            const repo = ${{github.repository.name}};
             core.info('Got owner and repo');
             const run_id = ${{github.run_id}};
             core.info('Got workflow id');

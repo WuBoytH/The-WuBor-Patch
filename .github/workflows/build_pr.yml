@@ -55,7 +55,7 @@ jobs:
           script: |
             const {owner, repo} = context.repo;
             core.info("Got owner and repo");
-            const run_id = ${{context.runId}};
+            const run_id = context.runId;
             core.info("Got workflow id ${run_id}");
             const issue_number = ${{github.event.number}};
             core.info("Got issue number ${issue_number}");

@@ -56,7 +56,7 @@ jobs:
             const {owner, repo} = context.repo;
             const run_id = ${{github.run_id}};
             const issue_number = ${{github.event.number}};
-            const data = await github.actions.listWorkflowRunArtifacts({owner, repo, run_id});
+            const data = await github.rest.actions.listWorkflowRunArtifacts({owner, repo, run_id});
             if (!data.artifacts.length) {
               return core.error('No artifacts found');
             }
@@ -66,11 +66,11 @@ jobs:
                 body += '\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)';
               }
             }
-            const {data: comments} = await github.issues.listComments({repo, owner, issue_number});
+            const {data: comments} = await github.rest.issues.listComments({repo, owner, issue_number});
             const existing_comment = comments.find((c) => c.user.login === 'github-actions[bot]');
             if (existing_comment) {
               core.info('Deleting comment ${existing_comment.id}');
-              await github.issues.deleteComment({repo, owner, comment_id: existing_comment.id});
+              await github.rest.issues.deleteComment({repo, owner, comment_id: existing_comment.id});
             }
             core.info('Creating a comment');
-            await github.issues.createComment({repo, owner, issue_number, body})
+            await github.rest.issues.createComment({repo, owner, issue_number, body})

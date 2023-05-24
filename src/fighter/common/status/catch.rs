@@ -91,16 +91,16 @@ unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
 
         // [NEW] Allow Taunt inputs to trigger a manual Grab Release.
-        if fighter.global_table[CMD_CAT2].get_i32() & (
-            *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW |
-            *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R
-        ) != 0 {
-            if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_CATCH_WAIT {
-                CatchModule::catch_cut(fighter.module_accessor, false, false);
-                fighter.change_status(FIGHTER_STATUS_KIND_CATCH_CUT.into(), true.into());
-                return true.into();
-            }
-        }
+        // if fighter.global_table[CMD_CAT2].get_i32() & (
+        //     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW |
+        //     *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L | *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R
+        // ) != 0 {
+        //     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_CATCH_WAIT {
+        //         CatchModule::catch_cut(fighter.module_accessor, false, false);
+        //         fighter.change_status(FIGHTER_STATUS_KIND_CATCH_CUT.into(), true.into());
+        //         return true.into();
+        //     }
+        // }
     }
     false.into()
 }

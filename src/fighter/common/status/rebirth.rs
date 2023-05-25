@@ -68,6 +68,7 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
             let kind = fighter.global_table[KIND].get_i32();
             if MotionModule::is_end(fighter.module_accessor) {
                 if [
+                    *FIGHTER_KIND_ROY,
                     *FIGHTER_KIND_CHROM
                 ].contains(&kind)
                 && ![

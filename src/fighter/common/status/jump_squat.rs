@@ -6,7 +6,7 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     let mut jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        jump_squat_frame += 1.0;
+        // jump_squat_frame += 1.0;
     }
     let mot = param_1.get_u64();
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(mot));

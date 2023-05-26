@@ -180,7 +180,6 @@ impl CancelInfo {
         self.exception = Some(exception);
         self
     }
-
 }
 
 pub struct AltInfo {
@@ -778,5 +777,4 @@ impl CustomCancelManager {
         }
         false
     }
-
 }

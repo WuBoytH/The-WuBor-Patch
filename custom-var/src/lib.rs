@@ -95,7 +95,6 @@ impl CustomVarManager {
 
         x
     }
-
 }
 
 pub struct VarModule {

@@ -88,7 +88,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
-        if fighter.global_table[STATUS_FRAME].get_f32() == jump_squat_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() == jump_squat_frame - 1.0 {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         }
     }

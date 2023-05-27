@@ -196,7 +196,7 @@ The thunderbolts will begin to spawn on frame 34.
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| 1+              | 8      | 70    | 85             | 17               |
+| 1+              | 8      | 42    | 85             | 17               |
 
 </datatable>
 
@@ -212,9 +212,9 @@ Can grab ledge before frame 18 and after frame 54.
 
 <datatable>
 
-| Hitbox Duration | Damage | Angle  | Base Knockback | Knockback Growth |
-|:--------------- |:------ |:------ |:-------------- |:---------------- |
-| 20 - 22         | 15     | 277/30 | 75/40          | 30/60            |
+| Hitbox Duration | Damage | Angle   | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:------- |:-------------- |:---------------- |
+| 20 - 22         | 15     | 277/290 | 75/40          | 30/45            |
 
 </datatable>
 

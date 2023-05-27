@@ -1,5 +1,5 @@
 # Bowser
-*description not found*
+*A small work in progress. Bowser will be cleaned up another time.*
 
 ## Stats
 

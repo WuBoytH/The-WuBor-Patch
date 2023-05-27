@@ -1,5 +1,5 @@
 # Pikachu
-*This rat. This. Freaking. Rat. The bane of many players' existences, even if Pikachu isn't frontrunning the meta. Everyone loves to hate him, but we like him enough, so he's a rework of every single Special as well as making him a heccin' chonker.*
+*This rat. This. Freaking. Rat. The bane of many players' existences, even if Pikachu isn't frontrunning the meta. Everyone loves to hate him, but we like him enough, so here's an anime-faithful rework of every single Special as well as making him a heccin' chonker.*
 
 ## Stats
 

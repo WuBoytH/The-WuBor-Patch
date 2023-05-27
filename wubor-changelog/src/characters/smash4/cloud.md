@@ -1,5 +1,5 @@
 # Cloud
-*He's pretty perfect. But, you know, if you can’t grab a flat man while he’s shielding, what’s the point?*
+*He's pretty perfect, and it didn't take much to make him even more perfect. But, you know, if you can’t grab a flat man while he’s shielding, what’s the point?*
 
 ## Stats
 

@@ -37,12 +37,13 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 * When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
   * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
 * It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
+* It is now possible to perform a Platform Drop while holding Shield.
 
 ## Out-of-Shield
 Out-of-Shield options have been significantly changed.
 
 * You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
-  * Spotdodges and Rolls can still be directly performed.
+  * Spotdodges, Rolls, and Platform Dropping can still be directly performed.
   * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.
 * Using the C-Stick will drop shield and perform whatever the C-Stick is bound to.
   * Performing angled Tilts or Smash Attacks will require moving the left stick up or down after inputting the C-Stick horizontally.

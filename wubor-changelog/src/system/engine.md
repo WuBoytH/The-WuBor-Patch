@@ -22,7 +22,7 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 
 ## Shield
 
-* It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
+### Shield Mechanics
 * Parrying has been moved to Shield Startup instead of Shield Release.
 * The Parry window was reduced from 5 to 3 frames.
   * These two changes should make it possible, but difficult to parry multi-hit moves, as many slower multi-hits will require manual represses of Shield.
@@ -37,11 +37,14 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 * When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
   * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
 * It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
-* It is now possible to perform a Platform Drop while holding Shield.
 
-## Out-of-Shield
+### Actions Into Shield
+* It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
+
+## Actions Out of Shield
 Out-of-Shield options have been significantly changed.
 
+* It is now possible to perform a Platform Drop like in perevious games.
 * You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
   * Spotdodges, Rolls, and Platform Dropping can still be directly performed.
   * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.
@@ -66,10 +69,6 @@ Out-of-Shield options have been significantly changed.
 ## Directional Air Dodge
 
 See [Air Dash](./mechanics.md#air-dash)
-
-## Platform Dropping in Shield
-
-It is not possible to Shield Drop on a Platform either by tilting down the Control Stick, like in previous Smash titles, or by pressing Taunt.
 
 ## Ledge Slipoffs
 

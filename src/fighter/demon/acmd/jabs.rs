@@ -15,9 +15,9 @@ unsafe fn demon_attack11(fighter: &mut L2CAgentBase) {
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 2, 8.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 3, 8.0, false);
         AttackModule::set_add_reaction_frame_revised(fighter.module_accessor, 4, 8.0, false);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 4.0);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 4.0);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 4.0);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 1.3);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 1, 1.3);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 2, 1.3);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {

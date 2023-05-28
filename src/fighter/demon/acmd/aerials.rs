@@ -92,6 +92,7 @@ unsafe fn demon_landingairlw(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DOWN_FLAG_UP);
+        ControlModule::reset_down_stand_fb_kind(fighter.module_accessor);
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_DOWN_WAIT, false);
     }
 }

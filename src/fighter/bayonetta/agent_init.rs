@@ -1,15 +1,5 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        phx::*,
-        app::*,
-        lib::lua_const::*
-    },
-    smashline::*,
-    custom_cancel::*,
-    // wubor_utils::table_const::*,
-    super::fgc
-};
+use crate::imports::status_imports::*;
+use super::fgc;
 
 // unsafe extern "C" fn bayonetta_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     let is_air_f = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F;
@@ -52,6 +42,13 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
             return;
         }
         fgc::install();
+        VarModule::add_reset_statuses(
+            fighter.battle_object_id,
+            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+            vec![
+                *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
+            ]
+        );
     }
 }
 

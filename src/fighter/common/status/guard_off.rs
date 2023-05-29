@@ -2,7 +2,6 @@ use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_GuardOff)]
 unsafe fn status_pre_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let buffer = VarModule::is_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -27,7 +26,6 @@ unsafe fn status_pre_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, guard::flag::ADD_BUFFER, buffer);
     0.into()
 }
 

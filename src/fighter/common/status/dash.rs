@@ -2,7 +2,6 @@ use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Dash)]
 unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -28,13 +27,11 @@ unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
 unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -60,7 +57,6 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 
@@ -488,7 +484,6 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let dash_cancel = VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -514,7 +509,6 @@ pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL, dash_cancel);
     0.into()
 }
 

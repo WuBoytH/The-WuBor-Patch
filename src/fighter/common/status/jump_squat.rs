@@ -211,7 +211,7 @@ unsafe fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommo
         fighter.sub_jump_squat_uniq_check_sub_mini_attack();
     }
     else {
-        let callable: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(param_1.get_ptr());
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(param_1.get_ptr());
         callable(fighter);
     }
     let mot = MotionModule::motion_kind(fighter.module_accessor);

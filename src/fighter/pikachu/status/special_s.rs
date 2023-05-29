@@ -80,7 +80,7 @@ unsafe extern "C" fn pikachu_special_s_main_loop(fighter: &mut L2CFighterCommon)
         let y_angle = angle.to_radians().sin();
         WorkModule::set_float(fighter.module_accessor, lr * special_hi_warp_spd_add_ * x_angle, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_WARP_SPEED_X);
         WorkModule::set_float(fighter.module_accessor, special_hi_warp_spd_add_ * y_angle, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_WARP_SPEED_Y);
-        WorkModule::set_float(fighter.module_accessor, x_angle, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_X);
+        WorkModule::set_float(fighter.module_accessor, x_angle * lr, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_X);
         WorkModule::set_float(fighter.module_accessor, y_angle, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_PREV_STICK_Y);
         fighter.change_status(FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP.into(), false.into());
     }

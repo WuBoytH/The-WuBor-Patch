@@ -115,6 +115,7 @@ unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
 
 #[skyline::hook(replace = L2CFighterCommon_status_DashCommon)]
 unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
+    VarModule::off_flag(fighter.battle_object, dash::flag::DISABLE_RUN);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     let transitions = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,

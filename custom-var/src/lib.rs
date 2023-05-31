@@ -161,8 +161,8 @@ impl VarModule {
             copy_flag: vec![false; 0x200],
             reset_status_pairs: HashMap::new()
         };
-        varmodule.reset_status_pairs.insert(0x3, vec![-1]); // Any into Dash
-        varmodule.reset_status_pairs.insert(0x7, vec![-1]); // Any into Turn Dash
+        varmodule.reset_status_pairs.insert(0x3, vec![-1, 0x3, 0x7]); // Not Dashes into Dash
+        varmodule.reset_status_pairs.insert(0x7, vec![-1, 0x3, 0x7]); // Not Dashes into Turn Dash
         varmodule.reset_status_pairs.insert(0x18, vec![0x36]); // Aerial into Landing
         varmodule.reset_status_pairs.insert(0x1E, vec![0x1B, 0x1C]); // Guards into Guard Damage
         varmodule.reset_status_pairs.insert(0x1C, vec![0x1B, 0x1E]); // Guards into Guard Damage
@@ -318,11 +318,12 @@ impl VarModule {
         let mut modules = manager.modules.read();
         if let Some(mut module) = modules.get(&object_id) {
             if let Some(reset_statuses) = module.reset_status_pairs.get(&status) {
-                for x in reset_statuses.iter() {
-                    if *x == -1
-                    || status_prev == *x {
-                        return true;
-                    }
+                let ret = reset_statuses.contains(&status_prev);
+                if !reset_statuses.contains(&-1) {
+                    return ret;
+                }
+                else {
+                    return !ret;
                 }
             }
         }

@@ -34,8 +34,8 @@ use super::fgc;
 //     return (0 < count).into();
 // }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
+#[fighter_init]
+fn fighter_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_BAYONETTA {
@@ -54,7 +54,7 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
 
 pub fn install() {
     CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_bayonetta"));
-    install_agent_resets!(
-        agent_reset
+    install_agent_init_callbacks!(
+        fighter_init
     );
 }

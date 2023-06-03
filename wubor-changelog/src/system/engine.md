@@ -32,7 +32,7 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 * It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).
 * The natural Shield HP decrease was increased from 0.15 HP/frame to 0.18 HP/frame.
 * Shields can no longer be tilted.
-* The Shield + B or Shield + Shield lock macro no longer exists.
+* Shield Lock (Siheld + Special or Shield + Shield) only prevents Rolls and Spotdodges from coming out.
 * Shield no longer shrinks when it loses HP, instead turning more transparent while remaining the same size.
 * When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
   * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
@@ -44,7 +44,8 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 ## Actions Out of Shield
 Out-of-Shield options have been significantly changed.
 
-* It is now possible to perform a Platform Drop like in perevious games.
+* It is now possible to perform a Platform Drop like in previous games.
+  * It is also possible to perform a Platform Drop while in Shield Lock.
 * You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
   * Spotdodges, Rolls, and Platform Dropping can still be directly performed.
   * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.

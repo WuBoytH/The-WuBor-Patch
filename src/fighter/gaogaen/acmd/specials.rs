@@ -567,7 +567,7 @@ unsafe fn gaogaen_specialairhifall(fighter: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "gaogaen", script = "game_specialairhifall2", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_specialairhifall_2(fighter: &mut L2CAgentBase) {
+unsafe fn gaogaen_specialairhifall2(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -741,7 +741,7 @@ pub fn install() {
         gaogaen_specialairsshoulder,
         gaogaen_specialslariat,
         gaogaen_specialairhifall,
-        gaogaen_specialairhifall_2,
+        gaogaen_specialairhifall2,
         gaogaen_speciallwstart, gaogaen_speciallwstart_eff,
         gaogaen_speciallw,
         gaogaen_speciallwturn

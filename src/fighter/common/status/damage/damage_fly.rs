@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use super::passive::*;
+use super::super::passive::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFly)]
 unsafe fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {

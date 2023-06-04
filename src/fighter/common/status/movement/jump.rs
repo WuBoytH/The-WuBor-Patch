@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use super::super::param;
+use super::super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {

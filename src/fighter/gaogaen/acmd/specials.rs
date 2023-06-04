@@ -611,9 +611,11 @@ unsafe fn gaogaen_speciallwstart(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 1.5);
     frame(fighter.lua_state_agent, 21.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 28.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_SPECIAL_LW_FLAG_STANCE_END);
+    }
+    frame(fighter.lua_state_agent, 28.0);
+    if macros::is_excute(fighter) {
         VarModule::on_flag(fighter.battle_object, gaogaen::instance::flag::REVENGE_AUTO);
         StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_LW_HIT, false);
     }
@@ -624,6 +626,33 @@ unsafe fn gaogaen_speciallwstart(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 46.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
+}
+
+#[acmd_script( agent = "gaogaen", scripts = [ "effect_speciallwstart", "effect_specialairlwstart" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn gaogaen_speciallwstart_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("gaogaen_revenge_pose"), Hash40::new("top"), 0, 11, 3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(fighter.lua_state_agent, 8.0);
+    if macros::is_excute(fighter) {
+        macros::FLASH(fighter, 1, 1, 1, 0.75);
+    }
+    wait(fighter.lua_state_agent, 1.0);
+    for _ in 0..2 {
+        if macros::is_excute(fighter) {
+            macros::FLASH(fighter, 0.7, 0.7, 0.7, 0.5);
+        }
+        wait(fighter.lua_state_agent, 2.0);
+        if macros::is_excute(fighter) {
+            macros::FLASH(fighter, 0.67, 0, 0.78, 0.31);
+        }
+        wait(fighter.lua_state_agent, 2.0);
+        if macros::is_excute(fighter) {
+            macros::COL_NORMAL(fighter);
+        }
+        wait(fighter.lua_state_agent, 2.0);
+    }
 }
 
 #[acmd_script( agent = "gaogaen", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
@@ -650,8 +679,7 @@ unsafe fn gaogaen_speciallw(fighter: &mut L2CAgentBase) {
         else {
             *ATTACK_SOUND_LEVEL_S
         };
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), dmg, 45, 69, 0, 60, 10.0, 0.0, 11.0, -1.0, None, None, None, 1.0, hitlag, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), hitsound, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), dmg, 45, 69, 0, 60, 20.0, 0.0, 11.0, -1.0, None, None, None, 1.0, hitlag, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), hitsound, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), dmg, 45, 69, 0, 60, 15.0, 0.0, 11.0, -1.0, None, None, None, 1.0, hitlag, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), hitsound, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -691,8 +719,7 @@ unsafe fn gaogaen_speciallwturn(fighter: &mut L2CAgentBase) {
         else {
             *ATTACK_SOUND_LEVEL_S
         };
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), dmg, 45, 69, 0, 60, 10.0, 0.0, 11.0, -1.0, None, None, None, 1.0, hitlag, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), hitsound, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), dmg, 45, 69, 0, 60, 20.0, 0.0, 11.0, -1.0, None, None, None, 1.0, hitlag, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), hitsound, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), dmg, 45, 69, 0, 60, 15.0, 0.0, 11.0, -1.0, None, None, None, 1.0, hitlag, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), hitsound, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
     }
     wait(fighter.lua_state_agent, 2.0);
     if macros::is_excute(fighter) {
@@ -715,7 +742,7 @@ pub fn install() {
         gaogaen_specialslariat,
         gaogaen_specialairhifall,
         gaogaen_specialairhifall_2,
-        gaogaen_speciallwstart,
+        gaogaen_speciallwstart, gaogaen_speciallwstart_eff,
         gaogaen_speciallw,
         gaogaen_speciallwturn
     );

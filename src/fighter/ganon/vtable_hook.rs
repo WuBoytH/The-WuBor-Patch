@@ -7,19 +7,21 @@ use {
     },
     smash_rs::{
         phx::Hash40,
-        app::LinkEventCapture
+        app::{LinkEvent, LinkEventCapture}
     },
     wubor_utils::wua_bind::*
 };
 
 #[skyline::hook(offset = 0xaa6970)]
-pub unsafe extern "C" fn ganon_on_grab(_vtable: u64, fighter: &mut Fighter, capture_event: &mut LinkEventCapture) -> u64 {
+pub unsafe extern "C" fn ganon_on_grab(_vtable: u64, fighter: &mut Fighter, event: u64) -> u64 {
     // param_3 + 0x10
     let module_accessor = fighter.battle_object.module_accessor;
-    if capture_event.link_event_kind.as_u64() == hash40("capture") {
-        let status = StatusModule::status_kind(module_accessor);
+    let status = StatusModule::status_kind(module_accessor);
+    let link_event : &mut LinkEvent = std::mem::transmute(event);
+    if link_event.link_event_kind.0 == hash40("capture") {
+        let capture_event : &mut LinkEventCapture = std::mem::transmute(event);
         if status == *FIGHTER_STATUS_KIND_SPECIAL_HI && capture_event.status == *FIGHTER_STATUS_KIND_CLUNG_GANON {
-            if LinkModule::is_link(module_accessor, 0) {
+            if LinkModule::is_link(module_accessor, *LINK_NO_CAPTURE) {
                 capture_event.result = false;
                 return 0;
             }
@@ -27,25 +29,27 @@ pub unsafe extern "C" fn ganon_on_grab(_vtable: u64, fighter: &mut Fighter, capt
             capture_event.result = true;
             capture_event.constraint = false;
             CatchModule::set_catch(module_accessor, capture_event.sender_id);
-            if !LinkModule::is_link(module_accessor, 0) {
+            if !LinkModule::is_link(module_accessor, *LINK_NO_CAPTURE) {
                 return 0;
             }
-            let catchmodule = (module_accessor as *mut u64).offset(0x110) as *mut smash_rs::app::Module;
-            crate::function_hooks::some_catch(catchmodule);
-            let mut x_offset = 0.0;
-            let mut y_offset = 0.0;
-            if capture_event.sender_id != *BATTLE_OBJECT_ID_INVALID as u32 {
-                if let Some(object) = MiscModule::get_battle_object_from_entry_id(capture_event.sender_id) {
-                    if (object as *mut u64).offset(0x10).add(0x2) as u64 > 4
-                    && capture_event.sender_id >> 0x1c == 0 {
-                        let sender_boma = (*object).module_accessor;
-                        x_offset = WorkModule::get_param_float(sender_boma, hash40("param_motion"), hash40("ganon_special_hi_offset_x"));
-                        y_offset = WorkModule::get_param_float(sender_boma, hash40("param_motion"), hash40("ganon_special_hi_offset_y"));
+            let catch_module = *(module_accessor as *const u64).offset(0x120 / 8) as *const u64;
+            let func : fn(*mut smash_rs::app::Module) = std::mem::transmute(catch_module.offset(0x80 / 8));
+            let catch_module = *(module_accessor as *const u64).offset(0x120 / 8) as *mut smash_rs::app::Module;
+            func(catch_module);
+            let mut offset_x = 0.0;
+            let mut offset_y = 0.0;
+            if capture_event.sender_id != 0x50000000 {
+                let object = MiscModule::get_battle_object_from_id(capture_event.sender_id);
+                if !object.is_null() /*|| *((object as *const u8).offset())*/ {
+                    // skipping a check that will probably always be 0?
+                    if (*object).battle_object_id >> 0x1c == 0 {
+                        offset_x = WorkModule::get_param_float((*object).module_accessor, hash40("param_motion"), hash40("ganon_special_hi_offset_x"));
+                        offset_y = WorkModule::get_param_float((*object).module_accessor, hash40("param_motion"), hash40("ganon_special_hi_offset_y"));
                     }
                 }
             }
             LinkModule::set_model_constraint_flag(module_accessor, 0x2003);
-            LinkModule::set_constraint_translate_offset(module_accessor, &Vector3f{x: x_offset, y: y_offset, z: 0.0});
+            LinkModule::set_constraint_translate_offset(module_accessor, &Vector3f{x: offset_x, y: offset_y, z: 0.0});
             return 0;
         }
         if status == *FIGHTER_STATUS_KIND_SPECIAL_S {
@@ -63,28 +67,23 @@ pub unsafe extern "C" fn ganon_on_grab(_vtable: u64, fighter: &mut Fighter, capt
             }
         }
     }
-    else {
-        if capture_event.link_event_kind.as_u64() == 0xa84e26287 {
-            if StatusModule::status_kind(module_accessor) == *FIGHTER_GANON_STATUS_KIND_SPECIAL_HI_CLING {
-                CatchModule::set_send_cut_event(module_accessor, false);
-                CatchModule::cling_cut(module_accessor, false);
-                // if ((*(capture_event.to_owned())) as *mut u64).add(0x29) as u64 != 0 {
-                //     return 0;
-                // }
-                StatusModule::change_status_request(module_accessor, *FIGHTER_STATUS_KIND_CATCH_CUT, false);
+    else if link_event.link_event_kind.0 == 0xa84e26287 {
+        if status == *FIGHTER_GANON_STATUS_KIND_SPECIAL_HI_CLING {
+            CatchModule::set_send_cut_event(module_accessor, false);
+            CatchModule::cling_cut(module_accessor, false);
+            if *(event as *const u8).offset(0x29) != 0 {
                 return 0;
             }
+            StatusModule::change_status_request(module_accessor, *FIGHTER_STATUS_KIND_CATCH_CUT, false);
         }
-        if capture_event.link_event_kind.as_u64() == 0xdac7c579e {
-            if StatusModule::status_kind(module_accessor) == *FIGHTER_GANON_STATUS_KIND_FINAL_ATTACK {
-                if let Some(object) = MiscModule::get_battle_object_from_entry_id(capture_event.sender_id) {
-                    let sender_boma = (*object).module_accessor;
-                    if capture_event.sender_id >> 0x1c == 1
-                    && WorkModule::get_int(sender_boma, 0x11000005) as u32 == capture_event.sender_id {
-                        WorkModule::on_flag(sender_boma, 0x21000012);
-                        return 1;
-                    }
-                }
+    }
+    else if link_event.link_event_kind.0 == 0xdac7c579e {
+        if status == *FIGHTER_GANON_STATUS_KIND_FINAL_ATTACK {
+            let object = MiscModule::get_battle_object_from_id(link_event.sender_id);
+            if !object.is_null()
+            && (*object).battle_object_id >> 0x1c == 1
+            && (*object).battle_object_id == WorkModule::get_int(module_accessor, *FIGHTER_GANON_STATUS_WORK_ID_INT_BEAST_BEAST_TASK_ID) as u32 {
+                WorkModule::on_flag(module_accessor, *FIGHTER_GANON_STATUS_WORK_ID_FLAG_BEAST_END);
             }
         }
     }

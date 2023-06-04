@@ -28,6 +28,7 @@ mod damage_fall;
 mod damage_fly;
 mod damage_fly_roll;
 // mod damage_fly_reflect;
+mod catched_air_ganon;
 mod landing;
 mod pass;
 mod cliff;
@@ -67,6 +68,7 @@ pub fn install() {
     damage_fly::install();
     damage_fly_roll::install();
     // damage_fly_reflect::install();
+    catched_air_ganon::install();
     landing::install();
     pass::install();
     cliff::install();

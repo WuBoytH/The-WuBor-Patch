@@ -50,25 +50,3 @@ jobs:
         with:
           name: The_WuBor_Patch_PR
           path: build/
-      - name: Comment PR Artifact Link
-        uses: actions/github-script@v6.4.1
-        with:
-          script: |
-            const {owner, repo} = context.repo;
-            const run_id = ${{github.run_id}};
-            const issue_number = ${{github.event.number}};
-            const {data: {artifacts}} = await github.rest.actions.listWorkflowRunArtifacts({owner, repo, run_id});
-            let body = 'Download the artifacts for this pull request:\n';
-            for (const art of artifacts) {
-              if (art.name == 'The_WuBor_Patch_PR') {
-                body += '\n* [${art.name}](https://nightly.link/${owner}/${repo}/actions/artifacts/${art.id}.zip)';
-              }
-            }
-            const {data: comments} = await github.rest.issues.listComments({repo, owner, issue_number});
-            const existing_comment = comments.find((c) => c.user.login === 'github-actions[bot]');
-            if (existing_comment) {
-              core.info('Deleting comment ${existing_comment.id}');
-              await github.rest.issues.deleteComment({repo, owner, comment_id: existing_comment.id});
-            }
-            core.info('Creating a comment');
-            await github.rest.issues.createComment({repo, owner, issue_number, body})

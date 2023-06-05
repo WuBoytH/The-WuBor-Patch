@@ -33,8 +33,7 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 * The natural Shield HP decrease was increased from 0.15 HP/frame to 0.18 HP/frame.
 * Shields can no longer be tilted.
 * Shield Lock (Siheld + Special or Shield + Shield) only prevents Rolls and Spotdodges from coming out.
-* Shield no longer shrinks when it loses HP, instead turning more transparent while remaining the same size.
-* When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
+* Shield shrinks while losing HP, however a more transparent shield will always be there to show how much space your shield covers.
   * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
 * It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
 

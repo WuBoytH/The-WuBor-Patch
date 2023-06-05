@@ -47,10 +47,8 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut L2CFighter
         let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
             let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
-            let shield_low_hp = shield_max * 0.4;
-            let ratio = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
-            let alpha = 0.85 * ratio.clamp(0.0, 1.0) + 0.15;
-            EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
+            let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
+            EffectModule::set_scale(fighter.module_accessor, shield_eff, &Vector3f{x: ratio, y: ratio, z: ratio});
         }
     }
     else {
@@ -233,10 +231,11 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_IS_DONE_GUARD_DAMAGE_NUM);
         }
         if param_1.get_bool() {
-            let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
-            let prev_shield_scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
+            // let prev_shield = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_PREV_SHIELD);
+            // let prev_shield_scale = fighter.FighterStatusGuard__calc_shield_scale(prev_shield.into()).get_f32();
             let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
-            let shield_scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+            // let shield_scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
+            let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
             EffectModule::req_follow(
                 fighter.module_accessor,
                 Hash40::new_raw(0x12c9377e3d),
@@ -293,7 +292,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
             EffectModule::set_rgb_partial_last(fighter.module_accessor, effect_team_color.x, effect_team_color.y, effect_team_color.z);
             WorkModule::set_int(fighter.module_accessor, handle as i32, *FIGHTER_STATUS_GUARD_ON_WORK_INT_SHIELD_DAMAGE_EFFECT_HANDLE);
             if handle != 0 {
-                let diff = (shield_scale / prev_shield_scale) * 0.1;
+                let diff = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
                 EffectModule::set_scale(fighter.module_accessor, handle as u32, &Vector3f{x: diff, y: diff, z: diff});
             }
         }
@@ -446,17 +445,9 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighter: &mut L2C
         ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
         let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
         let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
-        let shield_low_hp = shield_max * 0.4;
         if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
-            let ratio_main = (shield_hp - shield_low_hp) / (shield_max - shield_low_hp);
-            let ratio_sub = shield_hp / shield_low_hp;
-            let alpha = 0.85 * ratio_main.clamp(0.0, 1.0) + (0.15 * ratio_sub).clamp(0.02, 0.15);
-            EffectModule::set_alpha(fighter.module_accessor, shield_eff, alpha);
-        }
-        if shield_hp <= shield_low_hp
-        && !VarModule::is_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE) {
-            macros::EFFECT_FLW_POS(fighter, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
-            VarModule::on_flag(fighter.battle_object, guard::flag::SET_SHIELD_LOW_SMOKE);
+            let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
+            EffectModule::set_scale(fighter.module_accessor, shield_eff, &Vector3f{x: ratio, y: ratio, z: ratio});
         }
     }
     else {

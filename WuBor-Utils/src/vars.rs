@@ -153,12 +153,6 @@ pub mod attack_dash {
     }
 }
 
-pub mod captured {
-    pub mod flag {
-        pub const FORCE_PALM : i32 = 0x1050;
-    }
-}
-
 pub mod damage_fly_roll {
     pub mod flag {
         pub const DISABLE_PASSIVE : i32 = 0x1050;

@@ -39,8 +39,11 @@ unsafe fn capturepulledcommon(fighter: &mut L2CFighterCommon) {
                 if [
                     *FIGHTER_STATUS_KIND_SPECIAL_S, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW
                 ].contains(&StatusModule::status_kind(lucario_boma)) {
-                    // println!("Force Palmed!");
-                    VarModule::on_flag(fighter.battle_object, captured::flag::FORCE_PALM);
+                    GroundModule::set_passable_check(fighter.module_accessor, true);
+                    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
+                    && GroundModule::is_passable_ground(fighter.module_accessor) {
+                        fighter.set_situation(SITUATION_KIND_AIR.into());
+                    }
                 }
             }
         }
@@ -54,11 +57,7 @@ unsafe fn capturepulledcommon_main(fighter: &mut L2CFighterCommon) {
     if situation == pulled_sit {
         return;
     }
-    let mot = if VarModule::is_flag(fighter.battle_object, captured::flag::FORCE_PALM) {
-        GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_NONE));
-        WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND)
-    }
-    else if situation == *SITUATION_KIND_GROUND {
+    let mot = if situation == *SITUATION_KIND_GROUND {
         fighter.FighterStatusCaptrue_set_correct_ground();
         WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_MOTION_KIND_GROUND)
     }

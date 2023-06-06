@@ -68,7 +68,6 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         return true.into();
     }
     let can_act = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME) <= 0;
-    let check_guard_hold = fighter.check_guard_hold().get_bool();
     // if !check_guard_hold {
     //     if fighter.sub_transition_group_check_ground_jump_mini_attack().get_bool() {
     //         return true.into();
@@ -109,7 +108,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     
     if can_act
-    && fighter.check_guard_attack_special_hi(check_guard_hold.into()).get_bool() {
+    && fighter.check_guard_attack_special_hi(false.into()).get_bool() {
         return true.into();
     }
     if can_act {
@@ -126,29 +125,27 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             return true.into();
         }
     }
-    if !check_guard_hold {
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
-        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE != 0
-        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
-            return true.into();
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F)
-        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F != 0
-        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
-            return true.into();
-        }
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B)
-        && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B != 0
-        && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-            fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
-            return true.into();
-        }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE != 0
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE.into(), true.into());
+        return true.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_F != 0
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_F.into(), true.into());
+        return true.into();
+    }
+    if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B)
+    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_STICK_ESCAPE_B != 0
+    && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        fighter.change_status(FIGHTER_STATUS_KIND_ESCAPE_B.into(), true.into());
+        return true.into();
     }
     if GroundModule::is_passable_ground(fighter.module_accessor)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_PASS)
-    && fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_GUARD_TO_PASS != 0
+    && fighter.global_table[STICK_Y].get_f32() <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("squat_stick_y"))
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         fighter.change_status(FIGHTER_STATUS_KIND_PASS.into(), true.into());
         return true.into();

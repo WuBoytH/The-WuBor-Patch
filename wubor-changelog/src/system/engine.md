@@ -20,6 +20,10 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.
 
 Jumping no longer has accelerated rising momentum, matching the momentum from previous games.
 
+## Falling
+
+Actions that put you into the normal falling animation will instead use the unique double jump fall animation if you are out of jumps.
+
 ## Shield
 
 ### Shield Mechanics

@@ -165,9 +165,11 @@
 Up Smash is no longer prioritized when attempting to perform a buffered Up Air.</p>
 <h2 id="jumping"><a class="header" href="#jumping">Jumping</a></h2>
 <p>Jumping no longer has accelerated rising momentum, matching the momentum from previous games.</p>
+<h2 id="falling"><a class="header" href="#falling">Falling</a></h2>
+<p>Actions that put you into the normal falling animation will instead use the unique double jump fall animation if you are out of jumps.</p>
 <h2 id="shield"><a class="header" href="#shield">Shield</a></h2>
+<h3 id="shield-mechanics"><a class="header" href="#shield-mechanics">Shield Mechanics</a></h3>
 <ul>
-<li>It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).</li>
 <li>Parrying has been moved to Shield Startup instead of Shield Release.</li>
 <li>The Parry window was reduced from 5 to 3 frames.
 <ul>
@@ -183,21 +185,29 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).</li>
 <li>The natural Shield HP decrease was increased from 0.15 HP/frame to 0.18 HP/frame.</li>
 <li>Shields can no longer be tilted.</li>
-<li>The Shield + B or Shield + Shield lock macro no longer exists.</li>
-<li>Shield no longer shrinks when it loses HP, instead turning more transparent while remaining the same size.</li>
-<li>When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
+<li>Shield Lock (Siheld + Special or Shield + Shield) has been removed.</li>
+<li>Shield shrinks while losing HP, however a more transparent shield will always be there to show how much space your shield covers.
 <ul>
 <li>Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.</li>
 </ul>
 </li>
 <li>It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.</li>
 </ul>
-<h2 id="out-of-shield"><a class="header" href="#out-of-shield">Out-of-Shield</a></h2>
+<h3 id="actions-into-shield"><a class="header" href="#actions-into-shield">Actions Into Shield</a></h3>
+<ul>
+<li>It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).</li>
+</ul>
+<h2 id="actions-out-of-shield"><a class="header" href="#actions-out-of-shield">Actions Out of Shield</a></h2>
 <p>Out-of-Shield options have been significantly changed.</p>
 <ul>
+<li>It is now possible to perform a Platform Drop like in previous games.
+<ul>
+<li>It is also possible to perform a Platform Drop while in Shield Lock.</li>
+</ul>
+</li>
 <li>You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
 <ul>
-<li>Spotdodges and Rolls can still be directly performed.</li>
+<li>Spotdodges, Rolls, and Platform Dropping can still be directly performed.</li>
 <li>In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.</li>
 </ul>
 </li>
@@ -213,7 +223,6 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 <li>Grab-techs are now active throughout the entire startup of grab, not just while the grab box is currently active.</li>
 <li>All non-standard Grabs can no longer be grab-teched.</li>
 <li>It is now possible to buffer Dash and Pivot Grabs.</li>
-<li>You can manually Grab-Release an opponent by pressing Taunt.</li>
 </ul>
 <h2 id="spot-dodge"><a class="header" href="#spot-dodge">Spot Dodge</a></h2>
 <ul>
@@ -225,8 +234,6 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.<
 </ul>
 <h2 id="directional-air-dodge"><a class="header" href="#directional-air-dodge">Directional Air Dodge</a></h2>
 <p>See <a href="system/./mechanics.html#air-dash">Air Dash</a></p>
-<h2 id="platform-dropping-in-shield"><a class="header" href="#platform-dropping-in-shield">Platform Dropping in Shield</a></h2>
-<p>It is not possible to Shield Drop on a Platform either by tilting down the Control Stick, like in previous Smash titles, or by pressing Taunt.</p>
 <h2 id="ledge-slipoffs"><a class="header" href="#ledge-slipoffs">Ledge Slipoffs</a></h2>
 <p>It is now possible to slip off of ledges during the following states:</p>
 <ul>
@@ -519,7 +526,7 @@ Falling Hitbox:</p>
 <h4 id="jab-2"><a class="header" href="#jab-2">Jab 2</a></h4>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">FAF</th></tr></thead><tbody>
-<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">31</td></tr>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">32</td></tr>
 <tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>25</buff></td></tr>
 </tbody></table>
 </div></datatable>
@@ -913,9 +920,9 @@ If Dark Samus lands while the hitbox is active, it will take 24 frames of landin
 <h4 id="down-smash-1"><a class="header" href="#down-smash-1">Down Smash</a></h4>
 <p><buff>The move's weak hit now has the same properties as the strong hit.</buff></p>
 <h3 id="specials-4"><a class="header" href="#specials-4">Specials</a></h3>
-<h4 id="egg-lay"><a class="header" href="#egg-lay">Egg Lay</a></h4>
+<h4 id="neutral-special---egg-lay"><a class="header" href="#neutral-special---egg-lay">Neutral Special - Egg Lay</a></h4>
 <p><buff>Can no longer be grab-teched. See <a href="characters/64/../../system/engine.html#grab">Grab</a>.</buff></p>
-<h4 id="egg-roll"><a class="header" href="#egg-roll">Egg Roll</a></h4>
+<h4 id="side-special---egg-roll"><a class="header" href="#side-special---egg-roll">Side Special - Egg Roll</a></h4>
 <p><buff>No longer bounces when performed on the ground.</buff></p>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Max Roll Time</th><th style="text-align: left">Min Roll Time</th><th style="text-align: left">FAF</th></tr></thead><tbody>
@@ -1025,7 +1032,7 @@ FAF (After Bounce): 10</p>
 </tbody></table>
 </div></datatable>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pikachu"><a class="header" href="#pikachu">Pikachu</a></h1>
-<p><em>This rat. This. Freaking. Rat. The bane of many players' existences, even if Pikachu isn't frontrunning the meta. Everyone loves to hate him, but we like him enough, so he's a rework of every single Special as well as making him a heccin' chonker.</em></p>
+<p><em>This rat. This. Freaking. Rat. The bane of many players' existences, even if Pikachu isn't frontrunning the meta. Everyone loves to hate him, but we like him enough, so here's an anime-faithful rework of every single Special as well as making him a heccin' chonker.</em></p>
 <h2 id="stats-8"><a class="header" href="#stats-8">Stats</a></h2>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
@@ -1146,7 +1153,7 @@ Pikachu has two body hitboxes that attempt to send the opponent below Pikachu to
 <p>The thunderbolts will begin to spawn on frame 34.</p>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
-<tr><td style="text-align: left">1+</td><td style="text-align: left">8</td><td style="text-align: left">70</td><td style="text-align: left">85</td><td style="text-align: left">17</td></tr>
+<tr><td style="text-align: left">1+</td><td style="text-align: left">8</td><td style="text-align: left">42</td><td style="text-align: left">85</td><td style="text-align: left">17</td></tr>
 </tbody></table>
 </div></datatable>
 <p>Transitions into normal Fall after use.<br>
@@ -1157,7 +1164,7 @@ Can grab ledge before frame 18 and after frame 54.</p>
 <p>(Ground/Air Hitbox), if applicable.</p>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Hitbox Duration</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
-<tr><td style="text-align: left">20 - 22</td><td style="text-align: left">15</td><td style="text-align: left">277/30</td><td style="text-align: left">75/40</td><td style="text-align: left">30/60</td></tr>
+<tr><td style="text-align: left">20 - 22</td><td style="text-align: left">15</td><td style="text-align: left">277/290</td><td style="text-align: left">75/40</td><td style="text-align: left">30/45</td></tr>
 </tbody></table>
 </div></datatable>
 <p>FAF: 42</p>
@@ -1215,7 +1222,7 @@ Can grab ledge before frame 18 and after frame 54.</p>
 <p>Like with Turnips, Peach can now use Down Special to throw any held item.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="daisy"><a class="header" href="#daisy">Daisy</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bowser"><a class="header" href="#bowser">Bowser</a></h1>
-<p><em>description not found</em></p>
+<p><em>A small work in progress. Bowser will be cleaned up another time.</em></p>
 <h2 id="stats-11"><a class="header" href="#stats-11">Stats</a></h2>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
@@ -1255,8 +1262,10 @@ Can grab ledge before frame 18 and after frame 54.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="lucina"><a class="header" href="#lucina">Lucina</a></h1>
 <p>See <a href="characters/melee/../wubor/narukami.html">Yu Narukami</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="young-link"><a class="header" href="#young-link">Young Link</a></h1>
+<p>Young Link is nearly unchanged. His air dash tier is <nerf>Bad</nerf>. All of Young Link's aerials which previously had 6 frames of landing lag now have 8 frames of landing lag.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ganondorf"><a class="header" href="#ganondorf">Ganondorf</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mewtwo"><a class="header" href="#mewtwo">Mewtwo</a></h1>
+<p>Mewtwo is unchanged. Mewtwo's air dash tier is <buff>Good</buff>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="roy"><a class="header" href="#roy">Roy</a></h1>
 <p>Roy is unchanged. His air dash tier is <nerf>Bad</nerf>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="chrom"><a class="header" href="#chrom">Chrom</a></h1>
@@ -1422,7 +1431,7 @@ Acceleration: 0.07 &gt; 0.1</p>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Jump Startup</th><th style="text-align: left">Rush Active Frames</th><th style="text-align: left">Rush Gravity</th><th style="text-align: left">Rush Max Fall Speed</th></tr></thead><tbody>
 <tr><td style="text-align: left">Vanilla</td><td style="text-align: left">5</td><td style="text-align: left">120</td><td style="text-align: left">0.05</td><td style="text-align: left">0.7</td></tr>
-<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td><td style="text-align: left"><buff>600</buff></td><td style="text-align: left"><nerf>0.07</nerf></td><td style="text-align: left"><nerf>1</nerf></td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>7</nerf></td><td style="text-align: left"><buff>360</buff></td><td style="text-align: left"><nerf>0.07</nerf></td><td style="text-align: left"><nerf>1</nerf></td></tr>
 </tbody></table>
 </div></datatable>
 <h4 id="down-special---leaf-shield"><a class="header" href="#down-special---leaf-shield">Down Special - Leaf Shield</a></h4>
@@ -1441,6 +1450,8 @@ Acceleration: 0.07 &gt; 0.1</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="little-mac"><a class="header" href="#little-mac">Little Mac</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="greninja"><a class="header" href="#greninja">Greninja</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mii-brawler"><a class="header" href="#mii-brawler">Mii Brawler</a></h1>
+<p>Mii Brawler is nearly unchanged. Their air dash tier is <ovhl>Average</ovhl> and their neutral aerial's landing lag is increased to 7 from 6.</p>
+<p>There is also currently a change to Thrust Uppercut nerfing the move to frame 5 startup from frame 3. This will be removed sometime soon.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mii-swordfighter"><a class="header" href="#mii-swordfighter">Mii Swordfighter</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mii-gunner"><a class="header" href="#mii-gunner">Mii Gunner</a></h1>
 <p><em>We recommend not selecting this character. WuBoy has...</em> <em>plans...</em></p>
@@ -1460,7 +1471,7 @@ Acceleration: 0.07 &gt; 0.1</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ryu"><a class="header" href="#ryu">Ryu</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ken"><a class="header" href="#ken">Ken</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cloud"><a class="header" href="#cloud">Cloud</a></h1>
-<p><em>He's pretty perfect. But, you know, if you can’t grab a flat man while he’s shielding, what’s the point?</em></p>
+<p><em>He's pretty perfect, and it didn't take much to make him even more perfect. But, you know, if you can’t grab a flat man while he’s shielding, what’s the point?</em></p>
 <h2 id="stats-15"><a class="header" href="#stats-15">Stats</a></h2>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
@@ -1516,6 +1527,11 @@ FAF: 48</p>
 <tr><td style="text-align: left">WuBor</td><td style="text-align: left"><buff>1.15x</buff></td></tr>
 </tbody></table>
 </div></datatable>
+<h3 id="misc-3"><a class="header" href="#misc-3">Misc</a></h3>
+<h4 id="up-and-down-taunt"><a class="header" href="#up-and-down-taunt">Up and Down Taunt</a></h4>
+<p><funny>Holding the respective Taunt button will have Cloud hold his pose.</funny></p>
+<h4 id="side-taunt-1"><a class="header" href="#side-taunt-1">Side Taunt</a></h4>
+<p><funny>Double Tapping Side Taunt will cause Cloud to start doing squats. You can continue to squat by pressing Side Taunt at the right time, but it's possible to mess up and end your squats early.</funny></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="corrin"><a class="header" href="#corrin">Corrin</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bayonetta"><a class="header" href="#bayonetta">Bayonetta</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="inkling"><a class="header" href="#inkling">Inkling</a></h1>
@@ -1621,11 +1637,111 @@ Both of Down Air's hitboxes' Y positions have been moved upwards by 1 unit to co
 </tbody></table>
 </div></datatable><div style="break-before: page; page-break-before: always;"></div><h1 id="isabelle"><a class="header" href="#isabelle">Isabelle</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="incineroar"><a class="header" href="#incineroar">Incineroar</a></h1>
+<p><em>Our goal was to make Incineroar more fun, without being broken. You be the judge of that…</em></p>
+<h2 id="stats-19"><a class="header" href="#stats-19">Stats</a></h2>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Bad</td></tr>
+<tr><td style="text-align: left">Weight</td><td style="text-align: left">116</td><td style="text-align: left"><nerf>110</nerf></td></tr>
+<tr><td style="text-align: left">Walk Speed</td><td style="text-align: left">0.62</td><td style="text-align: left"><buff>1.0</buff></td></tr>
+<tr><td style="text-align: left">Dash Speed</td><td style="text-align: left">1.76</td><td style="text-align: left"><buff>1.86</buff></td></tr>
+<tr><td style="text-align: left">Run Speed</td><td style="text-align: left">1.18</td><td style="text-align: left"><buff>1.43</buff></td></tr>
+<tr><td style="text-align: left">Air Speed</td><td style="text-align: left">0.88</td><td style="text-align: left"><buff>1.025</buff></td></tr>
+<tr><td style="text-align: left">Air Acceleration</td><td style="text-align: left">0.06</td><td style="text-align: left"><buff>0.075</buff></td></tr>
+</tbody></table>
+</div></datatable>
+<h2 id="moveset-17"><a class="header" href="#moveset-17">Moveset</a></h2>
+<h3 id="normals-12"><a class="header" href="#normals-12">Normals</a></h3>
+<h4 id="forward-tilt-4"><a class="header" href="#forward-tilt-4">Forward Tilt</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">85</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>68</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="smash-attacks-6"><a class="header" href="#smash-attacks-6">Smash Attacks</a></h3>
+<h4 id="forward-smash-4"><a class="header" href="#forward-smash-4">Forward Smash</a></h4>
+<p>(Weak/Strong), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">71/94</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left">71/<nerf>71</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="up-smash-2"><a class="header" href="#up-smash-2">Up Smash</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Base Knockback</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">89</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>79</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="down-smash-2"><a class="header" href="#down-smash-2">Down Smash</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">73</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>55</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="aerials-13"><a class="header" href="#aerials-13">Aerials</a></h3>
+<h4 id="neutral-air-7"><a class="header" href="#neutral-air-7">Neutral Air</a></h4>
+<p>(Early/Late), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">13/7</td><td style="text-align: left">11</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>11</nerf>/7</td><td style="text-align: left"><nerf>8</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="back-air-8"><a class="header" href="#back-air-8">Back Air</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Knockback Growth</th><th style="text-align: left">Landing Lag</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">73</td><td style="text-align: left">11</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>60</nerf></td><td style="text-align: left"><nerf>14</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="down-air-5"><a class="header" href="#down-air-5">Down Air</a></h4>
+<p>(Spike/Non-spike), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Base Knockback</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">30/50</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>20</nerf>/50</td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="specials-11"><a class="header" href="#specials-11">Specials</a></h3>
+<h4 id="neutral-special---darkest-lariat"><a class="header" href="#neutral-special---darkest-lariat">Neutral Special - Darkest Lariat</a></h4>
+<p><ovhl>Is no longer invincible, always deals 10 damage and always launches upwards, but it can move horizontally twice as fast as before.<br>
+It can be jump-canceled after frame 21 if you're on the ground and the move hits the opponent.</ovhl></p>
+<h4 id="side-special---alolan-whip"><a class="header" href="#side-special---alolan-whip">Side Special - Alolan Whip</a></h4>
+<p>(Lariat/Shoulder), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">20/12</td><td style="text-align: left">88/128</td><td style="text-align: left">40/34</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>16/9</nerf></td><td style="text-align: left">88/<nerf>96</nerf></td><td style="text-align: left"><nerf>36</nerf>/34</td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="up-special---cross-chop"><a class="header" href="#up-special---cross-chop">Up Special - Cross Chop</a></h4>
+<p>Early Spike Hitbox Only</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Fixed Knockback</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">175</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>120</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="down-special---revenge"><a class="header" href="#down-special---revenge">Down Special - Revenge</a></h4>
+<p><ovhl>Similar to Sephiroth's Scintilla, Revenge now automatically activates after the counter window is over.<br>
+Revenge gets stronger depending on how damaged Incineroar is, dealing 8 damage at 0% and 36 damage at 165%.<br>
+A special zoom-in will happen if Incineroar hits an opponent with the counterattack if he's taken 80% or more.
+The counterattack's damage is calculated after he takes damage or automatically transitions to it.</ovhl></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Counterattack Window</th><th style="text-align: left">Automatic Transition Frame</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">8 - 26</td><td style="text-align: left">33</td><td style="text-align: left">8 to 36</td><td style="text-align: left">45</td><td style="text-align: left">60</td><td style="text-align: left">69</td></tr>
+</tbody></table>
+</div></datatable>
+<p>Counterattack FAF: 48</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="piranha-plant"><a class="header" href="#piranha-plant">Piranha Plant</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="joker"><a class="header" href="#joker">Joker</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hero"><a class="header" href="#hero">Hero</a></h1>
 <p><em>No significant changes yet. But there's at least two things worth mentioning.</em></p>
-<h2 id="stats-19"><a class="header" href="#stats-19">Stats</a></h2>
+<h2 id="stats-20"><a class="header" href="#stats-20">Stats</a></h2>
 <datatable>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
 <tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Bad</td></tr>
@@ -1638,11 +1754,246 @@ Both of Down Air's hitboxes' Y positions have been moved upwards by 1 unit to co
 <div style="break-before: page; page-break-before: always;"></div><h1 id="min-min"><a class="header" href="#min-min">Min Min</a></h1>
 <p>Min Min is currently unchanged. However, her air dash tier is <buff>Good</buff>. We understand that this may end up being a very powerful ability in her hands... <em>but it is canon.</em> And besides, Bor never even <em>bought</em> Min Min in the first place.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="steve"><a class="header" href="#steve">Steve</a></h1>
+<p><em>Steve is an interesting case starting out as an experiment to see how much we could nerf him without completely destroying his character. You can be the judge of how we did.</em></p>
+<h2 id="stats-21"><a class="header" href="#stats-21">Stats</a></h2>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Bad</td></tr>
+</tbody></table>
+</div></datatable>
+<h2 id="moveset-18"><a class="header" href="#moveset-18">Moveset</a></h2>
+<p><funny>When he uses his fist, Steve's attacks can no longer be SDI'd.</funny><br>
+Because many of Steve's attacks have large amounts of hitboxes, we won't be listing all of the individual hitbox data for those moves.</p>
+<h3 id="normals-13"><a class="header" href="#normals-13">Normals</a></h3>
+<h4 id="jab--forward-tilt-neutral-air--short-hop-forward-and-back-air"><a class="header" href="#jab--forward-tilt-neutral-air--short-hop-forward-and-back-air">Jab / Forward Tilt/ Neutral Air / Short Hop Forward and Back Air</a></h4>
+<p><nerf>Damage reduced by 0.7 (0.5 for Iron/Diamond).</nerf></p>
+<h4 id="dash-attack-6"><a class="header" href="#dash-attack-6">Dash Attack</a></h4>
+<p><nerf>Damage reduced by around 1 to 2 (sometimes we can’t do math).</nerf></p>
+<h4 id="up-tilt--up-air"><a class="header" href="#up-tilt--up-air">Up Tilt / Up Air</a></h4>
+<p><nerf>Damage reduced by 2 on all versions. Base Knockback increased slightly.</nerf></p>
+<h3 id="smash-attacks-7"><a class="header" href="#smash-attacks-7">Smash Attacks</a></h3>
+<h4 id="forward-smash-5"><a class="header" href="#forward-smash-5">Forward Smash</a></h4>
+<p><nerf>Damage reduced by 4 on all versions.</nerf></p>
+<h3 id="aerials-14"><a class="header" href="#aerials-14">Aerials</a></h3>
+<h4 id="forward-air--back-air"><a class="header" href="#forward-air--back-air">Forward Air / Back Air</a></h4>
+<p><nerf>Damage reduced by around 2.5 on all versions. No longer deals more damage on the later hitbox.</nerf></p>
+<h4 id="down-air-anvil"><a class="header" href="#down-air-anvil">Down Air (Anvil)</a></h4>
+<p><nerf>Startup increased (12 &gt; 16).<br>
+Anvil's Hitbox no longer covers the standing surface of the Anvil.<br>
+Ground-only Hitbox Angle changed (78 &gt; 58).<br>
+Additional Shield Damage removed.</nerf></p>
+<h4 id="down-air-no-anvil"><a class="header" href="#down-air-no-anvil">Down Air (No Anvil)</a></h4>
+<p><ovhl>No longer stops your momentum.<br>
+Now has a hitbox identical to Jab's fist hitbox, except facing down.</ovhl></p>
+<h3 id="specials-12"><a class="header" href="#specials-12">Specials</a></h3>
+<h4 id="neutral-special---mining"><a class="header" href="#neutral-special---mining">Neutral Special - Mining</a></h4>
+<p><ovhl>Now only uses the &quot;generic&quot; mining pattern used on Battlefield.<br>
+Now only uses the Pickaxe to mine.<br>
+All previous instances of Diamond were replaced with Redstone. Diamond is now mined on the 75th item mined.
+Mining Gold and Redstone gives only 2 pieces each.</ovhl></p>
+<h4 id="neutral-special---crafting"><a class="header" href="#neutral-special---crafting">Neutral Special - Crafting</a></h4>
+<p><ovhl>Gold tools only require 2 pieces to craft and repair.</ovhl></p>
+<h4 id="side-special---minecart"><a class="header" href="#side-special---minecart">Side Special - Minecart</a></h4>
+<p><nerf>Startup increased (18 &gt; 26).<br>
+Command grab base duration reduced (60 &gt; 30).</nerf><br>
+<ovhl>Has a hitbox on the front of the Minecart that can confirm into the command grab.</ovhl></p>
+<h4 id="down-special---tnt"><a class="header" href="#down-special---tnt">Down Special - TNT</a></h4>
+<p><nerf>Friendly Fire is enabled, allowing the larger hitbox to hit Steve (or whoever activates it).</nerf></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sephiroth"><a class="header" href="#sephiroth">Sephiroth</a></h1>
+<p><em>Sephiroth was one of the first characters we gave particularly funny things to, which is really interesting because he's... not known for having fun. Or is he? I'm not sure...</em></p>
+<h2 id="stats-22"><a class="header" href="#stats-22">Stats</a></h2>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Average</td></tr>
+</tbody></table>
+</div></datatable>
+<h2 id="moveset-19"><a class="header" href="#moveset-19">Moveset</a></h2>
+<h3 id="specials-13"><a class="header" href="#specials-13">Specials</a></h3>
+<h4 id="up-special---blade-dash"><a class="header" href="#up-special---blade-dash">Up Special - Blade Dash</a></h4>
+<p><ovhl>Launch Angle is determined by Blade Dash's angle.<br>
+The angle varies between 90 degrees (horizontal) to 65 degrees (vertical).<br>
+The angle will always point upwards.<br>
+On hit, Blade Dash can be canceled into itself, Octaslash, Jumps, and Air Dash.<br>
+Blade Dash can cancel into itself 3 times until Sephiroth lands on the ground.<br>
+If canceled into Jump or Air Dash, Blade Dash loses the ability to cancel into itself.</ovhl></p>
+<h4 id="up-special---octaslash"><a class="header" href="#up-special---octaslash">Up Special - Octaslash</a></h4>
+<p><nerf>Startup increased (36 &gt; 41).</nerf><br>
+<ovhl>Similarly to Blade Dash, the launching angle of Octaslash is determined by Octaslash's angle.<br>
+If the angle is within 15 degrees of 0 it always launches at the 361 Sakurai angle.<br>
+Othwerwise it can be between 60 and -60 degrees.<br>
+If the angle is below 0 degrees, Base Knockback and Knockback Growth are modified.</ovhl></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Base Konockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Above 0 Degrees</td><td style="text-align: left">64</td><td style="text-align: left">104</td></tr>
+<tr><td style="text-align: left">Below 0 Degrees</td><td style="text-align: left">55</td><td style="text-align: left">30</td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="throws"><a class="header" href="#throws">Throws</a></h3>
+<h4 id="down-throw-1"><a class="header" href="#down-throw-1">Down Throw</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Angle</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">56</td><td style="text-align: left">94</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><ovhl>70</ovhl></td><td style="text-align: left"><ovhl>80</ovhl></td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="misc-4"><a class="header" href="#misc-4">Misc</a></h3>
+<h4 id="side-taunt-2"><a class="header" href="#side-taunt-2">Side Taunt</a></h4>
+<p><funny>Can be held to hold the pose.<br>
+Pressing A while holding Taunt will perform an uncharged Forward Smash.<br>
+Pressing A at the right time will perform a special version of his Forward Smash that deals 777.7% damage.</funny></p>
+<h4 id="down-taunt-1"><a class="header" href="#down-taunt-1">Down Taunt</a></h4>
+<p><funny>Can be held to hold the pose.</funny></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pyramythra"><a class="header" href="#pyramythra">Pyra/Mythra</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pyra"><a class="header" href="#pyra">Pyra</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mythra"><a class="header" href="#mythra">Mythra</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="kazuya"><a class="header" href="#kazuya">Kazuya</a></h1>
+<p><em>We’d like to keep Kazuya’s highly technical, all-or-nothing playstyle intact, while providing an opportunity for the opponent to play the same game right back at him. As it turned out, we didn’t really need to change much to accomplish that at first… but when a character has this many moves to mess around with, why not try a few changes out?</em></p>
+<h2 id="stats-23"><a class="header" href="#stats-23">Stats</a></h2>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Vanilla</th><th style="text-align: left">WuBor</th></tr></thead><tbody>
+<tr><td style="text-align: left">Air Dash Tier</td><td style="text-align: left">N/A</td><td style="text-align: left">Bad</td></tr>
+<tr><td style="text-align: left">Weight</td><td style="text-align: left">113</td><td style="text-align: left"><nerf>109</nerf></td></tr>
+<tr><td style="text-align: left">Walk Speed</td><td style="text-align: left">0.66</td><td style="text-align: left"><buff>0.8</buff></td></tr>
+<tr><td style="text-align: left">Air Dodge</td><td style="text-align: left">3 - 30</td><td style="text-align: left"><nerf>4 - 30</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<p><nerf>In addition, his passive light armor has been removed.</nerf></p>
+<h2 id="moveset-20"><a class="header" href="#moveset-20">Moveset</a></h2>
+<h3 id="standing-normals"><a class="header" href="#standing-normals">Standing Normals</a></h3>
+<h4 id="jabs"><a class="header" href="#jabs">Jabs</a></h4>
+<p><buff>Made it easier to stop his jab combo intentionally</buff></p>
+<h4 id="jab-3-1"><a class="header" href="#jab-3-1">Jab 3</a></h4>
+<p><buff>Pressing Down + Back and Attack during this Jab will have him perform <strong>Twin Fang Stature Smash</strong>. Unlike the usual Stature Smash, this one doesn't trip the opponent.</buff></p>
+<h4 id="jab-4"><a class="header" href="#jab-4">Jab 4</a></h4>
+<p><buff>Pressing Down and Attack during this Jab will have him perform <strong>Spinning Backfists</strong>. This puts Kazuya directly into Nejiri Uraken.<br></buff>
+<buff>Pressing Up + Back and Attack during this jab will have him perform <strong>Back Fist to Side High Kick</strong>, putting Kazuya directly into Jumping Side Kick.</buff></p>
+<h4 id="down-tilt---nejiri-uraken"><a class="header" href="#down-tilt---nejiri-uraken">Down Tilt - Nejiri Uraken</a></h4>
+<p><buff>Canceling Nejiri Uraken is now fully intangible until Kazuya is able to act.<br>
+It is now possible to cancel into Crouching attacks.</buff></p>
+<h4 id="double-forward-attack---left-splits-kick"><a class="header" href="#double-forward-attack---left-splits-kick">Double Forward Attack - Left Splits Kick</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Reflector Multiplier</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">2.4x</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>1.7x</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="up--forward-attack---roundhouse-to-triple-spin-kicks"><a class="header" href="#up--forward-attack---roundhouse-to-triple-spin-kicks">Up + Forward Attack - Roundhouse to Triple Spin Kicks</a></h4>
+<p><buff>Pressing Special will have Kazuya perform the finishing kick early.<br>
+If done on the first spin, the finisher will be stronger than usual.</buff></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Normal (After 1st Spin)</td><td style="text-align: left">10.5</td><td style="text-align: left">50</td><td style="text-align: left">83</td><td style="text-align: left"><nerf>50</nerf> (Vanilla: 86)</td></tr>
+<tr><td style="text-align: left">Early (1st Spin Only)</td><td style="text-align: left">14.5</td><td style="text-align: left">44</td><td style="text-align: left">75</td><td style="text-align: left">65</td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="down--forward-attack---tsunami-kick"><a class="header" href="#down--forward-attack---tsunami-kick">Down + Forward Attack - Tsunami Kick</a></h4>
+<p>The follow-up kick has been adjusted:</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">10.5</td><td style="text-align: left">50</td><td style="text-align: left">78</td><td style="text-align: left">67</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>9</nerf></td><td style="text-align: left"><ovhl>350</ovhl></td><td style="text-align: left"><ovhl>79</ovhl></td><td style="text-align: left"><ovhl>5</ovhl></td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="crouching-normals"><a class="header" href="#crouching-normals">Crouching Normals</a></h3>
+<h4 id="crouch-down-attack---crouch-jab"><a class="header" href="#crouch-down-attack---crouch-jab">Crouch Down Attack - Crouch Jab</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">5</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>3</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="crouch-down--forward-attack---tombstone-crusher"><a class="header" href="#crouch-down--forward-attack---tombstone-crusher">Crouch Down + Forward Attack - Tombstone Crusher</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th><th style="text-align: left">Trip Chance</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">16.5</td><td style="text-align: left">0%</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>9</nerf></td><td style="text-align: left"><ovhl>100%</ovhl></td></tr>
+</tbody></table>
+</div></datatable>
+<h3 id="smash-attacks-8"><a class="header" href="#smash-attacks-8">Smash Attacks</a></h3>
+<h4 id="forward-smash---glorious-demon-god-fist"><a class="header" href="#forward-smash---glorious-demon-god-fist">Forward Smash - Glorious Demon God Fist</a></h4>
+<p><nerf>No longer has armor.</nerf></p>
+<h4 id="up-smash---devil-twister"><a class="header" href="#up-smash---devil-twister">Up Smash - Devil Twister</a></h4>
+<p><nerf>No longer has armor.</nerf></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">12</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>17</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="down-smash---lion-slayer"><a class="header" href="#down-smash---lion-slayer">Down Smash - Lion Slayer</a></h4>
+<p><ovhl>Startup increased to 26, but it has infinite Super Armor from frames 4 to when the hitbox disappears.<br>
+He also takes 1.5x hitstop for dramatic effect.</ovhl></p>
+<h3 id="grabs-and-throws"><a class="header" href="#grabs-and-throws">Grabs and Throws</a></h3>
+<h4 id="pummel"><a class="header" href="#pummel">Pummel</a></h4>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">3.4</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>2.7</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="gates-of-hell"><a class="header" href="#gates-of-hell">Gates of Hell</a></h4>
+<p><buff>Can no longer be grab-teched. See <a href="characters/ultimate/../../system/engine.html#grab">Grab</a>.</buff></p>
+<h3 id="crouch-dash-actions"><a class="header" href="#crouch-dash-actions">Crouch Dash Actions</a></h3>
+<h4 id="crouch-dash"><a class="header" href="#crouch-dash">Crouch Dash</a></h4>
+<p><nerf>Now only has upper body intangibility.</nerf></p>
+<h4 id="wind-god-fist"><a class="header" href="#wind-god-fist">Wind God Fist</a></h4>
+<p>(Ground/Air), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th><th style="text-align: left">Additional Hitstun</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">8</td><td style="text-align: left">13.5/13</td><td style="text-align: left">88/73</td><td style="text-align: left">102/90</td><td style="text-align: left">5</td><td style="text-align: left">15/13</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>10</nerf></td><td style="text-align: left"><nerf>9/7</nerf></td><td style="text-align: left"><ovhl>80</ovhl></td><td style="text-align: left"><ovhl>90/80</ovhl></td><td style="text-align: left">5</td><td style="text-align: left"><nerf>0</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="electric-wind-god-fist"><a class="header" href="#electric-wind-god-fist">Electric Wind God Fist</a></h4>
+<p><nerf>Now only has upper body intangibility.</nerf></p>
+<p>(Ground/Air), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th><th style="text-align: left">Damage</th><th style="text-align: left">Angle</th><th style="text-align: left">Base Knockback</th><th style="text-align: left">Knockback Growth</th><th style="text-align: left">Hit Effect</th><th style="text-align: left">Additional Hitstun</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">8</td><td style="text-align: left">14.5/14</td><td style="text-align: left">88/81</td><td style="text-align: left">102/92</td><td style="text-align: left">5</td><td style="text-align: left">Paralyze</td><td style="text-align: left">19/14</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>10</nerf></td><td style="text-align: left"><nerf>14/9</nerf></td><td style="text-align: left"><ovhl>80</ovhl></td><td style="text-align: left"><ovhl>90/80</ovhl></td><td style="text-align: left">5</td><td style="text-align: left"><ovhl>Electric</ovhl></td><td style="text-align: left"><nerf>8</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="dragon-uppercut"><a class="header" href="#dragon-uppercut">Dragon Uppercut</a></h4>
+<p><ovhl>Intangibility was replaced with invincibility on frames 7 to 25.</ovhl></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Startup</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">20</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>22</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="spinning-demon-to-left-hook"><a class="header" href="#spinning-demon-to-left-hook">Spinning Demon to Left Hook</a></h4>
+<p><ovhl>No longer kills, instead launching opponents low with fixed knockback.<br>
+On hit, Kazuya can act earlier than before (66 &gt; 55).</ovhl></p>
+<h3 id="aerials-15"><a class="header" href="#aerials-15">Aerials</a></h3>
+<h4 id="forward-air---searing-edge"><a class="header" href="#forward-air---searing-edge">Forward Air - Searing Edge</a></h4>
+<p>(Early/Late), if applicable.</p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th><th style="text-align: left">Hit Sound Strength</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">13/10</td><td style="text-align: left">L/L</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>10/7</nerf></td><td style="text-align: left">L/M</td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="up-air---rising-toe-kick"><a class="header" href="#up-air---rising-toe-kick">Up Air - Rising Toe Kick</a></h4>
+<p><nerf>No longer has leg intangibility.<br>
+In addition, the toe hitbox that hit exclusively grounded opponents was removed.</nerf></p>
+<datatable>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left"></th><th style="text-align: left">Damage</th></tr></thead><tbody>
+<tr><td style="text-align: left">Vanilla</td><td style="text-align: left">12</td></tr>
+<tr><td style="text-align: left">WuBor</td><td style="text-align: left"><nerf>9</nerf></td></tr>
+</tbody></table>
+</div></datatable>
+<h4 id="down-air---demon-scissors"><a class="header" href="#down-air---demon-scissors">Down Air - Demon Scissors</a></h4>
+<p><ovhl>On landing without an autocancel, Kazuya now is treated as &quot;knocked down&quot; and must perform a get-up option.</ovhl></p>
+<h3 id="specials-14"><a class="header" href="#specials-14">Specials</a></h3>
+<h4 id="down-special---heavens-door"><a class="header" href="#down-special---heavens-door">Down Special - Heaven's Door</a></h4>
+<p><buff>Can no longer be grab-teched. See <a href="characters/ultimate/../../system/engine.html#grab">Grab</a>.</buff></p>
+<h4 id="rage-drive"><a class="header" href="#rage-drive">Rage Drive</a></h4>
+<p><buff>Can no longer be grab-teched. See <a href="characters/ultimate/../../system/engine.html#grab">Grab</a>.</buff></p>
+<h3 id="misc-5"><a class="header" href="#misc-5">Misc</a></h3>
+<h4 id="side-taunt---demons-wrath"><a class="header" href="#side-taunt---demons-wrath">Side Taunt - Demon's Wrath</a></h4>
+<p><funny>When used facing a ledge, Kazuya will now slip off mid-taunt.</funny></p>
+<h4 id="up-taunt"><a class="header" href="#up-taunt">Up Taunt</a></h4>
+<p><funny>Can now be held.</funny></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sora"><a class="header" href="#sora">Sora</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="yu-narukami"><a class="header" href="#yu-narukami">Yu Narukami</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="items"><a class="header" href="#items">Items</a></h1>

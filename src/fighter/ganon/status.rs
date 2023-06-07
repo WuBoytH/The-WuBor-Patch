@@ -174,7 +174,7 @@ unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCo
     }
     if fighter.global_table[SITUATION_KIND] != *SITUATION_KIND_GROUND {
         if MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL_AERIAL.into(), false.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     else {

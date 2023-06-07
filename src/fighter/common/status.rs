@@ -5,6 +5,8 @@ mod damage;
 pub mod attack;
 mod catch;
 
+mod fall;
+
 mod passive;
 mod cliff;
 mod appeal;
@@ -19,6 +21,8 @@ pub fn install() {
     damage::install();
     attack::install();
     catch::install();
+
+    fall::install();
 
     passive::install();
     cliff::install();

@@ -95,9 +95,9 @@ jobs:
     needs: [ package-main, get-version ]
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.0
+        uses: actions/download-artifact@v3.0.2
       - name: Create Main Draft Release
-        uses: softprops/action-gh-release@v0.1.14
+        uses: softprops/action-gh-release@v0.1.15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -128,9 +128,9 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download all artifacts
-        uses: actions/download-artifact@v3.0.0
+        uses: actions/download-artifact@v3.0.2
       - name: Create Dev Prerelease
-        uses: softprops/action-gh-release@v0.1.14
+        uses: softprops/action-gh-release@v0.1.15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

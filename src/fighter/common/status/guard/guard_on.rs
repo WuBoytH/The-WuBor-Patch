@@ -128,20 +128,33 @@ unsafe fn effect_guardoncommon(fighter: &mut L2CFighterAnimcmdEffectCommon) -> L
     is_excute(agent.lua_state_agent);
     let excute = agent.pop_lua_stack(1).get_bool();
     if excute {
+        // Shield Smoke
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("sys_shield_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
         EFFECT_FLW_POS(agent.lua_state_agent);
+        agent.clear_lua_stack();
+        lua_args!(agent, 0.5);
+        LAST_EFFECT_SET_RATE(agent.lua_state_agent);
+        agent.clear_lua_stack();
+        lua_args!(agent, 0.5);
+        LAST_EFFECT_SET_ALPHA(agent.lua_state_agent);
+
+        // Base Color for Shields
         let color = {
             agent.clear_lua_stack();
             lua_args!(agent, FT_VAR_INT_TEAM_COLOR);
             get_value_int(agent.lua_state_agent, *FT_VAR_INT_TEAM_COLOR)
         };
+
+        // Transparent, Always Full Shield
         agent.clear_lua_stack();
         lua_args!(agent, Hash40::new("sys_shield"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.1, false, 0, color);
         EFFECT_FOLLOW_arg12(agent.lua_state_agent);
         agent.clear_lua_stack();
         lua_args!(agent, 0.2);
         LAST_EFFECT_SET_ALPHA(agent.lua_state_agent);
+
+        // Colored, Inner Shield
         let shield_hp = WorkModule::get_float(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
         let shield_max = WorkModule::get_float(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
         let ratio = (shield_hp / shield_max).clamp(0.1, 1.0);

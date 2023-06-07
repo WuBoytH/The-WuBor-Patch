@@ -115,11 +115,17 @@ pub mod appeal {
         pub const HOLD : i32 = 0x1050;
         pub const LOOP : i32 = 0x1051;
         pub const ENABLE_ACTION : i32 = 0x1052;
+        pub const ENABLE_ACTION_IMM : i32 = 0x1053;
+        pub const ACTION_BUTTON_CHECK : i32 = 0x1054;
+        pub const ACTION_BUTTON_ENABLE_SUCCESS : i32 = 0x1055;
+        pub const ACTION_BUFFER_SUCCESS : i32 = 0x1056;
+        pub const ACTION_BUFFER_LOCKED : i32 = 0x1057;
     }
     pub mod int {
         pub const HOLD_BUTTON : i32 = 0x1050;
         pub const ACTION_BUTTON : i32 = 0x1051;
-        pub const RESTART_FRAME : i32 = 0x1052;
+        pub const ACTION_FRAME : i32 = 0x1052;
+        pub const RESTART_FRAME : i32 = 0x1053;
     }
     pub mod int64 {
         pub const ACTION_MOT : i32 = 0x1050;
@@ -144,12 +150,6 @@ pub mod attack_dash {
     }
     pub mod float {
         pub const FALL_SPEED_Y_MUL : i32 = 0x1050;
-    }
-}
-
-pub mod captured {
-    pub mod flag {
-        pub const FORCE_PALM : i32 = 0x1050;
     }
 }
 
@@ -307,8 +307,13 @@ pub mod ganon {
 
 pub mod gaogaen {
     pub mod instance {
-        pub mod int {
-            pub const REVENGE : i32 = 0x0100;
+        pub mod flag {
+            pub const REVENGE_AUTO : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const REVENGE_CRITICAL : i32 = 0x1150;
         }
     }
 }

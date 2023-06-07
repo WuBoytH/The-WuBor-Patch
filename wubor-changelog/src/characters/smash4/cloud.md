@@ -1,5 +1,5 @@
 # Cloud
-*He's pretty perfect. But, you know, if you can’t grab a flat man while he’s shielding, what’s the point?*
+*He's pretty perfect, and it didn't take much to make him even more perfect. But, you know, if you can’t grab a flat man while he’s shielding, what’s the point?*
 
 ## Stats
 
@@ -90,3 +90,13 @@ FAF: 48
 | WuBor   | <buff>1.15x</buff>   |
 
 </datatable>
+
+### Misc
+
+#### Up and Down Taunt
+
+<funny>Holding the respective Taunt button will have Cloud hold his pose.</funny>
+
+#### Side Taunt
+
+<funny>Double Tapping Side Taunt will cause Cloud to start doing squats. You can continue to squat by pressing Side Taunt at the right time, but it's possible to mess up and end your squats early.</funny>

@@ -20,9 +20,13 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.
 
 Jumping no longer has accelerated rising momentum, matching the momentum from previous games.
 
+## Falling
+
+Actions that put you into the normal falling animation will instead use the unique double jump fall animation if you are out of jumps.
+
 ## Shield
 
-* It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
+### Shield Mechanics
 * Parrying has been moved to Shield Startup instead of Shield Release.
 * The Parry window was reduced from 5 to 3 frames.
   * These two changes should make it possible, but difficult to parry multi-hit moves, as many slower multi-hits will require manual represses of Shield.
@@ -32,17 +36,21 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 * It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).
 * The natural Shield HP decrease was increased from 0.15 HP/frame to 0.18 HP/frame.
 * Shields can no longer be tilted.
-* The Shield + B or Shield + Shield lock macro no longer exists.
-* Shield no longer shrinks when it loses HP, instead turning more transparent while remaining the same size.
-* When Shield's HP reaches 40% or less, it will start turning a dark red, as well as emit smoke.
+* Shield Lock (Siheld + Special or Shield + Shield) has been removed.
+* Shield shrinks while losing HP, however a more transparent shield will always be there to show how much space your shield covers.
   * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
 * It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
 
-## Out-of-Shield
+### Actions Into Shield
+* It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
+
+## Actions Out of Shield
 Out-of-Shield options have been significantly changed.
 
+* It is now possible to perform a Platform Drop like in previous games.
+  * It is also possible to perform a Platform Drop while in Shield Lock.
 * You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
-  * Spotdodges and Rolls can still be directly performed.
+  * Spotdodges, Rolls, and Platform Dropping can still be directly performed.
   * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.
 * Using the C-Stick will drop shield and perform whatever the C-Stick is bound to.
   * Performing angled Tilts or Smash Attacks will require moving the left stick up or down after inputting the C-Stick horizontally.
@@ -53,7 +61,6 @@ Out-of-Shield options have been significantly changed.
 * Grab-techs are now active throughout the entire startup of grab, not just while the grab box is currently active.
 * All non-standard Grabs can no longer be grab-teched.
 * It is now possible to buffer Dash and Pivot Grabs.
-* You can manually Grab-Release an opponent by pressing Taunt.
 
 ## Spot Dodge
 
@@ -66,10 +73,6 @@ Out-of-Shield options have been significantly changed.
 ## Directional Air Dodge
 
 See [Air Dash](./mechanics.md#air-dash)
-
-## Platform Dropping in Shield
-
-It is not possible to Shield Drop on a Platform either by tilting down the Control Stick, like in previous Smash titles, or by pressing Taunt.
 
 ## Ledge Slipoffs
 

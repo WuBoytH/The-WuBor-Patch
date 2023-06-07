@@ -95,7 +95,6 @@ impl CustomVarManager {
 
         x
     }
-
 }
 
 pub struct VarModule {
@@ -106,7 +105,8 @@ pub struct VarModule {
     copy_int: Vec<i32>,
     copy_int64: Vec<u64>,
     copy_float: Vec<f32>,
-    copy_flag: Vec<bool>
+    copy_flag: Vec<bool>,
+    reset_status_pairs: HashMap<i32, Vec<i32>>
 }
 
 /// An additional module to be used with Smash's `BattleObject` class. This handles storing and retrieving primitive variables
@@ -150,7 +150,7 @@ impl VarModule {
     /// # Returns
     /// A blank `VarModule` instance
     pub(crate) fn new() -> Self {
-        Self {
+        let mut varmodule = Self {
             int: [vec![0; 0x200], vec![0; 0x200]],
             int64: [vec![0; 0x200], vec![0; 0x200]],
             float: [vec![0.0; 0x200], vec![0.0; 0x200]],
@@ -158,8 +158,16 @@ impl VarModule {
             copy_int: vec![0; 0x200],
             copy_int64: vec![0; 0x200],
             copy_float: vec![0.0; 0x200],
-            copy_flag: vec![false; 0x200]
-        }
+            copy_flag: vec![false; 0x200],
+            reset_status_pairs: HashMap::new()
+        };
+        varmodule.reset_status_pairs.insert(0x3, vec![-1, 0x3, 0x7]); // Not Dashes into Dash
+        varmodule.reset_status_pairs.insert(0x7, vec![-1, 0x3, 0x7]); // Not Dashes into Turn Dash
+        varmodule.reset_status_pairs.insert(0x18, vec![0x36]); // Aerial into Landing
+        varmodule.reset_status_pairs.insert(0x1E, vec![0x1B, 0x1C]); // Guards into Guard Damage
+        varmodule.reset_status_pairs.insert(0x1C, vec![0x1B, 0x1E]); // Guards into Guard Damage
+        varmodule.reset_status_pairs.insert(0x1D, vec![0x1B, 0x1C, 0x1E]); // Guards into Guard Off
+        varmodule
     }
 
     /// Resets various `VarModule` arrays depending on the mask
@@ -284,6 +292,42 @@ impl VarModule {
                 // }
             }
         }
+    }
+
+    /// Adds a status to set reset flags for.
+    #[export_name = "VarModule__add_reset_statuses"]
+    pub extern "Rust" fn add_reset_statuses(object_id: u32, status: i32, prev_statuses: Vec<i32>) {
+        let mut manager = CUSTOM_VAR_MANAGER.read();
+        let mut modules = manager.modules.write();
+        if let Some(mut module) = modules.get_mut(&object_id) {
+            if module.reset_status_pairs.contains_key(&status) {
+                if let Some(prev_statuses_orig) = module.reset_status_pairs.get_mut(&status) {
+                    prev_statuses_orig.append(&mut prev_statuses.to_vec());
+                }
+            }
+            else {
+                module.reset_status_pairs.insert(status, prev_statuses);
+            }
+        }
+    }
+
+    /// Checks the current and previous statuses to check if it should reset or not.
+    #[export_name = "VarModule__check_reset_statuses"]
+    pub extern "Rust" fn check_reset_statuses(object_id: u32, status: i32, status_prev: i32) -> bool {
+        let mut manager = CUSTOM_VAR_MANAGER.read();
+        let mut modules = manager.modules.read();
+        if let Some(mut module) = modules.get(&object_id) {
+            if let Some(reset_statuses) = module.reset_status_pairs.get(&status) {
+                let ret = reset_statuses.contains(&status_prev);
+                if !reset_statuses.contains(&-1) {
+                    return ret;
+                }
+                else {
+                    return !ret;
+                }
+            }
+        }
+        false
     }
 
     /// Retrieves an integer

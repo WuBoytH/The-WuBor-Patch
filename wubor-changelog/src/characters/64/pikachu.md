@@ -1,5 +1,5 @@
 # Pikachu
-*This rat. This. Freaking. Rat. The bane of many players' existences, even if Pikachu isn't frontrunning the meta. Everyone loves to hate him, but we like him enough, so he's a rework of every single Special as well as making him a heccin' chonker.*
+*This rat. This. Freaking. Rat. The bane of many players' existences, even if Pikachu isn't frontrunning the meta. Everyone loves to hate him, but we like him enough, so here's an anime-faithful rework of every single Special as well as making him a heccin' chonker.*
 
 ## Stats
 
@@ -196,7 +196,7 @@ The thunderbolts will begin to spawn on frame 34.
 
 | Hitbox Duration | Damage | Angle | Base Knockback | Knockback Growth |
 |:--------------- |:------ |:----- |:-------------- |:---------------- |
-| 1+              | 8      | 70    | 85             | 17               |
+| 1+              | 8      | 42    | 85             | 17               |
 
 </datatable>
 
@@ -212,9 +212,9 @@ Can grab ledge before frame 18 and after frame 54.
 
 <datatable>
 
-| Hitbox Duration | Damage | Angle  | Base Knockback | Knockback Growth |
-|:--------------- |:------ |:------ |:-------------- |:---------------- |
-| 20 - 22         | 15     | 277/30 | 75/40          | 30/60            |
+| Hitbox Duration | Damage | Angle   | Base Knockback | Knockback Growth |
+|:--------------- |:------ |:------- |:-------------- |:---------------- |
+| 20 - 22         | 15     | 277/290 | 75/40          | 30/45            |
 
 </datatable>
 

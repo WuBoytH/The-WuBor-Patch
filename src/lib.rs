@@ -12,7 +12,8 @@
     clippy::collapsible_else_if,
     clippy::absurd_extreme_comparisons,
     clippy::cmp_null,
-    clippy::if_same_then_else
+    clippy::if_same_then_else,
+    clippy::module_inception
 )]
 
 use skyline::libc::c_char;

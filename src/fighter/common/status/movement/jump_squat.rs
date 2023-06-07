@@ -3,10 +3,10 @@ use crate::imports::status_imports::*;
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     jump_squat_check_special_jump(fighter);
-    let mut jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
+    let /* mut */ jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-        jump_squat_frame += 1.0;
+        // jump_squat_frame += 1.0;
     }
     let mot = param_1.get_u64();
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new_raw(mot));
@@ -88,7 +88,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
         let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
-        if fighter.global_table[STATUS_FRAME].get_f32() == jump_squat_frame {
+        if fighter.global_table[STATUS_FRAME].get_f32() == jump_squat_frame - 1.0 {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
         }
     }
@@ -211,7 +211,7 @@ unsafe fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommo
         fighter.sub_jump_squat_uniq_check_sub_mini_attack();
     }
     else {
-        let callable: extern "C" fn(&mut L2CFighterCommon) = std::mem::transmute(param_1.get_ptr());
+        let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(param_1.get_ptr());
         callable(fighter);
     }
     let mot = MotionModule::motion_kind(fighter.module_accessor);

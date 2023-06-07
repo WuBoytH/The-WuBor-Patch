@@ -1,20 +1,6 @@
 use {
-    smash::{
-        lua2cpp::{L2CFighterCommon, *},
-        hash40,
-        phx::Hash40,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smash_script::*,
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{
-        vars::*,
-        cancels::*,
-        table_const::*
-    },
-    super::super::common::status::attack::*
+    crate::imports::status_imports::*,
+    crate::fighter::common::status::attack::attack::*
 };
 
 #[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]

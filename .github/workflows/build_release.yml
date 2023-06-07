@@ -14,10 +14,10 @@ jobs:
         id: plugin-version
         # You may pin to the exact commit or the version.
         # uses: dante-signal31/rust-app-version@752c1afc51739ac75b36157cdd20e7116d203980
-        uses: dante-signal31/rust-app-version@v1.0.0
+        uses: dante-signal31/rust-app-version@v1.2.0
       - name: Get Branch Name
         id: branch-name
-        uses: tj-actions/branch-names@v6
+        uses: tj-actions/branch-names@v7.0.1
     outputs:
       version: ${{ steps.plugin-version.outputs.app_version }}
       branch: ${{ steps.branch-name.outputs.current_branch }}

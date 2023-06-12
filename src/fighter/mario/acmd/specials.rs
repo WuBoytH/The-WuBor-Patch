@@ -94,10 +94,7 @@ unsafe fn expression_specials(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "mario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn mario_specialhi(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(fighter, 3.0);
     frame(fighter.lua_state_agent, 3.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
     let mut effect = Hash40::new("collision_attr_coin");
     let mut sound = *COLLISION_SOUND_ATTR_COIN;
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY) {

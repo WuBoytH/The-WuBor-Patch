@@ -173,11 +173,60 @@ unsafe fn sub_update_damage_fly_effect(
     effect_id.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_sub_DamageFlyChkUniq)]
+unsafe fn sub_damageflychkuniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN) {
+            if fighter.sub_AirChkDown().get_bool() {
+                return true.into();
+            }
+        }
+        else {
+            fighter.clear_lua_stack();
+            lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+            let damage_speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
+            let damage_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_FRAME);
+            if -1.0 <= damage_speed_y
+            && WorkModule::get_param_int(fighter.module_accessor, hash40("common"), 0x1e7a52eb8a) <=damage_frame {
+                if fighter.sub_AirChkDown().get_bool() {
+                    return true.into();
+                }
+            }
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN);
+        }
+        // if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER)
+        // && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET) {
+        //     fighter.clear_lua_stack();
+        //     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_DAMAGE);
+        //     let damage_speed_length = sv_kinetic_energy::get_speed_length(fighter.lua_state_agent);
+        //     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_ATTACK_DISABLE_FRAME) <= 0 {
+        //         if damage_speed_length <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("damage_fly_attack_speed")) {
+        //             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ITEM_THROW);
+        //             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
+        //         }
+        //     }
+        //     if 1.0 < fighter.global_table[MOTION_FRAME].get_f32()
+        //     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_ESCAPE_DISABLE_FRAME) <= 0 {
+        //         if damage_speed_length <= WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("damage_fly_escape_speed")) {
+        //             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LASSO);
+        //             WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);
+        //         }
+        //     }
+        //     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_DAMAGE_REFLECT_ESCAPE_DISABLE_FRAME) <= 0 {
+        //         WorkModule::enable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR);
+        //     }
+        // }
+        fighter.FighterStatusDamage__check_smoke_effect();
+    }
+    false.into()
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
             status_pre_damagefly,
-            sub_update_damage_fly_effect
+            sub_update_damage_fly_effect,
+            sub_damageflychkuniq
         );
     }
 }

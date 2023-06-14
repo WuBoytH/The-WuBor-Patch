@@ -89,6 +89,7 @@ It is now possible to slip off of ledges during the following states:
 * Balloon Knockback has been reworked.
   * Balloon Knockback now applies based on Launch Speed instead of total Hitstun frames.
   * Maximum Balloon Knockback magitude has been reduced (6 > 4), making it have less of, but still a noticable effect.
+* Hitstun Canceling was removed.
 
 ## Directional Influence
 

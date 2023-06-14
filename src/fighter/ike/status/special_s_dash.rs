@@ -36,6 +36,7 @@ unsafe fn ike_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ike_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    GroundModule::select_cliff_hangdata(fighter.module_accessor, 1);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     let special_s_dash_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_s"), hash40("special_s_dash_frame"));
     WorkModule::set_int(fighter.module_accessor, special_s_dash_frame, *FIGHTER_IKE_STATUS_SPECIAL_S_WORK_INT_DASH_COUNT);

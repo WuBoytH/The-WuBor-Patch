@@ -68,7 +68,8 @@ unsafe fn gekkouga_attackhi3(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "gekkouga", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn gekkouga_attacklw3(fighter: &mut L2CAgentBase) {
-    macros::FT_MOTION_RATE(fighter, 0.8);
+    frame(fighter.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(fighter, 1.25);
     frame(fighter.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
     if macros::is_excute(fighter) {

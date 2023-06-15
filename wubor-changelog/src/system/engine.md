@@ -105,6 +105,20 @@ It is now possible to slip off of ledges during the following states:
 
 ## Ledges
 
+Ledges have been reworked.
+* The 2 frames it takes to reach a ledge have been removed.
+  * This also removes 2-Framing.
+* The entire cast has had their ledge grab boxes adjusted to remove the phenomenon known as "Magnet Hands".
+* Certain characters have had new ledge grab boxes added to certain moves.
+
+### Tethers
+
+* All tethers have had their reel-in speed cut in half.
+* In the case of Joker, Byleth, and Min Min, their Up Specials take longer to initially tether to the ledge.
+* Otherwise, tether framedata and ledge grab boxes as a whole have been untouched for now.
+
+### Ledge Intangibility
+
 * Dropping from ledge no longer clears your intangibility.
 * Intangibility gets cleared if you are no longer in the falling or jumping states.
 

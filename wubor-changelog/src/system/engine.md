@@ -114,8 +114,15 @@ Ledges have been reworked.
 ### Tethers
 
 * All tethers have had their reel-in speed cut in half.
-* In the case of Joker, Byleth, and Min Min, their Up Specials take longer to initially tether to the ledge.
-* Otherwise, tether framedata and ledge grab boxes as a whole have been untouched for now.
+* All tethers now grab the ledge the frame before their respective hitbox activates, if they don't already. This applies to:
+  * Samus (Grapple Beam)
+  * Young Link (Hookshot)
+  * Lucas (Rope Snake)
+  * Toon Link (Hookshot)
+  * Joker (Grappling Hook)
+  * Byleth (Sword of the Creator)
+  * Min Min (ARM Hook)
+* Tether's attack framedata and ledge grab boxes as a whole have been untouched for now.
 
 ### Ledge Intangibility
 

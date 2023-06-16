@@ -15,17 +15,20 @@ unsafe fn master_specialairhi(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 10.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
+    frame(fighter.lua_state_agent, 14.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_HANG_IMMIDIATE);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
+    }
     frame(fighter.lua_state_agent, 15.0);
     if macros::is_excute(fighter) {
         macros::SEARCH(fighter, 0, 0, Hash40::new("top"), 1.7, 0.0, 30.0, 9.0, Some(0.0), Some(46.0), Some(16.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_BODY, false);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_HANG_IMMIDIATE);
+        GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_MASTER_CLIFF_HANG_DATA_AIR_LASSO as u32);
+        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_HANG_IMMIDIATE);
     }
     frame(fighter.lua_state_agent, 16.0);
     if macros::is_excute(fighter) {
         search!(fighter, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
-        WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_HANG_IMMIDIATE);
-        GroundModule::select_cliff_hangdata(fighter.module_accessor, *FIGHTER_MASTER_CLIFF_HANG_DATA_AIR_LASSO as u32);
     }
     frame(fighter.lua_state_agent, 17.0);
     if macros::is_excute(fighter) {

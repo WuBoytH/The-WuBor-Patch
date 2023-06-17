@@ -102,13 +102,14 @@ pub unsafe fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) 
         return 1.into();
     }
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO)
+    && !VarModule::is_flag(fighter.battle_object, escape_air::flag::SLIDE_ENABLE_ATTACK)
     && {
         let air_lasso_type = WorkModule::get_param_int(fighter.module_accessor, hash40("air_lasso_type"), 0);
         air_lasso_type != *FIGHTER_AIR_LASSO_TYPE_NONE
     }
     && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
     && !LinkModule::is_link(fighter.module_accessor, *FIGHTER_LINK_NO_CONSTRAINT) {
-        fighter.change_status(FIGHTER_STATUS_KIND_ITEM_THROW.into(), false.into());
+        fighter.change_status(FIGHTER_STATUS_KIND_AIR_LASSO.into(), false.into());
         return 1.into();
     }
 
@@ -270,7 +271,8 @@ pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CVa
     else {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_FRAME);
-        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO) {
+        if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_AIR_LASSO)
+        && !VarModule::is_flag(fighter.battle_object, escape_air::flag::SLIDE_ENABLE_ATTACK) {
             let escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
             let attack_air_lasso_enable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("attack_air_lasso_enable_frame"));
             if attack_air_lasso_enable_frame < escape_frame {

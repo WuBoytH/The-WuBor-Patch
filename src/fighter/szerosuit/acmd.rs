@@ -2,6 +2,7 @@ mod normals;
 mod smashes;
 mod aerials;
 mod specials;
+mod lasso;
 mod escape;
 
 pub fn install() {
@@ -9,5 +10,6 @@ pub fn install() {
     smashes::install();
     aerials::install();
     specials::install();
+    lasso::install();
     escape::install();
 }

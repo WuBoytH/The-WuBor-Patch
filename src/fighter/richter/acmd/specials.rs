@@ -88,6 +88,9 @@ unsafe fn richter_cross_turn(weapon: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "richter", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        GroundModule::select_cliff_hangdata(fighter.module_accessor, 9);
+    }
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
@@ -132,6 +135,9 @@ unsafe fn richter_specialhi(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "richter", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe fn richter_specialairhi(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        GroundModule::select_cliff_hangdata(fighter.module_accessor, 9);
+    }
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 7.0 / 4.0);
     frame(fighter.lua_state_agent, 5.0);

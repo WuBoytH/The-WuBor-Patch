@@ -129,6 +129,7 @@ unsafe fn ganon_specialsstart(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "ganon", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
 unsafe fn ganon_specialairsstart(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
+        GroundModule::select_cliff_hangdata(fighter.module_accessor, 1);
         macros::ATTACK_ABS(fighter, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 4.0, 0, 10, 0, 100, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);
     }
     frame(fighter.lua_state_agent, 1.0);

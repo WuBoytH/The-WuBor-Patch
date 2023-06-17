@@ -89,6 +89,7 @@ It is now possible to slip off of ledges during the following states:
 * Balloon Knockback has been reworked.
   * Balloon Knockback now applies based on Launch Speed instead of total Hitstun frames.
   * Maximum Balloon Knockback magitude has been reduced (6 > 4), making it have less of, but still a noticable effect.
+* Hitstun Canceling was removed.
 
 ## Directional Influence
 
@@ -103,6 +104,27 @@ It is now possible to slip off of ledges during the following states:
 * Untechables no longer exist except for on moves where it is purposefully impossible to tech.
 
 ## Ledges
+
+Ledges have been reworked.
+* The 2 frames it takes to reach a ledge have been removed.
+  * This also removes 2-Framing.
+* The entire cast has had their ledge grab boxes adjusted to remove the phenomenon known as "Magnet Hands".
+* Certain characters have had new ledge grab boxes added to certain moves.
+
+### Tethers
+
+* All tethers have had their reel-in speed cut in half.
+* All tethers now grab the ledge the frame before their respective hitbox activates, if they don't already. This applies to:
+  * Samus (Grapple Beam)
+  * Young Link (Hookshot)
+  * Lucas (Rope Snake)
+  * Toon Link (Hookshot)
+  * Joker (Grappling Hook)
+  * Byleth (Sword of the Creator)
+  * Min Min (ARM Hook)
+* Tether's attack framedata and ledge grab boxes as a whole have been untouched for now.
+
+### Ledge Intangibility
 
 * Dropping from ledge no longer clears your intangibility.
 * Intangibility gets cleared if you are no longer in the falling or jumping states.

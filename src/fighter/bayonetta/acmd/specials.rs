@@ -119,6 +119,9 @@ unsafe fn bayonetta_specialairsd(fighter: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "bayonetta", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_specialhi(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        GroundModule::select_cliff_hangdata(fighter.module_accessor, 1);
+    }
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, true, false, false, 20, 0, 15, 0, false);

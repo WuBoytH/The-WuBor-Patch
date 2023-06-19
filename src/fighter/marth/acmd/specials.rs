@@ -405,7 +405,7 @@ unsafe fn marth_specialnendmaxlw_eff(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "marth", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
 unsafe fn marth_specialhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     let unstance = marth_unstance_game(fighter, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -424,11 +424,12 @@ unsafe fn marth_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear(fighter.module_accessor, 2, false);
         AttackModule::clear(fighter.module_accessor, 3, false);
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
+        // notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
     frame(fighter.lua_state_agent, 12.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
 
@@ -453,6 +454,45 @@ unsafe fn marth_specialhi_eff(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         macros::LANDING_EFFECT(fighter, Hash40::new("sys_v_smoke_a"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_jump"), -1);
+        macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_swing"), -1);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("marth_dolphin_shadow"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
+    }
+    frame(fighter.lua_state_agent, 7.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), -2, -10, 15, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+    }
+    frame(fighter.lua_state_agent, 12.0);
+    if macros::is_excute(fighter) {
+        macros::AFTER_IMAGE_OFF(fighter, 5);
+    }
+    frame(fighter.lua_state_agent, 13.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_OFF_KIND(fighter, Hash40::new_raw(unstance.swordflare), false, true);
+    }
+}
+
+#[acmd_script( agent = "marth", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
+unsafe fn marth_specialairhi_eff(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 3.0);
+    if macros::is_excute(fighter) {
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("marth_dolphin_swing"), Hash40::new("top"), 0, 12, -1, 14, -30, 37, 1, true);
+        if marth_is_unstance(fighter) {
+            macros::LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.2, 0.2);
+        }
+    }
+    frame(fighter.lua_state_agent, 4.0);
+    let unstance = marth_unstance_effect(fighter, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
+    if macros::is_excute(fighter) {
+        macros::AFTER_IMAGE4_ON_arg29(fighter, Hash40::new_raw(unstance.trail1), Hash40::new_raw(unstance.trail2), 6, Hash40::new("sword1"), 0.0, 0.0, 0.5, Hash40::new("sword1"), -0.0, -0.0, 12.6, true, Hash40::new("null"), Hash40::new("haver"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.2);
+        macros::EFFECT_FOLLOW(fighter, Hash40::new("marth_dolphin_jump"), Hash40::new("top"), -0.0, 0, -5, 0, 0, 0, 1, true);
+        if marth_is_unstance(fighter) {
+            macros::LAST_EFFECT_SET_COLOR(fighter, 1.0, 0.2, 0.2);
+        }
+    }
+    frame(fighter.lua_state_agent, 5.0);
+    if macros::is_excute(fighter) {
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_jump"), -1);
         macros::EFFECT_DETACH_KIND(fighter, Hash40::new("marth_dolphin_swing"), -1);
         macros::EFFECT_FOLLOW(fighter, Hash40::new("marth_dolphin_shadow"), Hash40::new("top"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -520,7 +560,7 @@ pub fn install() {
         marth_specialnendmax, marth_specialnendmax_eff,
         marth_specialnendmaxhi, marth_specialnendmaxhi_eff,
         marth_specialnendmaxlw, marth_specialnendmaxlw_eff,
-        marth_specialhi, marth_specialhi_eff,
+        marth_specialhi, marth_specialhi_eff, marth_specialairhi_eff,
         marth_speciallw,
         marth_speciallwenter,
         marth_speciallwexit,

@@ -57,7 +57,7 @@ unsafe fn donkey_specialairhi(fighter: &mut L2CAgentBase) {
         }
         wait(fighter.lua_state_agent, 4.0);
         if macros::is_excute(fighter) {
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
+            // WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
             AttackModule::clear_all(fighter.module_accessor);
         }
     }
@@ -75,7 +75,7 @@ unsafe fn donkey_specialairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_YACL_DEFAULT);
-        AttackModule::clear_all(fighter.module_accessor);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     macros::FT_MOTION_RATE(fighter, 1.0);
 }

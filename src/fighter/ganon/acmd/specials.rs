@@ -198,10 +198,10 @@ unsafe fn ganon_specialhi(fighter: &mut L2CAgentBase) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR, 1);
         macros::CATCH(fighter, 0, Hash40::new("top"), 4.4, 0.0, 16.0, 6.5, Some(0.0), Some(18.0), Some(3.0), *FIGHTER_STATUS_KIND_CLUNG_GANON, *COLLISION_SITUATION_MASK_GA);
     }
-    frame(fighter.lua_state_agent, 18.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
+    // frame(fighter.lua_state_agent, 18.0);
+    // if macros::is_excute(fighter) {
+    //     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    // }
     frame(fighter.lua_state_agent, 29.0);
     if macros::is_excute(fighter) {
         grab!(fighter, *MA_MSC_CMD_GRAB_CLEAR_ALL);

@@ -152,13 +152,10 @@ unsafe fn luigi_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     }
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
 
@@ -191,13 +188,10 @@ unsafe fn luigi_specialairhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     }
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
     frame(fighter.lua_state_agent, 24.0);
     if macros::is_excute(fighter) {
         AttackModule::clear_all(fighter.module_accessor);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
     }
 }
 

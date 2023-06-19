@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "link", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn game_attackhi4(fighter: &mut L2CAgentBase) {
+unsafe fn link_attackhi4(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(fighter, 0.5);
     frame(fighter.lua_state_agent, 6.0);

@@ -85,6 +85,14 @@ unsafe fn rockman_chargeshot_regular(weapon: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "rockman", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+unsafe fn rockman_specialhi(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 11.0);
+    if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
+    }
+}
+
 #[acmd_script( agent = "rockman", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe fn rockman_speciallw(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 5.0);
@@ -166,6 +174,7 @@ pub fn install() {
     install_acmd_scripts!(
         rockman_specialn, rockman_specialn_eff, rockman_specialn_snd, rockman_specialn_exp,
         rockman_chargeshot_regular,
+        rockman_specialhi,
         rockman_speciallw,
         rockman_specialairlw,
         rockman_leafshield_start, rockman_leafshield_shield, rockman_leafshield_fly

@@ -296,6 +296,7 @@ unsafe fn miifighter_specialairhi2(fighter: &mut L2CAgentBase) {
         macros::HIT_NODE(fighter, Hash40::new("legl"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneer"), *HIT_STATUS_NORMAL);
         macros::HIT_NODE(fighter, Hash40::new("kneel"), *HIT_STATUS_NORMAL);
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(fighter.lua_state_agent, 48.0);
     if macros::is_excute(fighter) {

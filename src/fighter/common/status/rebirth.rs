@@ -106,9 +106,9 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
                         false
                     );
                 }
-            }
-            else {
-                fighter.sub_wait_motion(false.into());
+                else {
+                    fighter.sub_wait_motion(false.into());
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ unsafe fn reflet_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
     }
-    frame(fighter.lua_state_agent, 30.0);
+    frame(fighter.lua_state_agent, 40.0);
     if macros::is_excute(fighter) {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_TRY_2ND);
     }

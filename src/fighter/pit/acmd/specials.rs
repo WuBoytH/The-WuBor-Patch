@@ -38,9 +38,27 @@ unsafe fn pit_specialairsend(fighter: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(fighter, 0.83);
 }
 
+#[acmd_script( agent = "pit", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+unsafe fn pit_specialhi(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+    }
+    frame(fighter.lua_state_agent, 10.0);
+    if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
+    }
+    frame(fighter.lua_state_agent, 45.0);
+    if macros::is_excute(fighter) {
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_FIX_ANGLE);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_BACK_ANGLE);
+        JostleModule::set_status(fighter.module_accessor, true);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         pit_specialsend,
-        pit_specialairsend
+        pit_specialairsend,
+        pit_specialhi
     );
 }

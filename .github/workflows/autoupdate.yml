@@ -11,3 +11,7 @@ jobs:
       - uses: docker://chinthakagodawita/autoupdate-action:v1
         env:
           GITHUB_TOKEN: '${{ secrets.RELEASE_TOKEN }}'
+          MERGE_CONFLICT_ACTION: "ignore"
+
+      - run: echo 'Merge conflicts found!'
+        if: ${{ steps.autoupdate.outputs.conflicted }}

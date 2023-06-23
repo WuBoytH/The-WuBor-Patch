@@ -8,26 +8,14 @@ unsafe fn mariod_throwb(fighter: &mut L2CAgentBase) {
     }
     frame(fighter.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(fighter, 2.0);
-    if macros::is_excute(fighter) {
-        let target = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
-        let boma = sv_battle_object::module_accessor(target as u32);
-        if !boma.is_null() {
-            MotionModule::set_rate(boma, 0.5);
-        }
-    }
+    ThrowUtils::set_thrown_rate(fighter.module_accessor, 0.5);
     frame(fighter.lua_state_agent, 20.0);
     if macros::is_excute(fighter) {
         macros::REVERSE_LR(fighter);
     }
     frame(fighter.lua_state_agent, 23.0);
     macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        let target = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);
-        let boma = sv_battle_object::module_accessor(target as u32);
-        if !boma.is_null() {
-            MotionModule::set_rate(boma, 1.0);
-        }
-    }
+    ThrowUtils::set_thrown_rate(fighter.module_accessor, 1.0);
     frame(fighter.lua_state_agent, 29.0);
     if macros::is_excute(fighter) {
         macros::CHECK_FINISH_CAMERA(fighter, 11, 6);

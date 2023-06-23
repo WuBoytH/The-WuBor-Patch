@@ -428,6 +428,39 @@ pub mod FGCModule {
 }
 
 #[allow(non_snake_case)]
+pub mod ThrowUtils {
+    use super::*;
+
+    /// Gets the thrown opponent boma.
+    pub unsafe fn get_thrown_object(module_accessor: *mut BattleObjectModuleAccessor) -> Option<*mut BattleObject> {
+        let link_id = LinkModule::get_node_object_id(module_accessor, *LINK_NO_CAPTURE) as u32;
+        let object = MiscModule::get_battle_object_from_id(link_id);
+        if object.is_null() {
+            None
+        }
+        else {
+            Some(object)
+        }
+    }
+
+    /// Sets the thrown opponent's rate.
+    pub unsafe fn set_thrown_rate(module_accessor: *mut BattleObjectModuleAccessor, rate: f32) {
+        if let Some(object) = get_thrown_object(module_accessor) {
+            MotionModule::set_rate((*object).module_accessor, rate);
+        }
+    }
+
+    /// Forces the "launched" knockback state.
+    pub unsafe fn set_force_launch(module_accessor: *mut BattleObjectModuleAccessor) {
+        if let Some(object) = get_thrown_object(module_accessor) {
+            if sv_battle_object::category((*object).battle_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                VarModule::on_flag(object, thrown::flag::FORCE_LAUNCHED);
+            }
+        }
+    }
+}
+
+#[allow(non_snake_case)]
 pub mod MiscModule {
     use super::*;
 

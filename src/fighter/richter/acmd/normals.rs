@@ -292,28 +292,28 @@ unsafe fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_whip", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attacks3(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 1.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_NONE);
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+unsafe fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
                 object as *mut smash::app::Weapon
             );
         }
     }
-    macros::FT_MOTION_RATE(weapon, 5.0 / 3.0);
-    frame(weapon.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(weapon, 1.0);
-    frame(weapon.lua_state_agent, 11.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
+    frame(agent.lua_state_agent, 4.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
     }
-    frame(weapon.lua_state_agent, 23.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_MOVE);
+    frame(agent.lua_state_agent, 23.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
     }
 }
 
@@ -345,23 +345,23 @@ unsafe fn richter_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_whip", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attackhi3(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 1.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_NONE);
+unsafe fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
     }
-    macros::FT_MOTION_RATE(weapon, 2.0);
-    frame(weapon.lua_state_agent, 6.0);
-    macros::FT_MOTION_RATE(weapon, 1.0);
-    frame(weapon.lua_state_agent, 31.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    macros::FT_MOTION_RATE(agent, 2.0);
+    frame(agent.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 31.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
     }
-    frame(weapon.lua_state_agent, 32.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_MOVE);
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+    frame(agent.lua_state_agent, 32.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
                 object as *mut smash::app::Weapon

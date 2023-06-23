@@ -151,27 +151,27 @@ unsafe fn richter_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_whip", scripts = [ "game_attacks4", "game_attacks4hi", "game_attacks4lw" ], category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attacks4(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_NONE);
+unsafe fn richter_whip_attacks4(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
     }
-    frame(weapon.lua_state_agent, 8.0);
-    macros::FT_MOTION_RATE(weapon, 1.5);
-    frame(weapon.lua_state_agent, 16.0);
-    macros::FT_MOTION_RATE(weapon, 1.0);
-    frame(weapon.lua_state_agent, 21.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    frame(agent.lua_state_agent, 8.0);
+    macros::FT_MOTION_RATE(agent, 1.5);
+    frame(agent.lua_state_agent, 16.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 21.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
     }
-    frame(weapon.lua_state_agent, 30.0);
-    macros::FT_MOTION_RATE(weapon, 7.0 / 10.0);
-    frame(weapon.lua_state_agent, 60.0);
-    macros::FT_MOTION_RATE(weapon, 1.0);
-    frame(weapon.lua_state_agent, 76.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_MOVE);
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+    frame(agent.lua_state_agent, 30.0);
+    macros::FT_MOTION_RATE(agent, 7.0 / 10.0);
+    frame(agent.lua_state_agent, 60.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 76.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::set_node_fix_flag_list(
                 object as *mut smash::app::Weapon,

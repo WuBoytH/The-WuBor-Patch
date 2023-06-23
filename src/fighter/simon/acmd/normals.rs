@@ -112,11 +112,11 @@ unsafe fn simon_attackdash_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon_whip", script = "game_attackdash" , category = ACMD_GAME, low_priority )]
-unsafe fn simon_whip_attackdash(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_MOVE);
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+unsafe fn simon_whip_attackdash(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
                 object as *mut smash::app::Weapon
@@ -156,19 +156,19 @@ unsafe fn simon_whip_attackdash(weapon: &mut L2CAgentBase) {
             );
         }
     }
-    frame(weapon.lua_state_agent, 48.0);
-    if macros::is_excute(weapon) {
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+    frame(agent.lua_state_agent, 48.0);
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
                 object as *mut smash::app::Weapon
             );
         }
     }
-    wait(weapon.lua_state_agent, 21.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_NONE);
+    wait(agent.lua_state_agent, 21.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
     }
 }
 
@@ -353,51 +353,51 @@ unsafe fn simon_attacks3_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon_whip", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME, low_priority )]
-unsafe fn simon_whip_attacks3(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 1.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_NONE);
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+unsafe fn simon_whip_attacks3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
                 object as *mut smash::app::Weapon
             );
         }
     }
-    macros::FT_MOTION_RATE(weapon, 0.5);
-    frame(weapon.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(weapon, 1.0);
-    frame(weapon.lua_state_agent, 11.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    macros::FT_MOTION_RATE(agent, 0.5);
+    frame(agent.lua_state_agent, 4.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
     }
-    frame(weapon.lua_state_agent, 23.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_MOVE);
+    frame(agent.lua_state_agent, 23.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
     }
 }
 
 #[acmd_script( agent = "simon_whip", scripts = [ "effect_attacks3", "effect_attacks3hi", "effect_attacks3lw" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_whip_attacks3_eff(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 13.0);
-    if macros::is_excute(weapon) {
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+unsafe fn simon_whip_attacks3_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 13.0);
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::set_chain_2_visibility(
                 object as *mut smash::app::Weapon,
                 true
             );
         }
-        macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_light"), Hash40::new("hookshot6"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_RATE(weapon, 1.3);
-        macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_light"), Hash40::new("hookshot6"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.3);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(weapon.lua_state_agent, 17.0);
-    if macros::is_excute(weapon) {
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+    frame(agent.lua_state_agent, 17.0);
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::set_chain_2_visibility(
                 object as *mut smash::app::Weapon,
@@ -492,48 +492,48 @@ unsafe fn simon_attacklw3_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon_whip", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn simon_whip_attacklw3(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 1.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_NONE);
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+unsafe fn simon_whip_attacklw3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
                 object as *mut smash::app::Weapon
             );
         }
     }
-    frame(weapon.lua_state_agent, 8.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_COLLIDE);
+    frame(agent.lua_state_agent, 8.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
     }
-    frame(weapon.lua_state_agent, 20.0);
-    if macros::is_excute(weapon) {
-        PhysicsModule::set_2nd_status(weapon.module_accessor, *PH2NDARY_CRAW_MOVE);
+    frame(agent.lua_state_agent, 20.0);
+    if macros::is_excute(agent) {
+        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
     }
 }
 
 #[acmd_script( agent = "simon_whip", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_whip_attacklw3_eff(weapon: &mut L2CAgentBase) {
-    frame(weapon.lua_state_agent, 11.0);
-    if macros::is_excute(weapon) {
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+unsafe fn simon_whip_attacklw3_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::set_chain_2_visibility(
                 object as *mut smash::app::Weapon,
                 true
             );
         }
-        macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_light"), Hash40::new("hookshot6"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_RATE(weapon, 1.3);
-        macros::EFFECT_FOLLOW(weapon, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_light"), Hash40::new("hookshot6"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.3);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
     }
-    frame(weapon.lua_state_agent, 15.0);
-    if macros::is_excute(weapon) {
-        weapon.clear_lua_stack();
-        let object = sv_system::battle_object(weapon.lua_state_agent) as *mut BattleObject;
+    frame(agent.lua_state_agent, 15.0);
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
         if !object.is_null() {
             WeaponSpecializer_SimonWhip::set_chain_2_visibility(
                 object as *mut smash::app::Weapon,

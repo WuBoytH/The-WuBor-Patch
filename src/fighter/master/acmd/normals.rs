@@ -54,22 +54,22 @@ unsafe fn master_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn master_sword_attacklw3(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        WorkModule::set_float(weapon.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
-        WorkModule::set_float(weapon.module_accessor, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
+unsafe fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        WorkModule::set_float(agent.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
+        WorkModule::set_float(agent.module_accessor, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
     }
-    frame(weapon.lua_state_agent, 3.0);
-    macros::FT_MOTION_RATE(weapon, 0.5);
-    frame(weapon.lua_state_agent, 9.0);
-    macros::FT_MOTION_RATE(weapon, 1);
-    frame(weapon.lua_state_agent, 24.0);
-    if macros::is_excute(weapon) {
-        WorkModule::on_flag(weapon.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
+    frame(agent.lua_state_agent, 3.0);
+    macros::FT_MOTION_RATE(agent, 0.5);
+    frame(agent.lua_state_agent, 9.0);
+    macros::FT_MOTION_RATE(agent, 1);
+    frame(agent.lua_state_agent, 24.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
     }
-    frame(weapon.lua_state_agent, 34.0);
-    if macros::is_excute(weapon) {
-        WorkModule::off_flag(weapon.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
+    frame(agent.lua_state_agent, 34.0);
+    if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
     }
 }
 

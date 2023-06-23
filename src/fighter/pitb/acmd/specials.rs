@@ -16,7 +16,7 @@ unsafe fn pitb_specialnstart_exp(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_final") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("agent") as i64, hash40("agent_final") as i64);
     }
 }
 
@@ -92,11 +92,11 @@ unsafe fn pitb_specialnfires_exp(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 35.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_none") as i64);
+        VisibilityModule::set_int64(agent.module_accessor, hash40("agent") as i64, hash40("agent_none") as i64);
     }
     frame(agent.lua_state_agent, 52.0);
     if macros::is_excute(agent) {
-        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("weapon") as i64, hash40("weapon_normal") as i64);
+        VisibilityModule::set_status_default_int64(agent.module_accessor, hash40("agent") as i64, hash40("agent_normal") as i64);
     }
 }
 

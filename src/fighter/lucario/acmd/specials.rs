@@ -122,57 +122,57 @@ unsafe fn lucario_specialnshoot2_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario_auraball", scripts = [ "game_charge", "game_chargemax" ], category = ACMD_GAME, low_priority )]
-unsafe fn lucario_auraball_charge(weapon: &mut L2CAgentBase) {
-    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
-        if macros::is_excute(weapon) {
-            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+unsafe fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
         }
     }
 }
 
 #[acmd_script( agent = "lucario_auraball", script = "sound_charge", category = ACMD_SOUND, low_priority )]
-unsafe fn lucario_auraball_charge_snd(weapon: &mut L2CAgentBase) {
-    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
-        if macros::is_excute(weapon) {
-            macros::PLAY_STATUS(weapon, Hash40::new("se_lucario_special_n01_l"));
+unsafe fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if macros::is_excute(agent) {
+            macros::PLAY_STATUS(agent, Hash40::new("se_lucario_special_n01_l"));
         }
     }
 }
 
 #[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_auraball_shoot(weapon: &mut L2CAgentBase) {
-    if !VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
-        if macros::is_excute(weapon) {
-            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 12.0, 361, 42, 0, 14, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-            macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 12.0, 361, 49, 0, 35, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-            attack!(weapon, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
-            AttackModule::enable_safe_pos(weapon.module_accessor);
+unsafe fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
+    if !VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 42, 0, 14, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            macros::ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 361, 49, 0, 35, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            attack!(agent, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
+            AttackModule::enable_safe_pos(agent.module_accessor);
         }
     }
     else {
-        if macros::is_excute(weapon) {
-            macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-            macros::ATTACK(weapon, 1, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-            attack!(weapon, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
-            AttackModule::enable_safe_pos(weapon.module_accessor);
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+            attack!(agent, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
+            AttackModule::enable_safe_pos(agent.module_accessor);
         }
     }
 }
 
 #[acmd_script( agent = "lucario_auraball", script = "sound_shoot", category = ACMD_SOUND, low_priority )]
-unsafe fn lucario_auraball_shoot_snd(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        macros::STOP_SE(weapon, Hash40::new("se_lucario_special_n01"));
-        macros::STOP_SE(weapon, Hash40::new_raw(0x16b0e86b15));
-        if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
-            macros::PLAY_STATUS(weapon, Hash40::new("se_lucario_special_n01_l"));
+unsafe fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::STOP_SE(agent, Hash40::new("se_lucario_special_n01"));
+        macros::STOP_SE(agent, Hash40::new_raw(0x16b0e86b15));
+        if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+            macros::PLAY_STATUS(agent, Hash40::new("se_lucario_special_n01_l"));
         }
     }
-    if macros::is_excute(weapon) {
-        let charge_rate = WorkModule::get_float(weapon.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_CHARGE_RATE);
-        let aurapower = WorkModule::get_float(weapon.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_AURAPOWER);
-        let aurapower_mid = WorkModule::get_float(weapon.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_SE_AURAPOWER_MIDDLE);
-        let aurapower_hi = WorkModule::get_float(weapon.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_SE_AURAPOWER_HIGH);
+    if macros::is_excute(agent) {
+        let charge_rate = WorkModule::get_float(agent.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_CHARGE_RATE);
+        let aurapower = WorkModule::get_float(agent.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_AURAPOWER);
+        let aurapower_mid = WorkModule::get_float(agent.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_SE_AURAPOWER_MIDDLE);
+        let aurapower_hi = WorkModule::get_float(agent.module_accessor, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_FLOAT_SE_AURAPOWER_HIGH);
         let se = if charge_rate <= 0.45 {
             if aurapower < aurapower_mid {
                 Hash40::new("se_lucario_special_n05_s")
@@ -206,28 +206,28 @@ unsafe fn lucario_auraball_shoot_snd(weapon: &mut L2CAgentBase) {
                 Hash40::new("se_lucario_special_n07_l")
             }
         };
-        macros::PLAY_SE(weapon, se);
+        macros::PLAY_SE(agent, se);
     }
 }
 
 #[acmd_script( agent = "lucario_auraball", script = "game_explosion", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_auraball_explosion(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        AttackModule::clear_all(weapon.module_accessor);
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 12.0, 70, 70, 0, 80, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        AttackModule::enable_safe_pos(weapon.module_accessor);
+unsafe fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 70, 70, 0, 80, 2.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        AttackModule::enable_safe_pos(agent.module_accessor);
     }
-    wait(weapon.lua_state_agent, 4.0);
-    if macros::is_excute(weapon) {
-        AttackModule::clear_all(weapon.module_accessor);
-        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+    wait(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }
 }
 
 #[acmd_script( agent = "lucario_auraball", script = "effect_explosion", category = ACMD_EFFECT, low_priority )]
-unsafe fn lucario_auraball_explosion_eff(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        macros::EFFECT(weapon, Hash40::new_raw(0x15cff20136), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, true);
+unsafe fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT(agent, Hash40::new_raw(0x15cff20136), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
@@ -943,17 +943,17 @@ unsafe fn lucario_specialairsthrow2_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_qigong_shoot(weapon: &mut L2CAgentBase) {
-    if macros::is_excute(weapon) {
-        macros::ATTACK(weapon, 0, 0, Hash40::new("top"), 10.0, 361, 68, 0, 60, 3.0, 0.0, 0.0, -4.5, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
+unsafe fn lucario_qigong_shoot(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 68, 0, 60, 3.0, 0.0, 0.0, -4.5, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
     }
-    wait(weapon.lua_state_agent, 2.0);
-    if macros::is_excute(weapon) {
-        AttackModule::clear_all(weapon.module_accessor);
+    wait(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
     }
-    wait(weapon.lua_state_agent, 8.0);
-    if macros::is_excute(weapon) {
-        notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
+    wait(agent.lua_state_agent, 8.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
     }
 }
 

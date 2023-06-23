@@ -39,24 +39,24 @@ unsafe fn pit_specialairsend(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pit", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
-unsafe fn pit_specialhistart(fighter: &mut L2CAgentBase) {
-    MiscModule::calc_motion_rate_from_end_frame(fighter, 0.0, 6.0);
+unsafe fn pit_specialhistart(agent: &mut L2CAgentBase) {
+    MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 6.0);
 }
 
 #[acmd_script( agent = "pit", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn pit_specialhi(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        JostleModule::set_status(fighter.module_accessor, false);
+unsafe fn pit_specialhi(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        JostleModule::set_status(agent.module_accessor, false);
     }
-    frame(fighter.lua_state_agent, 10.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES); // Vanilla
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES); // Vanilla
     }
-    frame(fighter.lua_state_agent, 45.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_FIX_ANGLE);
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_BACK_ANGLE);
-        JostleModule::set_status(fighter.module_accessor, true);
+    frame(agent.lua_state_agent, 45.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_FIX_ANGLE);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_HI_RUSH_FLAG_BACK_ANGLE);
+        JostleModule::set_status(agent.module_accessor, true);
     }
 }
 

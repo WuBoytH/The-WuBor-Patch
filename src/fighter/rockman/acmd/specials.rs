@@ -86,10 +86,10 @@ unsafe fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn rockman_specialhi(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 11.0);
-    if macros::is_excute(fighter) {
-        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
+unsafe fn rockman_specialhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
     }
 }
 

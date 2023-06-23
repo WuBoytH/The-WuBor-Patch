@@ -1,10 +1,10 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "duckhunt", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_specialhi(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 39.0);
-    if macros::is_excute(fighter) {
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_REQUEST_SPECIAL_HI_CANCEL);
+unsafe fn duckhunt_specialhi(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 39.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_DUCKHUNT_INSTANCE_WORK_ID_FLAG_REQUEST_SPECIAL_HI_CANCEL);
     }
 }
 

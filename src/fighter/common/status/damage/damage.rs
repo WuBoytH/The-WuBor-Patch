@@ -79,7 +79,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     // println!("degrees: {}", degrees);
     let speed_vector = sv_math::vec2_length(speed_vec_x, speed_vec_y);
     // println!("speed vector: {}", speed_vector);
-    // fighter.FighterStatusDamage_init_damage_speed_up(speed_vector.into(), degrees.into(), false.into());
+    // fighter.FighterStatusDamage_init_damage_speed_up(reaction_frame.into(), degrees.into(), false.into());
     fighterstatusdamage_init_damage_speed_up_by_speed(fighter, speed_vector.into(), degrees.into(), false.into());
     let damage_cliff_no_catch_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("damage_cliff_no_catch_frame"));
     WorkModule::set_int(fighter.module_accessor, damage_cliff_no_catch_frame, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME);

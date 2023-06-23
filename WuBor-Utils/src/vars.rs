@@ -182,6 +182,12 @@ pub mod guard {
     }
 }
 
+pub mod thrown {
+    pub mod flag {
+        pub const FORCE_LAUNCHED : i32 = 0x1051;
+    }
+}
+
 pub mod bayonetta {
     pub mod status {
         pub mod flag {

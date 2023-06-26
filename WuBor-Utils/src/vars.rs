@@ -625,6 +625,14 @@ pub mod marth {
     }
 }
 
+pub mod packun {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_ENABLE_CANCEL : i32 = 0x1100;
+        }
+    }
+}
+
 pub mod pickel {
     pub mod instance {
         pub mod int {

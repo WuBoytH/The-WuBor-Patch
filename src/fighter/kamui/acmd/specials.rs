@@ -58,10 +58,10 @@ unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 4, 1, Hash40::new("rot"), 1.2, 73, 100, 165, 0, 5.0, 0.0, -1.0, -5.5, None, None, None, 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_BODY);
         AttackModule::set_no_damage_fly_smoke_all(agent.module_accessor, true, false);
     }
-    frame(agent.lua_state_agent, 23.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
-    }
+    // frame(agent.lua_state_agent, 23.0);
+    // if macros::is_excute(agent) {
+    //     notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
+    // }
     frame(agent.lua_state_agent, 29.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);

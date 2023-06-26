@@ -92,20 +92,21 @@ unsafe fn expression_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "mario", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
 unsafe fn mario_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 1.0);
-    let mut effect = Hash40::new("collision_attr_coin");
-    let mut sound = *COLLISION_SOUND_ATTR_COIN;
-    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY) {
-        effect.hash = hash40("collision_attr_mario_local_coin");
-        sound = *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN;
-    }
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_REVERSE_LR);
+        let mut effect = Hash40::new("collision_attr_coin");
+        let mut sound = *COLLISION_SOUND_ATTR_COIN;
+        if WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY) {
+            effect.hash = hash40("collision_attr_mario_local_coin");
+            sound = *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN;
+        }
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 60, 100, 160, 0, 2.5, 0.0, 6.5, 0.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 5.0, 86, 100, 150, 0, 4.0, 0.0, 6.5, 5.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 5.0, 100, 100, 150, 0, 4.0, 0.0, 6.3, 9.2, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_PUNCH);
@@ -118,6 +119,12 @@ unsafe fn mario_specialhi(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+        let mut effect = Hash40::new("collision_attr_coin");
+        let mut sound = *COLLISION_SOUND_ATTR_COIN;
+        if WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY) {
+            effect.hash = hash40("collision_attr_mario_local_coin");
+            sound = *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN;
+        }
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.6, 60, 100, 180, 0, 3.0, 0.0, 6.5, 2.5, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.6, 92, 100, 170, 0, 3.8, 0.0, 6.5, 8.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 0.6, 60, 100, 110, 0, 3.0, 0.0, 11.5, 2.5, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 2, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_M, sound, *ATTACK_REGION_PUNCH);
@@ -128,25 +135,22 @@ unsafe fn mario_specialhi(agent: &mut L2CAgentBase) {
         AttackModule::set_no_finish_camera(agent.module_accessor, 3, true, false);
         AttackModule::set_no_damage_fly_smoke_all(agent.module_accessor, true, false);
     }
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
-    }
     frame(agent.lua_state_agent, 17.0);
-    if sound == *COLLISION_SOUND_ATTR_COIN {
-        sound = *COLLISION_SOUND_ATTR_MARIO_COIN_LAST;
-    }
-    else {
-        sound = *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN_LAST;
-    }
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+        let mut effect = Hash40::new("collision_attr_coin");
+        let mut sound = *COLLISION_SOUND_ATTR_MARIO_COIN_LAST;
+        if WorkModule::is_flag(agent.module_accessor, *FIGHTER_MARIO_STATUS_SPECIAL_HI_FLAG_CAPPY) {
+            effect.hash = hash40("collision_attr_mario_local_coin");
+            sound = *COLLISION_SOUND_ATTR_MARIO_LOCAL_COIN_LAST;
+        }
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 60, 145, 0, 50, 9.0, 0.0, 11.5, 8.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 60, 145, 0, 50, 9.0, 0.0, 11.5, 2.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, effect, *ATTACK_SOUND_LEVEL_L, sound, *ATTACK_REGION_PUNCH);
     }
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 

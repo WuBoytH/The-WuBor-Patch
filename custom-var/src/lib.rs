@@ -164,8 +164,8 @@ impl VarModule {
         varmodule.reset_status_pairs.insert(0x3, vec![-1, 0x3, 0x7]); // Not Dashes into Dash
         varmodule.reset_status_pairs.insert(0x7, vec![-1, 0x3, 0x7]); // Not Dashes into Turn Dash
         varmodule.reset_status_pairs.insert(0x18, vec![0x36]); // Aerial into Landing
-        varmodule.reset_status_pairs.insert(0x1E, vec![0x1B, 0x1C]); // Guards into Guard Damage
-        varmodule.reset_status_pairs.insert(0x1C, vec![0x1B, 0x1E]); // Guards into Guard Damage
+        varmodule.reset_status_pairs.insert(0x1E, vec![0x1B, 0x1C, 0x1E]); // Guards into Guard Damage
+        varmodule.reset_status_pairs.insert(0x1C, vec![0x1B, 0x1C, 0x1E]); // Guards into Guard
         varmodule.reset_status_pairs.insert(0x1D, vec![0x1B, 0x1C, 0x1E]); // Guards into Guard Off
         varmodule
     }
@@ -562,7 +562,7 @@ impl VarModule {
     #[export_name = "VarModule__countdown_int"]
     pub extern "Rust" fn countdown_int(object: *mut BattleObject, what: i32, min: i32) -> bool {
         if Self::get_int(object, what) < min {
-            true
+            false
         } else {
             Self::dec_int(object, what);
             Self::get_int(object, what) < min

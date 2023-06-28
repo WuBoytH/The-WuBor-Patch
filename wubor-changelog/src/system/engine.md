@@ -56,7 +56,7 @@ Out-of-Shield options have been significantly changed.
 * Parrying has been moved to Shield Startup instead of Shield Release.
 * The Parry window was reduced from 5 to 3 frames.
   * The Parry window is increased to 6 frames if Shield is held during a Parry.
-* Parries can only be buffered if the Shield button was pressed for less than 5 frames, otherwise you will only shield.
+* Parries can only be buffered if the Shield button was pressed for less than 5 frames, otherwise you will shield normally.
   * This ***does not*** apply if Shield is held during a parry.
 
 ## Grab

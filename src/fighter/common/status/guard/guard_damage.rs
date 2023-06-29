@@ -368,6 +368,9 @@ unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
         }
     }
     if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_STIFF_FRAME, 0) == 0 {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
+            CancelModule::enable_cancel(fighter.module_accessor);
+        }
         return 0.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
@@ -377,10 +380,10 @@ unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
             }
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLAG_GOLD_EYE);
         }
-        // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-        //     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-        //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
-        // }
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
+            HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+            WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
+        }
         EffectModule::req_on_joint(
             fighter.module_accessor,
             Hash40::new("sys_windwave"),
@@ -419,10 +422,6 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ENABLE_TRANSITION_STATUS_STOP);
         }
         if CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU) {
-                HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
-                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_HIT_XLU);
-            }
             if fighter.sub_wait_ground_check_common(false.into()).get_bool()
             && is_hit {
                 StopModule::cancel_hit_stop(fighter.module_accessor);

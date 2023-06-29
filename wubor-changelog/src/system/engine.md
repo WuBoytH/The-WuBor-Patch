@@ -27,9 +27,6 @@ Actions that put you into the normal falling animation will instead use the uniq
 ## Shield
 
 ### Shield Mechanics
-* Parrying has been moved to Shield Startup instead of Shield Release.
-* The Parry window was reduced from 5 to 3 frames.
-  * These two changes should make it possible, but difficult to parry multi-hit moves, as many slower multi-hits will require manual represses of Shield.
 * Shield Pushback was also increased by roughly 1.3x.
   * Shield Pushback while Parrying was reduced to 0.
 * Shield Release frames were reduced from 11 frames to 5.
@@ -44,7 +41,7 @@ Actions that put you into the normal falling animation will instead use the uniq
 ### Actions Into Shield
 * It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
 
-## Actions Out of Shield
+### Actions Out of Shield
 Out-of-Shield options have been significantly changed.
 
 * It is now possible to perform a Platform Drop like in previous games.
@@ -54,6 +51,13 @@ Out-of-Shield options have been significantly changed.
   * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.
 * Using the C-Stick will drop shield and perform whatever the C-Stick is bound to.
   * Performing angled Tilts or Smash Attacks will require moving the left stick up or down after inputting the C-Stick horizontally.
+
+### Parries
+* Parrying has been moved to Shield Startup instead of Shield Release.
+* The Parry window was reduced from 5 to 3 frames.
+  * The Parry window is increased to 6 frames if Shield is held during a Parry.
+* Parries can only be buffered if the Shield button was pressed for less than 5 frames, otherwise you will shield normally.
+  * This ***does not*** apply if Shield is held during a parry.
 
 ## Grab
 

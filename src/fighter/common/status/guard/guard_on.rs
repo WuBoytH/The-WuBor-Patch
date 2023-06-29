@@ -5,10 +5,21 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
-    if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
+    let was_parry = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_DAMAGE;
+    if FighterUtil::is_valid_just_shield(fighter.module_accessor)
+    && (
+        ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) <= 5
+        || was_parry
+    ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
         let just_shield_check_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("just_shield_check_frame"), 0);
-        let just_frame = (shield_just_frame * just_shield_check_frame + 0.5) as i32;
+        let just_frame_add = if was_parry {
+            3.0
+        }
+        else {
+            0.0
+        };
+        let just_frame = (shield_just_frame * just_shield_check_frame + 0.5 + just_frame_add) as i32;
         WorkModule::set_int(fighter.module_accessor, just_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_JUST_FRAME);
         ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(*SHIELD_TYPE_JUST_SHIELD), *FIGHTER_SHIELD_KIND_GUARD, 0);
         if FighterUtil::is_valid_just_shield_reflector(fighter.module_accessor) {

@@ -196,6 +196,14 @@ pub mod bayonetta {
     }
 }
 
+pub mod captain {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod chrom {
     pub mod status {
         pub mod flag {

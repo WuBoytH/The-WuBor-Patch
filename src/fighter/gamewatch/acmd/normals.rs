@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "gamewatch", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn game_attack11(agent: &mut L2CAgentBase) {
+unsafe fn gamewatch_attack11(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);
     if macros::is_excute(agent) {
         WorkModule::set_int(agent.module_accessor, *WEAPON_GAMEWATCH_NORMAL_WEAPON_KIND_SPRAY, *FIGHTER_GAMEWATCH_INSTANCE_WORK_ID_INT_NORMAL_WEAPON_KIND);

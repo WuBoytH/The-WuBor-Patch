@@ -56,12 +56,6 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
     if status != *FIGHTER_STATUS_KIND_NONE {
         fighter.change_status(status.into(), true.into());
     }
-    if arsene_exists {
-        WorkModule::off_flag(fighter.module_accessor, 0x200000E4); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_END
-    }
-    else {
-        WorkModule::off_flag(fighter.module_accessor, 0x200000E3); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUMMON
-    }
     0.into()
 }
 

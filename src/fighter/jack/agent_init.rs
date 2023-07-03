@@ -41,12 +41,37 @@ unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2C
     }
 }
 
+unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let arsene_exists = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST);
+    if arsene_exists {
+        WorkModule::on_flag(fighter.module_accessor, 0x200000E4); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_END
+    }
+    else {
+        if WorkModule::get_float(fighter.module_accessor,0x4D) < 25.0 { // FIGHTER_JACK_INSTANCE_WORK_ID_FLOAT_REBEL_GAUGE
+            return 0.into();
+        }
+        WorkModule::on_flag(fighter.module_accessor, 0x200000E3); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUMMON
+    }
+    let status = FighterSpecializer_Jack::check_doyle_summon_dispatch(fighter.module_accessor, true, false) as i32;
+    if status != *FIGHTER_STATUS_KIND_NONE {
+        fighter.change_status(status.into(), true.into());
+    }
+    if arsene_exists {
+        WorkModule::off_flag(fighter.module_accessor, 0x200000E4); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_END
+    }
+    else {
+        WorkModule::off_flag(fighter.module_accessor, 0x200000E3); // FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_SUMMON
+    }
+    0.into()
+}
+
 #[fighter_reset]
 fn fighter_reset(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind == *FIGHTER_KIND_JACK {
             set_move_customizer(fighter, jack_move_customizer);
+            fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
         }
     }
 }

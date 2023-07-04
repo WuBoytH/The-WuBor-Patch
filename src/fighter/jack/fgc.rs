@@ -28,6 +28,9 @@ pub fn install() {
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,
     ].iter() {
         CustomCancelManager::add_cancel_info(

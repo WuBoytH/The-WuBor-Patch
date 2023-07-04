@@ -14,7 +14,7 @@ unsafe extern "C" fn jack_cancel_post(fighter: &mut L2CFighterCommon) -> bool {
     WorkModule::on_flag(fighter.module_accessor, 0x200000E9);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST);
     let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
-    FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, FighterEntryID(entry_id), -10.0);
+    FighterSpecializer_Jack::add_rebel_gauge(fighter.module_accessor, FighterEntryID(entry_id), -20.0);
     WorkModule::set_flag(fighter.module_accessor, add_gauge, 0x200000E9);
     WorkModule::set_flag(fighter.module_accessor, arsene_exist, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST);
     false

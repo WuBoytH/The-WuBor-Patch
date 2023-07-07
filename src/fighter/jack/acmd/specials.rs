@@ -4,12 +4,15 @@ use crate::imports::acmd_imports::*;
 unsafe fn jack_specialn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
-        macros::FT_MOTION_RATE(agent, 15.0 / 12.0);
+        if macros::is_excute(agent) {
+            MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
+        }
     }
     frame(agent.lua_state_agent, 10.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
+            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -17,9 +20,8 @@ unsafe fn jack_specialn1(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
     }
     frame(agent.lua_state_agent, 12.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+        MotionModule::set_rate(agent.module_accessor, 1.0);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 361, 75, 0, 5, 2.5, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(24.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 361, 50, 0, 1, 2.5, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(44.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 1.0, 361, 0, 0, 0, 2.5, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(84.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
@@ -62,13 +64,16 @@ unsafe fn jack_specialn1(agent: &mut L2CAgentBase) {
 unsafe fn jack_specialairn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
-        macros::FT_MOTION_RATE(agent, 15.0 / 12.0);
+        if macros::is_excute(agent) {
+            MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
+        }
     }
     frame(agent.lua_state_agent, 10.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
+            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -77,9 +82,8 @@ unsafe fn jack_specialairn1(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
     }
     frame(agent.lua_state_agent, 12.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+        MotionModule::set_rate(agent.module_accessor, 1.0);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 361, 75, 0, 5, 2.5, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(24.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 361, 50, 0, 3, 2.5, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(44.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 1.0, 361, 0, 0, 0, 2.5, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(84.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
@@ -130,12 +134,15 @@ unsafe fn jack_specialairn1(agent: &mut L2CAgentBase) {
 unsafe fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
-        macros::FT_MOTION_RATE(agent, 15.0 / 12.0);
+        if macros::is_excute(agent) {
+            MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
+        }
     }
     frame(agent.lua_state_agent, 10.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
+            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -143,10 +150,9 @@ unsafe fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
     }
     frame(agent.lua_state_agent, 12.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
         if macros::is_excute(agent) {
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+            MotionModule::set_rate(agent.module_accessor, 1.0);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 361, 50, 0, 60, 2.8, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(24.0), 0.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
             macros::ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 361, 50, 0, 1, 2.8, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(44.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
             macros::ATTACK(agent, 2, 0, Hash40::new("top"), 1.0, 361, 0, 0, 0, 2.8, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(89.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
@@ -211,13 +217,16 @@ unsafe fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
 unsafe fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
-        macros::FT_MOTION_RATE(agent, 15.0 / 12.0);
+        if macros::is_excute(agent) {
+            MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
+        }
     }
     frame(agent.lua_state_agent, 10.0);
     if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
+            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -226,10 +235,9 @@ unsafe fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
     }
     frame(agent.lua_state_agent, 12.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
         if macros::is_excute(agent) {
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+            MotionModule::set_rate(agent.module_accessor, 1.0);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 361, 50, 0, 60, 2.8, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(24.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -3, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
             macros::ATTACK(agent, 1, 0, Hash40::new("top"), 3.0, 361, 50, 0, 3, 2.8, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(44.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -1, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);
             macros::ATTACK(agent, 2, 0, Hash40::new("top"), 1.0, 361, 0, 0, 0, 2.8, 0.0, 11.0, 9.0, Some(0.0), Some(11.0), Some(89.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_jack_bullet"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_JACK_SHOT, *ATTACK_REGION_OBJECT);

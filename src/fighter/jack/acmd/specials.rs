@@ -1,5 +1,31 @@
 use crate::imports::acmd_imports::*;
 
+#[acmd_script( agent = "jack", script = "game_specialnjump", category = ACMD_GAME, low_priority )]
+unsafe fn jack_specialnjump(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    macros::FT_MOTION_RATE(agent, 0.375);
+    if macros::is_excute(agent) {
+        KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.5, y: 0.1, z: 0.0});
+    }
+    frame(agent.lua_state_agent, 35.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+}
+
+#[acmd_script( agent = "jack", script = "effect_specialnjump", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_specialnjump_eff(_agent: &mut L2CAgentBase) {
+}
+
+#[acmd_script( agent = "jack", script = "sound_specialnjump", category = ACMD_SOUND, low_priority )]
+unsafe fn jack_specialnjump_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 2.0);
+    for _ in 0..4 {
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_common_swing_04"));
+        }
+        wait(agent.lua_state_agent, 10.0);
+    }
+}
+
 #[acmd_script( agent = "jack", script = "game_specialairnshoot", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialairnshoot(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
@@ -546,6 +572,7 @@ unsafe fn jack_speciallwcounter(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        jack_specialnjump, jack_specialnjump_eff, jack_specialnjump_snd,
         jack_specialairnshoot,
         jack_specials1, jack_specials1_eff, jack_specials1_snd, jack_specials1_exp,
         jack_specialairs1, jack_specialairs1_eff, jack_specialairs1_snd, jack_specialairs1_exp,

@@ -95,6 +95,7 @@ pub unsafe fn kirby_jack_special_n_escape_main(fighter: &mut L2CFighterCommon) -
     if !StopModule::is_stop(fighter.module_accessor) {
         kirby_jack_special_n_escape_substatus(fighter, false.into());
     }
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(kirby_jack_special_n_escape_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(kirby_jack_special_n_escape_main_loop as *const () as _))
 }
 

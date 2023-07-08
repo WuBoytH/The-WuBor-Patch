@@ -162,7 +162,7 @@ unsafe extern "C" fn jack_special_n_escape_main_loop(fighter: &mut L2CFighterCom
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     if prev_situation != *SITUATION_KIND_GROUND
     && situation == *SITUATION_KIND_GROUND {
-        let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("landing_frame"));
+        let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("barrage_landing_frame"));
         jack_special_n_landing_handler(fighter, landing_frame.into());
         return 0.into();
     }

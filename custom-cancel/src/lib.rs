@@ -35,6 +35,7 @@ bitflags! {
 
 pub struct CancelInfo {
     pub pre: Option<CancelFunc>,
+    pub post: Option<CancelFunc>,
     pub normals: Vec<i32>,
     pub normal_cancel: CancelType,
     pub normal_cancel_require_flag: bool,
@@ -58,6 +59,7 @@ impl CancelInfo {
     pub fn new() -> CancelInfo {
         CancelInfo {
             pre: None,
+            post: None,
             normals: vec![0; 0],
             normal_cancel: CancelType::NONE,
             normal_cancel_require_flag: false,
@@ -93,6 +95,11 @@ impl CancelInfo {
 
     pub fn pre_function(mut self, pre: CancelFunc) -> Self {
         self.pre = Some(pre);
+        self
+    }
+
+    pub fn post_function(mut self, post: CancelFunc) -> Self {
+        self.post = Some(post);
         self
     }
 
@@ -396,6 +403,11 @@ impl CustomCancelManager {
             let status = unsafe {StatusModule::status_kind(fighter.module_accessor)};
             if let Some(cancel_info) = agent_infos.get_mut(&status) {
                 if Self::execute_cancel_inner(fighter, cancel_info) {
+                    if let Some(post_func) = cancel_info.post {
+                        unsafe {
+                            post_func(fighter);
+                        }
+                    }
                     return true;
                 }
             }

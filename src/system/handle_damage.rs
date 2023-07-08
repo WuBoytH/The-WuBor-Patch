@@ -41,6 +41,12 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
             else if kind == *FIGHTER_KIND_DOLLY {
                 add_go(object, module_accessor, damage_received);
             }
+            else if kind == *FIGHTER_KIND_JACK {
+                if !WorkModule::is_flag(module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE_EXIST) {
+                    let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID);
+                    FighterSpecializer_Jack::add_rebel_gauge(module_accessor, FighterEntryID(entry_id), damage_received);
+                }
+            }
         }
     }
 }

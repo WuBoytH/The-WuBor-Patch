@@ -343,6 +343,8 @@ pub mod ike {
 pub mod jack {
     pub mod status {
         pub mod flag {
+            pub const SPECIAL_N_FIRST : i32 = 0x1150;
+
             pub const SPECIAL_S_FEINT : i32 = 0x1150;
         }
     }

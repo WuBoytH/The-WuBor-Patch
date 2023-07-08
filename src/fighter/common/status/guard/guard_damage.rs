@@ -81,7 +81,6 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
     let object_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_OBJECT_ID);
     if object_id != *BATTLE_OBJECT_ID_INVALID {
         capture!(fighter, MA_MSC_CMD_CAPTURE_SET_IGNORE_OBJECT_ID, object_id);
-        fighter.pop_lua_stack(1);
         let mut invalid_capture_frame = shield_stiff_frame;
         // println!("invalid_capture_frame: {}", invalid_capture_frame);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {

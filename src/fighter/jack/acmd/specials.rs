@@ -312,6 +312,10 @@ unsafe fn jack_specialnjump(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 35.0);
     macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 40.0);
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
+    }
 }
 
 #[acmd_script( agent = "jack", script = "effect_specialnjump", category = ACMD_EFFECT, low_priority )]

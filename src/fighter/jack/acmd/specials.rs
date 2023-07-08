@@ -315,6 +315,7 @@ unsafe fn jack_specialnjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
     }
 }
 

@@ -117,6 +117,25 @@ pub unsafe fn kirby_jack_special_n_jump_check_next(
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
     }
     else {
+        if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID) {
+            let escape_num_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("escape_num_max"));
+            let escape_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_ESCAPE);
+            if escape_num < escape_num_max {
+                if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_UNABLE_SPECIAL_N) {
+                    let cat1 = fighter.global_table[CMD_CAT1].get_i32();
+                    if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
+                        let lr = PostureModule::lr(fighter.module_accessor);
+                        let special_s_turn = ControlModule::special_s_turn(fighter.module_accessor) as i32;
+                        if (lr == 1.0 && special_s_turn == *FIGHTER_COMMAND_TURN_LR_RIGHT)
+                        || (lr != 1.0 && special_s_turn == *FIGHTER_COMMAND_TURN_LR_LEFT) {
+                            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_ESCAPE_F);
+                        }
+                        fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_ESCAPE.into(), true.into());
+                        return true.into();
+                    }
+                }
+            }
+        }
         if (ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL_RAW))
         && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_UNABLE_SPECIAL_N) {
@@ -131,17 +150,6 @@ pub unsafe fn kirby_jack_special_n_jump_check_next(
                         fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_BARRAGE_START.into(), true.into());
                         return true.into();
                     }
-                }
-                let escape_num_max = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_n"), hash40("escape_num_max"));
-                let escape_num = WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_ESCAPE);
-                if escape_num < escape_num_max
-                && (stick_dir == 0
-                || stick_dir == 1) {
-                    if stick_dir == 0 {
-                        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_ESCAPE_F);
-                    }
-                    fighter.change_status(FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_ESCAPE.into(), true.into());
-                    return true.into();
                 }
             }
         }

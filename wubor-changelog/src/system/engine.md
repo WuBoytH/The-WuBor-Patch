@@ -87,6 +87,10 @@ It is now possible to slip off of ledges during the following states:
 * Special Fall/Freefall Landing
 * Taunt
 
+## Hitstop
+
+* Electric-property moves only deal extra hitstop to the opponent.
+
 ## Knockback
 
 * The spinning knockback animation no longer is randomly applied, instead being applied at a consistent `character weight + 33` damage threshold, meant to signify average kill percent.

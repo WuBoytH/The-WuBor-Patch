@@ -46,7 +46,6 @@ jobs:
         uses: Swatinem/rust-cache@v2.5.1
         with:
           shared-key: "main"
-          workspaces: "plugin"
           cache-directories: "~/.cargo"
 
       - name: Build Release NRO (Main)
@@ -88,7 +87,6 @@ jobs:
         uses: Swatinem/rust-cache@v2.5.1
         with:
           shared-key: "main"
-          workspaces: "plugin"
           cache-directories: "~/.cargo"
 
       - name: Build Release NRO (Dev)

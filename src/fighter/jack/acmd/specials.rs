@@ -868,10 +868,10 @@ unsafe fn jack_wait4_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear_face"), Hash40::new("mask"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.85, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
         macros::LAST_EFFECT_SET_RATE(agent, 1.5);
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear2"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
         macros::LAST_EFFECT_SET_RATE(agent, 1.5);
         macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
         macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
@@ -899,7 +899,7 @@ unsafe fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
         macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
         macros::LAST_EFFECT_SET_RATE(agent, 1.5);
     }
     frame(agent.lua_state_agent, 42.0);
@@ -917,7 +917,7 @@ unsafe fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
 unsafe fn jack_wait5_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear2"), Hash40::new("mask"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
         macros::LAST_EFFECT_SET_RATE(agent, 1.5);
         macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
         macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
@@ -941,7 +941,7 @@ unsafe fn jack_wait5_eff(agent: &mut L2CAgentBase) {
 unsafe fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {

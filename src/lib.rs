@@ -55,6 +55,20 @@ fn change_version_string_hook(arg: u64, string: *const c_char) {
     }
 }
 
+pub fn is_on_ryujinx() -> bool {
+    unsafe {
+        // Ryujinx skip based on text addr
+        let text_addr = skyline::hooks::getRegionAddress(skyline::hooks::Region::Text) as u64;
+        if text_addr == 0x8004000 {
+            // println!("we are on Ryujinx");
+            return true;
+        } else {
+            // println!("we are not on Ryujinx");
+            return false;
+        }
+    }
+}
+
 std::arch::global_asm!(
     r#"
     .section .nro_header

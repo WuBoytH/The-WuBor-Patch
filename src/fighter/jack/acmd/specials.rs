@@ -846,35 +846,115 @@ unsafe fn jack_specialhithrow(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn jack_speciallw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 2.0);
-    frame(agent.lua_state_agent, 3.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
-    frame(agent.lua_state_agent, 4.0);
+#[acmd_script( agent = "jack", script = "effect_wait4", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_wait4_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_SHIELD, 0, *FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW);
-        shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        agent.clear_lua_stack();
+        EFFECT_STENCIL_ON(agent.lua_state_agent);
     }
-    frame(agent.lua_state_agent, 32.0);
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SUMMON_FLAG_CUT_IN_EFFECT) {
+        if macros::is_excute(agent) {
+            agent.clear_lua_stack();
+            lua_args!(agent, Hash40::new("jack_doyle_cutin"), 0, 0, 0, 0, 0, 0, 1, true);
+            EFFECT_GLOBAL(agent.lua_state_agent);
+            agent.clear_lua_stack();
+            lua_args!(agent, *FIGHTER_JACK_STATUS_SUMMON_INT_CUT_IN_EFFECT_HANDLE);
+            LAST_EFFECT_SET_WORK_INT(agent.lua_state_agent);
+            agent.clear_lua_stack();
+            lua_args!(agent, Hash40::new("jack_doyle_cutin2"), 0, 0, 0, 0, 0, 0, 1, true);
+            EFFECT_GLOBAL(agent.lua_state_agent);
+        }
+    }
     if macros::is_excute(agent) {
-        shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_SHIELD, 0, *FIGHTER_JACK_SHIELD_GROUP_KIND_SPECIAL_LW);
-        shield!(agent, *MA_MSC_CMD_SHIELD_OFF, *COLLISION_KIND_REFLECTOR, *FIGHTER_JACK_REFLECTOR_KIND_SPECIAL_LW, *FIGHTER_REFLECTOR_GROUP_EXTEND);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear_face"), Hash40::new("mask"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("top"), 0, 5, 0, 0, 0, 0, 0.85, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear2"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
+        macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
+    }
+    frame(agent.lua_state_agent, 28.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_DETACH_KIND(agent, Hash40::new("jack_counter_mask_fire"), -1);
+    }
+    frame(agent.lua_state_agent, 42.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0.7);
+        macros::BURN_COLOR_FRAME(agent, 12, 0.02, 0.15, 2, 0);
+    }
+    frame(agent.lua_state_agent, 54.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR_NORMAL(agent);
+        agent.clear_lua_stack();
+        EFFECT_STENCIL_OFF(agent.lua_state_agent);
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_speciallwcounter", "game_specialairlwcounter" ], category = ACMD_GAME, low_priority )]
-unsafe fn jack_speciallwcounter(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 4.0);
+#[acmd_script( agent = "jack_doyle", script = "effect_appear", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 361, 51, 0, 80, 11.0, 0.0, 15.0, 4.0, Some(0.0), Some(15.0), Some(19.0), 0.75, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_ENERGY);
-        AttackModule::set_force_reaction(agent.module_accessor, 0, true, false);
-        AttackModule::set_force_reaction(agent.module_accessor, 1, true, false);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
+        macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
     }
-    frame(agent.lua_state_agent, 8.0);
+    frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0.7);
+        macros::BURN_COLOR_FRAME(agent, 12, 0.02, 0.15, 2, 0);
+    }
+    frame(agent.lua_state_agent, 54.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR_NORMAL(agent);
+    }
+}
+
+#[acmd_script( agent = "jack", script = "effect_wait5", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_wait5_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear2"), Hash40::new("mask"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
+        macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
+    }
+    frame(agent.lua_state_agent, 28.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_DETACH_KIND(agent, Hash40::new("jack_counter_mask_fire"), -1);
+    }
+    frame(agent.lua_state_agent, 42.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0.7);
+        macros::BURN_COLOR_FRAME(agent, 12, 0.02, 0.15, 2, 0);
+    }
+    frame(agent.lua_state_agent, 54.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR_NORMAL(agent);
+    }
+}
+
+#[acmd_script( agent = "jack_doyle", script = "effect_return", category = ACMD_EFFECT, low_priority )]
+unsafe fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_ALPHA(agent, 0.75);
+    }
+    frame(agent.lua_state_agent, 20.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
+        macros::BURN_COLOR_FRAME(agent, 40, 0.02, 0.15, 2, 0.7);
+    }
+    frame(agent.lua_state_agent, 30.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_DETACH_KIND(agent, Hash40::new("jack_doyle_disappear"), -1);
+    }
+    frame(agent.lua_state_agent, 70.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR_NORMAL(agent);
     }
 }
 
@@ -890,7 +970,9 @@ pub fn install() {
         jack_specialairs1, jack_specialairs1_eff, jack_specialairs1_snd, jack_specialairs1_exp,
         jack_specialairhi,
         jack_specialhithrow,
-        jack_speciallw,
-        jack_speciallwcounter
+        jack_wait4_eff,
+        jack_doyle_appear_eff,
+        jack_wait5_eff,
+        jack_doyle_return_eff
     );
 }

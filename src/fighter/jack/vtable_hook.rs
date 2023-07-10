@@ -22,6 +22,11 @@ pub unsafe extern "C" fn jack_handle_gun_dodge_staling(_vtable: u64, _fighter: &
     // stub gaining rebel's gauge from getting hit?
 }
 
+#[skyline::hook(offset = 0x21b2af0)]
+pub unsafe extern "C" fn jack_call_summon_dispatch(_stack: u64) {
+    // stub gaining rebel's gauge from getting hit?
+}
+
 pub fn install() {
     // Disables passive meter gain
     skyline::patching::Patch::in_text(0xb31600).data(0x17FFFF6Eu32);
@@ -32,6 +37,7 @@ pub fn install() {
         jack_damage_callback,
         jack_damage_callback2,
         jack_damage_callback3,
-        jack_handle_gun_dodge_staling
+        jack_handle_gun_dodge_staling,
+        jack_call_summon_dispatch
     );
 }

@@ -6,14 +6,7 @@
 )]
 #![allow(
     unused_macros,
-    unused_must_use,
-    clippy::borrow_interior_mutable_const,
-    clippy::collapsible_if,
-    clippy::collapsible_else_if,
-    clippy::absurd_extreme_comparisons,
-    clippy::cmp_null,
-    clippy::if_same_then_else,
-    clippy::module_inception
+    unused_must_use
 )]
 
 use skyline::libc::c_char;

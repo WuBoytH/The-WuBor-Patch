@@ -37,12 +37,39 @@ unsafe fn luigi_specialshold_eff(agent: &mut L2CAgentBase) {
     for _ in 0..9 {
         if macros::is_excute(agent) {
             macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), -5, 0, 0, 0, 0, 0, 1, 10, 0, 4, 0, 0, 0, false);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.0, 10.0, 60.0, 180.0, 0.0, 0.0, 0.8, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.15);
+            macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 1.0, 0.7);
         }
-        wait(agent.lua_state_agent, 10.0);
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.0, 10.0, 48.0, 180.0, 0.0, 0.0, 0.8, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.15);
+            macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 1.0, 0.7);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.0, 10.0, 36.0, 180.0, 0.0, 0.0, 0.8, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.15);
+            macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 1.0, 0.7);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.0, 10.0, 24.0, 180.0, 0.0, 0.0, 0.8, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.15);
+            macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 1.0, 0.7);
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0.0, 10.0, 12.0, 180.0, 0.0, 0.0, 0.8, true);
+            macros::LAST_EFFECT_SET_ALPHA(agent, 0.15);
+            macros::LAST_EFFECT_SET_COLOR(agent, 1.0, 1.0, 0.7);
+        }
+        wait(agent.lua_state_agent, 2.0);
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_specialsend", category = ACMD_GAME, low_priority )]
+#[acmd_script( agent = "luigi", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
 unsafe fn luigi_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -50,45 +77,32 @@ unsafe fn luigi_specialsend(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 3, 0, Hash40::new("top"), 0.0, 180, 100, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(agent, 4, 0, Hash40::new("top"), 0.0, 180, 80, 45, 0, 10.0, 0.0, 10.0, 35.0, Some(0.0), Some(10.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(agent, 5, 0, Hash40::new("top"), 0.0, 180, 60, 45, 0, 10.0, 0.0, 10.0, 62.0, Some(0.0), Some(10.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("luigi_rocket_hold"), smash::phx::Hash40::new("top"), &Vector3f { x: 0.0, y: 10.0, z: 11.0 }, &ZERO_VECTOR, 1.0, true, 0, 0, 0, 0, 0, true, true);
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 270, 45, 20, 0, 5.0, 0.0, 14.0, 9.0, Some(0.0), Some(5.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 90, 60, 0, 45, 5.0, 0.0, 14.0, 9.0, Some(0.0), Some(5.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
         macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 4.2);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 23.0, false);
         EffectModule::kill_kind(agent.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
     }
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
-        EffectModule::kill_kind(agent.module_accessor, Hash40::new("sys_thunder"), false, true);
         AttackModule::clear_all(agent.module_accessor);
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_sspecialairend(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "luigi", scripts = [ "effect_specialsend", "effect_specialairsend" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn luigi_specialsend_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        EffectModule::kill_kind(agent.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 0.0, 180, 120, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        macros::ATTACK(agent, 3, 0, Hash40::new("top"), 0.0, 180, 100, 45, 0, 6.0, 0.0, 8.0, 62.0, Some(0.0), Some(8.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        macros::ATTACK(agent, 4, 0, Hash40::new("top"), 0.0, 180, 80, 45, 0, 10.0, 0.0, 10.0, 35.0, Some(0.0), Some(10.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        macros::ATTACK(agent, 5, 0, Hash40::new("top"), 0.0, 180, 60, 45, 0, 10.0, 0.0, 10.0, 62.0, Some(0.0), Some(10.0), Some(35.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
-        EffectModule::req_follow(agent.module_accessor, Hash40::new("luigi_rocket_hold"), smash::phx::Hash40::new("top"), &Vector3f { x: 0.0, y: 10.0, z: 11.0 }, &ZERO_VECTOR, 1.0, true, 0, 0, 0, 0, 0, true, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 10, 11, 0, 0, 0, 1, true);
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 15, 40, 0, 60, 5.0, 0.0, 14.0, 9.0, Some(0.0), Some(5.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.1);
-        EffectModule::kill_kind(agent.module_accessor, Hash40::new("luigi_rocket_hold"), false, true);
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("luigi_rocket_hold"), false, true);
     }
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         EffectModule::kill_kind(agent.module_accessor, Hash40::new("sys_thunder"), false, true);
-        AttackModule::clear_all(agent.module_accessor);
     }
 }
 
@@ -253,7 +267,7 @@ pub fn install() {
     install_acmd_scripts!(
         luigi_specialsstart,
         luigi_specialshold, luigi_specialshold_eff,
-        luigi_specialsend, luigi_sspecialairend, luigi_specialsend_snd, luigi_specialsend_exp,
+        luigi_specialsend, luigi_specialsend_eff, luigi_specialsend_snd, luigi_specialsend_exp,
         luigi_specialhi,
         luigi_specialairhi,
         luigi_speciallw,

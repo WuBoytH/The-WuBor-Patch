@@ -27,7 +27,7 @@ jobs:
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') != true }}
     runs-on: ubuntu-20.04
     container:
-      image: hewdrawremix/hewdraw-builder:latest
+      image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4.3.0
@@ -41,14 +41,6 @@ jobs:
           version: 'tags/${{needs.get-version.outputs.branch}}'
           file: 'romfs.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.5.1
-        with:
-          shared-key: "main"
-          workspaces: "plugin"
-          cache-directories: "~/.cargo"
-
       - name: Build Release NRO (Main)
         run: |
           cargo skyline build --release --no-default-features
@@ -69,7 +61,7 @@ jobs:
     if: ${{ contains(needs.get-version.outputs.branch, 'dev') }}
     runs-on: ubuntu-20.04
     container:
-      image: hewdrawremix/hewdraw-builder:latest
+      image: jugeeya/cargo-skyline:3.2.0-no-dkp
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4.3.0
@@ -83,14 +75,6 @@ jobs:
           version: 'tags/${{needs.get-version.outputs.branch}}'
           file: 'romfs.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Rust Cache
-        uses: Swatinem/rust-cache@v2.5.1
-        with:
-          shared-key: "main"
-          workspaces: "plugin"
-          cache-directories: "~/.cargo"
-
       - name: Build Release NRO (Dev)
         run: |
           cargo skyline build --release --features dev

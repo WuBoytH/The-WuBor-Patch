@@ -20,7 +20,7 @@ unsafe fn gamewatch_attacks4(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe fn gamewatch_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 1.2);
+    macros::FT_MOTION_RATE(agent, 5.0 / 6.0);
     frame(agent.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 13.0);
@@ -50,7 +50,7 @@ unsafe fn gamewatch_attackhi4(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "gamewatch", script = "game_attackhi4r", category = ACMD_GAME, low_priority )]
 unsafe fn gamewatch_attackhi4r(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    macros::FT_MOTION_RATE(agent, 1.2);
+    macros::FT_MOTION_RATE(agent, 5.0 / 6.0);
     frame(agent.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 13.0);

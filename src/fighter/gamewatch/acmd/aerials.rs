@@ -175,7 +175,7 @@ unsafe fn gamewatch_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
-        ArticleModule::shoot(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, *ARTICLE_OPE_TARGET_ALL, false);
+        ArticleModule::shoot(agent.module_accessor, *FIGHTER_GAMEWATCH_GENERATE_ARTICLE_BREATH, smash::app::ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
     frame(agent.lua_state_agent, 37.0);
     macros::FT_MOTION_RATE(agent, 2.0);

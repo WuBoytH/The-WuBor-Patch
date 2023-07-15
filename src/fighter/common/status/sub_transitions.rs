@@ -413,7 +413,6 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
         }
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR
-    && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_AIR_ESCAPE != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_AIR) {
         let stick_x = fighter.global_table[STICK_X].get_f32();
@@ -428,6 +427,10 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
         else {
             FIGHTER_STATUS_KIND_ESCAPE_AIR
         };
+        if *status == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
+        && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
+            return false.into();
+        }
         fighter.change_status(status.into(), true.into());
         return true.into();
     }

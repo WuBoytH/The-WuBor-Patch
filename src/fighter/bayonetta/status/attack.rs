@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use crate::fighter::common::status::attack::*;
+use crate::fighter::common::status::attack::attack::*;
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn bayonetta_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {

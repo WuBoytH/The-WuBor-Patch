@@ -1,69 +1,69 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "murabito", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn murabito_attackdash(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 1.0);    
-    macros::FT_MOTION_RATE(fighter, 0.75);
-    if macros::is_excute(fighter) {
-        WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
+unsafe fn murabito_attackdash(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);    
+    macros::FT_MOTION_RATE(agent, 0.75);
+    if macros::is_excute(agent) {
+        WorkModule::is_flag(agent.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
     }
-    frame(fighter.lua_state_agent, 2.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_FLOWERPOT, false, -1);
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_FLOWERPOT, false, -1);
     }
-    frame(fighter.lua_state_agent, 9.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::shoot(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_FLOWERPOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
+    frame(agent.lua_state_agent, 9.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    if macros::is_excute(agent) {
+        ArticleModule::shoot(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_FLOWERPOT, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
     }
 }
 
 #[acmd_script( agent = "murabito", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn murabito_attacks3(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, false, -1);
+unsafe fn murabito_attacks3(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, false, -1);
     }
-    frame(fighter.lua_state_agent, 8.0);
-    if macros::is_excute(fighter) {
-        macros::ATTACK(fighter, 0, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 4.5, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 2.5, -5.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(fighter, 2, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 2.5, 5.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(fighter, 3, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 2.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+    frame(agent.lua_state_agent, 8.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 4.5, 0.0, 9.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(agent, 1, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 2.5, -5.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(agent, 2, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 2.5, 5.0, 7.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(agent, 3, 0, Hash40::new("haver"), 9.0, 45, 80, 0, 80, 2.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_OBJECT);
     }
-    frame(fighter.lua_state_agent, 12.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
+    frame(agent.lua_state_agent, 12.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
     }
-    macros::FT_MOTION_RATE(fighter, 0.88);
-    frame(fighter.lua_state_agent, 37.0);
-    macros::FT_MOTION_RATE(fighter, 1.0);
-    frame(fighter.lua_state_agent, 48.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::remove(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    macros::FT_MOTION_RATE(agent, 0.88);
+    frame(agent.lua_state_agent, 37.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 48.0);
+    if macros::is_excute(agent) {
+        ArticleModule::remove(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
 #[acmd_script( agent = "murabito", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn murabito_attacklw3(fighter: &mut L2CAgentBase) {
-    frame(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 2.0, 4.0);
-        ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, true, -1);
+unsafe fn murabito_attacklw3(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 2.0, 4.0);
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, true, -1);
     }
-    frame(fighter.lua_state_agent, 9.0);
-    if macros::is_excute(fighter) {
-        ArticleModule::remove(fighter.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 13.0, 75, 95, 0, 50, 5.0, 0.0, 3.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(fighter, 1, 0, Hash40::new("top"), 10.0, 75, 95, 0, 50, 6.0, 0.0, 3.0, 10.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
-        AttackModule::set_attack_height_all(fighter.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
+    frame(agent.lua_state_agent, 9.0);
+    if macros::is_excute(agent) {
+        ArticleModule::remove(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_WEEDS, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 13.0, 75, 95, 0, 50, 5.0, 0.0, 3.0, 3.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 75, 95, 0, 50, 6.0, 0.0, 3.0, 10.0, Some(0.0), Some(3.0), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.3, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
+        AttackModule::set_attack_height_all(agent.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
     }
-    wait(fighter.lua_state_agent, 3.0);
-    if macros::is_excute(fighter) {
-        AttackModule::clear_all(fighter.module_accessor);
+    wait(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
     }
-    frame(fighter.lua_state_agent, 18.0);
-    if macros::is_excute(fighter) {
-        FighterAreaModuleImpl::enable_fix_jostle_area(fighter.module_accessor, 3.8, 3.0);
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
+        FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.8, 3.0);
     }
 }
 

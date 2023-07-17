@@ -208,7 +208,7 @@ Acceleration: 0.07 > 0.1
 |         | Jump Startup   | Rush Active Frames | Rush Gravity       | Rush Max Fall Speed |
 |:------- |:-------------- |:------------------ |:------------------ |:------------------- |
 | Vanilla | 5              | 120                | 0.05               | 0.7                 |
-| WuBor   | <nerf>7</nerf> | <buff>600</buff>   | <nerf>0.07</nerf>  | <nerf>1</nerf>      |
+| WuBor   | <nerf>7</nerf> | <buff>360</buff>   | <nerf>0.07</nerf>  | <nerf>1</nerf>      |
 
 </datatable>
 

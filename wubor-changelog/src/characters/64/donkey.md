@@ -23,7 +23,7 @@
 
 |         | FAF             |
 |:------- |:--------------- |
-| Vanilla | 31              |
+| Vanilla | 32              |
 | WuBor   | <buff>25</buff> |
 
 </datatable>
@@ -36,7 +36,7 @@ Donkey Kong falls at half the usual rate until Dash Attack finishes.</ovhl>
 
 <datatable>
 
-|         | Damage<br>(Side/Hi/Lw)   | FAF             |
+|         | Damage<br>(Side/Hi/Lw)| FAF             |
 |:------- |:--------------------- |:--------------- |
 | Vanilla | 8/9/9                 | 34              |
 | WuBor   | <buff>10/11/11</buff> | <buff>31</buff> |
@@ -47,7 +47,7 @@ Donkey Kong falls at half the usual rate until Dash Attack finishes.</ovhl>
 
 <datatable>
 
-|         | Damage<br>(Shoulder/Elbow/Hand)   | FAF             |
+|         | Damage<br>(Shoulder/Elbow/Hand)| FAF             |
 |:------- |:------------------------------ |:--------------- |
 | Vanilla | 8/9/10                         | 39              |
 | WuBor   | <buff>9/10/11</buff>           | <buff>35</buff> |

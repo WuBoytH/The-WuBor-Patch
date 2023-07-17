@@ -145,7 +145,6 @@ impl StatusInfo {
         self.calc_param = Some(calc_param);
         self
     }
-
 }
 
 lazy_static! {

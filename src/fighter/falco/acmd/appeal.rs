@@ -1,9 +1,9 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "falco", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority)]
-unsafe fn falco_appeallw(fighter: &mut L2CAgentBase) {
-    if macros::is_excute(fighter) {
-        VarModule::on_flag(fighter.battle_object, falco::instance::flag::KAA);
+unsafe fn falco_appeallw(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, falco::instance::flag::KAA);
     }
 }
 

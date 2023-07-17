@@ -152,44 +152,7 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     if sit != *SITUATION_KIND_AIR {
-        if VarModule::is_flag(fighter.battle_object, appeal::flag::HOLD)
-        || VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP) {
-            // New logic for taunt holds/loops/actions.
-            let loop_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::LOOP_MOT);
-            if MotionModule::motion_kind(fighter.module_accessor) != loop_mot {
-                MotionModule::change_motion(
-                    fighter.module_accessor,
-                    Hash40::new_raw(loop_mot),
-                    0.0,
-                    1.0,
-                    false,
-                    0.0,
-                    false,
-                    false
-                );
-            }
-            let is_loop = VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP);
-            taunt_holds(fighter, is_loop);
-        }
-        if VarModule::is_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION) {
-            let action_button = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_BUTTON);
-            if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
-                VarModule::off_flag(fighter.battle_object, appeal::flag::HOLD);
-                VarModule::off_flag(fighter.battle_object, appeal::flag::LOOP);
-                let action_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::ACTION_MOT);
-                MotionModule::change_motion(
-                    fighter.module_accessor,
-                    Hash40::new_raw(action_mot),
-                    0.0,
-                    1.0,
-                    false,
-                    0.0,
-                    false,
-                    false
-                );
-                VarModule::off_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION);
-            }
-        }
+        taunt_uniq_handler(fighter);
         if [
             WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L),
             WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
@@ -230,6 +193,71 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
     }
     0.into()
+}
+
+// New Taunt Animation Logic
+unsafe fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
+    if VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_CHECK) {
+        let action_button = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_BUTTON);
+        if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
+            let flag = if VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS) {
+                appeal::flag::ACTION_BUFFER_SUCCESS
+            }
+            else {
+                appeal::flag::ACTION_BUFFER_LOCKED
+            };
+            VarModule::on_flag(fighter.battle_object, flag);
+            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_CHECK);
+        }
+    }
+    if VarModule::is_flag(fighter.battle_object, appeal::flag::HOLD)
+    || VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP) {
+        // New logic for taunt holds/loops/actions.
+        let loop_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::LOOP_MOT);
+        if MotionModule::motion_kind(fighter.module_accessor) != loop_mot {
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new_raw(loop_mot),
+                0.0,
+                1.0,
+                false,
+                0.0,
+                false,
+                false
+            );
+        }
+        let is_loop = VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP);
+        taunt_holds(fighter, is_loop);
+    }
+    if VarModule::is_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION)
+    || VarModule::is_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION_IMM) {
+        let action_button = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_BUTTON);
+        if !VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_LOCKED)
+        && (
+            VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_SUCCESS)
+            || ControlModule::check_button_on_trriger(fighter.module_accessor, action_button)
+        ) {
+            VarModule::off_flag(fighter.battle_object, appeal::flag::HOLD);
+            VarModule::off_flag(fighter.battle_object, appeal::flag::LOOP);
+            let action_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::ACTION_MOT);
+            let action_frame = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_FRAME);
+            MotionModule::change_motion(
+                fighter.module_accessor,
+                Hash40::new_raw(action_mot),
+                action_frame as f32,
+                1.0,
+                false,
+                action_frame as f32,
+                false,
+                false
+            );
+            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_SUCCESS);
+            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_LOCKED);
+            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
+            VarModule::off_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION);
+        }
+        VarModule::off_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION_IMM);
+    }
 }
 
 /// Used specifically for taunts that we've made loop,

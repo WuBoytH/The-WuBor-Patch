@@ -20,25 +20,44 @@ Up Smash is no longer prioritized when attempting to perform a buffered Up Air.
 
 Jumping no longer has accelerated rising momentum, matching the momentum from previous games.
 
+## Falling
+
+Actions that put you into the normal falling animation will instead use the unique double jump fall animation if you are out of jumps.
+
 ## Shield
 
-* It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
-* Parrying has been moved to Shield Startup instead of Shield Release.
-* The Parry window was reduced from 5 to 3 frames.
-  * These two changes should make it possible, but difficult to parry multi-hit moves, as many slower multi-hits will require manual represses of Shield.
+### Shield Mechanics
 * Shield Pushback was also increased by roughly 1.3x.
   * Shield Pushback while Parrying was reduced to 0.
 * Shield Release frames were reduced from 11 frames to 5.
 * It is impossible to shield for 11 frames after the start of Shield Release (6 frames after you're actionable from Shield Release).
+* The natural Shield HP decrease was increased from 0.15 HP/frame to 0.18 HP/frame.
+* Shields can no longer be tilted.
+* Shield Lock (Siheld + Special or Shield + Shield) has been removed.
+* Shield shrinks while losing HP, however a more transparent shield will always be there to show how much space your shield covers.
+  * Instead of the above, Yoshi's Shield still fades to black, but it stops before turning black completely.
+* It is no longer possible to Shield Break yourself by holding Shield. Your shield can only break if the opponent breaks it.
 
-## Out-of-Shield
+### Actions Into Shield
+* It is now possible to Shield during Dash and Back Dash (Ryu/Ken/Terry/Kazuya).
+
+### Actions Out of Shield
 Out-of-Shield options have been significantly changed.
 
+* It is now possible to perform a Platform Drop like in previous games.
+  * It is also possible to perform a Platform Drop while in Shield Lock.
 * You can no longer directly perform actions out of shield. Performing any action while holding Shield will instead force a Shield Drop first, and then buffer the action.
-  * Spotdodges and Rolls can still be directly performed.
+  * Spotdodges, Rolls, and Platform Dropping can still be directly performed.
   * In addition, Grab, Dash Grab, and Turn Grab can still be performed directly while putting up Shield. Performing Grab otherwise will force a Shield Drop first.
 * Using the C-Stick will drop shield and perform whatever the C-Stick is bound to.
   * Performing angled Tilts or Smash Attacks will require moving the left stick up or down after inputting the C-Stick horizontally.
+
+### Parries
+* Parrying has been moved to Shield Startup instead of Shield Release.
+* The Parry window was reduced from 5 to 3 frames.
+  * The Parry window is increased to 6 frames if Shield is held during a Parry.
+* Parries can only be buffered if the Shield button was pressed for less than 5 frames, otherwise you will shield normally.
+  * This ***does not*** apply if Shield is held during a parry.
 
 ## Grab
 
@@ -46,7 +65,6 @@ Out-of-Shield options have been significantly changed.
 * Grab-techs are now active throughout the entire startup of grab, not just while the grab box is currently active.
 * All non-standard Grabs can no longer be grab-teched.
 * It is now possible to buffer Dash and Pivot Grabs.
-* You can manually Grab-Release an opponent by pressing Taunt.
 
 ## Spot Dodge
 
@@ -59,10 +77,6 @@ Out-of-Shield options have been significantly changed.
 ## Directional Air Dodge
 
 See [Air Dash](./mechanics.md#air-dash)
-
-## Platform Dropping in Shield
-
-It is not possible to Shield Drop on a Platform either by tilting down the Control Stick, like in previous Smash titles, or by pressing Taunt.
 
 ## Ledge Slipoffs
 
@@ -79,6 +93,8 @@ It is now possible to slip off of ledges during the following states:
 * Balloon Knockback has been reworked.
   * Balloon Knockback now applies based on Launch Speed instead of total Hitstun frames.
   * Maximum Balloon Knockback magitude has been reduced (6 > 4), making it have less of, but still a noticable effect.
+* Hitstun Canceling was removed.
+* Removes the raised lower blast zone when getting spiked.
 
 ## Directional Influence
 
@@ -93,6 +109,27 @@ It is now possible to slip off of ledges during the following states:
 * Untechables no longer exist except for on moves where it is purposefully impossible to tech.
 
 ## Ledges
+
+Ledges have been reworked.
+* The 2 frames it takes to reach a ledge have been removed.
+  * This also removes 2-Framing.
+* The entire cast has had their ledge grab boxes adjusted to remove the phenomenon known as "Magnet Hands".
+* Certain characters have had new ledge grab boxes added to certain moves.
+
+### Tethers
+
+* All tethers have had their reel-in speed cut in half.
+* All tethers now grab the ledge the frame before their respective hitbox activates, if they don't already. This applies to:
+  * Samus (Grapple Beam)
+  * Young Link (Hookshot)
+  * Lucas (Rope Snake)
+  * Toon Link (Hookshot)
+  * Joker (Grappling Hook)
+  * Byleth (Sword of the Creator)
+  * Min Min (ARM Hook)
+* Tether's attack framedata and ledge grab boxes as a whole have been untouched for now.
+
+### Ledge Intangibility
 
 * Dropping from ledge no longer clears your intangibility.
 * Intangibility gets cleared if you are no longer in the falling or jumping states.

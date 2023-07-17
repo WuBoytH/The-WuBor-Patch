@@ -8,7 +8,7 @@ mod stand;
 mod step;
 mod squat;
 mod escape;
-mod misc;
+mod appeal;
 
 pub fn install() {
     jabs::install();
@@ -21,5 +21,5 @@ pub fn install() {
     step::install();
     squat::install();
     escape::install();
-    misc::install();
+    appeal::install();
 }

@@ -428,6 +428,39 @@ pub mod FGCModule {
 }
 
 #[allow(non_snake_case)]
+pub mod ThrowUtils {
+    use super::*;
+
+    /// Gets the thrown opponent boma.
+    pub unsafe fn get_thrown_object(module_accessor: *mut BattleObjectModuleAccessor) -> Option<*mut BattleObject> {
+        let link_id = LinkModule::get_node_object_id(module_accessor, *LINK_NO_CAPTURE) as u32;
+        let object = MiscModule::get_battle_object_from_id(link_id);
+        if object.is_null() {
+            None
+        }
+        else {
+            Some(object)
+        }
+    }
+
+    /// Sets the thrown opponent's rate.
+    pub unsafe fn set_thrown_rate(module_accessor: *mut BattleObjectModuleAccessor, rate: f32) {
+        if let Some(object) = get_thrown_object(module_accessor) {
+            MotionModule::set_rate((*object).module_accessor, rate);
+        }
+    }
+
+    /// Forces the "launched" knockback state.
+    pub unsafe fn set_force_launch(module_accessor: *mut BattleObjectModuleAccessor) {
+        if let Some(object) = get_thrown_object(module_accessor) {
+            if sv_battle_object::category((*object).battle_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+                VarModule::on_flag(object, thrown::flag::FORCE_LAUNCHED);
+            }
+        }
+    }
+}
+
+#[allow(non_snake_case)]
 pub mod MiscModule {
     use super::*;
 
@@ -520,93 +553,6 @@ pub mod MiscModule {
                 StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_WALL_JUMP, true);
                 return;
             }
-        }
-    }
-
-    /// Creates the "critical hit" effect. Will be replaced later with a better implementation.
-    // #[deprecated(since = "1.1.0", note = "Should use the updated critical zoom function instead.")]
-    pub unsafe fn critical_zoom(fighter: &mut L2CFighterCommon, rate: u8, frames: f32, zoom: f32) {
-        if !SoundModule::is_playing(fighter.module_accessor, Hash40::new("se_common_finishhit")) {
-            macros::EFFECT(fighter, Hash40::new("sys_bg_criticalhit"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
-            if rate != 0 {
-                SlowModule::set_whole(fighter.module_accessor, rate, 0);
-            }
-            if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
-                macros:: CAM_ZOOM_IN_arg5(fighter, frames, 0.0, zoom, 0.0, 0.0);
-            }
-            macros::PLAY_SE(fighter, Hash40::new("se_common_criticalhit"));
-        }
-    }
-
-    // /// Creates the "critical hit" effect.
-    // pub unsafe fn critical_zoom_revised(
-    //     module_accessor: *mut BattleObjectModuleAccessor,
-    //     target_id: u32,
-    //     rate: u8,
-    //     frame: f32,
-    //     zoom_amount: f32,
-    //     zoom_frame: f32,
-    //     one_on_one: bool,
-    //     bg_only_frame: f32,
-    //     offset: Vector2f
-    // ) {
-    //     let manager = singletons::FighterManager() as *mut u64;
-    //     if *manager.add(0xb9) == 0 && *manager.add(0x1e8) == 0 && *manager.add(0x398) < 1 {
-    //         let target_object = get_battle_object_from_id(target_id);
-    //         if (*target_object).battle_object_id >> 0x1c == 0 {
-    //             let target_boma = (*target_object).module_accessor;
-    //             DamageModule::set_critical_hit(target_boma, true);
-    //             call_critical(
-    //                 rate,
-    //                 zoom_amount,
-    //                 offset,
-    //                 (*module_accessor as *mut *mut u64).offset(0x38) as *mut Module,
-    //                 frame,
-    //                 zoom_frame,
-    //                 true,
-    //                 one_on_one,
-    //                 target_id,
-    //                 0,
-    //                 0
-    //             );
-
-    //         }
-    //     }
-    // }
-
-    // #[repr(C)]
-    // pub struct Module {
-    //   vtable: *const u64,
-    //   owner: *mut BattleObjectModuleAccessor,
-    //   // ...
-    // }
-    
-    // #[skyline::from_offset(0x6ad990)]
-    // fn call_critical(
-    //     slow: f32,
-    //     zoom: f32,
-    //     offset: Vector2f,
-    //     posturemodule: *mut Module,
-    //     frame: f32,
-    //     zoom_in_frame: f32,
-    //     some: bool,
-    //     one_on_one: bool,
-    //     target_id: u32,
-    //     some2: i32,
-    //     some3: i32
-    // );
-
-    /// Used in Fighting Game Mode to reduce a fighter's HP to their Fighting Game Mode value.
-    pub unsafe fn set_hp(fighter: &mut L2CFighterCommon, hp: f32) {
-        let entry_id = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as i32;
-        let fighterentryid = smash::app::FighterEntryID(entry_id);
-        let fighterinformation = smash::app::lua_bind::FighterManager::get_fighter_information(singletons::FighterManager(), fighterentryid);
-        let max_hp = smash::app::lua_bind::FighterInformation::hit_point_max(fighterinformation, false);
-        let new_hp = max_hp - (hp / 300.0 * max_hp);
-        if DamageModule::damage(fighter.module_accessor, 0) < new_hp
-        && !smashball::is_training_mode() {
-            let dmg = new_hp - DamageModule::damage(fighter.module_accessor, 0);
-            DamageModule::add_damage(fighter.module_accessor, dmg, 0);
         }
     }
 
@@ -731,6 +677,18 @@ pub mod MiscModule {
         && adjusted_frame + adjust_frame > 0.0 {
             macros::FT_MOTION_RATE(fighter, (adjusted_frame + adjust_frame) / adjusted_frame);
             sv_animcmd::frame(fighter.lua_state_agent, cancel_frame);
+            macros::FT_MOTION_RATE(fighter, 1.0);
+        }
+    }
+
+    #[inline(always)]
+    pub unsafe fn calc_motion_rate_from_end_frame(fighter: &mut L2CAgentBase, current_frame: f32, adjust_frame: f32) {
+        let end_frame = MotionModule::end_frame(fighter.module_accessor);
+        let adjusted_frame = end_frame - current_frame;
+        if adjusted_frame > 0.0
+        && adjusted_frame + adjust_frame > 0.0 {
+            macros::FT_MOTION_RATE(fighter, (adjusted_frame + adjust_frame) / adjusted_frame);
+            sv_animcmd::frame(fighter.lua_state_agent, end_frame);
             macros::FT_MOTION_RATE(fighter, 1.0);
         }
     }

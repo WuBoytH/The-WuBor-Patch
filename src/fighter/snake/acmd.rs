@@ -1,11 +1,11 @@
 // mod normals;
 // mod aerials;
-// mod specials;
+mod specials;
 mod escape;
 
 pub fn install () {
     // normals::install();
     // aerials::install();
-    // specials::install();
+    specials::install();
     escape::install();
 }

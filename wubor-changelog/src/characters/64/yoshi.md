@@ -49,11 +49,11 @@
 
 ### Specials
 
-#### Egg Lay
+#### Neutral Special - Egg Lay
 
 <buff>Can no longer be grab-teched. See [Grab](../../system/engine.md#grab).</buff>
 
-#### Egg Roll
+#### Side Special - Egg Roll
 
 <buff>No longer bounces when performed on the ground.</buff>
 

@@ -174,7 +174,7 @@ unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCo
     }
     if fighter.global_table[SITUATION_KIND] != *SITUATION_KIND_GROUND {
         if MotionModule::is_end(fighter.module_accessor) {
-            fighter.change_status(FIGHTER_STATUS_KIND_FALL_AERIAL.into(), false.into());
+            fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         }
     }
     else {
@@ -183,85 +183,11 @@ unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCo
     1.into()
 }
 
-#[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn common_status_catchedairganon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25eu64, 0x7d88ea0u64);
-    if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
-        FighterMotionModuleImpl::add_body_type_hash(
-            fighter.module_accessor,
-            Hash40::new("catched_ganon"),
-            *BODY_TYPE_MOTION_DX
-        );
-    }
-    else if motion_share == *FIGHTER_MOTION_SHARE_TYPE_GIRL {
-        FighterMotionModuleImpl::add_body_type_hash(
-            fighter.module_accessor,
-            Hash40::new("catched_ganon"),
-            *BODY_TYPE_MOTION_GIRL
-        );
-    }
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new("catched_ganon"),
-        1.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
-    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairganon_main_loop as *const () as _))
-}
-
-unsafe extern "C" fn common_status_catchedairganon_main_loop(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
-#[common_status_script(status = FIGHTER_STATUS_KIND_CATCHED_AIR_END_GANON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn common_status_catchedairendganon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25eu64, 0x7d88ea0u64);
-    let throw_motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_INT_MOTION_KIND);
-    if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
-        FighterMotionModuleImpl::add_body_type_hash(
-            fighter.module_accessor,
-            Hash40::new_raw(throw_motion),
-            *BODY_TYPE_MOTION_DX
-        );
-    }
-    else if motion_share == *FIGHTER_MOTION_SHARE_TYPE_GIRL {
-        FighterMotionModuleImpl::add_body_type_hash(
-            fighter.module_accessor,
-            Hash40::new_raw(throw_motion),
-            *BODY_TYPE_MOTION_GIRL
-        );
-    }
-    MotionModule::change_motion(
-        fighter.module_accessor,
-        Hash40::new_raw(throw_motion),
-        1.0,
-        1.0,
-        false,
-        0.0,
-        false,
-        false
-    );
-    fighter.sub_shift_status_main(L2CValue::Ptr(common_status_catchedairendganon_main_loop as *const () as _))
-}
-
-unsafe extern "C" fn common_status_catchedairendganon_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if MotionModule::is_end(fighter.module_accessor) {
-        fighter.change_status(FIGHTER_STATUS_KIND_DAMAGE_FALL.into(), false.into());
-    }
-    0.into()
-}
-
 pub fn install() {
     install_status_scripts!(
         ganon_specialn_main,
         ganon_specials_air_catch_main,
         ganon_sspecial_air_end_pre,
-        ganon_sspecial_air_end_main,
-        common_status_catchedairganon_main,
-        common_status_catchedairendganon_main
+        ganon_sspecial_air_end_main
     );
 }

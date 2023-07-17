@@ -1,7 +1,7 @@
 #![allow(non_upper_case_globals)]
 
 pub mod shield {
-    pub const guard_off_invalid_capture_frame_add : i32 = 3;
+    pub const guard_off_invalid_capture_frame_add : i32 = 9;
 }
 
 pub mod passive {

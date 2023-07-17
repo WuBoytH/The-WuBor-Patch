@@ -25,6 +25,14 @@ pub unsafe extern "C" fn install() {
     );
     CustomCancelManager::add_cancel_info(
         agent,
+        *FIGHTER_STATUS_KIND_ATTACK_S3,
+        CancelInfo::new()
+            .enable_jump_cancel(CancelType::HIT)
+            .jump_cancel_require_flag()
+            .pre_function(disable_during_bullet_arts)
+    );
+    CustomCancelManager::add_cancel_info(
+        agent,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
         CancelInfo::new()
             .enable_dash_cancel(CancelType::HIT)

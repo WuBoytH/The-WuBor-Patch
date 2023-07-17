@@ -11,3 +11,11 @@
 | 'Acceleratle' Movement Speed Multiplier | x2      | <nerf>x1.5</nerf> |
 
 </datatable>
+
+## Moveset
+
+### Aerials
+
+#### Up Air
+
+<buff>Animation adjusted so that Hero kicks in an arc instead of directly upwards.</buff>

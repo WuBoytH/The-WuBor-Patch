@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use crate::fighter::common::status::attack::*;
+use crate::fighter::common::status::attack::attack::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
 unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFighterCommon) -> L2CValue {

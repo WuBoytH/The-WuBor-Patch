@@ -65,7 +65,51 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
     }
     else {
         if appeal_motion_uniq_handler(fighter) {
-            fighter.sub_wait_motion(false.into());
+            let kind = fighter.global_table[KIND].get_i32();
+            if MotionModule::is_end(fighter.module_accessor) {
+                if [
+                    *FIGHTER_KIND_ROY,
+                    *FIGHTER_KIND_CHROM
+                ].contains(&kind)
+                && ![
+                    hash40("wait"),
+                    hash40("wait_2"),
+                    hash40("wait_3"),
+                    hash40("wait_4")
+                ].contains(&mot) {
+                    MotionModule::change_motion(
+                        fighter.module_accessor,
+                        Hash40::new("wait_4"),
+                        0.0,
+                        1.0,
+                        false,
+                        0.0,
+                        false,
+                        false
+                    );
+                }
+                else if [
+                    *FIGHTER_KIND_SAMUSD,
+                    *FIGHTER_KIND_ELIGHT
+                ].contains(&kind)
+                && [
+                    hash40("down_stand_d")
+                ].contains(&mot) {
+                    MotionModule::change_motion(
+                        fighter.module_accessor,
+                        Hash40::new("wait_4"),
+                        0.0,
+                        1.0,
+                        false,
+                        0.0,
+                        false,
+                        false
+                    );
+                }
+                else {
+                    fighter.sub_wait_motion(false.into());
+                }
+            }
         }
     }
 }
@@ -120,7 +164,11 @@ unsafe fn appeal_motion_uniq_handler(fighter: &mut L2CFighterCommon) -> bool {
         }
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_FLAG_MOVE_END)
-    && !check_basic_taunts {
+    && !check_basic_taunts
+    || (
+        FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(mot), true) != 0.0
+        && FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(mot), true) <= MotionModule::frame(fighter.module_accessor)
+    ) {
         let lr = PostureModule::lr(fighter.module_accessor);
         let mot = if hi {
             if lr >= 0.0 {

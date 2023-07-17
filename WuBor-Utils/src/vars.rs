@@ -116,9 +116,33 @@ pub mod weapon {
     }
 }
 
+pub mod appeal {
+    pub mod flag {
+        pub const HOLD : i32 = 0x1050;
+        pub const LOOP : i32 = 0x1051;
+        pub const ENABLE_ACTION : i32 = 0x1052;
+        pub const ENABLE_ACTION_IMM : i32 = 0x1053;
+        pub const ACTION_BUTTON_CHECK : i32 = 0x1054;
+        pub const ACTION_BUTTON_ENABLE_SUCCESS : i32 = 0x1055;
+        pub const ACTION_BUFFER_SUCCESS : i32 = 0x1056;
+        pub const ACTION_BUFFER_LOCKED : i32 = 0x1057;
+    }
+    pub mod int {
+        pub const HOLD_BUTTON : i32 = 0x1050;
+        pub const ACTION_BUTTON : i32 = 0x1051;
+        pub const ACTION_FRAME : i32 = 0x1052;
+        pub const RESTART_FRAME : i32 = 0x1053;
+    }
+    pub mod int64 {
+        pub const ACTION_MOT : i32 = 0x1050;
+        pub const LOOP_MOT : i32 = 0x1051;
+    }
+}
+
 pub mod attack_air {
     pub mod flag {
         pub const WHIFF : i32 = 0x1050;
+        pub const ENABLE_LANDING_ATTACK : i32 = 0x1051;
     }
 }
 
@@ -135,38 +159,38 @@ pub mod attack_dash {
     }
 }
 
-pub mod dash {
-    pub mod flag {
-        pub const DISABLE_RUN : i32 = 0x1051;
-    }
-}
-
 pub mod damage_fly_roll {
     pub mod flag {
         pub const DISABLE_PASSIVE : i32 = 0x1050;
     }
 }
 
-pub mod captured {
+pub mod dash {
     pub mod flag {
-        pub const FORCE_PALM : i32 = 0x1050;
+        pub const DISABLE_RUN : i32 = 0x1051;
     }
 }
 
-pub mod appeal {
+pub mod escape_air {
     pub mod flag {
-        pub const HOLD : i32 = 0x1050;
-        pub const LOOP : i32 = 0x1051;
-        pub const ENABLE_ACTION : i32 = 0x1052;
+        pub const SLIDE_ENABLE_ATTACK : i32 = 0x1050;
+        pub const SLIDE_ENABLE_CANCEL : i32 = 0x1051;
+    }
+}
+
+pub mod guard {
+    pub mod flag {
+        pub const ADD_BUFFER : i32 = 0x1050;
+        pub const SET_SHIELD_LOW_SMOKE : i32 = 0x1051;
     }
     pub mod int {
-        pub const HOLD_BUTTON : i32 = 0x1050;
-        pub const ACTION_BUTTON : i32 = 0x1051;
-        pub const RESTART_FRAME : i32 = 0x1052;
+        pub const SHIELD_EFF_ID : i32 = 0x1050;
     }
-    pub mod int64 {
-        pub const ACTION_MOT : i32 = 0x1050;
-        pub const LOOP_MOT : i32 = 0x1051;
+}
+
+pub mod thrown {
+    pub mod flag {
+        pub const FORCE_LAUNCHED : i32 = 0x1051;
     }
 }
 
@@ -262,14 +286,6 @@ pub mod eflame_esword {
     }
 }
 
-pub mod elight {
-    pub mod instance {
-        pub mod flag {
-            pub const ATTACK_AIR_LW_LANDING_ATTACK : i32 = 0x0150;
-        }
-    }
-}
-
 pub mod falco {
     pub mod instance {
         pub mod flag {
@@ -303,8 +319,13 @@ pub mod ganon {
 
 pub mod gaogaen {
     pub mod instance {
-        pub mod int {
-            pub const REVENGE : i32 = 0x0100;
+        pub mod flag {
+            pub const REVENGE_AUTO : i32 = 0x0100;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const REVENGE_CRITICAL : i32 = 0x1150;
         }
     }
 }
@@ -328,6 +349,8 @@ pub mod ike {
 pub mod jack {
     pub mod status {
         pub mod flag {
+            pub const SPECIAL_N_FIRST : i32 = 0x1150;
+
             pub const SPECIAL_S_FEINT : i32 = 0x1150;
         }
     }
@@ -607,6 +630,14 @@ pub mod marth {
         pub const STANCE_SPECIAL_S2_END : i32 = 19;
         pub const STANCE_SPECIAL_S2_END2 : i32 = 20;
         // pub const STANCE_SPECIAL_S2_LANDING : i32 = 21;
+    }
+}
+
+pub mod packun {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_ENABLE_CANCEL : i32 = 0x1100;
+        }
     }
 }
 

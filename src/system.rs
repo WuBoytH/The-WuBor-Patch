@@ -17,6 +17,8 @@ pub mod func_links;
 mod fighter_util;
 mod menu;
 mod music;
+mod fighterspecializer;
+mod one_frame;
 
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
@@ -47,6 +49,8 @@ pub fn install() {
     fighter_util::install();
     menu::install();
     music::install();
+    fighterspecializer::install();
+    one_frame::install();
     
     // Removes Phantom Hits
     skyline::patching::Patch::in_text(0x3e6ce8).data(0x14000012u32);

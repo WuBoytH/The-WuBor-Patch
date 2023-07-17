@@ -117,7 +117,6 @@ unsafe fn ryu_ex_flash(fighter: &mut L2CFighterCommon) {
             }
         }
     }
-
 }
 
 unsafe fn ryu_secret_sensation_hit_cancel(fighter: &mut L2CFighterCommon) {

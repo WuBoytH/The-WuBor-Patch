@@ -20,18 +20,24 @@ pub unsafe fn init_settings_replace(
     keep_float: i32,
     arg10: i32,
 ) {
+    let status = StatusModule::status_kind(module_accessor);
+    let status_prev = StatusModule::prev_status_kind(module_accessor, 0);
+    let object_id = (*module_accessor).battle_object_id;
+    let status_pair = VarModule::check_reset_statuses(object_id, status, status_prev);
     let mut mask = 0;
-    if keep_flag != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG {
+    if keep_flag != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG
+    && !status_pair {
         mask += VarModule::RESET_STATUS_FLAG;
     }
-    if keep_int != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT {
+    if keep_int != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT
+    && !status_pair {
         mask += VarModule::RESET_STATUS_INT;
         mask += VarModule::RESET_STATUS_INT64;
     }
-    if keep_float != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT {
+    if keep_float != *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLOAT
+    && !status_pair {
         mask += VarModule::RESET_STATUS_FLOAT;
     }
-    let object_id = (*module_accessor).battle_object_id;
     let object = MiscModule::get_battle_object_from_id(object_id);
     VarModule::reset(object, mask);
     original!()(

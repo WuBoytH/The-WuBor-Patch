@@ -148,6 +148,9 @@ unsafe extern "C" fn dolly_speciallw_substatus(fighter: &mut L2CFighterCommon, _
 }
 
 unsafe extern "C" fn dolly_speciallw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.sub_transition_group_check_air_cliff().get_bool() {
+        return 1.into();
+    }
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 1.into();

@@ -312,14 +312,10 @@ pub mod ganon {
 }
 
 pub mod gaogaen {
-    pub mod instance {
-        pub mod flag {
-            pub const REVENGE_AUTO : i32 = 0x0100;
-        }
-    }
     pub mod status {
         pub mod flag {
-            pub const REVENGE_CRITICAL : i32 = 0x1150;
+            pub const REVENGE_AUTO : i32 = 0x1150;
+            pub const REVENGE_CRITICAL : i32 = 0x1151;
         }
     }
 }

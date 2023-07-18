@@ -4,9 +4,10 @@ use crate::imports::acmd_imports::*;
 unsafe fn gaogaen_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 75, 47, 0, 85, 5.8, 0.0, 11.0, 4.0, Some(0.0), Some(11.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 75, 50, 0, 80, 5.4, 0.0, 11.0, -4.0, Some(0.0), Some(11.0), Some(-4.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 10.0, 75, 50, 0, 80, 4.6, 0.0, 8.0, 2.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 75, 50, 0, 85, 5.8, 0.0, 11.0, 4.0, Some(0.0), Some(11.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 75, 40, 0, 80, 5.4, 0.0, 11.0, -4.0, Some(0.0), Some(11.0), Some(-4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 10.0, 75, 40, 0, 80, 4.6, 0.0, 8.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 15, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -69,10 +70,6 @@ unsafe fn gaogaen_specialn(agent: &mut L2CAgentBase) {
         AttackModule::set_size(agent.module_accessor, 0, 0.1);
         AttackModule::set_size(agent.module_accessor, 1, 0.1);
         AttackModule::set_size(agent.module_accessor, 2, 0.1);
-    }
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
@@ -174,9 +171,10 @@ unsafe fn gaogaen_specialn(agent: &mut L2CAgentBase) {
 unsafe fn gaogaen_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 75, 47, 0, 85, 4.6, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 75, 50, 0, 80, 4.2, 0.0, 10.0, -4.0, Some(0.0), Some(10.0), Some(-4.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 10.0, 75, 50, 0, 80, 4.6, 0.0, 8.0, 2.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 75, 50, 0, 85, 4.6, 0.0, 10.0, 4.0, Some(0.0), Some(10.0), Some(8.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 10.0, 75, 40, 0, 80, 4.2, 0.0, 10.0, -4.0, Some(0.0), Some(10.0), Some(-4.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 10.0, 75, 40, 0, 80, 4.6, 0.0, 8.0, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 30, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
     }
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -217,10 +215,6 @@ unsafe fn gaogaen_specialairn(agent: &mut L2CAgentBase) {
         AttackModule::set_size(agent.module_accessor, 0, 0.1);
         AttackModule::set_size(agent.module_accessor, 1, 0.1);
         AttackModule::set_size(agent.module_accessor, 2, 0.1);
-    }
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
     }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {

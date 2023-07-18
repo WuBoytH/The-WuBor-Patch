@@ -48,7 +48,7 @@ pub unsafe fn gaogaen_special_lw_kinetic_helper(fighter: &mut L2CFighterCommon, 
                         set_accel,
                         fighter,
                         FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-                        -0.01
+                        -0.03
                     );
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_GAOGAEN_INSTANCE_WORK_ID_FLAG_INVALID_SPECIAL_AIR_LW_SPPED_Y);
                 }

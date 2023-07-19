@@ -60,10 +60,61 @@ unsafe fn brave_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "brave", scripts = [ "sound_speciallw9", "sound_specialairlw9" ], category = ACMD_SOUND, low_priority )]
+unsafe fn brave_speciallw9_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_brave_special_l03"));
+        macros::PLAY_SE(agent, Hash40::new("se_brave_special_l14"));
+    }
+}
+
+#[acmd_script( agent = "brave", scripts = [ "game_speciallw9end", "game_specialairlw9end" ], category = ACMD_GAME, low_priority )]
+unsafe fn brave_speciallw9end(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::FT_ADD_DAMAGE(agent, 999.0);
+    }
+    MiscModule::calc_motion_rate_from_end_frame(agent, 1.0, 15.0);
+}
+
+#[acmd_script( agent = "brave", scripts = [ "effect_speciallw9end", "effect_specialairlw9end" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn brave_speciallw9end_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_dead2"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, true);
+    }
+}
+
+#[acmd_script( agent = "brave", scripts = [ "sound_speciallw9end", "sound_specialairlw9end" ], category = ACMD_SOUND, low_priority )]
+unsafe fn brave_speciallw9end_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_brave_final02"));
+        macros::PLAY_SE(agent, Hash40::new("se_common_stage_fall"));
+    }
+}
+
+#[acmd_script( agent = "brave", scripts = [ "expression_speciallw9end", "expression_specialairlw9end" ], category = ACMD_EXPRESSION, low_priority )]
+unsafe fn brave_speciallw9end_exp(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(
+            agent.module_accessor,
+            Hash40::new("rbkind_dead"),
+            0,
+            false,
+            *BATTLE_OBJECT_ID_INVALID as u32
+        );
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         brave_specialhi1,
         brave_specialhi2,
-        brave_specialhi3
+        brave_specialhi3,
+        brave_speciallw9_snd,
+        brave_speciallw9end, brave_speciallw9end_eff, brave_speciallw9end_snd, brave_speciallw9end_exp
     );
 }

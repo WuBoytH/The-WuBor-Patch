@@ -196,6 +196,19 @@ pub mod bayonetta {
     }
 }
 
+pub mod brave {
+    pub mod instance {
+        pub mod int {
+            pub const NEXT_ROLL_INDEX : i32 = 0x0100;
+            pub const USED_SPELL_MASK : i32 = 0x0101;
+            pub const SPELL_SLOT_1 : i32 = 0x0102;
+            pub const SPELL_SLOT_2 : i32 = 0x0103;
+            pub const SPELL_SLOT_3 : i32 = 0x0104;
+            pub const SPELL_SLOT_4 : i32 = 0x0105;
+        }
+    }
+}
+
 pub mod chrom {
     pub mod status {
         pub mod flag {

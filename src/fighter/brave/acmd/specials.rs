@@ -289,7 +289,7 @@ unsafe fn brave_speciallw20(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
         if macros::is_excute(agent) {
             damage!(agent, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
-            HitModule::set_hit_stop_mul(agent.module_accessor, 2.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
+            HitModule::set_hit_stop_mul(agent.module_accessor, 3.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_ALL as u8}, 0.0);
         }
     }
     frame(agent.lua_state_agent, 37.0);

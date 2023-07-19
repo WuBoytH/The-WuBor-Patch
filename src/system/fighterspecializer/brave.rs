@@ -151,9 +151,9 @@ unsafe fn lot_critical_hook(fighter: &mut BattleObject) {
         return;
     }
     if [
-        *FIGHTER_STATUS_ATTACK_S4,
-        *FIGHTER_STATUS_ATTACK_HI4,
-        *FIGHTER_STATUS_ATTACK_LW4
+        *FIGHTER_STATUS_KIND_ATTACK_S4,
+        *FIGHTER_STATUS_KIND_ATTACK_HI4,
+        *FIGHTER_STATUS_KIND_ATTACK_LW4
     ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
         original!()(fighter)
     }

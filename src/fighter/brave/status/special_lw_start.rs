@@ -3,11 +3,25 @@ use crate::imports::status_imports::*;
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_DECIDE_COMMAND);
-    let mask = VarModule::get_int(fighter.battle_object, brave::instance::int::USED_SPELL_MASK);
-    VarModule::set_int(fighter.battle_object, brave::instance::int::USED_SPELL_MASK, mask | (1 << spell_kind));
+    let mask = VarModule::get_int(fighter.battle_object, brave::instance::int::USED_SPELL_MASK) | (1 << spell_kind);
+    // println!("New Mask: {:#b}", mask);
+    VarModule::set_int(fighter.battle_object, brave::instance::int::USED_SPELL_MASK, mask);
     let index = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_SELECT_INDEX);
     VarModule::set_int(fighter.battle_object, brave::instance::int::NEXT_ROLL_INDEX, index);
     VarModule::set_int(fighter.battle_object, brave::instance::int::SPELL_SLOT_1 + index, -1);
+    for x in 0..21 {
+        if mask & (1 << x) == 0 {
+            break;
+        }
+        if x == 20 {
+            // println!("All spells have been used at least once!");
+            VarModule::set_int(fighter.battle_object, brave::instance::int::USED_SPELL_MASK, 0);
+            VarModule::set_int(fighter.battle_object, brave::instance::int::SPELL_SLOT_1, -1);
+            VarModule::set_int(fighter.battle_object, brave::instance::int::SPELL_SLOT_2, -1);
+            VarModule::set_int(fighter.battle_object, brave::instance::int::SPELL_SLOT_3, -1);
+            VarModule::set_int(fighter.battle_object, brave::instance::int::SPELL_SLOT_4, -1);
+        }
+    }
     original!(fighter)
 }
 

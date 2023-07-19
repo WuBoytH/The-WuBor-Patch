@@ -55,7 +55,7 @@ unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32)
 // 0x13 - Hatchet Man
 // 0x14 - Psyche Up
 pub unsafe fn roll_spell() -> i32 {
-    let roll = sv_math::rand(smash::hash40("fighter"), 275);
+    let roll = sv_math::rand(smash::hash40("fighter"), 271);
 
     // vanilla roll chances
     match roll {
@@ -79,7 +79,7 @@ pub unsafe fn roll_spell() -> i32 {
         233..=248 => 0xC,
         249..=255 => 0x0,
         256..=270 => 0xF,
-        _ => 0xE
+        _ => 0xE // Impossible to roll normally
     }
 }
 
@@ -101,22 +101,34 @@ unsafe fn special_lw_open_command_hook(fighter: &mut BattleObject) {
     let index = VarModule::get_int(fighter, brave::instance::int::NEXT_ROLL_INDEX);
 
     let mut rolls = vec![];
+    // println!("Getting saved spell list...");
     for x in 0..4 {
-        let spell = VarModule::get_int(fighter, brave::instance::int::SPELL_SLOT_1 + x);
+        let mut spell = VarModule::get_int(fighter, brave::instance::int::SPELL_SLOT_1 + x);
+        if spell == 0xE {
+            // println!("Hocus Pocus found! Force reroll...");
+            spell = -1;
+        }
+        // println!("Saved spell on slot {}: {:#x}", x, spell);
         rolls.push(spell);
     }
     for x in 0..4 {
         let mut spell = rolls[x];
         if spell == -1 {
+            let mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
+            let mut counter = 0;
             loop {
+                // println!("Rolling! This is loop {}", counter);
+                counter += 1;
                 spell = roll_spell();
+                // println!("Rolled {:#x}", spell);
+                if mask & (1 << spell) != 0 {
+                    // println!("Spell has already been used, replacing it with Hocus Pocus!");
+                    spell = 0xE;
+                }
                 if spell == 0xE || !rolls.contains(&spell) {
+                    // println!("Rolled new spell on slot {}: {:#x}", x, spell);
                     break;
                 }
-            }
-            let mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
-            if mask & (1 << spell) != 0 {
-                spell = 0xE;
             }
         }
         rolls[x] = spell;

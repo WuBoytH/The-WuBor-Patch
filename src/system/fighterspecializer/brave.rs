@@ -148,6 +148,7 @@ unsafe fn get_special_lw_command_sp_cost_hook(module_accessor: *mut BattleObject
 unsafe fn lot_critical_hook(fighter: &mut BattleObject) {
     let is_psyche_up = WorkModule::is_flag(fighter.module_accessor, 0x200000EA);
     WorkModule::set_flag(fighter.module_accessor, is_psyche_up, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
+    VarModule::set_flag(fighter, brave::status::flag::ENABLE_CLEAR_PSYCHE_UP, is_psyche_up);
 }
 
 pub fn install() {

@@ -207,6 +207,11 @@ pub mod brave {
             pub const SPELL_SLOT_4 : i32 = 0x0105;
         }
     }
+    pub mod status {
+        pub mod flag {
+            pub const ENABLE_CLEAR_PSYCHE_UP : i32 = 0x1150;
+        }
+    }
 }
 
 pub mod chrom {

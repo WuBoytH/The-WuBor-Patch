@@ -147,7 +147,7 @@ unsafe fn get_special_lw_command_sp_cost_hook(module_accessor: *mut BattleObject
 #[skyline::hook(replace = FighterSpecializer_Brave::lot_critical)]
 unsafe fn lot_critical_hook(fighter: &mut BattleObject) {
     if WorkModule::is_flag(fighter.module_accessor, 0x200000EA) {
-        WorkModule::set_flag(fighter.module_accessor, is_psyche_up, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
+        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT);
         return;
     }
     if [

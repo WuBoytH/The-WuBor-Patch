@@ -4,9 +4,9 @@ use crate::imports::acmd_imports::*;
 unsafe fn mario_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, false, -1);
-        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, Hash40::new("attack_air_f"), false, -1.0);
+        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("attack_air_f"), false, -1.0);
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -30,7 +30,7 @@ unsafe fn mario_attackairf(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
     }
 }
 
@@ -68,9 +68,9 @@ unsafe fn mario_attackairf_exp(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "mario", script = "game_landingairf", category = ACMD_GAME, low_priority )]
 unsafe fn mario_landingairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
-        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, false, -1);
-        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_PUMP, Hash40::new("start"), false, -1.0);
+        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+        ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
+        ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, Hash40::new("landing_air_f"), false, -1.0);
     }
 }
 

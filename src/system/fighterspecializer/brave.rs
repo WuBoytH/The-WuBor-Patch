@@ -115,10 +115,10 @@ unsafe fn special_lw_open_command_hook(fighter: &mut BattleObject) {
         let mut spell = rolls[x];
         if spell == -1 {
             let mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
-            let mut counter = 0;
+            // let mut counter = 0;
             loop {
                 // println!("Rolling! This is loop {}", counter);
-                counter += 1;
+                // counter += 1;
                 spell = roll_spell();
                 // println!("Rolled {:#x}", spell);
                 if mask & (1 << spell) != 0 {

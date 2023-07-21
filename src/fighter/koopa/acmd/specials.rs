@@ -1,5 +1,20 @@
 use crate::imports::acmd_imports::*;
 
+#[acmd_script( agent = "koopa_breath", script = "effect_move", category = ACMD_EFFECT, low_priority )]
+unsafe fn koopa_breath_move_eff(agent: &mut L2CAgentBase) {
+    for _ in 0..i32::MAX {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("koopa_breath_m_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        }
+        wait(agent.lua_state_agent, 15.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
+        }
+        wait(agent.lua_state_agent, 15.0);
+    }
+}
+
 #[acmd_script( agent = "koopa", script = "game_specialscatch", category = ACMD_GAME, low_priority )]
 unsafe fn koopa_specialscatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -79,6 +94,7 @@ unsafe fn koopa_specialairhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        koopa_breath_move_eff,
         koopa_specialscatch,
         koopa_specialsaircatch,
         koopa_specialairhi

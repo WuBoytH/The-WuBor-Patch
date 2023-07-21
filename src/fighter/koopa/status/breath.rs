@@ -17,6 +17,7 @@ unsafe fn koopa_breath_move_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     KineticModule::enable_energy(weapon.module_accessor, *WEAPON_KINETIC_ENERGY_RESERVE_ID_NORMAL);
     let scale = WorkModule::get_float(weapon.module_accessor, *WEAPON_KOOPA_BREATH_INSTANCE_WORK_ID_FLOAT_SIZE_RATE);
     PostureModule::set_scale(weapon.module_accessor, scale, false);
+    AttackModule::set_power_mul_status(weapon.module_accessor, speed_mul);
     if !StopModule::is_stop(weapon.module_accessor) {
         koopa_breah_move_substatus(weapon, false.into());
     }

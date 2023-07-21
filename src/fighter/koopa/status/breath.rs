@@ -62,6 +62,7 @@ unsafe extern "C" fn koopa_breath_move_fastshift(weapon: &mut L2CWeaponCommon) -
             false,
             0
         );
+        SoundModule::play_se(weapon.module_accessor, Hash40::new("se_common_bomb_m"), true, false, false, false, enSEType(0));
         notify_event_msc_cmd!(weapon, Hash40::new_raw(0x199c462b5d));
     }
     0.into()

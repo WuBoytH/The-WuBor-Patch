@@ -23,6 +23,13 @@ unsafe fn koopa_breath_move_eff(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "koopa_breath", script = "sound_move", category = ACMD_SOUND, low_priority )]
+unsafe fn koopa_breath_move_snd(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_STATUS(agent, Hash40::new("se_koopa_special_n02"));
+    }
+}
+
 #[acmd_script( agent = "koopa", script = "game_specialscatch", category = ACMD_GAME, low_priority )]
 unsafe fn koopa_specialscatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -102,7 +109,7 @@ unsafe fn koopa_specialairhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        koopa_breath_move, koopa_breath_move_eff,
+        koopa_breath_move, koopa_breath_move_eff, koopa_breath_move_snd,
         koopa_specialscatch,
         koopa_specialsaircatch,
         koopa_specialairhi

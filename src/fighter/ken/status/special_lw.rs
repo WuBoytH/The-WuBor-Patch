@@ -173,7 +173,7 @@ unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         SlowModule::set_whole(fighter.module_accessor, 6, 0);
         macros::SLOW_OPPONENT(fighter, 100.0, 12.0);
-        macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+        macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, 0, 205);
         let target_id = VarModule::get_int(fighter.battle_object, fighter::instance::int::TARGET_ID) as u32;
         if sv_battle_object::is_active(target_id) {
             let target_boma = sv_battle_object::module_accessor(target_id);

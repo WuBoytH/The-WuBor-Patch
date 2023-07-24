@@ -24,6 +24,10 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 
 Actions that put you into the normal falling animation will instead use the unique double jump fall animation if you are out of jumps.
 
+## Fast Falling
+
+Fast Falling is no longer canceled by performing an Aerial or Special.
+
 ## Shield
 
 ### Shield Mechanics

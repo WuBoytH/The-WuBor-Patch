@@ -1,5 +1,44 @@
 use crate::imports::status_imports::*;
 
+#[skyline::hook(replace = L2CFighterCommon_status_pre_JumpSquat_param)]
+unsafe fn status_pre_jumpsquat_param(
+    fighter: &mut L2CFighterCommon,
+    keep_flag: L2CValue,
+    keep_int: L2CValue,
+    keep_float: L2CValue,
+    kinetic_type: L2CValue,
+    fs_keep: L2CValue
+) -> L2CValue {
+    StatusModule::init_settings(
+        fighter.module_accessor,
+        SituationKind(*SITUATION_KIND_GROUND),
+        kinetic_type.get_i32(),
+        *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP as u32,
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
+        true,
+        keep_flag.get_i32(),
+        keep_int.get_i32(),
+        keep_float.get_i32(),
+        fs_keep.get_i32()
+    );
+    FighterStatusModuleImpl::set_fighter_status_data(
+        fighter.module_accessor,
+        true,
+        *FIGHTER_TREADED_KIND_ENABLE,
+        false,
+        false,
+        false,
+        0,
+        (
+            *FIGHTER_STATUS_ATTR_INTO_DOOR |
+            *FIGHTER_STATUS_ATTR_DISABLE_GROUND_FRICTION
+        ) as u32,
+        0,
+        0
+    );
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     jump_squat_check_special_jump(fighter);
@@ -244,6 +283,7 @@ unsafe fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
+            status_pre_jumpsquat_param,
             sub_jump_squat_uniq_process_init_param,
             status_jumpsquat_common,
             status_jumpsquat_main,

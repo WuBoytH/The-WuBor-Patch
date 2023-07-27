@@ -79,7 +79,7 @@ unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.change_status(strans[0].into(), true.into());
             return true.into();
         }
-        if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
+        if fighter.global_table[CMD_CAT1].get_i32() & (*FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N | *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N) != 0 {
             let catch_attack_distance = WorkModule::get_param_float(fighter.module_accessor, hash40("param_motion"), hash40("catch_attack_distance"));
             let scale = PostureModule::scale(fighter.module_accessor);
             let capture_pos_x_diff = CatchModule::capture_pos_x_diff(fighter.module_accessor);

@@ -1,5 +1,4 @@
 use crate::imports::status_imports::*;
-use super::fgc;
 
 // unsafe extern "C" fn bayonetta_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     let is_air_f = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F;
@@ -41,7 +40,6 @@ fn fighter_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_BAYONETTA {
             return;
         }
-        fgc::install();
         VarModule::add_reset_statuses(
             fighter.battle_object_id,
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
@@ -53,7 +51,6 @@ fn fighter_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_bayonetta"));
     install_agent_init_callbacks!(
         fighter_init
     );

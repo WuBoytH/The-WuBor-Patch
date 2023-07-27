@@ -1,16 +1,13 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        phx::*,
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    custom_cancel::*,
     smashline::*,
     wubor_utils::table_const::*,
     super::status::special_s::*,
-    super::status::special_lw::*,
-    super::fgc
+    super::status::special_lw::*
 };
 
 unsafe fn set_move_customizer(fighter: &mut L2CFighterCommon, customizer: unsafe extern "C" fn(&mut L2CFighterCommon) -> L2CValue) {
@@ -85,12 +82,10 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
         }
         set_move_customizer(fighter, jack_move_customizer);
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
-        fgc::install();
     }
 }
 
 pub fn install() {
-    CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_jack"));
     install_agent_resets!(
         fighter_reset
     );

@@ -39,7 +39,7 @@ unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
             if throw_stick[0x171beeff9u64].get_bool() {
                 throw_b = true;
             }
-            if throw_stick[0x171beeff9u64].get_bool() {
+            if throw_stick[0x2d8932aacu64].get_bool() {
                 throw_hi = true;
             }
             if throw_stick[0x246f0d2cbu64].get_bool() {

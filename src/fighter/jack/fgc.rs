@@ -29,6 +29,7 @@ unsafe extern "C" fn jack_cancel_post(fighter: &mut L2CFighterCommon) -> bool {
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_jack");
+    CustomCancelManager::initialize_agent(agent);
     for x in [
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_DASH,

@@ -1,13 +1,15 @@
+mod normals;
 mod aerials;
 mod specials;
+mod catch;
 mod escape;
-mod normals;
 mod smashes;
 
 pub fn install() {
+    normals::install();
     aerials::install();
     specials::install();
+    catch::install();
     escape::install();
-    normals::install();
     smashes::install();
 }

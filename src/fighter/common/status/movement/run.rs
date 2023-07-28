@@ -66,7 +66,8 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,
-        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_RUN,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT
     ];
     for term in terms.iter() {
         WorkModule::enable_transition_term(fighter.module_accessor, *term);
@@ -191,7 +192,7 @@ unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         return 1.into();
     }
 
-    // Allow crouch out of dash
+    // Allow crouch out of run
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SQUAT)
     && fighter.sub_check_command_squat().get_bool() {
         fighter.change_status(FIGHTER_STATUS_KIND_SQUAT.into(), true.into());

@@ -1,6 +1,7 @@
 mod jabs;
 mod normals;
 mod smashes;
+mod catch;
 mod throws;
 mod aerials;
 mod specials;
@@ -14,6 +15,7 @@ pub fn install() {
     jabs::install();
     normals::install();
     smashes::install();
+    catch::install();
     throws::install();
     aerials::install();
     specials::install();

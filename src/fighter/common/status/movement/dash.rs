@@ -149,6 +149,7 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_COMMAND_623NB,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH,
         // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
         // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
@@ -428,6 +429,13 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         }
     }
 
+    if fighter.global_table[STATUS_FRAME].get_i32() != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN) 
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0 {
+        fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
+        return 1.into();
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) 
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
@@ -480,6 +488,20 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         return 1.into();
+    }
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Main)]
+unsafe fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.status_Dash_Main_common(0.into()).get_bool() {
+        return 1.into();
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_DASH);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON);
+        }
     }
     0.into()
 }
@@ -799,6 +821,7 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
     if 0 <= turn_dash_frame {
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
         if turn_dash_frame - 1 < 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
         }
@@ -889,6 +912,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_turndash_sub,
             status_dashcommon,
             status_dash_main_common,
+            status_turndash_main,
             sub_dash_uniq_process_main_internal
         );
     }

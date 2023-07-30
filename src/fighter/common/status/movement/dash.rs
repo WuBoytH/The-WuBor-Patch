@@ -47,7 +47,7 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
-        true,
+        false,
         *FIGHTER_TREADED_KIND_ENABLE,
         true,
         false,

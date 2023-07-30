@@ -54,33 +54,53 @@ unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32)
 // 0x12 - Metal Slash
 // 0x13 - Hatchet Man
 // 0x14 - Psyche Up
-pub unsafe fn roll_spell() -> i32 {
-    let roll = sv_math::rand(smash::hash40("fighter"), 271);
-
-    // vanilla roll chances
-    match roll {
-        0..=15 => 0x1,
-        16..=35 => 0x2,
-        36..=51 => 0x3,
-        52..=71 => 0x4,
-        72..=88 => 0xD,
-        89..=106 => 0x10,
-        107..=124 => 0x11,
-        125..=131 => 0x12,
-        132..=149 => 0x13,
-        150..=157 => 0x5,
-        158..=169 => 0x6,
-        170..=174 => 0x7,
-        175..=179 => 0x8,
-        180..=195 => 0x14,
-        196..=211 => 0xB,
-        212..=227 => 0xA,
-        228..=232 => 0x9,
-        233..=248 => 0xC,
-        249..=255 => 0x0,
-        256..=270 => 0xF,
-        _ => 0xE // Impossible to roll normally
+pub unsafe fn roll_spell(include_all: bool, mask: i32) -> i32 {
+    let spell_list_full = [
+        (0x0, 10),
+        (0x1, 20),
+        (0x2, 15),
+        (0x3, 20),
+        (0x4, 10),
+        (0x5, 7),
+        (0x6, 3),
+        (0x7, 5),
+        (0x8, 1),
+        (0x9, 4),
+        (0xA, 15),
+        (0xB, 15),
+        (0xC, 20),
+        (0xD, 5),
+        (0xF, 10),
+        (0x10, 10),
+        (0x11, 10),
+        (0x12, 10),
+        (0x13, 5),
+        (0x14, 5)
+    ];
+    let mut rand_max = 0;
+    let mut spell_list = vec![];
+    let mut hocus_chance = 0;
+    let ignore_hocus = sv_math::rand(hash40("fighter"), 100) < 50;
+    for spell in spell_list_full.iter() {
+        if mask & (1 << spell.0) == 0 || include_all {
+            rand_max += spell.1;
+            spell_list.push(*spell);
+        }
+        else if !ignore_hocus {
+            hocus_chance += spell.1;
+        }
     }
+    if rand_max == 0 {
+        return 0xE;
+    }
+    let mut roll = sv_math::rand(smash::hash40("fighter"), rand_max + hocus_chance);
+    for spell in spell_list.iter() {
+        if roll < spell.1 {
+            return spell.0;
+        }
+        roll -= spell.1;
+    }
+    0xE
 }
 
 #[skyline::hook(replace = FighterSpecializer_Brave::special_lw_open_command)]
@@ -102,8 +122,10 @@ unsafe fn special_lw_open_command_hook(fighter: &mut BattleObject) {
 
     let mut rolls = vec![];
     // println!("Getting saved spell list...");
+    let mut mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
     for x in 0..4 {
         let mut spell = VarModule::get_int(fighter, brave::instance::int::SPELL_SLOT_1 + x);
+        mask |= 1 << spell;
         if spell == 0xE {
             // println!("Hocus Pocus found! Force reroll...");
             spell = -1;
@@ -114,22 +136,8 @@ unsafe fn special_lw_open_command_hook(fighter: &mut BattleObject) {
     for x in 0..4 {
         let mut spell = rolls[x];
         if spell == -1 {
-            let mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
-            // let mut counter = 0;
-            loop {
-                // println!("Rolling! This is loop {}", counter);
-                // counter += 1;
-                spell = roll_spell();
-                // println!("Rolled {:#x}", spell);
-                if mask & (1 << spell) != 0 {
-                    // println!("Spell has already been used, replacing it with Hocus Pocus!");
-                    spell = 0xE;
-                }
-                if spell == 0xE || !rolls.contains(&spell) {
-                    // println!("Rolled new spell on slot {}: {:#x}", x, spell);
-                    break;
-                }
-            }
+            spell = roll_spell(false, mask);
+            mask |= 1 << spell;
         }
         rolls[x] = spell;
         set_command_for_slot(fighter, x as usize, spell);

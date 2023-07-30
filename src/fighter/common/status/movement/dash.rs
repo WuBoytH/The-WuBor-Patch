@@ -432,6 +432,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
     if fighter.global_table[STATUS_FRAME].get_i32() != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN) 
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0 {
+        VarModule::on_flag(fighter.battle_object, dash::flag::DISABLE_PIVOT_TURN_DASH);
         fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
         return 1.into();
     }

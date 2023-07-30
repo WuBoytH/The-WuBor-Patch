@@ -171,6 +171,10 @@ impl VarModule {
             vec![-1, *FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH]
         ); // Not Dashes into Turn Dash
         varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_TURN,
+            vec![*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH]
+        ); // Dashes into Turn
+        varmodule.reset_status_pairs.insert(
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
             vec![*FIGHTER_STATUS_KIND_ATTACK_AIR]
         ); // Aerial into Landing

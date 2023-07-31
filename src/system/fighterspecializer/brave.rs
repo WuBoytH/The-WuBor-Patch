@@ -54,7 +54,7 @@ unsafe fn set_command_for_slot(fighter: &mut BattleObject, slot: usize, id: i32)
 // 0x12 - Metal Slash
 // 0x13 - Hatchet Man
 // 0x14 - Psyche Up
-pub unsafe fn roll_spell(include_all: bool, mask: i32) -> i32 {
+pub unsafe fn roll_spell(mask: i32, current_spells_mask: i32) -> i32 {
     let spell_list_full = [
         (0x0, 10),
         (0x1, 20),
@@ -82,19 +82,18 @@ pub unsafe fn roll_spell(include_all: bool, mask: i32) -> i32 {
     let mut hocus_chance = 0;
     let ignore_hocus = sv_math::rand(hash40("fighter"), 100) < 50;
     for spell in spell_list_full.iter() {
-        if mask & (1 << spell.0) == 0 || include_all {
+        if (mask | current_spells_mask) & (1 << spell.0) == 0 {
             rand_max += spell.1;
             spell_list.push(*spell);
         }
-        else if !ignore_hocus {
+        else if mask & (1 << spell.0) != 0 && !ignore_hocus {
             hocus_chance += spell.1;
         }
     }
-    if rand_max == 0 {
-        return 0xE;
-    }
     let mut roll = sv_math::rand(smash::hash40("fighter"), rand_max + hocus_chance);
+    // println!("Roll: {}, Max Roll: {}", roll, rand_max + hocus_chance - 1);
     for spell in spell_list.iter() {
+        // println!("Roll {} vs Spell {:#x} cost {}", roll, spell.0, spell.1);
         if roll < spell.1 {
             return spell.0;
         }
@@ -122,13 +121,16 @@ unsafe fn special_lw_open_command_hook(fighter: &mut BattleObject) {
 
     let mut rolls = vec![];
     // println!("Getting saved spell list...");
-    let mut mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
+    let mask = VarModule::get_int(fighter, brave::instance::int::USED_SPELL_MASK);
+    let mut current_spells = 0;
     for x in 0..4 {
         let mut spell = VarModule::get_int(fighter, brave::instance::int::SPELL_SLOT_1 + x);
-        mask |= 1 << spell;
         if spell == 0xE {
             // println!("Hocus Pocus found! Force reroll...");
             spell = -1;
+        }
+        if spell != -1 {
+            current_spells |= 1 << spell;
         }
         // println!("Saved spell on slot {}: {:#x}", x, spell);
         rolls.push(spell);
@@ -136,8 +138,8 @@ unsafe fn special_lw_open_command_hook(fighter: &mut BattleObject) {
     for x in 0..4 {
         let mut spell = rolls[x];
         if spell == -1 {
-            spell = roll_spell(false, mask);
-            mask |= 1 << spell;
+            spell = roll_spell(mask, current_spells);
+            current_spells |= 1 << spell;
         }
         rolls[x] = spell;
         set_command_for_slot(fighter, x as usize, spell);

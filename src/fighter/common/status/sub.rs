@@ -57,7 +57,8 @@ pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
         };
 
         if left_stick_y > dive_cont_value
-        || fighter.global_table[FLICK_Y].get_i32() >= dive_flick_frame_value {
+        || fighter.global_table[FLICK_Y].get_i32() >= dive_flick_frame_value
+        || fighter.global_table[FLICK_Y_DIR].get_i32() >= 0 {
             return false.into();
         }
 

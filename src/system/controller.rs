@@ -232,19 +232,28 @@ unsafe fn handle_incoming_packet(ctx: &mut skyline::hooks::InlineCtx) {
 unsafe extern "C" fn isthrowstick(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut out = fighter.local_func__fighter_status_catch_1();
     let lr = PostureModule::lr(fighter.module_accessor);
-    let stick_x = fighter.global_table[STICK_X].get_f32() * lr;
-    let stick_y = fighter.global_table[STICK_Y].get_f32();
+    let stick_x;
+    let stick_y;
+    if Buttons::from_bits_unchecked(ControlModule::get_button(fighter.module_accessor)).intersects(Buttons::CStickOverride) {
+        stick_x = ControlModule::get_sub_stick_x(fighter.module_accessor);
+        stick_y = ControlModule::get_sub_stick_y(fighter.module_accessor);
+    }
+    else {
+        stick_x = ControlModule::get_stick_x(fighter.module_accessor);
+        stick_y = ControlModule::get_stick_y(fighter.module_accessor);
+    }
+    let stick_x = stick_x * lr;
     let throw_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_lw3_stick_x"));
     let throw_stick_y = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("attack_hi4_stick_y"));
     if stick_x > throw_stick_x {
-        out["f"] = true.into();
+        out["f"].assign(&true.into());
     } else if stick_x < -throw_stick_x {
-        out["b"] = true.into();
+        out["b"].assign(&true.into());
     }
     if stick_y > throw_stick_y {
-        out["hi"] = true.into();
-    } else if stick_y < throw_stick_y {
-        out["lw"] = true.into();
+        out["hi"].assign(&true.into());
+    } else if stick_y < -throw_stick_y {
+        out["lw"].assign(&true.into());
     }
     out
 }

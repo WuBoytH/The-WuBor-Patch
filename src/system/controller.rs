@@ -5,7 +5,7 @@ use {
         app::lua_bind::*,
         lib::L2CValue
     },
-    wubor_utils::{controls::*, table_const::*},
+    wubor_utils::controls::*,
 };
 
 #[skyline::hook(offset = 0x16d948c, inline)]

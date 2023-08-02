@@ -8,6 +8,7 @@ use {
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_inkling");
+    CustomCancelManager::initialize_agent(agent);
     CustomCancelManager::add_cancel_info(
         agent,
         *FIGHTER_STATUS_KIND_ATTACK_AIR,

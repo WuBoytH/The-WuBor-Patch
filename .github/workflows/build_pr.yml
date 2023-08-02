@@ -9,7 +9,7 @@ jobs:
   package-pr:
     runs-on: ubuntu-20.04
     container:
-      image: jugeeya/cargo-skyline:3.2.0-no-dkp
+      image: hewdrawremix/hewdraw-builder:latest
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4.3.0

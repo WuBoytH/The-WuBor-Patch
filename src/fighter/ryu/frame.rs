@@ -172,7 +172,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
                 );
             }
             SlowModule::set_whole(fighter.module_accessor, 4, 0);
-            macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, *smash::lib::lua_const::EffectScreenLayer::GROUND, 205);
+            macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, 0, 205);
             let ryu_x = PostureModule::pos_x(fighter.module_accessor);
             let mut ryu_y = PostureModule::pos_y(fighter.module_accessor);
             if ryu_x == VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_X) {

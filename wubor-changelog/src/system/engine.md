@@ -24,6 +24,10 @@ Jumping no longer has accelerated rising momentum, matching the momentum from pr
 
 Actions that put you into the normal falling animation will instead use the unique double jump fall animation if you are out of jumps.
 
+## Fast Falling
+
+Fast Falling is no longer canceled by performing an Aerial or Special.
+
 ## Shield
 
 ### Shield Mechanics
@@ -86,6 +90,10 @@ It is now possible to slip off of ledges during the following states:
 * Normal/Light/Air Dodge Landing
 * Special Fall/Freefall Landing
 * Taunt
+
+## Hitstop
+
+* Electric-property moves only deal extra hitstop to the opponent.
 
 ## Knockback
 

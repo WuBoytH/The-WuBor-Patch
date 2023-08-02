@@ -8,6 +8,7 @@ use {
 
 pub fn install() {
     let agent = Hash40::new("fighter_kind_chrom");
+    CustomCancelManager::initialize_agent(agent);
     for x in [
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,

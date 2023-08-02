@@ -19,6 +19,8 @@ mod menu;
 mod music;
 mod fighterspecializer;
 mod engine;
+pub mod controller;
+mod modules;
 mod one_frame;
 
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
@@ -52,5 +54,7 @@ pub fn install() {
     music::install();
     fighterspecializer::install();
     engine::install();
+    controller::install();
+    modules::install();
     one_frame::install();
 }

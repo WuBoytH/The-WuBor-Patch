@@ -777,17 +777,16 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             if reset_type != FallAdjustNoCap
             && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT)
             && energy.unk[2] == 0 {
-                // let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
-                // let is_jump = VarModule::is_flag(object, jump::flag::JUMP_FROM_SQUAT);
-                // let stable_speed = if is_jump {
-                //     WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0)
-                // } else {
-                //     WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0)
-                // };
-                // let stable_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
-                // if stable_speed < energy.speed.x.abs() {
-                //     energy.speed = PaddedVec2::new(stable_speed * energy.speed.x.signum(), 0.0);
-                // }
+                let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
+                let is_jump = VarModule::is_flag(object, jump::flag::JUMP_FROM_SQUAT);
+                let stable_speed = if is_jump {
+                    WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0)
+                } else {
+                    WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0)
+                };
+                if stable_speed < energy.speed.x.abs() {
+                    energy.speed = PaddedVec2::new(stable_speed * energy.speed.x.signum(), 0.0);
+                }
             }
             WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);
         },

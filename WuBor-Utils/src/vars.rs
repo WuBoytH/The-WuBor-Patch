@@ -133,10 +133,16 @@ pub mod appeal {
     }
 }
 
+pub mod jump {
+    pub mod flag {
+        pub const JUMP_FROM_SQUAT : i32 = 0x1050;
+    }
+}
+
 pub mod attack_air {
     pub mod flag {
-        pub const WHIFF : i32 = 0x1050;
-        pub const ENABLE_LANDING_ATTACK : i32 = 0x1051;
+        pub const WHIFF : i32 = 0x1051;
+        pub const ENABLE_LANDING_ATTACK : i32 = 0x1052;
     }
 }
 

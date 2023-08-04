@@ -34,27 +34,27 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
             speed_x
         );
-        sv_kinetic_energy!(
-            mul_x_accel_mul,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            param::jump::special_jump_control_mul
-        );
-        sv_kinetic_energy!(
-            mul_x_accel_add,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            param::jump::special_jump_control_mul
-        );
-        if mini_jump {
-            let stable_speed = speed_x.abs().clamp(base_speed_x * 0.5, f32::MAX);
-            sv_kinetic_energy!(
-                set_stable_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                stable_speed.abs()
-            );
-        }
+        // sv_kinetic_energy!(
+        //     mul_x_accel_mul,
+        //     fighter,
+        //     FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        //     param::jump::special_jump_control_mul
+        // );
+        // sv_kinetic_energy!(
+        //     mul_x_accel_add,
+        //     fighter,
+        //     FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        //     param::jump::special_jump_control_mul
+        // );
+        // if mini_jump {
+        //     let stable_speed = speed_x.abs().clamp(base_speed_x * 0.5, f32::MAX);
+        //     sv_kinetic_energy!(
+        //         set_stable_speed,
+        //         fighter,
+        //         FIGHTER_KINETIC_ENERGY_ID_CONTROL,
+        //         stable_speed.abs()
+        //     );
+        // }
         // let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0);
         // if speed_x.abs() > jump_speed_x_max {
         //     sv_kinetic_energy!(

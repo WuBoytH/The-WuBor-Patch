@@ -802,13 +802,14 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
                 energy.lr
             };
             energy.speed.y = 0.0;
-            let dash_speed = lr * WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
-            energy.speed.x = if 0.0 <= lr * energy.speed.x {
-                dash_speed
-            }
-            else {
-                dash_speed + energy.speed.x
-            };
+            // let dash_speed = lr * WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
+            // energy.speed.x = if 0.0 <= lr * energy.speed.x {
+            //     dash_speed
+            // }
+            // else {
+            //     dash_speed + energy.speed.x
+            // };
+            energy.speed.x = lr * WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
         },
         ShootDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {

@@ -795,14 +795,18 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             }
         }, // not reached in game afaik
         Dash | TurnRun | DashBack => {
-            let dash_speed = if reset_type == DashBack {
-                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
-            } else {
-                energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
+            let lr = if reset_type == DashBack {
+                -energy.lr
+            }
+            else {
+                energy.lr
             };
-            energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
+            energy.speed.y = 0.0;
+            let dash_speed = lr * WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
+            energy.speed.x = if 0.0 <= lr * energy.speed.x {
                 dash_speed
-            } else {
+            }
+            else {
                 dash_speed + energy.speed.x
             };
         },
@@ -821,6 +825,7 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             };
         },
         RevolveSlashAir => {
+            energy.speed.y = 0.0;
             energy.speed.x *= WorkModule::get_param_float(boma, smash::hash40("rslash_air_spd_x_mul"), 0);
         },
         Free => {

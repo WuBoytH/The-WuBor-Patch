@@ -35,6 +35,13 @@ unsafe extern "C" fn fox_special_hi_rush_main_loop(fighter: &mut L2CFighterCommo
         return 0.into();
     }
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
+    if VarModule::is_flag(fighter.battle_object, fox::status::flag::SPECIAL_HI_ENABLE_SNAP) {
+        VarModule::off_flag(fighter.battle_object, fox::status::flag::SPECIAL_HI_ENABLE_SNAP);
+        if situation == *SITUATION_KIND_AIR {
+            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES.into());
+        }
+        VarModule::on_flag(fighter.battle_object, fox::status::flag::SPECIAL_HI_ENABLED_SNAP);
+    }
     if StatusModule::is_changing(fighter.module_accessor)
     || (
         StatusModule::is_situation_changed(fighter.module_accessor)
@@ -68,7 +75,13 @@ unsafe extern "C" fn fox_special_hi_rush_main_loop(fighter: &mut L2CFighterCommo
                     false
                 );
             }
-            fighter.sub_fighter_cliff_check(GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES.into()); // Was ALWAYS_BOTH_SIDES
+            let check_kind = if VarModule::is_flag(fighter.battle_object, fox::status::flag::SPECIAL_HI_ENABLED_SNAP) {
+                GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES
+            }
+            else {
+                GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES
+            };
+            fighter.sub_fighter_cliff_check(check_kind.into()); // Was ALWAYS_BOTH_SIDES
         }
         else {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_FOX_FIRE_STATUS_WORK_ID_FLAG_AIR);

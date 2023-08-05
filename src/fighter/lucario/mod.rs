@@ -4,6 +4,7 @@ mod frame;
 mod agent_init;
 pub mod helper;
 mod vtable_hook;
+pub mod fgc;
 pub mod vl;
 
 pub fn install() {

@@ -215,6 +215,14 @@ pub mod brave {
     }
 }
 
+pub mod captain {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod chrom {
     pub mod status {
         pub mod flag {
@@ -303,6 +311,15 @@ pub mod falco {
     pub mod instance {
         pub mod flag {
             pub const KAA : i32 = 0x0100;
+        }
+    }
+}
+
+pub mod fox {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_ENABLE_SNAP : i32 = 0x1100;
+            pub const SPECIAL_HI_ENABLED_SNAP : i32 = 0x1101;
         }
     }
 }

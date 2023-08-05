@@ -1,5 +1,18 @@
 use crate::imports::acmd_imports::*;
 
+#[acmd_script( agent = "master", script = "game_landingairn", category = ACMD_GAME, low_priority )]
+unsafe fn master_landingairn(agent: &mut L2CAgentBase) {
+    if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW) {
+        if macros::is_excute(agent) {
+            ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, Hash40::new("landing_air_n"), false, -1.0);
+        }
+    }
+    frame(agent.lua_state_agent, 25.0);
+    if macros::is_excute(agent) {
+        ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
+    }
+}
+
 #[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn master_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -38,6 +51,7 @@ unsafe fn master_attackairf(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        master_landingairn,
         master_attackairf
     );
 }

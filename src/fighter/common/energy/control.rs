@@ -338,6 +338,9 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
 
     let accel_diff = match reset_type {
         FallAdjust | FallAdjustNoCap | FlyAdjust | ShootDash | ShootBackDash | RevolveSlashAir | MoveGround | MoveAir => {
+            if energy.speed.x.abs() > energy.speed_max.x {
+                energy.speed_brake.x *= 2.0;
+            }
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         WallJump => {
@@ -575,14 +578,22 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
             energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0), 0.0);
             let air_x_speed_max = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
                 let mut speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
-                if speed < stable_speed {
-                    speed = stable_speed;
-                }
                 if super_jump {
                     if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-                        speed *= param::jump::hyper_hop_air_speed_x_stable_mul;
+                        // speed *= param::jump::hyper_hop_air_speed_x_stable_mul;
+                        energy.speed_max.x = speed;
+                        let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+                            ControlModule::get_sub_stick_x(boma)
+                        }
+                        else {
+                            ControlModule::get_stick_x(boma)
+                        };
+                        energy.speed.x = speed * stick_x;
+                        energy.speed_brake.x = 0.0;
                     }
                     else {
+                        energy.speed.x *= param::jump::super_jump_speed_x_mul;
+                        energy.speed_max.x *= param::jump::super_jump_speed_x_mul;
                         speed *= param::jump::super_jump_speed_x_mul;
                     }
                 }

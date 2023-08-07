@@ -27,7 +27,7 @@ unsafe extern "C" fn lucina_specialn_loop_main_loop(fighter: &mut L2CFighterComm
                 fighter.change_status(FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END.into(), false.into());
             }
             else {
-                VarModule::on_flag(fighter.battle_object, yu::instance::flag::HEROIC_GRAB);
+                // VarModule::on_flag(fighter.battle_object, yu::instance::flag::HEROIC_GRAB);
                 fighter.change_status(FIGHTER_STATUS_KIND_CATCH_DASH.into(), false.into());
             }
         }

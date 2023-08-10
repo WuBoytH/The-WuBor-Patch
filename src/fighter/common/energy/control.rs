@@ -576,28 +576,31 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
 
             energy.speed_max = PaddedVec2::new(stable_speed, -1.0);
             energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0), 0.0);
-            let air_x_speed_max = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
-                let mut speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
+            let limit_speed = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
                 if super_jump {
+                    let mut jump_speed_x = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
                     if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-                        // speed *= param::jump::hyper_hop_air_speed_x_stable_mul;
-                        energy.speed_max.x = speed;
+                        // jump_speed_x *= param::jump::hyper_hop_air_speed_x_stable_mul;
+                        energy.speed_max.x = jump_speed_x;
                         let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
                             ControlModule::get_sub_stick_x(boma)
                         }
                         else {
                             ControlModule::get_stick_x(boma)
                         };
-                        energy.speed.x = speed * stick_x;
+                        energy.speed.x = jump_speed_x * stick_x;
                         energy.speed_brake.x = 0.0;
                     }
                     else {
                         energy.speed.x *= param::jump::super_jump_speed_x_mul;
                         energy.speed_max.x *= param::jump::super_jump_speed_x_mul;
-                        speed *= param::jump::super_jump_speed_x_mul;
+                        jump_speed_x *= param::jump::super_jump_speed_x_mul;
                     }
+                    jump_speed_x
                 }
-                speed
+                else {
+                    WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0)
+                }
             } else {
                 -1.0
             };
@@ -607,7 +610,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
             else {
                 1.0
             };
-            energy.speed_limit = PaddedVec2::new(air_x_speed_max, 0.0);
+            energy.speed_limit = PaddedVec2::new(limit_speed, 0.0);
             energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0) * control_mul;
             energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0) * control_mul;
         },
@@ -788,15 +791,11 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             if reset_type != FallAdjustNoCap
             && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT)
             && energy.unk[2] == 0 {
-                let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
-                let is_jump = VarModule::is_flag(object, jump::flag::JUMP_FROM_SQUAT);
-                let stable_speed = if is_jump {
-                    WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0)
-                } else {
-                    WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0)
-                };
-                if stable_speed < energy.speed.x.abs() {
-                    energy.speed = PaddedVec2::new(stable_speed * energy.speed.x.signum(), 0.0);
+                // let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
+                // let is_jump = VarModule::is_flag(object, jump::flag::JUMP_FROM_SQUAT);
+                let limit_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
+                if limit_speed < energy.speed.x.abs() {
+                    energy.speed = PaddedVec2::new(limit_speed * energy.speed.x.signum(), 0.0);
                 }
             }
             WorkModule::off_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT_ONCE);

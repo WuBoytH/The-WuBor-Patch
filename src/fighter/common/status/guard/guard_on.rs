@@ -8,7 +8,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     let was_parry = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_DAMAGE;
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && (
-        ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) <= 5
+        ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF <= 5
         || was_parry
     ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;

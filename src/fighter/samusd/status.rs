@@ -13,12 +13,12 @@ use {
     super::vl,
 };
 
-#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("samusd", FIGHTER_STATUS_KIND_WAIT)]
 unsafe fn samusd_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Wait()
 }
 
-#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("samusd", FIGHTER_STATUS_KIND_ATTACK_AIR)]
 unsafe fn samusd_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -50,7 +50,7 @@ unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("samusd", FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H)]
 unsafe fn samusd_specialn_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -297,7 +297,7 @@ unsafe extern "C" fn samusd_specialn_hold_main_loop(fighter: &mut L2CFighterComm
     1.into()
 }
 
-#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
+#[status("samusd", FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H)]
 unsafe fn samusd_specialn_hold_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_F
@@ -329,7 +329,7 @@ unsafe extern "C" fn samusd_get_max_charge_frame(fighter: &mut L2CFighterCommon)
     WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("cshot_charge_frame")).into()
 }
 
-#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("samusd", FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW)]
 unsafe fn samusd_speciallw_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     samusd_speciallw_helper(fighter);
     samusd_speciallw_air_mot_helper(fighter);
@@ -415,7 +415,7 @@ unsafe extern "C" fn samusd_speciallw_air_is_end_helper(fighter: &mut L2CFighter
     0.into()
 }
 
-#[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("samusd_cshot", WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT)]
 unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -556,7 +556,7 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("samusd_cshot", WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT)]
 unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     weapon.clear_lua_stack();
     lua_args!(weapon, WEAPON_KINETIC_TYPE_NORMAL);
@@ -586,7 +586,7 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("samusd_cshot", WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT)]
 unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -601,14 +601,12 @@ unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        samusd_wait_main,
-        samusd_attackair_main,
-        samusd_specialn_hold_main,
-        samusd_specialn_hold_exit,
-        samusd_speciallw_air_main,
-        samusd_cshot_shoot_init,
-        samusd_cshot_shoot_exec,
-        samusd_cshot_shoot_end
-    );
+    samusd_wait_main::install();
+    samusd_attackair_main::install();
+    samusd_specialn_hold_main::install();
+    samusd_specialn_hold_exit::install();
+    samusd_speciallw_air_main::install();
+    samusd_cshot_shoot_init::install();
+    samusd_cshot_shoot_exec::install();
+    samusd_cshot_shoot_end::install();
 }

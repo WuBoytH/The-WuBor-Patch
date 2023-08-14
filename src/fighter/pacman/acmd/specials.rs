@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pacman", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
+#[acmd("pacman", "game_specialhistart")]
 unsafe fn pacman_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_PACMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_TRAMPOLINE_JUMP) {
@@ -14,7 +14,5 @@ unsafe fn pacman_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pacman_specialhistart
-    );
+    pacman_specialhistart::install();
 }

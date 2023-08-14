@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "cloud", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
+#[acmd("cloud", [ "game_appealsl", "game_appealsr" ])]
 unsafe fn cloud_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe fn cloud_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_appealsloop", category = ACMD_GAME, low_priority )]
+#[acmd("cloud", "game_appealsloop")]
 unsafe fn cloud_appealsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::set_int(agent.battle_object, appeal::int::ACTION_FRAME, 12);
@@ -38,7 +38,7 @@ unsafe fn cloud_appealsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "sound_appealsloop", category = ACMD_SOUND, low_priority )]
+#[acmd("cloud", "sound_appealsloop")]
 unsafe fn cloud_appealsloop_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -53,7 +53,7 @@ unsafe fn cloud_appealsloop_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "expression_appealsloop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("cloud", "expression_appealsloop")]
 unsafe fn cloud_appealsloop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -65,7 +65,7 @@ unsafe fn cloud_appealsloop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_appealhil", category = ACMD_GAME, low_priority )]
+#[acmd("cloud", "game_appealhil")]
 unsafe fn cloud_appealhil(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -81,7 +81,7 @@ unsafe fn cloud_appealhil(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_appealhir", category = ACMD_GAME, low_priority )]
+#[acmd("cloud", "game_appealhir")]
 unsafe fn cloud_appealhir(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -97,7 +97,7 @@ unsafe fn cloud_appealhir(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority )]
+#[acmd("cloud", [ "game_appeallwl", "game_appeallwr" ])]
 unsafe fn cloud_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 60.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -114,11 +114,11 @@ unsafe fn cloud_appeallw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        cloud_appeals,
-        cloud_appealsloop, cloud_appealsloop_snd, cloud_appealsloop_exp,
-        cloud_appealhil,
-        cloud_appealhir,
-        cloud_appeallw
-    );
+    cloud_appeals::install();
+    cloud_appealsloop::install();
+    cloud_appealsloop_snd::install();
+    cloud_appealsloop_exp::install();
+    cloud_appealhil::install();
+    cloud_appealhir::install();
+    cloud_appeallw::install();
 }

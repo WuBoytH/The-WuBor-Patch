@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("demon", FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2)]
 unsafe fn demon_attackstand2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !demon_attack_common(fighter).get_bool() {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -96,7 +96,5 @@ unsafe extern "C" fn demon_attackstand2_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install() {
-    install_status_scripts!(
-        demon_attackstand2_main
-    );
+    demon_attackstand2_main::install();
 }

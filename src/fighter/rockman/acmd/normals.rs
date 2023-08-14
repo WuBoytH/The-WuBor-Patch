@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 
-#[acmd_script( agent = "rockman", script = "game_attack11melee", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attack11melee")]
 unsafe fn rockman_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -24,7 +24,7 @@ unsafe fn rockman_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attack11melee", category = ACMD_EFFECT, low_priority )]
+#[acmd("rockman", "effect_attack11melee")]
 unsafe fn rockman_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -37,7 +37,7 @@ unsafe fn rockman_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attack11melee", category = ACMD_SOUND, low_priority )]
+#[acmd("rockman", "sound_attack11melee")]
 unsafe fn rockman_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -45,7 +45,7 @@ unsafe fn rockman_attack11_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attack11melee", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("rockman", "expression_attack11melee")]
 unsafe fn rockman_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("top"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_NONE), AttackDirectionAxis(*ATTACK_DIRECTION_NONE));
@@ -63,7 +63,7 @@ unsafe fn rockman_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attack12")]
 unsafe fn rockman_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -86,7 +86,7 @@ unsafe fn rockman_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
+#[acmd("rockman", "effect_attack12")]
 unsafe fn rockman_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -95,7 +95,7 @@ unsafe fn rockman_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
+#[acmd("rockman", "sound_attack12")]
 unsafe fn rockman_attack12_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -103,7 +103,7 @@ unsafe fn rockman_attack12_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("rockman", "expression_attack12")]
 unsafe fn rockman_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -128,7 +128,7 @@ unsafe fn rockman_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attack13")]
 unsafe fn rockman_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -140,7 +140,7 @@ unsafe fn rockman_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attack13", category = ACMD_EFFECT, low_priority )]
+#[acmd("rockman", "effect_attack13")]
 unsafe fn rockman_attack13_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -161,7 +161,7 @@ unsafe fn rockman_attack13_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attack13", category = ACMD_SOUND, low_priority )]
+#[acmd("rockman", "sound_attack13")]
 unsafe fn rockman_attack13_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -173,7 +173,7 @@ unsafe fn rockman_attack13_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attack13", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("rockman", "expression_attack13")]
 unsafe fn rockman_attack13_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -194,7 +194,7 @@ unsafe fn rockman_attack13_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attacks3melee", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attacks3melee")]
 unsafe fn rockman_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -214,7 +214,7 @@ unsafe fn rockman_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attacks3melee", category = ACMD_EFFECT, low_priority )]
+#[acmd("rockman", "effect_attacks3melee")]
 unsafe fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -230,7 +230,7 @@ unsafe fn rockman_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attacks3melee", category = ACMD_SOUND, low_priority )]
+#[acmd("rockman", "sound_attacks3melee")]
 unsafe fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -246,7 +246,7 @@ unsafe fn rockman_attacks3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attacks3melee", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("rockman", "expression_attacks3melee")]
 unsafe fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_L);
@@ -269,10 +269,20 @@ unsafe fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        rockman_attack11, rockman_attack11_eff, rockman_attack11_snd, rockman_attack11_exp,
-        rockman_attack12, rockman_attack12_eff, rockman_attack12_snd, rockman_attack12_exp,
-        rockman_attack13, rockman_attack13_eff, rockman_attack13_snd, rockman_attack13_exp,
-        rockman_attacks3, rockman_attacks3_eff, rockman_attacks3_snd, rockman_attacks3_exp
-    );
+    rockman_attack11::install();
+    rockman_attack11_eff::install();
+    rockman_attack11_snd::install();
+    rockman_attack11_exp::install();
+    rockman_attack12::install();
+    rockman_attack12_eff::install();
+    rockman_attack12_snd::install();
+    rockman_attack12_exp::install();
+    rockman_attack13::install();
+    rockman_attack13_eff::install();
+    rockman_attack13_snd::install();
+    rockman_attack13_exp::install();
+    rockman_attacks3::install();
+    rockman_attacks3_eff::install();
+    rockman_attacks3_snd::install();
+    rockman_attacks3_exp::install();
 }

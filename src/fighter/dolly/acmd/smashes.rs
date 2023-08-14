@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "dolly", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attacklw4")]
 unsafe fn dolly_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -30,7 +30,5 @@ unsafe fn dolly_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        dolly_attacklw4
-    );
+    dolly_attacklw4::install();
 }

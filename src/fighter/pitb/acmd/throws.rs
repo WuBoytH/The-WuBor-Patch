@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pitb", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+#[acmd("pitb", "game_throwlw")]
 unsafe fn pitb_throwlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -29,7 +29,5 @@ unsafe fn pitb_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pitb_throwlw
-    );
+    pitb_throwlw::install();
 }

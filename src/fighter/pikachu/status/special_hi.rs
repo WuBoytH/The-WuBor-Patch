@@ -1,11 +1,11 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn pikachu_special_hi_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn pikachu_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND);
@@ -62,18 +62,19 @@ unsafe extern "C" fn pikachu_special_hi_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn pikachu_special_hi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn pikachu_special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.super_jump_punch_end(L2CValue::Ptr(L2CFighterCommon_super_jump_punch_reset_common_condition as *const () as _));
     0.into()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pikachu_special_hi_init, pikachu_special_hi_main, pikachu_special_hi_exec, pikachu_special_hi_end
-    );
+    pikachu_special_hi_init::install();
+    pikachu_special_hi_main::install();
+    pikachu_special_hi_exec::install();
+    pikachu_special_hi_end::install();
 }

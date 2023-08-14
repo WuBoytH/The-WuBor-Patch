@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucas", scripts = ["game_speciallwend", "game_specialairlwend"], category = ACMD_GAME, low_priority )]
+#[acmd("lucas", ["game_speciallwend", "game_specialairlwend"])]
 unsafe fn lucas_speciallwend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -13,7 +13,7 @@ unsafe fn lucas_speciallwend(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas_pkfire", script = "game_pillar", category = ACMD_GAME, low_priority )]
+#[acmd("lucas_pkfire", "game_pillar")]
 unsafe fn lucas_pkfire_pillar(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 42, 110, 0, 45, 7.0, 0.0, 2.0, 2.0, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_PSI);
@@ -27,8 +27,6 @@ unsafe fn lucas_pkfire_pillar(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucas_speciallwend,
-        lucas_pkfire_pillar
-    );
+    lucas_speciallwend::install();
+    lucas_pkfire_pillar::install();
 }

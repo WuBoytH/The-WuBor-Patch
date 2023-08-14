@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wiifit", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("wiifit", "game_attacks3")]
 unsafe fn wiifit_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -27,7 +27,7 @@ unsafe fn wiifit_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("wiifit", "game_attackhi3")]
 unsafe fn wiifit_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -52,7 +52,7 @@ unsafe fn wiifit_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("wiifit", "game_attacklw3")]
 unsafe fn wiifit_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -79,9 +79,7 @@ unsafe fn wiifit_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wiifit_attacks3,
-        wiifit_attackhi3,
-        wiifit_attacklw3
-    );
+    wiifit_attacks3::install();
+    wiifit_attackhi3::install();
+    wiifit_attacklw3::install();
 }

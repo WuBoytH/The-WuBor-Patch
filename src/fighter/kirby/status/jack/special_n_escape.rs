@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_ESCAPE)]
 pub unsafe fn kirby_jack_special_n_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
@@ -190,7 +190,5 @@ unsafe extern "C" fn kirby_jack_special_n_escape_next_status(fighter: &mut L2CFi
 }
 
 pub fn install() {
-    install_status_scripts!(
-        kirby_jack_special_n_escape_main
-    );
+    kirby_jack_special_n_escape_main::install();
 }

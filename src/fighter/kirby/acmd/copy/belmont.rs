@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kirby", scripts = [ "expression_simonspecialn", "expression_richterspecialn" ], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("kirby", [ "expression_simonspecialn", "expression_richterspecialn" ])]
 unsafe fn kirby_belmontspecialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -11,7 +11,7 @@ unsafe fn kirby_belmontspecialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "expression_simonspecialairn", "expression_richterspecialairn" ], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("kirby", [ "expression_simonspecialairn", "expression_richterspecialairn" ])]
 unsafe fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
@@ -20,7 +20,6 @@ unsafe fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kirby_belmontspecialn_exp, kirby_belmontspecialairn_exp
-    );
+    kirby_belmontspecialn_exp::install();
+    kirby_belmontspecialairn_exp::install();
 }

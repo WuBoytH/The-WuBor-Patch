@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "gamewatch", status = FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("gamewatch", FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL)]
 unsafe fn gamewatch_special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attack_air_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_WORK_INT_ATTACK_AIR_KIND);
     ControlModule::set_attack_air_kind(fighter.module_accessor, attack_air_kind);
@@ -64,7 +64,5 @@ unsafe fn gamewatch_special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) ->
 }
 
 pub fn install() {
-    install_status_scripts!(
-        gamewatch_special_hi_fall_main
-    );
+    gamewatch_special_hi_fall_main::install();
 }

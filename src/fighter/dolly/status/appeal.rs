@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_APPEAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_STATUS_KIND_APPEAL)]
 unsafe fn dolly_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     fighter.status_end_Appeal();
@@ -8,7 +8,5 @@ unsafe fn dolly_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        dolly_appeal_end
-    );
+    dolly_appeal_end::install();
 }

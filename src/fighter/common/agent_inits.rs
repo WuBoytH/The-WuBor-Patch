@@ -66,7 +66,7 @@ pub unsafe extern "C" fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -
     1.into()
 }
 
-// #[fighter_init]
+// #[event(initialize)]
 // fn agent_init(fighter: &mut L2CFighterCommon) {
 //     unsafe {
 //         if !LISTENER_INSTALLED {
@@ -85,7 +85,7 @@ pub unsafe extern "C" fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -
 
 // static mut LISTENER_INSTALLED : bool = false;
 
-// #[fighter_reset]
+// #[event(start)]
 // fn fighter_reset(_fighter: &mut L2CFighterCommon) {
 //     unsafe {
 //         LISTENER_INSTALLED = false;
@@ -93,10 +93,6 @@ pub unsafe extern "C" fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -
 // }
 
 // pub fn install() {
-//     install_agent_init_callbacks!(
-//         agent_init
-//     );
-//     install_agent_resets!(
-//         fighter_reset
-//     );
+//     //agent_init//::install();
+//     //fighter_reset//::install();
 // }

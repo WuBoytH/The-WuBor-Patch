@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "duckhunt", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("duckhunt", "game_attackairn")]
 unsafe fn duckhunt_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -27,7 +27,7 @@ unsafe fn duckhunt_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("duckhunt", "game_attackairf")]
 unsafe fn duckhunt_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -55,7 +55,7 @@ unsafe fn duckhunt_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("duckhunt", "game_attackairhi")]
 unsafe fn duckhunt_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -91,7 +91,7 @@ unsafe fn duckhunt_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("duckhunt", "game_attackairlw")]
 unsafe fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -121,10 +121,8 @@ unsafe fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        duckhunt_attackairn,
-        duckhunt_attackairf,
-        duckhunt_attackairhi,
-        duckhunt_attackairlw
-    );
+    duckhunt_attackairn::install();
+    duckhunt_attackairf::install();
+    duckhunt_attackairhi::install();
+    duckhunt_attackairlw::install();
 }

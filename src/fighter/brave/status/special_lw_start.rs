@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("brave", FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)]
 unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_DECIDE_COMMAND);
     let mask = VarModule::get_int(fighter.battle_object, brave::instance::int::USED_SPELL_MASK) | (1 << spell_kind);
@@ -22,10 +22,10 @@ unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue
             VarModule::set_int(fighter.battle_object, brave::instance::int::SPELL_SLOT_4, -1);
         }
     }
-    original!(fighter)
+    original(fighter)
 }
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("brave", FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START)]
 unsafe fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_INT_ACTIVE_COMMAND);
     if spell_kind == *FIGHTER_BRAVE_SPECIAL_LW_COMMAND08_FULLBURST {
@@ -55,8 +55,6 @@ unsafe fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install() {
-    install_status_scripts!(
-        brave_special_lw_start_pre,
-        brave_special_lw_start_end
-    );
+    brave_special_lw_start_pre::install();
+    brave_special_lw_start_end::install();
 }

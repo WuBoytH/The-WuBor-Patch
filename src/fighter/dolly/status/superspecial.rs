@@ -1,22 +1,22 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL)]
 unsafe fn dolly_superspecial_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let ret = original!(fighter);
+    let ret = original(fighter);
     VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     ret
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2)]
 unsafe fn dolly_superspecial2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let ret = original!(fighter);
+    let ret = original(fighter);
     VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     ret
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL)]
 unsafe fn dolly_superspecial_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
     dolly_superspecial_main_helper(fighter, hash40("param_super_special").into());
@@ -41,7 +41,7 @@ unsafe extern "C" fn dolly_superspecial_main_helper(fighter: &mut L2CFighterComm
     GroundModule::set_shape_data_rhombus_modify_node_offset(fighter.module_accessor, Hash40::new_raw(map_coll_joint), &Vector3f{x: offx, y: offy, z: offz});
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2)]
 unsafe fn dolly_superspecial2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW {
         VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
@@ -56,7 +56,7 @@ unsafe fn dolly_superspecial2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW)]
 unsafe fn dolly_superspecial2_blow_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_WAIT
@@ -78,9 +78,9 @@ unsafe fn dolly_superspecial2_blow_end(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub fn install() {
-    install_status_scripts!(
-        dolly_superspecial_pre, dolly_superspecial_end,
-        dolly_superspecial2_pre, dolly_superspecial2_end,
-        dolly_superspecial2_blow_end
-    );
+    dolly_superspecial_pre::install();
+    dolly_superspecial_end::install();
+    dolly_superspecial2_pre::install();
+    dolly_superspecial2_end::install();
+    dolly_superspecial2_blow_end::install();
 }

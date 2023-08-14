@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("edge", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +34,7 @@ unsafe fn edge_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "edge", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("edge", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn edge_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_DIRECTION_EFFECT_VISIBLE);
@@ -244,7 +244,6 @@ unsafe extern "C" fn edge_special_hi_ground_touch_down(fighter: &mut L2CFighterC
 }
 
 pub fn install() {
-    install_status_scripts!(
-        edge_special_hi_pre, edge_special_hi_main
-    );
+    edge_special_hi_pre::install();
+    edge_special_hi_main::install();
 }

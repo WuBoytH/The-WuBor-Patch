@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("bayonetta", "game_attackairn")]
 unsafe fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -46,7 +46,7 @@ unsafe fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("bayonetta", "game_attackairf")]
 unsafe fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -83,7 +83,7 @@ unsafe fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf2", category = ACMD_GAME, low_priority )]
+#[acmd("bayonetta", "game_attackairf2")]
 unsafe fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -120,7 +120,7 @@ unsafe fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf3", category = ACMD_GAME, low_priority )]
+#[acmd("bayonetta", "game_attackairf3")]
 unsafe fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -155,7 +155,7 @@ unsafe fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("bayonetta", "game_attackairhi")]
 unsafe fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -200,7 +200,7 @@ unsafe fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd("bayonetta", "game_landingairlw")]
 unsafe fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -228,12 +228,10 @@ unsafe fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_attackairn,
-        bayonetta_attackairf,
-        bayonetta_attackairf2,
-        bayonetta_attackairf3,
-        bayonetta_attackairhi,
-        bayonetta_landingairlw
-    );
+    bayonetta_attackairn::install();
+    bayonetta_attackairf::install();
+    bayonetta_attackairf2::install();
+    bayonetta_attackairf3::install();
+    bayonetta_attackairhi::install();
+    bayonetta_landingairlw::install();
 }

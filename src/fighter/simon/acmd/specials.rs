@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "simon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
+#[acmd("simon", ["game_specialn", "game_specialairn"])]
 unsafe fn simon_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
@@ -8,7 +8,7 @@ unsafe fn simon_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("simon", ["expression_specialn", "expression_specialairn"])]
 unsafe fn simon_specialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -25,7 +25,7 @@ unsafe fn simon_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
+#[acmd("simon_axe", "game_fly")]
 unsafe fn simon_axe_fly(agent: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     if sv_battle_object::is_active(owner_id) {
@@ -38,7 +38,7 @@ unsafe fn simon_axe_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_specialhi")]
 unsafe fn simon_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
@@ -74,7 +74,7 @@ unsafe fn simon_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_specialairhi")]
 unsafe fn simon_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
@@ -111,7 +111,7 @@ unsafe fn simon_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
+#[acmd("simon", ["game_speciallw", "game_specialairlw"])]
 unsafe fn simon_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
@@ -122,7 +122,7 @@ unsafe fn simon_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+#[acmd("simon", "effect_speciallw")]
 unsafe fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -138,7 +138,7 @@ unsafe fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd("simon", "effect_specialairlw")]
 unsafe fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -150,7 +150,7 @@ unsafe fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["sound_speciallw", "sound_specialairlw"], category = ACMD_SOUND, low_priority )]
+#[acmd("simon", ["sound_speciallw", "sound_specialairlw"])]
 unsafe fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
@@ -159,7 +159,7 @@ unsafe fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("simon", ["expression_speciallw", "expression_specialairlw"])]
 unsafe fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -177,12 +177,14 @@ unsafe fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        simon_specialn,
-        simon_specialn_exp,
-        simon_specialhi,
-        simon_specialairhi,
-        simon_axe_fly,
-        simon_speciallw, simon_speciallw_eff, simon_specialairlw_eff, simon_speciallw_snd, simon_speciallw_exp
-    );
+    simon_specialn::install();
+    simon_specialn_exp::install();
+    simon_specialhi::install();
+    simon_specialairhi::install();
+    simon_axe_fly::install();
+    simon_speciallw::install();
+    simon_speciallw_eff::install();
+    simon_specialairlw_eff::install();
+    simon_speciallw_snd::install();
+    simon_speciallw_exp::install();
 }

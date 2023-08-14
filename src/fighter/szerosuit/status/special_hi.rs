@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "szerosuit", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("szerosuit", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn szerosuit_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int64(fighter.module_accessor, hash40("special_hi") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_hi") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND_AIR);
@@ -151,7 +151,5 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
 }
 
 pub fn install() {
-    install_status_scripts!(
-        szerosuit_specialhi_main
-    );
+    szerosuit_specialhi_main::install();
 }

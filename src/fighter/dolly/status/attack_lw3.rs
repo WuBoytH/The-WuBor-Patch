@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("dolly", FIGHTER_STATUS_KIND_ATTACK_LW3)]
 unsafe fn dolly_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.status_AttackLw3_common();
@@ -67,7 +67,7 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     1.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_STATUS_KIND_ATTACK_LW3)]
 unsafe fn dolly_attacklw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
         VarModule::set_int(fighter.battle_object, dolly::instance::int::D_TILT_CHAIN_COUNT, 0);
@@ -76,7 +76,6 @@ unsafe fn dolly_attacklw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        dolly_attacklw3_main, dolly_attacklw3_end
-    );
+    dolly_attacklw3_main::install();
+    dolly_attacklw3_end::install();
 }

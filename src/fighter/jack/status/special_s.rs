@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("jack", FIGHTER_STATUS_KIND_SPECIAL_S)]
 pub unsafe fn jack_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     jack_special_mot_helper(fighter, true.into(), hash40("special_s1").into(), hash40("special_air_s1").into());
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x20cbc92683), 1, FIGHTER_LOG_DATA_INT_ATTACK_NUM_KIND, *FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_09 - 1);
@@ -170,7 +170,7 @@ unsafe extern "C" fn jack_special_s_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("jack", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn jack_specials_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     ItemModule::set_have_item_visibility(fighter.module_accessor, true, 0);
     ItemModule::set_attach_item_visibility(fighter.module_accessor, true, 0);
@@ -186,7 +186,5 @@ unsafe fn jack_specials_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        jack_specials_end
-    );
+    jack_specials_end::install();
 }

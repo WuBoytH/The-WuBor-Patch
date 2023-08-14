@@ -8,7 +8,7 @@ unsafe fn krool_propeller_early_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KROOL, main )]
+#[line("krool", main)]
 fn krool_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         krool_propeller_early_cancel(fighter);
@@ -16,7 +16,5 @@ fn krool_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        krool_frame
-    );
+    krool_frame::install();
 }

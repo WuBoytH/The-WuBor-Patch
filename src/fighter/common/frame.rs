@@ -45,18 +45,14 @@ unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
 }
 
 // Use this for general per-frame fighter-level hooks
-#[fighter_frame_callback( main )]
-fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            hit_cancel_frame_set(fighter);
-            special_jump_stick_flick(fighter);
-        }
+#[line(main)]
+unsafe fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
+    if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        hit_cancel_frame_set(fighter);
+        special_jump_stick_flick(fighter);
     }
 }
 
 pub fn install() {
-    install_agent_frame_callbacks!(
-        common_fighter_frame
-    );
+    common_fighter_frame::install();
 }

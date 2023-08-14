@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("marth", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn marth_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, marth::status::flag::DISABLE_STANCE_CHANGE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
@@ -49,7 +49,7 @@ unsafe extern "C" fn marth_specials_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("marth", FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2)]
 unsafe fn marth_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     marth_specials_reset_helper(fighter);
@@ -104,7 +104,7 @@ unsafe fn marth_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_specials_main_loop as *const () as _))
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("marth", FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3)]
 unsafe fn marth_specials3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
@@ -175,7 +175,7 @@ unsafe extern "C" fn marth_specials3_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
+#[status("marth", FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3)]
 unsafe fn marth_specials3_exec_stop(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
@@ -290,7 +290,7 @@ unsafe extern "C" fn marth_specials_status_change_helper(fighter: &mut L2CFighte
     1.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("marth", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn marth_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attack_type;
     let power_up;
@@ -331,15 +331,15 @@ unsafe fn marth_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("marth", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn marth_specialhi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
-        original!(fighter);
+        original(fighter);
     }
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("marth", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn marth_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, marth::status::flag::DISABLE_STANCE_CHANGE);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
@@ -432,7 +432,7 @@ unsafe extern "C" fn marth_specialhi_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("marth", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn marth_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("landing_frame"));
     WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
@@ -446,11 +446,12 @@ unsafe fn marth_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        marth_specials_main,
-        marth_specials2_main,
-        marth_specials3_main,
-        marth_specials3_exec_stop,
-        marth_specialhi_pre, marth_specialhi_main, marth_specialhi_exec, marth_specialhi_end
-    );
+    marth_specials_main::install();
+    marth_specials2_main::install();
+    marth_specials3_main::install();
+    marth_specials3_exec_stop::install();
+    marth_specialhi_pre::install();
+    marth_specialhi_main::install();
+    marth_specialhi_exec::install();
+    marth_specialhi_end::install();
 }

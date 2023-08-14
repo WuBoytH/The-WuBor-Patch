@@ -9,7 +9,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_ELIGHT, main )]
+#[line("elight", main)]
 fn elight_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_hi_jump") {
@@ -23,7 +23,5 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        elight_frame
-    );
+    elight_frame::install();
 }

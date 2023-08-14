@@ -103,7 +103,7 @@ pub fn install() {
     dedede::install();
     lucas::install();
     jack::install();
-    kirby::install();
+    // kirby::install();
     cloud::install();
     lucario::install();
     bayonetta::install();

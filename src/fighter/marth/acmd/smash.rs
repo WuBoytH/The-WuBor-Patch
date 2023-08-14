@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "marth", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attacks4")]
 unsafe fn marth_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -22,7 +22,7 @@ unsafe fn marth_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attacks4")]
 unsafe fn marth_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -48,7 +48,7 @@ unsafe fn marth_attacks4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attackhi4")]
 unsafe fn marth_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -72,7 +72,7 @@ unsafe fn marth_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attackhi4")]
 unsafe fn marth_attackhi4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -101,7 +101,7 @@ unsafe fn marth_attackhi4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attacklw4")]
 unsafe fn marth_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -137,7 +137,7 @@ unsafe fn marth_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attacklw4")]
 unsafe fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -187,9 +187,10 @@ unsafe fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        marth_attacks4, marth_attacks4_eff,
-        marth_attackhi4, marth_attackhi4_eff,
-        marth_attacklw4, marth_attacklw4_eff
-    );
+    marth_attacks4::install();
+    marth_attacks4_eff::install();
+    marth_attackhi4::install();
+    marth_attackhi4_eff::install();
+    marth_attacklw4::install();
+    marth_attacklw4_eff::install();
 }

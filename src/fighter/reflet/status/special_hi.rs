@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "reflet", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("reflet", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn reflet_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_REFLET_MAGIC_KIND_EL_WIND, *FIGHTER_REFLET_INSTANCE_WORK_ID_INT_LAST_USED_MAGIC_KIND);
     let correct;
@@ -133,7 +133,5 @@ unsafe extern "C" fn reflet_special_hi_try_2nd(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        reflet_special_hi_main
-    );
+    reflet_special_hi_main::install();
 }

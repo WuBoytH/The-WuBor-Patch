@@ -1,11 +1,11 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("dolly", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn dolly_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_speciallw_pre_main(fighter)
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND)]
 unsafe fn dolly_speciallw_command_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_speciallw_pre_main(fighter)
 }
@@ -51,12 +51,12 @@ unsafe extern "C" fn dolly_speciallw_pre_main(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("dolly", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn dolly_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_speciallw_main_inner(fighter)
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND)]
 unsafe fn dolly_speciallw_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND);
     dolly_speciallw_main_inner(fighter)
@@ -208,12 +208,12 @@ unsafe extern "C" fn dolly_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn dolly_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_speciallw_end_main(fighter)
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND)]
 unsafe fn dolly_speciallw_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_speciallw_end_main(fighter)
 }
@@ -226,7 +226,7 @@ unsafe extern "C" fn dolly_speciallw_end_main(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK)]
 unsafe fn dolly_speciallw_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -287,7 +287,7 @@ unsafe extern "C" fn dolly_speciallw_attack_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("dolly", FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK)]
 unsafe fn dolly_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let param = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_HIT) {
         hash40("landing_frame_hit")
@@ -302,13 +302,12 @@ unsafe fn dolly_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install() {
-    install_status_scripts!(
-        dolly_speciallw_pre,
-        dolly_speciallw_command_pre,
-        dolly_speciallw_main,
-        dolly_speciallw_command_main,
-        dolly_speciallw_end,
-        dolly_speciallw_command_end,
-        dolly_speciallw_attack_main, dolly_speciallw_attack_end
-    );
+    dolly_speciallw_pre::install();
+    dolly_speciallw_command_pre::install();
+    dolly_speciallw_main::install();
+    dolly_speciallw_command_main::install();
+    dolly_speciallw_end::install();
+    dolly_speciallw_command_end::install();
+    dolly_speciallw_attack_main::install();
+    dolly_speciallw_attack_end::install();
 }

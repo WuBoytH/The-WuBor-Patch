@@ -16,7 +16,7 @@ use {
     super::vl::*
 };
 
-#[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("samus", FIGHTER_STATUS_KIND_ATTACK_S3)]
 unsafe fn samus_attacks3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS3Common();
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -35,7 +35,7 @@ unsafe extern "C" fn samus_attacks3_substatus2(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("samus", FIGHTER_STATUS_KIND_ATTACK_S3)]
 unsafe fn samus_attacks3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_S3 {
         WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUS_INSTANCE_WORK_ID_FLAG_BEAM_RAPID);
@@ -43,7 +43,7 @@ unsafe fn samus_attacks3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-// #[status_script(agent = "samus", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// #[status("samus", FIGHTER_STATUS_KIND_ATTACK_HI3)]
 // unsafe fn samus_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
 //     WorkModule::off_flag(fighter.module_accessor, FIGHTER_SAMUS_STATUS_ATTACK_HI_3_FLAG_CHECK_STEP);
@@ -105,7 +105,7 @@ unsafe fn samus_attacks3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     0.into()
 // }
 
-#[status_script(agent = "samus_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("samus_cshot", WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT)]
 unsafe fn samus_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_cshot"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
@@ -226,10 +226,8 @@ unsafe fn samus_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        samus_attacks3_main,
-        samus_attacks3_end,
-        // samus_attackhi3_main,
-        samus_cshot_shoot_init
-    );
+    samus_attacks3_main::install();
+    samus_attacks3_end::install();
+    //samus_attackhi3_main::install();
+    samus_cshot_shoot_init::install();
 }

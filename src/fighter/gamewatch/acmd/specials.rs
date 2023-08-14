@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials2", "game_specialairs2" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials2", "game_specialairs2" ])]
 unsafe fn gamewatch_specials2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe fn gamewatch_specials2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials3", "game_specialairs3" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials3", "game_specialairs3" ])]
 unsafe fn gamewatch_specials3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -34,7 +34,7 @@ unsafe fn gamewatch_specials3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials4", "game_specialairs4" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials4", "game_specialairs4" ])]
 unsafe fn gamewatch_specials4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -51,7 +51,7 @@ unsafe fn gamewatch_specials4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials5", "game_specialairs5" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials5", "game_specialairs5" ])]
 unsafe fn gamewatch_specials5(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -78,7 +78,7 @@ unsafe fn gamewatch_specials5(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials7", "game_specialairs7" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials7", "game_specialairs7" ])]
 unsafe fn gamewatch_specials7(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -95,7 +95,7 @@ unsafe fn gamewatch_specials7(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials8", "game_specialairs8" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials8", "game_specialairs8" ])]
 unsafe fn gamewatch_specials8(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -112,7 +112,7 @@ unsafe fn gamewatch_specials8(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", scripts = [ "game_specials9", "game_specialairs9" ], category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", [ "game_specials9", "game_specialairs9" ])]
 unsafe fn gamewatch_specials9(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -129,7 +129,7 @@ unsafe fn gamewatch_specials9(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", "game_specialhi")]
 unsafe fn gamewatch_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.25);
@@ -174,9 +174,12 @@ unsafe fn gamewatch_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_specials2, gamewatch_specials3, gamewatch_specials4, gamewatch_specials5,
-        gamewatch_specials7, gamewatch_specials8, gamewatch_specials9, 
-        gamewatch_specialhi
-    );
+    gamewatch_specials2::install();
+    gamewatch_specials3::install();
+    gamewatch_specials4::install();
+    gamewatch_specials5::install();
+    gamewatch_specials7::install();
+    gamewatch_specials8::install();
+    gamewatch_specials9::install();
+    gamewatch_specialhi::install();
 }

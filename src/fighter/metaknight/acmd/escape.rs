@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "meaknight", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd("meaknight", "game_escapeairslide")]
 unsafe fn meaknight_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -14,7 +14,5 @@ unsafe fn meaknight_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        meaknight_escapeairslide
-    );
+    meaknight_escapeairslide::install();
 }

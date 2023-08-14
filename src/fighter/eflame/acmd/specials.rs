@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "eflame", scripts = [ "game_specials", "game_specialairs", "game_specialsflick", "game_specialairsflick" ], category = ACMD_GAME, low_priority )]
+#[acmd("eflame", [ "game_specials", "game_specialairs", "game_specialsflick", "game_specialairsflick" ])]
 unsafe fn eflame_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
@@ -28,7 +28,7 @@ unsafe fn eflame_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", scripts = [ "game_flyl", "game_flyr" ], category = ACMD_GAME, low_priority )]
+#[acmd("eflame_esword", [ "game_flyl", "game_flyr" ])]
 unsafe fn eflame_esword_fly(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -47,7 +47,7 @@ unsafe fn eflame_esword_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", scripts = [ "game_flyflickl", "game_flyflickr" ], category = ACMD_GAME, low_priority )]
+#[acmd("eflame_esword", [ "game_flyflickl", "game_flyflickr" ])]
 unsafe fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -66,7 +66,7 @@ unsafe fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", script = "game_rotate", category = ACMD_GAME, low_priority )]
+#[acmd("eflame_esword", "game_rotate")]
 unsafe fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::disable_tip(agent.module_accessor);
@@ -170,7 +170,7 @@ unsafe fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", script = "effect_rotate", category = ACMD_EFFECT, low_priority )]
+#[acmd("eflame_esword", "effect_rotate")]
 unsafe fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_blazeend_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
@@ -201,7 +201,7 @@ unsafe fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame_esword", scripts = [ "game_reflectedl", "game_reflectedr" ], category = ACMD_GAME, low_priority )]
+#[acmd("eflame_esword", [ "game_reflectedl", "game_reflectedr" ])]
 unsafe fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -215,7 +215,7 @@ unsafe fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_specialairhijump", category = ACMD_GAME, low_priority )]
+#[acmd("eflame", "game_specialairhijump")]
 unsafe fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -298,7 +298,7 @@ unsafe fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "game_speciallwattack", "game_specialairlwattack" ], category = ACMD_GAME, low_priority )]
+#[acmd("eflame", [ "game_speciallwattack", "game_specialairlwattack" ])]
 unsafe fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
@@ -352,7 +352,7 @@ unsafe fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "effect_speciallwattack", "effect_specialairlwattack" ], category = ACMD_EFFECT, low_priority )]
+#[acmd("eflame", [ "effect_speciallwattack", "effect_specialairlwattack" ])]
 unsafe fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -417,7 +417,7 @@ unsafe fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
+#[acmd("eflame", "sound_speciallwattack")]
 unsafe fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -441,7 +441,7 @@ unsafe fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
+#[acmd("eflame", "sound_specialairlwattack")]
 unsafe fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -461,7 +461,7 @@ unsafe fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "expression_speciallwattack", "expression_specialairlwattack" ], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("eflame", [ "expression_speciallwattack", "expression_specialairlwattack" ])]
 unsafe fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -504,13 +504,16 @@ unsafe fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        eflame_specials,
-        eflame_esword_fly,
-        eflame_esword_flyflick,
-        eflame_esword_rotate, eflame_esword_rotate_eff,
-        eflame_esword_reflected,
-        eflame_specialairhijump,
-        eflame_speciallwattack, eflame_speciallwattack_eff, eflame_speciallwattack_snd, eflame_specialairlwattack_snd, eflame_speciallwattack_exp
-    );
+    eflame_specials::install();
+    eflame_esword_fly::install();
+    eflame_esword_flyflick::install();
+    eflame_esword_rotate::install();
+    eflame_esword_rotate_eff::install();
+    eflame_esword_reflected::install();
+    eflame_specialairhijump::install();
+    eflame_speciallwattack::install();
+    eflame_speciallwattack_eff::install();
+    eflame_speciallwattack_snd::install();
+    eflame_specialairlwattack_snd::install();
+    eflame_speciallwattack_exp::install();
 }

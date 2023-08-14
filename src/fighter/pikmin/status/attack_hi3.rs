@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("pikmin", FIGHTER_STATUS_KIND_ATTACK_HI3)]
 unsafe fn pikmin_attackhi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,7 +32,7 @@ unsafe fn pikmin_attackhi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pikmin", FIGHTER_STATUS_KIND_ATTACK_HI3)]
 unsafe fn pikmin_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackHi3_Common(Hash40::new("attack_hi3").into(), Hash40::new("attack_hi3").into());
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
@@ -129,7 +129,6 @@ unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pikmin_attackhi3_pre, pikmin_attackhi3_main
-    );
+    pikmin_attackhi3_pre::install();
+    pikmin_attackhi3_main::install();
 }

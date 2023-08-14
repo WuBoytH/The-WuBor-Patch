@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "brave", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("brave", "game_attack11")]
 unsafe fn brave_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe fn brave_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("brave", "game_attack12")]
 unsafe fn brave_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {
@@ -80,7 +80,7 @@ unsafe fn brave_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("brave", "game_attack13")]
 unsafe fn brave_attack13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 6.0, 2.0);
@@ -106,7 +106,7 @@ unsafe fn brave_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("brave", "game_attackdash")]
 unsafe fn brave_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
@@ -142,7 +142,7 @@ unsafe fn brave_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attacks3s2", category = ACMD_GAME, low_priority )]
+#[acmd("brave", "game_attacks3s2")]
 unsafe fn brave_attacks3s2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -169,7 +169,7 @@ unsafe fn brave_attacks3s2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("brave", "game_attackhi3")]
 unsafe fn brave_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -210,12 +210,10 @@ unsafe fn brave_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        brave_attack11,
-        brave_attack12,
-        brave_attack13,
-        brave_attackdash,
-        brave_attacks3s2,
-        brave_attackhi3
-    );
+    brave_attack11::install();
+    brave_attack12::install();
+    brave_attack13::install();
+    brave_attackdash::install();
+    brave_attacks3s2::install();
+    brave_attackhi3::install();
 }

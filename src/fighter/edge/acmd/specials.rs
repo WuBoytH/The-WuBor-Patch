@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "edge", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
+#[acmd("edge", [ "game_specialhistart", "game_specialairhistart" ])]
 unsafe fn edge_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -9,7 +9,7 @@ unsafe fn edge_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 22.0 / 17.0);
 }
 
-#[acmd_script( agent = "edge", script = "game_specialhi1", category = ACMD_GAME, low_priority )]
+#[acmd("edge", "game_specialhi1")]
 unsafe fn edge_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -28,7 +28,7 @@ unsafe fn edge_specialhi1(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_specialairhi2end", category = ACMD_GAME, low_priority )]
+#[acmd("edge", "game_specialairhi2end")]
 unsafe fn edge_specialairhi2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 4.0, 3.0);
@@ -71,9 +71,7 @@ unsafe fn edge_specialairhi2end(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        edge_specialhi,
-        edge_specialhi1,
-        edge_specialairhi2end
-    );
+    edge_specialhi::install();
+    edge_specialhi1::install();
+    edge_specialairhi2end::install();
 }

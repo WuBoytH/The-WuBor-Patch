@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "buddy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attackairn")]
 unsafe fn buddy_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -21,7 +21,7 @@ unsafe fn buddy_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attackairhi")]
 unsafe fn buddy_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -55,7 +55,7 @@ unsafe fn buddy_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attackairlw")]
 unsafe fn buddy_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_LANDING_CLEAR_SPEED);
@@ -99,7 +99,7 @@ unsafe fn buddy_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_landingairlw")]
 unsafe fn buddy_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -112,10 +112,8 @@ unsafe fn buddy_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        buddy_attackairn,
-        buddy_attackairhi,
-        buddy_attackairlw,
-        buddy_landingairlw
-    );
+    buddy_attackairn::install();
+    buddy_attackairhi::install();
+    buddy_attackairlw::install();
+    buddy_landingairlw::install();
 }

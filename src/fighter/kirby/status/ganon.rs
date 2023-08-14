@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use crate::fighter::ganon::helper::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_GANON_SPECIAL_N)]
 unsafe fn kirby_ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         FighterMotionModuleImpl::change_motion_kirby_copy(
@@ -93,7 +93,5 @@ unsafe extern "C" fn kirby_ganon_specialn_main_loop(fighter: &mut L2CFighterComm
 }
 
 pub fn install() {
-    install_status_scripts!(
-        kirby_ganon_specialn_main
-    );
+    kirby_ganon_specialn_main::install();
 }

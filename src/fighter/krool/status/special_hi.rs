@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "krool", status = FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("krool", FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI)]
 unsafe fn krool_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -33,7 +33,5 @@ unsafe fn krool_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        krool_special_hi_pre
-    );
+    krool_special_hi_pre::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "richter", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacks4")]
 unsafe fn richter_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -50,7 +50,7 @@ unsafe fn richter_attacks4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacks4hi")]
 unsafe fn richter_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -100,7 +100,7 @@ unsafe fn richter_attacks4hi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacks4lw")]
 unsafe fn richter_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -150,7 +150,7 @@ unsafe fn richter_attacks4lw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter_whip", scripts = [ "game_attacks4", "game_attacks4hi", "game_attacks4lw" ], category = ACMD_GAME, low_priority )]
+#[acmd("richter_whip", [ "game_attacks4", "game_attacks4hi", "game_attacks4lw" ])]
 unsafe fn richter_whip_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
@@ -210,7 +210,7 @@ unsafe fn richter_whip_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attackhi4")]
 unsafe fn richter_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.2);
@@ -257,7 +257,7 @@ unsafe fn richter_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacklw4")]
 unsafe fn richter_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -288,10 +288,10 @@ unsafe fn richter_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_attacks4, richter_attacks4hi, richter_attacks4lw,
-        richter_whip_attacks4,
-        richter_attackhi4,
-        richter_attacklw4
-    );
+    richter_attacks4::install();
+    richter_attacks4hi::install();
+    richter_attacks4lw::install();
+    richter_whip_attacks4::install();
+    richter_attackhi4::install();
+    richter_attacklw4::install();
 }

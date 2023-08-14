@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "donkey", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attack12")]
 unsafe fn donkey_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -14,7 +14,7 @@ unsafe fn donkey_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attackdash")]
 unsafe fn donkey_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
@@ -38,7 +38,7 @@ unsafe fn donkey_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attacks3")]
 unsafe fn donkey_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
@@ -60,7 +60,7 @@ unsafe fn donkey_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attacks3hi")]
 unsafe fn donkey_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.91);
@@ -83,7 +83,7 @@ unsafe fn donkey_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attacks3lw")]
 unsafe fn donkey_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.91);
@@ -106,7 +106,7 @@ unsafe fn donkey_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attackhi3")]
 unsafe fn donkey_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -122,7 +122,7 @@ unsafe fn donkey_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("donkey", "game_attacklw3")]
 unsafe fn donkey_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -144,13 +144,11 @@ unsafe fn donkey_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        donkey_attack12,
-        donkey_attackdash,
-        donkey_attacks3,
-        donkey_attacks3hi,
-        donkey_attacks3lw,
-        donkey_attackhi3,
-        donkey_attacklw3
-    );
+    donkey_attack12::install();
+    donkey_attackdash::install();
+    donkey_attacks3::install();
+    donkey_attacks3hi::install();
+    donkey_attacks3lw::install();
+    donkey_attackhi3::install();
+    donkey_attacklw3::install();
 }

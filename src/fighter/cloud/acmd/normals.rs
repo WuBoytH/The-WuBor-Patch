@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "cloud", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("cloud", "game_attackhi3")]
 unsafe fn cloud_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -21,7 +21,5 @@ unsafe fn cloud_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        cloud_attackhi3
-    );
+    cloud_attackhi3::install();
 }

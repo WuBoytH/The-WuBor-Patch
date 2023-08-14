@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mewtwo", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("mewtwo", "game_attackdash")]
 unsafe fn mewtwo_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -20,7 +20,7 @@ unsafe fn mewtwo_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("mewtwo", "game_attacks3")]
 unsafe fn mewtwo_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -34,7 +34,7 @@ unsafe fn mewtwo_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("mewtwo", "game_attacks3hi")]
 unsafe fn mewtwo_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -48,7 +48,7 @@ unsafe fn mewtwo_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("mewtwo", "game_attacks3lw")]
 unsafe fn mewtwo_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -63,7 +63,7 @@ unsafe fn mewtwo_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("mewtwo", "game_attackhi3")]
 unsafe fn mewtwo_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -85,7 +85,7 @@ unsafe fn mewtwo_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("mewtwo", "game_attacklw3")]
 unsafe fn mewtwo_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -108,10 +108,10 @@ unsafe fn mewtwo_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attackdash,
-        mewtwo_attacks3, mewtwo_attacks3hi, mewtwo_attacks3lw,
-        mewtwo_attackhi3,
-        mewtwo_attacklw3
-    );
+    mewtwo_attackdash::install();
+    mewtwo_attacks3::install();
+    mewtwo_attacks3hi::install();
+    mewtwo_attacks3lw::install();
+    mewtwo_attackhi3::install();
+    mewtwo_attacklw3::install();
 }

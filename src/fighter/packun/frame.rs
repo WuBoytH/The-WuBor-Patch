@@ -9,7 +9,7 @@ unsafe fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PACKUN, main )]
+#[line("packun", main)]
 fn packun_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         piranhacopter_early_cancel(fighter);
@@ -17,7 +17,5 @@ fn packun_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        packun_frame
-    );
+    packun_frame::install();
 }

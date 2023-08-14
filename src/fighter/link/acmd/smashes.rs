@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "link", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("link", "game_attackhi4")]
 unsafe fn link_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -65,7 +65,5 @@ unsafe fn link_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        link_attackhi4
-    );
+    link_attackhi4::install();
 }

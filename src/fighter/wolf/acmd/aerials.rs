@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wolf", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("wolf", "game_attackairn")]
 unsafe fn wolf_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.55);
@@ -31,7 +31,7 @@ unsafe fn wolf_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wolf", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("wolf", "game_attackairb")]
 unsafe fn wolf_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -53,7 +53,7 @@ unsafe fn wolf_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wolf", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("wolf", "game_attackairlw")]
 unsafe fn wolf_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -75,9 +75,7 @@ unsafe fn wolf_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wolf_attackairn,
-        wolf_attackairb,
-        wolf_attackairlw
-    );
+    wolf_attackairn::install();
+    wolf_attackairb::install();
+    wolf_attackairlw::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ryu", script = "game_attackhi3s", category = ACMD_GAME, low_priority )]
+#[acmd("ryu", "game_attackhi3s")]
 unsafe fn ryu_attackhi3s(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -44,7 +44,5 @@ unsafe fn ryu_attackhi3s(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ryu_attackhi3s
-    );
+    ryu_attackhi3s::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "palutena", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
+#[acmd("palutena", [ "game_specialhistart", "game_specialairhistart" ])]
 unsafe fn palutena_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -9,7 +9,7 @@ unsafe fn palutena_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("palutena", "game_specialhi")]
 unsafe fn palutena_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -17,7 +17,7 @@ unsafe fn palutena_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("palutena", "game_specialairhi")]
 unsafe fn palutena_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -31,9 +31,7 @@ unsafe fn palutena_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        palutena_specialhistart,
-        palutena_specialhi,
-        palutena_specialairhi
-    );
+    palutena_specialhistart::install();
+    palutena_specialhi::install();
+    palutena_specialairhi::install();
 }

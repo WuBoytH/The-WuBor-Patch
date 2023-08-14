@@ -1,11 +1,11 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N)]
 unsafe fn kirby_simon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N)]
 unsafe fn kirby_richter_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)
 }
@@ -141,12 +141,12 @@ unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N)]
 unsafe fn kirby_simon_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_end_inner(fighter)
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N)]
 unsafe fn kirby_richter_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_end_inner(fighter)
 }
@@ -164,10 +164,8 @@ pub unsafe fn belmont_special_n_end_inner(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    install_status_scripts!(
-        kirby_simon_specialn_main,
-        kirby_richter_specialn_main,
-        kirby_simon_specialn_end,
-        kirby_richter_specialn_end
-    );
+    kirby_simon_specialn_main::install();
+    kirby_richter_specialn_main::install();
+    kirby_simon_specialn_end::install();
+    kirby_richter_specialn_end::install();
 }

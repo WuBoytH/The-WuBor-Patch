@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "shulk", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("shulk", "game_attackairb")]
 unsafe fn shulk_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -24,7 +24,7 @@ unsafe fn shulk_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
+#[acmd("shulk", "effect_attackairb")]
 unsafe fn shulk_attackairb_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
@@ -56,7 +56,6 @@ unsafe fn shulk_attackairb_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        shulk_attackairb, shulk_attackairb_eff
-    );
+    shulk_attackairb::install();
+    shulk_attackairb_eff::install();
 }

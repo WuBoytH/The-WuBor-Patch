@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "simon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_attacks4")]
 unsafe fn simon_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -42,7 +42,7 @@ unsafe fn simon_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_attacks4hi")]
 unsafe fn simon_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -84,7 +84,7 @@ unsafe fn simon_attacks4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_attacks4lw")]
 unsafe fn simon_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -126,7 +126,7 @@ unsafe fn simon_attacks4lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_attackhi4")]
 unsafe fn simon_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.2);
@@ -173,7 +173,7 @@ unsafe fn simon_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("simon", "game_attacklw4")]
 unsafe fn simon_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -204,11 +204,9 @@ unsafe fn simon_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        simon_attacks4,
-        simon_attacks4hi,
-        simon_attacks4lw,
-        simon_attackhi4,
-        simon_attacklw4
-    );
+    simon_attacks4::install();
+    simon_attacks4hi::install();
+    simon_attacks4lw::install();
+    simon_attackhi4::install();
+    simon_attacklw4::install();
 }

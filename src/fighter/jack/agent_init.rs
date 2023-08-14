@@ -36,7 +36,7 @@ unsafe extern "C" fn jack_move_customizer(fighter: &mut L2CFighterCommon) -> L2C
         fighter.sv_set_status_func(
             FIGHTER_STATUS_KIND_SPECIAL_S.into(),
             LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN.into(),
-            &mut *(jack_specials_main as *const () as *mut libc::c_void)
+            &mut *(jack_specials_main::jack_specials_main as *const () as *mut libc::c_void)
         );
         0.into()
     } else if customize_to == *FIGHTER_WAZA_CUSTOMIZE_TO_SPECIAL_LW_1 {
@@ -73,20 +73,12 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
     1.into()
 }
 
-#[fighter_reset]
-fn fighter_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_JACK {
-            return;
-        }
-        set_move_customizer(fighter, jack_move_customizer);
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
-    }
+#[event("jack", start)]
+unsafe fn fighter_reset(fighter: &mut L2CFighterCommon) {
+    set_move_customizer(fighter, jack_move_customizer);
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
 }
 
 pub fn install() {
-    install_agent_resets!(
-        fighter_reset
-    );
+    fighter_reset::install();
 }

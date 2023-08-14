@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("rockman", FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR)]
 unsafe fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_attr_add = if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_N {
         fighter.sub_status_pre_SpecialNCommon();
@@ -45,7 +45,7 @@ unsafe fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("rockman", FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR)]
 unsafe fn rockman_rockbuster_shoot_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
@@ -81,7 +81,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_air_main_loop(fighter: &mut L2CFig
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_air_pre, rockman_rockbuster_shoot_air_main
-    );
+    rockman_rockbuster_shoot_air_pre::install();
+    rockman_rockbuster_shoot_air_main::install();
 }

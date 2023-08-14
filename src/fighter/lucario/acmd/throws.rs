@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_throwlw")]
 unsafe fn lucario_throwlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
@@ -23,7 +23,5 @@ unsafe fn lucario_throwlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_throwlw
-    );
+    lucario_throwlw::install();
 }

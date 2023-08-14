@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kirby", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_attackdash")]
 unsafe fn kirby_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
@@ -35,7 +35,7 @@ unsafe fn kirby_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+#[acmd("kirby", "effect_attackdash")]
 unsafe fn kirby_attackdash_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -67,7 +67,7 @@ unsafe fn kirby_attackdash_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_attackhi3")]
 unsafe fn kirby_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -91,7 +91,7 @@ unsafe fn kirby_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_attacklw3")]
 unsafe fn kirby_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -109,7 +109,7 @@ unsafe fn kirby_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+#[acmd("kirby", "effect_attacklw3")]
 unsafe fn kirby_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -128,9 +128,9 @@ unsafe fn kirby_attacklw3_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kirby_attackdash, kirby_attackdash_eff,
-        kirby_attackhi3,
-        kirby_attacklw3, kirby_attacklw3_eff
-    );
+    kirby_attackdash::install();
+    kirby_attackdash_eff::install();
+    kirby_attackhi3::install();
+    kirby_attacklw3::install();
+    kirby_attacklw3_eff::install();
 }

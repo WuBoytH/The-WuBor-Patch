@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use crate::fighter::ike::vl;
 
-#[acmd_script( agent = "kirby", script = "effect_ikespecialnend", category = ACMD_EFFECT, low_priority )]
+#[acmd("kirby", "effect_ikespecialnend")]
 unsafe fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -40,7 +40,7 @@ unsafe fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_ikespecialnend", category = ACMD_SOUND, low_priority )]
+#[acmd("kirby", "sound_ikespecialnend")]
 unsafe fn kirby_ikespecialnend_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -87,7 +87,7 @@ unsafe fn kirby_ikespecialnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_ikespecialnend", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("kirby", "expression_ikespecialnend")]
 unsafe fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -141,7 +141,7 @@ unsafe fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_ikespecialairnend", category = ACMD_EFFECT, low_priority )]
+#[acmd("kirby", "effect_ikespecialairnend")]
 unsafe fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -154,7 +154,7 @@ unsafe fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_ikespecialairnend", category = ACMD_SOUND, low_priority )]
+#[acmd("kirby", "sound_ikespecialairnend")]
 unsafe fn kirby_ikespecialairnend_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -174,7 +174,7 @@ unsafe fn kirby_ikespecialairnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_ikespecialairnend", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("kirby", "expression_ikespecialairnend")]
 unsafe fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -198,8 +198,10 @@ unsafe fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kirby_ikespecialnend_eff, kirby_ikespecialnend_snd, kirby_ikespecialnend_exp,
-        kirby_ikespecialairnend_eff, kirby_ikespecialairnend_snd, kirby_ikespecialairnend_exp
-    );
+    kirby_ikespecialnend_eff::install();
+    kirby_ikespecialnend_snd::install();
+    kirby_ikespecialnend_exp::install();
+    kirby_ikespecialairnend_eff::install();
+    kirby_ikespecialairnend_snd::install();
+    kirby_ikespecialairnend_exp::install();
 }

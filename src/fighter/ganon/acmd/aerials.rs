@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ganon", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("ganon", "game_attackairn")]
 unsafe fn ganon_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -42,7 +42,7 @@ unsafe fn ganon_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+#[acmd("ganon", "effect_attackairn")]
 unsafe fn ganon_attackairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -56,7 +56,7 @@ unsafe fn ganon_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("ganon", "game_attackairf")]
 unsafe fn ganon_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -77,7 +77,7 @@ unsafe fn ganon_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "ganon", script = "game_landingairf", category = ACMD_GAME, low_priority )]
+// #[acmd("ganon", "game_landingairf")]
 // unsafe fn ganon_landingairf(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 1.0);
 //     if macros::is_excute(agent) {
@@ -90,7 +90,7 @@ unsafe fn ganon_attackairf(agent: &mut L2CAgentBase) {
 //     }
 // }
 
-#[acmd_script( agent = "ganon", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("ganon", "game_attackairb")]
 unsafe fn ganon_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -112,7 +112,7 @@ unsafe fn ganon_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("ganon", "game_attackairhi")]
 unsafe fn ganon_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -146,7 +146,7 @@ unsafe fn ganon_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("ganon", "game_attackairlw")]
 unsafe fn ganon_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -173,12 +173,11 @@ unsafe fn ganon_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ganon_attackairn, ganon_attackairn_eff,
-        ganon_attackairf,
-        // ganon_landingairf,
-        ganon_attackairb,
-        ganon_attackairhi,
-        ganon_attackairlw
-    );
+    ganon_attackairn::install();
+    ganon_attackairn_eff::install();
+    ganon_attackairf::install();
+    //ganon_landingairf::install();
+    ganon_attackairb::install();
+    ganon_attackairhi::install();
+    ganon_attackairlw::install();
 }

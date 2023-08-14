@@ -11,7 +11,7 @@ use {
     // wubor_utils::vars::*
 };
 
-// #[acmd_script( agent = "samus", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME, low_priority )]
+// #[acmd("samus", [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ])]
 // unsafe fn samus_attacks3(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 10.0);
 //     if macros::is_excute(agent) {
@@ -28,7 +28,7 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
+// #[acmd("samus", "effect_attacks3")]
 // unsafe fn samus_attacks3_eff(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 10.0);
 //     if macros::is_excute(agent) {
@@ -51,7 +51,7 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
+// #[acmd("samus", "effect_attacks3hi")]
 // unsafe fn samus_attacks3hi_eff(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 10.0);
 //     if macros::is_excute(agent) {
@@ -74,7 +74,7 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
+// #[acmd("samus", "effect_attacks3lw")]
 // unsafe fn samus_attacks3lw_eff(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 10.0);
 //     if macros::is_excute(agent) {
@@ -97,12 +97,12 @@ use {
 //     }
 // }
 
-// #[acmd_script( agent = "samus", scripts = [ "sound_attacks3", "sound_attacks3hi", "sound_attacks3lw" ], category = ACMD_SOUND, low_priority )]
+// #[acmd("samus", [ "sound_attacks3", "sound_attacks3hi", "sound_attacks3lw" ])]
 // unsafe fn samus_attacks3_snd(_agent: &mut L2CAgentBase) {
     
 // }
 
-// #[acmd_script( agent = "samus", scripts = [ "expression_attacks3", "expression_attacks3hi", "expression_attacks3lw" ], category = ACMD_EXPRESSION, low_priority )]
+// #[acmd("samus", [ "expression_attacks3", "expression_attacks3hi", "expression_attacks3lw" ])]
 // unsafe fn samus_attacks3_exp(agent: &mut L2CAgentBase) {
 //     if macros::is_excute(agent) {
 //         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -113,7 +113,7 @@ use {
 //     }
 // }
 
-#[acmd_script( agent = "samus", script = "game_attackhi3" , category = ACMD_GAME, low_priority )]
+#[acmd("samus", "game_attackhi3")]
 unsafe fn samus_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -144,7 +144,7 @@ unsafe fn samus_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "samus", script = "effect_attackhi3" , category = ACMD_EFFECT, low_priority )]
+#[acmd("samus", "effect_attackhi3")]
 unsafe fn samus_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -164,7 +164,7 @@ unsafe fn samus_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "sound_attackhi3" , category = ACMD_SOUND, low_priority )]
+#[acmd("samus", "sound_attackhi3")]
 unsafe fn samus_attackhi3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -180,7 +180,7 @@ unsafe fn samus_attackhi3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "expression_attackhi3" , category = ACMD_EXPRESSION, low_priority )]
+#[acmd("samus", "expression_attackhi3")]
 unsafe fn samus_attackhi3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -203,8 +203,14 @@ unsafe fn samus_attackhi3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        // samus_attacks3, samus_attacks3_eff, samus_attacks3hi_eff, samus_attacks3lw_eff, samus_attacks3_snd, samus_attacks3_exp,
-        samus_attackhi3, samus_attackhi3_eff, samus_attackhi3_snd, samus_attackhi3_exp
-    );
+    // samus_attacks3::install();
+    // samus_attacks3_eff::install();
+    // samus_attacks3hi_eff::install();
+    // samus_attacks3lw_eff::install();
+    // samus_attacks3_snd::install();
+    // samus_attacks3_exp::install();
+    samus_attackhi3::install();
+    samus_attackhi3_eff::install();
+    samus_attackhi3_snd::install();
+    samus_attackhi3_exp::install();
 }

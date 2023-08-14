@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ridley", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("ridley", "game_attackairlw")]
 unsafe fn ridley_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -51,7 +51,7 @@ unsafe fn ridley_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd("ridley", "game_landingairlw")]
 unsafe fn ridley_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -66,8 +66,6 @@ unsafe fn ridley_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ridley_attackairlw,
-        ridley_landingairlw
-    );
+    ridley_attackairlw::install();
+    ridley_landingairlw::install();
 }

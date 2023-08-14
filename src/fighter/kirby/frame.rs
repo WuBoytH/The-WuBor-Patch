@@ -11,7 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_KIRBY, main )]
+#[line("kirby", main)]
 fn kirby_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
@@ -53,7 +53,5 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        kirby_frame
-    );
+    kirby_frame::install();
 }

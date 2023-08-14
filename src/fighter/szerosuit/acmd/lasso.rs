@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "szerosuit", script = "game_aircatch", category = ACMD_GAME, low_priority )]
+#[acmd("szerosuit", "game_aircatch")]
 unsafe fn szerosuit_aircatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_SZEROSUIT_GENERATE_ARTICLE_WHIP2, false, -1);
@@ -40,7 +40,5 @@ unsafe fn szerosuit_aircatch(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_aircatch
-    );
+    szerosuit_aircatch::install();
 }

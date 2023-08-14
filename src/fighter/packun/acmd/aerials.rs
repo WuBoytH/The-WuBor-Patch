@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "packun", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("packun", "game_attackairn")]
 unsafe fn packun_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -29,7 +29,7 @@ unsafe fn packun_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("packun", "game_attackairf")]
 unsafe fn packun_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -53,7 +53,7 @@ unsafe fn packun_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("packun", "game_attackairhi")]
 unsafe fn packun_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -83,7 +83,7 @@ unsafe fn packun_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "packun", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("packun", "game_attackairlw")]
 unsafe fn packun_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -114,10 +114,8 @@ unsafe fn packun_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        packun_attackairn,
-        packun_attackairf,
-        packun_attackairhi,
-        packun_attackairlw
-    );
+    packun_attackairn::install();
+    packun_attackairf::install();
+    packun_attackairhi::install();
+    packun_attackairlw::install();
 }

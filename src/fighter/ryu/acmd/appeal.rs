@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ryu", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
+#[acmd("ryu", [ "game_appealhil", "game_appealhir" ])]
 unsafe fn ryu_appealhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if DamageModule::damage(agent.module_accessor, 0) >= 180.0 {
@@ -45,7 +45,5 @@ unsafe fn ryu_appealhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ryu_appealhi
-    );
+    ryu_appealhi::install();
 }

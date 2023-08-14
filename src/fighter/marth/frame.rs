@@ -33,7 +33,7 @@ unsafe fn marth_stance_toggle_handler(fighter: &mut L2CFighterCommon, stance: bo
     );
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_MARTH, main )]
+#[line("marth", main)]
 fn marth_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
@@ -68,7 +68,5 @@ fn marth_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        marth_frame
-    );
+    marth_frame::install();
 }

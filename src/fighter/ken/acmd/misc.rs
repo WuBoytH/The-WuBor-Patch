@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ken", script = "game_run", category = ACMD_GAME, low_priority )]
+#[acmd("ken", "game_run")]
 unsafe fn ken_run(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         if VarModule::get_int(agent.battle_object, ken::instance::int::QUICK_STEP_STATE) == ken::QUICK_STEP_STATE_RUN {
@@ -20,7 +20,5 @@ unsafe fn ken_run(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ken_run
-    );
+    ken_run::install();
 }

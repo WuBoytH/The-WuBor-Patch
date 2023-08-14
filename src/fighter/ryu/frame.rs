@@ -278,7 +278,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_RYU, main )]
+#[line("ryu", main)]
 fn ryu_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         ryu_reset_vars(fighter);
@@ -292,7 +292,5 @@ fn ryu_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        ryu_frame
-    );
+    ryu_frame::install();
 }

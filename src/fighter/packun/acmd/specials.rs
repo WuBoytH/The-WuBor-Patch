@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "packun", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+#[acmd("packun", [ "game_specialhi", "game_specialairhi" ])]
 unsafe fn packun_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -55,7 +55,5 @@ unsafe fn packun_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        packun_specialhi
-    );
+    packun_specialhi::install();
 }

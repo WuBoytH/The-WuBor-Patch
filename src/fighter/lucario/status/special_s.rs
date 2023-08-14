@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucario", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn lucario_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
@@ -77,7 +77,7 @@ unsafe extern "C" fn lucario_special_s_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("lucario", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn lucario_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENHANCE) {
         fighter.clear_lua_stack();
@@ -98,7 +98,7 @@ unsafe fn lucario_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucario", FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW)]
 unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
@@ -255,8 +255,7 @@ unsafe extern "C" fn lucario_special_s_throw_substatus(fighter: &mut L2CFighterC
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucario_special_s_main, lucario_special_s_end,
-        lucario_special_s_throw_main
-    );
+    lucario_special_s_main::install();
+    lucario_special_s_end::install();
+    lucario_special_s_throw_main::install();
 }

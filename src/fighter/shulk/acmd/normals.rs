@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "shulk", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("shulk", "game_attack11")]
 unsafe fn shulk_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -27,7 +27,5 @@ unsafe fn shulk_attack11(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        shulk_attack11
-    );
+    shulk_attack11::install();
 }

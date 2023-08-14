@@ -9,7 +9,7 @@ extern "C" {
     ) -> smash_rs::phx::Vector2f;
 }
 
-#[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("edge", FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING)]
 unsafe fn edge_special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
     let speed_mul = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_USE_LANDING_SPEED_MUL) {
@@ -72,7 +72,7 @@ unsafe extern "C" fn edge_special_hi_landing_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-#[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("edge", FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING)]
 unsafe fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("edge_octaslash_line"), true, true);
     if !VarModule::is_flag(fighter.battle_object, edge::status::flag::SPECIAL_HI_CANCEL) {
@@ -82,7 +82,6 @@ unsafe fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 pub fn install() {
-    install_status_scripts!(
-        edge_special_hi_landing_main, edge_special_hi_landing_end
-    );
+    edge_special_hi_landing_main::install();
+    edge_special_hi_landing_end::install();
 }

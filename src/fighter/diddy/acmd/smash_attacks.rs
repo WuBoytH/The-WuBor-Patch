@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "diddy", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("diddy", "game_attackhi4")]
 unsafe fn diddy_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -58,7 +58,5 @@ unsafe fn diddy_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_attackhi4
-    );
+    diddy_attackhi4::install();
 }

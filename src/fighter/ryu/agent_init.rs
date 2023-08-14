@@ -9,20 +9,12 @@ use {
     wubor_utils::vars::*,
 };
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_RYU {
-            return;
-        }
-        VarModule::set_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER, -0.6);
-        // fighter.global_table[STATUS_END_CONTROL].assign(&false.into());
-    }
+#[event("ryu", initialize)]
+unsafe fn agent_init(fighter: &mut L2CFighterCommon) {
+    VarModule::set_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER, -0.6);
+    // fighter.global_table[STATUS_END_CONTROL].assign(&false.into());
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+    agent_init::install();
 }

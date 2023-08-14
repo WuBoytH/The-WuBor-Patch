@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mariod", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attack11")]
 unsafe fn mariod_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -23,7 +23,7 @@ unsafe fn mariod_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attack12")]
 unsafe fn mariod_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -44,7 +44,7 @@ unsafe fn mariod_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attack13")]
 unsafe fn mariod_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -58,7 +58,7 @@ unsafe fn mariod_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attackdash")]
 unsafe fn mariod_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -88,7 +88,7 @@ unsafe fn mariod_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attacks3")]
 unsafe fn mariod_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -102,7 +102,7 @@ unsafe fn mariod_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attacks3hi")]
 unsafe fn mariod_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -116,7 +116,7 @@ unsafe fn mariod_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attacks3lw")]
 unsafe fn mariod_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -131,7 +131,7 @@ unsafe fn mariod_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attackhi3")]
 unsafe fn mariod_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -145,7 +145,7 @@ unsafe fn mariod_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("mariod", "game_attacklw3")]
 unsafe fn mariod_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -162,15 +162,13 @@ unsafe fn mariod_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mariod_attack11,
-        mariod_attack12,
-        mariod_attack13,
-        mariod_attackdash,
-        mariod_attacks3,
-        mariod_attacks3hi,
-        mariod_attacks3lw,
-        mariod_attackhi3,
-        mariod_attacklw3
-    );
+    mariod_attack11::install();
+    mariod_attack12::install();
+    mariod_attack13::install();
+    mariod_attackdash::install();
+    mariod_attacks3::install();
+    mariod_attacks3hi::install();
+    mariod_attacks3lw::install();
+    mariod_attackhi3::install();
+    mariod_attacklw3::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "miiswordsman", status = FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("miiswordsman", FIGHTER_MIISWORDSMAN_STATUS_KIND_SPECIAL_HI2_RUSH)]
 unsafe fn miiswordsman_special_hi2_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MIISWORDSMAN_SDUSH_STATUS_WORK_ID_FLAG_CONTINUE);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_MIISWORDSMAN_SDUSH_STATUS_WORK_ID_INT_RUSH_FRAME);
@@ -124,7 +124,5 @@ unsafe extern "C" fn miiswordsman_special_hi2_rush_handle_bound(fighter: &mut L2
 }
 
 pub fn install() {
-    install_status_scripts!(
-        miiswordsman_special_hi2_rush_main
-    );
+    miiswordsman_special_hi2_rush_main::install();
 }

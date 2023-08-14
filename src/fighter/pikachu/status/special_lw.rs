@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::vl;
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn pikachu_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,12 +31,12 @@ unsafe fn pikachu_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn pikachu_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_START);
     VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW);
@@ -127,7 +127,7 @@ unsafe extern "C" fn pikachu_special_lw_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pikachu_special_lw_pre, pikachu_special_lw_init, pikachu_special_lw_main
-    );
+    pikachu_special_lw_pre::install();
+    pikachu_special_lw_init::install();
+    pikachu_special_lw_main::install();
 }

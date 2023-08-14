@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gaogaen", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("gaogaen", "game_attacks3")]
 unsafe fn gaogaen_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -14,7 +14,7 @@ unsafe fn gaogaen_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("gaogaen", "game_attacks3hi")]
 unsafe fn gaogaen_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -28,7 +28,7 @@ unsafe fn gaogaen_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("gaogaen", "game_attacks3lw")]
 unsafe fn gaogaen_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -44,9 +44,7 @@ unsafe fn gaogaen_attacks3lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gaogaen_attacks3,
-        gaogaen_attacks3hi,
-        gaogaen_attacks3lw
-    );
+    gaogaen_attacks3::install();
+    gaogaen_attacks3hi::install();
+    gaogaen_attacks3lw::install();
 }

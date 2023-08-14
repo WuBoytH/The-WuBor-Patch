@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kamui", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attack12")]
 unsafe fn kamui_attack12(agent: &mut L2CAgentBase) {
     let mut rehit = 0;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -34,7 +34,7 @@ unsafe fn kamui_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attack13")]
 unsafe fn kamui_attack13(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -71,7 +71,7 @@ unsafe fn kamui_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attacks3")]
 unsafe fn kamui_attacks3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -105,7 +105,7 @@ unsafe fn kamui_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.87);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attackhi3")]
 unsafe fn kamui_attackhi3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -151,7 +151,7 @@ unsafe fn kamui_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attacklw3")]
 unsafe fn kamui_attacklw3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -184,11 +184,9 @@ unsafe fn kamui_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_attack12,
-        kamui_attack13,
-        kamui_attacks3,
-        kamui_attackhi3,
-        kamui_attacklw3
-    );
+    kamui_attack12::install();
+    kamui_attack13::install();
+    kamui_attacks3::install();
+    kamui_attackhi3::install();
+    kamui_attacklw3::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "daisy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("daisy", "game_attackairn")]
 unsafe fn daisy_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -25,7 +25,7 @@ unsafe fn daisy_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("daisy", "game_attackairlw")]
 unsafe fn daisy_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -52,7 +52,7 @@ unsafe fn daisy_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd("daisy", "effect_attackairlw")]
 unsafe fn daisy_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -70,7 +70,7 @@ unsafe fn daisy_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+#[acmd("daisy", "sound_attackairlw")]
 unsafe fn daisy_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -87,7 +87,7 @@ unsafe fn daisy_attackairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("daisy", "expression_attackairlw")]
 unsafe fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -108,8 +108,9 @@ unsafe fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        daisy_attackairn,
-        daisy_attackairlw, daisy_attackairlw_eff, daisy_attackairlw_snd, daisy_attackairlw_exp
-    );
+    daisy_attackairn::install();
+    daisy_attackairlw::install();
+    daisy_attackairlw_eff::install();
+    daisy_attackairlw_snd::install();
+    daisy_attackairlw_exp::install();
 }

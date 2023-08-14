@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "chrom", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("chrom", "game_attack11")]
 unsafe fn chrom_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -25,7 +25,7 @@ unsafe fn chrom_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+#[acmd("chrom", "effect_attack11")]
 unsafe fn chrom_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -38,7 +38,7 @@ unsafe fn chrom_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
+#[acmd("chrom", "sound_attack11")]
 unsafe fn chrom_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -46,7 +46,7 @@ unsafe fn chrom_attack11_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("chrom", "expression_attack11")]
 unsafe fn chrom_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -61,7 +61,7 @@ unsafe fn chrom_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("chrom", "game_attacks3")]
 unsafe fn chrom_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -79,7 +79,7 @@ unsafe fn chrom_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("chrom", "game_attacklw3")]
 unsafe fn chrom_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -94,9 +94,10 @@ unsafe fn chrom_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        chrom_attack11, chrom_attack11_eff, chrom_attack11_snd, chrom_attack11_exp,
-        chrom_attacks3,
-        chrom_attacklw3
-    );
+    chrom_attack11::install();
+    chrom_attack11_eff::install();
+    chrom_attack11_snd::install();
+    chrom_attack11_exp::install();
+    chrom_attacks3::install();
+    chrom_attacklw3::install();
 }

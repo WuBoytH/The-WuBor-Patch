@@ -14,7 +14,7 @@ use {
     super::helper::*,
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SHIZUE, main )]
+#[line("shizue", main)]
 fn shizue_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.battle_object, shizue::instance::flag::FIRE_ROCKET_ANYTIME) {
@@ -43,7 +43,5 @@ fn shizue_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        shizue_frame
-    );
+    shizue_frame::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mario", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attack11")]
 unsafe fn mario_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -23,7 +23,7 @@ unsafe fn mario_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attack12")]
 unsafe fn mario_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -44,7 +44,7 @@ unsafe fn mario_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attack13")]
 unsafe fn mario_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
@@ -61,7 +61,7 @@ unsafe fn mario_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attackhi3")]
 unsafe fn mario_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -75,7 +75,7 @@ unsafe fn mario_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attacklw3")]
 unsafe fn mario_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -90,11 +90,9 @@ unsafe fn mario_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_attack11,
-        mario_attack12,
-        mario_attack13,
-        mario_attackhi3,
-        mario_attacklw3
-    );
+    mario_attack11::install();
+    mario_attack12::install();
+    mario_attack13::install();
+    mario_attackhi3::install();
+    mario_attacklw3::install();
 }

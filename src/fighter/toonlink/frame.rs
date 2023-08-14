@@ -11,7 +11,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_TOONLINK, main )]
+#[line("toonlink", main)]
 fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
@@ -40,7 +40,5 @@ fn toonlink_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        toonlink_frame
-    );
+    toonlink_frame::install();
 }

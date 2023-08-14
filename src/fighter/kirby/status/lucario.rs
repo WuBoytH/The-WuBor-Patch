@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use crate::fighter::lucario::helper::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N)]
 unsafe fn kirby_lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
@@ -93,13 +93,13 @@ unsafe extern "C" fn kirby_lucario_special_n_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N)]
 unsafe fn kirby_lucario_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_n_save_charge_status(fighter);
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kirby", FIGHTER_KIRBY_STATUS_KIND_LUCARIO_SPECIAL_N_HOLD)]
 unsafe fn kirby_lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
@@ -129,15 +129,15 @@ unsafe extern "C" fn kirby_lucario_special_n_hold_main_loop(fighter: &mut L2CFig
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("kirby", FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD)]
 unsafe fn kirby_lucario_special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_n_save_charge_status(fighter);
     0.into()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        kirby_lucario_special_n_main, kirby_lucario_special_n_end,
-        kirby_lucario_special_n_hold_main, kirby_lucario_special_n_hold_end
-    );
+    kirby_lucario_special_n_main::install();
+    kirby_lucario_special_n_end::install();
+    kirby_lucario_special_n_hold_main::install();
+    kirby_lucario_special_n_hold_end::install();
 }

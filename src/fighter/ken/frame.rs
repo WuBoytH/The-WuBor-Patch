@@ -187,20 +187,16 @@ unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KEN, main )]
-fn ken_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        ken_reset_vars(fighter);
-        ken_vgauge_flash(fighter);
-        ken_vskill(fighter);
-        ken_vtrigger(fighter);
-        // ken_vshift(fighter);
-        ken_training_tools(fighter);
-    }
+#[line("ken", main)]
+unsafe fn ken_frame(fighter: &mut L2CFighterCommon) {
+    ken_reset_vars(fighter);
+    ken_vgauge_flash(fighter);
+    ken_vskill(fighter);
+    ken_vtrigger(fighter);
+    // ken_vshift(fighter);
+    ken_training_tools(fighter);
 }
 
 pub fn install() {
-    install_agent_frames!(
-        ken_frame
-    );
+    ken_frame::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "richter", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attack11")]
 unsafe fn richter_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -30,7 +30,7 @@ unsafe fn richter_attack11(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -4.0);
 }
 
-#[acmd_script( agent = "richter", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+#[acmd("richter", "effect_attack11")]
 unsafe fn richter_attack11_eff(agent: &mut L2CAgentBase) {
     // frame(agent.lua_state_agent, 4.0);
     // if macros::is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe fn richter_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
+#[acmd("richter", "sound_attack11")]
 unsafe fn richter_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -57,7 +57,7 @@ unsafe fn richter_attack11_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("richter", "expression_attack11")]
 unsafe fn richter_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -78,7 +78,7 @@ unsafe fn richter_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attack12")]
 unsafe fn richter_attack12(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 8.0);
@@ -93,7 +93,7 @@ unsafe fn richter_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
+#[acmd("richter", "effect_attack12")]
 unsafe fn richter_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -103,7 +103,7 @@ unsafe fn richter_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
+#[acmd("richter", "sound_attack12")]
 unsafe fn richter_attack12_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -115,7 +115,7 @@ unsafe fn richter_attack12_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("richter", "expression_attack12")]
 unsafe fn richter_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -136,7 +136,7 @@ unsafe fn richter_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attack12f", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attack12f")]
 unsafe fn richter_attack12f(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 11.0);
@@ -150,7 +150,7 @@ unsafe fn richter_attack12f(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attack12f", category = ACMD_EFFECT, low_priority )]
+#[acmd("richter", "effect_attack12f")]
 unsafe fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -163,7 +163,7 @@ unsafe fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attack12f", category = ACMD_SOUND, low_priority )]
+#[acmd("richter", "sound_attack12f")]
 unsafe fn richter_attack12f_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -175,7 +175,7 @@ unsafe fn richter_attack12f_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_attack12f", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("richter", "expression_attack12f")]
 unsafe fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -201,7 +201,7 @@ unsafe fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attackdash")]
 unsafe fn richter_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -235,7 +235,7 @@ unsafe fn richter_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacks3")]
 unsafe fn richter_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
@@ -279,7 +279,7 @@ unsafe fn richter_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
+#[acmd("richter", "effect_attacks3")]
 unsafe fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -291,7 +291,7 @@ unsafe fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("richter_whip", "game_attacks3")]
 unsafe fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -317,7 +317,7 @@ unsafe fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attackhi3")]
 unsafe fn richter_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -344,7 +344,7 @@ unsafe fn richter_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("richter_whip", "game_attackhi3")]
 unsafe fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -403,7 +403,7 @@ unsafe fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacklw3")]
 unsafe fn richter_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -425,7 +425,7 @@ unsafe fn richter_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacklw32", category = ACMD_GAME, low_priority )]
+#[acmd("richter", "game_attacklw32")]
 unsafe fn richter_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -453,16 +453,24 @@ unsafe fn richter_attacklw32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        richter_attack11, richter_attack11_eff, richter_attack11_snd, richter_attack11_exp,
-        richter_attack12, richter_attack12_eff, richter_attack12_snd, richter_attack12_exp,
-        richter_attack12f, richter_attack12f_eff, richter_attack12f_snd, richter_attack12f_exp,
-        richter_attackdash,
-        richter_attacks3, richter_attacks3_eff,
-        richter_whip_attacks3,
-        richter_attackhi3,
-        richter_whip_attackhi3,
-        richter_attacklw3,
-        richter_attacklw32
-    );
+    richter_attack11::install();
+    richter_attack11_eff::install();
+    richter_attack11_snd::install();
+    richter_attack11_exp::install();
+    richter_attack12::install();
+    richter_attack12_eff::install();
+    richter_attack12_snd::install();
+    richter_attack12_exp::install();
+    richter_attack12f::install();
+    richter_attack12f_eff::install();
+    richter_attack12f_snd::install();
+    richter_attack12f_exp::install();
+    richter_attackdash::install();
+    richter_attacks3::install();
+    richter_attacks3_eff::install();
+    richter_whip_attacks3::install();
+    richter_attackhi3::install();
+    richter_whip_attackhi3::install();
+    richter_attacklw3::install();
+    richter_attacklw32::install();
 }

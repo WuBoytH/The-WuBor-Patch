@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "toonlink", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+#[acmd("toonlink", ["game_specialnstart", "game_specialairnstart"])]
 unsafe fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOW, false, 0);
@@ -14,7 +14,7 @@ unsafe fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("toonlink", "game_specialhi")]
 unsafe fn toonlink_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.battle_object, toonlink::status::flag::SPECIAL_HI_MOVE);
@@ -58,7 +58,7 @@ unsafe fn toonlink_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("toonlink", "game_specialairhi")]
 unsafe fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -154,7 +154,7 @@ unsafe fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
+#[acmd("toonlink", ["game_speciallw", "game_specialairlw"])]
 unsafe fn toonlink_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
@@ -169,7 +169,7 @@ unsafe fn toonlink_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink_bowarrow", script = "game_fly", category = ACMD_GAME, low_priority )]
+#[acmd("toonlink_bowarrow", "game_fly")]
 unsafe fn toonlink_bowarrow_fly(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 35, 0, 20, 1.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
@@ -177,7 +177,7 @@ unsafe fn toonlink_bowarrow_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink_boomerang", script = "game_fly", category = ACMD_GAME, low_priority )]
+#[acmd("toonlink_boomerang", "game_fly")]
 unsafe fn toonlink_boomerang_fly(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
@@ -185,7 +185,7 @@ unsafe fn toonlink_boomerang_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink_boomerang", script = "game_turn", category = ACMD_GAME, low_priority )]
+#[acmd("toonlink_boomerang", "game_turn")]
 unsafe fn toonlink_boomerang_turn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -195,13 +195,11 @@ unsafe fn toonlink_boomerang_turn(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        toonlink_specialnstart,
-        toonlink_specialhi,
-        toonlink_specialairhi,
-        toonlink_speciallw,
-        toonlink_bowarrow_fly,
-        toonlink_boomerang_fly,
-        toonlink_boomerang_turn
-    );
+    toonlink_specialnstart::install();
+    toonlink_specialhi::install();
+    toonlink_specialairhi::install();
+    toonlink_speciallw::install();
+    toonlink_bowarrow_fly::install();
+    toonlink_boomerang_fly::install();
+    toonlink_boomerang_turn::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "popo", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd("popo", "game_escapeairslide")]
 unsafe fn popo_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -13,7 +13,7 @@ unsafe fn popo_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "popo", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
+#[acmd("popo", "game_escapeairslide_nana")]
 unsafe fn popo_escapeairslide_nana(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -26,7 +26,7 @@ unsafe fn popo_escapeairslide_nana(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd("nana", "game_escapeairslide")]
 unsafe fn nana_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -39,7 +39,7 @@ unsafe fn nana_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "nana", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
+#[acmd("nana", "game_escapeairslide_nana")]
 unsafe fn nana_escapeairslide_nana(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -53,10 +53,8 @@ unsafe fn nana_escapeairslide_nana(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        popo_escapeairslide,
-        popo_escapeairslide_nana,
-        nana_escapeairslide,
-        nana_escapeairslide_nana
-    );
+    popo_escapeairslide::install();
+    popo_escapeairslide_nana::install();
+    nana_escapeairslide::install();
+    nana_escapeairslide_nana::install();
 }

@@ -4,17 +4,17 @@ use {
     super::helper::*
 };
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_DASH_BACK)]
 unsafe fn ryu_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_pre(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_DASH_BACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_DASH_BACK)]
 unsafe fn ryu_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fgc_dashback_main(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_STATUS_KIND_ATTACK)]
 unsafe fn ryu_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
@@ -135,7 +135,7 @@ unsafe extern "C" fn ryu_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("ryu", FIGHTER_STATUS_KIND_ATTACK_HI3)]
 unsafe fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL) {
         FGCModule::jump_cancel_check_hit(fighter, false);
@@ -143,35 +143,35 @@ unsafe fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("ryu", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn ryu_specials_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specials_init_main(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_STATUS_KIND_SPECIAL_S, main)]
 unsafe fn ryu_specials(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specials_main(fighter);
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND)]
 unsafe fn ryu_specials_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
     ryu_specials_init_main(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, main)]
 unsafe fn ryu_specials_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specials_main(fighter);
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP)]
 unsafe fn ryu_specials_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specials_loop_init_main(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP)]
 unsafe fn ryu_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     if start_sit != *SITUATION_KIND_GROUND {
@@ -315,24 +315,24 @@ unsafe extern "C" fn ryu_specials_loop_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_STATUS_KIND_SPECIAL_HI, main)]
 unsafe fn ryu_specialhi(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specialhi_main(fighter);
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, main)]
 unsafe fn ryu_specialhi_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specialhi_main(fighter);
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F)]
 unsafe fn ryu_speciallw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_speciallw_step_pre(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("ryu", FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B)]
 unsafe fn ryu_speciallw_step_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_speciallw_step_pre(fighter)
 }
@@ -378,75 +378,73 @@ unsafe fn ryu_speciallw_step_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+// #[status("ryu", FIGHTER_STATUS_KIND_WAIT)]
 // unsafe fn ryu_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_pre_Wait()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// #[status("ryu", FIGHTER_STATUS_KIND_WAIT)]
 // unsafe fn ryu_wait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_Wait()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SQUAT_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// #[status("ryu", FIGHTER_STATUS_KIND_SQUAT_WAIT)]
 // unsafe fn ryu_squatwait_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_SquatWait()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_WALK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+// #[status("ryu", FIGHTER_STATUS_KIND_WALK)]
 // unsafe fn ryu_walk_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_Walk()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_TURN, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+// #[status("ryu", FIGHTER_STATUS_KIND_TURN)]
 // unsafe fn ryu_turn_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_pre_Turn()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_TURN_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+// #[status("ryu", FIGHTER_STATUS_KIND_TURN_DASH)]
 // unsafe fn ryu_turndash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.status_pre_TurnDash()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+// #[status("ryu", FIGHTER_STATUS_KIND_LANDING)]
 // unsafe fn ryu_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.sub_landing_uniq_process_init()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+// #[status("ryu", FIGHTER_STATUS_KIND_LANDING_LIGHT)]
 // unsafe fn ryu_landinglight_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.sub_landing_uniq_process_init()
 // }
 
-// #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+// #[status("ryu", FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL)]
 // unsafe fn ryu_landingfallspecial_init(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     fighter.sub_landing_uniq_process_init()
 // }
 
 pub fn install() {
-    install_status_scripts!(
-        ryu_dashback_pre,
-        ryu_dashback_main,
-        ryu_attack_main,
-        ryu_attackhi3_exec,
-        ryu_specials_init,
-        ryu_specials,
-        ryu_specials_command_init,
-        ryu_specials_command,
-        ryu_specials_loop_init,
-        ryu_specials_loop_main,
-        ryu_specialhi,
-        ryu_specialhi_command,
-        ryu_speciallw_step_f_pre,
-        ryu_speciallw_step_b_pre,
-        // ryu_wait_pre,
-        // ryu_wait_main,
-        // ryu_squatwait_main,
-        // ryu_walk_main,
-        // ryu_turn_pre,
-        // ryu_turndash_pre,
-        // ryu_landing_init,
-        // ryu_landinglight_init,
-        // ryu_landingfallspecial_init
-    );
+    ryu_dashback_pre::install();
+    ryu_dashback_main::install();
+    ryu_attack_main::install();
+    ryu_attackhi3_exec::install();
+    ryu_specials_init::install();
+    ryu_specials::install();
+    ryu_specials_command_init::install();
+    ryu_specials_command::install();
+    ryu_specials_loop_init::install();
+    ryu_specials_loop_main::install();
+    ryu_specialhi::install();
+    ryu_specialhi_command::install();
+    ryu_speciallw_step_f_pre::install();
+    ryu_speciallw_step_b_pre::install();
+    //ryu_wait_pre::install();
+    //ryu_wait_main::install();
+    //ryu_squatwait_main::install();
+    //ryu_walk_main::install();
+    //ryu_turn_pre::install();
+    //ryu_turndash_pre::install();
+    //ryu_landing_init::install();
+    //ryu_landinglight_init::install();
+    //ryu_landingfallspecial_init::install();
 }

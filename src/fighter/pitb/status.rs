@@ -10,7 +10,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pitb", FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE)]
 unsafe fn pitb_specialn_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_DIR_S) {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);
@@ -150,7 +150,7 @@ unsafe extern "C" fn pitb_specialn_charge_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("pitb", FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT)]
 unsafe fn pitb_specialn_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     pitb_specialn_endremove(fighter)
 }
@@ -169,8 +169,6 @@ unsafe extern "C" fn pitb_specialn_endremove(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pitb_specialn_charge_main,
-        pitb_specialn_shoot_end
-    );
+    pitb_specialn_charge_main::install();
+    pitb_specialn_shoot_end::install();
 }

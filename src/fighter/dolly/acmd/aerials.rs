@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "dolly", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attackairn")]
 unsafe fn dolly_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -30,7 +30,7 @@ unsafe fn dolly_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attackairhi")]
 unsafe fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -61,8 +61,6 @@ unsafe fn dolly_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        dolly_attackairn,
-        dolly_attackairhi
-    );
+    dolly_attackairn::install();
+    dolly_attackairhi::install();
 }

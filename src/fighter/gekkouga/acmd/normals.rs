@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gekkouga", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("gekkouga", "game_attacks3")]
 unsafe fn gekkouga_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe fn gekkouga_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("gekkouga", "game_attacks3hi")]
 unsafe fn gekkouga_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -34,7 +34,7 @@ unsafe fn gekkouga_attacks3hi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("gekkouga", "game_attacks3lw")]
 unsafe fn gekkouga_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -52,7 +52,7 @@ unsafe fn gekkouga_attacks3lw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("gekkouga", "game_attackhi3")]
 unsafe fn gekkouga_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -66,7 +66,7 @@ unsafe fn gekkouga_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("gekkouga", "game_attacklw3")]
 unsafe fn gekkouga_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.25);
@@ -88,11 +88,9 @@ unsafe fn gekkouga_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_attacks3,
-        gekkouga_attacks3hi,
-        gekkouga_attacks3lw,
-        gekkouga_attackhi3,
-        gekkouga_attacklw3
-    );
+    gekkouga_attacks3::install();
+    gekkouga_attacks3hi::install();
+    gekkouga_attacks3lw::install();
+    gekkouga_attackhi3::install();
+    gekkouga_attacklw3::install();
 }

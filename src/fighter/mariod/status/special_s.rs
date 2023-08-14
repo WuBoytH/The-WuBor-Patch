@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("mariod", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn mariod_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,7 +31,5 @@ unsafe fn mariod_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        mariod_specials_pre
-    );
+    mariod_specials_pre::install();
 }

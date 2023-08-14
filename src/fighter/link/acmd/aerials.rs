@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "link", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("link", "game_attackairf")]
 unsafe fn link_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -35,7 +35,5 @@ unsafe fn link_attackairf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        link_attackairf
-    );
+    link_attackairf::install();
 }

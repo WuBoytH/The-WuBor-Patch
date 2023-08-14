@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_LADDER_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("rockman", FIGHTER_STATUS_KIND_LADDER_ATTACK)]
 unsafe fn rockman_ladder_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD) {
         ControlModule::set_attack_air_kind(fighter.module_accessor, *FIGHTER_COMMAND_ATTACK_AIR_KIND_N);
@@ -15,13 +15,12 @@ unsafe fn rockman_ladder_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_LadderAttack_Main as *const () as _))
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_LADDER_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("rockman", FIGHTER_STATUS_KIND_LADDER_ATTACK)]
 unsafe fn rockman_ladder_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_LadderAttack()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_ladder_attack_main, rockman_ladder_attack_end
-    );
+    rockman_ladder_attack_main::install();
+    rockman_ladder_attack_end::install();
 }

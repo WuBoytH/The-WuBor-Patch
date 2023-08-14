@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "captain", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+#[acmd("captain", "game_specialsstart")]
 unsafe fn captain_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.75);
@@ -25,7 +25,7 @@ unsafe fn captain_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+#[acmd("captain", [ "game_specialhi", "game_specialairhi" ])]
 unsafe fn captain_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -63,8 +63,6 @@ unsafe fn captain_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        captain_specialsstart,
-        captain_specialhi
-    );
+    captain_specialsstart::install();
+    captain_specialhi::install();
 }

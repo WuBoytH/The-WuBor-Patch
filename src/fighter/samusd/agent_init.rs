@@ -12,7 +12,7 @@ use {
     // super::fgc
 };
 
-// #[fighter_reset]
+// #[event(start)]
 // fn agent_reset(fighter: &mut L2CFighterCommon) {
 //     unsafe {
 //         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
@@ -23,24 +23,14 @@ use {
 //     }
 // }
 
-#[fighter_init]
+#[event("samusd", initialize)]
 fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_SAMUSD {
-            return;
-        }
-        VarModule::set_int(fighter.battle_object, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
-    }
+    VarModule::set_int(fighter.battle_object, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
 }
 
 pub fn install() {
     // let agent = Hash40::new("fighter_kind_samusd");
     // CustomCancelManager::initialize_agent(agent);
-    // install_agent_resets!(
-    //     agent_reset
-    // );
-    install_agent_init_callbacks!(
-        agent_init
-    );
+    // //agent_reset//::install();
+    agent_init::install();
 }

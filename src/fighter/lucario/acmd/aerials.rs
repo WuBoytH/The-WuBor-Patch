@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackairn")]
 unsafe fn lucario_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -38,7 +38,7 @@ unsafe fn lucario_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackairf")]
 unsafe fn lucario_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -64,7 +64,7 @@ unsafe fn lucario_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackairb")]
 unsafe fn lucario_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.09);
@@ -92,7 +92,7 @@ unsafe fn lucario_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackairhi")]
 unsafe fn lucario_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 1.0, 4.0, 4.0, 4.0);
@@ -122,7 +122,7 @@ unsafe fn lucario_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackairlw")]
 unsafe fn lucario_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 8.0, 2.0);
@@ -164,11 +164,9 @@ unsafe fn lucario_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_attackairn,
-        lucario_attackairf,
-        lucario_attackairb,
-        lucario_attackairhi,
-        lucario_attackairlw
-    );
+    lucario_attackairn::install();
+    lucario_attackairf::install();
+    lucario_attackairb::install();
+    lucario_attackairhi::install();
+    lucario_attackairlw::install();
 }

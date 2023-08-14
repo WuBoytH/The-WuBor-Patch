@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack11")]
 unsafe fn demon_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -27,7 +27,7 @@ unsafe fn demon_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack13")]
 unsafe fn demon_attack13(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 9.0 / 6.0);
     frame(agent.lua_state_agent, 4.0);
@@ -57,7 +57,7 @@ unsafe fn demon_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack14", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack14")]
 unsafe fn demon_attack14(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -84,7 +84,7 @@ unsafe fn demon_attack14(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack15", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack15")]
 unsafe fn demon_attack15(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -113,7 +113,7 @@ unsafe fn demon_attack15(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack16", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack16")]
 unsafe fn demon_attack16(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -153,7 +153,7 @@ unsafe fn demon_attack16(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack17", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack17")]
 unsafe fn demon_attack17(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -180,7 +180,7 @@ unsafe fn demon_attack17(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack18", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack18")]
 unsafe fn demon_attack18(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -209,7 +209,7 @@ unsafe fn demon_attack18(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack19", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack19")]
 unsafe fn demon_attack19(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -237,7 +237,7 @@ unsafe fn demon_attack19(agent: &mut L2CAgentBase) {
 
 // Twin Fangs Stature Smash
 
-#[acmd_script( agent = "demon", script = "game_attack142", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attack142")]
 unsafe fn demon_attack142(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -272,7 +272,7 @@ unsafe fn demon_attack142(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "effect_attack142", category = ACMD_EFFECT, low_priority )]
+#[acmd("demon", "effect_attack142")]
 unsafe fn demon_attack142_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -289,7 +289,7 @@ unsafe fn demon_attack142_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "sound_attack142", category = ACMD_SOUND, low_priority )]
+#[acmd("demon", "sound_attack142")]
 unsafe fn demon_attack142_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -298,7 +298,7 @@ unsafe fn demon_attack142_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_attack142", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("demon", "expression_attack142")]
 unsafe fn demon_attack142_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -325,15 +325,16 @@ unsafe fn demon_attack142_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        demon_attack11,
-        demon_attack13,
-        demon_attack14,
-        demon_attack15,
-        demon_attack16,
-        demon_attack17,
-        demon_attack18,
-        demon_attack19,
-        demon_attack142, demon_attack142_eff, demon_attack142_snd, demon_attack142_exp
-    );
+    demon_attack11::install();
+    demon_attack13::install();
+    demon_attack14::install();
+    demon_attack15::install();
+    demon_attack16::install();
+    demon_attack17::install();
+    demon_attack18::install();
+    demon_attack19::install();
+    demon_attack142::install();
+    demon_attack142_eff::install();
+    demon_attack142_snd::install();
+    demon_attack142_exp::install();
 }

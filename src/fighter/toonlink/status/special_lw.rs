@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "toonlink", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("toonlink", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn toonlink_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -33,7 +33,5 @@ unsafe fn toonlink_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        toonlink_speciallw_pre
-    );
+    toonlink_speciallw_pre::install();
 }

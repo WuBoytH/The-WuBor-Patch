@@ -1,12 +1,10 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "eflame", status = FIGHTER_STATUS_KIND_ESCAPE_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("eflame", FIGHTER_STATUS_KIND_ESCAPE_AIR)]
 unsafe fn eflame_escapeair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_EscapeAir()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        eflame_escapeair_main
-    );
+    eflame_escapeair_main::install();
 }

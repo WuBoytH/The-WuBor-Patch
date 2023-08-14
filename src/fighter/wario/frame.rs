@@ -22,7 +22,7 @@ unsafe fn wario_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_WARIO, main )]
+#[line("wario", main)]
 fn wario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         wario_training_tools(fighter);
@@ -30,7 +30,5 @@ fn wario_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        wario_frame
-    );
+    wario_frame::install();
 }

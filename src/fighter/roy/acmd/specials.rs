@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "roy", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("roy", "game_specialhi")]
 unsafe fn roy_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -46,7 +46,7 @@ unsafe fn roy_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "roy", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("roy", "game_specialairhi")]
 unsafe fn roy_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -88,8 +88,6 @@ unsafe fn roy_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        roy_specialhi,
-        roy_specialairhi
-    );
+    roy_specialhi::install();
+    roy_specialairhi::install();
 }

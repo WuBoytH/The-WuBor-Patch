@@ -1,8 +1,8 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("simon", FIGHTER_STATUS_KIND_ATTACK_AIR)]
 unsafe fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
+    let ret = original(fighter);
     let motion = MotionModule::motion_kind(fighter.module_accessor);
     let new_mot = if motion == hash40("attack_air_b") { hash40("attack_air_f") }
     else if motion == hash40("attack_air_b_hi") { hash40("attack_air_f_hi") }
@@ -26,18 +26,18 @@ unsafe fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ret
 }
 
-#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("simon", FIGHTER_STATUS_KIND_ATTACK_AIR)]
 unsafe fn simon_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_uniq_process_exec()
 }
 
-#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_CHECK_ATTACK)]
-unsafe fn simon_attack_air_check_attack(_fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status("simon", FIGHTER_STATUS_KIND_ATTACK_AIR)]
+unsafe fn simon_attack_air_check_attack(_fighter: &mut L2CFighterCommon, _arg1: L2CValue, _arg2: L2CValue) -> L2CValue {
     0.into()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        simon_attack_air_main, simon_attack_air_exec, simon_attack_air_check_attack
-    );
+    simon_attack_air_main::install();
+    simon_attack_air_exec::install();
+    simon_attack_air_check_attack::install();
 }

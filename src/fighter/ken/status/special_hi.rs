@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_specialhi_command(fighter: &mut L2CFighterCommon) -> L2CValue {
+#[status("ken", FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND)]
+unsafe fn ken_specialhi_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ken_specialhi_main(fighter);
     0.into()
 }
@@ -147,7 +147,5 @@ unsafe extern "C" fn ken_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        ken_specialhi_command
-    );
+    ken_specialhi_command_main::install();
 }

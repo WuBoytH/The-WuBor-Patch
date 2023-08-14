@@ -12,7 +12,7 @@ use {
     }
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_GANON, main )]
+#[line("ganon", main)]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N)
@@ -30,7 +30,5 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        ganon_frame
-    );
+    ganon_frame::install();
 }

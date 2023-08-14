@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "robot", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
+#[acmd("robot", [ "game_appealhil", "game_appealhir" ])]
 unsafe fn robot_appealhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 38.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -17,7 +17,5 @@ unsafe fn robot_appealhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        robot_appealhi
-    );
+    robot_appealhi::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "diddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("diddy", "game_attackdash")]
 unsafe fn diddy_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
@@ -44,7 +44,5 @@ unsafe fn diddy_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        diddy_attackdash
-    );
+    diddy_attackdash::install();
 }

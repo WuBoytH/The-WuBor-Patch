@@ -12,7 +12,7 @@ use {
     super::helper::*
 };
 
-#[status_script(agent = "ganon", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ganon", FIGHTER_STATUS_KIND_SPECIAL_N)]
 unsafe fn ganon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
@@ -103,7 +103,7 @@ unsafe extern "C" fn ganon_specialn_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ganon", FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH)]
 unsafe fn ganon_specials_air_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     MotionModule::set_rate(fighter.module_accessor, 0.0);
@@ -126,7 +126,7 @@ unsafe extern "C" fn ganon_special_s_air_catch_main_loop(fighter: &mut L2CFighte
     ret.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("ganon", FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END)]
 unsafe fn ganon_sspecial_air_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -155,7 +155,7 @@ unsafe fn ganon_sspecial_air_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ganon", FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END)]
 unsafe fn ganon_sspecial_air_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
     sv_kinetic_energy!(
@@ -184,10 +184,8 @@ unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCo
 }
 
 pub fn install() {
-    install_status_scripts!(
-        ganon_specialn_main,
-        ganon_specials_air_catch_main,
-        ganon_sspecial_air_end_pre,
-        ganon_sspecial_air_end_main
-    );
+    ganon_specialn_main::install();
+    ganon_specials_air_catch_main::install();
+    ganon_sspecial_air_end_pre::install();
+    ganon_sspecial_air_end_main::install();
 }

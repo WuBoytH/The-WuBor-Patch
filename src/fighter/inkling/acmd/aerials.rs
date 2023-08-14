@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "inkling", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("inkling", "game_attackairn")]
 unsafe fn inkling_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -33,7 +33,7 @@ unsafe fn inkling_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("inkling", "game_attackairf")]
 unsafe fn inkling_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -59,7 +59,7 @@ unsafe fn inkling_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("inkling", "game_attackairlw")]
 unsafe fn inkling_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -81,9 +81,7 @@ unsafe fn inkling_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        inkling_attackairn,
-        inkling_attackairf,
-        inkling_attackairlw
-    );
+    inkling_attackairn::install();
+    inkling_attackairf::install();
+    inkling_attackairlw::install();
 }

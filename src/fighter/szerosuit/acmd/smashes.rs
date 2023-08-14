@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
+#[acmd("szerosuit", "game_attacks4hi")]
 unsafe fn szerosuit_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
@@ -24,7 +24,7 @@ unsafe fn szerosuit_attacks4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
+#[acmd("szerosuit", "game_attacks4lw")]
 unsafe fn szerosuit_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -41,8 +41,6 @@ unsafe fn szerosuit_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_attacks4hi,
-        szerosuit_attacks4lw
-    );
+    szerosuit_attacks4hi::install();
+    szerosuit_attacks4lw::install();
 }

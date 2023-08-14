@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "marth", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attack11")]
 unsafe fn marth_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -20,7 +20,7 @@ unsafe fn marth_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attack11")]
 unsafe fn marth_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -34,7 +34,7 @@ unsafe fn marth_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attack12")]
 unsafe fn marth_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -49,7 +49,7 @@ unsafe fn marth_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attack12")]
 unsafe fn marth_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -63,7 +63,7 @@ unsafe fn marth_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attacks3")]
 unsafe fn marth_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -78,7 +78,7 @@ unsafe fn marth_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attacks3")]
 unsafe fn marth_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -92,7 +92,7 @@ unsafe fn marth_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attackhi3")]
 unsafe fn marth_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -123,7 +123,7 @@ unsafe fn marth_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attackhi3")]
 unsafe fn marth_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -137,7 +137,7 @@ unsafe fn marth_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_attacklw3")]
 unsafe fn marth_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -152,7 +152,7 @@ unsafe fn marth_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_attacklw3")]
 unsafe fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -167,11 +167,14 @@ unsafe fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        marth_attack11, marth_attack11_eff,
-        marth_attack12, marth_attack12_eff,
-        marth_attacks3, marth_attacks3_eff,
-        marth_attackhi3, marth_attackhi3_eff,
-        marth_attacklw3, marth_attacklw3_eff
-    );
+    marth_attack11::install();
+    marth_attack11_eff::install();
+    marth_attack12::install();
+    marth_attack12_eff::install();
+    marth_attacks3::install();
+    marth_attacks3_eff::install();
+    marth_attackhi3::install();
+    marth_attackhi3_eff::install();
+    marth_attacklw3::install();
+    marth_attacklw3_eff::install();
 }

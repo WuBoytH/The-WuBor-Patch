@@ -12,7 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_MARIO, main )]
+#[line("mario", main)]
 fn mario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
@@ -38,7 +38,5 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        mario_frame
-    );
+    mario_frame::install();
 }

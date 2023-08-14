@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "mario_pump", script = "effect_start", category = ACMD_EFFECT, low_priority )]
+#[acmd("mario_pump", "effect_start")]
 unsafe fn mario_pump_start_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         bonker_vis(agent.module_accessor);
@@ -9,7 +9,7 @@ unsafe fn mario_pump_start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario_pump", script = "effect_light", category = ACMD_EFFECT, low_priority )]
+#[acmd("mario_pump", "effect_light")]
 unsafe fn mario_pump_light_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         bonker_vis(agent.module_accessor);
@@ -17,7 +17,7 @@ unsafe fn mario_pump_light_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario_pump", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("mario_pump", "game_attackairf")]
 unsafe fn mario_pump_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         bonker_vis(agent.module_accessor);
@@ -26,9 +26,7 @@ unsafe fn mario_pump_attackairf(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_pump_start_eff,
-        mario_pump_light_eff,
-        mario_pump_attackairf
-    );
+    mario_pump_start_eff::install();
+    mario_pump_light_eff::install();
+    mario_pump_attackairf::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucina", FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END)]
 unsafe fn lucina_specialn_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
@@ -129,7 +129,5 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucina_specialn_end_main
-    );
+    lucina_specialn_end_main::install();
 }

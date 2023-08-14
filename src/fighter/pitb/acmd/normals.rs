@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pitb", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("pitb", "game_attacks3")]
 unsafe fn pitb_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -12,7 +12,7 @@ unsafe fn pitb_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("pitb", "game_attacklw3")]
 unsafe fn pitb_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -27,8 +27,6 @@ unsafe fn pitb_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pitb_attacks3,
-        pitb_attacklw3
-    );
+    pitb_attacks3::install();
+    pitb_attacklw3::install();
 }

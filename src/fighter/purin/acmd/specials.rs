@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "purin", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd("purin", "game_specialairs")]
 unsafe fn purin_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -31,7 +31,5 @@ unsafe fn purin_specialairs(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        purin_specialairs
-    );
+    purin_specialairs::install();
 }

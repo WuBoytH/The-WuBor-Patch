@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mario", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attacks4")]
 unsafe fn mario_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -22,7 +22,7 @@ unsafe fn mario_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
+#[acmd("mario", "effect_attacks4")]
 unsafe fn mario_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -39,7 +39,7 @@ unsafe fn mario_attacks4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attacks4hi")]
 unsafe fn mario_attacks4hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -61,7 +61,7 @@ unsafe fn mario_attacks4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks4hi", category = ACMD_EFFECT, low_priority )]
+#[acmd("mario", "effect_attacks4hi")]
 unsafe fn mario_attacks4hi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -78,7 +78,7 @@ unsafe fn mario_attacks4hi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attacks4lw")]
 unsafe fn mario_attacks4lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -100,7 +100,7 @@ unsafe fn mario_attacks4lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attacks4lw", category = ACMD_EFFECT, low_priority )]
+#[acmd("mario", "effect_attacks4lw")]
 unsafe fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -117,7 +117,7 @@ unsafe fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = [ "sound_attacks4", "sound_attacks4hi", "sound_attacks4lw" ], category = ACMD_SOUND, low_priority )]
+#[acmd("mario", [ "sound_attacks4", "sound_attacks4hi", "sound_attacks4lw" ])]
 unsafe fn mario_attacks4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -126,7 +126,7 @@ unsafe fn mario_attacks4_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", scripts = [ "expression_attacks4", "expression_attacks4hi", "expression_attacks4lw" ], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("mario", [ "expression_attacks4", "expression_attacks4hi", "expression_attacks4lw" ])]
 unsafe fn mario_attacks4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -155,7 +155,7 @@ unsafe fn mario_attacks4_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("mario", "game_attacklw4")]
 unsafe fn mario_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -188,12 +188,13 @@ unsafe fn mario_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        mario_attacks4, mario_attacks4_eff,
-        mario_attacks4hi, mario_attacks4hi_eff,
-        mario_attacks4lw, mario_attacks4lw_eff,
-        mario_attacks4_snd,
-        mario_attacks4_exp,
-        mario_attacklw4
-    );
+    mario_attacks4::install();
+    mario_attacks4_eff::install();
+    mario_attacks4hi::install();
+    mario_attacks4hi_eff::install();
+    mario_attacks4lw::install();
+    mario_attacks4lw_eff::install();
+    mario_attacks4_snd::install();
+    mario_attacks4_exp::install();
+    mario_attacklw4::install();
 }

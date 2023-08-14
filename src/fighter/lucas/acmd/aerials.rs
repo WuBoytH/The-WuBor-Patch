@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("lucas", "game_attackairn")]
 unsafe fn lucas_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -31,7 +31,7 @@ unsafe fn lucas_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("lucas", "game_attackairf")]
 unsafe fn lucas_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -56,7 +56,7 @@ unsafe fn lucas_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("lucas", "game_attackairb")]
 unsafe fn lucas_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -94,7 +94,7 @@ unsafe fn lucas_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("lucas", "game_attackairhi")]
 unsafe fn lucas_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -120,7 +120,7 @@ unsafe fn lucas_attackairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("lucas", "game_attackairlw")]
 unsafe fn lucas_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -154,11 +154,9 @@ unsafe fn lucas_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucas_attackairn,
-        lucas_attackairf,
-        lucas_attackairb,
-        lucas_attackairhi,
-        lucas_attackairlw
-    );
+    lucas_attackairn::install();
+    lucas_attackairf::install();
+    lucas_attackairb::install();
+    lucas_attackairhi::install();
+    lucas_attackairlw::install();
 }

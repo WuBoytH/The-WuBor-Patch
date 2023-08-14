@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "zelda", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
+#[acmd("zelda", [ "game_specialsstart", "game_specialairsstart" ])]
 unsafe fn zelda_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -12,7 +12,7 @@ unsafe fn zelda_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
+#[acmd("zelda", [ "game_specialsend", "game_specialairsend" ])]
 unsafe fn zelda_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -25,8 +25,6 @@ unsafe fn zelda_specialsend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        zelda_specialsstart,
-        zelda_specialsend
-    );
+    zelda_specialsstart::install();
+    zelda_specialsend::install();
 }

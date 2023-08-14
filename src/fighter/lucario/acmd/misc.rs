@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 // Temporary, for debug purposes
-#[acmd_script( agent = "lucario", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
+#[acmd("lucario", [ "game_appealhil", "game_appealhir" ])]
 unsafe fn lucario_appealhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
@@ -17,7 +17,5 @@ unsafe fn lucario_appealhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_appealhi
-    );
+    lucario_appealhi::install();
 }

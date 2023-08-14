@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("mariod", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn mariod_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_pre_SpecialNCommon();
     StatusModule::init_settings(
@@ -31,7 +31,7 @@ unsafe fn mariod_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("mariod", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn mariod_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     mariod_speciallw_mot_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(mariod_speciallw_main_loop as *const () as _))
@@ -119,7 +119,7 @@ unsafe extern "C" fn mariod_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("mariod", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_LIMIT_X_DEC) {
         let limit_x_dec_curr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLOAT_LIMIT_X_DEC);
@@ -173,7 +173,7 @@ unsafe fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
+#[status("mariod", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn mariod_speciallw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_RISE_PRECEDE) {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
@@ -185,7 +185,8 @@ unsafe fn mariod_speciallw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install() {
-    install_status_scripts!(
-        mariod_speciallw_pre, mariod_speciallw_main, mariod_speciallw_exec, mariod_speciallw_exec_stop
-    );
+    mariod_speciallw_pre::install();
+    mariod_speciallw_main::install();
+    mariod_speciallw_exec::install();
+    mariod_speciallw_exec_stop::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "elight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attack100end")]
 unsafe fn elight_attack100end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe fn elight_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackdash")]
 unsafe fn elight_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -60,7 +60,7 @@ unsafe fn elight_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.75);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attacks3")]
 unsafe fn elight_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -110,7 +110,7 @@ unsafe fn elight_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackhi3")]
 unsafe fn elight_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -189,7 +189,7 @@ unsafe fn elight_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attacklw3")]
 unsafe fn elight_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -234,11 +234,9 @@ unsafe fn elight_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        elight_attack100end,
-        elight_attackdash,
-        elight_attacks3,
-        elight_attackhi3,
-        elight_attacklw3
-    );
+    elight_attack100end::install();
+    elight_attackdash::install();
+    elight_attacks3::install();
+    elight_attackhi3::install();
+    elight_attacklw3::install();
 }

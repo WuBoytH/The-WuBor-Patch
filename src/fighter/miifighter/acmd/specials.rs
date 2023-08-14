@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "miifighter", script = "game_specials3dash", category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", "game_specials3dash")]
 unsafe fn miifighter_specials3dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -30,7 +30,7 @@ unsafe fn miifighter_specials3dash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", script = "game_specialairs3dash", category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", "game_specialairs3dash")]
 unsafe fn miifighter_specialairs3dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -65,7 +65,7 @@ unsafe fn miifighter_specialairs3dash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-#[acmd_script( agent = "miifighter", scripts = [ "game_specialhi12", "game_specialairhi12" ], category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", [ "game_specialhi12", "game_specialairhi12" ])]
 unsafe fn miifighter_specialhi12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -94,7 +94,7 @@ unsafe fn miifighter_specialhi12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", scripts = [ "game_specialhi13", "game_specialairhi13" ], category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", [ "game_specialhi13", "game_specialairhi13" ])]
 unsafe fn miifighter_specialhi13(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);
@@ -117,7 +117,7 @@ unsafe fn miifighter_specialhi13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", "game_specialhi2")]
 unsafe fn miifighter_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -211,7 +211,7 @@ unsafe fn miifighter_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", "game_specialairhi2")]
 unsafe fn miifighter_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -308,7 +308,7 @@ unsafe fn miifighter_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miifighter", scripts = [ "game_specialhi3", "game_specialairhi3" ], category = ACMD_GAME, low_priority )]
+#[acmd("miifighter", [ "game_specialhi3", "game_specialairhi3" ])]
 unsafe fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
@@ -377,13 +377,11 @@ unsafe fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        miifighter_specials3dash,
-        miifighter_specialairs3dash,
-        miifighter_specialhi12,
-        miifighter_specialhi13,
-        miifighter_specialhi2,
-        miifighter_specialairhi2,
-        miifighter_specialhi3
-    );
+    miifighter_specials3dash::install();
+    miifighter_specialairs3dash::install();
+    miifighter_specialhi12::install();
+    miifighter_specialhi13::install();
+    miifighter_specialhi2::install();
+    miifighter_specialairhi2::install();
+    miifighter_specialhi3::install();
 }

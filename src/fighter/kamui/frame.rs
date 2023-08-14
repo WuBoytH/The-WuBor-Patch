@@ -11,7 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_KAMUI, main )]
+#[line("kamui", main)]
 fn kamui_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
@@ -57,7 +57,5 @@ fn kamui_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        kamui_frame
-    );
+    kamui_frame::install();
 }

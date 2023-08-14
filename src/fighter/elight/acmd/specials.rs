@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "elight", script = "game_specialn", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_specialn")]
 unsafe fn elight_specialn(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -162,7 +162,7 @@ unsafe fn elight_specialn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_specialairn", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_specialairn")]
 unsafe fn elight_specialairn(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -330,7 +330,7 @@ unsafe fn elight_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialn2", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_specialn2")]
 unsafe fn elight_specialn2(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -537,7 +537,7 @@ unsafe fn elight_specialn2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialairn2", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_specialairn2")]
 unsafe fn elight_specialairn2(agent: &mut L2CAgentBase) {
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -736,7 +736,7 @@ unsafe fn elight_specialairn2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_speciallwattack", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_speciallwattack")]
 unsafe fn elight_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -783,7 +783,7 @@ unsafe fn elight_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_speciallwattack", category = ACMD_EFFECT, low_priority )]
+#[acmd("elight", "effect_speciallwattack")]
 unsafe fn elight_speciallwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -822,7 +822,7 @@ unsafe fn elight_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
+#[acmd("elight", "sound_speciallwattack")]
 unsafe fn elight_speciallwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -839,7 +839,7 @@ unsafe fn elight_speciallwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "expression_speciallwattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("elight", "expression_speciallwattack")]
 unsafe fn elight_speciallwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -877,7 +877,7 @@ unsafe fn elight_speciallwattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_specialairlwattack", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_specialairlwattack")]
 unsafe fn elight_specialairlwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -916,7 +916,7 @@ unsafe fn elight_specialairlwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_specialairlwattack", category = ACMD_EFFECT, low_priority )]
+#[acmd("elight", "effect_specialairlwattack")]
 unsafe fn elight_specialairlwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -951,7 +951,7 @@ unsafe fn elight_specialairlwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
+#[acmd("elight", "sound_specialairlwattack")]
 unsafe fn elight_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -964,7 +964,7 @@ unsafe fn elight_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "expression_specialairlwattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("elight", "expression_specialairlwattack")]
 unsafe fn elight_specialairlwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -983,12 +983,16 @@ unsafe fn elight_specialairlwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        elight_specialn,
-        elight_specialairn,
-        elight_specialn2,
-        elight_specialairn2,
-        elight_speciallwattack, elight_speciallwattack_eff, elight_speciallwattack_snd, elight_speciallwattack_exp,
-        elight_specialairlwattack, elight_specialairlwattack_eff, elight_specialairlwattack_snd, elight_specialairlwattack_exp
-    );
+    elight_specialn::install();
+    elight_specialairn::install();
+    elight_specialn2::install();
+    elight_specialairn2::install();
+    elight_speciallwattack::install();
+    elight_speciallwattack_eff::install();
+    elight_speciallwattack_snd::install();
+    elight_speciallwattack_exp::install();
+    elight_specialairlwattack::install();
+    elight_specialairlwattack_eff::install();
+    elight_specialairlwattack_snd::install();
+    elight_specialairlwattack_exp::install();
 }

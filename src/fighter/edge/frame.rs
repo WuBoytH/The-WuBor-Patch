@@ -9,7 +9,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_EDGE, main )]
+#[line("edge", main)]
 fn edge_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let status = fighter.global_table[STATUS_KIND].get_i32();
@@ -64,7 +64,5 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        edge_frame
-    );
+    edge_frame::install();
 }

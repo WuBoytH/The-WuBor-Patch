@@ -3,7 +3,7 @@ use {
     crate::fighter::common::status::attack::attack::*
 };
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("trail", FIGHTER_STATUS_KIND_ATTACK)]
 unsafe fn trail_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
@@ -33,7 +33,7 @@ unsafe extern "C" fn trail_attack_substatus(fighter: &mut L2CFighterCommon, para
     0.into()
 }
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("trail", FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N)]
 unsafe fn trail_attackairn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     ControlModule::reset_attack_air_kind(fighter.module_accessor);
@@ -160,7 +160,7 @@ unsafe extern "C" fn trail_attackairn_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("trail", FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR)]
 unsafe fn trail_landingattackair_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     let mut motion_rate: f32 = 1.0;
@@ -250,9 +250,7 @@ unsafe fn trail_landingattackair_init(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 pub fn install() {
-    install_status_scripts!(
-        trail_attack_main,
-        trail_attackairn_main,
-        trail_landingattackair_init
-    );
+    trail_attack_main::install();
+    trail_attackairn_main::install();
+    trail_landingattackair_init::install();
 }

@@ -17,19 +17,11 @@ unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_KEN {
-            return;
-        }
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(ken_speciallw_pre as *const () as _));
-    }
+#[event("ken", initialize)]
+unsafe fn agent_init(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(ken_speciallw_pre as *const () as _));
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+    agent_init::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_appealhil", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_appealhil")]
 unsafe fn demon_appealhil(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -16,7 +16,7 @@ unsafe fn demon_appealhil(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_appealhir", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_appealhir")]
 unsafe fn demon_appealhir(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 46.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -33,8 +33,6 @@ unsafe fn demon_appealhir(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        demon_appealhil,
-        demon_appealhir
-    );
+    demon_appealhil::install();
+    demon_appealhir::install();
 }

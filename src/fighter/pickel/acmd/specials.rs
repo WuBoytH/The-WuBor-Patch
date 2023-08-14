@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pickel", script = "game_specialsride", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_specialsride")]
 unsafe fn pickel_specialsride(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -11,7 +11,7 @@ unsafe fn pickel_specialsride(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "pickel", script = "game_specialairsride", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_specialairsride")]
 unsafe fn pickel_specialairsride(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -21,7 +21,7 @@ unsafe fn pickel_specialairsride(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "pickel_trolley", script = "game_specialsdrivepartial", category = ACMD_GAME, low_priority )]
+#[acmd("pickel_trolley", "game_specialsdrivepartial")]
 unsafe fn pickel_specialsdrivepartial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -31,7 +31,7 @@ unsafe fn pickel_specialsdrivepartial(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
+#[acmd("pickel_trolley", "game_specialsdriveemptypartial")]
 unsafe fn pickel_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -55,7 +55,7 @@ unsafe fn pickel_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_specialairhi")]
 unsafe fn pickel_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -82,11 +82,9 @@ unsafe fn pickel_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pickel_specialsride,
-        pickel_specialairsride,
-        pickel_specialsdrivepartial,
-        pickel_specialsdriveemptypartial,
-        pickel_specialairhi
-    );
+    pickel_specialsride::install();
+    pickel_specialairsride::install();
+    pickel_specialsdrivepartial::install();
+    pickel_specialsdriveemptypartial::install();
+    pickel_specialairhi::install();
 }

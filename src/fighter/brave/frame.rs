@@ -2,7 +2,7 @@ use {
     crate::imports::status_imports::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_BRAVE, main )]
+#[line("brave", main)]
 fn brave_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smashball::is_training_mode() {
@@ -17,7 +17,5 @@ fn brave_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        brave_frame
-    );
+    brave_frame::install();
 }

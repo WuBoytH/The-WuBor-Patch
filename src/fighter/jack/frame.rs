@@ -3,7 +3,7 @@ use {
     wubor_utils::cancels::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_JACK, main )]
+#[line("jack", main)]
 fn jack_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)
@@ -33,7 +33,5 @@ fn jack_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        jack_frame
-    );
+    jack_frame::install();
 }

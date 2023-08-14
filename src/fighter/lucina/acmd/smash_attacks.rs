@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attacks4")]
 unsafe fn lucina_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -21,7 +21,7 @@ unsafe fn lucina_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attackhi4")]
 unsafe fn lucina_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -45,7 +45,7 @@ unsafe fn lucina_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attacklw4")]
 unsafe fn lucina_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
@@ -94,9 +94,7 @@ unsafe fn lucina_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucina_attacks4,
-        lucina_attackhi4,
-        lucina_attacklw4
-    );
+    lucina_attacks4::install();
+    lucina_attackhi4::install();
+    lucina_attacklw4::install();
 }

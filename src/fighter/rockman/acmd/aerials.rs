@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "rockman", script = "game_attackairnmelee", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attackairnmelee")]
 unsafe fn rockman_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -28,7 +28,7 @@ unsafe fn rockman_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attackairnmelee", category = ACMD_EFFECT, low_priority )]
+#[acmd("rockman", "effect_attackairnmelee")]
 unsafe fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -36,7 +36,7 @@ unsafe fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attackairnmelee", category = ACMD_SOUND, low_priority )]
+#[acmd("rockman", "sound_attackairnmelee")]
 unsafe fn rockman_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe fn rockman_attackairn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attackairnmelee", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("rockman", "expression_attackairnmelee")]
 unsafe fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -61,7 +61,7 @@ unsafe fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attackairf")]
 unsafe fn rockman_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -91,7 +91,7 @@ unsafe fn rockman_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("rockman", "game_attackairb")]
 unsafe fn rockman_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
@@ -134,7 +134,7 @@ unsafe fn rockman_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "rockman", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+// #[acmd("rockman", "game_attackairhi")]
 // unsafe fn rockman_attackairhi(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 2.0);
 //     if macros::is_excute(agent) {
@@ -156,7 +156,7 @@ unsafe fn rockman_attackairb(agent: &mut L2CAgentBase) {
 //     }
 // }
 
-#[acmd_script( agent = "rockman_airshooter", script = "game_regular", category = ACMD_GAME, low_priority )]
+#[acmd("rockman_airshooter", "game_regular")]
 unsafe fn rockman_airshooter_regular(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.75, 367, 100, 70, 0, 5.0, 0.0, 3.0, 0.0, None, None, None, 0.2, 0.7, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 3, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
@@ -175,11 +175,12 @@ unsafe fn rockman_airshooter_regular(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        rockman_attackairn, rockman_attackairn_eff, rockman_attackairn_snd, rockman_attackairn_exp,
-        rockman_attackairf,
-        rockman_attackairb,
-        // rockman_attackairhi,
-        rockman_airshooter_regular
-    );
+    rockman_attackairn::install();
+    rockman_attackairn_eff::install();
+    rockman_attackairn_snd::install();
+    rockman_attackairn_exp::install();
+    rockman_attackairf::install();
+    rockman_attackairb::install();
+    //rockman_attackairhi::install();
+    rockman_airshooter_regular::install();
 }

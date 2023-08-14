@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "wiifit", status = FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("wiifit", FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_HI_JUMP)]
 unsafe fn wiifit_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,7 +30,5 @@ unsafe fn wiifit_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 pub fn install() {
-    install_status_scripts!(
-        wiifit_special_hi_jump_pre
-    );
+    wiifit_special_hi_jump_pre::install();
 }

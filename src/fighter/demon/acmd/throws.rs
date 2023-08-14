@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_catchattack", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_catchattack")]
 unsafe fn demon_pummel(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -13,7 +13,7 @@ unsafe fn demon_pummel(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_throwlw", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_throwlw")]
 unsafe fn demon_throwlw(agent: &mut L2CAgentBase) {
     if !smash_rs::app::FighterCutInManager::is_vr_mode() {
         if smash_rs::app::FighterCutInManager::is_one_on_one_including_thrown(&*(agent.module_accessor as *const smash_rs::app::BattleObjectModuleAccessor)) {
@@ -60,7 +60,7 @@ unsafe fn demon_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_catchcommand", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_catchcommand")]
 unsafe fn demon_catchcommand(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -87,9 +87,7 @@ unsafe fn demon_catchcommand(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        demon_pummel,
-        demon_throwlw,
-        demon_catchcommand
-    );
+    demon_pummel::install();
+    demon_throwlw::install();
+    demon_catchcommand::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "peach", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
+#[acmd("peach", [ "game_specialhistart", "game_specialairhistart" ])]
 unsafe fn peach_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_PEACH_GENERATE_ARTICLE_KASSAR, false, -1);
@@ -60,7 +60,5 @@ unsafe fn peach_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        peach_specialhistart
-    );
+    peach_specialhistart::install();
 }

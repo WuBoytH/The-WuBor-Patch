@@ -8,7 +8,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[status_script(agent = "shulk", status = FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("shulk", FIGHTER_SHULK_STATUS_KIND_SPECIAL_LW_HIT)]
 unsafe fn shulk_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut flag = *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_FLAG;
     let mut int = *FIGHTER_STATUS_WORK_KEEP_FLAG_ALL_INT;
@@ -48,7 +48,5 @@ unsafe fn shulk_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        shulk_speciallw_hit_pre
-    );
+    shulk_speciallw_hit_pre::install();
 }

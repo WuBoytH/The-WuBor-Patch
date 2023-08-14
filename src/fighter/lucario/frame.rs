@@ -32,16 +32,11 @@ unsafe fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
 //     }
 // }
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCARIO, main )]
-fn lucario_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        lucario_training_tools(fighter);
-        // lucario_super_dash_cancel(fighter);
-    }
+#[line("lucario", main)]
+unsafe fn lucario_frame(fighter: &mut L2CFighterCommon) {
+    lucario_training_tools(fighter);
 }
 
 pub fn install() {
-    install_agent_frames!(
-        lucario_frame
-    );
+    lucario_frame::install();
 }

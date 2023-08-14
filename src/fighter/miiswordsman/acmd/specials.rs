@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "miiswordsman", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
+#[acmd("miiswordsman", [ "game_specialhi1", "game_specialairhi1" ])]
 unsafe fn miiswordsman_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -40,7 +40,7 @@ unsafe fn miiswordsman_specialhi1(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
+#[acmd("miiswordsman", "game_specialhi3")]
 unsafe fn miiswordsman_specialhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -72,7 +72,7 @@ unsafe fn miiswordsman_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_specialairhi3", category = ACMD_GAME, low_priority )]
+#[acmd("miiswordsman", "game_specialairhi3")]
 unsafe fn miiswordsman_specialairhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -173,9 +173,7 @@ unsafe fn miiswordsman_specialairhi3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        miiswordsman_specialhi1,
-        miiswordsman_specialhi3,
-        miiswordsman_specialairhi3
-    );
+    miiswordsman_specialhi1::install();
+    miiswordsman_specialhi3::install();
+    miiswordsman_specialairhi3::install();
 }

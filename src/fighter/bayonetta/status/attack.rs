@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
-#[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("bayonetta", FIGHTER_STATUS_KIND_ATTACK)]
 unsafe fn bayonetta_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     let combo_type = WorkModule::get_param_int(fighter.module_accessor, hash40("attack_combo_type"), 0);
@@ -149,7 +149,5 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        bayonetta_attack_main
-    );
+    bayonetta_attack_main::install();
 }

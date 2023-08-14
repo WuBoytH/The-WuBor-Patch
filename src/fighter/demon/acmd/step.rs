@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 
 // Wind God Fist
 
-#[acmd_script( agent = "demon", script = "game_attackstep2", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstep2")]
 unsafe fn demon_attackstep2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -100,7 +100,7 @@ unsafe fn demon_attackstep2(agent: &mut L2CAgentBase) {
 
 // Electric Wind God Fist
 
-#[acmd_script( agent = "demon", script = "game_attackstep2f", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstep2f")]
 unsafe fn demon_attackstep2f(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -207,7 +207,7 @@ unsafe fn demon_attackstep2f(agent: &mut L2CAgentBase) {
 
 // Dragon Uppercut
 
-#[acmd_script( agent = "demon", script = "game_attackstep2l", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstep2l")]
 unsafe fn demon_attackstep2l(agent: &mut L2CAgentBase) {
     // macros::FT_MOTION_RATE(agent, 0.9);
     frame(agent.lua_state_agent, 7.0);
@@ -285,7 +285,7 @@ unsafe fn demon_attackstep2l(agent: &mut L2CAgentBase) {
 
 // Spinning Demon to Left Hook
 
-#[acmd_script( agent = "demon", script = "game_attackstep2s", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstep2s")]
 unsafe fn demon_attackstep2s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -333,10 +333,8 @@ unsafe fn demon_attackstep2s(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        demon_attackstep2,
-        demon_attackstep2f,
-        demon_attackstep2l,
-        demon_attackstep2s
-    );
+    demon_attackstep2::install();
+    demon_attackstep2f::install();
+    demon_attackstep2l::install();
+    demon_attackstep2s::install();
 }

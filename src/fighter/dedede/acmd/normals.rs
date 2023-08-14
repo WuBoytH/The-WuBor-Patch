@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "dedede", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("dedede", "game_attack11")]
 unsafe fn dedede_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
@@ -33,7 +33,7 @@ unsafe fn dedede_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("dedede", "game_attack12")]
 unsafe fn dedede_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.75);
@@ -69,7 +69,7 @@ unsafe fn dedede_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dedede", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("dedede", "game_attackhi3")]
 unsafe fn dedede_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -97,7 +97,7 @@ unsafe fn dedede_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "dedede", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("dedede", "game_attacklw3")]
 unsafe fn dedede_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -114,10 +114,8 @@ unsafe fn dedede_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        dedede_attack11,
-        dedede_attack12,
-        dedede_attackhi3,
-        dedede_attacklw3
-    );
+    dedede_attack11::install();
+    dedede_attack12::install();
+    dedede_attackhi3::install();
+    dedede_attacklw3::install();
 }

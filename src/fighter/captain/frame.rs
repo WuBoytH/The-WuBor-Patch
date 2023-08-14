@@ -60,14 +60,14 @@ use {
 //     FGCModule::cancel_system(fighter, status, allowed_cancels);
 // }
 
-// #[fighter_frame( agent = FIGHTER_KIND_CAPTAIN, main )]
+// #[line("captain", main)]
 // fn captain_frame(fighter: &mut L2CFighterCommon) {
 //     unsafe {
         
 //     }
 // }
 
-// #[weapon_frame( agent = WEAPON_KIND_CAPTAIN_FALCONPUNCH, main )]
+// #[line("captain_falconpunch", main)]
 // fn captain_falconpunch_frame(weapon: &mut L2CFighterBase) {
 //     unsafe {
         
@@ -75,8 +75,6 @@ use {
 // }
 
 pub fn install() {
-    // install_agent_frames!(
-    //     captain_frame,
-    //     captain_falconpunch_frame
-    // );
+    // //captain_frame::install();
+    //captain_falconpunch_frame//::install();
 }

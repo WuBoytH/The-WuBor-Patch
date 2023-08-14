@@ -13,7 +13,7 @@ use {
     super::vl
 };
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("wario", FIGHTER_STATUS_KIND_REBIRTH)]
 unsafe fn wario_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int(fighter.module_accessor, 0, 0x100000bf); // FIGHTER_WARIO_INSTANCE_WORK_ID_INT_GASS_COUNT
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_WARIO_INSTANCE_WORK_ID_FLAG_FLASHING);
@@ -22,7 +22,7 @@ unsafe fn wario_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Rebirth()
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("wario", FIGHTER_STATUS_KIND_THROW)]
 unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, wario::status::flag::THROW_B_MOVE) {
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
@@ -65,7 +65,7 @@ unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("wario", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn wario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_LW_FLAG_MOT_CHANGE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_WARIO_STATUS_SPECIAL_LW_FLAG_JUMP);
@@ -166,9 +166,7 @@ unsafe extern "C" fn wario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 pub fn install() {
-    install_status_scripts!(
-        wario_rebirth_pre,
-        wario_throw_exec,
-        wario_speciallw_main
-    );
+    wario_rebirth_pre::install();
+    wario_throw_exec::install();
+    wario_speciallw_main::install();
 }

@@ -10,8 +10,8 @@ use {
     wubor_utils::vars::*
 };
 
-#[weapon_frame( agent = WEAPON_KIND_EFLAME_ESWORD, main )]
-fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
+#[line("eflame_esword", main)]
+fn eflame_esword_frame(weapon: &mut L2CWeaponCommon) {
     unsafe {
         if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY
         && VarModule::is_flag(weapon.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN)
@@ -24,7 +24,5 @@ fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        eflame_esword_frame
-    );
+    eflame_esword_frame::install();
 }

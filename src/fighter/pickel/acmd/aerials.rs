@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pickel", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attackairn")]
 unsafe fn pickel_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -91,7 +91,7 @@ unsafe fn pickel_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attackairf")]
 unsafe fn pickel_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -262,7 +262,7 @@ unsafe fn pickel_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attackairb")]
 unsafe fn pickel_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -424,7 +424,7 @@ unsafe fn pickel_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attackairhi")]
 unsafe fn pickel_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -490,7 +490,7 @@ unsafe fn pickel_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attackairlw")]
 unsafe fn pickel_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -512,7 +512,7 @@ unsafe fn pickel_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackairlw2", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attackairlw2")]
 unsafe fn pickel_attackairlw2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -527,7 +527,7 @@ unsafe fn pickel_attackairlw2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "expression_attackairlw2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("pickel", "expression_attackairlw2")]
 unsafe fn pickel_attackairlw2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -544,7 +544,7 @@ unsafe fn pickel_attackairlw2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_forge", script = "game_fallattack", category = ACMD_GAME, low_priority )]
+#[acmd("pickel_forge", "game_fallattack")]
 unsafe fn pickel_forge_fallattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 58, 78, 0, 62, 3.0, 0.0, 3.0, -2.5, Some(0.0), Some(3.0), Some(2.5), 0.7, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
@@ -553,7 +553,7 @@ unsafe fn pickel_forge_fallattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_forge", script = "game_fallattackride", category = ACMD_GAME, low_priority )]
+#[acmd("pickel_forge", "game_fallattackride")]
 unsafe fn pickel_forge_fallattackride(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 18.0, 58, 84, 0, 62, 3.0, 0.0, 3.0, -2.5, Some(0.0), Some(3.0), Some(2.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_HEAVY, *ATTACK_REGION_OBJECT);
@@ -562,7 +562,7 @@ unsafe fn pickel_forge_fallattackride(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel_forge", script = "game_wait", category = ACMD_GAME, low_priority )]
+#[acmd("pickel_forge", "game_wait")]
 unsafe fn pickel_forge_wait(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::QUAKE(agent, *CAMERA_QUAKE_KIND_M);
@@ -582,15 +582,14 @@ unsafe fn pickel_forge_wait(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pickel_attackairn,
-        pickel_attackairf,
-        pickel_attackairb,
-        pickel_attackairhi,
-        pickel_attackairlw,
-        pickel_attackairlw2, pickel_attackairlw2_exp,
-        pickel_forge_fallattack,
-        pickel_forge_fallattackride,
-        pickel_forge_wait
-    );
+    pickel_attackairn::install();
+    pickel_attackairf::install();
+    pickel_attackairb::install();
+    pickel_attackairhi::install();
+    pickel_attackairlw::install();
+    pickel_attackairlw2::install();
+    pickel_attackairlw2_exp::install();
+    pickel_forge_fallattack::install();
+    pickel_forge_fallattackride::install();
+    pickel_forge_wait::install();
 }

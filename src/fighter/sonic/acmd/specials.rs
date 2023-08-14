@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "sonic", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("sonic", "game_specialhi")]
 unsafe fn sonic_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::shoot_exist(agent.module_accessor, *FIGHTER_SONIC_GENERATE_ARTICLE_GIMMICKJUMP, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL), false);
@@ -12,7 +12,5 @@ unsafe fn sonic_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        sonic_specialhi
-    );
+    sonic_specialhi::install();
 }

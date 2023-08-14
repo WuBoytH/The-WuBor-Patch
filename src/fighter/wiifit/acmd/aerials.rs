@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wiifit", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("wiifit", "game_attackairf")]
 unsafe fn wiifit_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe fn wiifit_attackairf(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "wiifit", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("wiifit", "game_attackairb")]
 unsafe fn wiifit_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -58,8 +58,6 @@ unsafe fn wiifit_attackairb(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        wiifit_attackairf,
-        wiifit_attackairb
-    );
+    wiifit_attackairf::install();
+    wiifit_attackairb::install();
 }

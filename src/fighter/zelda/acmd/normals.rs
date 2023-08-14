@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "zelda", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("zelda", "game_attacklw3")]
 unsafe fn zelda_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -15,7 +15,7 @@ unsafe fn zelda_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("zelda", "game_attackdash")]
 unsafe fn zelda_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -32,8 +32,6 @@ unsafe fn zelda_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        zelda_attacklw3,
-        zelda_attackdash
-    );
+    zelda_attacklw3::install();
+    zelda_attackdash::install();
 }

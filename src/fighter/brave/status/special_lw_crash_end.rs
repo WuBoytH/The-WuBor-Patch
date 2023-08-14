@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("brave", FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END)]
 unsafe fn brave_special_lw_crash_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -29,7 +29,7 @@ unsafe fn brave_special_lw_crash_end_pre(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("brave", FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END)]
 unsafe fn brave_special_lw_crash_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
@@ -66,8 +66,6 @@ unsafe extern "C" fn brave_special_lw_crash_end_main_loop(fighter: &mut L2CFight
 }
 
 pub fn install() {
-    install_status_scripts!(
-        brave_special_lw_crash_end_pre,
-        brave_special_lw_crash_end_main
-    );
+    brave_special_lw_crash_end_pre::install();
+    brave_special_lw_crash_end_main::install();
 }

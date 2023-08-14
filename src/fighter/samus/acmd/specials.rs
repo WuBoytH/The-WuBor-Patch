@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("samus", "game_specialhi")]
 unsafe fn samus_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
@@ -55,7 +55,7 @@ unsafe fn samus_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("samus", "game_specialairhi")]
 unsafe fn samus_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
@@ -96,7 +96,7 @@ unsafe fn samus_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "samus_cshot", script = "game_shoot", category = ACMD_GAME, low_priority )]
+// #[acmd("samus_cshot", "game_shoot")]
 // unsafe fn samus_cshot_shoot(agent: &mut L2CAgentBase) {
 //     if macros::is_excute(agent) {
 //         let angle = WorkModule::get_float(agent.module_accessor, WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_ANGLE);
@@ -117,9 +117,7 @@ unsafe fn samus_specialairhi(agent: &mut L2CAgentBase) {
 // }
 
 pub fn install() {
-    install_acmd_scripts!(
-        samus_specialhi,
-        samus_specialairhi,
-        // samus_cshot_shoot
-    );
+    samus_specialhi::install();
+    samus_specialairhi::install();
+    //samus_cshot_shoot::install();
 }

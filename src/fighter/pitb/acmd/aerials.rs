@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pitb", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("pitb", "game_attackairn")]
 unsafe fn pitb_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -21,7 +21,7 @@ unsafe fn pitb_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("pitb", "game_attackairf")]
 unsafe fn pitb_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -51,7 +51,7 @@ unsafe fn pitb_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("pitb", "game_attackairlw")]
 unsafe fn pitb_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -79,9 +79,7 @@ unsafe fn pitb_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pitb_attackairn,
-        pitb_attackairf,
-        pitb_attackairlw
-    );
+    pitb_attackairn::install();
+    pitb_attackairf::install();
+    pitb_attackairlw::install();
 }

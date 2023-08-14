@@ -9,7 +9,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_RICHTER, main )]
+#[line("richter", main)]
 fn richter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI)
@@ -22,7 +22,5 @@ fn richter_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        richter_frame
-    );
+    richter_frame::install();
 }

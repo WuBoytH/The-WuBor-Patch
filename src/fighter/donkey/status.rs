@@ -11,7 +11,7 @@ use {
     super::vl
 };
 
-#[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("donkey", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn donkey_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
@@ -69,7 +69,5 @@ pub unsafe fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        donkey_specials_main
-    );
+    donkey_specials_main::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("master", "game_attacks3")]
 unsafe fn master_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -28,7 +28,7 @@ unsafe fn master_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("master", "game_attacklw3")]
 unsafe fn master_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
@@ -53,7 +53,7 @@ unsafe fn master_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("master_sword", "game_attacklw3")]
 unsafe fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::set_float(agent.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
@@ -74,9 +74,7 @@ unsafe fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        master_attacks3,
-        master_attacklw3,
-        master_sword_attacklw3
-    );
+    master_attacks3::install();
+    master_attacklw3::install();
+    master_sword_attacklw3::install();
 }

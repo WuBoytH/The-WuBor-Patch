@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "eflame", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("eflame", "game_attackairn")]
 unsafe fn eflame_attackairn(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 3.0);
@@ -63,7 +63,7 @@ unsafe fn eflame_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+#[acmd("eflame", "effect_attackairn")]
 unsafe fn eflame_attackairn_eff(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 6.0);
@@ -95,7 +95,7 @@ unsafe fn eflame_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+#[acmd("eflame", "sound_attackairn")]
 unsafe fn eflame_attackairn_snd(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 10.0);
@@ -114,7 +114,7 @@ unsafe fn eflame_attackairn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("eflame", "expression_attackairn")]
 unsafe fn eflame_attackairn_exp(agent: &mut L2CAgentBase) {
     let has_sword = WorkModule::is_flag(agent.module_accessor, *FIGHTER_EFLAME_INSTANCE_WORK_ID_FLAG_HAS_ESWORD);
     frame(agent.lua_state_agent, 10.0);
@@ -146,7 +146,7 @@ unsafe fn eflame_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("eflame", "game_attackairf")]
 unsafe fn eflame_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -218,7 +218,7 @@ unsafe fn eflame_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("eflame", "game_attackairb")]
 unsafe fn eflame_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -284,7 +284,7 @@ unsafe fn eflame_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("eflame", "game_attackairhi")]
 unsafe fn eflame_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -344,7 +344,7 @@ unsafe fn eflame_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("eflame", "game_attackairlw")]
 unsafe fn eflame_attackairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.333);
     frame(agent.lua_state_agent, 5.0);
@@ -417,11 +417,12 @@ unsafe fn eflame_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        eflame_attackairn, eflame_attackairn_eff, eflame_attackairn_snd, eflame_attackairn_exp,
-        eflame_attackairf,
-        eflame_attackairb,
-        eflame_attackairhi,
-        eflame_attackairlw
-    );
+    eflame_attackairn::install();
+    eflame_attackairn_eff::install();
+    eflame_attackairn_snd::install();
+    eflame_attackairn_exp::install();
+    eflame_attackairf::install();
+    eflame_attackairb::install();
+    eflame_attackairhi::install();
+    eflame_attackairlw::install();
 }

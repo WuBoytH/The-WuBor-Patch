@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ridley", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("ridley", "game_attacklw3")]
 unsafe fn ridley_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -15,7 +15,5 @@ unsafe fn ridley_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        ridley_attacklw3
-    );
+    ridley_attacklw3::install();
 }

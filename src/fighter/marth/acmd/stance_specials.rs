@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecials", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecials")]
 unsafe fn marth_speciallwspecials(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
@@ -32,7 +32,7 @@ unsafe fn marth_speciallwspecials(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecials", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecials")]
 unsafe fn marth_speciallwspecials_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -69,7 +69,7 @@ unsafe fn marth_speciallwspecials_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecials", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecials")]
 unsafe fn marth_speciallwspecials_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -86,7 +86,7 @@ unsafe fn marth_speciallwspecials_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecials", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecials")]
 unsafe fn marth_speciallwspecials_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -110,7 +110,7 @@ unsafe fn marth_speciallwspecials_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecialairs", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecialairs")]
 unsafe fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
@@ -142,7 +142,7 @@ unsafe fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecialairs", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecialairs")]
 unsafe fn marth_speciallwspecialairs_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -170,7 +170,7 @@ unsafe fn marth_speciallwspecialairs_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecialairs", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecialairs")]
 unsafe fn marth_speciallwspecialairs_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -182,7 +182,7 @@ unsafe fn marth_speciallwspecialairs_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecialairs", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecialairs")]
 unsafe fn marth_speciallwspecialairs_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -196,13 +196,13 @@ unsafe fn marth_speciallwspecialairs_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecials2start", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecials2start")]
 unsafe fn marth_speciallwspecials2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecials2start", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecials2start")]
 unsafe fn marth_speciallwspecials2start_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -214,7 +214,7 @@ unsafe fn marth_speciallwspecials2start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecials2start", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecials2start")]
 unsafe fn marth_speciallwspecials2start_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -226,7 +226,7 @@ unsafe fn marth_speciallwspecials2start_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecials2start", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecials2start")]
 unsafe fn marth_speciallwspecials2start_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
@@ -240,7 +240,7 @@ unsafe fn marth_speciallwspecials2start_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecials2loop", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecials2loop")]
 unsafe fn marth_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -291,7 +291,7 @@ unsafe fn marth_speciallwspecials2loop(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecials2loop", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecials2loop")]
 unsafe fn marth_speciallwspecials2loop_eff(agent: &mut L2CAgentBase) {
     if VarModule::get_int(agent.battle_object, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
@@ -317,7 +317,7 @@ unsafe fn marth_speciallwspecials2loop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecials2loop", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecials2loop")]
 unsafe fn marth_speciallwspecials2loop_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_s"));
@@ -333,7 +333,7 @@ unsafe fn marth_speciallwspecials2loop_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecials2loop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecials2loop")]
 unsafe fn marth_speciallwspecials2loop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -371,7 +371,7 @@ unsafe fn marth_speciallwspecials2loop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecials2end2", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecials2end2")]
 unsafe fn marth_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -383,7 +383,7 @@ unsafe fn marth_speciallwspecials2end2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecials2end2", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecials2end2")]
 unsafe fn marth_speciallwspecials2end2_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -0.0, 9.0, -10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -405,7 +405,7 @@ unsafe fn marth_speciallwspecials2end2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecials2end2", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecials2end2")]
 unsafe fn marth_speciallwspecials2end2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -417,7 +417,7 @@ unsafe fn marth_speciallwspecials2end2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecials2end2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecials2end2")]
 unsafe fn marth_speciallwspecials2end2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -438,13 +438,13 @@ unsafe fn marth_speciallwspecials2end2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecialairs2start", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecialairs2start")]
 unsafe fn marth_speciallwspecialairs2start(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecialairs2start", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecialairs2start")]
 unsafe fn marth_speciallwspecialairs2start_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -456,7 +456,7 @@ unsafe fn marth_speciallwspecialairs2start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecialairs2start", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecialairs2start")]
 unsafe fn marth_speciallwspecialairs2start_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -468,7 +468,7 @@ unsafe fn marth_speciallwspecialairs2start_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecialairs2start", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecialairs2start")]
 unsafe fn marth_speciallwspecialairs2start_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -482,7 +482,7 @@ unsafe fn marth_speciallwspecialairs2start_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecialairs2loop", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecialairs2loop")]
 unsafe fn marth_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -522,7 +522,7 @@ unsafe fn marth_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecialairs2loop", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecialairs2loop")]
 unsafe fn marth_speciallwspecialairs2loop_eff(agent: &mut L2CAgentBase) {
     if VarModule::get_int(agent.battle_object, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
@@ -545,7 +545,7 @@ unsafe fn marth_speciallwspecialairs2loop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecialairs2loop", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecialairs2loop")]
 unsafe fn marth_speciallwspecialairs2loop_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_s"));
@@ -561,7 +561,7 @@ unsafe fn marth_speciallwspecialairs2loop_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecialairs2loop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecialairs2loop")]
 unsafe fn marth_speciallwspecialairs2loop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -599,7 +599,7 @@ unsafe fn marth_speciallwspecialairs2loop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecialairs2end", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecialairs2end")]
 unsafe fn marth_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -611,7 +611,7 @@ unsafe fn marth_speciallwspecialairs2end(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecialairs2end", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecialairs2end")]
 unsafe fn marth_speciallwspecialairs2end_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
@@ -620,7 +620,7 @@ unsafe fn marth_speciallwspecialairs2end_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecialairs2end", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecialairs2end")]
 unsafe fn marth_speciallwspecialairs2end_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_swing_m"));
@@ -628,7 +628,7 @@ unsafe fn marth_speciallwspecialairs2end_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecialairs2end", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecialairs2end")]
 unsafe fn marth_speciallwspecialairs2end_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -646,7 +646,7 @@ unsafe fn marth_speciallwspecialairs2end_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwspecialhi", category = ACMD_GAME, low_priority )]
+#[acmd("marth", "game_speciallwspecialhi")]
 unsafe fn marth_speciallwspecialhi(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
@@ -684,7 +684,7 @@ unsafe fn marth_speciallwspecialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "effect_speciallwspecialhi", category = ACMD_EFFECT, low_priority )]
+#[acmd("marth", "effect_speciallwspecialhi")]
 unsafe fn marth_speciallwspecialhi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
@@ -705,7 +705,7 @@ unsafe fn marth_speciallwspecialhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "sound_speciallwspecialhi", category = ACMD_SOUND, low_priority )]
+#[acmd("marth", "sound_speciallwspecialhi")]
 unsafe fn marth_speciallwspecialhi_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -713,7 +713,7 @@ unsafe fn marth_speciallwspecialhi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "marth", script = "expression_speciallwspecialhi", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("marth", "expression_speciallwspecialhi")]
 unsafe fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("haver"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -739,15 +739,40 @@ unsafe fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        marth_speciallwspecials, marth_speciallwspecials_eff, marth_speciallwspecials_snd, marth_speciallwspecials_exp,
-        marth_speciallwspecialairs, marth_speciallwspecialairs_eff, marth_speciallwspecialairs_snd, marth_speciallwspecialairs_exp,
-        marth_speciallwspecials2start, marth_speciallwspecials2start_eff, marth_speciallwspecials2start_snd, marth_speciallwspecials2start_exp,
-        marth_speciallwspecials2loop, marth_speciallwspecials2loop_eff, marth_speciallwspecials2loop_snd, marth_speciallwspecials2loop_exp,
-        marth_speciallwspecials2end2, marth_speciallwspecials2end2_eff, marth_speciallwspecials2end2_snd, marth_speciallwspecials2end2_exp,
-        marth_speciallwspecialairs2start, marth_speciallwspecialairs2start_eff, marth_speciallwspecialairs2start_snd, marth_speciallwspecialairs2start_exp,
-        marth_speciallwspecialairs2loop, marth_speciallwspecialairs2loop_eff, marth_speciallwspecialairs2loop_snd, marth_speciallwspecialairs2loop_exp,
-        marth_speciallwspecialairs2end, marth_speciallwspecialairs2end_eff, marth_speciallwspecialairs2end_snd, marth_speciallwspecialairs2end_exp,
-        marth_speciallwspecialhi, marth_speciallwspecialhi_eff, marth_speciallwspecialhi_snd, marth_speciallwspecialhi_exp
-    );
+    marth_speciallwspecials::install();
+    marth_speciallwspecials_eff::install();
+    marth_speciallwspecials_snd::install();
+    marth_speciallwspecials_exp::install();
+    marth_speciallwspecialairs::install();
+    marth_speciallwspecialairs_eff::install();
+    marth_speciallwspecialairs_snd::install();
+    marth_speciallwspecialairs_exp::install();
+    marth_speciallwspecials2start::install();
+    marth_speciallwspecials2start_eff::install();
+    marth_speciallwspecials2start_snd::install();
+    marth_speciallwspecials2start_exp::install();
+    marth_speciallwspecials2loop::install();
+    marth_speciallwspecials2loop_eff::install();
+    marth_speciallwspecials2loop_snd::install();
+    marth_speciallwspecials2loop_exp::install();
+    marth_speciallwspecials2end2::install();
+    marth_speciallwspecials2end2_eff::install();
+    marth_speciallwspecials2end2_snd::install();
+    marth_speciallwspecials2end2_exp::install();
+    marth_speciallwspecialairs2start::install();
+    marth_speciallwspecialairs2start_eff::install();
+    marth_speciallwspecialairs2start_snd::install();
+    marth_speciallwspecialairs2start_exp::install();
+    marth_speciallwspecialairs2loop::install();
+    marth_speciallwspecialairs2loop_eff::install();
+    marth_speciallwspecialairs2loop_snd::install();
+    marth_speciallwspecialairs2loop_exp::install();
+    marth_speciallwspecialairs2end::install();
+    marth_speciallwspecialairs2end_eff::install();
+    marth_speciallwspecialairs2end_snd::install();
+    marth_speciallwspecialairs2end_exp::install();
+    marth_speciallwspecialhi::install();
+    marth_speciallwspecialhi_eff::install();
+    marth_speciallwspecialhi_snd::install();
+    marth_speciallwspecialhi_exp::install();
 }

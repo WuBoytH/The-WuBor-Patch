@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("snake", FIGHTER_STATUS_KIND_REBIRTH)]
 unsafe fn snake_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [
@@ -35,7 +35,5 @@ unsafe fn snake_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        snake_rebirth_main
-    );
+    snake_rebirth_main::install();
 }

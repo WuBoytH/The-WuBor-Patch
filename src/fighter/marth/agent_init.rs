@@ -35,7 +35,7 @@ pub unsafe extern "C" fn marth_speciallw_pre(_fighter: &mut L2CFighterCommon) ->
     false.into()
 }
 
-#[fighter_init]
+#[event(initialize)]
 fn agent_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
@@ -72,7 +72,5 @@ fn marth_fgc() {
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+    agent_init::install();
 }

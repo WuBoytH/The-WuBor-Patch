@@ -3,14 +3,14 @@ use super::super::helper::*;
 
 // SPECIAL N
 
-#[acmd_script( agent = "lucario", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
+#[acmd("lucario", ["game_specialnstart", "game_specialairnstart"])]
 unsafe fn lucario_specialnstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 2.2);
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["game_specialnshoot", "game_specialairnshoot"], category = ACMD_GAME, low_priority )]
+#[acmd("lucario", ["game_specialnshoot", "game_specialairnshoot"])]
 unsafe fn lucario_specialnshoot(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -23,7 +23,7 @@ unsafe fn lucario_specialnshoot(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 12.0, 6.0);
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialnshoot2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialnshoot2")]
 unsafe fn lucario_specialnshoot_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -41,7 +41,7 @@ unsafe fn lucario_specialnshoot_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairnshoot2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialairnshoot2")]
 unsafe fn lucario_specialairnshoot_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -58,7 +58,7 @@ unsafe fn lucario_specialairnshoot_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialnhold2", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialnhold2")]
 unsafe fn lucario_specialnhold2_eff(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
     for _ in 0..i32::MAX {
@@ -69,7 +69,7 @@ unsafe fn lucario_specialnhold2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["sound_specialnhold2", "sound_specialairnhold2"], category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", ["sound_specialnhold2", "sound_specialairnhold2"])]
 unsafe fn lucario_specialnhold2_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_ex"));
@@ -77,7 +77,7 @@ unsafe fn lucario_specialnhold2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["game_specialnshoot2", "game_specialairnshoot2"], category = ACMD_GAME, low_priority )]
+#[acmd("lucario", ["game_specialnshoot2", "game_specialairnshoot2"])]
 unsafe fn lucario_specialnshoot2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -89,7 +89,7 @@ unsafe fn lucario_specialnshoot2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialnshoot2", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialnshoot2")]
 unsafe fn lucario_specialnshoot2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -97,14 +97,14 @@ unsafe fn lucario_specialnshoot2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["sound_specialnshoot2", "sound_specialairnshoot2"], category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", ["sound_specialnshoot2", "sound_specialairnshoot2"])]
 unsafe fn lucario_specialnshoot2_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_lucario_attack07"));
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = ["expression_specialnshoot2", "expression_specialairnshoot2"], category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", ["expression_specialnshoot2", "expression_specialairnshoot2"])]
 unsafe fn lucario_specialnshoot2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -121,7 +121,7 @@ unsafe fn lucario_specialnshoot2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", scripts = [ "game_charge", "game_chargemax" ], category = ACMD_GAME, low_priority )]
+#[acmd("lucario_auraball", [ "game_charge", "game_chargemax" ])]
 unsafe fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
@@ -130,7 +130,7 @@ unsafe fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "sound_charge", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario_auraball", "sound_charge")]
 unsafe fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
@@ -139,7 +139,7 @@ unsafe fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
+#[acmd("lucario_auraball", "game_shoot")]
 unsafe fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
     if !VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
@@ -159,7 +159,7 @@ unsafe fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "sound_shoot", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario_auraball", "sound_shoot")]
 unsafe fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_lucario_special_n01"));
@@ -210,7 +210,7 @@ unsafe fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "game_explosion", category = ACMD_GAME, low_priority )]
+#[acmd("lucario_auraball", "game_explosion")]
 unsafe fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -224,7 +224,7 @@ unsafe fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "effect_explosion", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario_auraball", "effect_explosion")]
 unsafe fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new_raw(0x15cff20136), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, true);
@@ -233,7 +233,7 @@ unsafe fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
 
 // SPECIAL S
 
-#[acmd_script( agent = "lucario", script = "game_specials", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specials")]
 unsafe fn lucario_specials(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 2.0, 5.0);
@@ -272,7 +272,7 @@ unsafe fn lucario_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specials", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specials")]
 unsafe fn lucario_specials_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -283,7 +283,7 @@ unsafe fn lucario_specials_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specials", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specials")]
 unsafe fn lucario_specials_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -291,7 +291,7 @@ unsafe fn lucario_specials_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specials", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specials")]
 unsafe fn lucario_specials_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -303,7 +303,7 @@ unsafe fn lucario_specials_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specials2", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specials2")]
 unsafe fn lucario_specials2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 2.0, 5.0);
@@ -339,7 +339,7 @@ unsafe fn lucario_specials2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specials2", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specials2")]
 unsafe fn lucario_specials2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -361,7 +361,7 @@ unsafe fn lucario_specials2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specials2", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specials2")]
 unsafe fn lucario_specials2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -369,7 +369,7 @@ unsafe fn lucario_specials2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specials2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specials2")]
 unsafe fn lucario_specials2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -381,7 +381,7 @@ unsafe fn lucario_specials2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairs")]
 unsafe fn lucario_specialairs(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 9.0, 5.0);
@@ -421,7 +421,7 @@ unsafe fn lucario_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairs", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialairs")]
 unsafe fn lucario_specialairs_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -432,7 +432,7 @@ unsafe fn lucario_specialairs_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairs", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialairs")]
 unsafe fn lucario_specialairs_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -440,7 +440,7 @@ unsafe fn lucario_specialairs_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairs", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialairs")]
 unsafe fn lucario_specialairs_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -452,7 +452,7 @@ unsafe fn lucario_specialairs_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairs2", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairs2")]
 unsafe fn lucario_specialairs2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 9.0, 5.0);
@@ -488,7 +488,7 @@ unsafe fn lucario_specialairs2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairs2", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialairs2")]
 unsafe fn lucario_specialairs2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -506,7 +506,7 @@ unsafe fn lucario_specialairs2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairs2", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialairs2")]
 unsafe fn lucario_specialairs2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -514,7 +514,7 @@ unsafe fn lucario_specialairs2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairs2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialairs2")]
 unsafe fn lucario_specialairs2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -526,7 +526,7 @@ unsafe fn lucario_specialairs2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialsthrow", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialsthrow")]
 unsafe fn lucario_specialsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
@@ -548,7 +548,7 @@ unsafe fn lucario_specialsthrow(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 27.0, -5.0);
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialsthrow", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialsthrow")]
 unsafe fn lucario_specialsthrow_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -568,7 +568,7 @@ unsafe fn lucario_specialsthrow_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialsthrow", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialsthrow")]
 unsafe fn lucario_specialsthrow_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -595,7 +595,7 @@ unsafe fn lucario_specialsthrow_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialsthrow", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialsthrow")]
 unsafe fn lucario_specialsthrow_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -621,7 +621,7 @@ unsafe fn lucario_specialsthrow_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialsthrow2", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialsthrow2")]
 unsafe fn lucario_specialsthrow2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
@@ -651,7 +651,7 @@ unsafe fn lucario_specialsthrow2(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.25);
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialsthrow2", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialsthrow2")]
 unsafe fn lucario_specialsthrow2_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -681,7 +681,7 @@ unsafe fn lucario_specialsthrow2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialsthrow2", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialsthrow2")]
 unsafe fn lucario_specialsthrow2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -717,7 +717,7 @@ unsafe fn lucario_specialsthrow2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialsthrow2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialsthrow2")]
 unsafe fn lucario_specialsthrow2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -753,7 +753,7 @@ unsafe fn lucario_specialsthrow2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairsthrow", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairsthrow")]
 unsafe fn lucario_specialairsthrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
@@ -780,7 +780,7 @@ unsafe fn lucario_specialairsthrow(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairsthrow", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialairsthrow")]
 unsafe fn lucario_specialairsthrow_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_catch"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -792,7 +792,7 @@ unsafe fn lucario_specialairsthrow_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairsthrow", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialairsthrow")]
 unsafe fn lucario_specialairsthrow_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
@@ -819,7 +819,7 @@ unsafe fn lucario_specialairsthrow_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairsthrow", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialairsthrow")]
 unsafe fn lucario_specialairsthrow_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -845,7 +845,7 @@ unsafe fn lucario_specialairsthrow_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairsthrow2", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairsthrow2")]
 unsafe fn lucario_specialairsthrow2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         lucario_drain_aura(agent, false);
@@ -873,7 +873,7 @@ unsafe fn lucario_specialairsthrow2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairsthrow2", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialairsthrow2")]
 unsafe fn lucario_specialairsthrow2_eff(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
     if macros::is_excute(agent) {
@@ -886,7 +886,7 @@ unsafe fn lucario_specialairsthrow2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairsthrow2", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialairsthrow2")]
 unsafe fn lucario_specialairsthrow2_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_ex"));
@@ -916,7 +916,7 @@ unsafe fn lucario_specialairsthrow2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairsthrow2", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialairsthrow2")]
 unsafe fn lucario_specialairsthrow2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -942,7 +942,7 @@ unsafe fn lucario_specialairsthrow2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_qigong", script = "game_shoot", category = ACMD_GAME, low_priority )]
+#[acmd("lucario_qigong", "game_shoot")]
 unsafe fn lucario_qigong_shoot(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 68, 0, 60, 3.0, 0.0, 0.0, -4.5, Some(0.0), Some(0.0), Some(22.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, true, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
@@ -959,7 +959,7 @@ unsafe fn lucario_qigong_shoot(agent: &mut L2CAgentBase) {
 
 // SPECIAL HI
 
-#[acmd_script( agent = "lucario", script = "game_specialhi", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialhi")]
 unsafe fn lucario_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.75);
@@ -969,7 +969,7 @@ unsafe fn lucario_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairhi")]
 unsafe fn lucario_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.75);
@@ -983,7 +983,7 @@ unsafe fn lucario_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialhimove", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialhimove")]
 unsafe fn lucario_specialhimove(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -993,7 +993,7 @@ unsafe fn lucario_specialhimove(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialhimove", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialhimove")]
 unsafe fn lucario_specialhimove_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_sinsoku_hadou2"), Hash40::new("havel"), 0, 0, 0, 0, -30, 180, 1, true);
@@ -1017,7 +1017,7 @@ unsafe fn lucario_specialhimove_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialhimove", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialhimove")]
 unsafe fn lucario_specialhimove_snd(agent: &mut L2CAgentBase) {
     if VarModule::get_int(agent.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
         if macros::is_excute(agent) {
@@ -1044,7 +1044,7 @@ unsafe fn lucario_specialhimove_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialhiend", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialhiend")]
 unsafe fn lucario_specialhiend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if VarModule::is_flag(agent.battle_object, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL) {
@@ -1052,7 +1052,7 @@ unsafe fn lucario_specialhiend(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairhiend", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairhiend")]
 unsafe fn lucario_specialairhiend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -1066,7 +1066,7 @@ unsafe fn lucario_specialairhiend(agent: &mut L2CAgentBase) {
 
 // SPECIAL LW
 
-#[acmd_script( agent = "lucario", script = "game_speciallw", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_speciallw")]
 unsafe fn lucario_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -1082,7 +1082,7 @@ unsafe fn lucario_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_speciallw")]
 unsafe fn lucario_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -1096,7 +1096,7 @@ unsafe fn lucario_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_speciallw", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_speciallw")]
 unsafe fn lucario_speciallw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -1108,7 +1108,7 @@ unsafe fn lucario_speciallw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairlw")]
 unsafe fn lucario_specialairlw(agent: &mut L2CAgentBase) {
     if !VarModule::is_flag(agent.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR) {
         if macros::is_excute(agent) {
@@ -1130,7 +1130,7 @@ unsafe fn lucario_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialairlw")]
 unsafe fn lucario_specialairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -1143,7 +1143,7 @@ unsafe fn lucario_specialairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairlw", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialairlw")]
 unsafe fn lucario_specialairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -1155,7 +1155,7 @@ unsafe fn lucario_specialairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = [ "game_speciallwend", "game_specialairlwend" ], category = ACMD_GAME, low_priority )]
+#[acmd("lucario", [ "game_speciallwend", "game_specialairlwend" ])]
 unsafe fn lucario_speciallwend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -1163,14 +1163,14 @@ unsafe fn lucario_speciallwend(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = [ "effect_speciallwend", "effect_specialairlwend" ], category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", [ "effect_speciallwend", "effect_specialairlwend" ])]
 unsafe fn lucario_speciallwend_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = [ "game_speciallwcancel", "game_specialairlwcancel" ], category = ACMD_GAME, low_priority )]
+#[acmd("lucario", [ "game_speciallwcancel", "game_specialairlwcancel" ])]
 unsafe fn lucario_speciallwcancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -1178,21 +1178,21 @@ unsafe fn lucario_speciallwcancel(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = [ "effect_speciallwcancel", "effect_specialairlwcancel" ], category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", [ "effect_speciallwcancel", "effect_specialairlwcancel" ])]
 unsafe fn lucario_speciallwcancel_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
     }
 }
 
-#[acmd_script( agent = "lucario", scripts = [ "sound_speciallwcancel", "sound_specialairlwcancel"], category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", [ "sound_speciallwcancel", "sound_specialairlwcancel"])]
 unsafe fn lucario_speciallwcancel_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("vc_lucario_appeal02"));
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_speciallwattack", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_speciallwattack")]
 unsafe fn lucario_speciallwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -1214,7 +1214,7 @@ unsafe fn lucario_speciallwattack(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 44.0, 5.0);
 }
 
-#[acmd_script( agent = "lucario", script = "effect_speciallwattack", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_speciallwattack")]
 unsafe fn lucario_speciallwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
@@ -1237,7 +1237,7 @@ unsafe fn lucario_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_speciallwattack")]
 unsafe fn lucario_speciallwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
@@ -1253,7 +1253,7 @@ unsafe fn lucario_speciallwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_speciallwattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_speciallwattack")]
 unsafe fn lucario_speciallwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -1286,7 +1286,7 @@ unsafe fn lucario_speciallwattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_specialairlwattack", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_specialairlwattack")]
 unsafe fn lucario_specialairlwattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -1308,7 +1308,7 @@ unsafe fn lucario_specialairlwattack(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 44.0, 5.0);
 }
 
-#[acmd_script( agent = "lucario", script = "effect_specialairlwattack", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucario", "effect_specialairlwattack")]
 unsafe fn lucario_specialairlwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("lucario_aura"), false, true);
@@ -1325,7 +1325,7 @@ unsafe fn lucario_specialairlwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
+#[acmd("lucario", "sound_specialairlwattack")]
 unsafe fn lucario_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
@@ -1337,7 +1337,7 @@ unsafe fn lucario_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "expression_specialairlwattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucario", "expression_specialairlwattack")]
 unsafe fn lucario_specialairlwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -1363,37 +1363,79 @@ unsafe fn lucario_specialairlwattack_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_specialnstart,
-        lucario_specialnshoot, lucario_specialnshoot_exp,
-        lucario_specialairnshoot_exp,
-        lucario_specialnhold2_eff, lucario_specialnhold2_snd,
-        lucario_specialnshoot2, lucario_specialnshoot2_eff, lucario_specialnshoot2_snd, lucario_specialnshoot2_exp,
-        lucario_auraball_charge, lucario_auraball_charge_snd,
-        lucario_auraball_shoot, lucario_auraball_shoot_snd,
-        lucario_auraball_explosion, lucario_auraball_explosion_eff,
-
-        lucario_specials, lucario_specials_eff, lucario_specials_snd, lucario_specials_exp,
-        lucario_specials2, lucario_specials2_eff, lucario_specials2_snd, lucario_specials2_exp,
-        lucario_specialairs, lucario_specialairs_eff, lucario_specialairs_snd, lucario_specialairs_exp,
-        lucario_specialairs2, lucario_specialairs2_eff, lucario_specialairs2_snd, lucario_specialairs2_exp,
-        lucario_specialsthrow, lucario_specialsthrow_eff, lucario_specialsthrow_snd, lucario_specialsthrow_exp,
-        lucario_specialsthrow2, lucario_specialsthrow2_eff, lucario_specialsthrow2_snd, lucario_specialsthrow2_exp,
-        lucario_specialairsthrow, lucario_specialairsthrow_eff, lucario_specialairsthrow_snd, lucario_specialairsthrow_exp,
-        lucario_specialairsthrow2, lucario_specialairsthrow2_eff, lucario_specialairsthrow2_snd, lucario_specialairsthrow2_exp,
-        lucario_qigong_shoot,
-
-        lucario_specialhi,
-        lucario_specialairhi,
-        lucario_specialhimove, lucario_specialhimove_eff, lucario_specialhimove_snd,
-        lucario_specialhiend,
-        lucario_specialairhiend,
-
-        lucario_speciallw, lucario_speciallw_eff, lucario_speciallw_snd,
-        lucario_specialairlw, lucario_specialairlw_eff, lucario_specialairlw_snd,
-        lucario_speciallwend, lucario_speciallwend_eff,
-        lucario_speciallwcancel, lucario_speciallwcancel_eff, lucario_speciallwcancel_snd,
-        lucario_speciallwattack, lucario_speciallwattack_eff, lucario_speciallwattack_snd, lucario_speciallwattack_exp,
-        lucario_specialairlwattack, lucario_specialairlwattack_eff, lucario_specialairlwattack_snd, lucario_specialairlwattack_exp
-    );
+    lucario_specialnstart::install();
+    lucario_specialnshoot::install();
+    lucario_specialnshoot_exp::install();
+    lucario_specialairnshoot_exp::install();
+    lucario_specialnhold2_eff::install();
+    lucario_specialnhold2_snd::install();
+    lucario_specialnshoot2::install();
+    lucario_specialnshoot2_eff::install();
+    lucario_specialnshoot2_snd::install();
+    lucario_specialnshoot2_exp::install();
+    lucario_auraball_charge::install();
+    lucario_auraball_charge_snd::install();
+    lucario_auraball_shoot::install();
+    lucario_auraball_shoot_snd::install();
+    lucario_auraball_explosion::install();
+    lucario_auraball_explosion_eff::install();
+    lucario_specials::install();
+    lucario_specials_eff::install();
+    lucario_specials_snd::install();
+    lucario_specials_exp::install();
+    lucario_specials2::install();
+    lucario_specials2_eff::install();
+    lucario_specials2_snd::install();
+    lucario_specials2_exp::install();
+    lucario_specialairs::install();
+    lucario_specialairs_eff::install();
+    lucario_specialairs_snd::install();
+    lucario_specialairs_exp::install();
+    lucario_specialairs2::install();
+    lucario_specialairs2_eff::install();
+    lucario_specialairs2_snd::install();
+    lucario_specialairs2_exp::install();
+    lucario_specialsthrow::install();
+    lucario_specialsthrow_eff::install();
+    lucario_specialsthrow_snd::install();
+    lucario_specialsthrow_exp::install();
+    lucario_specialsthrow2::install();
+    lucario_specialsthrow2_eff::install();
+    lucario_specialsthrow2_snd::install();
+    lucario_specialsthrow2_exp::install();
+    lucario_specialairsthrow::install();
+    lucario_specialairsthrow_eff::install();
+    lucario_specialairsthrow_snd::install();
+    lucario_specialairsthrow_exp::install();
+    lucario_specialairsthrow2::install();
+    lucario_specialairsthrow2_eff::install();
+    lucario_specialairsthrow2_snd::install();
+    lucario_specialairsthrow2_exp::install();
+    lucario_qigong_shoot::install();
+    lucario_specialhi::install();
+    lucario_specialairhi::install();
+    lucario_specialhimove::install();
+    lucario_specialhimove_eff::install();
+    lucario_specialhimove_snd::install();
+    lucario_specialhiend::install();
+    lucario_specialairhiend::install();
+    lucario_speciallw::install();
+    lucario_speciallw_eff::install();
+    lucario_speciallw_snd::install();
+    lucario_specialairlw::install();
+    lucario_specialairlw_eff::install();
+    lucario_specialairlw_snd::install();
+    lucario_speciallwend::install();
+    lucario_speciallwend_eff::install();
+    lucario_speciallwcancel::install();
+    lucario_speciallwcancel_eff::install();
+    lucario_speciallwcancel_snd::install();
+    lucario_speciallwattack::install();
+    lucario_speciallwattack_eff::install();
+    lucario_speciallwattack_snd::install();
+    lucario_speciallwattack_exp::install();
+    lucario_specialairlwattack::install();
+    lucario_specialairlwattack_eff::install();
+    lucario_specialairlwattack_snd::install();
+    lucario_specialairlwattack_exp::install();
 }

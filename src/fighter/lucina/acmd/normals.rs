@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "lucina", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attack11")]
 unsafe fn lucina_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -24,7 +24,7 @@ unsafe fn lucina_attack11(agent: &mut L2CAgentBase) {
     //macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucina", "effect_attack11")]
 unsafe fn lucina_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -36,7 +36,7 @@ unsafe fn lucina_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucina", "expression_attack11")]
 unsafe fn lucina_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -51,7 +51,7 @@ unsafe fn lucina_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attack12")]
 unsafe fn lucina_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -64,7 +64,7 @@ unsafe fn lucina_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucina", "effect_attack12")]
 unsafe fn lucina_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -76,7 +76,7 @@ unsafe fn lucina_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucina", "expression_attack12")]
 unsafe fn lucina_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -91,7 +91,7 @@ unsafe fn lucina_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attackdash")]
 unsafe fn lucina_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -125,7 +125,7 @@ unsafe fn lucina_attackdash(agent: &mut L2CAgentBase) {
         VarModule::on_flag(agent.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
     }
 }
-#[acmd_script( agent = "lucina", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucina", "effect_attackdash")]
 unsafe fn lucina_attackdash_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -144,7 +144,7 @@ unsafe fn lucina_attackdash_eff(agent: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 8, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
 }
-#[acmd_script( agent = "lucina", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
+#[acmd("lucina", "sound_attackdash")]
 unsafe fn lucina_attackdash_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -153,7 +153,7 @@ unsafe fn lucina_attackdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucina", "expression_attackdash")]
 unsafe fn lucina_attackdash_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 6);
@@ -169,7 +169,7 @@ unsafe fn lucina_attackdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attacks3")]
 unsafe fn lucina_attacks3(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, yu::instance::flag::HEROIC_GRAB) {
         macros::FT_MOTION_RATE(agent, 0.5);
@@ -191,7 +191,7 @@ unsafe fn lucina_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "lucina", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attackhi3")]
 unsafe fn lucina_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
@@ -221,7 +221,7 @@ unsafe fn lucina_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+#[acmd("lucina", "effect_attackhi3")]
 unsafe fn lucina_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -234,7 +234,7 @@ unsafe fn lucina_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
+#[acmd("lucina", "sound_attackhi3")]
 unsafe fn lucina_attackhi3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -243,7 +243,7 @@ unsafe fn lucina_attackhi3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("lucina", "expression_attackhi3")]
 unsafe fn lucina_attackhi3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(
@@ -269,7 +269,7 @@ unsafe fn lucina_attackhi3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_attacklw3")]
 unsafe fn lucina_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -297,12 +297,20 @@ unsafe fn lucina_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucina_attack11, lucina_attack11_eff, lucina_attack11_exp,
-        lucina_attack12, lucina_attack12_eff, lucina_attack12_exp,
-        lucina_attackdash, lucina_attackdash_eff, lucina_attackdash_snd, lucina_attackdash_exp,
-        lucina_attacks3,
-        lucina_attackhi3, lucina_attackhi3_eff, lucina_attackhi3_snd, lucina_attackhi3_exp,
-        lucina_attacklw3
-    );
+    lucina_attack11::install();
+    lucina_attack11_eff::install();
+    lucina_attack11_exp::install();
+    lucina_attack12::install();
+    lucina_attack12_eff::install();
+    lucina_attack12_exp::install();
+    lucina_attackdash::install();
+    lucina_attackdash_eff::install();
+    lucina_attackdash_snd::install();
+    lucina_attackdash_exp::install();
+    lucina_attacks3::install();
+    lucina_attackhi3::install();
+    lucina_attackhi3_eff::install();
+    lucina_attackhi3_snd::install();
+    lucina_attackhi3_exp::install();
+    lucina_attacklw3::install();
 }

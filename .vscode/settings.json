@@ -1,17 +1,10 @@
 {
-    "rust-analyzer.checkOnSave.overrideCommand": [
+    "rust-analyzer.check.overrideCommand": [
         "cargo",
         "+skyline-v3",
+        "check",
         "--message-format=json",
         "--workspace",
         "--quiet"
-    ],
-    "rust-analyzer.cargo.buildScripts.overrideCommand": [
-        "cargo",
-        "+skyline-v3",
-        "--message-format=json",
-        "--workspace",
-        "--quiet"
-    ],
-    "rust-analyzer.server.extraEnv": {"RUSTFLAGS" : "--cfg skyline_std_v3"}
+    ]
 }

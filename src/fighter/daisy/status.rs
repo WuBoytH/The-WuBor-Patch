@@ -12,12 +12,12 @@ use {
     super::vl
 };
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("daisy", FIGHTER_STATUS_KIND_ATTACK_AIR)]
 unsafe fn daisy_attackair_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_AttackAir()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("daisy", FIGHTER_STATUS_KIND_ATTACK_AIR)]
 unsafe fn daisy_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());
     fighter.sub_shift_status_main(L2CValue::Ptr(daisy_attack_air_main_loop as *const () as _))
@@ -27,7 +27,7 @@ unsafe extern "C" fn daisy_attack_air_main_loop(fighter: &mut L2CFighterCommon) 
     fighter.status_AttackAir_Main()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("daisy", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn daisy_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("special_hi_landing_mot_frame"));
     WorkModule::set_float(fighter.module_accessor, landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
@@ -68,7 +68,7 @@ unsafe extern "C" fn daisy_specialhi_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("daisy", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START);
@@ -101,7 +101,7 @@ unsafe fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("daisy", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn daisy_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         FighterSpecializer_Peach::special_lw_check_num_of_item(fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut FighterModuleAccessor);
@@ -110,7 +110,7 @@ unsafe fn daisy_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("daisy", FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START)]
 unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -139,7 +139,7 @@ unsafe fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("daisy", FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START)]
 unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_FALL {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -154,7 +154,7 @@ unsafe fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("daisy", FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START)]
 unsafe fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     MotionModule::change_motion(
@@ -178,7 +178,7 @@ unsafe extern "C" fn daisy_uniqfloatstart_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("daisy", FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START)]
 unsafe fn daisy_uniqfloatstart_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
     && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {
@@ -187,7 +187,7 @@ unsafe fn daisy_uniqfloatstart_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_FALL_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("daisy", FIGHTER_STATUS_KIND_FALL_SPECIAL)]
 unsafe fn daisy_fallspecial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
     MotionModule::change_motion(
@@ -246,16 +246,14 @@ unsafe extern "C" fn daisy_fallspecial_main_loop_helper(fighter: &mut L2CFighter
 }
 
 pub fn install() {
-    install_status_scripts!(
-        daisy_attackair_pre,
-        daisy_attackair_main,
-        daisy_specialhi_main,
-        daisy_speciallw_pre,
-        daisy_speciallw_init,
-        daisy_uniqfloatstart_pre,
-        daisy_uniqfloatstart_exec,
-        daisy_uniqfloatstart_main,
-        daisy_uniqfloatstart_end,
-        daisy_fallspecial_main
-    );
+    daisy_attackair_pre::install();
+    daisy_attackair_main::install();
+    daisy_specialhi_main::install();
+    daisy_speciallw_pre::install();
+    daisy_speciallw_init::install();
+    daisy_uniqfloatstart_pre::install();
+    daisy_uniqfloatstart_exec::install();
+    daisy_uniqfloatstart_main::install();
+    daisy_uniqfloatstart_end::install();
+    daisy_fallspecial_main::install();
 }

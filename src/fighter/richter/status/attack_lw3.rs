@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "richter", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("richter", FIGHTER_STATUS_KIND_ATTACK_LW3)]
 unsafe fn richter_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3();
     fighter.sub_shift_status_main(L2CValue::Ptr(richter_attack_lw3_main_loop as *const () as _))
@@ -17,7 +17,5 @@ unsafe extern "C" fn richter_attack_lw3_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install() {
-    install_status_scripts!(
-        richter_attack_lw3_main
-    );
+    richter_attack_lw3_main::install();
 }

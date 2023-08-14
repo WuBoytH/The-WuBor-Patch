@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
+#[acmd("lucina", "game_throwhi")]
 unsafe fn lucina_throwhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, yu::instance::flag::HEROIC_GRAB) {
@@ -36,7 +36,5 @@ unsafe fn lucina_throwhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucina_throwhi
-    );
+    lucina_throwhi::install();
 }

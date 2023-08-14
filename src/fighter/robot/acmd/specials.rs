@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "robot", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
+#[acmd("robot", "game_specialairsend")]
 unsafe fn robot_specialairsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -14,7 +14,5 @@ unsafe fn robot_specialairsend(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        robot_specialairsend
-    );
+    robot_specialairsend::install();
 }

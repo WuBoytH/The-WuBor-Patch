@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kamui", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attackairf")]
 unsafe fn kamui_attackairf(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -67,7 +67,7 @@ unsafe fn kamui_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
+#[acmd("kamui", "effect_attackairf")]
 unsafe fn kamui_attackairf_eff(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -96,7 +96,7 @@ unsafe fn kamui_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attackairb")]
 unsafe fn kamui_attackairb(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -130,7 +130,7 @@ unsafe fn kamui_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_attackairhi")]
 unsafe fn kamui_attackairhi(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -183,9 +183,8 @@ unsafe fn kamui_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_attackairf, kamui_attackairf_eff,
-        kamui_attackairb,
-        kamui_attackairhi
-    );
+    kamui_attackairf::install();
+    kamui_attackairf_eff::install();
+    kamui_attackairb::install();
+    kamui_attackairhi::install();
 }

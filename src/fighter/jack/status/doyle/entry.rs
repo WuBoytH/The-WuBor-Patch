@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "jack_doyle", status = WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("jack_doyle", WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY)]
 pub unsafe fn jack_doyle_entry_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = LinkModule::get_parent_id(weapon.module_accessor, *LINK_NO_CONSTRAINT, true) as u32;
     let owner = sv_battle_object::module_accessor(owner_id);
@@ -29,7 +29,5 @@ unsafe extern "C" fn jack_doyle_entry_main_loop(weapon: &mut L2CWeaponCommon) ->
 }
 
 pub fn install() {
-    install_status_scripts!(
-        jack_doyle_entry_main
-    );
+    jack_doyle_entry_main::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("littlemac", "game_attackairn")]
 unsafe fn littlemac_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -26,7 +26,7 @@ unsafe fn littlemac_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("littlemac", "game_attackairf")]
 unsafe fn littlemac_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -48,7 +48,7 @@ unsafe fn littlemac_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("littlemac", "game_attackairb")]
 unsafe fn littlemac_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -70,7 +70,7 @@ unsafe fn littlemac_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("littlemac", "game_attackairhi")]
 unsafe fn littlemac_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -96,7 +96,7 @@ unsafe fn littlemac_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("littlemac", "game_attackairlw")]
 unsafe fn littlemac_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -119,11 +119,9 @@ unsafe fn littlemac_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        littlemac_attackairn,
-        littlemac_attackairf,
-        littlemac_attackairb,
-        littlemac_attackairhi,
-        littlemac_attackairlw
-    );
+    littlemac_attackairn::install();
+    littlemac_attackairf::install();
+    littlemac_attackairb::install();
+    littlemac_attackairhi::install();
+    littlemac_attackairlw::install();
 }

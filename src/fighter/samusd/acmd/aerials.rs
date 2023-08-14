@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "samusd", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("samusd", "game_attackairn")]
 unsafe fn samusd_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -34,7 +34,7 @@ unsafe fn samusd_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+#[acmd("samusd", "effect_attackairn")]
 unsafe fn samusd_attackairn_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 2.5, true);
@@ -64,7 +64,7 @@ unsafe fn samusd_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+#[acmd("samusd", "sound_attackairn")]
 unsafe fn samusd_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -77,7 +77,7 @@ unsafe fn samusd_attackairn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("samusd", "expression_attackairn")]
 unsafe fn samusd_attackairn_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -95,7 +95,7 @@ unsafe fn samusd_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("samusd", "game_attackairf")]
 unsafe fn samusd_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -116,7 +116,7 @@ unsafe fn samusd_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
+#[acmd("samusd", "effect_attackairf")]
 unsafe fn samusd_attackairf_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     let mut effect = 0;
@@ -140,7 +140,7 @@ unsafe fn samusd_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
+#[acmd("samusd", "sound_attackairf")]
 unsafe fn samusd_attackairf_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -152,7 +152,7 @@ unsafe fn samusd_attackairf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("samusd", "expression_attackairf")]
 unsafe fn samusd_attackairf_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
@@ -173,7 +173,7 @@ unsafe fn samusd_attackairf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("samusd", "game_attackairb")]
 unsafe fn samusd_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -201,7 +201,7 @@ unsafe fn samusd_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("samusd", "game_attackairhi")]
 unsafe fn samusd_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
@@ -230,7 +230,7 @@ unsafe fn samusd_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
+#[acmd("samusd", "effect_attackairhi")]
 unsafe fn samusd_attackairhi_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("legl"), 0, 0, 0, 0, 0, 0, 1.9, true);
@@ -252,7 +252,7 @@ unsafe fn samusd_attackairhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("samusd", "expression_attackairhi")]
 unsafe fn samusd_attackairhi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 8);
@@ -267,7 +267,7 @@ unsafe fn samusd_attackairhi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("samusd", "game_attackairlw")]
 unsafe fn samusd_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -298,11 +298,17 @@ unsafe fn samusd_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        samusd_attackairn, samusd_attackairn_eff, samusd_attackairn_snd, samusd_attackairn_exp,
-        samusd_attackairf, samusd_attackairf_eff, samusd_attackairf_snd, samusd_attackairf_exp,
-        samusd_attackairb,
-        samusd_attackairhi, samusd_attackairhi_eff, samusd_attackairhi_exp,
-        samusd_attackairlw
-    );
+    samusd_attackairn::install();
+    samusd_attackairn_eff::install();
+    samusd_attackairn_snd::install();
+    samusd_attackairn_exp::install();
+    samusd_attackairf::install();
+    samusd_attackairf_eff::install();
+    samusd_attackairf_snd::install();
+    samusd_attackairf_exp::install();
+    samusd_attackairb::install();
+    samusd_attackairhi::install();
+    samusd_attackairhi_eff::install();
+    samusd_attackairhi_exp::install();
+    samusd_attackairlw::install();
 }

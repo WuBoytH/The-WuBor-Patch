@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("ken", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -29,7 +29,7 @@ unsafe fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("ken", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         reset_energy,
@@ -93,7 +93,7 @@ unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ken", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_SPECIAL_LW);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -270,9 +270,7 @@ unsafe extern "C" fn ken_heatrush_loop(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 pub fn install() {
-    install_status_scripts!(
-        ken_speciallw_pre,
-        ken_speciallw_init,
-        ken_speciallw_main
-    );
+    ken_speciallw_pre::install();
+    ken_speciallw_init::install();
+    ken_speciallw_main::install();
 }

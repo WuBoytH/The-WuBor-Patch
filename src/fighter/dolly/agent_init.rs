@@ -222,23 +222,15 @@ unsafe extern "C" fn dolly_status_end_control(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_DOLLY {
-            return;
-        }
-        fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
-        fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
-        fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
-        // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
-    }
+#[event("dolly", initialize)]
+unsafe fn agent_init(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
+    fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
+    // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+    agent_init::install();
 }

@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "inkling", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
+#[acmd("inkling", "game_escapeairslide")]
 unsafe fn inkling_escapeairslide(agent: &mut L2CAgentBase) {
     inkling_generate_squid_helper(agent);
     frame(agent.lua_state_agent, 6.0);
@@ -32,7 +32,5 @@ unsafe fn inkling_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        inkling_escapeairslide
-    );
+    inkling_escapeairslide::install();
 }

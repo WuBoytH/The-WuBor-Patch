@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::vl;
 
-#[status_script(agent = "pikachu_dengekidama", status = WEAPON_PIKACHU_DENGEKIDAMA_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pikachu_dengekidama", WEAPON_PIKACHU_DENGEKIDAMA_STATUS_KIND_REGULAR)]
 unsafe fn pikachu_dengekidama_regular_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MotionModule::change_motion(
         weapon.module_accessor,
@@ -57,7 +57,5 @@ unsafe extern "C" fn pikachu_dengekidama_regular_main_loop(weapon: &mut L2CWeapo
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pikachu_dengekidama_regular_main
-    );
+    pikachu_dengekidama_regular_main::install();
 }

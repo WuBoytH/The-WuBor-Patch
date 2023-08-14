@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("lucina", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let turn = if !VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND) {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
@@ -35,12 +35,12 @@ unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("lucina", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucina", FIGHTER_STATUS_KIND_SPECIAL_HI)]
 unsafe fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
@@ -118,7 +118,7 @@ unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucina_specialhi_pre, lucina_specialhi_exec, lucina_specialhi_main
-    );
+    lucina_specialhi_pre::install();
+    lucina_specialhi_exec::install();
+    lucina_specialhi_main::install();
 }

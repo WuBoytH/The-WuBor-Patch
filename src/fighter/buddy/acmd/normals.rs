@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attackdash")]
 unsafe fn buddy_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
@@ -20,7 +20,7 @@ unsafe fn buddy_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attacks3")]
 unsafe fn buddy_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -51,7 +51,7 @@ unsafe fn buddy_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attacks3hi")]
 unsafe fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -82,7 +82,7 @@ unsafe fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attacks3lw")]
 unsafe fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -113,7 +113,7 @@ unsafe fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attackhi3")]
 unsafe fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NO(agent, 12, *HIT_STATUS_NORMAL);
@@ -154,7 +154,7 @@ unsafe fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("buddy", "game_attacklw3")]
 unsafe fn buddy_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -169,12 +169,10 @@ unsafe fn buddy_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        buddy_attackdash,
-        buddy_attacks3,
-        buddy_attacks3hi,
-        buddy_attacks3lw,
-        buddy_attackhi3,
-        buddy_attacklw3
-    );
+    buddy_attackdash::install();
+    buddy_attacks3::install();
+    buddy_attacks3hi::install();
+    buddy_attacks3lw::install();
+    buddy_attackhi3::install();
+    buddy_attacklw3::install();
 }

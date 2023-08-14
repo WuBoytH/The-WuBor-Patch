@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "dolly", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attack11")]
 unsafe fn dolly_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe fn dolly_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attack12", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attack12")]
 unsafe fn dolly_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -69,7 +69,7 @@ unsafe fn dolly_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attack13")]
 unsafe fn dolly_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -82,7 +82,7 @@ unsafe fn dolly_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attackdash")]
 unsafe fn dolly_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -150,7 +150,7 @@ unsafe fn dolly_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attacks3")]
 unsafe fn dolly_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -187,7 +187,7 @@ unsafe fn dolly_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attacks3hi")]
 unsafe fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -217,7 +217,7 @@ unsafe fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
+#[acmd("dolly", "effect_attacks3hi")]
 unsafe fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -232,7 +232,7 @@ unsafe fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_attacks3hi", category = ACMD_SOUND, low_priority )]
+#[acmd("dolly", "sound_attacks3hi")]
 unsafe fn dolly_attacks3hi_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -244,7 +244,7 @@ unsafe fn dolly_attacks3hi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "expression_attacks3hi", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("dolly", "expression_attacks3hi")]
 unsafe fn dolly_attacks3hi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -263,7 +263,7 @@ unsafe fn dolly_attacks3hi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attacks3lw")]
 unsafe fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
@@ -305,7 +305,7 @@ unsafe fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
+#[acmd("dolly", "effect_attacks3lw")]
 unsafe fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -319,7 +319,7 @@ unsafe fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_attacks3lw", category = ACMD_SOUND, low_priority )]
+#[acmd("dolly", "sound_attacks3lw")]
 unsafe fn dolly_attacks3lw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -331,7 +331,7 @@ unsafe fn dolly_attacks3lw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "expression_attacks3lw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("dolly", "expression_attacks3lw")]
 unsafe fn dolly_attacks3lw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -354,7 +354,7 @@ unsafe fn dolly_attacks3lw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attacklw3")]
 unsafe fn dolly_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -384,7 +384,7 @@ unsafe fn dolly_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attacklw32", category = ACMD_GAME, low_priority )]
+#[acmd("dolly", "game_attacklw32")]
 unsafe fn dolly_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -408,7 +408,7 @@ unsafe fn dolly_attacklw32(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "effect_attacklw32", category = ACMD_EFFECT, low_priority )]
+#[acmd("dolly", "effect_attacklw32")]
 unsafe fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -420,7 +420,7 @@ unsafe fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "sound_attacklw32", category = ACMD_SOUND, low_priority )]
+#[acmd("dolly", "sound_attacklw32")]
 unsafe fn dolly_attacklw32_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -433,7 +433,7 @@ unsafe fn dolly_attacklw32_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "expression_attacklw32", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("dolly", "expression_attacklw32")]
 unsafe fn dolly_attacklw32_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 2);
@@ -453,15 +453,22 @@ unsafe fn dolly_attacklw32_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        dolly_attack11,
-        dolly_attack12,
-        dolly_attack13,
-        dolly_attackdash,
-        dolly_attacks3,
-        dolly_attacks3hi, dolly_attacks3hi_eff, dolly_attacks3hi_snd, dolly_attacks3hi_exp,
-        dolly_attacks3lw, dolly_attacks3lw_eff, dolly_attacks3lw_snd, dolly_attacks3lw_exp,
-        dolly_attacklw3,
-        dolly_attacklw32, dolly_attacklw32_eff, dolly_attacklw32_snd, dolly_attacklw32_exp
-    );
+    dolly_attack11::install();
+    dolly_attack12::install();
+    dolly_attack13::install();
+    dolly_attackdash::install();
+    dolly_attacks3::install();
+    dolly_attacks3hi::install();
+    dolly_attacks3hi_eff::install();
+    dolly_attacks3hi_snd::install();
+    dolly_attacks3hi_exp::install();
+    dolly_attacks3lw::install();
+    dolly_attacks3lw_eff::install();
+    dolly_attacks3lw_snd::install();
+    dolly_attacks3lw_exp::install();
+    dolly_attacklw3::install();
+    dolly_attacklw32::install();
+    dolly_attacklw32_eff::install();
+    dolly_attacklw32_snd::install();
+    dolly_attacklw32_exp::install();
 }

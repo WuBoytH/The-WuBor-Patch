@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn pikachu_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -33,7 +33,7 @@ unsafe fn pikachu_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn pikachu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -46,7 +46,7 @@ unsafe fn pikachu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn pikachu_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_QUICK_ATTACK_GUIDE_EFFECT_LAST_VISIBLE);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
@@ -87,7 +87,7 @@ unsafe extern "C" fn pikachu_special_s_main_loop(fighter: &mut L2CFighterCommon)
     is_end.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn pikachu_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::dec_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_FALL_STOP_COUNTER);
     let fall_stop_counter = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_FALL_STOP_COUNTER);
@@ -115,7 +115,7 @@ unsafe fn pikachu_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("pikachu", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn pikachu_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_direction2"), true, true);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_GUIDE_EFFECT_HANDLE);
@@ -124,7 +124,9 @@ unsafe fn pikachu_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pikachu_special_s_pre, pikachu_special_s_init, pikachu_special_s_main, pikachu_special_s_exec, pikachu_special_s_end
-    );
+    pikachu_special_s_pre::install();
+    pikachu_special_s_init::install();
+    pikachu_special_s_main::install();
+    pikachu_special_s_exec::install();
+    pikachu_special_s_end::install();
 }

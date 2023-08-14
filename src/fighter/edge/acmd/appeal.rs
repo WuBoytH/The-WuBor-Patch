@@ -13,7 +13,7 @@ use {
     // super::super::vars::*
 };
 
-#[acmd_script( agent = "edge", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
+#[acmd("edge", [ "game_appealsl", "game_appealsr" ])]
 unsafe fn edge_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 39.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -32,7 +32,7 @@ unsafe fn edge_appeals(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "effect_appealsloop", category = ACMD_EFFECT, low_priority )]
+#[acmd("edge", "effect_appealsloop")]
 unsafe fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 120.0);
@@ -66,7 +66,7 @@ unsafe fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_appealsloop", category = ACMD_SOUND, low_priority )]
+#[acmd("edge", "sound_appealsloop")]
 unsafe fn edge_appealsloop_snd(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 116.0);
@@ -79,7 +79,7 @@ unsafe fn edge_appealsloop_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "expression_appealsloop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("edge", "expression_appealsloop")]
 unsafe fn edge_appealsloop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -112,7 +112,7 @@ unsafe fn edge_appealsloop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_appealsattack", category = ACMD_GAME, low_priority )]
+#[acmd("edge", "game_appealsattack")]
 unsafe fn edge_appealsattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
@@ -137,7 +137,7 @@ unsafe fn edge_appealsattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "effect_appealsattack", category = ACMD_EFFECT, low_priority )]
+#[acmd("edge", "effect_appealsattack")]
 unsafe fn edge_appealsattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 9, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -172,7 +172,7 @@ unsafe fn edge_appealsattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_appealsattack", category = ACMD_SOUND, low_priority )]
+#[acmd("edge", "sound_appealsattack")]
 unsafe fn edge_appealsattack_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_edge_smash_s01"));
@@ -205,7 +205,7 @@ unsafe fn edge_appealsattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "expression_appealsattack", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("edge", "expression_appealsattack")]
 unsafe fn edge_appealsattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -237,7 +237,7 @@ unsafe fn edge_appealsattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_appealsattackjust", category = ACMD_GAME, low_priority )]
+#[acmd("edge", "game_appealsattackjust")]
 unsafe fn edge_appealsattackjust(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, MA_MSC_DAMAGE_DAMAGE_NO_REACTION, DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -269,7 +269,7 @@ unsafe fn edge_appealsattackjust(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "effect_appealsattackjust", category = ACMD_EFFECT, low_priority )]
+#[acmd("edge", "effect_appealsattackjust")]
 unsafe fn edge_appealsattackjust_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 9, 13, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -305,7 +305,7 @@ unsafe fn edge_appealsattackjust_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "sound_appealsattackjust", category = ACMD_SOUND, low_priority )]
+#[acmd("edge", "sound_appealsattackjust")]
 unsafe fn edge_appealsattackjust_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_edge_smash_s01"));
@@ -335,7 +335,7 @@ unsafe fn edge_appealsattackjust_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "expression_appealsattackjust", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("edge", "expression_appealsattackjust")]
 unsafe fn edge_appealsattackjust_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -367,7 +367,7 @@ unsafe fn edge_appealsattackjust_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority )]
+#[acmd("edge", [ "game_appeallwl", "game_appeallwr" ])]
 unsafe fn edge_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 39.0);
     let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
@@ -383,7 +383,7 @@ unsafe fn edge_appeallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "effect_appeallwloop", category = ACMD_EFFECT, low_priority )]
+#[acmd("edge", "effect_appeallwloop")]
 unsafe fn edge_appeallwloop_eff(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 1.0);
@@ -400,7 +400,7 @@ unsafe fn edge_appeallwloop_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "expression_appeallwloop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("edge", "expression_appeallwloop")]
 unsafe fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -423,12 +423,19 @@ unsafe fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        edge_appeals,
-        edge_appealsloop_eff, edge_appealsloop_snd, edge_appealsloop_exp,
-        edge_appealsattack, edge_appealsattack_eff, edge_appealsattack_snd, edge_appealsattack_exp,
-        edge_appealsattackjust, edge_appealsattackjust_eff, edge_appealsattackjust_snd, edge_appealsattackjust_exp,
-        edge_appeallw,
-        edge_appeallwloop_eff, edge_appeallwloop_exp
-    );
+    edge_appeals::install();
+    edge_appealsloop_eff::install();
+    edge_appealsloop_snd::install();
+    edge_appealsloop_exp::install();
+    edge_appealsattack::install();
+    edge_appealsattack_eff::install();
+    edge_appealsattack_snd::install();
+    edge_appealsattack_exp::install();
+    edge_appealsattackjust::install();
+    edge_appealsattackjust_eff::install();
+    edge_appealsattackjust_snd::install();
+    edge_appealsattackjust_exp::install();
+    edge_appeallw::install();
+    edge_appeallwloop_eff::install();
+    edge_appeallwloop_exp::install();
 }

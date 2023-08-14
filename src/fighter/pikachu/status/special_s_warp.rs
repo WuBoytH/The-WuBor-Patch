@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 
 // Quick Attack is now on side b lol
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("pikachu", FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP)]
 unsafe fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +34,7 @@ unsafe fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("pikachu", FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP)]
 unsafe fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     if count == 0 {
@@ -73,18 +73,18 @@ unsafe fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValu
         0.into()
     }
     else {
-        original!(fighter)
+        original(fighter)
     }
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("pikachu", FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP)]
 unsafe fn pikachu_special_s_warp_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     if count != 0 {
-        return original!(fighter);
+        return original(fighter);
     }
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_SPECIALUPDUMMY, false, -1);
     ArticleModule::change_motion(
@@ -135,7 +135,7 @@ unsafe extern "C" fn pikachu_special_s_warp_1_main_loop(fighter: &mut L2CFighter
 }
 
 pub fn install() {
-    install_status_scripts!(
-        pikachu_special_s_warp_pre, pikachu_special_s_warp_init, pikachu_special_s_warp_main
-    );
+    pikachu_special_s_warp_pre::install();
+    pikachu_special_s_warp_init::install();
+    pikachu_special_s_warp_main::install();
 }

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use crate::fighter::ryu::helper::*;
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ken", FIGHTER_STATUS_KIND_ATTACK)]
 unsafe fn ken_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {
@@ -123,7 +123,5 @@ unsafe extern "C" fn ken_attack_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 pub fn install() {
-    install_status_scripts!(
-        ken_attack_main
-    );
+    ken_attack_main::install();
 }

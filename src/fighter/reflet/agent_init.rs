@@ -11,7 +11,7 @@ pub unsafe extern "C" fn reflet_status_end_control(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-#[fighter_init]
+#[event(initialize)]
 fn agent_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
@@ -24,7 +24,5 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+    agent_init::install();
 }

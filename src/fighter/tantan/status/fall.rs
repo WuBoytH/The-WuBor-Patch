@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("tantan", FIGHTER_STATUS_KIND_FALL)]
 unsafe fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_pre_fall().get_bool() {
         return 1.into();
@@ -11,11 +11,9 @@ unsafe fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL);
         return 1.into();
     }
-    original!(fighter)
+    original(fighter)
 }
 
 pub fn install() {
-    install_status_scripts!(
-        tantan_fall_pre
-    );
+    tantan_fall_pre::install();
 }

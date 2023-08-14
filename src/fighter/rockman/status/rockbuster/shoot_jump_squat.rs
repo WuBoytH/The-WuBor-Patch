@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("rockman", FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT)]
 unsafe fn rockman_rockbuster_shoot_jump_squat_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,7 +37,7 @@ unsafe fn rockman_rockbuster_shoot_jump_squat_pre(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("rockman", FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT)]
 unsafe fn rockman_rockbuster_shoot_jump_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_jump_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     if stick_jump_life == 0 || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {
@@ -108,7 +108,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_main_loop(fighter: &mut
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_jump_squat_pre, rockman_rockbuster_shoot_jump_squat_main
-    );
+    rockman_rockbuster_shoot_jump_squat_pre::install();
+    rockman_rockbuster_shoot_jump_squat_main::install();
 }

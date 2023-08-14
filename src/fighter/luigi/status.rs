@@ -12,13 +12,13 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[status_script(agent = "luigi", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("luigi", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn luigi_specials_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     luigi_remove_thunderhand_eff(fighter);
     0.into()
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("luigi", FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE)]
 unsafe fn luigi_specials_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
@@ -115,13 +115,13 @@ unsafe extern "C" fn luigi_specials_charge_main_loop(fighter: &mut L2CFighterCom
     0.into()
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("luigi", FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE)]
 unsafe fn luigi_specials_charge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     luigi_remove_thunderhand_eff(fighter);
     0.into()
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("luigi", FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_END)]
 unsafe fn luigi_specials_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     luigi_remove_thunderhand_eff(fighter);
     0.into()
@@ -138,7 +138,7 @@ unsafe extern "C" fn luigi_remove_thunderhand_eff(fighter: &mut L2CFighterCommon
     }
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("luigi", FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP)]
 unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fall_max_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_max_x"));
     fighter.clear_lua_stack();
@@ -210,11 +210,9 @@ unsafe extern "C" fn luigi_specialhi_drop_main_loop(fighter: &mut L2CFighterComm
 }
 
 pub fn install() {
-    install_status_scripts!(
-        luigi_specials_end,
-        luigi_specials_charge_main,
-        luigi_specials_charge_end,
-        luigi_specials_end_end,
-        luigi_specialhi_drop_main
-    );
+    luigi_specials_end::install();
+    luigi_specials_charge_main::install();
+    luigi_specials_charge_end::install();
+    luigi_specials_end_end::install();
+    luigi_specialhi_drop_main::install();
 }

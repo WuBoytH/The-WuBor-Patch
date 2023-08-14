@@ -37,35 +37,19 @@ pub unsafe extern "C" fn lucario_special_s_uniq(fighter: &mut L2CFighterCommon) 
     (!VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S)).into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_LUCARIO {
-            return;
-        }
-        fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(lucario_special_s_uniq as *const () as _));
-        fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(lucario_status_end_control as *const () as _));
-    }
+#[event("lucario", start)]
+unsafe fn agent_reset(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(lucario_special_s_uniq as *const () as _));
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(lucario_status_end_control as *const () as _));
 }
 
-#[fighter_init]
-fn fighter_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_LUCARIO {
-            return;
-        }
-        fgc::install();
-    }
+#[event("lucario", initialize)]
+unsafe fn fighter_init(fighter: &mut L2CFighterCommon) {
+    fgc::install();
 }
 
 pub fn install() {
     CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucario"));
-    install_agent_resets!(
-        agent_reset
-    );
-    install_agent_init_callbacks!(
-        fighter_init
-    );
+    agent_reset::install();
+    fighter_init::install();
 }

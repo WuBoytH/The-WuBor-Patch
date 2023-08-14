@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "robot", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("robot", "game_attacks3")]
 unsafe fn robot_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -15,7 +15,7 @@ unsafe fn robot_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("robot", "game_attacks3hi")]
 unsafe fn robot_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe fn robot_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("robot", "game_attacks3lw")]
 unsafe fn robot_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -47,7 +47,7 @@ unsafe fn robot_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("robot", "game_attackhi3")]
 unsafe fn robot_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -69,7 +69,7 @@ unsafe fn robot_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("robot", "game_attacklw3")]
 unsafe fn robot_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -82,7 +82,7 @@ unsafe fn robot_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
+#[acmd("robot", "effect_attacklw3")]
 unsafe fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -138,7 +138,7 @@ unsafe fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
+#[acmd("robot", "sound_attacklw3")]
 unsafe fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -152,7 +152,7 @@ unsafe fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("robot", "expression_attacklw3")]
 unsafe fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
@@ -177,11 +177,12 @@ unsafe fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        robot_attacks3,
-        robot_attacks3hi,
-        robot_attacks3lw,
-        robot_attackhi3,
-        robot_attacklw3, robot_attacklw3_eff, robot_attacklw3_snd, robot_attacklw3_exp
-    );
+    robot_attacks3::install();
+    robot_attacks3hi::install();
+    robot_attacks3lw::install();
+    robot_attackhi3::install();
+    robot_attacklw3::install();
+    robot_attacklw3_eff::install();
+    robot_attacklw3_snd::install();
+    robot_attacklw3_exp::install();
 }

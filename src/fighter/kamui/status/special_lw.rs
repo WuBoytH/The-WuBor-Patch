@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("kamui", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn kamui_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KAMUI_STATUS_SPECIAL_LW_FLAG_CONTINUE_MOT);
     kamui_special_lw_mot_helper(fighter);
@@ -90,7 +90,7 @@ unsafe extern "C" fn kamui_special_lw_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "kamui", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("kamui", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn kamui_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_FINAL_VISUAL_ATTACK_OTHER {
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON) {
@@ -102,7 +102,6 @@ unsafe fn kamui_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        kamui_special_lw_main, kamui_special_lw_end
-    );
+    kamui_special_lw_main::install();
+    kamui_special_lw_end::install();
 }

@@ -74,39 +74,23 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
     ret.into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_LUCINA {
-            return;
-        }
-        cancel::install();
-    }
+#[event("lucina", start)]
+unsafe fn agent_reset(fighter: &mut L2CFighterCommon) {
+    cancel::install();
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_LUCINA {
-            return;
-        }
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
-        VarModule::set_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX, 100.0);
-        fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
-    }
+#[event("lucina", initialize)]
+unsafe fn agent_init(fighter: &mut L2CFighterCommon) {
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
+    VarModule::set_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX, 100.0);
+    fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
 }
 
 pub fn install() {
     CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucina"));
-    install_agent_resets!(
-        agent_reset
-    );
-    install_agent_init_callback!(
-        agent_init
-    );
+    agent_reset::install();
+    agent_init::install();
 }

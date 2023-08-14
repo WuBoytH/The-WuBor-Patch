@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "plizardon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("plizardon", "game_attackhi4")]
 unsafe fn plizardon_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -74,7 +74,5 @@ unsafe fn plizardon_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        plizardon_attackhi4
-    );
+    plizardon_attackhi4::install();
 }

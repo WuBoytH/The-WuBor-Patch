@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kirby", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_specialsstart")]
 unsafe fn kirby_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
@@ -11,7 +11,7 @@ unsafe fn kirby_specialsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_specialairsstart")]
 unsafe fn kirby_specialairsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_HAMMER, false, 0);
@@ -19,7 +19,7 @@ unsafe fn kirby_specialairsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 9.0 / 17.0);
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairs", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_specialairs")]
 unsafe fn kirby_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -46,7 +46,7 @@ unsafe fn kirby_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "game_specialairss", category = ACMD_GAME, low_priority )]
+#[acmd("kirby", "game_specialairss")]
 unsafe fn kirby_specialairss(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -73,7 +73,7 @@ unsafe fn kirby_specialairss(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+#[acmd("kirby", [ "game_specialhi", "game_specialairhi" ])]
 unsafe fn kirby_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KIRBY_GENERATE_ARTICLE_FINALCUTTER, false, 0);
@@ -86,11 +86,9 @@ unsafe fn kirby_specialhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kirby_specialsstart,
-        kirby_specialairsstart,
-        kirby_specialairs,
-        kirby_specialairss,
-        kirby_specialhi
-    );
+    kirby_specialsstart::install();
+    kirby_specialairsstart::install();
+    kirby_specialairs::install();
+    kirby_specialairss::install();
+    kirby_specialhi::install();
 }

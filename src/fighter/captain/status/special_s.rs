@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "captain", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("captain", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn captain_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_KNUCKLE_HIT);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_KNUCKLE_HIT_CHECK_ONOFF);
@@ -128,7 +128,5 @@ unsafe extern "C" fn captain_special_s_main_loop(fighter: &mut L2CFighterCommon)
 }
 
 pub fn install() {
-    install_status_scripts!(
-        captain_special_s_main
-    );
+    captain_special_s_main::install();
 }

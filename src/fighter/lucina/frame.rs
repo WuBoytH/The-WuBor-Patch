@@ -229,7 +229,7 @@ unsafe fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCINA, main )]
+#[line("lucina", main)]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         lucina_reset_vars(fighter);
@@ -244,7 +244,5 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        lucina_frame
-    );
+    lucina_frame::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pikmin", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("pikmin", "game_attack11")]
 unsafe fn pikmin_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -26,7 +26,7 @@ unsafe fn pikmin_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("pikmin", "game_attackdash")]
 unsafe fn pikmin_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     for _ in 0..3 {
@@ -46,7 +46,7 @@ unsafe fn pikmin_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("pikmin", "expression_attackdash")]
 unsafe fn pikmin_attackdash_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 3, true);
@@ -71,12 +71,12 @@ unsafe fn pikmin_attackdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("pikmin", "game_attacks3")]
 unsafe fn pikmin_attacks3(_agent: &mut L2CAgentBase) {
     // Blank
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attacks3", category = ACMD_SOUND, low_priority )]
+#[acmd("pikmin", "sound_attacks3")]
 unsafe fn pikmin_attacks3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -84,21 +84,21 @@ unsafe fn pikmin_attacks3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "effect_attacks3loop", category = ACMD_EFFECT, low_priority )]
+#[acmd("pikmin", "effect_attacks3loop")]
 unsafe fn pikmin_attacks3loop_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("pikmin_punch_spin"), Hash40::new("top"), -3, 6, -2, -192, 4, 68, 0.85, true);
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attacks3loop", category = ACMD_SOUND, low_priority )]
+#[acmd("pikmin", "sound_attacks3loop")]
 unsafe fn pikmin_attacks3loop_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikmin_attackhard_s01"));
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "expression_attacks3loop", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("pikmin", "expression_attacks3loop")]
 unsafe fn pikmin_attacks3loop_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_R);
@@ -112,7 +112,7 @@ unsafe fn pikmin_attacks3loop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attacks3end", category = ACMD_GAME, low_priority )]
+#[acmd("pikmin", "game_attacks3end")]
 unsafe fn pikmin_attacks3end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -138,7 +138,7 @@ unsafe fn pikmin_attacks3end(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "effect_attacks3end", category = ACMD_EFFECT, low_priority )]
+#[acmd("pikmin", "effect_attacks3end")]
 unsafe fn pikmin_attacks3end_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -155,14 +155,14 @@ unsafe fn pikmin_attacks3end_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attacks3end", category = ACMD_SOUND, low_priority )]
+#[acmd("pikmin", "sound_attacks3end")]
 unsafe fn pikmin_attacks3end_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikmin_attackhard_s02"));
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "expression_attacks3end", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("pikmin", "expression_attacks3end")]
 unsafe fn pikmin_attacks3end_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_R, 5);
@@ -184,7 +184,7 @@ unsafe fn pikmin_attacks3end_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("pikmin", "game_attackhi3")]
 unsafe fn pikmin_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -213,7 +213,7 @@ unsafe fn pikmin_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
+#[acmd("pikmin", "effect_attackhi3")]
 unsafe fn pikmin_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -227,7 +227,7 @@ unsafe fn pikmin_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
+#[acmd("pikmin", "sound_attackhi3")]
 unsafe fn pikmin_attackhi3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -243,7 +243,7 @@ unsafe fn pikmin_attackhi3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikmin", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("pikmin", "game_attacklw3")]
 unsafe fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -259,13 +259,20 @@ unsafe fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pikmin_attack11,
-        pikmin_attackdash, pikmin_attackdash_exp,
-        pikmin_attacks3, pikmin_attacks3_snd,
-        pikmin_attacks3loop_eff, pikmin_attacks3loop_snd, pikmin_attacks3loop_exp,
-        pikmin_attacks3end, pikmin_attacks3end_eff, pikmin_attacks3end_snd, pikmin_attacks3end_exp,
-        pikmin_attackhi3, pikmin_attackhi3_eff, pikmin_attackhi3_snd,
-        pikmin_attacklw3
-    );
+    pikmin_attack11::install();
+    pikmin_attackdash::install();
+    pikmin_attackdash_exp::install();
+    pikmin_attacks3::install();
+    pikmin_attacks3_snd::install();
+    pikmin_attacks3loop_eff::install();
+    pikmin_attacks3loop_snd::install();
+    pikmin_attacks3loop_exp::install();
+    pikmin_attacks3end::install();
+    pikmin_attacks3end_eff::install();
+    pikmin_attacks3end_snd::install();
+    pikmin_attacks3end_exp::install();
+    pikmin_attackhi3::install();
+    pikmin_attackhi3_eff::install();
+    pikmin_attackhi3_snd::install();
+    pikmin_attacklw3::install();
 }

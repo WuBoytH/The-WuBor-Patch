@@ -13,9 +13,8 @@ use {
     }
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_GAOGAEN, main )]
-fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
+#[line("gaogaen", main)]
+unsafe fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         
         // Darkest Lariat Jump Cancel
 
@@ -27,11 +26,8 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
         && !fighter.global_table[IS_STOP].get_bool() {
             FGCModule::jump_cancel_check_exception(fighter);
         }
-    }
 }
 
 pub fn install() {
-    install_agent_frames!(
-        gaogaen_frame
-    );
+    gaogaen_frame::install();
 }

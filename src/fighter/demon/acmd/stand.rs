@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 
 // Spinning Demon Finisher
 
-#[acmd_script( agent = "demon", script = "game_attackstand24", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstand24")]
 unsafe fn demon_attackstand24(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -19,7 +19,7 @@ unsafe fn demon_attackstand24(agent: &mut L2CAgentBase) {
 
 // Spinning Demon 1 Finisher
 
-#[acmd_script( agent = "demon", script = "game_attackstand2f", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstand2f")]
 unsafe fn demon_attackstand2f(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 4.0);
@@ -35,7 +35,7 @@ unsafe fn demon_attackstand2f(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "effect_attackstand2f", category = ACMD_EFFECT, low_priority )]
+#[acmd("demon", "effect_attackstand2f")]
 unsafe fn demon_attackstand2f_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -53,7 +53,7 @@ unsafe fn demon_attackstand2f_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "sound_attackstand2f", category = ACMD_SOUND, low_priority )]
+#[acmd("demon", "sound_attackstand2f")]
 unsafe fn demon_attackstand2f_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -62,7 +62,7 @@ unsafe fn demon_attackstand2f_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_attackstand2f", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("demon", "expression_attackstand2f")]
 unsafe fn demon_attackstand2f_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -89,7 +89,7 @@ unsafe fn demon_attackstand2f_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackstand32", category = ACMD_GAME, low_priority )]
+#[acmd("demon", "game_attackstand32")]
 unsafe fn demon_attackstand32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -134,9 +134,10 @@ unsafe fn demon_attackstand32(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        demon_attackstand24,
-        demon_attackstand2f, demon_attackstand2f_eff, demon_attackstand2f_snd, demon_attackstand2f_exp,
-        demon_attackstand32
-    );
+    demon_attackstand24::install();
+    demon_attackstand2f::install();
+    demon_attackstand2f_eff::install();
+    demon_attackstand2f_snd::install();
+    demon_attackstand2f_exp::install();
+    demon_attackstand32::install();
 }

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("rockman", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn rockman_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -35,7 +35,7 @@ unsafe fn rockman_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("rockman", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn rockman_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_METALBLADE) {
         LinkModule::send_event_nodes(
@@ -134,7 +134,7 @@ unsafe extern "C" fn rockman_special_s_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("rockman", FIGHTER_STATUS_KIND_SPECIAL_S)]
 unsafe fn rockman_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_STATUS_SPECIAL_N_WORK_INT_METALBLADE_ID) != 0 {
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x29b79a80a1));
@@ -143,7 +143,7 @@ unsafe fn rockman_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_special_s_pre, rockman_special_s_main, rockman_special_s_end
-    );
+    rockman_special_s_pre::install();
+    rockman_special_s_main::install();
+    rockman_special_s_end::install();
 }

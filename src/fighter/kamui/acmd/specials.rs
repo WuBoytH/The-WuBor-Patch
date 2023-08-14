@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
+#[acmd("kamui", "game_specialsjump")]
 unsafe fn kamui_specialsjump(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
@@ -24,7 +24,7 @@ unsafe fn kamui_specialsjump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
+#[acmd("kamui", [ "game_specialhi", "game_specialairhi" ])]
 unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -85,7 +85,7 @@ unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
+#[acmd("kamui", ["game_speciallwhit", "game_specialairlwhit"])]
 unsafe fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, 0);
@@ -103,7 +103,7 @@ unsafe fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
+#[acmd("kamui_waterdragon", ["game_speciallwhit", "game_specialairlwhit"])]
 unsafe fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -136,10 +136,8 @@ unsafe fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        kamui_specialsjump,
-        kamui_specialhi,
-        kamui_speciallwhit,
-        kamui_waterdragon_speciallwhit
-    );
+    kamui_specialsjump::install();
+    kamui_specialhi::install();
+    kamui_speciallwhit::install();
+    kamui_waterdragon_speciallwhit::install();
 }

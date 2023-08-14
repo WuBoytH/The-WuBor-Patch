@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "younglink", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
+#[acmd("younglink", "game_specialairhi")]
 unsafe fn younglink_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -96,7 +96,5 @@ unsafe fn younglink_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        younglink_specialairhi
-    );
+    younglink_specialairhi::install();
 }

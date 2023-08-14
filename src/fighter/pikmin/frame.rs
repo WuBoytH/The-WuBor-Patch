@@ -57,7 +57,7 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PIKMIN, main )]
+#[line("pikmin", main)]
 fn pikmin_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         pikmin_antenna_indicator(fighter);
@@ -65,7 +65,5 @@ fn pikmin_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        pikmin_frame
-    );
+    pikmin_frame::install();
 }

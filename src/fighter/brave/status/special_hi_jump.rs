@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("brave", FIGHTER_BRAVE_STATUS_KIND_SPECIAL_HI_JUMP)]
 unsafe fn brave_special_hi_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
     let hold_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_HI_WORK_INT_HOLD_FRAME);
@@ -373,7 +373,5 @@ unsafe extern "C" fn brave_special_hi_jump_situation_change_handler(fighter: &mu
 }
 
 pub fn install() {
-    install_status_scripts!(
-        brave_special_hi_jump_main
-    );
+    brave_special_hi_jump_main::install();
 }

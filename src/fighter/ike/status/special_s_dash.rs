@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper;
 
-#[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("ike", FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH)]
 unsafe fn ike_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
     StatusModule::init_settings(
@@ -34,7 +34,7 @@ unsafe fn ike_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("ike", FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH)]
 unsafe fn ike_special_s_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     GroundModule::select_cliff_hangdata(fighter.module_accessor, 1);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
@@ -126,7 +126,6 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install() {
-    install_status_scripts!(
-        ike_special_s_dash_pre, ike_special_s_dash_main
-    );
+    ike_special_s_dash_pre::install();
+    ike_special_s_dash_main::install();
 }

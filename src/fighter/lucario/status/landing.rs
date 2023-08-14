@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("lucario", FIGHTER_STATUS_KIND_LANDING)]
 unsafe fn lucario_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL) {
         VarModule::off_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
@@ -10,7 +10,7 @@ unsafe fn lucario_landing_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_Landing()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("lucario", FIGHTER_STATUS_KIND_LANDING_LIGHT)]
 unsafe fn lucario_landing_light_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL) {
         VarModule::off_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
@@ -20,7 +20,7 @@ unsafe fn lucario_landing_light_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     fighter.status_pre_LandingLight()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("lucario", FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR)]
 unsafe fn lucario_landing_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL) {
         VarModule::off_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
@@ -31,9 +31,7 @@ unsafe fn lucario_landing_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucario_landing_pre,
-        lucario_landing_light_pre,
-        lucario_landing_attack_air_pre
-    );
+    lucario_landing_pre::install();
+    lucario_landing_light_pre::install();
+    lucario_landing_attack_air_pre::install();
 }

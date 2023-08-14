@@ -9,9 +9,8 @@ use {
     smashline::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_DEDEDE, main )]
-fn dedede_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
+#[line("dedede", main)]
+unsafe fn dedede_frame(fighter: &mut L2CFighterCommon) {
 
         // Jet Hammer Movement
         
@@ -25,11 +24,8 @@ fn dedede_frame(fighter: &mut L2CFighterCommon) {
             let speed = 1.88;
             macros::SET_SPEED_EX(fighter, speed, dedespeedy, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         }
-    }
 }
 
 pub fn install() {
-    install_agent_frames!(
-        dedede_frame
-    );
+    dedede_frame::install();
 }

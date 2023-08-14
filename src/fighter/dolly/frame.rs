@@ -96,17 +96,12 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_DOLLY, main )]
-fn dolly_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // dolly_reset_vars(fighter);
-        dolly_super_special_aura(fighter);
-        dolly_super_super_cancels(fighter);
-    }
+#[line("dolly", main)]
+unsafe fn dolly_frame(fighter: &mut L2CFighterCommon) {
+    dolly_super_special_aura(fighter);
+    dolly_super_super_cancels(fighter);
 }
 
 pub fn install() {
-    install_agent_frames!(
-        dolly_frame
-    );
+    dolly_frame::install();
 }

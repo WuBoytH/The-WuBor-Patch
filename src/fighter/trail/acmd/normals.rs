@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "trail", script = "game_attack11", category = ACMD_GAME, low_priority )]
+#[acmd("trail", "game_attack11")]
 unsafe fn trail_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -69,7 +69,7 @@ unsafe fn trail_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("trail", "game_attacks3")]
 unsafe fn trail_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -93,8 +93,6 @@ unsafe fn trail_attacks3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        trail_attack11,
-        trail_attacks3
-    );
+    trail_attack11::install();
+    trail_attacks3::install();
 }

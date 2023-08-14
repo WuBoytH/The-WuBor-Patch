@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "yoshi", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("yoshi", "game_attacks3")]
 unsafe fn yoshi_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -14,7 +14,7 @@ unsafe fn yoshi_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("yoshi", "game_attacks3hi")]
 unsafe fn yoshi_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -29,7 +29,7 @@ unsafe fn yoshi_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("yoshi", "game_attacks3lw")]
 unsafe fn yoshi_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe fn yoshi_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("yoshi", "game_attackhi3")]
 unsafe fn yoshi_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
@@ -62,7 +62,7 @@ unsafe fn yoshi_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("yoshi", "game_attacklw3")]
 unsafe fn yoshi_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.1);
@@ -81,11 +81,9 @@ unsafe fn yoshi_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        yoshi_attacks3,
-        yoshi_attacks3hi,
-        yoshi_attacks3lw,
-        yoshi_attackhi3,
-        yoshi_attacklw3
-    );
+    yoshi_attacks3::install();
+    yoshi_attacks3hi::install();
+    yoshi_attacks3lw::install();
+    yoshi_attackhi3::install();
+    yoshi_attacklw3::install();
 }

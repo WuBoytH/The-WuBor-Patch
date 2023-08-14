@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("miiswordsman", "game_attackairn")]
 unsafe fn miisword_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
@@ -25,7 +25,7 @@ unsafe fn miisword_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("miiswordsman", "game_attackairb")]
 unsafe fn miisword_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -55,7 +55,7 @@ unsafe fn miisword_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("miiswordsman", "game_attackairhi")]
 unsafe fn miisword_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
@@ -81,9 +81,7 @@ unsafe fn miisword_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        miisword_attackairn,
-        miisword_attackairb,
-        miisword_attackairhi
-    );
+    miisword_attackairn::install();
+    miisword_attackairb::install();
+    miisword_attackairhi::install();
 }

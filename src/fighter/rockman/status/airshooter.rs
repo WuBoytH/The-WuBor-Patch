@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "rockman_airshooter", status = WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("rockman_airshooter", WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR)]
 unsafe fn rockman_airshooter_regular_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_airshooter"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
@@ -52,7 +52,7 @@ unsafe fn rockman_airshooter_regular_init(weapon: &mut L2CWeaponCommon) -> L2CVa
     0.into()
 }
 
-#[status_script(agent = "rockman_airshooter", status = WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("rockman_airshooter", WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR)]
 unsafe fn rockman_airshooter_regular_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if VarModule::is_flag(weapon.battle_object, rockman_airshooter::status::flag::MOVE) {
         let limit_speed_y = WorkModule::get_param_float(weapon.module_accessor, hash40("param_airshooter"), hash40("limit_speed"));
@@ -69,8 +69,6 @@ unsafe fn rockman_airshooter_regular_exec(weapon: &mut L2CWeaponCommon) -> L2CVa
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_airshooter_regular_init,
-        rockman_airshooter_regular_exec
-    );
+    rockman_airshooter_regular_init::install();
+    rockman_airshooter_regular_exec::install();
 }

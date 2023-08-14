@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "snake", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("snake", "game_attackairn")]
 unsafe fn snake_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -47,7 +47,7 @@ unsafe fn snake_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("snake", "game_attackairb")]
 unsafe fn snake_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if StatusModule::prev_status_kind(agent.module_accessor, 0) == *FIGHTER_STATUS_KIND_PASS {
@@ -84,7 +84,7 @@ unsafe fn snake_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("snake", "game_attackairlw")]
 unsafe fn snake_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -142,9 +142,7 @@ unsafe fn snake_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        snake_attackairn,
-        snake_attackairb,
-        snake_attackairlw
-    );
+    snake_attackairn::install();
+    snake_attackairb::install();
+    snake_attackairlw::install();
 }

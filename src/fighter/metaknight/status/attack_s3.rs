@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "metaknight", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("metaknight", FIGHTER_STATUS_KIND_ATTACK_S3)]
 unsafe fn metaknight_attacks3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -30,7 +30,5 @@ unsafe fn metaknight_attacks3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        metaknight_attacks3_pre
-    );
+    metaknight_attacks3_pre::install();
 }

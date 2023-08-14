@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucina", FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP)]
 unsafe fn lucina_specialn_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(
@@ -36,7 +36,5 @@ unsafe extern "C" fn lucina_specialn_loop_main_loop(fighter: &mut L2CFighterComm
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucina_specialn_loop_main
-    );
+    lucina_specialn_loop_main::install();
 }

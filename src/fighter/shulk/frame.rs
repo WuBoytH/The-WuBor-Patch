@@ -10,7 +10,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SHULK, main )]
+#[line("shulk", main)]
 fn shulk_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         
@@ -72,7 +72,5 @@ fn shulk_frame(fighter: &mut L2CFighterCommon) {
 }
 
 pub fn install() {
-    install_agent_frames!(
-        shulk_frame
-    );
+    shulk_frame::install();
 }

@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "chrom", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("chrom", "game_attackairf")]
 unsafe fn chrom_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -22,7 +22,7 @@ unsafe fn chrom_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("chrom", "game_attackairlw")]
 unsafe fn chrom_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -44,7 +44,7 @@ unsafe fn chrom_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd("chrom", "effect_attackairlw")]
 unsafe fn chrom_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -56,7 +56,7 @@ unsafe fn chrom_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+#[acmd("chrom", "sound_attackairlw")]
 unsafe fn chrom_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -68,7 +68,7 @@ unsafe fn chrom_attackairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("chrom", "expression_attackairlw")]
 unsafe fn chrom_attackairlw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y), AttackDirectionAxis(*ATTACK_DIRECTION_X));
@@ -84,8 +84,9 @@ unsafe fn chrom_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        chrom_attackairf,
-        chrom_attackairlw, chrom_attackairlw_eff, chrom_attackairlw_snd, chrom_attackairlw_exp
-    );
+    chrom_attackairf::install();
+    chrom_attackairlw::install();
+    chrom_attackairlw_eff::install();
+    chrom_attackairlw_snd::install();
+    chrom_attackairlw_exp::install();
 }

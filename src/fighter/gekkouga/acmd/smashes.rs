@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gekkouga", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("gekkouga", "game_attackhi4")]
 unsafe fn gekkouga_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -38,7 +38,5 @@ unsafe fn gekkouga_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_attackhi4
-    );
+    gekkouga_attackhi4::install();
 }

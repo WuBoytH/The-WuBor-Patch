@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "elight", script = "game_attackairn", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackairn")]
 unsafe fn elight_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -36,7 +36,7 @@ unsafe fn elight_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
+#[acmd("elight", "effect_attackairn")]
 unsafe fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_attack100_hand"), Hash40::new("handl"), 1, 0.7, -0.2, 0, 0, 0, 0.37, true);
@@ -54,7 +54,7 @@ unsafe fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
+#[acmd("elight", "sound_attackairn")]
 unsafe fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -62,7 +62,7 @@ unsafe fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("elight", "expression_attackairn")]
 unsafe fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
@@ -79,12 +79,12 @@ unsafe fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_landingairn", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_landingairn")]
 unsafe fn elight_landingairn(_agent: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairf", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackairf")]
 unsafe fn elight_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -148,7 +148,7 @@ unsafe fn elight_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairb", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackairb")]
 unsafe fn elight_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -213,7 +213,7 @@ unsafe fn elight_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackairhi")]
 unsafe fn elight_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -276,7 +276,7 @@ unsafe fn elight_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_attackairlw")]
 unsafe fn elight_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -342,7 +342,7 @@ unsafe fn elight_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd("elight", "effect_attackairlw")]
 unsafe fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -373,7 +373,7 @@ unsafe fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
+#[acmd("elight", "sound_attackairlw")]
 unsafe fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -387,7 +387,7 @@ unsafe fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
+#[acmd("elight", "expression_attackairlw")]
 unsafe fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -413,7 +413,7 @@ unsafe fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
+#[acmd("elight", "game_landingairlw")]
 unsafe fn elight_landingairlw(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, attack_air::flag::ENABLE_LANDING_ATTACK) {
         if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -453,7 +453,7 @@ unsafe fn elight_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "effect_landingairlw", category = ACMD_EFFECT, low_priority )]
+#[acmd("elight", "effect_landingairlw")]
 unsafe fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -488,7 +488,7 @@ unsafe fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "sound_landingairlw", category = ACMD_SOUND, low_priority )]
+#[acmd("elight", "sound_landingairlw")]
 unsafe fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -503,13 +503,19 @@ unsafe fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        elight_attackairn, elight_attackairn_eff, elight_attackairn_snd, elight_attackairn_exp,
-        elight_landingairn,
-        elight_attackairf,
-        elight_attackairb,
-        elight_attackairhi,
-        elight_attackairlw, elight_attackairlw_eff, elight_attackairlw_snd, elight_attackairlw_exp,
-        elight_landingairlw, elight_landingairlw_eff, elight_landingairlw_snd
-    );
+    elight_attackairn::install();
+    elight_attackairn_eff::install();
+    elight_attackairn_snd::install();
+    elight_attackairn_exp::install();
+    elight_landingairn::install();
+    elight_attackairf::install();
+    elight_attackairb::install();
+    elight_attackairhi::install();
+    elight_attackairlw::install();
+    elight_attackairlw_eff::install();
+    elight_attackairlw_snd::install();
+    elight_attackairlw_exp::install();
+    elight_landingairlw::install();
+    elight_landingairlw_eff::install();
+    elight_landingairlw_snd::install();
 }

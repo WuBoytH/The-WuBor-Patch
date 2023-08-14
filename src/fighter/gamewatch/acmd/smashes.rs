@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gamewatch", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", "game_attacks4")]
 unsafe fn gamewatch_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -17,7 +17,7 @@ unsafe fn gamewatch_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", "game_attackhi4")]
 unsafe fn gamewatch_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -47,7 +47,7 @@ unsafe fn gamewatch_attackhi4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attackhi4r", category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", "game_attackhi4r")]
 unsafe fn gamewatch_attackhi4r(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -77,7 +77,7 @@ unsafe fn gamewatch_attackhi4r(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gamewatch", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
+#[acmd("gamewatch", "game_attacklw4")]
 unsafe fn gamewatch_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -99,10 +99,8 @@ unsafe fn gamewatch_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_attacks4,
-        gamewatch_attackhi4,
-        gamewatch_attackhi4r,
-        gamewatch_attacklw4
-    );
+    gamewatch_attacks4::install();
+    gamewatch_attackhi4::install();
+    gamewatch_attackhi4r::install();
+    gamewatch_attacklw4::install();
 }

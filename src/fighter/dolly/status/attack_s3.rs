@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("dolly", FIGHTER_STATUS_KIND_ATTACK_S3)]
 unsafe fn dolly_attacks3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.status_AttackS3Common();
@@ -179,7 +179,5 @@ unsafe extern "C" fn dolly_attacks3_mtrans_param(fighter: &mut L2CFighterCommon,
 }
 
 pub fn install() {
-    install_status_scripts!(
-        dolly_attacks3_main
-    );
+    dolly_attacks3_main::install();
 }

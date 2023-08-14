@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "toonlink", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("toonlink", "game_attackdash")]
 unsafe fn toonlink_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 8.0);
@@ -20,7 +20,5 @@ unsafe fn toonlink_attackdash(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        toonlink_attackdash
-    );
+    toonlink_attackdash::install();
 }

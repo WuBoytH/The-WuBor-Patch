@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pickel", script = "game_attacks4", category = ACMD_GAME, low_priority )]
+#[acmd("pickel", "game_attacks4")]
 unsafe fn pickel_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
@@ -73,7 +73,5 @@ unsafe fn pickel_attacks4(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        pickel_attacks4
-    );
+    pickel_attacks4::install();
 }

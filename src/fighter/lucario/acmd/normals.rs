@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attack13")]
 unsafe fn lucario_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -17,7 +17,7 @@ unsafe fn lucario_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackdash")]
 unsafe fn lucario_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
@@ -38,7 +38,7 @@ unsafe fn lucario_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacks3", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attacks3")]
 unsafe fn lucario_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -56,7 +56,7 @@ unsafe fn lucario_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attacks3hi")]
 unsafe fn lucario_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -74,7 +74,7 @@ unsafe fn lucario_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attacks3lw")]
 unsafe fn lucario_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -94,7 +94,7 @@ unsafe fn lucario_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attackhi3")]
 unsafe fn lucario_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -108,7 +108,7 @@ unsafe fn lucario_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
+#[acmd("lucario", "game_attacklw3")]
 unsafe fn lucario_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.6);
@@ -126,13 +126,11 @@ unsafe fn lucario_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        lucario_attack13,
-        lucario_attackdash,
-        lucario_attacks3,
-        lucario_attacks3hi,
-        lucario_attacks3lw,
-        lucario_attackhi3,
-        lucario_attacklw3
-    );
+    lucario_attack13::install();
+    lucario_attackdash::install();
+    lucario_attacks3::install();
+    lucario_attacks3hi::install();
+    lucario_attacks3lw::install();
+    lucario_attackhi3::install();
+    lucario_attacklw3::install();
 }

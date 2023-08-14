@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("lucario_auraball", WEAPON_LUCARIO_AURABALL_STATUS_KIND_START)]
 unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.battle_object, weapon::instance::flag::FROM_POCKET) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
@@ -23,7 +23,7 @@ unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("lucario_auraball", WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT)]
 unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.battle_object, weapon::instance::flag::FROM_POCKET) {
         // println!("We don't know if this auraball is outta pocket! Checking...");
@@ -60,7 +60,7 @@ unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucario_auraball", WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT)]
 unsafe fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_auraball"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
@@ -227,8 +227,7 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucario_auraball_start_end,
-        lucario_auraball_shoot_pre, lucario_auraball_shoot_main
-    );
+    lucario_auraball_start_end::install();
+    lucario_auraball_shoot_pre::install();
+    lucario_auraball_shoot_main::install();
 }

@@ -12,13 +12,13 @@ use {
     super::vl
 };
 
-#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("chrom", FIGHTER_STATUS_KIND_ATTACK_DASH)]
 unsafe fn chrom_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3);
     1.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("chrom", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn chrom_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -47,7 +47,7 @@ unsafe fn chrom_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("chrom", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn chrom_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.battle_object, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
     MotionModule::change_motion(
@@ -73,12 +73,12 @@ unsafe extern "C" fn chrom_speciallw_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("chrom", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn chrom_speciallw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("chrom", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
@@ -107,20 +107,22 @@ unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("chrom", FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT)]
 unsafe fn chrom_speciallw_hit_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "chrom", status = FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+#[status("chrom", FIGHTER_ROY_STATUS_KIND_SPECIAL_LW_HIT)]
 unsafe fn chrom_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        chrom_attackdash_pre,
-        chrom_speciallw_pre, chrom_speciallw_main, chrom_speciallw_init, chrom_speciallw_exec,
-        chrom_speciallw_hit_init, chrom_speciallw_hit_exec
-    );
+    chrom_attackdash_pre::install();
+    chrom_speciallw_pre::install();
+    chrom_speciallw_main::install();
+    chrom_speciallw_init::install();
+    chrom_speciallw_exec::install();
+    chrom_speciallw_hit_init::install();
+    chrom_speciallw_hit_exec::install();
 }

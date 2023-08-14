@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("rockman", FIGHTER_STATUS_KIND_REBIRTH)]
 unsafe fn rockman_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [
@@ -14,7 +14,5 @@ unsafe fn rockman_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 pub fn install() {
-    install_status_scripts!(
-        rockman_rebirth_main
-    );
+    rockman_rebirth_main::install();
 }

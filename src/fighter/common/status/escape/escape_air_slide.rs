@@ -101,7 +101,7 @@ pub unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParam
     AirDashParams{attack_frame, cancel_frame}
 }
 
-#[common_status_script( status = FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE )]
+#[status(FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE)]
 unsafe fn escape_air_slide_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -130,7 +130,7 @@ unsafe fn escape_air_slide_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[common_status_script( status = FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS )]
+#[status(FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE)]
 unsafe fn escape_air_slide_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if [
@@ -259,7 +259,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     }
 }
 
-#[common_status_script( status = FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN )]
+#[status(FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE)]
 unsafe fn escape_air_slide_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_escape_air_slide_common(fighter);
     MotionModule::change_motion(
@@ -293,7 +293,7 @@ unsafe fn sub_escape_air_slide_common(fighter: &mut L2CFighterCommon) {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_escape_air_uniq as *const () as _));
 }
 
-#[common_status_script( status = FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END )]
+#[status(FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE)]
 unsafe fn escape_air_slide_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     escape_air_slide_end_inner(fighter)
 }
@@ -357,7 +357,7 @@ pub unsafe fn escape_air_slide_end_inner(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[common_status_script( status = FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE, condition = LUA_SCRIPT_STATUS_FUNC_CALC_PARAM )]
+#[status(FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE)]
 unsafe fn escape_air_slide_calc_param(fighter: &mut L2CFighterCommon) -> L2CValue {
     FighterWorkModuleImpl::calc_escape_air_slide_param(fighter.module_accessor, 0.0);
     0.into()
@@ -373,11 +373,9 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
-    install_status_scripts!(
-        escape_air_slide_pre,
-        escape_air_slide_init,
-        escape_air_slide_main,
-        escape_air_slide_end,
-        escape_air_slide_calc_param
-    );
+    escape_air_slide_pre::install();
+    escape_air_slide_init::install();
+    escape_air_slide_main::install();
+    escape_air_slide_end::install();
+    escape_air_slide_calc_param::install();
 }

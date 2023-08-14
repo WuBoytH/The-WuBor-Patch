@@ -1,6 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "tantan", scripts = [ "game_specialairhistart", "game_specialairhistart2" ], category = ACMD_GAME, low_priority )]
+#[acmd("tantan", [ "game_specialairhistart", "game_specialairhistart2" ])]
 unsafe fn tantan_specialairhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -27,7 +27,5 @@ unsafe fn tantan_specialairhistart(agent: &mut L2CAgentBase) {
 }
 
 pub fn install() {
-    install_acmd_scripts!(
-        tantan_specialairhistart
-    );
+    tantan_specialairhistart::install();
 }

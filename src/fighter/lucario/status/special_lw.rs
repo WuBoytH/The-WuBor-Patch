@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::{vl, helper::*};
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
+#[status("lucario", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,7 +31,7 @@ unsafe fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+#[status("lucario", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -72,7 +72,7 @@ unsafe fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status("lucario", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_STEP, lucario::SPECIAL_LW_STEP_START);
     VarModule::set_int(fighter.battle_object, lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
@@ -325,14 +325,15 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+#[status("lucario", FIGHTER_STATUS_KIND_SPECIAL_LW)]
 unsafe fn lucario_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_lw_eff_remover(fighter);
     0.into()
 }
 
 pub fn install() {
-    install_status_scripts!(
-        lucario_special_lw_pre, lucario_special_lw_init, lucario_special_lw_main, lucario_special_lw_end
-    );
+    lucario_special_lw_pre::install();
+    lucario_special_lw_init::install();
+    lucario_special_lw_main::install();
+    lucario_special_lw_end::install();
 }

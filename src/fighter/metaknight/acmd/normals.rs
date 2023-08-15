@@ -493,7 +493,7 @@ unsafe fn metaknight_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 15.0, 7.0, 7.0, 7.0);
     }
-    macros::FT_MOTION_RATE(agent, 1.0 / 4.0);
+    macros::FT_MOTION_RATE(agent, 0.75);
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 8.0);
@@ -513,7 +513,7 @@ unsafe fn metaknight_attacklw3(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
         FighterAreaModuleImpl::disable_fix_jostle_area(agent.module_accessor);
     }
-    MiscModule::calc_motion_rate_from_cancel_frame(agent, 28.0, 8.0);
+    MiscModule::calc_motion_rate_from_cancel_frame(agent, 28.0, 13.0);
 }
 
 #[acmd_script( agent = "metaknight", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]

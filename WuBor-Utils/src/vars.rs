@@ -202,6 +202,32 @@ pub mod bayonetta {
     }
 }
 
+pub mod brave {
+    pub mod instance {
+        pub mod int {
+            pub const NEXT_ROLL_INDEX : i32 = 0x0100;
+            pub const USED_SPELL_MASK : i32 = 0x0101;
+            pub const SPELL_SLOT_1 : i32 = 0x0102;
+            pub const SPELL_SLOT_2 : i32 = 0x0103;
+            pub const SPELL_SLOT_3 : i32 = 0x0104;
+            pub const SPELL_SLOT_4 : i32 = 0x0105;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const ENABLE_CLEAR_PSYCHE_UP : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod captain {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod chrom {
     pub mod status {
         pub mod flag {
@@ -294,6 +320,15 @@ pub mod falco {
     }
 }
 
+pub mod fox {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_ENABLE_SNAP : i32 = 0x1100;
+            pub const SPECIAL_HI_ENABLED_SNAP : i32 = 0x1101;
+        }
+    }
+}
+
 pub mod ganon {
     pub mod status {
         pub mod flag {
@@ -318,14 +353,10 @@ pub mod ganon {
 }
 
 pub mod gaogaen {
-    pub mod instance {
-        pub mod flag {
-            pub const REVENGE_AUTO : i32 = 0x0100;
-        }
-    }
     pub mod status {
         pub mod flag {
-            pub const REVENGE_CRITICAL : i32 = 0x1150;
+            pub const REVENGE_AUTO : i32 = 0x1150;
+            pub const REVENGE_CRITICAL : i32 = 0x1151;
         }
     }
 }

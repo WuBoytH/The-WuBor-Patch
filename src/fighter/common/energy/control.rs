@@ -16,9 +16,10 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*},
-    super::super::param
+    wubor_utils::controls::*
+    // custom_var::*,
+    // wubor_utils::{wua_bind::*, vars::*},
+    // super::super::param
 };
 
 #[repr(C)]
@@ -292,9 +293,16 @@ impl DerefMut for FighterKineticEnergyControl {
 unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObjectModuleAccessor) {
     let reset_type = std::mem::transmute(energy.energy_reset_type);
 
-    let mut stick = Vector2f {
-        x: ControlModule::get_stick_x(boma),
-        y: ControlModule::get_stick_y(boma)
+    let mut stick = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        Vector2f {
+            x: ControlModule::get_sub_stick_x(boma),
+            y: ControlModule::get_sub_stick_y(boma)
+        }
+    } else {
+        Vector2f {
+            x: ControlModule::get_stick_x(boma),
+            y: ControlModule::get_stick_y(boma)
+        }
     };
 
     let backup_max = energy.speed_max;
@@ -540,31 +548,31 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
     let reset_type = std::mem::transmute(energy.energy_reset_type);
     match reset_type {
         FallAdjust | FallAdjustNoCap | StopCeil | WallJump => {
-            println!("sup");
+            // println!("sup");
             let mut stable_speed = WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0);
             if reset_type == StopCeil {
                 stable_speed *= WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("stop_ceil_speed_x_stable_mul"));
             }
 
-            let kinetic_type = KineticModule::get_kinetic_type(boma);
-            let is_jump = kinetic_type == *FIGHTER_KINETIC_TYPE_JUMP;
-            println!("Is jumping? {is_jump}");
-            let super_jump = is_jump && {
-                let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
-                VarModule::is_flag(object, jump::flag::SUPER_JUMP)
-            };
-            println!("Is super jumping? {super_jump}");
-            if kinetic_type == *FIGHTER_KINETIC_TYPE_JUMP {
-                stable_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
-                if super_jump {
-                    if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-                        stable_speed *= param::jump::hyper_hop_air_speed_x_stable_mul;
-                    }
-                    else {
-                        stable_speed *= param::jump::super_jump_speed_x_mul;
-                    }
-                }
-            }
+            // let kinetic_type = KineticModule::get_kinetic_type(boma);
+            // let is_jump = kinetic_type == *FIGHTER_KINETIC_TYPE_JUMP;
+            // println!("Is jumping? {is_jump}");
+            // let super_jump = is_jump && {
+            //     let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
+            //     VarModule::is_flag(object, jump::flag::SUPER_JUMP)
+            // };
+            // println!("Is super jumping? {super_jump}");
+            // if kinetic_type == *FIGHTER_KINETIC_TYPE_JUMP {
+            //     stable_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
+            //     if super_jump {
+            //         if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
+            //             stable_speed *= param::jump::hyper_hop_air_speed_x_stable_mul;
+            //         }
+            //         else {
+            //             stable_speed *= param::jump::super_jump_speed_x_mul;
+            //         }
+            //     }
+            // }
 
             energy.speed_max = PaddedVec2::new(stable_speed, -1.0);
             energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0), 0.0);
@@ -573,15 +581,15 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
             } else {
                 -1.0
             };
-            let control_mul = if super_jump {
-                param::jump::special_jump_control_mul
-            }
-            else {
-                1.0
-            };
+            // let control_mul = if super_jump {
+            //     param::jump::special_jump_control_mul
+            // }
+            // else {
+            //     1.0
+            // };
             energy.speed_limit = PaddedVec2::new(air_x_speed_max, 0.0);
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0) * control_mul;
-            energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0) * control_mul;
+            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0) /* * control_mul */;
+            energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0) /* * control_mul */;
         },
         FlyAdjust => {
             let kind = smash::app::utility::get_kind(boma);

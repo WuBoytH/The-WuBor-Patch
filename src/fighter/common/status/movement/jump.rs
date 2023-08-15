@@ -1,5 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::super::param;
+use wubor_utils::controls::*;
+use std::arch::asm;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
@@ -165,6 +167,126 @@ unsafe fn status_end_jump(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
+#[skyline::hook(offset = 0x6ce6b8, inline)]
+unsafe fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d19a4, inline)]
+unsafe fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d1af0, inline)]
+unsafe fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d0434, inline)]
+unsafe fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6ce7b0, inline)]
+unsafe fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d05ac, inline)]
+unsafe fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d115c, inline)]
+unsafe fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6ce26c, inline)]
+unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let control_module = *ctx.registers[0].x.as_ref();
+    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);    
+    let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+        ControlModule::get_sub_stick_x(boma)
+    }
+    else {
+        ControlModule::get_stick_x(boma)
+    };
+    asm!("fmov s0, w8", in("w8") left_stick_x)
+}
+
+#[skyline::hook(offset = 0x6d251c, inline)]
+unsafe fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
+    let work_module = *ctx.registers[0].x.as_ref();
+    let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let object = MiscModule::get_battle_object_from_id(module_accessor.battle_object_id);
+    let mul = if VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP) {
+        1.2
+    }
+    else {
+        1.0
+    };
+    let jump_y = callable(work_module, hash40("jump_speed_y"), 0) * mul;
+    asm!("fmov s0, w8", in("w8") jump_y)
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -178,4 +300,31 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
 
 pub fn install() {
     skyline::nro::add_hook(nro_hook);
+
+    // Stubs ControlModule::get_stick_x calls when calculating horizontal jump velocity
+    skyline::patching::Patch::in_text(0x6ce6b8).nop();
+    skyline::patching::Patch::in_text(0x6d19a4).nop();
+    skyline::patching::Patch::in_text(0x6d1af0).nop();
+    skyline::patching::Patch::in_text(0x6d0434).nop();
+
+    // Same as above but for double jumps
+    skyline::patching::Patch::in_text(0x6ce7b0).nop();
+    skyline::patching::Patch::in_text(0x6d05ac).nop();
+    skyline::patching::Patch::in_text(0x6d115c).nop();
+    skyline::patching::Patch::in_text(0x6ce26c).nop();
+
+    // Super Jump Speed Multiplier
+    skyline::patching::Patch::in_text(0x6d251c).nop();
+
+    skyline::install_hooks!(
+        jump1_stick_x_hook,
+        jump2_stick_x_hook,
+        jump3_stick_x_hook,
+        jump4_stick_x_hook,
+        jump_aerial_stick_x_hook,
+        jump_aerial_2_stick_x_hook,
+        jump_aerial_3_stick_x_hook,
+        jump_aerial_4_stick_x_hook,
+        jump_speed_y_hook
+    );
 }

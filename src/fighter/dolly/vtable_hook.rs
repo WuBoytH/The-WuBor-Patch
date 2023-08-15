@@ -41,11 +41,6 @@ pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, f
     let mut some_bool2 = false;
     if 0x1E >= status - 0x1DC {
         match status {
-            0x29 => {
-                if VarModule::is_flag(object, dolly::status::flag::ATTACK_DASH_COMMAND) {
-                    some_int = 1
-                }
-            },
             0x1DC..=0x1E0 => some_bool2 = true,
             0x1EB => some_int = 0,
             0x1EF => some_int = 2,

@@ -33,14 +33,19 @@ pub unsafe extern "C" fn dolly_check_super_special_pre(module_accessor: *mut Bat
 
 #[skyline::hook(offset = 0x972d90)]
 pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, fighter: &mut Fighter) {
-    let module_accessor = fighter.battle_object.module_accessor;
+    let object = &mut fighter.battle_object;
+    let module_accessor = object.module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let mut some_bool = false;
     let mut some_int = -1;
     let mut some_bool2 = false;
     if 0x1E >= status - 0x1DC {
         match status {
-            0x29 => some_int = 1,
+            0x29 => {
+                if VarModule::is_flag(object, dolly::status::flag::ATTACK_DASH_COMMAND) {
+                    some_int = 1
+                }
+            },
             0x1DC..=0x1E0 => some_bool2 = true,
             0x1EB => some_int = 0,
             0x1EF => some_int = 2,
@@ -77,7 +82,7 @@ pub unsafe extern "C" fn dolly_handle_special_command_turnaround(_vtable: u64, f
         else {
             special_command_lr
         };
-        if new_lr != 0.0 && new_lr != special_command_lr {
+        if new_lr != 0.0 && new_lr != lr {
             PostureModule::set_lr(module_accessor, new_lr);
             PostureModule::update_rot_y_lr(module_accessor);
         }

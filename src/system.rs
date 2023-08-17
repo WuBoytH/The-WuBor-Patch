@@ -22,6 +22,7 @@ mod engine;
 pub mod controller;
 mod modules;
 mod one_frame;
+mod css;
 
 fn find_subsequence(haystack: &[u8], needle: &[u8]) -> Option<usize> {
     haystack.windows(needle.len()).position(|window| window == needle)
@@ -57,4 +58,5 @@ pub fn install() {
     controller::install();
     modules::install();
     one_frame::install();
+    css::install();
 }

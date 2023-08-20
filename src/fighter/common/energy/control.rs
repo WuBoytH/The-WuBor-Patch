@@ -312,8 +312,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
         stick.x = 0.0;
     }
 
-    let accel_add_x = if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR
-    && WorkModule::is_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE)
+    let accel_add_x = if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
     && !WorkModule::is_flag(boma, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_CONTROL)
     {
         stick.x = 0.0;
@@ -329,8 +328,6 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
     } else {
         0.0
     };
-
-    let mut change_y = energy.accel.y;
 
     use EnergyControllerResetType::*;
 
@@ -408,7 +405,6 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             if 0.0 <= mul * energy.lr {
                 do_standard_accel = false;
                 energy.accel.x = 0.0;
-                energy.accel.y = change_y;
                 energy.speed_max.x = 0.0;
                 0.0
             } else {
@@ -416,7 +412,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
         },
         Free => {
-            change_y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
+            energy.accel.y = accel_add_y * stick.y.signum() + stick.y * energy.accel_mul_y;
             energy.speed_max.y *= stick.y;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
@@ -498,20 +494,30 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
         _ => 0.0
     };
 
+
     if do_standard_accel {
+        let mut set_speed_max = true;
+
         energy.accel.x = accel_diff;
-        energy.speed_max.x *= stick.x.abs();
+        let speed_max = energy.speed_max.x * stick.x.abs();
     
         if energy.unk[1] != 0 {
-            if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || energy.speed_max.x.abs() <= energy._x9c.abs()))
-            && (stick.x >= 0.0 || energy._xa0 >= 0.0 || energy.speed_max.x.abs() <= energy._x9c.abs()))
+            if !(((energy._x9c != 0.0 && (stick.x <= 0.0 || energy._xa0 <= 0.0 || speed_max.abs() <= energy._x9c.abs()))
+            && (stick.x >= 0.0 || energy._xa0 >= 0.0 || speed_max.abs() <= energy._x9c.abs()))
             && ((stick.x <= 0.0 || 0.0 <= energy._xa0) && (0.0 <= stick.x || energy._xa0 <= 0.0)))
             {
-                energy._x9c = energy.speed_max.x;
+                energy._x9c = speed_max;
                 energy._xa0 = stick.x;
             }
-
+            else {
+                set_speed_max = false;
+            }
         }
+
+        if set_speed_max {
+            energy.speed_max.x = speed_max;
+        }
+
     }
 
     energy.process(boma);

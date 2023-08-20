@@ -264,6 +264,9 @@ pub fn install() {
     // Super Jump Speed Multiplier
     skyline::patching::Patch::in_text(0x6d251c).nop();
 
+    // Always use Jump Speed Y
+    skyline::patching::Patch::in_text(0x6d215c).data(0x140000EBu32);
+
     skyline::install_hooks!(
         jump1_stick_x_hook,
         jump2_stick_x_hook,

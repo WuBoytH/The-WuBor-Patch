@@ -21,6 +21,9 @@ pub fn install() {
     // Patches out the removal of unused command input classes for Ryu and Ken
     skyline::patching::Patch::in_text(0x10d45a4).data(0x14000014u32);
 
+    // Patches the check that enables proximity normals
+    skyline::patching::Patch::in_text(0x10d51bc).data(0x1400021Au32);
+
     skyline::install_hooks!(
         ryu_ken_init
     );

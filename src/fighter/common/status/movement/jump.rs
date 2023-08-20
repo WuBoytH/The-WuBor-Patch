@@ -219,6 +219,22 @@ unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
+#[skyline::hook(offset = 0x6d251c, inline)]
+unsafe fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
+    let work_module = *ctx.registers[0].x.as_ref();
+    let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let object = MiscModule::get_battle_object_from_id(module_accessor.battle_object_id);
+    let mul = if VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP) {
+        1.2
+    }
+    else {
+        1.0
+    };
+    let jump_y = callable(work_module, hash40("jump_speed_y"), 0) * mul;
+    asm!("fmov s0, w8", in("w8") jump_y)
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -245,6 +261,9 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x6d115c).nop();
     skyline::patching::Patch::in_text(0x6ce26c).nop();
 
+    // Super Jump Speed Multiplier
+    skyline::patching::Patch::in_text(0x6d251c).nop();
+
     skyline::install_hooks!(
         jump1_stick_x_hook,
         jump2_stick_x_hook,
@@ -254,5 +273,6 @@ pub fn install() {
         jump_aerial_2_stick_x_hook,
         jump_aerial_3_stick_x_hook,
         jump_aerial_4_stick_x_hook,
+        jump_speed_y_hook
     );
 }

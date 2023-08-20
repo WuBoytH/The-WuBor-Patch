@@ -220,6 +220,14 @@ pub mod brave {
     }
 }
 
+pub mod captain {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
+        }
+    }
+}
+
 pub mod chrom {
     pub mod status {
         pub mod flag {
@@ -312,6 +320,15 @@ pub mod falco {
     }
 }
 
+pub mod fox {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_ENABLE_SNAP : i32 = 0x1100;
+            pub const SPECIAL_HI_ENABLED_SNAP : i32 = 0x1101;
+        }
+    }
+}
+
 pub mod ganon {
     pub mod status {
         pub mod flag {
@@ -336,14 +353,10 @@ pub mod ganon {
 }
 
 pub mod gaogaen {
-    pub mod instance {
-        pub mod flag {
-            pub const REVENGE_AUTO : i32 = 0x0100;
-        }
-    }
     pub mod status {
         pub mod flag {
-            pub const REVENGE_CRITICAL : i32 = 0x1150;
+            pub const REVENGE_AUTO : i32 = 0x1150;
+            pub const REVENGE_CRITICAL : i32 = 0x1151;
         }
     }
 }

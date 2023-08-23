@@ -190,6 +190,18 @@ impl VarModule {
             *FIGHTER_STATUS_KIND_GUARD_OFF,
             vec![*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE]
         ); // Guards into Guard Off
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_ESCAPE,
+            vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
+        ); // Escapes...
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_ESCAPE_F,
+            vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
+        ); // Escapes...
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_ESCAPE_B,
+            vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
+        ); // Escapes...
         varmodule
     }
 

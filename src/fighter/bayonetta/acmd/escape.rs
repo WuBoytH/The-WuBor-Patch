@@ -1,5 +1,21 @@
 use crate::imports::acmd_imports::*;
 
+#[acmd_script( agent = "bayonetta", script = "game_escapef", category = ACMD_GAME, low_priority )]
+unsafe fn bayonetta_escapef(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), true);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        notify_event_msc_cmd!(agent, Hash40::new_raw(0x2ea0f68425), false);
+    }
+    frame(agent.lua_state_agent, 19.0);
+    if macros::is_excute(agent) {
+        macros::REVERSE_LR(agent);
+    }
+}
+
 #[acmd_script( agent = "bayonetta", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe fn bayonetta_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
@@ -15,6 +31,7 @@ unsafe fn bayonetta_escapeairslide(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
+        bayonetta_escapef,
         bayonetta_escapeairslide
     );
 }

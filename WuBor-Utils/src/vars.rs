@@ -57,7 +57,9 @@ pub mod fighter {
             // pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x0004;
             // pub const IS_FGC : i32 = 0x0005;
             // pub const DODGE_CANCEL : i32 = 0x0006;
+            pub const JUMP_FROM_SQUAT : i32 = 0x0006;
             pub const SUPER_JUMP : i32 = 0x0007;
+            pub const SUPER_JUMP_SET_MOMENTUM : i32 = 0x0008;
             // pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
             pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
         }
@@ -73,6 +75,7 @@ pub mod fighter {
             // pub const CUSTOM_COMMAND_623_TIMER : i32 = 0x0008;
             // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x0009;
             // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0x000A;
+            pub const JUMP_FROM_SQUAT_COUNT_STATUS : i32 = 0x000B;
         }
         pub mod float {
             pub const FLICK_DOWN : i32 = 0x0000;
@@ -130,12 +133,6 @@ pub mod appeal {
     pub mod int64 {
         pub const ACTION_MOT : i32 = 0x1050;
         pub const LOOP_MOT : i32 = 0x1051;
-    }
-}
-
-pub mod jump {
-    pub mod flag {
-        pub const JUMP_FROM_SQUAT : i32 = 0x1050;
     }
 }
 

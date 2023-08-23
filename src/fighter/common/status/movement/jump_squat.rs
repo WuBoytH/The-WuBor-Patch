@@ -41,7 +41,7 @@ unsafe fn status_pre_jumpsquat_param(
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    VarModule::on_flag(fighter.battle_object, jump::flag::JUMP_FROM_SQUAT);
+    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT);
     jump_squat_check_special_jump(fighter);
     let /* mut */ jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {

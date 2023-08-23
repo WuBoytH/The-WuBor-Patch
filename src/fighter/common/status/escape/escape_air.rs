@@ -43,12 +43,20 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
             return true.into();
         }
     }
-    // if CancelModule::is_enable_cancel(fighter.module_accessor) {
+    if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return true.into();
         }
-    // }
+    }
+    else if VarModule::is_flag(fighter.battle_object, escape_air::flag::SLIDE_ENABLE_ATTACK) {
+        if fighter.sub_transition_group_check_air_special().get_bool()
+        || fighter.sub_transition_group_check_air_item_throw().get_bool()
+        || fighter.sub_transition_group_check_air_lasso().get_bool()
+        || fighter.sub_transition_group_check_air_attack().get_bool() {
+            return true.into();
+        }
+    }
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
         let airdash_params = get_airdash_params(fighter);
         if fighter.global_table[STATUS_FRAME].get_f32() >= airdash_params.attack_frame
@@ -230,7 +238,14 @@ pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CVa
                     if 0.0 <= stiff_start {
                         let frame = MotionModule::frame(fighter.module_accessor);
                         if stiff_start <= frame {
-                            let end_frame = MotionModule::end_frame(fighter.module_accessor);
+                            let mot = MotionModule::motion_kind(fighter.module_accessor);
+                            let cancel_frame = FighterMotionModuleImpl::get_cancel_frame(fighter.module_accessor, Hash40::new_raw(mot), true);
+                            let end_frame = if cancel_frame == 0.0 {
+                                MotionModule::end_frame(fighter.module_accessor)
+                            }
+                            else {
+                                cancel_frame
+                            };
                             let which_cancel = if !slide {
                                 hash40("escape_air_cancel_frame")
                             }
@@ -241,13 +256,10 @@ pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CVa
                             if cancel < 0.0 {
                                 cancel = end_frame;
                             }
-                            let stiff_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
-                            if stiff_frame <= frame {
-                                WorkModule::set_float(fighter.module_accessor, end_frame, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
-                            }
-                            let diff = cancel - frame;
-                            let stiff_diff = stiff_frame - frame;
-                            let stiff_rate = diff / stiff_diff;
+                            let cancel_diff = cancel - frame;
+                            let cancel_motion_diff = end_frame - frame;
+                            let stiff_rate = cancel_diff / cancel_motion_diff;
+                            WorkModule::set_float(fighter.module_accessor, cancel_motion_diff, *FIGHTER_STATUS_ESCAPE_AIR_STIFF_FRAME);
                             let rate = MotionModule::rate(fighter.module_accessor);
                             MotionModule::set_rate(fighter.module_accessor, rate * stiff_rate);
                             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_STIFF);

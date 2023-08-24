@@ -335,11 +335,8 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
 
     let accel_diff = match reset_type {
         FallAdjust | FallAdjustNoCap | FlyAdjust | ShootDash | ShootBackDash | RevolveSlashAir | MoveGround | MoveAir => {
-            if energy.speed.x.abs() > energy.speed_max.x
-            && energy.speed_brake.x != 0.0 {
-                let speed_diff = energy.speed_limit.x - energy.speed_max.x;
-                let new_brake = speed_diff.abs() / 24.0;
-                energy.speed_brake.x = new_brake;
+            if energy.speed.x.abs() > energy.speed_max.x {
+                energy.speed_brake.x *= 2.0;
             }
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
@@ -572,7 +569,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
 
             energy.speed_max = PaddedVec2::new(stable_speed, -1.0);
             energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0), 0.0);
-            let limit_speed = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
+            let mut limit_speed = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
                 if super_jump {
                     let mut jump_speed_x = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
                     if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
@@ -602,6 +599,10 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
             } else {
                 -1.0
             };
+            if limit_speed != -1.0
+            && energy.speed_max.x > limit_speed {
+                limit_speed = WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit"))
+            }
             let control_mul = if super_jump {
                 param::jump::special_jump_control_mul
             }
@@ -791,7 +792,10 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             && energy.unk[2] == 0 {
                 // let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
                 // let is_jump = VarModule::is_flag(object, fighter::instance::flag::JUMP_FROM_SQUAT);
-                let limit_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
+                let mut limit_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
+                if limit_speed < WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0) {
+                    limit_speed = WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit"));
+                }
                 if limit_speed < energy.speed.x.abs() {
                     energy.speed = PaddedVec2::new(limit_speed * energy.speed.x.signum(), 0.0);
                 }

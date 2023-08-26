@@ -424,6 +424,13 @@ pub mod FGCModule {
             macros::LAST_EFFECT_SET_COLOR(fighter, 0.831, 0.686, 0.216);
         }
     }
+
+    /// Sets a command input to only use certain buttons.
+    pub unsafe fn set_command_input_button(module_accessor: *mut BattleObjectModuleAccessor, command: usize, buttons: u8) {
+        let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
+        let command_input = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut u8;
+        *command_input.add(0xb) = buttons;
+    }
 }
 
 #[allow(non_snake_case)]

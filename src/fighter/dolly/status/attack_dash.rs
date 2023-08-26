@@ -13,6 +13,24 @@ unsafe fn dolly_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND) {
+        let special_command_lr = ControlModule::get_special_command_lr(fighter.module_accessor, 1);
+        if PostureModule::lr(fighter.module_accessor) != special_command_lr {
+            PostureModule::set_lr(fighter.module_accessor, special_command_lr);
+            PostureModule::update_rot_y_lr(fighter.module_accessor);
+            sv_kinetic_energy!(
+                reset_energy,
+                fighter,
+                FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            );
+        }
+    }
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("attack_dash"),

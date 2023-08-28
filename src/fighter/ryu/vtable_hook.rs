@@ -40,25 +40,25 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_SAME_ATTACK_CANCEL);
-                    MotionModule::change_motion_inherit_frame(
-                        module_accessor,
-                        Hash40::new_raw(light_motion),
-                        -1.0,
-                        1.0,
-                        0.0,
-                        false,
-                        false
-                    );
-                    // MotionModule::change_motion(
+                    // MotionModule::change_motion_inherit_frame(
                     //     module_accessor,
                     //     Hash40::new_raw(light_motion),
-                    //     0.0,
+                    //     -1.0,
                     //     1.0,
-                    //     false,
                     //     0.0,
                     //     false,
                     //     false
                     // );
+                    MotionModule::change_motion(
+                        module_accessor,
+                        Hash40::new_raw(light_motion),
+                        0.0,
+                        1.0,
+                        false,
+                        0.0,
+                        false,
+                        false
+                    );
                     WorkModule::on_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK);
                     WorkModule::on_flag(module_accessor, 0x21000022 + 6);
                 }

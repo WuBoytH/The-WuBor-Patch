@@ -73,6 +73,8 @@ pub mod fighter {
             // pub const CUSTOM_COMMAND_623_TIMER : i32 = 0x0008;
             // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x0009;
             // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0x000A;
+
+            pub const GUARD_TRIGGER : i32 = 0x000C;
         }
         pub mod float {
             pub const FLICK_DOWN : i32 = 0x0000;

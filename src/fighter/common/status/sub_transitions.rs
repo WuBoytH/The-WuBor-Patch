@@ -41,6 +41,8 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
         }
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
         && fighter.sub_check_command_guard().get_bool() {
+            let guard_trigger = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF;
+            VarModule::set_int(fighter.battle_object, fighter::instance::int::GUARD_TRIGGER, guard_trigger);
             let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), clear_buffer.into());
             return true.into();

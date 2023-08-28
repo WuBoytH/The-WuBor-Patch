@@ -6,9 +6,11 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
     let was_parry = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_DAMAGE;
+    let guard_trigger = VarModule::get_int(fighter.battle_object, fighter::instance::int::GUARD_TRIGGER);
+    println!("Held Shield for {} frames, can parry? {}", guard_trigger, guard_trigger <= 5 || was_parry);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && (
-        ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF <= 5
+        guard_trigger <= 5
         || was_parry
     ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;

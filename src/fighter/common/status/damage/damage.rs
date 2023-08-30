@@ -213,15 +213,15 @@ unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterComm
     if damage_lr != 0.0 {
         let status = StatusModule::status_kind(fighter.module_accessor);
         let lr = PostureModule::lr(fighter.module_accessor);
-        if damage_lr * lr >= 0.0 {
+        if damage_lr * lr >= 0.0 || status == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL || status == *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR {
             PostureModule::set_lr(fighter.module_accessor, damage_lr);
             PostureModule::update_rot_y_lr(fighter.module_accessor);
             WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_DAMAGE_LR);
         }
-        else if status != *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL || status != *FIGHTER_STATUS_KIND_DAMAGE_FLY_METEOR {
-            if status == *FIGHTER_STATUS_KIND_DAMAGE_FLY
+        else {
+            if !(status == *FIGHTER_STATUS_KIND_DAMAGE_FLY
             && (damage_motion == hash40("wall_damage")
-            || MotionModule::motion_kind(fighter.module_accessor) == hash40("wall_damage"))
+            || MotionModule::motion_kind(fighter.module_accessor) == hash40("wall_damage")))
             && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_KNOCKOUT) {
                 TurnModule::set_turn(
                     fighter.module_accessor,

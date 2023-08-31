@@ -178,10 +178,10 @@ unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterComm
     }
     let some = fighter.local_func__fighter_status_damage_2();
     let absolute = some["absolute"].get_bool();
-    fighter.clear_lua_stack();
-    lua_args!(fighter, hash40("attr"));
-    sv_information::damage_log_value(fighter.lua_state_agent);
-    let attr = fighter.pop_lua_stack(1).get_u64();
+    // fighter.clear_lua_stack();
+    // lua_args!(fighter, hash40("attr"));
+    // sv_information::damage_log_value(fighter.lua_state_agent);
+    // let attr = fighter.pop_lua_stack(1).get_u64();
     if !absolute {
     // || attr == 0x193bdcb0cc { // Kazuya's unique normal hit effect
         fighter.FighterStatusUniqProcessDamage_check_hit_stop_delay(some);

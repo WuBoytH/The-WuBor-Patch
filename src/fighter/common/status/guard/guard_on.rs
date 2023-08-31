@@ -7,7 +7,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     // Additions
     let was_parry = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_DAMAGE;
     let guard_trigger = VarModule::get_int(fighter.battle_object, fighter::instance::int::GUARD_TRIGGER);
-    println!("Held Shield for {} frames, can parry? {}", guard_trigger, guard_trigger <= 5 || was_parry);
+    // println!("Held Shield for {} frames, can parry? {}", guard_trigger, guard_trigger <= 5 || was_parry);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && (
         guard_trigger <= 5

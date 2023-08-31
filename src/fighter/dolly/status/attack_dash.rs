@@ -15,7 +15,7 @@ unsafe fn dolly_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND) {
         let special_command_lr = ControlModule::get_special_command_lr(fighter.module_accessor, 1);
-        if PostureModule::lr(fighter.module_accessor) != special_command_lr {
+        if special_command_lr != 0.0 && PostureModule::lr(fighter.module_accessor) != special_command_lr {
             PostureModule::set_lr(fighter.module_accessor, special_command_lr);
             PostureModule::update_rot_y_lr(fighter.module_accessor);
             sv_kinetic_energy!(

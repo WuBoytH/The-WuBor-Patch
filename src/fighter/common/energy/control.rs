@@ -355,31 +355,29 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 if WorkModule::get_int(boma, *FIGHTER_STATUS_DASH_WORK_INT_COUNT) < keep_frame {
                     energy.speed_max.x = 0.0;
                     energy.speed_brake.x = 0.0;
-                    stick.x = accel_add_x; // not sure if this is accurate but it's what I think I saw in the code
                     zero = true;
                 }
             } else if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_TURN_DASH {
                 if WorkModule::get_int(boma, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FROM_DASH_COUNT) < keep_frame {
                     energy.speed_max.x = 0.0;
                     energy.speed_brake.x = 0.0;
-                    stick.x = accel_add_x;
                     zero = true;
                 }
             }
 
-            let direction = -PostureModule::lr(boma);
-            let direction = if reset_type != DashBack {
-                -direction
-            } else {
-                direction
-            };
+            // let direction = -PostureModule::lr(boma);
+            // let direction = if reset_type != DashBack {
+            //     -direction
+            // } else {
+            //     direction
+            // };
 
             // Prevents any negative acceleration from happening during dash
             // (this kills any potential of moonwalks)
-            if !zero && stick.x * direction <= 0.0 {
-                energy.speed_max.x = 0.0;
-                zero = true;
-            }
+            // if !zero && stick.x * direction <= 0.0 {
+            //     energy.speed_max.x = 0.0;
+            //     zero = true;
+            // }
 
             // accel add
             if zero {
@@ -822,16 +820,21 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             }
         }, // not reached in game afaik
         Dash | TurnRun | DashBack => {
-            let dash_speed = if reset_type == DashBack {
-                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
-            } else {
-                energy.lr * WorkModule::get_param_float(boma, smash::hash40("dash_speed"), 0)
+            let lr = if reset_type == DashBack {
+                -energy.lr
+            }
+            else {
+                energy.lr
             };
-            energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                dash_speed
-            } else {
-                dash_speed + energy.speed.x
-            };
+            energy.speed.y = 0.0;
+            // let dash_speed = lr * WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
+            // energy.speed.x = if 0.0 <= lr * energy.speed.x {
+            //     dash_speed
+            // }
+            // else {
+            //     dash_speed + energy.speed.x
+            // };
+            energy.speed.x = lr * WorkModule::get_param_float(boma, hash40("dash_speed"), 0);
         },
         ShootDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
@@ -848,6 +851,7 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             };
         },
         RevolveSlashAir => {
+            energy.speed.y = 0.0;
             energy.speed.x *= WorkModule::get_param_float(boma, smash::hash40("rslash_air_spd_x_mul"), 0);
         },
         Free => {

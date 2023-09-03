@@ -221,7 +221,7 @@ impl FlyData {
         unsafe {
             let accessor = *((singletons::FighterParamAccessor2() as *const u8).add((kind as usize) * 0x38 + 0x70) as *const u64);
             let function: extern "C" fn(u64, u64) -> FlyDataResult = std::mem::transmute(*(*(accessor as *const *const u64)).add(0x2));
-            let result = function(accessor, smash::hash40("fly_data"));
+            let result = function(accessor, hash40("fly_data"));
             if (*result.data).is_null() {
                 return None;
             } else {
@@ -349,7 +349,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
         },
         Dash | DashBack => {
             // Don't apply or change the speed by any ammount during the first keep frames of dash
-            let keep_frame = WorkModule::get_param_int(boma, smash::hash40("common"), smash::hash40("dash_speed_keep_frame"));
+            let keep_frame = WorkModule::get_param_int(boma, hash40("common"), hash40("dash_speed_keep_frame"));
             let mut zero = false;
             if StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_DASH || reset_type == DashBack {
                 if WorkModule::get_int(boma, *FIGHTER_STATUS_DASH_WORK_INT_COUNT) < keep_frame {
@@ -389,13 +389,13 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
         },
         TurnRun => {
             let mut mul = stick.x * energy.accel_mul_x + accel_add_x * stick.x.signum();
-            let mut brake = WorkModule::get_param_float(boma, smash::hash40("ground_brake"), 0)
-                                    * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("run_brake_brake_mul"));
+            let mut brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0)
+                                    * WorkModule::get_param_float(boma, hash40("common"), hash40("run_brake_brake_mul"));
             
             let ground_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x88 / 0x8);
             let some_float = *(ground_module as *const f32).add(0x130 / 0x8);
             if some_float * energy.lr <= -0.1 {
-                let turn_run_brake = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("turn_run_stop_brake_mul"));
+                let turn_run_brake = WorkModule::get_param_float(boma, hash40("common"), hash40("turn_run_stop_brake_mul"));
                 mul *= turn_run_brake;
                 brake *= turn_run_brake;
             }
@@ -438,14 +438,14 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
             }
         },
         Swim => {
-            let speed_mul = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_speed_mul"));
+            let speed_mul = WorkModule::get_param_float(boma, hash40("common"), hash40("swim_speed_mul"));
             energy.speed_max.x = stick.x.abs() * speed_mul;
             energy.speed_max.y = -1.0;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
         },
         SwimDrown => {
-            let speed_mul = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_drown_speed_x_mul"))
-                                    * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_speed_mul")); 
+            let speed_mul = WorkModule::get_param_float(boma, hash40("common"), hash40("swim_drown_speed_x_mul"))
+                                    * WorkModule::get_param_float(boma, hash40("common"), hash40("swim_speed_mul")); 
             energy.speed_max.x = stick.x * speed_mul;
             energy.speed_max.y = -1.0;
             accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x
@@ -461,22 +461,22 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 }
             }
 
-            (accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x) * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("turn_speed_mul"))
+            (accel_add_x * stick.x.signum() + stick.x * energy.accel_mul_x) * WorkModule::get_param_float(boma, hash40("common"), hash40("turn_speed_mul"))
         },
         Ladder => {
-            let ladder_y = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_stick_y"));
+            let ladder_y = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_stick_y"));
             let (speed_max, accel_y) = if ladder_y <= stick.y.abs() {
                 if stick.y <= 0.0 {
-                    let down_max = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_speed_d_max"));
+                    let down_max = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_speed_d_max"));
                     // lerp the down_max
                     let down_max = ((stick.y.abs() - ladder_y) / (1.0 - ladder_y)) * down_max;
-                    let attack_mul = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_attack_speed_mul"));
+                    let attack_mul = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_attack_speed_mul"));
                     (down_max * attack_mul, -down_max * attack_mul)
                 } else {
-                    let up_max = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_speed_d_max"));
+                    let up_max = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_speed_d_max"));
                     // lerp the down_max
                     let up_max = ((stick.y - ladder_y) / (1.0 - ladder_y)) * up_max;
-                    let attack_mul = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_attack_speed_mul"));
+                    let attack_mul = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_attack_speed_mul"));
                     (up_max * attack_mul, up_max * attack_mul)
                 }
             } else {
@@ -523,11 +523,11 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
     let status_module = *(boma as *const BattleObjectModuleAccessor as *const u64).add(0x8);
     if !*(status_module as *const bool).add(0x12a) {
         if StatusModule::situation_kind(boma) == *SITUATION_KIND_AIR {
-            let horizontal_limit = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("common_air_speed_x_limit"));
+            let horizontal_limit = WorkModule::get_param_float(boma, hash40("common"), hash40("common_air_speed_x_limit"));
             let vertical_limit = if energy.speed.y <= 0.0 {
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("air_speed_down_limit"))
+                WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_down_limit"))
             } else {
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("air_speed_up_limit"))
+                WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_up_limit"))
             };
 
             if horizontal_limit < energy.speed.x.abs() {
@@ -538,7 +538,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, boma: &mut BattleObje
                 energy.speed.y = vertical_limit * energy.speed.y.signum();
             }
         } else if StatusModule::situation_kind(boma) == *SITUATION_KIND_GROUND {
-            let speed_limit = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ground_speed_limit"));
+            let speed_limit = WorkModule::get_param_float(boma, hash40("common"), hash40("ground_speed_limit"));
             if speed_limit < energy.speed.x.abs() {
                 energy.speed.x = speed_limit * energy.speed.x.signum();
             }
@@ -555,9 +555,9 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
     let reset_type = std::mem::transmute(energy.energy_reset_type);
     match reset_type {
         FallAdjust | FallAdjustNoCap | StopCeil | WallJump => {
-            let mut stable_speed = WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0);
+            let mut stable_speed = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
             if reset_type == StopCeil {
-                stable_speed *= WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("stop_ceil_speed_x_stable_mul"));
+                stable_speed *= WorkModule::get_param_float(boma, hash40("common"), hash40("stop_ceil_speed_x_stable_mul"));
             }
 
             let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
@@ -566,41 +566,30 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
             let super_jump = is_jump && VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP);
 
             energy.speed_max = PaddedVec2::new(stable_speed, -1.0);
-            energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0), 0.0);
-            let mut limit_speed = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
-                if super_jump {
-                    let mut jump_speed_x = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
-                    if WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-                        if !VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
-                            let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
-                                ControlModule::get_sub_stick_x(boma)
-                            }
-                            else {
-                                ControlModule::get_stick_x(boma)
-                            };
-                            energy.speed.x = jump_speed_x * stick_x;
-                            VarModule::on_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
-                        }
-                        
-                        energy.speed_brake.x = 0.0;
-                    }
-                    else {
-                        energy.speed.x *= param::jump::super_jump_speed_x_mul;
-                        energy.speed_max.x *= param::jump::super_jump_speed_x_mul;
-                        jump_speed_x *= param::jump::super_jump_speed_x_mul;
-                    }
-                    jump_speed_x
-                }
-                else {
-                    WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0)
-                }
+            energy.speed_brake = PaddedVec2::new(WorkModule::get_param_float(boma, hash40("air_brake_x"), 0), 0.0);
+
+            let limit_speed = if !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT) && energy.unk[2] == 0 {
+                WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit"))
             } else {
                 -1.0
             };
-            if limit_speed != -1.0
-            && energy.speed_max.x > limit_speed {
-                limit_speed = WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit"))
+
+            if super_jump && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
+                if !VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
+                    let jump_speed_x = WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0);
+                    let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
+                        ControlModule::get_sub_stick_x(boma)
+                    }
+                    else {
+                        ControlModule::get_stick_x(boma)
+                    };
+                    energy.speed.x = jump_speed_x * stick_x;
+                    VarModule::on_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
+                }
+                
+                energy.speed_brake.x = 0.0;
             }
+
             let control_mul = if super_jump {
                 param::jump::special_jump_control_mul
             }
@@ -608,8 +597,8 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
                 1.0
             };
             energy.speed_limit = PaddedVec2::new(limit_speed, 0.0);
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0) * control_mul;
-            energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0) * control_mul;
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("air_accel_x_mul"), 0) * control_mul;
+            energy.accel_add_x = WorkModule::get_param_float(boma, hash40("air_accel_x_add"), 0) * control_mul;
         },
         FlyAdjust => {
             let kind = smash::app::utility::get_kind(boma);
@@ -634,68 +623,68 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
         },
         Dash | TurnRun | DashBack => {
             energy.speed_limit = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ground_speed_limit")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("ground_speed_limit")),
                 0.0
             );
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("run_speed_max"), 0),
+                WorkModule::get_param_float(boma, hash40("run_speed_max"), 0),
                 -1.0
             );
-            let brake = WorkModule::get_param_float(boma, smash::hash40("ground_brake"), 0)
-                                * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("run_brake_brake_mul"));
+            let brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0)
+                                * WorkModule::get_param_float(boma, hash40("common"), hash40("run_brake_brake_mul"));
             energy.speed_brake = PaddedVec2::new(brake, 0.0);
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("run_accel_mul"), 0);
-            energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("run_accel_add"), 0);
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("run_accel_mul"), 0);
+            energy.accel_add_x = WorkModule::get_param_float(boma, hash40("run_accel_add"), 0);
         },
         ShootDash | ShootBackDash => {
             energy.speed_limit = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ground_speed_limit")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("ground_speed_limit")),
                 0.0
             );
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("run_speed_max"), 0),
+                WorkModule::get_param_float(boma, hash40("run_speed_max"), 0),
                 -1.0
             );
-            let brake = WorkModule::get_param_float(boma, smash::hash40("ground_brake"), 0)
-                                * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("run_brake_brake_mul"));
+            let brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0)
+                                * WorkModule::get_param_float(boma, hash40("common"), hash40("run_brake_brake_mul"));
             energy.speed_brake = PaddedVec2::new(brake, 0.0);
         },
         RevolveSlashAir => {
-            let speed_max = WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0)
-                                    * WorkModule::get_param_float(boma, smash::hash40("param_special_hi"), smash::hash40("rslash_air_max_x_mul"));
+            let speed_max = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0)
+                                    * WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("rslash_air_max_x_mul"));
 
             energy.speed_max = PaddedVec2::new(speed_max, -1.0);
             energy.speed_brake = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0),
+                WorkModule::get_param_float(boma, hash40("air_brake_x"), 0),
                 0.0
             );
             energy.speed_limit = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("air_speed_x_limit")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit")),
                 0.0
             );
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("param_special_hi"), smash::hash40("rslash_air_max_x_mul"));
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("rslash_air_max_x_mul"));
         },
         Turn | TurnNoStop => {
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("walk_speed_max"), 0),
+                WorkModule::get_param_float(boma, hash40("walk_speed_max"), 0),
                 -1.0
             );
             energy.speed_limit = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ground_speed_limit")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("ground_speed_limit")),
                 0.0
             );
-            let brake = WorkModule::get_param_float(boma, smash::hash40("ground_brake"), 0)
-                                * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("run_brake_brake_mul"));
+            let brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0)
+                                * WorkModule::get_param_float(boma, hash40("common"), hash40("run_brake_brake_mul"));
             energy.speed_brake = PaddedVec2::new(brake, 0.0);
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("walk_accel_mul"), 0);
-            energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("walk_accel_add"), 0);
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("walk_accel_mul"), 0);
+            energy.accel_add_x = WorkModule::get_param_float(boma, hash40("walk_accel_add"), 0);
         },
         Free => {
-            let speed_max = WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0);
-            let speed_brake = WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0);
-            let speed_limit = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("air_speed_x_limit"));
-            let mul = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0);
-            let add = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0);
+            let speed_max = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+            let speed_brake = WorkModule::get_param_float(boma, hash40("air_brake_x"), 0);
+            let speed_limit = WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit"));
+            let mul = WorkModule::get_param_float(boma, hash40("air_accel_x_mul"), 0);
+            let add = WorkModule::get_param_float(boma, hash40("air_accel_x_add"), 0);
             energy.speed_max = PaddedVec2::new(speed_max, speed_max);
             energy.speed_brake = PaddedVec2::new(speed_brake, speed_brake);
             energy.speed_limit = PaddedVec2::new(speed_limit, speed_limit);
@@ -707,53 +696,53 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
         ItemLift => {
             let scale = PostureModule::scale(boma);
             energy.speed_max = PaddedVec2::new(
-                scale * WorkModule::get_param_float(boma, smash::hash40("item_lift_speed_max"), 0),
+                scale * WorkModule::get_param_float(boma, hash40("item_lift_speed_max"), 0),
                 -1.0
             );
             energy.speed_limit = PaddedVec2::new(
-                scale * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ground_speed_limit")),
+                scale * WorkModule::get_param_float(boma, hash40("common"), hash40("ground_speed_limit")),
                 0.0
             );
-            let brake = WorkModule::get_param_float(boma, smash::hash40("ground_brake"), 0)
-                                * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("run_brake_brake_mul"));
+            let brake = WorkModule::get_param_float(boma, hash40("ground_brake"), 0)
+                                * WorkModule::get_param_float(boma, hash40("common"), hash40("run_brake_brake_mul"));
             energy.speed_brake = PaddedVec2::new(brake, 0.0);
-            energy.accel_mul_x = scale * WorkModule::get_param_float(boma, smash::hash40("item_lift_accel_mul"), 0);
-            energy.accel_add_x = scale * WorkModule::get_param_float(boma, smash::hash40("item_lift_accel_add"), 0);
+            energy.accel_mul_x = scale * WorkModule::get_param_float(boma, hash40("item_lift_accel_mul"), 0);
+            energy.accel_add_x = scale * WorkModule::get_param_float(boma, hash40("item_lift_accel_add"), 0);
         },
         Swim => {
             energy.speed_brake = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_brake")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("swim_brake")),
                 0.0
             );
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_accel_mul"));
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("common"), hash40("swim_accel_mul"));
         },
         SwimDrown => {
             energy.speed_brake = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_brake")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("swim_brake")),
                 0.0
             );
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_accel_mul"))
-                                    * WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("swim_drown_speed_x_mul"));
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("common"), hash40("swim_accel_mul"))
+                                    * WorkModule::get_param_float(boma, hash40("common"), hash40("swim_drown_speed_x_mul"));
         },
         TurnNoStopAir => {
             energy.speed_max = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0),
+                WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0),
                 -1.0
             );
             energy.speed_limit = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("air_speed_x_limit")),
+                WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit")),
                 0.0
             );
             energy.speed_brake = PaddedVec2::new(
-                WorkModule::get_param_float(boma, smash::hash40("air_brake_x"), 0),
+                WorkModule::get_param_float(boma, hash40("air_brake_x"), 0),
                 0.0
             );
-            energy.accel_mul_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_mul"), 0);
-            energy.accel_add_x = WorkModule::get_param_float(boma, smash::hash40("air_accel_x_add"), 0);
+            energy.accel_mul_x = WorkModule::get_param_float(boma, hash40("air_accel_x_mul"), 0);
+            energy.accel_add_x = WorkModule::get_param_float(boma, hash40("air_accel_x_add"), 0);
         },
         Ladder => {
-            let up_speed = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_speed_u_max"));
-            let down_speed = WorkModule::get_param_float(boma, smash::hash40("common"), smash::hash40("ladder_speed_d_max"));
+            let up_speed = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_speed_u_max"));
+            let down_speed = WorkModule::get_param_float(boma, hash40("common"), hash40("ladder_speed_d_max"));
             energy.speed_brake = PaddedVec2::new(0.0, up_speed.max(down_speed));
         }
         _ => {}
@@ -788,9 +777,14 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
             if reset_type != FallAdjustNoCap
             && !WorkModule::is_flag(boma, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_NO_LIMIT)
             && energy.unk[2] == 0 {
-                // let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
-                // let is_jump = VarModule::is_flag(object, fighter::instance::flag::JUMP_FROM_SQUAT);
-                let mut limit_speed = WorkModule::get_param_float(boma, smash::hash40("jump_speed_x_max"), 0);
+                let object = MiscModule::get_battle_object_from_id(boma.battle_object_id);
+                let is_jump = VarModule::is_flag(object, fighter::instance::flag::JUMP_FROM_SQUAT);
+                let mut limit_speed = if is_jump || StatusModule::prev_situation_kind(boma) == *SITUATION_KIND_AIR {
+                    WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0)
+                }
+                else {
+                    WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0)
+                };
                 if limit_speed < WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0) {
                     limit_speed = WorkModule::get_param_float(boma, hash40("common"), hash40("air_speed_x_limit"));
                 }
@@ -809,7 +803,7 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
                 return;
             };
 
-            let _stable_speed = WorkModule::get_param_float(boma, smash::hash40("air_speed_x_stable"), 0);
+            let _stable_speed = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
             let speed = *energy.get_speed();
 
             let sum = speed.x + speed.y;
@@ -838,21 +832,21 @@ unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyCont
         },
         ShootDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
+                energy.lr * WorkModule::get_param_float(boma, hash40("shoot_dash_speed_f"), 0)
             } else {
-                energy.speed.x + energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_f"), 0)
+                energy.speed.x + energy.lr * WorkModule::get_param_float(boma, hash40("shoot_dash_speed_f"), 0)
             };
         },
         ShootBackDash => {
             energy.speed.x = if 0.0 <= energy.speed.x * energy.lr {
-                -energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
+                -energy.lr * WorkModule::get_param_float(boma, hash40("shoot_dash_speed_b"), 0)
             } else {
-                energy.speed.x - energy.lr * WorkModule::get_param_float(boma, smash::hash40("shoot_dash_speed_b"), 0)
+                energy.speed.x - energy.lr * WorkModule::get_param_float(boma, hash40("shoot_dash_speed_b"), 0)
             };
         },
         RevolveSlashAir => {
             energy.speed.y = 0.0;
-            energy.speed.x *= WorkModule::get_param_float(boma, smash::hash40("rslash_air_spd_x_mul"), 0);
+            energy.speed.x *= WorkModule::get_param_float(boma, hash40("param_special_hi"), hash40("rslash_air_spd_x_mul"));
         },
         Free => {
             energy.speed = PaddedVec2::zeros();

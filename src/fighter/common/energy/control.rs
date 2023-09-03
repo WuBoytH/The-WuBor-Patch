@@ -576,7 +576,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
 
             if super_jump && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
                 if !VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
-                    let mut jump_speed_x = WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0).max(WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0));
+                    let jump_speed_x = WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0).max(WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0));
 
                     let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
                         ControlModule::get_sub_stick_x(boma)

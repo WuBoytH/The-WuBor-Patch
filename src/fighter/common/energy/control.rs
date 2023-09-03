@@ -575,9 +575,13 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
             };
 
             if super_jump && WorkModule::is_flag(boma, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI) {
-                if !VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
-                    let jump_speed_x = WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0).max(WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0));
+                let mut jump_speed_x = WorkModule::get_param_float(boma, hash40("jump_speed_x_max"), 0);
 
+                if jump_speed_x < WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0) {
+                    jump_speed_x = WorkModule::get_param_float(boma, hash40("air_speed_x_stable"), 0);
+                }
+
+                if !VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM) {
                     let stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
                         ControlModule::get_sub_stick_x(boma)
                     }
@@ -587,8 +591,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, boma: &mut Battle
                     energy.speed.x = jump_speed_x * stick_x;
                     VarModule::on_flag(object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
                 }
-                
-                energy.speed_brake.x = 0.0;
+                energy.speed_max.x = jump_speed_x;
             }
 
             let control_mul = if super_jump {

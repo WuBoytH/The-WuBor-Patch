@@ -7,7 +7,7 @@ use {
 };
 
 pub fn install() {
-    let agent = Hash40::new("fighter_kind_lucario");
+    let agent = Hash40::new("fighter_kind_rockman");
     CustomCancelManager::initialize_agent(agent);
     CustomCancelManager::add_cancel_info(
         agent,

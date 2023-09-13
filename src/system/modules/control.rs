@@ -163,25 +163,24 @@ unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
     // Only happens during jumpsquat currently
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    if *((control_module + 0x645) as *const bool)
-    && StatusModule::status_kind(boma) == *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+    if *((control_module + 0x645) as *const bool) {
         return;
     }
     call_original!(control_module, arg);
 }
 
-#[skyline::hook(offset = 0x6bd6a4, inline)]
-unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
-    let control_module = *ctx.registers[21].x.as_ref();
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
-    // For some reason, the game resets your attack_air_kind value every frame
-    // even though it resets as soon as you perform an aerial attack
-    // We don't want this to reset while in jumpsquat
-    // to allow the game to use your initial C-stick input during jumpsquat for your attack_air_kind
-    if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
-        ControlModule::reset_attack_air_kind(boma);
-    }
-}
+// #[skyline::hook(offset = 0x6bd6a4, inline)]
+// unsafe fn exec_command_reset_attack_air_kind_hook(ctx: &mut skyline::hooks::InlineCtx) {
+//     let control_module = *ctx.registers[21].x.as_ref();
+//     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+//     // For some reason, the game resets your attack_air_kind value every frame
+//     // even though it resets as soon as you perform an aerial attack
+//     // We don't want this to reset while in jumpsquat
+//     // to allow the game to use your initial C-stick input during jumpsquat for your attack_air_kind
+//     if StatusModule::status_kind(boma) != *FIGHTER_STATUS_KIND_JUMP_SQUAT {
+//         ControlModule::reset_attack_air_kind(boma);
+//     }
+// }
 
 pub fn install() {
     // Prevents buffered C-stick aerials from triggering nair
@@ -200,6 +199,6 @@ pub fn install() {
         // get_command_flag_cat_replace,
         exec_command_hook,
         set_attack_air_stick_hook,
-        exec_command_reset_attack_air_kind_hook
+        // exec_command_reset_attack_air_kind_hook
     );
 }

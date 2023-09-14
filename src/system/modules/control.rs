@@ -1,7 +1,7 @@
 use {
     smash::{
         app::{lua_bind::*, *},
-        lib::lua_const::*
+        // lib::lua_const::*
     },
     wubor_utils::controls::*
 };
@@ -162,7 +162,7 @@ fn exec_command_hook(control_module: u64, flag: bool) {
 unsafe fn set_attack_air_stick_hook(control_module: u64, arg: u32) {
     // This check passes on the frame FighterControlModuleImpl::reserve_on_attack_button is called
     // Only happens during jumpsquat currently
-    let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
+    // let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     if *((control_module + 0x645) as *const bool) {
         return;
     }

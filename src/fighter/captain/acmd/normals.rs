@@ -55,10 +55,51 @@ unsafe fn captain_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "captain", script = "game_attack100", category = ACMD_GAME, low_priority )]
+unsafe fn captain_attack100(agent: &mut L2CAgentBase) {
+    for _ in 0..i32::MAX {
+        frame(agent.lua_state_agent, 2.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 4.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 6.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 8.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 10.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 12.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 14.0);
+        captain_attack100_inner(agent);
+        frame(agent.lua_state_agent, 16.0);
+        captain_attack100_inner(agent);
+        macros::wait_loop_clear(agent);
+    }
+}
+
+#[inline(always)]
+unsafe fn captain_attack100_inner(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 1, 0, Hash40::new("shoulderr"), 0.6, 361, 15, 0, 8, 2.25, 7.5, 0.8, -0.5, Some(2.0), Some(-1.0), Some(0.0), 0.5, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 0.6, 361, 15, 0, 8, 6.5, 0.0, 8.0, 15.0, Some(0.0), Some(8.0), Some(12.0), 0.5, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 2.0, false);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 9);
+        AttackModule::set_add_reaction_frame(agent.module_accessor, 1, 2.0, false);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 9);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         captain_attack11,
         captain_attack12,
-        captain_attack13
+        captain_attack13,
+        captain_attack100
     );
 }

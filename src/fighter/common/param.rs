@@ -9,6 +9,7 @@ pub mod shield {
 
 pub mod passive {
     pub const invalid_passive_damage_add : f32 = 33.0;
+    pub const invalid_passive_reaction : f32 = 45.0;
 }
 
 pub mod jump {

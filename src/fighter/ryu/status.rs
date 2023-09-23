@@ -1,6 +1,8 @@
 mod dash_back;
 mod attack;
 // mod attack_hi3;
+mod attack_lw4_start;
+mod attack_lw4;
 mod special_s;
 mod special_s_loop;
 mod special_hi;
@@ -10,6 +12,8 @@ pub fn install() {
     dash_back::install();
     attack::install();
     // attack_hi3::install();
+    attack_lw4_start::install();
+    attack_lw4::install();
     special_s::install();
     special_s_loop::install();
     special_hi::install();

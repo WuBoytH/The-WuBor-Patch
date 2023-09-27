@@ -32,18 +32,15 @@ unsafe extern "C" fn ryu_ken_move_strength_autoturn_handler(_vtable: u64, fighte
     let module_accessor = (*object).module_accessor;
     let status = StatusModule::status_kind(module_accessor);
     let mut transition_bool = 0;
-    if status - 0x1dc < 0x1a {
-        transition_bool = 1;
-        match status {
-            0x1dc | 0x1eb | 0x1ec => ryu_ken_handle_special_strength(object, hash40("param_special_n")),
-            0x1dd | 0x1ef => ryu_ken_handle_special_strength(object, hash40("param_special_s")),
-            0x1de | 0x1f4 =>
-                if !WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH) {
-                    ryu_ken_handle_special_strength(object, hash40("param_special_hi"));
-                },
-            0x1df | 0x1f5 => transition_bool = 0,
-            _ => ()
-        }
+    match status {
+        0x1dc | 0x1eb | 0x1ec => ryu_ken_handle_special_strength(object, hash40("param_special_n")),
+        0x1dd | 0x1ef => ryu_ken_handle_special_strength(object, hash40("param_special_s")),
+        0x1de | 0x1f4 =>
+            if !WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH) {
+                ryu_ken_handle_special_strength(object, hash40("param_special_hi"));
+            },
+        0x1df | 0x1f5 => transition_bool = 1,
+        _ => ()
     }
     match status {
         0x27 => ryu_ken_handle_light_normals(fighter, hash40("attack_11_s"), hash40("attack_11_w")),
@@ -86,14 +83,14 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
     let module_accessor = fighter.battle_object.module_accessor;
     let mot = MotionModule::motion_kind(module_accessor);
     let battle_object_slow = singletons::BattleObjectSlow() as *mut u8;
-    if !StopModule::is_stop(module_accessor) && !SlowModule::is_skip(module_accessor)
+    if (!StopModule::is_stop(module_accessor) && !SlowModule::is_skip(module_accessor))
     && (*battle_object_slow.add(0x8) == 0 || *(battle_object_slow as *const u32) == 2) {
         if !WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK) {
             if (mot ^ heavy_motion) & 0xffffffffff == 0 {
                 let button = ControlModule::get_button(module_accessor);
                 let cat1 = ControlModule::get_command_flag_cat(module_accessor, 0);
                 if button & 1 == 0
-                && (cat1 >> 0x15 & 1 == 0 || !WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT)) {
+                && (cat1 >> 0x15 & 1 == 0 || !WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON)) {
                     HitModule::set_status_all(module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
                     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_WEAK_CANCEL);
@@ -134,7 +131,7 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
                 _ => 1
             };
             let cat1 = ControlModule::get_command_flag_cat(module_accessor, 0);
-            if (cat1 >> 0x15 & 1 == 0 || !WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT))
+            if (cat1 >> 0x15 & 1 == 0 || !WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON))
             && ControlModule::get_command_flag_cat(module_accessor, 3) == 0 {
 
                 let huh = what_is_this(fighter);
@@ -152,6 +149,7 @@ pub fn install() {
 
     skyline::install_hooks!(
         ryu_ken_init,
+        ryu_ken_move_strength_autoturn_handler,
         ryu_ken_handle_light_normals
     );
 }

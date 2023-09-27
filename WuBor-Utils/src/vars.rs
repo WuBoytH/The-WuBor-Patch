@@ -749,7 +749,7 @@ pub mod ryu {
 }
 
 pub mod ken {
-    use super::ryu::*;
+    pub use super::ryu::*;
 }
 
 pub mod samusd {

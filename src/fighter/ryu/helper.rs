@@ -368,20 +368,8 @@ unsafe extern "C" fn ryu_specials_substatus(fighter: &mut L2CFighterCommon, para
 }
 
 unsafe extern "C" fn ryu_specials_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !StatusModule::is_changing(fighter.module_accessor) {
-        if StatusModule::is_situation_changed(fighter.module_accessor) {
-            if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
-            && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
-                WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-                fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
-                return 1.into();
-            }
-            else {
-                ryu_specials_mot_helper(fighter);
-            }
-        }
-    }
-    else {
+    if StatusModule::is_changing(fighter.module_accessor)
+    || StatusModule::is_situation_changed(fighter.module_accessor) {
         ryu_specials_mot_helper(fighter);
     }
     if MotionModule::is_end(fighter.module_accessor) {

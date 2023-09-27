@@ -9,7 +9,6 @@ use {
 mod init_settings;
 mod get_val;
 // mod get_param;
-mod transition;
 mod collision_hit;
 mod handle_damage;
 mod sound;
@@ -47,7 +46,6 @@ pub fn install() {
     init_settings::install();
     get_val::install();
     // get_param::install();
-    transition::install();
     collision_hit::install();
     handle_damage::install();
     sound::install();

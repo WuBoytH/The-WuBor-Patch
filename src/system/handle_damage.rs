@@ -6,7 +6,6 @@ use {
     crate::{
         fighter::{
             dolly::helper::*,
-            ken::helper::*,
             lucina::helper::*
         }
     },
@@ -34,9 +33,6 @@ unsafe fn fighter_handle_damage_hook(object: *mut BattleObject, arg: *const u8) 
             let kind = utility::get_kind(&mut *module_accessor);
             if kind == *FIGHTER_KIND_LUCINA {
                 add_sp(object, module_accessor, damage_received);
-            }
-            else if kind == *FIGHTER_KIND_KEN {
-                add_vgauge(object, module_accessor, damage_received);
             }
             else if kind == *FIGHTER_KIND_DOLLY {
                 add_go(object, module_accessor, damage_received);

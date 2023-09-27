@@ -396,44 +396,6 @@ pub mod kamui {
     }
 }
 
-pub mod ken {
-    pub mod instance {
-        pub mod flag {
-            pub const V_TRIGGER : i32 = 0x0100;
-        }
-        pub mod int {
-            pub const SPECIAL_LW_TYPE : i32 = 0x0100;
-            pub const QUICK_STEP_STATE : i32 = 0x0101;
-            pub const FLASH_MAX : i32 = 0x0102;
-            pub const FLASH_COUNTER : i32 = 0x0103;
-            pub const V_TRIGGER_EFF_TIMER : i32 = 0x0104;
-        }
-        pub mod float {
-            pub const V_GAUGE : i32 =  0x0100;
-            pub const DIFF_X : i32 = 0x0101;
-        }
-    }
-    pub mod status {
-        pub mod flag {
-            pub const VS1_CANCEL : i32 = 0x1100;
-            pub const VT1_CANCEL : i32 = 0x1101;
-
-            pub const GUARD_V_SHIFT : i32 = 0x1150;
-
-            pub const SPECIAL_LW_STEP_KICK : i32 = 0x1150;
-
-            pub const SPECIAL_HI_CHANGE_REPPA : i32 = 0x1150;
-        }
-    }
-
-    pub const SPECIAL_LW_TYPE_QUICK_STEP : i32 = 0;
-    pub const SPECIAL_LW_TYPE_HEAT_RUSH : i32 = 1;
-
-    pub const QUICK_STEP_STATE_ENABLE : i32 = 0;
-    pub const QUICK_STEP_STATE_RUN : i32 = 1;
-    pub const QUICK_STEP_STATE_DISABLE : i32 = 2;
-}
-
 pub mod kirby {
     pub mod status {
         pub mod flag {
@@ -779,29 +741,15 @@ pub mod rockman_airshooter {
 }
 
 pub mod ryu {
-    pub mod instance {
+    pub mod status {
         pub mod flag {
-            pub const DISABLE_EX_FOCUS : i32 = 0x0100;
-            pub const EX_FOCUS : i32 = 0x0101;
-            pub const EX_FLASH : i32 = 0x0102;
-            pub const SEC_SEN_STATE : i32 = 0x0103;
-            pub const SECRET_SENSATION : i32 = 0x0104;
-            pub const SEC_SEN_CAMERA : i32 = 0x0105;
-        }
-        pub mod int {
-            pub const FLASH_TIMER : i32 = 0x0100;
-        }
-        pub mod float {
-            pub const RYU_X : i32 = 0x0100;
-            pub const RYU_Y : i32 = 0x0101;
-            pub const TARGET_X : i32 = 0x0102;
-            pub const TARGET_Y : i32 = 0x0103;
-            pub const DISABLE_EX_FOCUS_TIMER : i32 = 0x0104;
-            pub const SEC_SEN_TIMER : i32 = 0x0105;
-            pub const OPPONENT_DIREC : i32 = 0x0106;
-            pub const VERT_EXTRA : i32 = 0x0107;
+            pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1100;
         }
     }
+}
+
+pub mod ken {
+    use super::ryu::*;
 }
 
 pub mod samusd {

@@ -741,9 +741,18 @@ pub mod rockman_airshooter {
 }
 
 pub mod ryu {
+    pub mod instance {
+        pub mod flag {
+            pub const DENJIN_CHARGE : i32 = 0x0100;
+        }
+        pub mod int {
+            pub const DENJIN_EFF_HANDLE : i32 = 0x0100;
+        }
+    }
     pub mod status {
         pub mod flag {
-            pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1100;
+            pub const USED_DENJIN_CHARGE : i32 = 0x1100;
+            pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
         }
     }
 }

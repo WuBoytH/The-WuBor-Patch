@@ -3,6 +3,15 @@ use {
     crate::fighter::common::status::attack::attack::only_jabs
 };
 
+pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
+    VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE);
+    let eff_handle = VarModule::get_int(fighter.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+    if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
+        EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
+    }
+    VarModule::set_int(fighter.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE, 0);
+}
+
 pub unsafe extern "C" fn ryu_attack_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_NEAR_OPPONENT) {

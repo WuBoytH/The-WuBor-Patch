@@ -56,7 +56,7 @@ pub fn is_on_ryujinx() -> bool {
     }
 }
 
-#[skyline::main(name = "the_wubor_patch")]
+#[skyline::main(name = "wubor")]
 pub fn main() {
     system::install();
     fighter::install();

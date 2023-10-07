@@ -6,9 +6,11 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
     let was_parry = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_DAMAGE;
+    let guard_trigger = VarModule::get_int(fighter.battle_object, fighter::instance::int::GUARD_TRIGGER);
+    // println!("Held Shield for {} frames, can parry? {}", guard_trigger, guard_trigger <= 5 || was_parry);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && (
-        ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF <= 5
+        guard_trigger <= 5
         || was_parry
     ) {
         let shield_just_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_just_frame")) as f32;
@@ -118,6 +120,29 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
     0.into()
 }
 
+#[skyline::hook(replace = L2CFighterCommon_status_GuardOn_Main)]
+unsafe fn status_guardon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_EFFECT) {
+        // if fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
+            notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_EFFECT);
+        // }
+    }
+    if fighter.sub_status_guard_on_main_air_common().get_bool() {
+        return 0.into();
+    }
+    if fighter.sub_guard_cont().get_bool() {
+        return 0.into();
+    }
+    if fighter.status_guard_main_common().get_bool() {
+        return 0.into();
+    }
+    if MotionModule::is_end(fighter.module_accessor) {
+        fighter.change_status(FIGHTER_STATUS_KIND_GUARD.into(), false.into());
+    }
+    0.into()
+}
+
 #[skyline::hook(replace = L2CFighterCommon_sub_status_end_guard_on_common)]
 unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
@@ -186,6 +211,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
         skyline::install_hooks!(
             sub_ftstatusuniqprocessguardon_initstatus_common,
             sub_guard_on_uniq,
+            status_guardon_main,
             sub_status_end_guard_on_common,
             sub_status_guard_on_common,
             effect_guardoncommon

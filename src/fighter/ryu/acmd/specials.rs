@@ -48,6 +48,46 @@ unsafe fn ryu_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ryu", scripts = [ "sound_specialn", "sound_specialairn" ], category = ACMD_SOUND, low_priority )]
+unsafe fn ryu_specialn_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
+        wait(agent.lua_state_agent, 10.0);
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_ryu_special_n03"));
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("vc_ryu_special_n03"));
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+                macros::PLAY_SE(agent, Hash40::new("se_ryu_command_success"));
+            }
+            macros::PLAY_SE(agent, Hash40::new("se_ryu_special_n01"));
+        }
+        wait(agent.lua_state_agent, 10.0);
+        if macros::is_excute(agent) {
+            macros::PLAY_SE(agent, Hash40::new("se_ryu_special_n03"));
+        }
+        wait(agent.lua_state_agent, 2.0);
+        if macros::is_excute(agent) {
+            let se = if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+                hash40("vc_ryu_hadoken_denjin")
+            }
+            else if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
+                hash40("vc_ryu_special_n01_command")
+            }
+            else {
+                hash40("vc_ryu_special_n01")
+            };
+            macros::PLAY_SE(agent, Hash40::new_raw(se));
+        }
+    }
+}
+
 #[acmd_script( agent = "ryu_hadoken", scripts = [ "game_movew", "game_movem", "game_moves" ], category = ACMD_GAME, low_priority )]
 unsafe fn ryu_hadoken_move(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -306,11 +346,11 @@ unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
         }
         EffectModule::req_follow(
             agent.module_accessor,
-            Hash40::new("sys_aura_light"),
+            Hash40::new("ryu_savingattack_aura"),
             Hash40::new("bust"),
             &ZERO_VECTOR,
             &ZERO_VECTOR,
-            3.0,
+            1.5,
             false,
             0,
             0,
@@ -321,7 +361,8 @@ unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
             false
         );
         let eff_handle = EffectModule::get_last_handle(agent.module_accessor);
-        EffectModule::set_rgb(agent.module_accessor, eff_handle as u32, 0.1, 0.1, 1.0);
+        EffectModule::set_rgb(agent.module_accessor, eff_handle as u32, 0.3, 0.3, 1.0);
+        EffectModule::set_rate(agent.module_accessor, eff_handle as u32, 0.75);
         VarModule::set_int(agent.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE, eff_handle as i32);
     }
 }
@@ -349,6 +390,8 @@ unsafe fn ryu_speciallw_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ryu_specialn,
+        ryu_specialn_snd,
+
         ryu_hadoken_move,
         ryu_hadoken_movesp,
         ryu_hadoken_movesp_last,

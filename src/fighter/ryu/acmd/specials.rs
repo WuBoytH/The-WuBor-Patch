@@ -333,6 +333,13 @@ unsafe fn ryu_speciallw(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ryu", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        EFFECT_STENCIL_ON(agent.lua_state_agent);
+        macros::BURN_COLOR(agent, 0.02, 0.15, 2.0, 0);
+        macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2.0, 0.7);
+    }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, true);
@@ -361,9 +368,16 @@ unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
             false
         );
         let eff_handle = EffectModule::get_last_handle(agent.module_accessor);
-        EffectModule::set_rgb(agent.module_accessor, eff_handle as u32, 0.3, 0.3, 1.0);
-        EffectModule::set_rate(agent.module_accessor, eff_handle as u32, 0.75);
+        EffectModule::set_rgb(agent.module_accessor, eff_handle as u32, 0.3, 0.3, 2.0);
+        EffectModule::set_rate(agent.module_accessor, eff_handle as u32, 1.5);
         VarModule::set_int(agent.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE, eff_handle as i32);
+    }
+    frame(agent.lua_state_agent, 52.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_hit_elec"), Hash40::new("top"), 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 0.6, true);
+        macros::BURN_COLOR_NORMAL(agent);
+        agent.clear_lua_stack();
+        EFFECT_STENCIL_OFF(agent.lua_state_agent);
     }
 }
 

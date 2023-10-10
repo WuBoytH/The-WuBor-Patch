@@ -56,6 +56,12 @@ unsafe fn ryu_special_n2_command_init(fighter: &mut L2CFighterCommon) -> L2CValu
             0.0,
             0.0
         );
+        sv_kinetic_energy!(
+            set_speed_mul,
+            fighter,
+            FIGHTER_KINETIC_ENERGY_ID_MOTION,
+            1.75
+        );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         sv_kinetic_energy!(
             reset_energy,
@@ -228,6 +234,12 @@ unsafe fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
             }
             if !StatusModule::is_changing(fighter.module_accessor) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
+                sv_kinetic_energy!(
+                    set_speed_mul,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_MOTION,
+                    1.75
+                );
             }
         }
     }

@@ -186,7 +186,6 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     if !VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
@@ -199,6 +198,10 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
         else {
             MiscModule::calc_motion_rate_from_cancel_frame(agent, 30.0, 1.0);
         }
+    }
+    frame(agent.lua_state_agent, 35.0);
+    if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {

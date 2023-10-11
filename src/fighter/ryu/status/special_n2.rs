@@ -60,7 +60,7 @@ unsafe fn ryu_special_n2_command_init(fighter: &mut L2CFighterCommon) -> L2CValu
             set_speed_mul,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            1.75
+            1.5
         );
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
         sv_kinetic_energy!(
@@ -163,6 +163,13 @@ unsafe fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
             return 1.into();
         }
     }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL)
+    && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD | *COLLISION_KIND_MASK_HIT) {
+        let sitation = fighter.global_table[SITUATION_KIND].get_i32();
+        if ryu_final_hit_cancel(fighter, sitation.into()).get_bool() {
+            return 1.into();
+        }
+    }
     if StatusModule::is_changing(fighter.module_accessor)
     || StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -238,7 +245,7 @@ unsafe fn ryu_special_n2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
                     set_speed_mul,
                     fighter,
                     FIGHTER_KINETIC_ENERGY_ID_MOTION,
-                    1.75
+                    1.5
                 );
             }
         }

@@ -409,6 +409,9 @@ unsafe fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 26.0 / 21.0);
     frame(agent.lua_state_agent, 21.0);
     macros::FT_MOTION_RATE(agent, 1.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_REMOVE_ARMOR);
+    }
     if WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT) == 2 {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
@@ -455,7 +458,7 @@ unsafe fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
             macros::EFFECT(agent, Hash40::new("ryu_savingattack_line_r"), Hash40::new("top"), -5.2, 11.5, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         }
     }
-    frame(agent.lua_state_agent, 21.0);
+    frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
         macros::BURN_COLOR_NORMAL(agent);
         agent.clear_lua_stack();
@@ -468,6 +471,43 @@ unsafe fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
 unsafe fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_impact"));
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_ryu_drive_impact"));
+    }
+    frame(agent.lua_state_agent, 23.0);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
+        if macros::is_excute(agent) {
+            let mut vc_type = VarModule::get_int(agent.battle_object, ryu::instance::int::IMPACT_PUNISH_VC_TYPE);
+            let vc = if vc_type == 0 {
+                hash40("vc_ryu_drive_impact_counter01")
+            }
+            else if vc_type == 1 {
+                hash40("vc_ryu_drive_impact_counter02")
+            }
+            else {
+                hash40("vc_ryu_drive_impact_counter03")
+            };
+            vc_type += 1;
+            if vc_type > 2 {
+                vc_type = 0;
+            }
+            VarModule::set_int(agent.battle_object, ryu::instance::int::IMPACT_PUNISH_VC_TYPE, vc_type);
+            macros::PLAY_SE(agent, Hash40::new_raw(vc));
+        }
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "expression_speciallwimpact", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ryu_speciallwimpact_exp(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll_l"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 21.0);
+    if macros::is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
     }
 }
 
@@ -503,6 +543,7 @@ pub fn install() {
         ryu_speciallwimpact,
         ryu_speciallwimpact_eff,
         ryu_speciallwimpact_snd,
+        ryu_speciallwimpact_exp,
 
         ryu_speciallwimpactarmor_eff
     );

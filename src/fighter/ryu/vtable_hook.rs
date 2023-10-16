@@ -146,65 +146,68 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
     }
 }
 
-// #[skyline::hook(offset = 0x10d7400)]
-// unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) {
-//     let object = &mut fighter.battle_object;
-//     let module_accessor = (*object).module_accessor;
-//     let collision_log = *(log as *const u64).add(0x10 / 0x8) as *mut CollisionLogScuffed;
-//     let status = StatusModule::status_kind(module_accessor);
-//     println!("power: {}", *(log as *const f32).add(0xc / 0x4));
-//     println!("status: {:#x}, special lw kind {}, collision kind {}", status, VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND), (*collision_log).collision_kind);
-//     if (*object).kind == 0x3c
-//     && status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
-//     && VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
-//     && (*collision_log).collision_kind == 1 {
-//         let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
-//         if armor_count != 2 {
-//             SoundModule::play_se(
-//                 module_accessor,
-//                 Hash40::new("se_ryu_drive_impact_punish"),
-//                 true,
-//                 false,
-//                 false,
-//                 false,
-//                 enSEType(0)
-//             );
-//         }
-//     }
-//     original!()(vtable, fighter, log);
-// }
+#[skyline::hook(offset = 0x10d6c80)]
+unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
+    let object = &mut fighter.battle_object;
+    let module_accessor = (*object).module_accessor;
+    let collision_log = log as *mut CollisionLogScuffed;
+    let status = StatusModule::status_kind(module_accessor);
+    if (*object).kind == 0x3c
+    && status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
+    && VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
+    && !VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT)
+    && (*collision_log).collision_kind == 1
+    && (*collision_log).opponent_object_id >> 0x1c == 0 {
+        let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
+        if armor_count != 2 {
+            SoundModule::play_se(
+                module_accessor,
+                Hash40::new("se_ryu_drive_impact_punish"),
+                true,
+                false,
+                false,
+                false,
+                enSEType(0)
+            );
+            VarModule::on_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
+        }
+    }
+    original!()(vtable, fighter, log, some_float);
+}
 
-// #[repr(C)]
-// pub struct CollisionLogScuffed {
-//     x00: *const u64,
-//     x08: *const u64,
-//     location: smash_rs::cpp::simd::Vector3,
-//     x20: u8,
-//     x21: u8,
-//     x22: u8,
-//     x23: u8,
-//     opponent_object_id: u32,
-//     x28: u8,
-//     x29: u8,
-//     x2A: u8,
-//     x2B: u8,
-//     x2C: u8,
-//     x2D: u8,
-//     x2E: u8,
-//     collision_kind: u8,
-//     receiver_part_id: u8,
-//     collider_part_id: u8,
-//     receiver_id: u8,
-//     collider_id: u8,
-// }
+#[repr(C)]
+pub struct CollisionLogScuffed {
+    x00: *const u64,
+    x08: *const u64,
+    location: smash_rs::cpp::simd::Vector3,
+    x20: u8,
+    x21: u8,
+    x22: u8,
+    x23: u8,
+    opponent_object_id: u32,
+    x28: u8,
+    x29: u8,
+    x2A: u8,
+    x2B: u8,
+    x2C: u8,
+    x2D: u8,
+    x2E: u8,
+    collision_kind: u8,
+    receiver_part_id: u8,
+    collider_part_id: u8,
+    receiver_id: u8,
+    collider_id: u8,
+}
 
 #[skyline::hook(offset = 0x10d7740)]
 unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_damage: u64) {
-    if fighter.battle_object.kind == 0x3d {
+    let object = &mut fighter.battle_object;
+    let module_accessor = (*object).module_accessor;
+    if (*object).kind == 0x3d {
         original!()(vtable, fighter, on_damage);
         return;
     }
-    let module_accessor = fighter.battle_object.module_accessor;
+    let module_accessor = (*object).module_accessor;
     if *(on_damage as *const u8).add(0x18) != 0 {
         let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         if *(control_energy as *const u8).add(0xa4) != 0 {
@@ -214,6 +217,7 @@ unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_da
     }
     let status = StatusModule::status_kind(module_accessor);
     if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
+    && VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_ENABLED_ARMOR)
     && *(*(on_damage as *const *const u64).offset(0x10 / 0x8) as *const u8).add(0xd0) == 0 {
         let mut armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
         if 0 < armor_count {
@@ -244,7 +248,7 @@ pub fn install() {
         ryu_ken_init,
         ryu_ken_move_strength_autoturn_handler,
         ryu_ken_handle_light_normals,
-        // ryu_ken_on_hit,
+        ryu_ken_on_hit,
         ryu_ken_on_damage
     );
 }

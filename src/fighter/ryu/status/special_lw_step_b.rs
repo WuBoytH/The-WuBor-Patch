@@ -70,6 +70,7 @@ unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue
         let wind_influence = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("wind_influence"));
         WorkModule::set_float(fighter.module_accessor, wind_influence, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_KINETIC_ENERGY_TYPE_ATTACK_SPEED_MUL);
         MotionModule::set_frame_partial(fighter.module_accessor, *FIGHTER_RYU_MOTION_PART_SET_KIND_INK, 0.0, true);
+        VarModule::on_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_ENABLED_ARMOR);
     }
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE, fighter.module_accessor);
 
@@ -77,6 +78,13 @@ unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe fn ryu_special_lw_step_b_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_REMOVE_ARMOR) {
+        DamageModule::reset_no_reaction_mode_status(fighter.module_accessor);
+        HitModule::set_hit_stop_mul(fighter.module_accessor, 1.0, HitStopMulTarget{ _address: *HIT_STOP_MUL_TARGET_ALL as u8 }, 0.0);
+        HitModule::set_defense_mul_status(fighter.module_accessor, 1.0);
+        VarModule::off_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_ENABLED_ARMOR);
+        VarModule::off_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_REMOVE_ARMOR);
+    }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return 1.into();

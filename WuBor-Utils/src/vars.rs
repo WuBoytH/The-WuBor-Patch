@@ -752,11 +752,18 @@ pub mod ryu {
         }
         pub mod int {
             pub const DENJIN_EFF_HANDLE : i32 = 0x0100;
+            pub const RUSH_VC_TYPE : i32 = 0x0101;
+            pub const IMPACT_PUNISH_VC_TYPE : i32 = 0x0102;
         }
     }
     pub mod status {
         pub mod flag {
             pub const USED_DENJIN_CHARGE : i32 = 0x1100;
+
+            pub const SPECIAL_LW_IMPACT_HIT : i32 = 0x1101;
+            pub const SPECIAL_LW_IMPACT_ENABLED_ARMOR : i32 = 0x1102;
+            pub const SPECIAL_LW_IMPACT_REMOVE_ARMOR : i32 = 0x1103;
+
             pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
         }
         pub mod int {

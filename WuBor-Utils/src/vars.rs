@@ -759,7 +759,13 @@ pub mod ryu {
             pub const USED_DENJIN_CHARGE : i32 = 0x1100;
             pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
         }
+        pub mod int {
+            pub const GUARD_SPECIAL_LW_KIND : i32 = 0x1100;
+        }
     }
+
+    pub const GUARD_SPECIAL_LW_KIND_IMPACT : i32 = 0x0;
+    pub const GUARD_SPECIAL_LW_KIND_REVERSAL : i32 = 0x1;
 }
 
 pub mod ken {

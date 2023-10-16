@@ -1,9 +1,12 @@
+#![allow(non_snake_case)]
+
 use crate::imports::status_imports::*;
 
 #[skyline::hook(offset = 0x10d4550)]
-unsafe extern "C" fn ryu_ken_init(vtable: u64, fighter: &mut Fighter) {
-    original!()(vtable, fighter);
+unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
+    let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+    *(control_energy as *mut u8).add(0xa4) = 1;
     if fighter.battle_object.kind != 0x3d {
         FGCModule::set_command_input_button(module_accessor, 1, 2);
     }
@@ -143,13 +146,105 @@ unsafe extern "C" fn ryu_ken_handle_light_normals(fighter: &mut Fighter, heavy_m
     }
 }
 
-pub fn install() {
-    // Patches out the removal of unused command input classes for Ryu and Ken
-    skyline::patching::Patch::in_text(0x10d45a4).data(0x14000014u32);
+// #[skyline::hook(offset = 0x10d7400)]
+// unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64) {
+//     let object = &mut fighter.battle_object;
+//     let module_accessor = (*object).module_accessor;
+//     let collision_log = *(log as *const u64).add(0x10 / 0x8) as *mut CollisionLogScuffed;
+//     let status = StatusModule::status_kind(module_accessor);
+//     println!("power: {}", *(log as *const f32).add(0xc / 0x4));
+//     println!("status: {:#x}, special lw kind {}, collision kind {}", status, VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND), (*collision_log).collision_kind);
+//     if (*object).kind == 0x3c
+//     && status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
+//     && VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
+//     && (*collision_log).collision_kind == 1 {
+//         let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
+//         if armor_count != 2 {
+//             SoundModule::play_se(
+//                 module_accessor,
+//                 Hash40::new("se_ryu_drive_impact_punish"),
+//                 true,
+//                 false,
+//                 false,
+//                 false,
+//                 enSEType(0)
+//             );
+//         }
+//     }
+//     original!()(vtable, fighter, log);
+// }
 
+// #[repr(C)]
+// pub struct CollisionLogScuffed {
+//     x00: *const u64,
+//     x08: *const u64,
+//     location: smash_rs::cpp::simd::Vector3,
+//     x20: u8,
+//     x21: u8,
+//     x22: u8,
+//     x23: u8,
+//     opponent_object_id: u32,
+//     x28: u8,
+//     x29: u8,
+//     x2A: u8,
+//     x2B: u8,
+//     x2C: u8,
+//     x2D: u8,
+//     x2E: u8,
+//     collision_kind: u8,
+//     receiver_part_id: u8,
+//     collider_part_id: u8,
+//     receiver_id: u8,
+//     collider_id: u8,
+// }
+
+#[skyline::hook(offset = 0x10d7740)]
+unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_damage: u64) {
+    if fighter.battle_object.kind == 0x3d {
+        original!()(vtable, fighter, on_damage);
+        return;
+    }
+    let module_accessor = fighter.battle_object.module_accessor;
+    if *(on_damage as *const u8).add(0x18) != 0 {
+        let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        if *(control_energy as *const u8).add(0xa4) != 0 {
+            *(control_energy as *mut u8).add(0xa5) = 0;
+        }
+        WorkModule::off_flag(module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
+    }
+    let status = StatusModule::status_kind(module_accessor);
+    if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
+    && *(*(on_damage as *const *const u64).offset(0x10 / 0x8) as *const u8).add(0xd0) == 0 {
+        let mut armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
+        if 0 < armor_count {
+            SoundModule::play_se(
+                module_accessor,
+                Hash40::new("se_ryu_drive_impact_armor"),
+                true,
+                false,
+                false,
+                false,
+                enSEType(0)
+            );
+            MotionAnimcmdModule::call_script_single(module_accessor, *FIGHTER_ANIMCMD_EFFECT, Hash40::new("effect_speciallwimpactarmor"), -1);
+        }
+        armor_count -= 1;
+        WorkModule::dec_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
+        if armor_count < 1 {
+            DamageModule::reset_no_reaction_mode_status(module_accessor);
+            HitModule::set_hit_stop_mul(module_accessor, 1.0, HitStopMulTarget{ _address: *HIT_STOP_MUL_TARGET_ALL as u8 }, 0.0);
+            HitModule::set_defense_mul_status(module_accessor, 1.0);
+            WorkModule::set_float(module_accessor, 0.0, *FIGHTER_STATUS_WORK_ID_FLOAT_RESERVE_KINETIC_ENERGY_TYPE_ATTACK_SPEED_MUL);
+        }
+    }
+}
+
+pub fn install() {
     skyline::install_hooks!(
         ryu_ken_init,
         ryu_ken_move_strength_autoturn_handler,
-        ryu_ken_handle_light_normals
+        ryu_ken_handle_light_normals,
+        // ryu_ken_on_hit,
+        ryu_ken_on_damage
     );
 }

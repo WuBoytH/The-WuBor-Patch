@@ -404,6 +404,83 @@ unsafe fn ryu_speciallw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ryu", script = "game_speciallwimpact", category = ACMD_GAME, low_priority )]
+unsafe fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
+    macros::FT_MOTION_RATE(agent, 26.0 / 21.0);
+    frame(agent.lua_state_agent, 21.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    if WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT) == 2 {
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+        }
+    }
+    else {
+        if macros::is_excute(agent) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
+            AttackModule::set_attack_level(agent.module_accessor, 0, *FIGHTER_RYU_SAVING_LV_2 as u8);
+        }
+    }
+    wait(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "effect_speciallwimpact", category = ACMD_EFFECT, low_priority )]
+unsafe fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 0.75);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
+        if macros::is_excute(agent) {
+            macros::EFFECT(agent, Hash40::new("ryu_savingattack_line_l"), Hash40::new("top"), 4, 11.5, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+    else{
+        if macros::is_excute(agent) {
+            macros::EFFECT(agent, Hash40::new("ryu_savingattack_line_r"), Hash40::new("top"), -5.2, 11.5, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
+        }
+    }
+    frame(agent.lua_state_agent, 21.0);
+    if macros::is_excute(agent) {
+        macros::BURN_COLOR_NORMAL(agent);
+        agent.clear_lua_stack();
+        EFFECT_STENCIL_OFF(agent.lua_state_agent);
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "sound_speciallwimpact", category = ACMD_SOUND, low_priority )]
+unsafe fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_impact"));
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "effect_speciallwimpactarmor", category = ACMD_EFFECT, low_priority )]
+unsafe fn ryu_speciallwimpactarmor_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        agent.clear_lua_stack();
+        EFFECT_STENCIL_ON(agent.lua_state_agent);
+        macros::BURN_COLOR(agent, 2.0, 0.4, 0.4, 1);
+        macros::BURN_COLOR_FRAME(agent, 1, 2.0, 0.4, 0.4, 1.0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ryu_specialn,
@@ -421,6 +498,12 @@ pub fn install() {
         ryu_speciallw,
         ryu_speciallw_eff,
         ryu_speciallw_snd,
-        ryu_speciallw_exp
+        ryu_speciallw_exp,
+
+        ryu_speciallwimpact,
+        ryu_speciallwimpact_eff,
+        ryu_speciallwimpact_snd,
+
+        ryu_speciallwimpactarmor_eff
     );
 }

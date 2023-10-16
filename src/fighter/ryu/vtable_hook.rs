@@ -202,7 +202,6 @@ pub struct CollisionLogScuffed {
 #[skyline::hook(offset = 0x10d7740)]
 unsafe extern "C" fn ryu_ken_on_damage(vtable: u64, fighter: &mut Fighter, on_damage: u64) {
     let object = &mut fighter.battle_object;
-    let module_accessor = (*object).module_accessor;
     if (*object).kind == 0x3d {
         original!()(vtable, fighter, on_damage);
         return;

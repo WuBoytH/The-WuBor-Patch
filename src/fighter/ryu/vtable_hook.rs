@@ -169,6 +169,18 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                     false,
                     enSEType(0)
                 );
+                let pos = &(*collision_log).location;
+                EffectModule::req(
+                    module_accessor,
+                    Hash40::new("ryu_savingattack_guard"),
+                    &Vector3f{x: pos.x, y: pos.y, z: pos.z},
+                    &ZERO_VECTOR,
+                    1.0,
+                    0,
+                    -1,
+                    false,
+                    0
+                );
                 VarModule::on_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
             }
         }

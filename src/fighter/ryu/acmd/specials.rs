@@ -414,12 +414,12 @@ unsafe fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
     }
     if WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT) == 2 {
         if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(8.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
         }
     }
     else {
         if macros::is_excute(agent) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 100, 10, 65, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(8.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 10, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_PUNCH);
             AttackModule::set_attack_level(agent.module_accessor, 0, *FIGHTER_RYU_SAVING_LV_2 as u8);
         }
     }
@@ -529,6 +529,65 @@ unsafe fn ryu_speciallwimpactonshield(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ryu", script = "game_speciallwreversal", category = ACMD_GAME, low_priority )]
+unsafe fn ryu_speciallwreversal(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 20.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 0, 0, 80, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    wait(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
+        AttackModule::clear_all(agent.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "effect_speciallwreversal", category = ACMD_EFFECT, low_priority )]
+unsafe fn ryu_speciallwreversal_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.0, 12.0, 6.0, 0.0, 0.0, 0.0, 1.4, true);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+    }
+    frame(agent.lua_state_agent, 20.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "sound_speciallwreversal", category = ACMD_SOUND, low_priority )]
+unsafe fn ryu_speciallwreversal_snd(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_reversal"));
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_ryu_drive_reversal"));
+    }
+}
+
+#[acmd_script( agent = "ryu", script = "expression_speciallwimpact", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ryu_speciallwreversal_exp(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 20.0);
+    if macros::is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ryu_specialn,
@@ -555,6 +614,11 @@ pub fn install() {
 
         ryu_speciallwimpactarmor_eff,
 
-        ryu_speciallwimpactonshield
+        ryu_speciallwimpactonshield,
+
+        ryu_speciallwreversal,
+        ryu_speciallwreversal_eff,
+        ryu_speciallwreversal_snd,
+        ryu_speciallwreversal_exp
     );
 }

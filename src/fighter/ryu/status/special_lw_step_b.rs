@@ -72,6 +72,9 @@ unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue
         MotionModule::set_frame_partial(fighter.module_accessor, *FIGHTER_RYU_MOTION_PART_SET_KIND_INK, 0.0, true);
         VarModule::on_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_ENABLED_ARMOR);
     }
+    else {
+        HitModule::set_status_all(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
+    }
     KineticUtility::clear_unable_energy(*FIGHTER_KINETIC_ENERGY_ID_DAMAGE, fighter.module_accessor);
 
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_lw_step_b_main_loop as *const () as _))

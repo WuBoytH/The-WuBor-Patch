@@ -155,21 +155,34 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
     if (*object).kind == 0x3c
     && status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
     && VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
-    && !VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT)
-    && (*collision_log).collision_kind == 1
-    && (*collision_log).opponent_object_id >> 0x1c == 0 {
-        let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
-        if armor_count != 2 {
-            SoundModule::play_se(
-                module_accessor,
-                Hash40::new("se_ryu_drive_impact_punish"),
-                true,
-                false,
-                false,
-                false,
-                enSEType(0)
-            );
-            VarModule::on_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
+    && !VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
+        if (*collision_log).collision_kind == 1
+        && (*collision_log).opponent_object_id >> 0x1c == 0 {
+            let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
+            if armor_count != 2 {
+                SoundModule::play_se(
+                    module_accessor,
+                    Hash40::new("se_ryu_drive_impact_punish"),
+                    true,
+                    false,
+                    false,
+                    false,
+                    enSEType(0)
+                );
+                VarModule::on_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
+            }
+        }
+        if (*collision_log).collision_kind == 2
+        && (*collision_log).x28 == 0 {
+            let opponent_object = MiscModule::get_battle_object_from_id((*collision_log).opponent_object_id);
+            let func: extern "C" fn(*mut BattleObject) -> u64 = std::mem::transmute(*((*(opponent_object as *const u64) + 0x2d0) as *const u64));
+            let flag = if func(opponent_object) == 0 {
+                ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD
+            }
+            else {
+                ryu::status::flag::SPECIAL_LW_IMPACT_JUST_SHIELD
+            };
+            VarModule::on_flag(object, flag);
         }
     }
     original!()(vtable, fighter, log, some_float);
@@ -197,6 +210,24 @@ pub struct CollisionLogScuffed {
     collider_part_id: u8,
     receiver_id: u8,
     collider_id: u8,
+}
+
+#[skyline::hook(offset = 0x10d7400)]
+unsafe extern "C" fn ryu_ken_on_hit_2(vtable: u64, fighter: &mut Fighter, log: u64) {
+    let object = &mut fighter.battle_object;
+    if (*object).kind == 0x3c {
+        let module_accessor = (*object).module_accessor;
+        let status = StatusModule::status_kind(module_accessor);
+        if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
+        && VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
+        && !VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD_WIND)
+        && !VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_JUST_SHIELD)
+        && VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD) {
+            MotionAnimcmdModule::call_script_single(module_accessor, *FIGHTER_ANIMCMD_GAME, Hash40::new("game_speciallwimpactonshield"), -1);
+            VarModule::on_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD_WIND);
+        }
+    }
+    original!()(vtable, fighter, log);
 }
 
 #[skyline::hook(offset = 0x10d7740)]
@@ -248,6 +279,7 @@ pub fn install() {
         ryu_ken_move_strength_autoturn_handler,
         ryu_ken_handle_light_normals,
         ryu_ken_on_hit,
+        ryu_ken_on_hit_2,
         ryu_ken_on_damage
     );
 }

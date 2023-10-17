@@ -761,8 +761,11 @@ pub mod ryu {
             pub const USED_DENJIN_CHARGE : i32 = 0x1100;
 
             pub const SPECIAL_LW_IMPACT_HIT : i32 = 0x1101;
-            pub const SPECIAL_LW_IMPACT_ENABLED_ARMOR : i32 = 0x1102;
-            pub const SPECIAL_LW_IMPACT_REMOVE_ARMOR : i32 = 0x1103;
+            pub const SPECIAL_LW_IMPACT_SHIELD : i32 = 0x1102;
+            pub const SPECIAL_LW_IMPACT_JUST_SHIELD : i32 = 0x1103;
+            pub const SPECIAL_LW_IMPACT_SHIELD_WIND : i32 = 0x1104;
+            pub const SPECIAL_LW_IMPACT_ENABLED_ARMOR : i32 = 0x1105;
+            pub const SPECIAL_LW_IMPACT_REMOVE_ARMOR : i32 = 0x1106;
 
             pub const SPECIAL_DECIDE_STRENGTH : i32 = 0x1150;
         }

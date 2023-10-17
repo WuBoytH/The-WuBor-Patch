@@ -521,6 +521,14 @@ unsafe fn ryu_speciallwimpactarmor_eff(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ryu", script = "game_speciallwimpactonshield", category = ACMD_GAME, low_priority )]
+unsafe fn ryu_speciallwimpactonshield(fighter: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 6, 1, Hash40::new("top"), 0.0, 50, 100, 65, 0, 12.0, 0.0, 10.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, f32::NAN, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
+        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 6, 10.0, false);
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ryu_specialn,
@@ -545,6 +553,8 @@ pub fn install() {
         ryu_speciallwimpact_snd,
         ryu_speciallwimpact_exp,
 
-        ryu_speciallwimpactarmor_eff
+        ryu_speciallwimpactarmor_eff,
+
+        ryu_speciallwimpactonshield
     );
 }

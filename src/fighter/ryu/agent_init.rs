@@ -6,7 +6,8 @@ use {
     },
     smashline::*,
     custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
+    wubor_utils::{vars::*, table_const::*},
+    crate::fighter::common::agent_inits::*
 };
 
 pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -57,6 +58,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
             return;
         }
         fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(ryu_check_special_command as *const () as _));
+        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(speciallw_pre_generic as *const () as _));
     }
 }
 

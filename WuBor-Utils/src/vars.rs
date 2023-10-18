@@ -749,6 +749,7 @@ pub mod ryu {
     pub mod instance {
         pub mod flag {
             pub const DENJIN_CHARGE : i32 = 0x0100;
+            pub const DENJIN_RUSH_INHERIT : i32 = 0x0101;
         }
         pub mod int {
             pub const DENJIN_EFF_HANDLE : i32 = 0x0100;
@@ -759,6 +760,9 @@ pub mod ryu {
     pub mod status {
         pub mod flag {
             pub const USED_DENJIN_CHARGE : i32 = 0x1100;
+
+            pub const SPECIAL_LW_RUSH_RESUME_ENERGY : i32 = 0x1101;
+            pub const SPECIAL_LW_RUSH_ENABLE_ATTACK : i32 = 0x1102;
 
             pub const SPECIAL_LW_IMPACT_HIT : i32 = 0x1101;
             pub const SPECIAL_LW_IMPACT_SHIELD : i32 = 0x1102;

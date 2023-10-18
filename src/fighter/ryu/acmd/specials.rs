@@ -588,6 +588,77 @@ unsafe fn ryu_speciallwreversal_exp(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "ryu", scripts = [ "game_speciallwrush", "game_specialairlwrush" ], category = ACMD_GAME, low_priority )]
+unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::SEARCH(agent, 0, 0, Hash40::new("top"), 10.0, 0.0, 10.0, 0.0, Some(0.0), Some(10.0), Some(5.0), *COLLISION_KIND_MASK_AHS, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        search!(agent, *MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
+    }
+    frame(agent.lua_state_agent, 11.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY);
+    }
+    frame(agent.lua_state_agent, 19.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK);
+    }
+    frame(agent.lua_state_agent, 50.0);
+    if macros::is_excute(agent) {
+        VarModule::off_flag(agent.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+    }
+}
+
+#[acmd_script( agent = "ryu", scripts = [ "effect_speciallwrush", "effect_specialairlwrush" ], category = ACMD_EFFECT, low_priority )]
+unsafe fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
+        macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
+    }
+    frame(agent.lua_state_agent, 50.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    }
+}
+
+#[acmd_script( agent = "ryu", scripts = [ "sound_speciallwrush", "sound_specialairlwrush" ], category = ACMD_SOUND, low_priority )]
+unsafe fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_rush01"));
+        let mut vc_type = VarModule::get_int(agent.battle_object, ryu::instance::int::RUSH_VC_TYPE);
+        let vc = if vc_type == 0 {
+            hash40("vc_ryu_drive_rush01")
+        }
+        else {
+            hash40("vc_ryu_drive_rush02")
+        };
+        vc_type += 1;
+        if vc_type > 1 {
+            vc_type = 0;
+        }
+        VarModule::set_int(agent.battle_object, ryu::instance::int::RUSH_VC_TYPE, vc_type);
+        macros::PLAY_SE(agent, Hash40::new_raw(vc));
+    }
+}
+
 pub fn install() {
     install_acmd_scripts!(
         ryu_specialn,
@@ -619,6 +690,10 @@ pub fn install() {
         ryu_speciallwreversal,
         ryu_speciallwreversal_eff,
         ryu_speciallwreversal_snd,
-        ryu_speciallwreversal_exp
+        ryu_speciallwreversal_exp,
+
+        ryu_speciallwrush,
+        ryu_speciallwrush_eff,
+        ryu_speciallwrush_snd
     );
 }

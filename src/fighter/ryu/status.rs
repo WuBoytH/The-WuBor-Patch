@@ -23,6 +23,9 @@ mod special_hi;
 
 mod special_lw;
 
+// Reused for Denjin Rush
+mod special_lw_step_f;
+
 // Reused for Denjin Impact / Denjin Reversal
 mod special_lw_step_b;
 
@@ -51,6 +54,8 @@ pub fn install() {
     special_hi::install();
 
     special_lw::install();
+
+    special_lw_step_f::install();
 
     special_lw_step_b::install();
 }

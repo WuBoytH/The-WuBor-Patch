@@ -36,6 +36,11 @@ unsafe fn ryu_special_lw_step_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
+#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
+unsafe fn ryu_special_lw_step_b_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE) {
@@ -106,6 +111,7 @@ unsafe fn ryu_special_lw_step_b_main_loop(fighter: &mut L2CFighterCommon) -> L2C
 pub fn install() {
     install_status_scripts!(
         ryu_special_lw_step_b_pre,
+        ryu_special_lw_step_b_init,
         ryu_special_lw_step_b_main
     );
 }

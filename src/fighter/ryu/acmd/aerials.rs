@@ -52,12 +52,14 @@ unsafe fn ryu_attackairn(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attackairn_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 32.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -105,7 +107,7 @@ unsafe fn ryu_attackairf(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attackairf_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 12.0);
@@ -113,8 +115,10 @@ unsafe fn ryu_attackairf_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 1, 5, 12, 0, 0, 0, 1, false, 0.8);
     }
     frame(agent.lua_state_agent, 21.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -164,7 +168,7 @@ unsafe fn ryu_attackairb(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attackairb_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 7.0);
@@ -173,8 +177,10 @@ unsafe fn ryu_attackairb_eff(agent: &mut L2CAgentBase) {
         macros::LAST_EFFECT_SET_RATE(agent, 1.5);
     }
     frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -224,7 +230,7 @@ unsafe fn ryu_attackairhi(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attackairhi_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 6.0);
@@ -237,8 +243,10 @@ unsafe fn ryu_attackairhi_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 4, 18, 0, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 360, false, 0.4);
     }
     wait(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -271,7 +279,7 @@ unsafe fn ryu_attackairlw(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attackairlw_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 7.0);
@@ -284,8 +292,10 @@ unsafe fn ryu_attackairlw_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 2.5, 9, 0, 0, 0, 0.8, false, 0.5);
     }
     wait(agent.lua_state_agent, 5.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 

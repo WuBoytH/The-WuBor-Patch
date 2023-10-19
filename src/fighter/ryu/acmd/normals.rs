@@ -49,8 +49,10 @@ unsafe fn ryu_attack11w_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 11, 14, 0, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 360, false, 0.3);
     }
     wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -130,7 +132,7 @@ unsafe fn ryu_attack11s(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attack11s_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 8.0);
@@ -143,8 +145,10 @@ unsafe fn ryu_attack11s_eff(agent: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -189,8 +193,10 @@ unsafe fn ryu_attacks3w_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 13, 12, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 360, false, 0.4);
     }
     frame(agent.lua_state_agent, 12.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -216,17 +222,16 @@ unsafe fn ryu_attacks3s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+            macros::ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 6.0, 70, 90, 40, 20, 3.0, 1.2, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 1, 0, Hash40::new("bust"), 6.0, 70, 90, 40, 20, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            macros::ATTACK(agent, 2, 0, Hash40::new("top"), 6.0, 70, 90, 40, 20, 4.2, 0.0, 7.0, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
+            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 4.0, false);
+            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 1, 4.0, false);
+            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 2, 4.0, false);}
+        else {
             macros::ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 6.0, 46, 90, 0, 60, 3.0, 1.2, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
             macros::ATTACK(agent, 1, 0, Hash40::new("bust"), 6.0, 46, 90, 0, 60, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
             macros::ATTACK(agent, 2, 0, Hash40::new("top"), 6.0, 46, 90, 0, 60, 4.2, 0.0, 7.0, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-        }
-        else {
-            macros::ATTACK(agent, 0, 0, Hash40::new("shoulderr"), 6.0, 80, 90, 40, 20, 3.0, 1.2, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 1, 0, Hash40::new("bust"), 6.0, 80, 90, 40, 20, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            macros::ATTACK(agent, 2, 0, Hash40::new("top"), 6.0, 80, 90, 40, 20, 4.2, 0.0, 7.0, 8.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 20, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
-            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 4.0, false);
-            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 1, 4.0, false);
-            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 2, 4.0, false);
         }
     }
     wait(agent.lua_state_agent, 2.0);
@@ -240,7 +245,7 @@ unsafe fn ryu_attacks3s(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attacks3s_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 12.0);
@@ -254,8 +259,10 @@ unsafe fn ryu_attacks3s_eff(agent: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_turn_smoke"), Hash40::new("top"), -4, 0, 2, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
     }
     wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -311,8 +318,10 @@ unsafe fn ryu_attackhi3w_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 8, 15.5, 1.5, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 360, false, 0.4);
     }
     wait(agent.lua_state_agent, 4.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -405,7 +414,7 @@ unsafe fn ryu_attackhi3s(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attackhi3s_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 5.0);
@@ -422,8 +431,10 @@ unsafe fn ryu_attackhi3s_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 7, 19, 2, 0, 0, 0, 1.1, 0, 0, 0, 0, 0, 360, false, 0.4);
     }
     wait(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -479,8 +490,10 @@ unsafe fn ryu_attacklw3w_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 1.5, 12, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 360, true, 0.4);
     }
     wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 
@@ -544,7 +557,7 @@ unsafe fn ryu_attacklw3s(agent: &mut L2CAgentBase) {
 unsafe fn ryu_attacklw3s_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
-            ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
         }
     }
     frame(agent.lua_state_agent, 7.0);
@@ -558,8 +571,10 @@ unsafe fn ryu_attacklw3s_eff(agent: &mut L2CAgentBase) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 6, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
     wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, false);
+        }
     }
 }
 

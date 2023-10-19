@@ -595,7 +595,7 @@ unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", scripts = [ "effect_speciallwrush", "effect_specialairlwrush" ], category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
+        ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {

@@ -119,7 +119,9 @@ unsafe fn ryu_attack11s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 70, 110, 40, 40, 4.5, 0.0, 17.0, 11.9, Some(0.0), Some(14.0), Some(5.4), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 75, 75, 10, 40, 4.5, 0.0, 17.0, 11.9, Some(0.0), Some(14.0), Some(5.4), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_saving"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);
+            AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 8.0, false);
+            AttackModule::set_attack_level(agent.module_accessor, 0, *FIGHTER_RYU_SAVING_LV_2 as u8);
         }
         else {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 50, 110, 0, 40, 4.5, 0.0, 17.0, 11.9, Some(0.0), Some(14.0), Some(5.4), 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_KICK, *ATTACK_REGION_KICK);

@@ -1,17 +1,16 @@
-use {
-    crate::imports::status_imports::*
-};
+use crate::imports::status_imports::*;
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn ryu_attackhi3_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL) {
-        FGCModule::jump_cancel_check_hit(fighter, false);
+#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+unsafe fn ryu_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT) {
+        VarModule::on_flag(fighter.battle_object, ryu::status::flag::USED_DENJIN_CHARGE);
+        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
     }
-    0.into()
+    original!(fighter)
 }
 
 pub fn install() {
     install_status_scripts!(
-        ryu_attackhi3_exec
+        ryu_attack_hi3_main
     );
 }

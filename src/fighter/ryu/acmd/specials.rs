@@ -1,4 +1,5 @@
 use crate::imports::acmd_imports::*;
+use super::super::helper::*;
 
 #[acmd_script( agent = "ryu", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
 unsafe fn ryu_specialn(agent: &mut L2CAgentBase) {
@@ -434,18 +435,7 @@ unsafe fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.75);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        ryu_saving_aura_handler(agent, 0.1, 0.1, 0.1);
     }
     frame(agent.lua_state_agent, 18.0);
     if get_value_float(agent.lua_state_agent, *SO_VAR_FLOAT_LR) < 0.0 {
@@ -546,18 +536,7 @@ unsafe fn ryu_speciallwreversal(agent: &mut L2CAgentBase) {
 unsafe fn ryu_speciallwreversal_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.0, 12.0, 6.0, 0.0, 0.0, 0.0, 1.4, true);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.1, 0.1, 0.1);
+        ryu_saving_aura_handler(agent, 0.1, 0.1, 0.1);
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
@@ -616,18 +595,7 @@ unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "ryu", scripts = [ "effect_speciallwrush", "effect_specialairlwrush" ], category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
-        macros::LAST_EFFECT_SET_COLOR(agent, 0.5, 1.0, 0.5);
+        ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {

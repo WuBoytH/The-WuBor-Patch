@@ -154,12 +154,21 @@ unsafe fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -> L2CValue 
         *FIGHTER_STATUS_KIND_ATTACK_S3,
         *FIGHTER_STATUS_KIND_ATTACK_HI3,
         *FIGHTER_STATUS_KIND_ATTACK_LW3,
-        *FIGHTER_STATUS_KIND_ATTACK_S4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_HI4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_LW4_START,
-        *FIGHTER_STATUS_KIND_ATTACK_AIR
+        *FIGHTER_STATUS_KIND_ATTACK_AIR,
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
         VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+    }
+    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT)
+    && [
+        *FIGHTER_STATUS_KIND_SPECIAL_N,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+    ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
+        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+        VarModule::on_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE);
     }
     0.into()
 }

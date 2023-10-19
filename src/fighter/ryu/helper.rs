@@ -3,6 +3,22 @@ use {
     crate::fighter::common::status::attack::attack::only_jabs
 };
 
+#[inline(always)]
+pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, b: f32) {
+    macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
+    macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+    macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
+    macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+    macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
+    macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+    macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handr"), 0, 0, 0, 0, 0, 0, 1, true);
+    macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+    macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneel"), 4, 0, 0, 0, 0, 0, 1.1, true);
+    macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+    macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
+    macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
+}
+
 pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE);
     let eff_handle = VarModule::get_int(fighter.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;

@@ -8,10 +8,14 @@ mod guard_damage;
 
 mod attack;
 
-// mod attack_hi3;
+mod attack_s3;
+mod attack_hi3;
+mod attack_lw3;
 
 mod attack_lw4_start;
 mod attack_lw4;
+
+mod attack_air;
 
 mod special_n;
 
@@ -40,10 +44,14 @@ pub fn install() {
 
     attack::install();
 
-    // attack_hi3::install();
+    attack_s3::install();
+    attack_hi3::install();
+    attack_lw3::install();
 
     attack_lw4_start::install();
     attack_lw4::install();
+
+    attack_air::install();
 
     special_n::install();
 

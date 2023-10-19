@@ -64,6 +64,17 @@ unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue
         false,
         false
     );
+    sv_kinetic_energy!(
+        reset_energy,
+        fighter,
+        FIGHTER_KINETIC_ENERGY_ID_MOTION,
+        ENERGY_MOTION_RESET_TYPE_GROUND_TRANS,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    );
     if VarModule::get_int(fighter.battle_object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT {
         WorkModule::set_int(fighter.module_accessor, 2, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
         DamageModule::set_no_reaction_mode_status(fighter.module_accessor, DamageNoReactionMode{_address: *DAMAGE_NO_REACTION_MODE_ALWAYS as u8}, -1.0, -1.0, -1);

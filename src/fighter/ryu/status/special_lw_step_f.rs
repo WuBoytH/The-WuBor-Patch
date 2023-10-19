@@ -29,7 +29,7 @@ unsafe fn ryu_special_lw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
             *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON |
             *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_LW
         ) as u64,
-        0,
+        *FIGHTER_STATUS_ATTR_START_TURN as u32,
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );

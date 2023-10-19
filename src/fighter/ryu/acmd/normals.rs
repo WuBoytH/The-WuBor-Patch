@@ -44,6 +44,11 @@ unsafe fn ryu_attack11w(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ryu", script = "effect_attack11w", category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_attack11w_eff(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
+        }
+    }
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 11, 14, 0, 0, 0, 0, 0.65, 0, 0, 0, 0, 0, 360, false, 0.3);
@@ -188,6 +193,11 @@ unsafe fn ryu_attacks3w(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ryu", script = "effect_attacks3w", category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_attacks3w_eff(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
+        }
+    }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
@@ -313,6 +323,11 @@ unsafe fn ryu_attackhi3w(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ryu", script = "effect_attackhi3w", category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_attackhi3w_eff(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
+        }
+    }
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -3, 0, -2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -485,6 +500,11 @@ unsafe fn ryu_attacklw3w(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ryu", script = "effect_attacklw3w", category = ACMD_EFFECT, low_priority )]
 unsafe fn ryu_attacklw3w_eff(agent: &mut L2CAgentBase) {
+    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if macros::is_excute(agent) {
+            ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
+        }
+    }
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);

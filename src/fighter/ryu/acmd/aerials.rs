@@ -1,4 +1,5 @@
 use crate::imports::acmd_imports::*;
+use super::super::helper::*;
 
 #[acmd_script( agent = "ryu", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe fn ryu_attackairn(agent: &mut L2CAgentBase) {
@@ -267,7 +268,7 @@ unsafe fn ryu_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ryu", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryut_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe fn ryu_attackairlw_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.7, 1.0, 0.7);

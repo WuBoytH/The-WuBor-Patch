@@ -1,4 +1,5 @@
 use crate::imports::status_imports::*;
+use super::super::helper::*;
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ryu_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
@@ -6,7 +7,7 @@ unsafe fn ryu_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         VarModule::on_flag(fighter.battle_object, ryu::status::flag::USED_DENJIN_CHARGE);
         VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
     }
-    original!(fighter)
+    ryu_attack_s3_main_inner(fighter)
 }
 
 pub fn install() {

@@ -197,9 +197,15 @@ unsafe fn ridley_special_hi_charge_f_main_loop(fighter: &mut L2CFighterCommon) -
 
 pub fn install() {
     install_status_scripts!(
-        ridley_special_hi_charge_hi_pre, ridley_special_hi_charge_hi_main,
-        ridley_special_hi_charge_f_pre, ridley_special_hi_charge_f_main,
-        ridley_special_hi_charge_b_pre, ridley_special_hi_charge_b_main,
+        ridley_special_hi_charge_hi_pre,
+        ridley_special_hi_charge_hi_main,
+
+        ridley_special_hi_charge_f_pre,
+        ridley_special_hi_charge_f_main,
+
+        ridley_special_hi_charge_b_pre,
+        ridley_special_hi_charge_b_main,
+
         ridley_special_hi_charge_lw_pre
     );
 }

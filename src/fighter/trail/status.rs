@@ -252,7 +252,9 @@ unsafe fn trail_landingattackair_init(fighter: &mut L2CFighterCommon) -> L2CValu
 pub fn install() {
     install_status_scripts!(
         trail_attack_main,
+
         trail_attackairn_main,
+
         trail_landingattackair_init
     );
 }

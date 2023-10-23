@@ -179,7 +179,10 @@ unsafe fn bayonetta_attackairf_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        bayonetta_attackair_main, bayonetta_attackair_end,
-        bayonetta_attackairf_init, bayonetta_attackairf_end
+        bayonetta_attackair_main,
+        bayonetta_attackair_end,
+
+        bayonetta_attackairf_init,
+        bayonetta_attackairf_end
     );
 }

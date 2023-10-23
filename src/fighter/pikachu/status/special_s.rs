@@ -125,6 +125,10 @@ unsafe fn pikachu_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        pikachu_special_s_pre, pikachu_special_s_init, pikachu_special_s_main, pikachu_special_s_exec, pikachu_special_s_end
+        pikachu_special_s_pre,
+        pikachu_special_s_init,
+        pikachu_special_s_main,
+        pikachu_special_s_exec,
+        pikachu_special_s_end
     );
 }

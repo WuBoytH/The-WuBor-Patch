@@ -130,6 +130,7 @@ unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) 
 
 pub fn install() {
     install_status_scripts!(
-        pikmin_attackhi3_pre, pikmin_attackhi3_main
+        pikmin_attackhi3_pre,
+        pikmin_attackhi3_main
     );
 }

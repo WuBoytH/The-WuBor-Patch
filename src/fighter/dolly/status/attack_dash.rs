@@ -112,6 +112,8 @@ unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        dolly_attackdash_pre, dolly_attackdash_main, dolly_attackdash_end
+        dolly_attackdash_pre,
+        dolly_attackdash_main,
+        dolly_attackdash_end
     );
 }

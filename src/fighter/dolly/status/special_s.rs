@@ -82,13 +82,20 @@ unsafe extern "C" fn dolly_specials_end_main(fighter: &mut L2CFighterCommon) -> 
 
 pub fn install() {
     install_status_scripts!(
-        dolly_specials_pre, dolly_specialscommand_pre,
-        dolly_specialb_pre, dolly_specialbcommand_pre,
+        dolly_specials_pre,
+        dolly_specialscommand_pre,
+
+        dolly_specialb_pre,
+        dolly_specialbcommand_pre,
+
         dolly_specials_end,
         dolly_specials_command_end,
+
         dolly_specialf_attack_end,
+
         dolly_specialb_end,
         dolly_specialb_command_end,
+
         dolly_specialb_attack_end
     );
 }

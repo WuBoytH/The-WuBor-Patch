@@ -123,6 +123,8 @@ unsafe fn dolly_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        dolly_specialn_pre, dolly_specialn_main, dolly_specialn_end,
+        dolly_specialn_pre,
+        dolly_specialn_main,
+        dolly_specialn_end,
     );
 }

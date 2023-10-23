@@ -116,9 +116,15 @@ unsafe fn cloud_appeallw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         cloud_appeals,
-        cloud_appealsloop, cloud_appealsloop_snd, cloud_appealsloop_exp,
+
+        cloud_appealsloop,
+        cloud_appealsloop_snd,
+        cloud_appealsloop_exp,
+
         cloud_appealhil,
+
         cloud_appealhir,
+
         cloud_appeallw
     );
 }

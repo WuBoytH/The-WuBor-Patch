@@ -110,6 +110,10 @@ unsafe fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         daisy_attackairn,
-        daisy_attackairlw, daisy_attackairlw_eff, daisy_attackairlw_snd, daisy_attackairlw_exp
+
+        daisy_attackairlw,
+        daisy_attackairlw_eff,
+        daisy_attackairlw_snd,
+        daisy_attackairlw_exp
     );
 }

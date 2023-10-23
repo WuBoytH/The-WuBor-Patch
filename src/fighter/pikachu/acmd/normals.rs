@@ -74,7 +74,9 @@ unsafe fn pikachu_attacks4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pikachu_attack11,
+
         pikachu_attackhi3,
+
         pikachu_attacks4
     );
 }

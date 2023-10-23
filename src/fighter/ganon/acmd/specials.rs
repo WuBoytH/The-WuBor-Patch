@@ -310,15 +310,26 @@ unsafe fn ganon_specialairlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ganon_specialn, ganon_specialn_eff, ganon_specialn_snd,
+        ganon_specialn,
+        ganon_specialn_eff,
+        ganon_specialn_snd,
+
         ganon_specialsstart,
+
         ganon_specialairsstart,
+
         ganon_specialairscatch,
+
         ganon_specialairs,
+
         ganon_specialhi,
+
         ganon_specialhicatch,
+
         ganon_specialhithrow,
+
         ganon_speciallw,
+
         ganon_specialairlw
     );
 }

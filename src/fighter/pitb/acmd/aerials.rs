@@ -81,7 +81,9 @@ unsafe fn pitb_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pitb_attackairn,
+
         pitb_attackairf,
+
         pitb_attackairlw
     );
 }

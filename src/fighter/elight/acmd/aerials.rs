@@ -504,12 +504,26 @@ unsafe fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        elight_attackairn, elight_attackairn_eff, elight_attackairn_snd, elight_attackairn_exp,
+        elight_attackairn,
+        elight_attackairn_eff,
+        elight_attackairn_snd,
+        elight_attackairn_exp,
+
         elight_landingairn,
+
         elight_attackairf,
+
         elight_attackairb,
+
         elight_attackairhi,
-        elight_attackairlw, elight_attackairlw_eff, elight_attackairlw_snd, elight_attackairlw_exp,
-        elight_landingairlw, elight_landingairlw_eff, elight_landingairlw_snd
+
+        elight_attackairlw,
+        elight_attackairlw_eff,
+        elight_attackairlw_snd,
+        elight_attackairlw_exp,
+
+        elight_landingairlw,
+        elight_landingairlw_eff,
+        elight_landingairlw_snd
     );
 }

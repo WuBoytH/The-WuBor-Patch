@@ -141,7 +141,10 @@ unsafe fn toonlink_attackairlw_eff(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         toonlink_attackairn,
+
         toonlink_attackairhi,
-        toonlink_attackairlw, toonlink_attackairlw_eff,
+
+        toonlink_attackairlw,
+        toonlink_attackairlw_eff,
     );
 }

@@ -132,8 +132,14 @@ unsafe fn pikachu_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pikachu_attackairn,
-        pikachu_attackairb, pikachu_attackairb_eff, pikachu_attackairb_snd, pikachu_attackairb_exp,
+
+        pikachu_attackairb,
+        pikachu_attackairb_eff,
+        pikachu_attackairb_snd,
+        pikachu_attackairb_exp,
+
         pikachu_landingairb,
+
         pikachu_attackairhi
     );
 }

@@ -73,6 +73,8 @@ unsafe fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         cloud_attackairb,
-        cloud_attackairhi, cloud_attackairhi_exp
+
+        cloud_attackairhi,
+        cloud_attackairhi_exp
     );
 }

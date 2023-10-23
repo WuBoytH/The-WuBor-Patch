@@ -180,9 +180,17 @@ pub fn install() {
     install_acmd_scripts!(
         simon_specialn,
         simon_specialn_exp,
+
         simon_specialhi,
+
         simon_specialairhi,
+
         simon_axe_fly,
-        simon_speciallw, simon_speciallw_eff, simon_specialairlw_eff, simon_speciallw_snd, simon_speciallw_exp
+
+        simon_speciallw,
+        simon_speciallw_eff,
+        simon_specialairlw_eff,
+        simon_speciallw_snd,
+        simon_speciallw_exp
     );
 }

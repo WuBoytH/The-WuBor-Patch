@@ -117,8 +117,11 @@ unsafe fn wario_throwlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         wario_throwf,
+
         wario_throwb,
+
         wario_throwhi,
+
         wario_throwlw
     );
 }

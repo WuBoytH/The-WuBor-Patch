@@ -83,7 +83,9 @@ unsafe fn donkey_specialairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         donkey_specials,
+
         donkey_specialairs,
+
         donkey_specialairhi
     );
 }

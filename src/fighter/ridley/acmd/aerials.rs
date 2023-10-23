@@ -68,6 +68,7 @@ unsafe fn ridley_landingairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ridley_attackairlw,
+
         ridley_landingairlw
     );
 }

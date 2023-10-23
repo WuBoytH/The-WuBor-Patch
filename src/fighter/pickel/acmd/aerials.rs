@@ -584,13 +584,22 @@ unsafe fn pickel_forge_wait(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pickel_attackairn,
+
         pickel_attackairf,
+
         pickel_attackairb,
+
         pickel_attackairhi,
+
         pickel_attackairlw,
-        pickel_attackairlw2, pickel_attackairlw2_exp,
+
+        pickel_attackairlw2,
+        pickel_attackairlw2_exp,
+
         pickel_forge_fallattack,
+
         pickel_forge_fallattackride,
+
         pickel_forge_wait
     );
 }

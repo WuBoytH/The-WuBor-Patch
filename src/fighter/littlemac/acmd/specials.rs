@@ -48,6 +48,7 @@ unsafe fn littlemac_specialhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         littlemac_specialhistart,
+
         littlemac_specialhi
     );
 }

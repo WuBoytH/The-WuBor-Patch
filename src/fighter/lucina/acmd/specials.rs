@@ -300,7 +300,7 @@ unsafe fn lucina_specialhi(agent: &mut L2CAgentBase) {
             full_invuln(agent.module_accessor, false);
             AttackModule::clear_all(agent.module_accessor);
             let ratio = get_damage_mul(agent.module_accessor);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0 * ratio, 40, 85, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0 * ratio, 40, 85, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
         frame(agent.lua_state_agent, 24.0);
@@ -322,7 +322,7 @@ unsafe fn lucina_specialhi(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             AttackModule::clear_all(agent.module_accessor);
             let ratio = get_damage_mul(agent.module_accessor);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0 * ratio, 40, 80, 0, 70, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0 * ratio, 40, 80, 0, 70, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
         frame(agent.lua_state_agent, 24.0);
@@ -453,7 +453,7 @@ unsafe fn lucina_specialairhi(agent: &mut L2CAgentBase) {
             full_invuln(agent.module_accessor, false);
             AttackModule::clear_all(agent.module_accessor);
             let ratio = get_damage_mul(agent.module_accessor);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0 * ratio, 40, 85, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0 * ratio, 40, 85, 0, 75, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_SWORD);
             // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
         frame(agent.lua_state_agent, 24.0);
@@ -475,7 +475,7 @@ unsafe fn lucina_specialairhi(agent: &mut L2CAgentBase) {
         if macros::is_excute(agent) {
             AttackModule::clear_all(agent.module_accessor);
             let ratio = get_damage_mul(agent.module_accessor);
-            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0 * ratio, 40, 80, 0, 70, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+            macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0 * ratio, 40, 80, 0, 70, 6.5, 0.0, 12.0, 10.0, Some(0.0), Some(15.0), Some(10.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
             // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS);
         }
         frame(agent.lua_state_agent, 24.0);
@@ -851,21 +851,51 @@ unsafe fn lucina_lightningflash_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_specialnstart_eff, lucina_specialnstart_snd,
+        lucina_specialnstart_eff,
+        lucina_specialnstart_snd,
+
         lucina_specialnloop,
+
         lucina_specialnend,
+
         lucina_specialnendmax,
 
-        lucina_specialairs1, lucina_specialairs1_eff, lucina_specialairs1_snd,
-        lucina_specialairs2hi, lucina_specialairs2hi_eff, lucina_specialairs2hi_snd,
-        lucina_specials2hi, lucina_specials2hi_eff, lucina_specials2hi_snd, lucina_specials2hi_exp,
+        lucina_specialairs1,
+        lucina_specialairs1_eff,
+        lucina_specialairs1_snd,
 
-        lucina_specialhi, lucina_specialhi_eff, lucina_specialhi_snd, lucina_specialhi_exp,
-        lucina_specialairhi, lucina_specialairhi_eff, lucina_specialairhi_snd, lucina_specialairhi_exp,
+        lucina_specialairs2hi,
+        lucina_specialairs2hi_eff,
+        lucina_specialairs2hi_snd,
 
-        lucina_speciallw, lucina_speciallw_eff, lucina_speciallw_snd,
-        lucina_speciallw_hit, lucina_specialairlw_hit, lucina_speciallw_hit_eff, lucina_speciallw_hit_snd, lucina_speciallw_hit_exp,
+        lucina_specials2hi,
+        lucina_specials2hi_eff,
+        lucina_specials2hi_snd,
+        lucina_specials2hi_exp,
 
-        lucina_lightningflash, lucina_lightningflash_eff, lucina_lightningflash_snd, lucina_lightningflash_exp
+        lucina_specialhi,
+        lucina_specialhi_eff,
+        lucina_specialhi_snd,
+        lucina_specialhi_exp,
+
+        lucina_specialairhi,
+        lucina_specialairhi_eff,
+        lucina_specialairhi_snd,
+        lucina_specialairhi_exp,
+
+        lucina_speciallw,
+        lucina_speciallw_eff,
+        lucina_speciallw_snd,
+
+        lucina_speciallw_hit,
+        lucina_specialairlw_hit,
+        lucina_speciallw_hit_eff,
+        lucina_speciallw_hit_snd,
+        lucina_speciallw_hit_exp,
+
+        lucina_lightningflash,
+        lucina_lightningflash_eff,
+        lucina_lightningflash_snd,
+        lucina_lightningflash_exp
     );
 }

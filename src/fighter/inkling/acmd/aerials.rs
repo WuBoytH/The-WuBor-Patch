@@ -83,7 +83,9 @@ unsafe fn inkling_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         inkling_attackairn,
+
         inkling_attackairf,
+
         inkling_attackairlw
     );
 }

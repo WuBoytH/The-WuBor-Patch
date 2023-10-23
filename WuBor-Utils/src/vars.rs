@@ -56,8 +56,10 @@ pub mod fighter {
             pub const DISABLE_SPECIAL_LW : i32 = 0x0003;
             // pub const GUARD_OFF_ATTACK_CANCEL : i32 = 0x0004;
             // pub const IS_FGC : i32 = 0x0005;
-            pub const CANCEL_ESCAPE_TO_ESCAPE_FB : i32 = 0x0006;
+            // pub const DODGE_CANCEL : i32 = 0x0006;
+            pub const JUMP_FROM_SQUAT : i32 = 0x0006;
             pub const SUPER_JUMP : i32 = 0x0007;
+            pub const SUPER_JUMP_SET_MOMENTUM : i32 = 0x0008;
             // pub const FORCE_ESCAPE_AIR_SLIDE : i32 = 0x0008;
             pub const LEDGE_INTANGIBILITY : i32 = 0x0009;
         }
@@ -73,6 +75,8 @@ pub mod fighter {
             // pub const CUSTOM_COMMAND_623_TIMER : i32 = 0x0008;
             // pub const CUSTOM_COMMAND_236236_STEP : i32 = 0x0009;
             // pub const CUSTOM_COMMAND_236236_TIMER : i32 = 0x000A;
+            pub const JUMP_FROM_SQUAT_COUNT_STATUS : i32 = 0x000B;
+            pub const GUARD_TRIGGER : i32 = 0x000C;
         }
         pub mod float {
             pub const FLICK_DOWN : i32 = 0x0000;
@@ -135,8 +139,8 @@ pub mod appeal {
 
 pub mod attack_air {
     pub mod flag {
-        pub const WHIFF : i32 = 0x1050;
-        pub const ENABLE_LANDING_ATTACK : i32 = 0x1051;
+        pub const WHIFF : i32 = 0x1051;
+        pub const ENABLE_LANDING_ATTACK : i32 = 0x1052;
     }
 }
 
@@ -162,6 +166,13 @@ pub mod damage_fly_roll {
 pub mod dash {
     pub mod flag {
         pub const DISABLE_RUN : i32 = 0x1051;
+        pub const DISABLE_PIVOT_TURN_DASH : i32 = 0x1052;
+    }
+}
+
+pub mod escape {
+    pub mod flag {
+        pub const DODGE_CANCEL : i32 = 0x1050;
     }
 }
 
@@ -192,6 +203,32 @@ pub mod bayonetta {
     pub mod status {
         pub mod flag {
             pub const SPECIAL_AIR_S_D_IS_BOUNCE : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod brave {
+    pub mod instance {
+        pub mod int {
+            pub const NEXT_ROLL_INDEX : i32 = 0x0100;
+            pub const USED_SPELL_MASK : i32 = 0x0101;
+            pub const SPELL_SLOT_1 : i32 = 0x0102;
+            pub const SPELL_SLOT_2 : i32 = 0x0103;
+            pub const SPELL_SLOT_3 : i32 = 0x0104;
+            pub const SPELL_SLOT_4 : i32 = 0x0105;
+        }
+    }
+    pub mod status {
+        pub mod flag {
+            pub const ENABLE_CLEAR_PSYCHE_UP : i32 = 0x1150;
+        }
+    }
+}
+
+pub mod captain {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_S_ENABLE_MANUAL_ATTACK : i32 = 0x1150;
         }
     }
 }
@@ -288,6 +325,15 @@ pub mod falco {
     }
 }
 
+pub mod fox {
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_HI_ENABLE_SNAP : i32 = 0x1100;
+            pub const SPECIAL_HI_ENABLED_SNAP : i32 = 0x1101;
+        }
+    }
+}
+
 pub mod ganon {
     pub mod status {
         pub mod flag {
@@ -312,14 +358,10 @@ pub mod ganon {
 }
 
 pub mod gaogaen {
-    pub mod instance {
-        pub mod flag {
-            pub const REVENGE_AUTO : i32 = 0x0100;
-        }
-    }
     pub mod status {
         pub mod flag {
-            pub const REVENGE_CRITICAL : i32 = 0x1150;
+            pub const REVENGE_AUTO : i32 = 0x1150;
+            pub const REVENGE_CRITICAL : i32 = 0x1151;
         }
     }
 }

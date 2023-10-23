@@ -171,6 +171,10 @@ impl VarModule {
             vec![-1, *FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH]
         ); // Not Dashes into Turn Dash
         varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_TURN,
+            vec![*FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH]
+        ); // Dashes into Turn
+        varmodule.reset_status_pairs.insert(
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
             vec![*FIGHTER_STATUS_KIND_ATTACK_AIR]
         ); // Aerial into Landing
@@ -186,6 +190,18 @@ impl VarModule {
             *FIGHTER_STATUS_KIND_GUARD_OFF,
             vec![*FIGHTER_STATUS_KIND_GUARD_ON, *FIGHTER_STATUS_KIND_GUARD, *FIGHTER_STATUS_KIND_GUARD_DAMAGE]
         ); // Guards into Guard Off
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_ESCAPE,
+            vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
+        ); // Escapes...
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_ESCAPE_F,
+            vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
+        ); // Escapes...
+        varmodule.reset_status_pairs.insert(
+            *FIGHTER_STATUS_KIND_ESCAPE_B,
+            vec![*FIGHTER_STATUS_KIND_ESCAPE, *FIGHTER_STATUS_KIND_ESCAPE_F, *FIGHTER_STATUS_KIND_ESCAPE_B]
+        ); // Escapes...
         varmodule
     }
 
@@ -580,11 +596,11 @@ impl VarModule {
     /// * `false` - `what` remains greater than or equal to `min` after decrementing
     #[export_name = "VarModule__countdown_int"]
     pub extern "Rust" fn countdown_int(object: *mut BattleObject, what: i32, min: i32) -> bool {
-        if Self::get_int(object, what) < min {
+        if Self::get_int(object, what) <= min {
             false
         } else {
             Self::dec_int(object, what);
-            Self::get_int(object, what) < min
+            Self::get_int(object, what) == min
         }
     }
 

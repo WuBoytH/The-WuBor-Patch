@@ -229,30 +229,6 @@ unsafe fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_heroic_bravery_grab(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::HEROIC_GRAB) {
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("catch_wait")
-        || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_CATCH_ATTACK {
-            fighter.change_status(FIGHTER_STATUS_KIND_THROW.into(), true.into());
-        }
-        if MotionModule::motion_kind(fighter.module_accessor) == hash40("throw_hi")
-        && MotionModule::frame(fighter.module_accessor) > 22.0 {
-            StatusModule::change_status_request_from_script(fighter.module_accessor, *FIGHTER_STATUS_KIND_ATTACK_S3, true);
-        }
-    }
-    if StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_WAIT
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_DASH
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_TURN
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_PULL
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_JUMP
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH_CUT
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_CATCH
-    && !CatchModule::is_catch(fighter.module_accessor)
-    && StatusModule::status_kind(fighter.module_accessor) != *FIGHTER_STATUS_KIND_THROW {
-        VarModule::off_flag(fighter.battle_object, yu::instance::flag::HEROIC_GRAB);
-    }
-}
-
 #[fighter_frame( agent = FIGHTER_KIND_LUCINA, main )]
 fn lucina_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
@@ -264,7 +240,6 @@ fn lucina_frame(fighter: &mut L2CFighterCommon) {
         lucina_meter_display(fighter);
         lucina_one_more_check(fighter);
         lucina_sb_flash(fighter);
-        lucina_heroic_bravery_grab(fighter);
     }
 }
 

@@ -397,14 +397,33 @@ unsafe fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pikachu_specialn, pikachu_specialn_eff, pikachu_specialairn_eff, pikachu_specialn_snd, pikachu_specialn_exp,
+        pikachu_specialn,
+        pikachu_specialn_eff,
+        pikachu_specialairn_eff,
+        pikachu_specialn_snd,
+        pikachu_specialn_exp,
+
         pikachu_dengekidama_regular,
+
         pikachu_specialhistart,
+
         pikachu_specialhi1,
+
         pikachu_specialhi2,
-        pikachu_speciallw, pikachu_speciallw_eff, pikachu_speciallw_snd, pikachu_speciallw_exp,
-        pikachu_cloud_regular, pikachu_cloud_regular_eff,
+
+        pikachu_speciallw,
+        pikachu_speciallw_eff,
+        pikachu_speciallw_snd,
+        pikachu_speciallw_exp,
+
+        pikachu_cloud_regular,
+        pikachu_cloud_regular_eff,
+
         pikachu_kaminari_regular,
-        pikachu_speciallwstrike, pikachu_speciallwstrike_eff, pikachu_speciallwstrike_snd, pikachu_speciallwstrike_exp
+
+        pikachu_speciallwstrike,
+        pikachu_speciallwstrike_eff,
+        pikachu_speciallwstrike_snd,
+        pikachu_speciallwstrike_exp
     );
 }

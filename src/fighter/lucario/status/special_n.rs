@@ -232,8 +232,12 @@ unsafe extern "C" fn lucario_special_n_shoot_set_kinetic(fighter: &mut L2CFighte
 
 pub fn install() {
     install_status_scripts!(
-        lucario_special_n_main, lucario_special_n_end,
-        lucario_special_n_hold_main, lucario_special_n_hold_end,
+        lucario_special_n_main,
+        lucario_special_n_end,
+
+        lucario_special_n_hold_main,
+        lucario_special_n_hold_end,
+
         lucario_special_n_shoot_main
     );
 }

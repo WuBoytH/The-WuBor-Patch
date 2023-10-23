@@ -83,6 +83,7 @@ unsafe fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValu
 
 pub fn install() {
     install_status_scripts!(
-        edge_special_hi_landing_main, edge_special_hi_landing_end
+        edge_special_hi_landing_main,
+        edge_special_hi_landing_end
     );
 }

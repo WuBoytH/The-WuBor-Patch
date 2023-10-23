@@ -38,6 +38,8 @@ unsafe fn simon_attack_air_check_attack(_fighter: &mut L2CFighterCommon) -> L2CV
 
 pub fn install() {
     install_status_scripts!(
-        simon_attack_air_main, simon_attack_air_exec, simon_attack_air_check_attack
+        simon_attack_air_main,
+        simon_attack_air_exec,
+        simon_attack_air_check_attack
     );
 }

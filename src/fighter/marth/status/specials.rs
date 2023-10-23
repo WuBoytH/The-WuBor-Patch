@@ -448,9 +448,15 @@ unsafe fn marth_specialhi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install() {
     install_status_scripts!(
         marth_specials_main,
+
         marth_specials2_main,
+
         marth_specials3_main,
         marth_specials3_exec_stop,
-        marth_specialhi_pre, marth_specialhi_main, marth_specialhi_exec, marth_specialhi_end
+
+        marth_specialhi_pre,
+        marth_specialhi_main,
+        marth_specialhi_exec,
+        marth_specialhi_end
     );
 }

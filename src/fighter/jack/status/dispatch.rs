@@ -87,6 +87,7 @@ unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> 
 
 pub fn install() {
     install_status_scripts!(
-        jack_dispatch_pre, jack_dispatch_main
+        jack_dispatch_pre,
+        jack_dispatch_main
     );
 }

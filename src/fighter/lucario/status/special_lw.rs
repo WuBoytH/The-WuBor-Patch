@@ -333,6 +333,9 @@ unsafe fn lucario_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        lucario_special_lw_pre, lucario_special_lw_init, lucario_special_lw_main, lucario_special_lw_end
+        lucario_special_lw_pre,
+        lucario_special_lw_init,
+        lucario_special_lw_main,
+        lucario_special_lw_end
     );
 }

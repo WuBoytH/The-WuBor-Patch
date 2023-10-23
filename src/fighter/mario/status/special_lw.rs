@@ -304,7 +304,12 @@ unsafe extern "C" fn mario_speciallw_groundpound_cancel_main_loop(fighter: &mut 
 pub fn install() {
     install_status_scripts!(
         mario_speciallw_main,
-        mario_speciallw_shoot_pre, mario_speciallw_shoot_init, mario_speciallw_shoot_exec, mario_speciallw_shoot_main,
+
+        mario_speciallw_shoot_pre,
+        mario_speciallw_shoot_init,
+        mario_speciallw_shoot_exec,
+        mario_speciallw_shoot_main,
+
         mario_speciallw_charge_main
     );
 }

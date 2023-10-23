@@ -80,6 +80,7 @@ unsafe extern "C" fn kirby_ike_special_n_end_main_loop(fighter: &mut L2CFighterC
 
 pub fn install() {
     install_status_scripts!(
-        kirby_ike_special_n_end_init, kirby_ike_special_n_end_main
+        kirby_ike_special_n_end_init,
+        kirby_ike_special_n_end_main
     );
 }

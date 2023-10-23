@@ -33,7 +33,9 @@ unsafe fn lucario_landing_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CV
 pub fn install() {
     install_status_scripts!(
         lucario_landing_pre,
+
         lucario_landing_light_pre,
+
         lucario_landing_attack_air_pre
     );
 }

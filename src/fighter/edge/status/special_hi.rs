@@ -245,6 +245,7 @@ unsafe extern "C" fn edge_special_hi_ground_touch_down(fighter: &mut L2CFighterC
 
 pub fn install() {
     install_status_scripts!(
-        edge_special_hi_pre, edge_special_hi_main
+        edge_special_hi_pre,
+        edge_special_hi_main
     );
 }

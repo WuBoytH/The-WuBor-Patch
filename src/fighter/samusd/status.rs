@@ -603,10 +603,14 @@ unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 pub fn install() {
     install_status_scripts!(
         samusd_wait_main,
+
         samusd_attackair_main,
+
         samusd_specialn_hold_main,
         samusd_specialn_hold_exit,
+
         samusd_speciallw_air_main,
+
         samusd_cshot_shoot_init,
         samusd_cshot_shoot_exec,
         samusd_cshot_shoot_end

@@ -229,6 +229,8 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
 pub fn install() {
     install_status_scripts!(
         lucario_auraball_start_end,
-        lucario_auraball_shoot_pre, lucario_auraball_shoot_main
+
+        lucario_auraball_shoot_pre,
+        lucario_auraball_shoot_main
     );
 }

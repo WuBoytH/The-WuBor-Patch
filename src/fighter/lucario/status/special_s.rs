@@ -256,7 +256,8 @@ unsafe extern "C" fn lucario_special_s_throw_substatus(fighter: &mut L2CFighterC
 
 pub fn install() {
     install_status_scripts!(
-        lucario_special_s_main, lucario_special_s_end,
+        lucario_special_s_main,
+        lucario_special_s_end,
         lucario_special_s_throw_main
     );
 }

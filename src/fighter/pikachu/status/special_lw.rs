@@ -128,6 +128,8 @@ unsafe extern "C" fn pikachu_special_lw_main_loop(fighter: &mut L2CFighterCommon
 
 pub fn install() {
     install_status_scripts!(
-        pikachu_special_lw_pre, pikachu_special_lw_init, pikachu_special_lw_main
+        pikachu_special_lw_pre,
+        pikachu_special_lw_init,
+        pikachu_special_lw_main
     );
 }

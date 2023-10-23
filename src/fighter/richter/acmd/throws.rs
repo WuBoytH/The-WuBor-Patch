@@ -70,7 +70,9 @@ unsafe fn richter_throwlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         richter_throwb,
+
         richter_throwhi,
+
         richter_throwlw
     );
 }

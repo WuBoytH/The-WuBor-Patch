@@ -817,17 +817,32 @@ unsafe fn gaogaen_speciallwturn_eff(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         gaogaen_specialn,
+
         gaogaen_specialairn,
+
         gaogaen_specialsstart,
+
         gaogaen_specialairsstart,
+
         gaogaen_specialsshoulder,
+
         gaogaen_specialairsshoulder,
+
         gaogaen_specialslariat,
+
         gaogaen_specialhistart,
+
         gaogaen_specialairhifall,
+
         gaogaen_specialairhifall2,
-        gaogaen_speciallwstart, gaogaen_speciallwstart_eff,
-        gaogaen_speciallw, gaogaen_speciallw_eff,
-        gaogaen_speciallwturn, gaogaen_speciallwturn_eff
+
+        gaogaen_speciallwstart,
+        gaogaen_speciallwstart_eff,
+
+        gaogaen_speciallw,
+        gaogaen_speciallw_eff,
+
+        gaogaen_speciallwturn,
+        gaogaen_speciallwturn_eff
     );
 }

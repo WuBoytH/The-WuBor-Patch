@@ -1365,35 +1365,106 @@ unsafe fn lucario_specialairlwattack_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_specialnstart,
-        lucario_specialnshoot, lucario_specialnshoot_exp,
-        lucario_specialairnshoot_exp,
-        lucario_specialnhold2_eff, lucario_specialnhold2_snd,
-        lucario_specialnshoot2, lucario_specialnshoot2_eff, lucario_specialnshoot2_snd, lucario_specialnshoot2_exp,
-        lucario_auraball_charge, lucario_auraball_charge_snd,
-        lucario_auraball_shoot, lucario_auraball_shoot_snd,
-        lucario_auraball_explosion, lucario_auraball_explosion_eff,
 
-        lucario_specials, lucario_specials_eff, lucario_specials_snd, lucario_specials_exp,
-        lucario_specials2, lucario_specials2_eff, lucario_specials2_snd, lucario_specials2_exp,
-        lucario_specialairs, lucario_specialairs_eff, lucario_specialairs_snd, lucario_specialairs_exp,
-        lucario_specialairs2, lucario_specialairs2_eff, lucario_specialairs2_snd, lucario_specialairs2_exp,
-        lucario_specialsthrow, lucario_specialsthrow_eff, lucario_specialsthrow_snd, lucario_specialsthrow_exp,
-        lucario_specialsthrow2, lucario_specialsthrow2_eff, lucario_specialsthrow2_snd, lucario_specialsthrow2_exp,
-        lucario_specialairsthrow, lucario_specialairsthrow_eff, lucario_specialairsthrow_snd, lucario_specialairsthrow_exp,
-        lucario_specialairsthrow2, lucario_specialairsthrow2_eff, lucario_specialairsthrow2_snd, lucario_specialairsthrow2_exp,
+        lucario_specialnshoot,
+        lucario_specialnshoot_exp,
+
+        lucario_specialairnshoot_exp,
+
+        lucario_specialnhold2_eff,
+        lucario_specialnhold2_snd,
+
+        lucario_specialnshoot2,
+        lucario_specialnshoot2_eff,
+        lucario_specialnshoot2_snd,
+        lucario_specialnshoot2_exp,
+
+        lucario_auraball_charge,
+        lucario_auraball_charge_snd,
+
+        lucario_auraball_shoot,
+        lucario_auraball_shoot_snd,
+
+        lucario_auraball_explosion,
+        lucario_auraball_explosion_eff,
+
+        lucario_specials,
+        lucario_specials_eff,
+        lucario_specials_snd,
+        lucario_specials_exp,
+
+        lucario_specials2,
+        lucario_specials2_eff,
+        lucario_specials2_snd,
+        lucario_specials2_exp,
+
+        lucario_specialairs,
+        lucario_specialairs_eff,
+        lucario_specialairs_snd,
+        lucario_specialairs_exp,
+
+        lucario_specialairs2,
+        lucario_specialairs2_eff,
+        lucario_specialairs2_snd,
+        lucario_specialairs2_exp,
+
+        lucario_specialsthrow,
+        lucario_specialsthrow_eff,
+        lucario_specialsthrow_snd,
+        lucario_specialsthrow_exp,
+
+        lucario_specialsthrow2,
+        lucario_specialsthrow2_eff,
+        lucario_specialsthrow2_snd,
+        lucario_specialsthrow2_exp,
+
+        lucario_specialairsthrow,
+        lucario_specialairsthrow_eff,
+        lucario_specialairsthrow_snd,
+        lucario_specialairsthrow_exp,
+
+        lucario_specialairsthrow2,
+        lucario_specialairsthrow2_eff,
+        lucario_specialairsthrow2_snd,
+        lucario_specialairsthrow2_exp,
+
         lucario_qigong_shoot,
 
         lucario_specialhi,
+
         lucario_specialairhi,
-        lucario_specialhimove, lucario_specialhimove_eff, lucario_specialhimove_snd,
+
+        lucario_specialhimove,
+        lucario_specialhimove_eff,
+        lucario_specialhimove_snd,
+
         lucario_specialhiend,
+
         lucario_specialairhiend,
 
-        lucario_speciallw, lucario_speciallw_eff, lucario_speciallw_snd,
-        lucario_specialairlw, lucario_specialairlw_eff, lucario_specialairlw_snd,
-        lucario_speciallwend, lucario_speciallwend_eff,
-        lucario_speciallwcancel, lucario_speciallwcancel_eff, lucario_speciallwcancel_snd,
-        lucario_speciallwattack, lucario_speciallwattack_eff, lucario_speciallwattack_snd, lucario_speciallwattack_exp,
-        lucario_specialairlwattack, lucario_specialairlwattack_eff, lucario_specialairlwattack_snd, lucario_specialairlwattack_exp
+        lucario_speciallw,
+        lucario_speciallw_eff,
+        lucario_speciallw_snd,
+
+        lucario_specialairlw,
+        lucario_specialairlw_eff,
+        lucario_specialairlw_snd,
+
+        lucario_speciallwend,
+        lucario_speciallwend_eff,
+
+        lucario_speciallwcancel,
+        lucario_speciallwcancel_eff,
+        lucario_speciallwcancel_snd,
+
+        lucario_speciallwattack,
+        lucario_speciallwattack_eff,
+        lucario_speciallwattack_snd,
+        lucario_speciallwattack_exp,
+
+        lucario_specialairlwattack,
+        lucario_specialairlwattack_eff,
+        lucario_specialairlwattack_snd,
+        lucario_specialairlwattack_exp
     );
 }

@@ -32,6 +32,7 @@ unsafe fn bayonetta_escapeairslide(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         bayonetta_escapef,
+
         bayonetta_escapeairslide
     );
 }

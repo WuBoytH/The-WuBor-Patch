@@ -227,11 +227,22 @@ unsafe fn mario_landingairlw(_agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_attackairf, mario_attackairf_eff, mario_attackairf_snd, mario_attackairf_exp,
+        mario_attackairf,
+        mario_attackairf_eff,
+        mario_attackairf_snd,
+        mario_attackairf_exp,
+
         mario_landingairf,
+
         mario_attackairb,
+
         mario_attackairhi,
-        mario_attackairlw, mario_attackairlw_eff, mario_attackairlw_snd, mario_attackairlw_exp,
+
+        mario_attackairlw,
+        mario_attackairlw_eff,
+        mario_attackairlw_snd,
+        mario_attackairlw_exp,
+
         mario_landingairlw
     );
 }

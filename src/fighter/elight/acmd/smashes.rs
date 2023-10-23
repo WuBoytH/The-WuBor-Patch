@@ -161,6 +161,7 @@ unsafe fn elight_attackhi4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         elight_attacks4,
+
         elight_attackhi4
     );
 }

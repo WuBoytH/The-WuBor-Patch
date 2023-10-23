@@ -1545,27 +1545,50 @@ unsafe fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dolly_specialn,
+
         dolly_specialairn,
 
         dolly_specialsfattack,
 
         dolly_specialsbattackw,
-        dolly_specialsbattack, dolly_specialsbattack_eff, dolly_specialsbattack_snd, dolly_specialsbattack_exp,
+
+        dolly_specialsbattack,
+        dolly_specialsbattack_eff,
+        dolly_specialsbattack_snd,
+        dolly_specialsbattack_exp,
 
         dolly_specialhi,
+
         dolly_specialhicommand,
 
-        dolly_speciallwstart, dolly_speciallwstart_eff, dolly_speciallwstart_snd, dolly_speciallwstart_exp,
+        dolly_speciallwstart,
+        dolly_speciallwstart_eff,
+        dolly_speciallwstart_snd,
+        dolly_speciallwstart_exp,
+
         dolly_specialairlwrisew,
+
         dolly_specialairlwrise,
+
         dolly_specialairlw,
 
-        dolly_superspecial, dolly_superspecial_eff, dolly_superspecial_snd,
-        dolly_superspecial2start, dolly_superspecial2start_eff, dolly_superspecial2start_snd,
+        dolly_superspecial,
+        dolly_superspecial_eff,
+        dolly_superspecial_snd,
+
+        dolly_superspecial2start,
+        dolly_superspecial2start_eff,
+        dolly_superspecial2start_snd,
+
         dolly_superspecial2,
 
-        dolly_wave_normalw, dolly_wave_normal,
-        dolly_wave_normalairw, dolly_wave_normalair,
+        dolly_wave_normalw,
+
+        dolly_wave_normal,
+
+        dolly_wave_normalairw,
+
+        dolly_wave_normalair,
 
         dolly_burst_superspecial
     );

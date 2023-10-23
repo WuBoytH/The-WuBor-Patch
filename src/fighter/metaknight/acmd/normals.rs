@@ -609,15 +609,44 @@ unsafe fn metaknight_attacklw3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        metaknight_attack11, metaknight_attack11_eff, metaknight_attack11_snd, metaknight_attack11_exp,
-        metaknight_attack12, metaknight_attack12_eff, metaknight_attack12_snd, metaknight_attack12_exp,
-        metaknight_attack13, metaknight_attack13_eff, metaknight_attack13_snd, metaknight_attack13_exp,
-        metaknight_attack100start_eff, metaknight_attack100start_snd,
-        metaknight_attack100, metaknight_attack100sub,
-        metaknight_attack100end, metaknight_attack100end_eff, metaknight_attack100end_snd, metaknight_attack100end_exp,
+        metaknight_attack11,
+        metaknight_attack11_eff,
+        metaknight_attack11_snd,
+        metaknight_attack11_exp,
+
+        metaknight_attack12,
+        metaknight_attack12_eff,
+        metaknight_attack12_snd,
+        metaknight_attack12_exp,
+
+        metaknight_attack13,
+        metaknight_attack13_eff,
+        metaknight_attack13_snd,
+        metaknight_attack13_exp,
+
+        metaknight_attack100start_eff,
+        metaknight_attack100start_snd,
+
+        metaknight_attack100,
+        metaknight_attack100sub,
+
+        metaknight_attack100end,
+        metaknight_attack100end_eff,
+        metaknight_attack100end_snd,
+        metaknight_attack100end_exp,
+
         metaknight_attackdash,
-        metaknight_attacks3, metaknight_attacks3_eff, metaknight_attacks3_snd, metaknight_attacks3_exp,
+
+        metaknight_attacks3,
+        metaknight_attacks3_eff,
+        metaknight_attacks3_snd,
+        metaknight_attacks3_exp,
+
         metaknight_attackhi3,
-        metaknight_attacklw3, metaknight_attacklw3_eff, metaknight_attacklw3_snd, metaknight_attacklw3_exp
+
+        metaknight_attacklw3,
+        metaknight_attacklw3_eff,
+        metaknight_attacklw3_snd,
+        metaknight_attacklw3_exp
     );
 }

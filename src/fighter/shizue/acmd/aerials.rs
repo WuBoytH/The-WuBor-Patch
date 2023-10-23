@@ -83,10 +83,15 @@ unsafe fn shizue_bullet_shootb(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         shizue_attackairf,
+
         shizue_slingshot_attackairf,
+
         shizue_bullet_shootf,
+
         shizue_attackairb,
+
         shizue_slingshot_attackairb,
+
         shizue_bullet_shootb
     );
 }

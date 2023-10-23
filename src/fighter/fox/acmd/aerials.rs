@@ -148,8 +148,11 @@ unsafe fn fox_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         fox_attackairf,
+
         fox_landingairf,
+
         fox_attackairb,
+
         fox_attackairhi
     );
 }

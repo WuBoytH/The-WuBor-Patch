@@ -176,9 +176,13 @@ unsafe fn dolly_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dolly_attackairn,
+
         dolly_attackairf,
+
         dolly_attackairb,
+
         dolly_attackairhi,
+
         dolly_attackairlw
     );
 }

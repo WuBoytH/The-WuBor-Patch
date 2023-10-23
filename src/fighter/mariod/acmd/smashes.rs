@@ -73,7 +73,9 @@ unsafe fn mariod_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mariod_attacks4,
+
         mariod_attackhi4,
+
         mariod_attacklw4
     );
 }

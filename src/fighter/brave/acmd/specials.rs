@@ -322,13 +322,24 @@ unsafe fn brave_speciallw20(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         brave_specialhi1,
+
         brave_specialhi2,
+
         brave_specialhi3,
+
         brave_speciallw9_snd,
-        brave_speciallw9end, brave_speciallw9end_eff, brave_speciallw9end_snd, brave_speciallw9end_exp,
+
+        brave_speciallw9end,
+        brave_speciallw9end_eff,
+        brave_speciallw9end_snd,
+        brave_speciallw9end_exp,
+
         brave_speciallw17,
+
         brave_speciallw18,
+
         brave_speciallw19,
+
         brave_speciallw20
     );
 }

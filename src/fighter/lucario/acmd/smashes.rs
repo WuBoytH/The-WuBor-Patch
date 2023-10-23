@@ -82,7 +82,9 @@ unsafe fn lucario_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_attacks4,
+
         lucario_attackhi4,
+
         lucario_attacklw4
     );
 }

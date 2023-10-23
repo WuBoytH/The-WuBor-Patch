@@ -181,10 +181,17 @@ unsafe fn rockman_airshooter_regular(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_attackairn, rockman_attackairn_eff, rockman_attackairn_snd, rockman_attackairn_exp,
+        rockman_attackairn,
+        rockman_attackairn_eff,
+        rockman_attackairn_snd,
+        rockman_attackairn_exp,
+
         rockman_attackairf,
+
         rockman_attackairb,
+
         // rockman_attackairhi,
+
         rockman_airshooter_regular
     );
 }

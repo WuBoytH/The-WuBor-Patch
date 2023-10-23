@@ -300,9 +300,23 @@ unsafe fn rockman_attacks4charge_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_attacks4, rockman_attacks4_eff, rockman_attacks4_snd, rockman_attacks4_exp,
-        rockman_attacks4hi, rockman_attacks4hi_eff, rockman_attacks4hi_snd, rockman_attacks4hi_exp,
-        rockman_attacks4lw, rockman_attacks4lw_eff, rockman_attacks4lw_snd, rockman_attacks4lw_exp,
-        rockman_attacks4charge_eff, rockman_attacks4charge_snd, rockman_attacks4charge_exp
+        rockman_attacks4,
+        rockman_attacks4_eff,
+        rockman_attacks4_snd,
+        rockman_attacks4_exp,
+
+        rockman_attacks4hi,
+        rockman_attacks4hi_eff,
+        rockman_attacks4hi_snd,
+        rockman_attacks4hi_exp,
+
+        rockman_attacks4lw,
+        rockman_attacks4lw_eff,
+        rockman_attacks4lw_snd,
+        rockman_attacks4lw_exp,
+
+        rockman_attacks4charge_eff,
+        rockman_attacks4charge_snd,
+        rockman_attacks4charge_exp
     );
 }

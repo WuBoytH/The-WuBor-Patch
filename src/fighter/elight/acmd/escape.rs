@@ -51,6 +51,7 @@ pub fn install() {
         elight_escapeb,
 
         elight_escapeairslide,
+
         elight_escapeairslideforesight
     );
 }

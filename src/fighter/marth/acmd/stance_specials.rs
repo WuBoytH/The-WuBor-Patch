@@ -740,14 +740,49 @@ unsafe fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_speciallwspecials, marth_speciallwspecials_eff, marth_speciallwspecials_snd, marth_speciallwspecials_exp,
-        marth_speciallwspecialairs, marth_speciallwspecialairs_eff, marth_speciallwspecialairs_snd, marth_speciallwspecialairs_exp,
-        marth_speciallwspecials2start, marth_speciallwspecials2start_eff, marth_speciallwspecials2start_snd, marth_speciallwspecials2start_exp,
-        marth_speciallwspecials2loop, marth_speciallwspecials2loop_eff, marth_speciallwspecials2loop_snd, marth_speciallwspecials2loop_exp,
-        marth_speciallwspecials2end2, marth_speciallwspecials2end2_eff, marth_speciallwspecials2end2_snd, marth_speciallwspecials2end2_exp,
-        marth_speciallwspecialairs2start, marth_speciallwspecialairs2start_eff, marth_speciallwspecialairs2start_snd, marth_speciallwspecialairs2start_exp,
-        marth_speciallwspecialairs2loop, marth_speciallwspecialairs2loop_eff, marth_speciallwspecialairs2loop_snd, marth_speciallwspecialairs2loop_exp,
-        marth_speciallwspecialairs2end, marth_speciallwspecialairs2end_eff, marth_speciallwspecialairs2end_snd, marth_speciallwspecialairs2end_exp,
-        marth_speciallwspecialhi, marth_speciallwspecialhi_eff, marth_speciallwspecialhi_snd, marth_speciallwspecialhi_exp
+        marth_speciallwspecials,
+        marth_speciallwspecials_eff,
+        marth_speciallwspecials_snd,
+        marth_speciallwspecials_exp,
+
+        marth_speciallwspecialairs,
+        marth_speciallwspecialairs_eff,
+        marth_speciallwspecialairs_snd,
+        marth_speciallwspecialairs_exp,
+
+        marth_speciallwspecials2start,
+        marth_speciallwspecials2start_eff,
+        marth_speciallwspecials2start_snd,
+        marth_speciallwspecials2start_exp,
+
+        marth_speciallwspecials2loop,
+        marth_speciallwspecials2loop_eff,
+        marth_speciallwspecials2loop_snd,
+        marth_speciallwspecials2loop_exp,
+
+        marth_speciallwspecials2end2,
+        marth_speciallwspecials2end2_eff,
+        marth_speciallwspecials2end2_snd,
+        marth_speciallwspecials2end2_exp,
+
+        marth_speciallwspecialairs2start,
+        marth_speciallwspecialairs2start_eff,
+        marth_speciallwspecialairs2start_snd,
+        marth_speciallwspecialairs2start_exp,
+
+        marth_speciallwspecialairs2loop,
+        marth_speciallwspecialairs2loop_eff,
+        marth_speciallwspecialairs2loop_snd,
+        marth_speciallwspecialairs2loop_exp,
+
+        marth_speciallwspecialairs2end,
+        marth_speciallwspecialairs2end_eff,
+        marth_speciallwspecialairs2end_snd,
+        marth_speciallwspecialairs2end_exp,
+
+        marth_speciallwspecialhi,
+        marth_speciallwspecialhi_eff,
+        marth_speciallwspecialhi_snd,
+        marth_speciallwspecialhi_exp
     );
 }

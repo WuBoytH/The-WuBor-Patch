@@ -143,7 +143,14 @@ unsafe fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        chrom_attacks4, chrom_attacks4_eff, chrom_attacks4_snd, chrom_attacks4_exp,
-        chrom_attackhi4, chrom_attackhi4_eff, chrom_attackhi4_snd, chrom_attackhi4_exp
+        chrom_attacks4,
+        chrom_attacks4_eff,
+        chrom_attacks4_snd,
+        chrom_attacks4_exp,
+
+        chrom_attackhi4,
+        chrom_attackhi4_eff,
+        chrom_attackhi4_snd,
+        chrom_attackhi4_exp
     );
 }

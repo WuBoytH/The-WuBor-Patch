@@ -61,6 +61,7 @@ unsafe fn dolly_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dolly_attacks4,
+
         dolly_attacklw4
     );
 }

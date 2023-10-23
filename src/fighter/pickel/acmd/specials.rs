@@ -84,9 +84,13 @@ unsafe fn pickel_specialairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pickel_specialsride,
+
         pickel_specialairsride,
+
         pickel_specialsdrivepartial,
+
         pickel_specialsdriveemptypartial,
+
         pickel_specialairhi
     );
 }

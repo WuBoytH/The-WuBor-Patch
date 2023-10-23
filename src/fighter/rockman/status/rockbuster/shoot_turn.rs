@@ -120,6 +120,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_main_loop(fighter: &mut L2CFi
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_turn_pre, rockman_rockbuster_shoot_turn_main
+        rockman_rockbuster_shoot_turn_pre,
+        rockman_rockbuster_shoot_turn_main
     );
 }

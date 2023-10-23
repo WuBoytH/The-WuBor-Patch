@@ -55,8 +55,8 @@ unsafe fn lucina_attack11_exp(agent: &mut L2CAgentBase) {
 unsafe fn lucina_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("kneer"), 3.5, 361, 60, 0, 30, 4.2, 5.0, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
-        macros::ATTACK(agent, 1, 0, Hash40::new("kneer"), 3.5, 361, 60, 0, 30, 3.8, -1.0, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(agent, 0, 0, Hash40::new("kneer"), 4.0, 361, 40, 0, 35, 4.2, 5.0, -1.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
+        macros::ATTACK(agent, 1, 0, Hash40::new("kneer"), 4.0, 361, 40, 0, 35, 3.8, -1.0, 0.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
     wait(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -186,6 +186,8 @@ unsafe fn lucina_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
+    macros::FT_MOTION_RATE(agent, 0.75);
+    wait(agent.lua_state_agent, 12.0);
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
@@ -271,6 +273,10 @@ unsafe fn lucina_attackhi3_exp(agent: &mut L2CAgentBase) {
 unsafe fn lucina_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
+    frame(agent.lua_state_agent, 4.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 5.0);
+    macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 7.0);
@@ -284,15 +290,34 @@ unsafe fn lucina_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
+    frame(agent.lua_state_agent, 19.0);
+    macros::FT_MOTION_RATE(agent, 0.75);
+    frame(agent.lua_state_agent, 23.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
 }
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_attack11, lucina_attack11_eff, lucina_attack11_exp,
-        lucina_attack12, lucina_attack12_eff, lucina_attack12_exp,
-        lucina_attackdash, lucina_attackdash_eff, lucina_attackdash_snd, lucina_attackdash_exp,
+        lucina_attack11,
+        lucina_attack11_eff,
+        lucina_attack11_exp,
+
+        lucina_attack12,
+        lucina_attack12_eff,
+        lucina_attack12_exp,
+
+        lucina_attackdash,
+        lucina_attackdash_eff,
+        lucina_attackdash_snd,
+        lucina_attackdash_exp,
+
         lucina_attacks3,
-        lucina_attackhi3, lucina_attackhi3_eff, lucina_attackhi3_snd, lucina_attackhi3_exp,
+
+        lucina_attackhi3,
+        lucina_attackhi3_eff,
+        lucina_attackhi3_snd,
+        lucina_attackhi3_exp,
+
         lucina_attacklw3
     );
 }

@@ -42,6 +42,7 @@ unsafe fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        edge_special_hi_rush_pre, edge_special_hi_rush_end
+        edge_special_hi_rush_pre,
+        edge_special_hi_rush_end
     );
 }

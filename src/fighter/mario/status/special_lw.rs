@@ -77,7 +77,7 @@ unsafe fn mario_speciallw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-    macros::SA_SET(fighter, *SITUATION_KIND_AIR);
+    // macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     if VarModule::get_int(fighter.battle_object, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
         VarModule::off_flag(fighter.battle_object, mario::status::flag::SPECIAL_LW_BLJ);
         let dir = FGCModule::get_command_stick_direction(fighter, true);
@@ -158,7 +158,7 @@ unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new("special_lw_light"),
+            Hash40::new("special_lw_jump"),
             0.0,
             1.0,
             false,
@@ -172,7 +172,7 @@ unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue
         VarModule::on_flag(fighter.battle_object, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new("special_air_lw_light"),
+            Hash40::new("special_air_lw_fall"),
             0.0,
             1.0,
             false,
@@ -200,8 +200,7 @@ unsafe extern "C" fn mario_speciallw_groundpound_fall_main_loop(fighter: &mut L2
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
-    if !AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_CATEGORY_MASK_ALL)
-    && FGCModule::get_command_stick_direction(fighter, false) == 8 {
+    if FGCModule::get_command_stick_direction(fighter, false) == 8 {
         VarModule::set_int(fighter.battle_object, mario::instance::int::SPECIAL_LW_KIND, mario::SPECIAL_LW_KIND_GROUND_POUND_CANCEL);
         fighter.change_status(FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE.into(), false.into());
     }
@@ -216,7 +215,7 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
     if VarModule::get_int(fighter.battle_object, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new("special_lw_hold"),
+            Hash40::new("special_lw_landing"),
             0.0,
             1.0,
             false,
@@ -230,7 +229,7 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new("special_air_lw_hold"),
+            Hash40::new("special_air_lw_landing"),
             0.0,
             1.0,
             false,
@@ -242,10 +241,10 @@ unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValu
     }
     else {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-        macros::SET_SPEED_EX(fighter, 0.0, -2.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
+        macros::SET_SPEED_EX(fighter, 0.0, -1.0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         MotionModule::change_motion(
             fighter.module_accessor,
-            Hash40::new("special_air_lw_heavy"),
+            Hash40::new("special_air_lw_cancel"),
             0.0,
             1.0,
             false,
@@ -305,7 +304,12 @@ unsafe extern "C" fn mario_speciallw_groundpound_cancel_main_loop(fighter: &mut 
 pub fn install() {
     install_status_scripts!(
         mario_speciallw_main,
-        mario_speciallw_shoot_pre, mario_speciallw_shoot_init, mario_speciallw_shoot_exec, mario_speciallw_shoot_main,
+
+        mario_speciallw_shoot_pre,
+        mario_speciallw_shoot_init,
+        mario_speciallw_shoot_exec,
+        mario_speciallw_shoot_main,
+
         mario_speciallw_charge_main
     );
 }

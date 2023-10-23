@@ -62,9 +62,11 @@ unsafe fn dolly_specialhi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        dolly_specialhi_pre, dolly_specialhicommand_pre,
+        dolly_specialhi_pre,
+        dolly_specialhicommand_pre,
         dolly_specialhi_end,
         dolly_specialhi_command_end,
+
         dolly_specialhi_jump_end
     );
 }

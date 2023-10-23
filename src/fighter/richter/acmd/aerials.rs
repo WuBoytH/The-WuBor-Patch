@@ -571,18 +571,33 @@ unsafe fn richter_landingairlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        richter_attackairn, richter_attackairn_eff, richter_attackairn_snd, richter_attackairn_exp,
+        richter_attackairn,
+        richter_attackairn_eff,
+        richter_attackairn_snd,
+        richter_attackairn_exp,
+
         richter_attackairf,
+
         richter_attackairfhi,
+
         richter_attackairflw,
+
         richter_whip_attackairf,
+
         richter_attackairb,
+
         richter_attackairbhi,
+
         richter_attackairblw,
+
         richter_whip_attackairb,
+
         richter_attackairhi,
+
         richter_whip_attackairhi,
+
         richter_attackairlw,
+
         richter_landingairlw
     );
 }

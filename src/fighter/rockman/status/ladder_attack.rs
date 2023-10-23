@@ -22,6 +22,7 @@ unsafe fn rockman_ladder_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 pub fn install() {
     install_status_scripts!(
-        rockman_ladder_attack_main, rockman_ladder_attack_end
+        rockman_ladder_attack_main,
+        rockman_ladder_attack_end
     );
 }

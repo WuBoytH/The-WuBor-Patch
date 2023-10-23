@@ -13,6 +13,7 @@ unsafe fn dolly_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        dolly_dashback_pre, dolly_dashback_main
+        dolly_dashback_pre,
+        dolly_dashback_main
     );
 }

@@ -121,9 +121,13 @@ unsafe fn littlemac_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         littlemac_attackairn,
+
         littlemac_attackairf,
+
         littlemac_attackairb,
+
         littlemac_attackairhi,
+
         littlemac_attackairlw
     );
 }

@@ -186,9 +186,13 @@ unsafe fn kamui_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         kamui_attack12,
+
         kamui_attack13,
+
         kamui_attacks3,
+
         kamui_attackhi3,
+
         kamui_attacklw3
     );
 }

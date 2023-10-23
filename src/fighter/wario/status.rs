@@ -168,7 +168,9 @@ unsafe extern "C" fn wario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
 pub fn install() {
     install_status_scripts!(
         wario_rebirth_pre,
+
         wario_throw_exec,
+
         wario_speciallw_main
     );
 }

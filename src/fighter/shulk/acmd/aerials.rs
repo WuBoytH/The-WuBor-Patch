@@ -80,6 +80,8 @@ unsafe fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        shulk_attackairb, shulk_attackairb_eff, shulk_attackairb_exp
+        shulk_attackairb,
+        shulk_attackairb_eff,
+        shulk_attackairb_exp
     );
 }

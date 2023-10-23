@@ -416,11 +416,22 @@ unsafe fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ike_specialnend, ike_specialnend_eff, ike_specialnend_snd, ike_specialnend_exp,
-        ike_specialairnend, ike_specialairnend_eff, ike_specialairnend_snd, ike_specialairnend_exp,
+        ike_specialnend,
+        ike_specialnend_eff,
+        ike_specialnend_snd,
+        ike_specialnend_exp,
+
+        ike_specialairnend,
+        ike_specialairnend_eff,
+        ike_specialairnend_snd,
+        ike_specialairnend_exp,
 
         ike_specialsdash_snd,
+
         ike_specialsend,
-        ike_specialsattack, ike_specialsattack_eff, ike_specialsattack_snd
+
+        ike_specialsattack,
+        ike_specialsattack_eff,
+        ike_specialsattack_snd
     );
 }

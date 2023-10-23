@@ -56,7 +56,7 @@ unsafe fn pikmin_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn pikmin_attackhi3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK)
-        || WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0) != 0 {
+        || WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0) {
             WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON);
@@ -130,6 +130,7 @@ unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) 
 
 pub fn install() {
     install_status_scripts!(
-        pikmin_attackhi3_pre, pikmin_attackhi3_main
+        pikmin_attackhi3_pre,
+        pikmin_attackhi3_main
     );
 }

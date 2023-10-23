@@ -199,7 +199,12 @@ unsafe fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kirby_ikespecialnend_eff, kirby_ikespecialnend_snd, kirby_ikespecialnend_exp,
-        kirby_ikespecialairnend_eff, kirby_ikespecialairnend_snd, kirby_ikespecialairnend_exp
+        kirby_ikespecialnend_eff,
+        kirby_ikespecialnend_snd,
+        kirby_ikespecialnend_exp,
+
+        kirby_ikespecialairnend_eff,
+        kirby_ikespecialairnend_snd,
+        kirby_ikespecialairnend_exp
     );
 }

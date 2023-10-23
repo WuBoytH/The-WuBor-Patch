@@ -8,7 +8,7 @@ use {
     smashline::*,
     custom_var::*,
     custom_cancel::*,
-    wubor_utils::{vars::*, table_const::*},
+    wubor_utils::{wua_bind::*, vars::*, table_const::*},
     super::{helper::*, cancel}
 };
 
@@ -98,6 +98,14 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
         fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
+        FGCModule::set_command_input_button(fighter.module_accessor, 0, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 1, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 2, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 3, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 8, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 9, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 10, 2);
+        FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
     }
 }
 

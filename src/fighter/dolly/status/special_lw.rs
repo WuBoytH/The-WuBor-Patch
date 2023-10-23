@@ -157,9 +157,10 @@ unsafe extern "C" fn dolly_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
     }
     if !MotionModule::is_end(fighter.module_accessor) {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP)
-        && StatusModule::is_changing(fighter.module_accessor) {
+        && !StatusModule::is_changing(fighter.module_accessor)
+        && StatusModule::is_situation_changed(fighter.module_accessor) {
             dolly_speciallw_mot_helper(fighter, false.into());
-            fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_lw").into());
+            fighter.sub_exec_special_start_common_kinetic_setting(hash40("param_special_lw").into());
         }
     }
     if !fighter.global_table[IS_STOP].get_bool()
@@ -309,6 +310,8 @@ pub fn install() {
         dolly_speciallw_command_main,
         dolly_speciallw_end,
         dolly_speciallw_command_end,
-        dolly_speciallw_attack_main, dolly_speciallw_attack_end
+
+        dolly_speciallw_attack_main,
+        dolly_speciallw_attack_end
     );
 }

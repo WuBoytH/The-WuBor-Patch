@@ -50,6 +50,18 @@ unsafe fn samusd_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
+unsafe fn samusd_attack12_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_samusd_smash_s01"));
+    }
+    wait(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_samusd_smash_s02"));
+    }
+}
+
 #[acmd_script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
 unsafe fn samusd_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -70,18 +82,6 @@ unsafe fn samusd_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_normal") as i64);
-    }
-}
-
-#[acmd_script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
-unsafe fn samusd_attack12_snd(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 5.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_samusd_smash_s01"));
-    }
-    wait(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        macros::PLAY_SE(agent, Hash40::new("se_samusd_smash_s02"));
     }
 }
 
@@ -289,10 +289,27 @@ unsafe fn samusd_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samusd_attack11,
-        samusd_attack12, samusd_attack12_eff, samusd_attack12_exp, samusd_attack12_snd,
-        samusd_attackdash, samusd_attackdash_eff, samusd_attackdash_exp,
-        samusd_attacks3, samusd_attacks3hi, samusd_attacks3lw,
-        samusd_attackhi3, samusd_attackhi3_eff, samusd_attackhi3_snd, samusd_attackhi3_exp,
+
+        samusd_attack12,
+        samusd_attack12_eff,
+        samusd_attack12_snd,
+        samusd_attack12_exp,
+
+        samusd_attackdash,
+        samusd_attackdash_eff,
+        samusd_attackdash_exp,
+
+        samusd_attacks3,
+
+        samusd_attacks3hi,
+
+        samusd_attacks3lw,
+
+        samusd_attackhi3,
+        samusd_attackhi3_eff,
+        samusd_attackhi3_snd,
+        samusd_attackhi3_exp,
+
         samusd_attacklw3
     );
 }

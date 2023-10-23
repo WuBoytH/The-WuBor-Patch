@@ -54,6 +54,7 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
 pub fn install() {
     install_status_scripts!(
         kirby_attackdash_main,
+
         kirby_attacklw3_main
     );
 }

@@ -1,17 +1,18 @@
-use smash::app::sv_fighter_util;
-
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_fighter_pre_end_status)]
 unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
         let some = fighter.global_table[0x24].get_f32();
         if some <= 2.0 {
             let status = fighter.global_table[STATUS_KIND].get_i32();
-            fighter.clear_lua_stack();
-            lua_args!(fighter, status);
-            if sv_fighter_util::is_attack_air_status(fighter.lua_state_agent, status)
-            || [
+            // fighter.clear_lua_stack();
+            // lua_args!(fighter, status);
+            // if sv_fighter_util::is_attack_air_status(fighter.lua_state_agent, status)
+            // || [
+            if [
                 *FIGHTER_STATUS_KIND_SPECIAL_N,
                 *FIGHTER_STATUS_KIND_SPECIAL_S,
                 *FIGHTER_STATUS_KIND_SPECIAL_HI,
@@ -35,7 +36,6 @@ unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
     // May cause unintended side effects but the logic should be pretty air-tight.
 
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::LEDGE_INTANGIBILITY) {
-        let status = fighter.global_table[STATUS_KIND].get_i32();
         if ![
             *FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -44,6 +44,27 @@ unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
         ].contains(&status) {
             VarModule::off_flag(fighter.battle_object, fighter::instance::flag::LEDGE_INTANGIBILITY);
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
+        }
+    }
+
+    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT) {
+        let status = fighter.global_table[STATUS_KIND].get_i32();
+        if VarModule::get_int(fighter.battle_object, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS) < 2
+        && ![
+            *FIGHTER_STATUS_KIND_FALL,
+            *FIGHTER_STATUS_KIND_JUMP_AERIAL,
+            *FIGHTER_STATUS_KIND_FALL_AERIAL,
+            *FIGHTER_STATUS_KIND_FLY,
+            *FIGHTER_STATUS_KIND_ESCAPE_AIR,
+            *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
+        ].contains(&status) {
+            VarModule::inc_int(fighter.battle_object, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS);
+        }
+        else {
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT);
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
+            VarModule::set_int(fighter.battle_object, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS, 0);
         }
     }
 }

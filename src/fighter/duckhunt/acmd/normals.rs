@@ -37,6 +37,7 @@ unsafe fn duckhunt_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         duckhunt_attackhi3,
+
         duckhunt_attacklw3
     );
 }

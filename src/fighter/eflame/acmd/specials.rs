@@ -506,11 +506,22 @@ unsafe fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         eflame_specials,
+
         eflame_esword_fly,
+
         eflame_esword_flyflick,
-        eflame_esword_rotate, eflame_esword_rotate_eff,
+
+        eflame_esword_rotate,
+        eflame_esword_rotate_eff,
+
         eflame_esword_reflected,
+
         eflame_specialairhijump,
-        eflame_speciallwattack, eflame_speciallwattack_eff, eflame_speciallwattack_snd, eflame_specialairlwattack_snd, eflame_speciallwattack_exp
+
+        eflame_speciallwattack,
+        eflame_speciallwattack_eff,
+        eflame_speciallwattack_snd,
+        eflame_specialairlwattack_snd,
+        eflame_speciallwattack_exp
     );
 }

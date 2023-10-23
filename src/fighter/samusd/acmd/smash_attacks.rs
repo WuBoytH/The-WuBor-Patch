@@ -103,6 +103,7 @@ unsafe fn samusd_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samusd_attackhi4,
+
         samusd_attacklw4
     );
 }

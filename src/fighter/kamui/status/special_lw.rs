@@ -103,6 +103,7 @@ unsafe fn kamui_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        kamui_special_lw_main, kamui_special_lw_end
+        kamui_special_lw_main,
+        kamui_special_lw_end
     );
 }

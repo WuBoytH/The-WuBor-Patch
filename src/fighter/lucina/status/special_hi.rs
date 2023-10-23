@@ -119,6 +119,8 @@ unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) 
 
 pub fn install() {
     install_status_scripts!(
-        lucina_specialhi_pre, lucina_specialhi_exec, lucina_specialhi_main
+        lucina_specialhi_pre,
+        lucina_specialhi_exec,
+        lucina_specialhi_main
     );
 }

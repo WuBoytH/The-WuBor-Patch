@@ -79,8 +79,12 @@ unsafe fn dolly_superspecial2_blow_end(fighter: &mut L2CFighterCommon) -> L2CVal
 
 pub fn install() {
     install_status_scripts!(
-        dolly_superspecial_pre, dolly_superspecial_end,
-        dolly_superspecial2_pre, dolly_superspecial2_end,
+        dolly_superspecial_pre,
+        dolly_superspecial_end,
+
+        dolly_superspecial2_pre,
+        dolly_superspecial2_end,
+
         dolly_superspecial2_blow_end
     );
 }

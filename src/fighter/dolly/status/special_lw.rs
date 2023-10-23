@@ -310,6 +310,8 @@ pub fn install() {
         dolly_speciallw_command_main,
         dolly_speciallw_end,
         dolly_speciallw_command_end,
-        dolly_speciallw_attack_main, dolly_speciallw_attack_end
+
+        dolly_speciallw_attack_main,
+        dolly_speciallw_attack_end
     );
 }

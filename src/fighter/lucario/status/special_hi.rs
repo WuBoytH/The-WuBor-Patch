@@ -526,8 +526,13 @@ unsafe extern "C" fn lucario_special_hi_end(fighter: &mut L2CFighterCommon, stat
 
 pub fn install() {
     install_status_scripts!(
-        lucario_special_hi_pre, lucario_special_hi_init,
-        lucario_special_hi_rush_pre, lucario_special_hi_rush_main,
-        lucario_special_hi_rush_end_main, lucario_special_hi_rush_end_end
+        lucario_special_hi_pre,
+        lucario_special_hi_init,
+
+        lucario_special_hi_rush_pre,
+        lucario_special_hi_rush_main,
+
+        lucario_special_hi_rush_end_main,
+        lucario_special_hi_rush_end_end
     );
 }

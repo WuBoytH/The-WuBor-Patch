@@ -134,6 +134,7 @@ unsafe extern "C" fn bayonetta_reset_witchtwist(fighter: &mut L2CFighterCommon) 
 pub fn install() {
     install_status_scripts!(
         bayonetta_specialairs_d_main,
+
         bayonetta_specialairs_d_landing_main
     );
 }

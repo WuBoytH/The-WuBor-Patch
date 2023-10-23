@@ -100,6 +100,8 @@ unsafe fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        rockman_special_n_pre, rockman_special_n_main, rockman_special_n_end
+        rockman_special_n_pre,
+        rockman_special_n_main,
+        rockman_special_n_end
     );
 }

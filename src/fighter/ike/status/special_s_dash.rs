@@ -127,6 +127,7 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
 
 pub fn install() {
     install_status_scripts!(
-        ike_special_s_dash_pre, ike_special_s_dash_main
+        ike_special_s_dash_pre,
+        ike_special_s_dash_main
     );
 }

@@ -95,6 +95,7 @@ unsafe extern "C" fn jack_summon_main_loop(fighter: &mut L2CFighterCommon) -> L2
 
 pub fn install() {
     install_status_scripts!(
-        jack_summon_pre, jack_summon_main
+        jack_summon_pre,
+        jack_summon_main
     );
 }

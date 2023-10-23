@@ -137,7 +137,10 @@ unsafe fn kirby_lucario_special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2
 
 pub fn install() {
     install_status_scripts!(
-        kirby_lucario_special_n_main, kirby_lucario_special_n_end,
-        kirby_lucario_special_n_hold_main, kirby_lucario_special_n_hold_end
+        kirby_lucario_special_n_main,
+        kirby_lucario_special_n_end,
+
+        kirby_lucario_special_n_hold_main,
+        kirby_lucario_special_n_hold_end
     );
 }

@@ -153,9 +153,13 @@ unsafe fn mariod_specialairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mariod_speciallw,
+
         mariod_specialairlw,
+
         mariod_drcapsule_regular,
+
         mariod_specialhi,
+
         mariod_specialairhi
     );
 }

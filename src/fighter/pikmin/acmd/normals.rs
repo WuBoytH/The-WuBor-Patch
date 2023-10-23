@@ -274,12 +274,28 @@ unsafe fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pikmin_attack11,
+
         pikmin_attack12,
-        pikmin_attackdash, pikmin_attackdash_exp,
-        pikmin_attacks3, pikmin_attacks3_snd,
-        pikmin_attacks3loop_eff, pikmin_attacks3loop_snd, pikmin_attacks3loop_exp,
-        pikmin_attacks3end, pikmin_attacks3end_eff, pikmin_attacks3end_snd, pikmin_attacks3end_exp,
-        pikmin_attackhi3, pikmin_attackhi3_eff, pikmin_attackhi3_snd,
+
+        pikmin_attackdash,
+        pikmin_attackdash_exp,
+
+        pikmin_attacks3,
+        pikmin_attacks3_snd,
+
+        pikmin_attacks3loop_eff,
+        pikmin_attacks3loop_snd,
+        pikmin_attacks3loop_exp,
+
+        pikmin_attacks3end,
+        pikmin_attacks3end_eff,
+        pikmin_attacks3end_snd,
+        pikmin_attacks3end_exp,
+
+        pikmin_attackhi3,
+        pikmin_attackhi3_eff,
+        pikmin_attackhi3_snd,
+
         pikmin_attacklw3
     );
 }

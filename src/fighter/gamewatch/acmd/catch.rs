@@ -23,6 +23,7 @@ unsafe fn gamewatch_catchattack_snd(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        gamewatch_catchattack, gamewatch_catchattack_snd
+        gamewatch_catchattack,
+        gamewatch_catchattack_snd
     );
 }

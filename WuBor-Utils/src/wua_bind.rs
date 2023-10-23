@@ -69,7 +69,7 @@ pub mod FGCModule {
     pub unsafe fn check_cancel_window(fighter: &mut L2CFighterCommon) -> bool {
         let hit_frame = VarModule::get_float(fighter.battle_object, fighter::status::float::HIT_FRAME);
         let motion_frame = fighter.global_table[STATUS_FRAME].get_f32();
-        motion_frame - hit_frame <= 10.0 && !fighter.global_table[IS_STOP].get_bool() && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
+        motion_frame - hit_frame <= 20.0 && !fighter.global_table[IS_STOP].get_bool() && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     }
 
     /// A function used to enable jump-cancels, styled after the special cancel functions that Ryu, Ken, and Terry use.
@@ -170,7 +170,6 @@ pub mod FGCModule {
     ///
     /// ```
     /// // Checks if you are in the Down Tilt status, then checks if you input another Down Tilt.
-    /// // On hit, it will transition into Dash Attack.
     /// if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_LW3 {
     ///     FGCModule::chain_cancels(fighter, *FIGHTER_STATUS_KIND_ATTACK_LW3, *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3, true, FIGHTER_DOLLY_INSTANCE_WORK_ID_INT_D_TILT_CHAIN_COUNT, 2);
     /// }
@@ -424,6 +423,13 @@ pub mod FGCModule {
             macros::EFFECT(fighter, Hash40::new("sys_flash"), Hash40::new("top"), 8.0 * lr, 10, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true);
             macros::LAST_EFFECT_SET_COLOR(fighter, 0.831, 0.686, 0.216);
         }
+    }
+
+    /// Sets a command input to only use certain buttons.
+    pub unsafe fn set_command_input_button(module_accessor: *mut BattleObjectModuleAccessor, command: usize, buttons: u8) {
+        let control_module = *(module_accessor as *const *const u64).add(0x48 / 8);
+        let command_input = *control_module.add((0x7f0 + (command * 8)) / 8) as *mut u8;
+        *command_input.add(0xb) = buttons;
     }
 }
 

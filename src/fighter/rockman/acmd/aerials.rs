@@ -34,6 +34,11 @@ unsafe fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("sys_attack_speedline"), Hash40::new("top"), -1, 6, 1, 30, 0, 0, 0.6, true, *EF_FLIP_YZ, 1);
     }
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("footl"), 0, 0.0, 0.0, 0, 0, 0, 0.7, true, 0.5);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.3);
+    }
 }
 
 #[acmd_script( agent = "rockman", script = "sound_attackairnmelee", category = ACMD_SOUND, low_priority )]
@@ -176,10 +181,17 @@ unsafe fn rockman_airshooter_regular(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_attackairn, rockman_attackairn_eff, rockman_attackairn_snd, rockman_attackairn_exp,
+        rockman_attackairn,
+        rockman_attackairn_eff,
+        rockman_attackairn_snd,
+        rockman_attackairn_exp,
+
         rockman_attackairf,
+
         rockman_attackairb,
+
         // rockman_attackairhi,
+
         rockman_airshooter_regular
     );
 }

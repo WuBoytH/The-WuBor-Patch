@@ -90,9 +90,13 @@ unsafe fn gekkouga_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         gekkouga_attacks3,
+
         gekkouga_attacks3hi,
+
         gekkouga_attacks3lw,
+
         gekkouga_attackhi3,
+
         gekkouga_attacklw3
     );
 }

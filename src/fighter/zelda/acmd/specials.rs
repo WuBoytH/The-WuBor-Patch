@@ -27,6 +27,7 @@ unsafe fn zelda_specialsend(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         zelda_specialsstart,
+
         zelda_specialsend
     );
 }

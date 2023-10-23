@@ -545,14 +545,32 @@ unsafe fn simon_whip_attacklw3_eff(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        simon_attackdash, simon_attackdash_eff, simon_attackdash_snd, simon_attackdash_exp,
+        simon_attackdash,
+        simon_attackdash_eff,
+        simon_attackdash_snd,
+        simon_attackdash_exp,
+
         simon_whip_attackdash,
+
         simon_attacks3,
+
         simon_attacks3hi,
+
         simon_attacks3lw,
-        simon_attacks3_eff, simon_attacks3_snd, simon_attacks3_exp,
-        simon_whip_attacks3, simon_whip_attacks3_eff,
-        simon_attacklw3, simon_attacklw3_eff, simon_attacklw3_snd, simon_attacklw3_exp,
-        simon_whip_attacklw3, simon_whip_attacklw3_eff,
+
+        simon_attacks3_eff,
+        simon_attacks3_snd,
+        simon_attacks3_exp,
+
+        simon_whip_attacks3,
+        simon_whip_attacks3_eff,
+
+        simon_attacklw3,
+        simon_attacklw3_eff,
+        simon_attacklw3_snd,
+        simon_attacklw3_exp,
+
+        simon_whip_attacklw3,
+        simon_whip_attacklw3_eff,
     );
 }

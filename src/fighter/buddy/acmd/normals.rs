@@ -282,10 +282,15 @@ pub fn install() {
         buddy_attack13,
         buddy_attack100,
         buddy_attackdash,
+
         buddy_attacks3,
+
         buddy_attacks3hi,
+
         buddy_attacks3lw,
+
         buddy_attackhi3,
+
         buddy_attacklw3
     );
 }

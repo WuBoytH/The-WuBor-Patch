@@ -138,8 +138,11 @@ unsafe fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         kamui_specialsjump,
+
         kamui_specialhi,
+
         kamui_speciallwhit,
+
         kamui_waterdragon_speciallwhit
     );
 }

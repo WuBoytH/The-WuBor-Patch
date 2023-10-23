@@ -123,8 +123,11 @@ unsafe fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         duckhunt_attackairn,
+
         duckhunt_attackairf,
+
         duckhunt_attackairhi,
+
         duckhunt_attackairlw
     );
 }

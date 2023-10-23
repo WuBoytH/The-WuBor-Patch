@@ -184,8 +184,11 @@ unsafe fn kamui_attackairhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kamui_attackairf, kamui_attackairf_eff,
+        kamui_attackairf,
+        kamui_attackairf_eff,
+
         kamui_attackairb,
+
         kamui_attackairhi
     );
 }

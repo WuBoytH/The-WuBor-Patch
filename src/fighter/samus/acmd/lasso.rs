@@ -66,6 +66,7 @@ unsafe fn samus_aircatch_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        samus_aircatch, samus_aircatch_exp
+        samus_aircatch,
+        samus_aircatch_exp
     );
 }

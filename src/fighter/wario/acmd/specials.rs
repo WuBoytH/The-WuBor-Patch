@@ -165,11 +165,17 @@ unsafe fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         wario_specialnopenwait,
+
         wario_specialnbite,
+
         wario_specialhijump,
+
         wario_speciallwsr,
+
         wario_speciallwmr,
+
         wario_speciallwlr,
+
         wario_speciallwflyr
     );
 }

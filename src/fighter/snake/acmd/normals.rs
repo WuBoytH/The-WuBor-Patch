@@ -86,7 +86,9 @@ unsafe fn snake_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         snake_attacks3s2,
+
         snake_attackhi3,
+
         snake_attacklw3
     );
 }

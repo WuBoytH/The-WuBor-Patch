@@ -77,7 +77,9 @@ unsafe fn palutena_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         palutena_attacks3,
+
         palutena_attackhi3,
+
         palutena_attacklw3
     );
 }

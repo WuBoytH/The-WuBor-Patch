@@ -72,6 +72,7 @@ unsafe fn ken_attackcommand3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ken_attacks3w,
-        ken_attackcommand3,
+
+        ken_attackcommand3
     );
 }

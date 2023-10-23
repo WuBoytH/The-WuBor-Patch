@@ -307,13 +307,24 @@ unsafe fn demon_attack142_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_attack11,
+
         demon_attack13,
+
         demon_attack14,
+
         demon_attack15,
+
         demon_attack16,
+
         demon_attack17,
+
         demon_attack18,
+
         demon_attack19,
-        demon_attack142, demon_attack142_eff, demon_attack142_snd, demon_attack142_exp
+
+        demon_attack142,
+        demon_attack142_eff,
+        demon_attack142_snd,
+        demon_attack142_exp
     );
 }

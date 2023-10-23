@@ -103,8 +103,11 @@ unsafe fn jack_throwlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         jack_throwf,
+
         jack_throwb,
+
         jack_throwhi,
+
         jack_throwlw
     );
 }

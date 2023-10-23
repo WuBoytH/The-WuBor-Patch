@@ -88,9 +88,13 @@ unsafe fn kirby_specialhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         kirby_specialsstart,
+
         kirby_specialairsstart,
+
         kirby_specialairs,
+
         kirby_specialairss,
+
         kirby_specialhi
     );
 }

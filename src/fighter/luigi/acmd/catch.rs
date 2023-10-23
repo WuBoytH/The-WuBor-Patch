@@ -169,9 +169,21 @@ unsafe fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        luigi_catch, luigi_catch_eff, luigi_catch_snd, luigi_catch_exp,
-        luigi_catchdash, luigi_catchdash_snd, luigi_catchdash_exp,
-        luigi_catchturn, luigi_catchturn_snd, luigi_catchturn_exp,
-        luigi_catchattack, luigi_catchattack_eff, luigi_catchattack_exp
+        luigi_catch,
+        luigi_catch_eff,
+        luigi_catch_snd,
+        luigi_catch_exp,
+
+        luigi_catchdash,
+        luigi_catchdash_snd,
+        luigi_catchdash_exp,
+
+        luigi_catchturn,
+        luigi_catchturn_snd,
+        luigi_catchturn_exp,
+
+        luigi_catchattack,
+        luigi_catchattack_eff,
+        luigi_catchattack_exp
     );
 }

@@ -101,9 +101,13 @@ unsafe fn daisy_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         daisy_attack12,
+
         daisy_attackdash,
+
         daisy_attacks3,
+
         daisy_attackhi3,
+
         daisy_attacklw3
     );
 }

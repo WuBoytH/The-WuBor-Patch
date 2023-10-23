@@ -69,6 +69,7 @@ unsafe fn szerosuit_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         szerosuit_attackairf,
+
         szerosuit_attackairhi
     );
 }

@@ -99,9 +99,13 @@ unsafe fn mario_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mario_attack11,
+
         mario_attack12,
+
         mario_attack13,
+
         mario_attackhi3,
+
         mario_attacklw3
     );
 }

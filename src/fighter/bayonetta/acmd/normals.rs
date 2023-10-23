@@ -315,13 +315,21 @@ unsafe fn bayonetta_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         bayonetta_attack11,
+
         bayonetta_attack12,
+
         bayonetta_attack13,
+
         bayonetta_attack100,
+
         bayonetta_attack100end,
+
         bayonetta_attackdash,
+
         bayonetta_attacks32,
+
         bayonetta_attacks33,
+
         bayonetta_attacklw3
     );
 }

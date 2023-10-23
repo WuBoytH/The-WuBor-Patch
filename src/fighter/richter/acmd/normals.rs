@@ -454,15 +454,34 @@ unsafe fn richter_attacklw32(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        richter_attack11, richter_attack11_eff, richter_attack11_snd, richter_attack11_exp,
-        richter_attack12, richter_attack12_eff, richter_attack12_snd, richter_attack12_exp,
-        richter_attack12f, richter_attack12f_eff, richter_attack12f_snd, richter_attack12f_exp,
+        richter_attack11,
+        richter_attack11_eff,
+        richter_attack11_snd,
+        richter_attack11_exp,
+
+        richter_attack12,
+        richter_attack12_eff,
+        richter_attack12_snd,
+        richter_attack12_exp,
+
+        richter_attack12f,
+        richter_attack12f_eff,
+        richter_attack12f_snd,
+        richter_attack12f_exp,
+
         richter_attackdash,
-        richter_attacks3, richter_attacks3_eff,
+
+        richter_attacks3,
+        richter_attacks3_eff,
+
         richter_whip_attacks3,
+
         richter_attackhi3,
+
         richter_whip_attackhi3,
+
         richter_attacklw3,
+
         richter_attacklw32
     );
 }

@@ -851,21 +851,51 @@ unsafe fn lucina_lightningflash_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_specialnstart_eff, lucina_specialnstart_snd,
+        lucina_specialnstart_eff,
+        lucina_specialnstart_snd,
+
         lucina_specialnloop,
+
         lucina_specialnend,
+
         lucina_specialnendmax,
 
-        lucina_specialairs1, lucina_specialairs1_eff, lucina_specialairs1_snd,
-        lucina_specialairs2hi, lucina_specialairs2hi_eff, lucina_specialairs2hi_snd,
-        lucina_specials2hi, lucina_specials2hi_eff, lucina_specials2hi_snd, lucina_specials2hi_exp,
+        lucina_specialairs1,
+        lucina_specialairs1_eff,
+        lucina_specialairs1_snd,
 
-        lucina_specialhi, lucina_specialhi_eff, lucina_specialhi_snd, lucina_specialhi_exp,
-        lucina_specialairhi, lucina_specialairhi_eff, lucina_specialairhi_snd, lucina_specialairhi_exp,
+        lucina_specialairs2hi,
+        lucina_specialairs2hi_eff,
+        lucina_specialairs2hi_snd,
 
-        lucina_speciallw, lucina_speciallw_eff, lucina_speciallw_snd,
-        lucina_speciallw_hit, lucina_specialairlw_hit, lucina_speciallw_hit_eff, lucina_speciallw_hit_snd, lucina_speciallw_hit_exp,
+        lucina_specials2hi,
+        lucina_specials2hi_eff,
+        lucina_specials2hi_snd,
+        lucina_specials2hi_exp,
 
-        lucina_lightningflash, lucina_lightningflash_eff, lucina_lightningflash_snd, lucina_lightningflash_exp
+        lucina_specialhi,
+        lucina_specialhi_eff,
+        lucina_specialhi_snd,
+        lucina_specialhi_exp,
+
+        lucina_specialairhi,
+        lucina_specialairhi_eff,
+        lucina_specialairhi_snd,
+        lucina_specialairhi_exp,
+
+        lucina_speciallw,
+        lucina_speciallw_eff,
+        lucina_speciallw_snd,
+
+        lucina_speciallw_hit,
+        lucina_specialairlw_hit,
+        lucina_speciallw_hit_eff,
+        lucina_speciallw_hit_snd,
+        lucina_speciallw_hit_exp,
+
+        lucina_lightningflash,
+        lucina_lightningflash_eff,
+        lucina_lightningflash_snd,
+        lucina_lightningflash_exp
     );
 }

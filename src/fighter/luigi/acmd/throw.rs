@@ -328,9 +328,24 @@ unsafe fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        luigi_throwf, luigi_throwf_eff, luigi_throwf_snd, luigi_throwf_exp,
-        luigi_throwb, luigi_throwb_eff, luigi_throwb_snd, luigi_throwb_exp,
-        luigi_throwhi, luigi_throwhi_eff, luigi_throwhi_snd, luigi_throwhi_exp,
-        luigi_throwlw, luigi_throwlw_eff, luigi_throwlw_snd, luigi_throwlw_exp
+        luigi_throwf,
+        luigi_throwf_eff,
+        luigi_throwf_snd,
+        luigi_throwf_exp,
+
+        luigi_throwb,
+        luigi_throwb_eff,
+        luigi_throwb_snd,
+        luigi_throwb_exp,
+
+        luigi_throwhi,
+        luigi_throwhi_eff,
+        luigi_throwhi_snd,
+        luigi_throwhi_exp,
+
+        luigi_throwlw,
+        luigi_throwlw_eff,
+        luigi_throwlw_snd,
+        luigi_throwlw_exp
     );
 }

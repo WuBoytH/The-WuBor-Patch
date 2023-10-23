@@ -174,11 +174,17 @@ unsafe fn ganon_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ganon_attackairn, ganon_attackairn_eff,
+        ganon_attackairn,
+        ganon_attackairn_eff,
+
         ganon_attackairf,
+
         // ganon_landingairf,
+
         ganon_attackairb,
+
         ganon_attackairhi,
+
         ganon_attackairlw
     );
 }

@@ -236,9 +236,13 @@ unsafe fn elight_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         elight_attack100end,
+
         elight_attackdash,
+
         elight_attacks3,
+
         elight_attackhi3,
+
         elight_attacklw3
     );
 }

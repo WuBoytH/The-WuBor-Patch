@@ -133,6 +133,7 @@ pub fn install() {
         duckhunt_attack13,
         duckhunt_attack100,
         duckhunt_attackhi3,
+
         duckhunt_attacklw3
     );
 }

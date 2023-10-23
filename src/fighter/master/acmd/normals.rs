@@ -137,7 +137,9 @@ pub fn install() {
         master_attack12,
         master_attack13,
         master_attacks3,
+
         master_attacklw3,
+
         master_sword_attacklw3
     );
 }

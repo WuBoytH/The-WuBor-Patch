@@ -41,6 +41,7 @@ unsafe fn status_pre_jumpsquat_param(
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT);
     jump_squat_check_special_jump(fighter);
     let /* mut */ jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
     if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
@@ -264,7 +265,7 @@ unsafe fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommo
         fighter.global_table[SITUATION_KIND].assign(&L2CValue::I32(*SITUATION_KIND_AIR));
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         // Is responsible for telling the game to accelerate your full hops
-        // WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
+        WorkModule::set_int(fighter.module_accessor, *FIGHTER_STATUS_JUMP_FROM_SQUAT, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_JUMP_FROM);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_JUMP);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_JUMP_START);
     }

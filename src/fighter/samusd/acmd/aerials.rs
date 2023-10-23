@@ -299,10 +299,22 @@ unsafe fn samusd_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        samusd_attackairn, samusd_attackairn_eff, samusd_attackairn_snd, samusd_attackairn_exp,
-        samusd_attackairf, samusd_attackairf_eff, samusd_attackairf_snd, samusd_attackairf_exp,
+        samusd_attackairn,
+        samusd_attackairn_eff,
+        samusd_attackairn_snd,
+        samusd_attackairn_exp,
+
+        samusd_attackairf,
+        samusd_attackairf_eff,
+        samusd_attackairf_snd,
+        samusd_attackairf_exp,
+
         samusd_attackairb,
-        samusd_attackairhi, samusd_attackairhi_eff, samusd_attackairhi_exp,
+
+        samusd_attackairhi,
+        samusd_attackairhi_eff,
+        samusd_attackairhi_exp,
+
         samusd_attackairlw
     );
 }

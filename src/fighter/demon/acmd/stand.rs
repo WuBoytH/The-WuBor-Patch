@@ -136,7 +136,12 @@ unsafe fn demon_attackstand32(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_attackstand24,
-        demon_attackstand2f, demon_attackstand2f_eff, demon_attackstand2f_snd, demon_attackstand2f_exp,
+
+        demon_attackstand2f,
+        demon_attackstand2f_eff,
+        demon_attackstand2f_snd,
+        demon_attackstand2f_exp,
+
         demon_attackstand32
     );
 }

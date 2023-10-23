@@ -298,11 +298,26 @@ unsafe fn lucina_attacklw3(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_attack11, lucina_attack11_eff, lucina_attack11_exp,
-        lucina_attack12, lucina_attack12_eff, lucina_attack12_exp,
-        lucina_attackdash, lucina_attackdash_eff, lucina_attackdash_snd, lucina_attackdash_exp,
+        lucina_attack11,
+        lucina_attack11_eff,
+        lucina_attack11_exp,
+
+        lucina_attack12,
+        lucina_attack12_eff,
+        lucina_attack12_exp,
+
+        lucina_attackdash,
+        lucina_attackdash_eff,
+        lucina_attackdash_snd,
+        lucina_attackdash_exp,
+
         lucina_attacks3,
-        lucina_attackhi3, lucina_attackhi3_eff, lucina_attackhi3_snd, lucina_attackhi3_exp,
+
+        lucina_attackhi3,
+        lucina_attackhi3_eff,
+        lucina_attackhi3_snd,
+        lucina_attackhi3_exp,
+
         lucina_attacklw3
     );
 }

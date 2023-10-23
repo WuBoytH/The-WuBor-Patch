@@ -180,7 +180,9 @@ unsafe fn master_specialairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         master_specialairhi,
+
         master_speciallw,
+
         master_specialairlw
     );
 }

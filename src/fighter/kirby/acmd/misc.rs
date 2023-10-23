@@ -218,7 +218,13 @@ unsafe fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kirby_appeals, kirby_appeals_eff, kirby_appeals_snd, kirby_appeals_exp,
-        kirby_appealsloop_eff, kirby_appealsloop_snd, kirby_appealsloop_exp
+        kirby_appeals,
+        kirby_appeals_eff,
+        kirby_appeals_snd,
+        kirby_appeals_exp,
+
+        kirby_appealsloop_eff,
+        kirby_appealsloop_snd,
+        kirby_appealsloop_exp
     );
 }

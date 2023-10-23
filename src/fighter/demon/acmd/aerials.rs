@@ -94,7 +94,9 @@ unsafe fn demon_landingairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_attackairf,
+
         demon_attackairhi,
+
         demon_landingairlw
     );
 }

@@ -83,7 +83,9 @@ unsafe fn miisword_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         miisword_attackairn,
+
         miisword_attackairb,
+
         miisword_attackairhi
     );
 }

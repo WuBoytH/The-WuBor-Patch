@@ -479,14 +479,32 @@ unsafe fn dolly_attacklw32_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dolly_attack11,
+
         dolly_attack12,
+
         dolly_attack13,
+
         dolly_attackdash,
+
         dolly_attacks3,
-        dolly_attacks3hi, dolly_attacks3hi_eff, dolly_attacks3hi_snd, dolly_attacks3hi_exp,
-        dolly_attacks3lw, dolly_attacks3lw_eff, dolly_attacks3lw_snd, dolly_attacks3lw_exp,
+
+        dolly_attacks3hi,
+        dolly_attacks3hi_eff,
+        dolly_attacks3hi_snd,
+        dolly_attacks3hi_exp,
+
+        dolly_attacks3lw,
+        dolly_attacks3lw_eff,
+        dolly_attacks3lw_snd,
+        dolly_attacks3lw_exp,
+
         dolly_attackhi3,
+
         dolly_attacklw3,
-        dolly_attacklw32, dolly_attacklw32_eff, dolly_attacklw32_snd, dolly_attacklw32_exp
+
+        dolly_attacklw32,
+        dolly_attacklw32_eff,
+        dolly_attacklw32_snd,
+        dolly_attacklw32_exp
     );
 }

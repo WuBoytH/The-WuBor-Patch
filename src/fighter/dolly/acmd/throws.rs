@@ -96,8 +96,11 @@ unsafe fn dolly_throwlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dolly_throwf,
+
         dolly_throwb,
+
         dolly_throwhi,
+
         dolly_throwlw
     );
 }

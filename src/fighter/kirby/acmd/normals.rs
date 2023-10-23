@@ -129,8 +129,12 @@ unsafe fn kirby_attacklw3_eff(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kirby_attackdash, kirby_attackdash_eff,
+        kirby_attackdash,
+        kirby_attackdash_eff,
+
         kirby_attackhi3,
-        kirby_attacklw3, kirby_attacklw3_eff
+
+        kirby_attacklw3,
+        kirby_attacklw3_eff
     );
 }

@@ -146,11 +146,17 @@ unsafe fn donkey_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         donkey_attack12,
+
         donkey_attackdash,
+
         donkey_attacks3,
+
         donkey_attacks3hi,
+
         donkey_attacks3lw,
+
         donkey_attackhi3,
+
         donkey_attacklw3
     );
 }

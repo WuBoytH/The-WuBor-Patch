@@ -95,8 +95,13 @@ unsafe fn chrom_attacklw3(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        chrom_attack11, chrom_attack11_eff, chrom_attack11_snd, chrom_attack11_exp,
+        chrom_attack11,
+        chrom_attack11_eff,
+        chrom_attack11_snd,
+        chrom_attack11_exp,
+
         chrom_attacks3,
+
         chrom_attacklw3
     );
 }

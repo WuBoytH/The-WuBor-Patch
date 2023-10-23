@@ -212,9 +212,16 @@ unsafe fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         daisy_specialsjump,
+
         daisy_specialshitend,
+
         daisy_specialhistart,
+
         daisy_specialairhistart,
-        daisy_specialairlw, daisy_specialairlw_eff, daisy_specialairlw_snd, daisy_specialairlw_exp
+
+        daisy_specialairlw,
+        daisy_specialairlw_eff,
+        daisy_specialairlw_snd,
+        daisy_specialairlw_exp
     );
 }

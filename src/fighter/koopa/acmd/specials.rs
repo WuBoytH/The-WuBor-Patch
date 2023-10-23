@@ -109,9 +109,14 @@ unsafe fn koopa_specialairhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        koopa_breath_move, koopa_breath_move_eff, koopa_breath_move_snd,
+        koopa_breath_move,
+        koopa_breath_move_eff,
+        koopa_breath_move_snd,
+
         koopa_specialscatch,
+
         koopa_specialsaircatch,
+
         koopa_specialairhi
     );
 }

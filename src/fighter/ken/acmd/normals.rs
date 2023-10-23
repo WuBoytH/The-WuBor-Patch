@@ -290,10 +290,23 @@ unsafe fn ken_attacklw3w_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        ken_attack11w, ken_attack11w_eff, ken_attack11w_snd, ken_attack11w_exp,
+        ken_attack11w,
+        ken_attack11w_eff,
+        ken_attack11w_snd,
+        ken_attack11w_exp,
+
         ken_attack12,
-        ken_attackhi3w, ken_attackhi3w_eff, ken_attackhi3w_snd, ken_attackhi3w_exp,
+
+        ken_attackhi3w,
+        ken_attackhi3w_eff,
+        ken_attackhi3w_snd,
+        ken_attackhi3w_exp,
+
         ken_attackhi3s,
-        ken_attacklw3w, ken_attacklw3w_eff, ken_attacklw3w_snd, ken_attacklw3w_exp,
+
+        ken_attacklw3w,
+        ken_attacklw3w_eff,
+        ken_attacklw3w_snd,
+        ken_attacklw3w_exp
     );
 }

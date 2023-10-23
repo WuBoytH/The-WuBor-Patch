@@ -230,10 +230,15 @@ unsafe fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         bayonetta_attackairn,
+
         bayonetta_attackairf,
+
         bayonetta_attackairf2,
+
         bayonetta_attackairf3,
+
         bayonetta_attackairhi,
+
         bayonetta_landingairlw
     );
 }

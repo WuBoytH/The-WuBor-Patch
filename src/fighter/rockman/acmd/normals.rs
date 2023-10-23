@@ -271,9 +271,24 @@ unsafe fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_attack11, rockman_attack11_eff, rockman_attack11_snd, rockman_attack11_exp,
-        rockman_attack12, rockman_attack12_eff, rockman_attack12_snd, rockman_attack12_exp,
-        rockman_attack13, rockman_attack13_eff, rockman_attack13_snd, rockman_attack13_exp,
-        rockman_attacks3, rockman_attacks3_eff, rockman_attacks3_snd, rockman_attacks3_exp
+        rockman_attack11,
+        rockman_attack11_eff,
+        rockman_attack11_snd,
+        rockman_attack11_exp,
+
+        rockman_attack12,
+        rockman_attack12_eff,
+        rockman_attack12_snd,
+        rockman_attack12_exp,
+
+        rockman_attack13,
+        rockman_attack13_eff,
+        rockman_attack13_snd,
+        rockman_attack13_exp,
+
+        rockman_attacks3,
+        rockman_attacks3_eff,
+        rockman_attacks3_snd,
+        rockman_attacks3_exp
     );
 }

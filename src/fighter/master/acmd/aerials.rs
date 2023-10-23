@@ -52,6 +52,7 @@ unsafe fn master_attackairf(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         master_landingairn,
+
         master_attackairf
     );
 }

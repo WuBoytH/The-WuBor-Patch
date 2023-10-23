@@ -961,18 +961,39 @@ unsafe fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         jack_specialn1,
+
         jack_specialairn1,
+
         jack_specialn1_ex,
+
         jack_specialairn1_ex,
-        jack_specialnjump, jack_specialnjump_eff, jack_specialnjump_snd,
+
+        jack_specialnjump,
+        jack_specialnjump_eff,
+        jack_specialnjump_snd,
+
         jack_specialairnshoot,
-        jack_specials1, jack_specials1_eff, jack_specials1_snd, jack_specials1_exp,
-        jack_specialairs1, jack_specialairs1_eff, jack_specialairs1_snd, jack_specialairs1_exp,
+
+        jack_specials1,
+        jack_specials1_eff,
+        jack_specials1_snd,
+        jack_specials1_exp,
+
+        jack_specialairs1,
+        jack_specialairs1_eff,
+        jack_specialairs1_snd,
+        jack_specialairs1_exp,
+
         jack_specialairhi,
+
         jack_specialhithrow,
+
         jack_wait4_eff,
+
         jack_doyle_appear_eff,
+
         jack_wait5_eff,
+
         jack_doyle_return_eff
     );
 }

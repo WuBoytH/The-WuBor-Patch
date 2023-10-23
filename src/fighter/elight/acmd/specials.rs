@@ -985,10 +985,21 @@ unsafe fn elight_specialairlwattack_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         elight_specialn,
+
         elight_specialairn,
+
         elight_specialn2,
+
         elight_specialairn2,
-        elight_speciallwattack, elight_speciallwattack_eff, elight_speciallwattack_snd, elight_speciallwattack_exp,
-        elight_specialairlwattack, elight_specialairlwattack_eff, elight_specialairlwattack_snd, elight_specialairlwattack_exp
+
+        elight_speciallwattack,
+        elight_speciallwattack_eff,
+        elight_speciallwattack_snd,
+        elight_speciallwattack_exp,
+
+        elight_specialairlwattack,
+        elight_specialairlwattack_eff,
+        elight_specialairlwattack_snd,
+        elight_specialairlwattack_exp
     );
 }

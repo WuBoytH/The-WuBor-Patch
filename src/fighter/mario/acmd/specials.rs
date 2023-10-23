@@ -303,13 +303,33 @@ unsafe fn mario_groundpoundland_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_specials, mario_specials_eff, mario_specialairs_eff, expression_specials,
+        mario_specials,
+        mario_specials_eff,
+        mario_specialairs_eff,
+        expression_specials,
+
         mario_specialhi,
+
         mario_longjumpstart_snd,
-        mario_longjump, mario_longjump_snd, mario_longjump_exp,
-        mario_longjumpland_snd, mario_longjumpland_eff, mario_longjumpland_exp,
-        mario_groundpoundstart, mario_groundpoundstart_snd,
-        mario_groundpoundfall, mario_groundpoundfall_eff, mario_groundpoundfall_exp,
-        mario_groundpoundland, mario_groundpoundland_snd, mario_groundpoundland_eff, mario_groundpoundland_exp
+
+        mario_longjump,
+        mario_longjump_snd,
+        mario_longjump_exp,
+
+        mario_longjumpland_snd,
+        mario_longjumpland_eff,
+        mario_longjumpland_exp,
+
+        mario_groundpoundstart,
+        mario_groundpoundstart_snd,
+
+        mario_groundpoundfall,
+        mario_groundpoundfall_eff,
+        mario_groundpoundfall_exp,
+
+        mario_groundpoundland,
+        mario_groundpoundland_snd,
+        mario_groundpoundland_eff,
+        mario_groundpoundland_exp
     );
 }

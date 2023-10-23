@@ -67,8 +67,11 @@ unsafe fn fox_attackhi3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         fox_attacks3,
+
         fox_attacks3hi,
+
         fox_attacks3lw,
+
         fox_attackhi3
     );
 }

@@ -31,7 +31,9 @@ unsafe fn shizue_clayrocket_burst(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         shizue_clayrocket_ready,
+
         shizue_clayrocket_fly,
+
         shizue_clayrocket_burst
     );
 }

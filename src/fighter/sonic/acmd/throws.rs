@@ -98,7 +98,11 @@ unsafe fn sonic_throwlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        sonic_throwf, sonic_throwf_eff, sonic_throwf_snd, sonic_throwf_exp,
+        sonic_throwf,
+        sonic_throwf_eff,
+        sonic_throwf_snd,
+        sonic_throwf_exp,
+
         sonic_throwlw
     );
 }

@@ -32,8 +32,11 @@ unsafe fn rosetta_specialhiend(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         rosetta_specialhistart,
+
         rosetta_tico_specialhistart,
+
         rosetta_specialhi,
+
         rosetta_specialhiend
     );
 }

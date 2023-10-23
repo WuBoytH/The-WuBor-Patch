@@ -189,11 +189,18 @@ unsafe fn mario_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mario_attacks4, mario_attacks4_eff,
-        mario_attacks4hi, mario_attacks4hi_eff,
-        mario_attacks4lw, mario_attacks4lw_eff,
+        mario_attacks4,
+        mario_attacks4_eff,
+
+        mario_attacks4hi,
+        mario_attacks4hi_eff,
+
+        mario_attacks4lw,
+        mario_attacks4lw_eff,
+
         mario_attacks4_snd,
         mario_attacks4_exp,
+
         mario_attacklw4
     );
 }

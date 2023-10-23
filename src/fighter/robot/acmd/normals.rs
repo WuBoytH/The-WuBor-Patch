@@ -179,9 +179,16 @@ unsafe fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         robot_attacks3,
+
         robot_attacks3hi,
+
         robot_attacks3lw,
+
         robot_attackhi3,
-        robot_attacklw3, robot_attacklw3_eff, robot_attacklw3_snd, robot_attacklw3_exp
+
+        robot_attacklw3,
+        robot_attacklw3_eff,
+        robot_attacklw3_snd,
+        robot_attacklw3_exp
     );
 }

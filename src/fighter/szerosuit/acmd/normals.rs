@@ -125,9 +125,13 @@ unsafe fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         szerosuit_attack11,
+
         szerosuit_attacks3,
+
         szerosuit_attacks3hi,
+
         szerosuit_attacks3lw,
+
         szerosuit_attacklw3
     );
 }

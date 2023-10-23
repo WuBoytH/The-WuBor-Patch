@@ -642,13 +642,41 @@ unsafe fn marth_speciallwattackb3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_speciallwattack11, marth_speciallwattack11_eff, marth_speciallwattack11_snd, marth_speciallwattack11_exp,
-        marth_speciallwattacklw3, marth_speciallwattacklw3_eff, marth_speciallwattacklw3_snd, marth_speciallwattacklw3_exp,
-        marth_speciallwattacklw4, marth_speciallwattacklw4f, marth_speciallwattacklw4b,
-        marth_speciallwattacklw4_eff, marth_speciallwattacklw4_snd, marth_speciallwattacklw4_exp,
-        marth_speciallwattackhi3, marth_speciallwattackhi3_eff, marth_speciallwattackhi3_snd, marth_speciallwattackhi3_exp,
-        marth_speciallwattackhi4, marth_speciallwattackhi4_eff, marth_speciallwattackhi4_snd, marth_speciallwattackhi4_exp,
-        marth_speciallwattackf3, marth_speciallwattackf3_eff, marth_speciallwattackf3_snd, marth_speciallwattackf3_exp,
-        marth_speciallwattackb3, marth_speciallwattackb3_eff, marth_speciallwattackb3_snd, marth_speciallwattackb3_exp
+        marth_speciallwattack11,
+        marth_speciallwattack11_eff,
+        marth_speciallwattack11_snd,
+        marth_speciallwattack11_exp,
+
+        marth_speciallwattacklw3,
+        marth_speciallwattacklw3_eff,
+        marth_speciallwattacklw3_snd,
+        marth_speciallwattacklw3_exp,
+
+        marth_speciallwattacklw4,
+        marth_speciallwattacklw4f,
+        marth_speciallwattacklw4b,
+        marth_speciallwattacklw4_eff,
+        marth_speciallwattacklw4_snd,
+        marth_speciallwattacklw4_exp,
+
+        marth_speciallwattackhi3,
+        marth_speciallwattackhi3_eff,
+        marth_speciallwattackhi3_snd,
+        marth_speciallwattackhi3_exp,
+
+        marth_speciallwattackhi4,
+        marth_speciallwattackhi4_eff,
+        marth_speciallwattackhi4_snd,
+        marth_speciallwattackhi4_exp,
+
+        marth_speciallwattackf3,
+        marth_speciallwattackf3_eff,
+        marth_speciallwattackf3_snd,
+        marth_speciallwattackf3_exp,
+
+        marth_speciallwattackb3,
+        marth_speciallwattackb3_eff,
+        marth_speciallwattackb3_snd,
+        marth_speciallwattackb3_exp
     );
 }

@@ -65,6 +65,7 @@ unsafe fn captain_specialhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         captain_specialsstart,
+
         captain_specialhi
     );
 }

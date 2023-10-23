@@ -96,7 +96,9 @@ unsafe fn lucina_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucina_attacks4,
+
         lucina_attackhi4,
+
         lucina_attacklw4
     );
 }

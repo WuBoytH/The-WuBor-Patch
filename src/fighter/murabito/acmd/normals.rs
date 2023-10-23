@@ -104,8 +104,11 @@ unsafe fn murabito_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         murabito_attackdash,
+
         murabito_attacks3,
+
         murabito_attackhi3,
+
         murabito_attacklw3
     );
 }

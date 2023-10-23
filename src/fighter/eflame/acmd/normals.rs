@@ -194,8 +194,11 @@ unsafe fn eflame_attackhi3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         eflame_attack11,
+
         eflame_attack100end,
+
         eflame_attacks3,
+
         eflame_attackhi3
     );
 }

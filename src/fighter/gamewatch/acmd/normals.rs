@@ -140,8 +140,13 @@ unsafe fn gamewatch_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         gamewatch_attack11,
-        gamewatch_attackdash, gamewatch_attackdash_snd, gamewatch_attackdash_exp,
+
+        gamewatch_attackdash,
+        gamewatch_attackdash_snd,
+        gamewatch_attackdash_exp,
+
         gamewatch_attackhi3,
+
         gamewatch_attacklw3
     );
 }

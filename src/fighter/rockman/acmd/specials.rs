@@ -172,11 +172,23 @@ unsafe fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_specialn, rockman_specialn_eff, rockman_specialn_snd, rockman_specialn_exp,
+        rockman_specialn,
+        rockman_specialn_eff,
+        rockman_specialn_snd,
+        rockman_specialn_exp,
+
         rockman_chargeshot_regular,
+
         rockman_specialhi,
+
         rockman_speciallw,
+
         rockman_specialairlw,
-        rockman_leafshield_start, rockman_leafshield_shield, rockman_leafshield_fly
+
+        rockman_leafshield_start,
+
+        rockman_leafshield_shield,
+
+        rockman_leafshield_fly
     );
 }

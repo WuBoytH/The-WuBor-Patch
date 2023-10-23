@@ -291,10 +291,18 @@ unsafe fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        cloud_specialn, cloud_specialn_eff, cloud_specialairn_eff, cloud_specialn_exp, cloud_specialairn_exp,
+        cloud_specialn,
+        cloud_specialn_eff,
+        cloud_specialairn_eff,
+        cloud_specialn_exp,
+        cloud_specialairn_exp,
+
         cloud_specialhi,
+
         cloud_specialhi2,
+
         cloud_specialhi2fall,
+
         cloud_specialhi_lb
     );
 }

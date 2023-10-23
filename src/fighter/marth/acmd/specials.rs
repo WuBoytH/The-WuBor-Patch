@@ -554,17 +554,36 @@ unsafe fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_specialnend, marth_specialnend_eff,
-        marth_specialnendhi, marth_specialnendhi_eff,
-        marth_specialnendlw, marth_specialnendlw_eff,
-        marth_specialnendmax, marth_specialnendmax_eff,
-        marth_specialnendmaxhi, marth_specialnendmaxhi_eff,
-        marth_specialnendmaxlw, marth_specialnendmaxlw_eff,
-        marth_specialhi, marth_specialhi_eff, marth_specialairhi_eff,
+        marth_specialnend,
+        marth_specialnend_eff
+
+        marth_specialnendhi,
+        marth_specialnendhi_eff,
+
+        marth_specialnendlw,
+        marth_specialnendlw_eff,
+
+        marth_specialnendmax,
+        marth_specialnendmax_eff,
+
+        marth_specialnendmaxhi,
+        marth_specialnendmaxhi_eff,
+
+        marth_specialnendmaxlw,
+        marth_specialnendmaxlw_eff,
+
+        marth_specialhi,
+        marth_specialhi_eff,
+        marth_specialairhi_eff,
+
         marth_speciallw,
+
         marth_speciallwenter,
+
         marth_speciallwexit,
+
         marth_speciallwairenter,
+
         marth_speciallwairexit
     );
 }

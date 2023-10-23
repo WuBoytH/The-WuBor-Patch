@@ -47,6 +47,7 @@ unsafe fn mewtwo_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mewtwo_attackairb,
+
         mewtwo_attackairhi
     );
 }

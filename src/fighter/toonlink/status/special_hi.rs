@@ -276,6 +276,7 @@ unsafe fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValu
 
 pub fn install() {
     install_status_scripts!(
-        toonlink_specialhi_end_main, toonlink_specialhi_end_exec
+        toonlink_specialhi_end_main,
+        toonlink_specialhi_end_exec
     );
 }

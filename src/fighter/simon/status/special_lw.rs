@@ -18,6 +18,8 @@ unsafe fn simon_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        simon_special_lw_pre, simon_special_lw_main, simon_special_lw_end
+        simon_special_lw_pre,
+        simon_special_lw_main,
+        simon_special_lw_end
     );
 }

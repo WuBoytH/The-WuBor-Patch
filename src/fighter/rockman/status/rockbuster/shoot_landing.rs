@@ -99,6 +99,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_landing_main_loop(fighter: &mut L2
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_landing_pre, rockman_rockbuster_shoot_landing_main
+        rockman_rockbuster_shoot_landing_pre,
+        rockman_rockbuster_shoot_landing_main
     );
 }

@@ -77,6 +77,7 @@ unsafe extern "C" fn lucina_raginglion_loop(fighter: &mut L2CFighterCommon) -> L
 
 pub fn install() {
     install_status_scripts!(
-        lucina_specials_pre, lucina_specials_main
+        lucina_specials_pre,
+        lucina_specials_main
     );
 }

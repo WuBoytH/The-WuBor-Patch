@@ -15,6 +15,7 @@ unsafe fn falco_attacks4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install() {
     install_status_scripts!(
         falco_attacks4hold_end,
+
         falco_attacks4_end
     );
 }

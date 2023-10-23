@@ -186,7 +186,9 @@ unsafe extern "C" fn ganon_specials_air_end_main_loop(fighter: &mut L2CFighterCo
 pub fn install() {
     install_status_scripts!(
         ganon_specialn_main,
+
         ganon_specials_air_catch_main,
+
         ganon_sspecial_air_end_pre,
         ganon_sspecial_air_end_main
     );

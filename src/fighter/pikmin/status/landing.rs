@@ -59,9 +59,15 @@ unsafe fn pikmin_landing_exit_inner(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 pub fn install() {
     install_status_scripts!(
-        pikmin_landinglight_init, pikmin_landinglight_exit,
-        pikmin_landing_init, pikmin_landing_exec, pikmin_landing_exit,
+        pikmin_landinglight_init,
+        pikmin_landinglight_exit,
+
+        pikmin_landing_init,
+        pikmin_landing_exec,
+        pikmin_landing_exit,
+
         pikmin_landingattackair_exit,
+
         pikmin_landingfallspecial_exit
     );
 }

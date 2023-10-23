@@ -90,6 +90,9 @@ unsafe extern "C" fn lucina_shadowfrenzy_loop(fighter: &mut L2CFighterCommon) ->
 
 pub fn install() {
     install_status_scripts!(
-        lucina_speciallw_hit_pre, lucina_speciallw_hit_init, lucina_speciallw_hit_exec, lucina_speciallw_hit_main
+        lucina_speciallw_hit_pre,
+        lucina_speciallw_hit_init,
+        lucina_speciallw_hit_exec,
+        lucina_speciallw_hit_main
     );
 }

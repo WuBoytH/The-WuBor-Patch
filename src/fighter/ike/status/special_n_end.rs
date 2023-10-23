@@ -96,6 +96,7 @@ unsafe extern "C" fn ike_special_n_end_main_loop(fighter: &mut L2CFighterCommon)
 
 pub fn install() {
     install_status_scripts!(
-        ike_special_n_end_init, ike_special_n_end_main
+        ike_special_n_end_init,
+        ike_special_n_end_main
     );
 }

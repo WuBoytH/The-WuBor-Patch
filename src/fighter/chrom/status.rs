@@ -120,7 +120,13 @@ unsafe fn chrom_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue 
 pub fn install() {
     install_status_scripts!(
         chrom_attackdash_pre,
-        chrom_speciallw_pre, chrom_speciallw_main, chrom_speciallw_init, chrom_speciallw_exec,
-        chrom_speciallw_hit_init, chrom_speciallw_hit_exec
+
+        chrom_speciallw_pre,
+        chrom_speciallw_main,
+        chrom_speciallw_init,
+        chrom_speciallw_exec,
+
+        chrom_speciallw_hit_init,
+        chrom_speciallw_hit_exec
     );
 }

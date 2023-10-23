@@ -82,6 +82,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_air_main_loop(fighter: &mut L2CFig
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_air_pre, rockman_rockbuster_shoot_air_main
+        rockman_rockbuster_shoot_air_pre,
+        rockman_rockbuster_shoot_air_main
     );
 }

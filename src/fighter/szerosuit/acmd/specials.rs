@@ -293,8 +293,17 @@ unsafe fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         szerosuit_specialhi,
-        szerosuit_specialhi2, szerosuit_specialhi2_eff, szerosuit_specialhi2_snd, szerosuit_specialhi2_exp,
+
+        szerosuit_specialhi2,
+        szerosuit_specialhi2_eff,
+        szerosuit_specialhi2_snd,
+        szerosuit_specialhi2_exp,
+
         szerosuit_specialairhi,
-        szerosuit_specialairhi2, szerosuit_specialairhi2_eff, szerosuit_specialairhi2_snd, szerosuit_specialairhi2_exp
+
+        szerosuit_specialairhi2,
+        szerosuit_specialairhi2_eff,
+        szerosuit_specialairhi2_snd,
+        szerosuit_specialairhi2_exp
     );
 }

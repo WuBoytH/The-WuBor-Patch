@@ -311,13 +311,21 @@ unsafe fn ryu_hadoken_movesp_last(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ryu_specialsstart,
+
         ryu_specialairsstart,
+
         ryu_specialairs,
+
         ryu_specialhi,
+
         ryu_specialairhi,
+
         ryu_hadoken_movew,
+
         ryu_hadoken_movem,
+
         ryu_hadoken_moves,
+
         ryu_hadoken_movesp_last
     );
 }

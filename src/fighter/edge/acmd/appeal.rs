@@ -425,10 +425,24 @@ unsafe fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         edge_appeals,
-        edge_appealsloop_eff, edge_appealsloop_snd, edge_appealsloop_exp,
-        edge_appealsattack, edge_appealsattack_eff, edge_appealsattack_snd, edge_appealsattack_exp,
-        edge_appealsattackjust, edge_appealsattackjust_eff, edge_appealsattackjust_snd, edge_appealsattackjust_exp,
+
+        edge_appealsloop_eff,
+        edge_appealsloop_snd,
+        edge_appealsloop_exp,
+
+        edge_appealsattack,
+        edge_appealsattack_eff,
+        edge_appealsattack_snd,
+        edge_appealsattack_exp,
+
+        edge_appealsattackjust,
+        edge_appealsattackjust_eff,
+        edge_appealsattackjust_snd,
+        edge_appealsattackjust_exp,
+
         edge_appeallw,
-        edge_appeallwloop_eff, edge_appeallwloop_exp
+
+        edge_appeallwloop_eff,
+        edge_appeallwloop_exp
     );
 }

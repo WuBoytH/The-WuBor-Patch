@@ -412,10 +412,21 @@ pub fn install() {
         simon_attackairfhi,
         simon_attackairflw,
         simon_attackairf_snd,
+
         simon_attackairhi,
-        simon_attackairlw, simon_attackairlw_eff, simon_attackairlw_snd, simon_attackairlw_exp,
-        simon_whip_attackairlw, simon_whip_attackairlw_eff,
-        simon_landingairlw_eff, simon_landingairlw_snd, simon_landingairlw_exp,
+
+        simon_attackairlw,
+        simon_attackairlw_eff,
+        simon_attackairlw_snd,
+        simon_attackairlw_exp,
+
+        simon_whip_attackairlw,
+        simon_whip_attackairlw_eff,
+
+        simon_landingairlw_eff,
+        simon_landingairlw_snd,
+        simon_landingairlw_exp,
+
         simon_whip_landingairlw
     );
 }

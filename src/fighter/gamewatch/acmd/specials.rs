@@ -175,8 +175,20 @@ unsafe fn gamewatch_specialhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        gamewatch_specials2, gamewatch_specials3, gamewatch_specials4, gamewatch_specials5,
-        gamewatch_specials7, gamewatch_specials8, gamewatch_specials9, 
+        gamewatch_specials2,
+
+        gamewatch_specials3,
+
+        gamewatch_specials4,
+
+        gamewatch_specials5,
+
+        gamewatch_specials7,
+
+        gamewatch_specials8,
+
+        gamewatch_specials9, 
+
         gamewatch_specialhi
     );
 }

@@ -134,7 +134,9 @@ unsafe fn jack_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         jack_attackairf,
+
         jack_attackairb,
+
         jack_attackairhi
     );
 }

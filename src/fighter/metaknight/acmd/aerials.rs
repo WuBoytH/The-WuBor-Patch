@@ -269,9 +269,19 @@ unsafe fn metaknight_landingairlw_snd(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         metaknight_attackairn,
+
         metaknight_attackairf,
-        metaknight_attackairhi, metaknight_attackairhi_eff,
-        metaknight_attackairlw, metaknight_attackairlw_eff, metaknight_attackairlw_snd, metaknight_attackairlw_exp,
-        metaknight_landingairlw, metaknight_landingairlw_eff, metaknight_landingairlw_snd
+
+        metaknight_attackairhi,
+        metaknight_attackairhi_eff,
+
+        metaknight_attackairlw,
+        metaknight_attackairlw_eff,
+        metaknight_attackairlw_snd,
+        metaknight_attackairlw_exp,
+
+        metaknight_landingairlw,
+        metaknight_landingairlw_eff,
+        metaknight_landingairlw_snd
     );
 }

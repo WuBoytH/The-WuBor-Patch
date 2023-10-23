@@ -110,8 +110,15 @@ unsafe fn mewtwo_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mewtwo_attackdash,
-        mewtwo_attacks3, mewtwo_attacks3hi, mewtwo_attacks3lw,
+
+        mewtwo_attacks3,
+
+        mewtwo_attacks3hi,
+
+        mewtwo_attacks3lw,
+
         mewtwo_attackhi3,
+
         mewtwo_attacklw3
     );
 }

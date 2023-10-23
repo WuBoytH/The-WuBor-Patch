@@ -289,9 +289,16 @@ unsafe fn richter_attacklw4(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        richter_attacks4, richter_attacks4hi, richter_attacks4lw,
+        richter_attacks4,
+
+        richter_attacks4hi,
+
+        richter_attacks4lw,
+
         richter_whip_attacks4,
+
         richter_attackhi4,
+
         richter_attacklw4
     );
 }

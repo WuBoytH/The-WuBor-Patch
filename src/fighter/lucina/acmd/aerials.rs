@@ -335,10 +335,26 @@ unsafe fn lucina_attackairlw_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        lucina_attackairn, lucina_attackairn_eff, lucina_attackairn_snd, lucina_attackairn_exp,
-        lucina_attackairf, lucina_attackairf_eff, lucina_attackairf_snd, lucina_attackairf_exp,
-        lucina_attackairb, lucina_attackairb_eff, lucina_attackairb_snd, lucina_attackairb_exp,
+        lucina_attackairn,
+        lucina_attackairn_eff,
+        lucina_attackairn_snd,
+        lucina_attackairn_exp,
+
+        lucina_attackairf,
+        lucina_attackairf_eff,
+        lucina_attackairf_snd,
+        lucina_attackairf_exp,
+
+        lucina_attackairb,
+        lucina_attackairb_eff,
+        lucina_attackairb_snd,
+        lucina_attackairb_exp,
+
         lucina_attackairhi,
-        lucina_attackairlw, lucina_attackairlw_eff, lucina_attackairlw_snd, lucina_attackairlw_exp
+
+        lucina_attackairlw,
+        lucina_attackairlw_eff,
+        lucina_attackairlw_snd,
+        lucina_attackairlw_exp
     );
 }

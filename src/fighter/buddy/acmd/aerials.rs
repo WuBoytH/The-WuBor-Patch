@@ -114,8 +114,11 @@ unsafe fn buddy_landingairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         buddy_attackairn,
+
         buddy_attackairhi,
+
         buddy_attackairlw,
+
         buddy_landingairlw
     );
 }

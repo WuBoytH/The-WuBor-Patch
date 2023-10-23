@@ -205,7 +205,9 @@ unsafe fn demon_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_attacks4,
+
         demon_attackhi4,
+
         demon_attacklw4
     );
 }

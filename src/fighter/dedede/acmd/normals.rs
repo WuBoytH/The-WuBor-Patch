@@ -116,8 +116,11 @@ unsafe fn dedede_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dedede_attack11,
+
         dedede_attack12,
+
         dedede_attackhi3,
+
         dedede_attacklw3
     );
 }

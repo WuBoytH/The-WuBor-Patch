@@ -66,7 +66,9 @@ unsafe fn sheik_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         sheik_attacks3,
+
         // sheik_attackhi3,
+
         sheik_attacklw3
     );
 }

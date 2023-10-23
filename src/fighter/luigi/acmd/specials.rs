@@ -292,12 +292,23 @@ unsafe fn luigi_specialairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         luigi_fireball_regular,
+
         luigi_specialsstart,
-        luigi_specialshold, luigi_specialshold_eff,
-        luigi_specialsend, luigi_specialsend_eff, luigi_specialsend_snd, luigi_specialsend_exp,
+
+        luigi_specialshold,
+        luigi_specialshold_eff,
+
+        luigi_specialsend,
+        luigi_specialsend_eff,
+        luigi_specialsend_snd,
+        luigi_specialsend_exp,
+
         luigi_specialhi,
+
         luigi_specialairhi,
+
         luigi_speciallw,
+
         luigi_specialairlw
     );
 }

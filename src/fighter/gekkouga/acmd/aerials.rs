@@ -137,8 +137,11 @@ unsafe fn gekkouga_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         gekkouga_attackairn,
+
         gekkouga_attackairf,
+
         gekkouga_attackairb,
+
         gekkouga_attackairhi
     );
 }

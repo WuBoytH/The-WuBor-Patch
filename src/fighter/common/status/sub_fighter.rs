@@ -4,30 +4,31 @@ use crate::imports::status_imports::*;
 unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
 
-    // if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
-    //     let some = fighter.global_table[0x24].get_f32();
-    //     if some <= 2.0 {
-    //         let status = fighter.global_table[STATUS_KIND].get_i32();
-    //         fighter.clear_lua_stack();
-    //         lua_args!(fighter, status);
-    //         if sv_fighter_util::is_attack_air_status(fighter.lua_state_agent, status)
-    //         || [
-    //             *FIGHTER_STATUS_KIND_SPECIAL_N,
-    //             *FIGHTER_STATUS_KIND_SPECIAL_S,
-    //             *FIGHTER_STATUS_KIND_SPECIAL_HI,
-    //             *FIGHTER_STATUS_KIND_SPECIAL_LW
-    //         ].contains(&status) {
-    //             let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
-    //             sv_kinetic_energy!(
-    //                 set_speed,
-    //                 fighter,
-    //                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-    //                 -air_speed_y_stable
-    //             );
-    //             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
-    //         }
-    //     }
-    // }
+    if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
+        let some = fighter.global_table[0x24].get_f32();
+        if some <= 2.0 {
+            let status = fighter.global_table[STATUS_KIND].get_i32();
+            // fighter.clear_lua_stack();
+            // lua_args!(fighter, status);
+            // if sv_fighter_util::is_attack_air_status(fighter.lua_state_agent, status)
+            // || [
+            if [
+                *FIGHTER_STATUS_KIND_SPECIAL_N,
+                *FIGHTER_STATUS_KIND_SPECIAL_S,
+                *FIGHTER_STATUS_KIND_SPECIAL_HI,
+                *FIGHTER_STATUS_KIND_SPECIAL_LW
+            ].contains(&status) {
+                let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
+                sv_kinetic_energy!(
+                    set_speed,
+                    fighter,
+                    FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
+                    -air_speed_y_stable
+                );
+                WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE);
+            }
+        }
+    }
 
     // <WuBor>
     // Handles removing ledge intangibility when not falling or double jumping.

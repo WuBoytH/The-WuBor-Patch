@@ -71,7 +71,9 @@ unsafe fn dedede_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         dedede_attackairf,
+
         dedede_attackairb,
+
         dedede_attackairlw
     );
 }

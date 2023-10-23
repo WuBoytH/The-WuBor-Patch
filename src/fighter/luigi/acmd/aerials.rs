@@ -68,7 +68,9 @@ unsafe fn luigi_attackairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         luigi_attackairn,
+
         luigi_attackairf,
+
         luigi_attackairhi
     );
 }

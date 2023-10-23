@@ -128,11 +128,17 @@ unsafe fn lucario_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_attack13,
+
         lucario_attackdash,
+
         lucario_attacks3,
+
         lucario_attacks3hi,
+
         lucario_attacks3lw,
+
         lucario_attackhi3,
+
         lucario_attacklw3
     );
 }

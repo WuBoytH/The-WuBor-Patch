@@ -21,6 +21,8 @@ unsafe fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kirby_belmontspecialn_exp, kirby_belmontspecialairn_exp
+        kirby_belmontspecialn_exp,
+
+        kirby_belmontspecialairn_exp
     );
 }

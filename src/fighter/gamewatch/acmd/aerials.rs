@@ -206,9 +206,22 @@ unsafe fn gamewatch_breath_attackairhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        gamewatch_attackairf, gamewatch_attackairf_eff, gamewatch_attackairf_snd, gamewatch_attackairf_exp,
-        gamewatch_landingairf, gamewatch_landingairf_eff, gamewatch_landingairf_snd, gamewatch_landingairf_exp,
-        gamewatch_attackairb, gamewatch_landingairb,
-        gamewatch_attackairhi, gamewatch_breath_attackairhi
+        gamewatch_attackairf,
+        gamewatch_attackairf_eff,
+        gamewatch_attackairf_snd,
+        gamewatch_attackairf_exp,
+
+        gamewatch_landingairf,
+        gamewatch_landingairf_eff,
+        gamewatch_landingairf_snd,
+        gamewatch_landingairf_exp,
+
+        gamewatch_attackairb,
+
+        gamewatch_landingairb,
+
+        gamewatch_attackairhi,
+
+        gamewatch_breath_attackairhi
     );
 }

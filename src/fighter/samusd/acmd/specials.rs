@@ -300,14 +300,30 @@ unsafe fn samusd_supermissile_ready(_agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samusd_specialnstart,
-        samusd_special, samusd_specialair,
-        samusd_specials, samusd_specialairs,
+
+        samusd_special,
+
+        samusd_specialair,
+
+        samusd_specials,
+
+        samusd_specialairs,
+
         samusd_specialhi,
+
         samusd_specialairhi,
-        samusd_speciallw, samusd_specialairlw, samusd_speciallw_eff,
+
+        samusd_speciallw,
+
+        samusd_specialairlw,
+        samusd_speciallw_eff,
+
         samusd_cshot_shoot,
+
         samusd_missile_homing,
+
         samusd_missile_hburst,
+
         samusd_supermissile_ready
     );
 }

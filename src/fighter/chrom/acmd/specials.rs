@@ -127,7 +127,14 @@ unsafe fn chrom_speciallwhit_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        chrom_speciallw, chrom_speciallw_eff, chrom_speciallw_snd, chrom_speciallw_exp,
-        chrom_speciallwhit, chrom_speciallwhit_eff, chrom_speciallwhit_snd, chrom_speciallwhit_exp
+        chrom_speciallw,
+        chrom_speciallw_eff,
+        chrom_speciallw_snd,
+        chrom_speciallw_exp,
+
+        chrom_speciallwhit,
+        chrom_speciallwhit_eff,
+        chrom_speciallwhit_snd,
+        chrom_speciallwhit_exp
     );
 }

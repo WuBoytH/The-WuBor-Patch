@@ -202,8 +202,11 @@ unsafe fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        bayonetta_specialairsu, bayonetta_specialairsu_eff,
+        bayonetta_specialairsu,
+        bayonetta_specialairsu_eff,
+
         bayonetta_specialairsd,
+
         bayonetta_specialhi
     );
 }

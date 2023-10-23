@@ -197,11 +197,17 @@ unsafe fn toonlink_boomerang_turn(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         toonlink_specialnstart,
+
         toonlink_specialhi,
+
         toonlink_specialairhi,
+
         toonlink_speciallw,
+
         toonlink_bowarrow_fly,
+
         toonlink_boomerang_fly,
+
         toonlink_boomerang_turn
     );
 }

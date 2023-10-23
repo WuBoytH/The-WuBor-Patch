@@ -80,7 +80,9 @@ unsafe fn shizue_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         shizue_attack11,
+
         shizue_attacks3,
+
         shizue_attacklw3
     );
 }

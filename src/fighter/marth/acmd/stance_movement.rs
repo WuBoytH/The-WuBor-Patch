@@ -82,7 +82,14 @@ unsafe fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_speciallwdashf, marth_speciallwdashf_eff, marth_speciallwdashf_snd, marth_speciallwdashf_exp,
-        marth_speciallwdashb, marth_speciallwdashb_eff, marth_speciallwdashb_snd, marth_speciallwdashb_exp
+        marth_speciallwdashf,
+        marth_speciallwdashf_eff,
+        marth_speciallwdashf_snd,
+        marth_speciallwdashf_exp,
+
+        marth_speciallwdashb,
+        marth_speciallwdashb_eff,
+        marth_speciallwdashb_snd,
+        marth_speciallwdashb_exp
     );
 }

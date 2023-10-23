@@ -212,10 +212,15 @@ unsafe fn brave_attackhi3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         brave_attack11,
+
         brave_attack12,
+
         brave_attack13,
+
         brave_attackdash,
+
         brave_attacks3s2,
+
         brave_attackhi3
     );
 }

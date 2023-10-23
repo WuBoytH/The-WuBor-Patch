@@ -28,7 +28,9 @@ unsafe fn mario_pump_attackairf(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mario_pump_start_eff,
+
         mario_pump_light_eff,
+
         mario_pump_attackairf
     );
 }

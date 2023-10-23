@@ -76,7 +76,9 @@ unsafe fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         master_attacks3,
+
         master_attacklw3,
+
         master_sword_attacklw3
     );
 }

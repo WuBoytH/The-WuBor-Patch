@@ -77,7 +77,9 @@ unsafe fn wolf_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         wolf_attackairn,
+
         wolf_attackairb,
+
         wolf_attackairlw
     );
 }

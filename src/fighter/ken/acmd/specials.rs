@@ -953,17 +953,33 @@ unsafe fn ken_hadoken_moves(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ken_specialsstart,
+
         ken_specials,
+
         ken_specialairsstart,
+
         ken_specialairs,
+
         ken_specialhi,
-        ken_specialhicommand, ken_specialhicommand_snd,
-        ken_specialhireppa, ken_specialhireppa_eff, ken_specialhireppa_snd, ken_specialhireppa_exp,
+
+        ken_specialhicommand,
+        ken_specialhicommand_snd,
+
+        ken_specialhireppa,
+        ken_specialhireppa_eff,
+        ken_specialhireppa_snd,
+        ken_specialhireppa_exp,
+
         ken_specialhiair,
+
         ken_speciallwstepf,
+
         ken_specialairlwstepf,
+
         ken_hadoken_movew,
+
         ken_hadoken_movem,
+
         ken_hadoken_moves
     );
 }

@@ -81,7 +81,9 @@ unsafe fn wiifit_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         wiifit_attacks3,
+
         wiifit_attackhi3,
+
         wiifit_attacklw3
     );
 }

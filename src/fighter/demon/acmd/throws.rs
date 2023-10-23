@@ -89,7 +89,9 @@ unsafe fn demon_catchcommand(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_pummel,
+
         demon_throwlw,
+
         demon_catchcommand
     );
 }

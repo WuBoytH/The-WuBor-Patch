@@ -516,11 +516,17 @@ unsafe fn demon_specialairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_specialhi,
+
         demon_specialhigroundair,
+
         demon_attackragedrive,
+
         demon_15cb9d3406,
+
         demon_15b52c48bb,
+
         demon_speciallw,
+
         demon_specialairlw
     );
 }

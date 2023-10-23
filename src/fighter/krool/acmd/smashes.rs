@@ -61,7 +61,9 @@ unsafe fn krool_attacks4lw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         krool_attacks4,
+
         krool_attacks4hi,
+
         krool_attacks4lw
     );
 }

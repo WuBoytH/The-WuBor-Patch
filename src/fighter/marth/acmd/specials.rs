@@ -555,7 +555,7 @@ unsafe fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         marth_specialnend,
-        marth_specialnend_eff
+        marth_specialnend_eff,
 
         marth_specialnendhi,
         marth_specialnendhi_eff,

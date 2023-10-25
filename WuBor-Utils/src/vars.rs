@@ -784,7 +784,16 @@ pub mod ryu {
 }
 
 pub mod ken {
-    pub use super::ryu::*;
+    pub mod status {
+        pub mod flag {
+            pub const SPECIAL_LW_ENABLE_ACTION : i32 = 0x1100;
+            pub const SPECIAL_LW_UNABLE_ACTION : i32 = 0x1101;
+            pub const SPECIAL_LW_ENABLED_ACTION : i32 = 0x1102;
+            pub const SPECIAL_LW_RESET_GRAVITY : i32 = 0x1103;
+
+            pub use super::super::super::ryu::status::flag::SPECIAL_DECIDE_STRENGTH;
+        }
+    }
 }
 
 pub mod samusd {

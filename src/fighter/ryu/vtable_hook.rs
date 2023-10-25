@@ -155,9 +155,7 @@ unsafe extern "C" fn ryu_ken_on_situation_change(_vtable: u64, fighter: &mut Fig
     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_LW);
     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_SPECIAL_AIR_N_HOP);
     WorkModule::off_flag(module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_S);
-    if (*object).kind == 0x3c {
-        VarModule::off_flag(object, fighter::instance::flag::DISABLE_SPECIAL_LW);
-    }
+    VarModule::off_flag(object, fighter::instance::flag::DISABLE_SPECIAL_LW);
 }
 
 #[skyline::hook(offset = 0x10d6c80)]

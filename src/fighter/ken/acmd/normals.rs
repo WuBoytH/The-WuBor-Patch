@@ -94,6 +94,142 @@ unsafe fn ken_attack12(agent: &mut L2CAgentBase) {
     // }
 }
 
+#[acmd_script( agent = "ken", script = "game_attacks3w", category = ACMD_GAME, low_priority )]
+unsafe fn ken_attacks3w(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 70, 46, 20, 20, 3.8, 0.0, 11.0, 7.0, Some(0.0), Some(11.0), Some(5.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 4.0, false);
+    }
+    frame(agent.lua_state_agent, 9.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_ALL) {
+            WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+        }
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
+    }
+    frame(agent.lua_state_agent, 12.0);
+    if macros::is_excute(agent) {
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "effect_attacks3w", category = ACMD_EFFECT, low_priority )]
+unsafe fn ken_attacks3w_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 2, 12, 9, 0, 0, 0, 1, true, *EF_FLIP_YZ, 0.7);
+        macros::LANDING_EFFECT_FLIP(agent, Hash40::new("sys_atk_smoke"), Hash40::new("sys_atk_smoke"), Hash40::new("top"), 1, 0, -2, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "sound_attacks3w", category = ACMD_SOUND, low_priority )]
+unsafe fn ken_attacks3w_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 3.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_ken_swing_punch_m"));
+        macros::PLAY_SEQUENCE(agent, Hash40::new("seq_ken_rnd_attack_s"));
+    }
+}
+
+#[acmd_script( agent = "ken", script = "expression_attacks3w", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ken_attacks3w_exp(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "game_attacks3s2", category = ACMD_GAME, low_priority )]
+unsafe fn ken_attacks3s2(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        ControlModule::reset_trigger(agent.module_accessor);
+        AttackModule::clear_all(agent.module_accessor);
+        AttackModule::clear_inflict_kind_status(agent.module_accessor);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 80, 46, 20, 40, 3.8, 0.0, 14.0, 7.0, Some(0.0), Some(8.0), Some(7.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 4.0, false);
+    }
+    frame(agent.lua_state_agent, 13.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "effect_attacks3s2", category = ACMD_EFFECT, low_priority )]
+unsafe fn ken_attacks3s2_eff(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("sys_attack_impact"), Hash40::new("top"), 2, 14, 5, 0, 0, 0, 1, true, *EF_FLIP_YZ, 0.7);
+        macros::LANDING_EFFECT_FLIP(agent, Hash40::new("sys_atk_smoke"), Hash40::new("sys_atk_smoke"), Hash40::new("top"), 1, 0, -2, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0, false, *EF_FLIP_YZ);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "sound_attacks3s2", category = ACMD_SOUND, low_priority )]
+unsafe fn ken_attacks3s2_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("se_ken_swing_punch_m"));
+        macros::PLAY_SE(agent, Hash40::new("vc_ken_attack06"));
+    }
+}
+
+#[acmd_script( agent = "ken", script = "expression_attacks3s2", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn ken_attacks3s2_exp(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
+    }
+    frame(agent.lua_state_agent, 7.0);
+    if macros::is_excute(agent) {
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackm"), 0);
+    }
+}
+
+#[acmd_script( agent = "ken", script = "game_attacks3s", category = ACMD_GAME, low_priority )]
+unsafe fn ken_attacks3s(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    }
+    frame(agent.lua_state_agent, 10.0);
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 34, 40, 0, 47, 3.0, 0.0, 12.5, 5.0, Some(0.0), Some(12.5), Some(5.7), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 8.0, 34, 40, 0, 47, 3.4, 0.0, 12.5, 11.6, Some(0.0), Some(12.5), Some(9.6), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
+    }
+    wait(agent.lua_state_agent, 4.0);
+    if macros::is_excute(agent) {
+        AttackModule::clear_all(agent.module_accessor);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
+        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+    }
+}
+
 #[acmd_script( agent = "ken", script = "game_attackhi3w", category = ACMD_GAME, low_priority )]
 unsafe fn ken_attackhi3w(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
@@ -296,6 +432,18 @@ pub fn install() {
         ken_attack11w_exp,
 
         ken_attack12,
+
+        ken_attacks3w,
+        ken_attacks3w_eff,
+        ken_attacks3w_snd,
+        ken_attacks3w_exp,
+
+        ken_attacks3s2,
+        ken_attacks3s2_eff,
+        ken_attacks3s2_snd,
+        ken_attacks3s2_exp,
+
+        ken_attacks3s,
 
         ken_attackhi3w,
         ken_attackhi3w_eff,

@@ -7,10 +7,8 @@ unsafe extern "C" fn ryu_ken_init(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     let control_energy = KineticModule::get_energy(module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
     *(control_energy as *mut u8).add(0xa4) = 1;
-    if fighter.battle_object.kind != 0x3d {
-        FGCModule::set_command_input_button(module_accessor, 1, 2);
-    }
     FGCModule::set_command_input_button(module_accessor, 0, 2);
+    FGCModule::set_command_input_button(module_accessor, 1, 2);
     FGCModule::set_command_input_button(module_accessor, 2, 2);
     FGCModule::set_command_input_button(module_accessor, 3, 2);
     FGCModule::set_command_input_button(module_accessor, 7, 2);

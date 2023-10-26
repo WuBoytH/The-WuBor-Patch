@@ -76,6 +76,10 @@ unsafe fn ken_speciallwstart_eff(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", scripts = [ "sound_speciallwstart", "sound_specialairlwstart" ], category = ACMD_SOUND, low_priority )]
 unsafe fn ken_speciallwstart_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_ken_quick_step"));
+    }
 }
 
 #[acmd_script( agent = "ken", scripts = [ "expression_speciallwstart", "expression_specialairlwstart" ], category = ACMD_EXPRESSION, low_priority )]
@@ -101,6 +105,10 @@ unsafe fn ken_speciallw_eff(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", scripts = [ "sound_speciallw", "sound_specialairlw" ], category = ACMD_SOUND, low_priority )]
 unsafe fn ken_speciallw_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 5.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_ken_quick_step_kick"));
+    }
 }
 
 #[acmd_script( agent = "ken", scripts = [ "expression_speciallw", "expression_specialairlw" ], category = ACMD_EXPRESSION, low_priority )]
@@ -120,6 +128,10 @@ unsafe fn ken_speciallwstepf_eff(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ken", scripts = [ "sound_speciallwstepf", "sound_specialairlwstepf" ], category = ACMD_SOUND, low_priority )]
 unsafe fn ken_speciallwstepf_snd(agent: &mut L2CAgentBase) {
+    frame(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        macros::PLAY_SE(agent, Hash40::new("vc_ken_quick_step_stop"));
+    }
 }
 
 #[acmd_script( agent = "ken", scripts = [ "expression_speciallwstepf", "expression_specialairlwstepf" ], category = ACMD_EXPRESSION, low_priority )]

@@ -5,6 +5,10 @@ use {
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_LW4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ryu_attack_lw4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT) {
+        VarModule::on_flag(fighter.battle_object, ryu::status::flag::USED_DENJIN_CHARGE);
+        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+    }
     ryu_attack_reset(fighter);
     fighter.status_AttackLw4Start_common();
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_attack_lw4_start_main_loop as *const () as _))

@@ -734,7 +734,7 @@ unsafe fn ryu_speciallwreversal_exp(agent: &mut L2CAgentBase) {
 unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        macros::SEARCH(agent, 0, 0, Hash40::new("top"), 10.0, 0.0, 10.0, 0.0, Some(0.0), Some(10.0), Some(15.0), *COLLISION_KIND_MASK_AHS, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
+        macros::SEARCH(agent, 0, 0, Hash40::new("top"), 15.0, 0.0, 10.0, 0.0, Some(0.0), Some(10.0), Some(15.0), *COLLISION_KIND_MASK_AHS, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
     }
     wait(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

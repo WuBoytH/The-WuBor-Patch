@@ -65,8 +65,11 @@ unsafe fn ken_speciallwstart(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_UNABLE_ACTION);
         VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
+    }
+    frame(agent.lua_state_agent, 32.0);
+    if macros::is_excute(agent) {
+        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_UNABLE_ACTION);
     }
 }
 

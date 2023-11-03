@@ -4,7 +4,7 @@ use crate::imports::acmd_imports::*;
 unsafe fn ken_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_DECIDE_STRENGTH);
+        VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_DECIDE_STRENGTH);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if strength == *FIGHTER_RYU_STRENGTH_W {
@@ -814,15 +814,15 @@ unsafe fn ken_specialairhi2_exp(agent: &mut L2CAgentBase) {
 unsafe fn ken_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_ENABLE_ACTION);
+        VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_ENABLE_ACTION);
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_UNABLE_ACTION);
+        VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_UNABLE_ACTION);
     }
 }
 
@@ -880,7 +880,7 @@ unsafe fn ken_specialairlwstart_exp(agent: &mut L2CAgentBase) {
 unsafe fn ken_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.0, 45, 10, 0, 70, 3.5, 0.0, 9.5, 10.0, Some(0.0), Some(9.5), Some(2.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 15, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KEN_KICK, *ATTACK_REGION_KICK);
     }
     frame(agent.lua_state_agent, 14.0);
@@ -931,7 +931,7 @@ unsafe fn ken_speciallw_exp(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "ken", scripts = [ "game_speciallwstepf", "game_specialairlwstepf" ], category = ACMD_GAME, low_priority )]
 unsafe fn ken_speciallwstepf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
     }
 }
 

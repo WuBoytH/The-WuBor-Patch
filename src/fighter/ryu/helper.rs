@@ -5,7 +5,7 @@ use {
 
 #[inline(always)]
 pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, b: f32) {
-    if !VarModule::is_flag(agent.battle_object, ryu::status::flag::SET_DENJIN_AURA) {
+    if !VarModule::is_flag(agent.module_accessor, ryu::status::flag::SET_DENJIN_AURA) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
         macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
         macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -18,17 +18,17 @@ pub unsafe fn ryu_saving_aura_handler(agent: &mut L2CAgentBase, r: f32, g: f32, 
         macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
         macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("kneer"), 4, 0, 0, 0, 0, 0, 1.1, true);
         macros::LAST_EFFECT_SET_COLOR(agent, r, g, b);
-        VarModule::on_flag(agent.battle_object, ryu::status::flag::SET_DENJIN_AURA);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SET_DENJIN_AURA);
     }
 }
 
 pub unsafe fn ryu_denjin_remover(fighter: &mut L2CFighterCommon) {
-    VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE);
-    let eff_handle = VarModule::get_int(fighter.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+    VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE);
+    let eff_handle = VarModule::get_int(fighter.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
     if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
         EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
     }
-    VarModule::set_int(fighter.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE, 0);
+    VarModule::set_int(fighter.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE, 0);
 }
 
 pub unsafe extern "C" fn ryu_attack_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {

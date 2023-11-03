@@ -38,15 +38,15 @@ unsafe fn ryu_special_lw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ryu_special_lw_step_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         ryu_denjin_remover(fighter);
-        VarModule::on_flag(fighter.battle_object, ryu::status::flag::USED_DENJIN_CHARGE);
+        VarModule::on_flag(fighter.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
     }
 
     let correct;
     let mot;
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW);
+        VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
         correct = *GROUND_CORRECT_KIND_AIR;
         mot = hash40("special_air_lw_rush");
     }
@@ -88,15 +88,15 @@ unsafe fn ryu_special_lw_step_f_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 unsafe fn ryu_special_lw_step_f_substatus(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK) {
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ATTACK);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
-        VarModule::off_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK);
+        VarModule::off_flag(fighter.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK);
     }
-    if VarModule::is_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -114,7 +114,7 @@ unsafe fn ryu_special_lw_step_f_substatus(fighter: &mut L2CFighterCommon, _param
                 -air_accel_y * 0.55
             );
         }
-        VarModule::off_flag(fighter.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY);
+        VarModule::off_flag(fighter.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY);
     }
     0.into()
 }
@@ -160,16 +160,16 @@ unsafe fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -> L2CValue 
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT);
     }
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT)
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT)
     && [
         *FIGHTER_STATUS_KIND_SPECIAL_N,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
-        VarModule::on_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+        VarModule::on_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE);
     }
     0.into()
 }

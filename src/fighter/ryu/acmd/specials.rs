@@ -5,7 +5,7 @@ use super::super::helper::*;
 unsafe fn ryu_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_DECIDE_STRENGTH);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SPECIAL_DECIDE_STRENGTH);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
     if strength == *FIGHTER_RYU_STRENGTH_W {
@@ -75,7 +75,7 @@ unsafe fn ryu_specialn_snd(agent: &mut L2CAgentBase) {
         }
         wait(agent.lua_state_agent, 2.0);
         if macros::is_excute(agent) {
-            let se = if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+            let se = if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
                 hash40("vc_ryu_hadoken_denjin")
             }
             else if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
@@ -124,10 +124,10 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 8.0 / 14.0);
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_DECIDE_STRENGTH);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SPECIAL_DECIDE_STRENGTH);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         macros::FT_MOTION_RATE(agent, 11.0 / 9.0);
     }
     else if strength == *FIGHTER_RYU_STRENGTH_W {
@@ -149,7 +149,7 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 367, 40, 30, 0, 4.0, 0.0, 11.0, 8.0, None, None, None, 1.2, 0.5, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
         }
@@ -174,7 +174,7 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 69, 15, 0, 80, 5.0, 0.0, 11.0, 8.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
         }
@@ -188,7 +188,7 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
     }
-    if !VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+    if !VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
         if strength == *FIGHTER_RYU_STRENGTH_W {
             MiscModule::calc_motion_rate_from_cancel_frame(agent, 30.0, -1.0);
@@ -221,13 +221,13 @@ unsafe fn ryu_specialn2_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_hadoken_hold"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.4);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
-        if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+        if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("sys_hit_elec"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 0.3, true);
             macros::LAST_EFFECT_SET_RATE(agent, 0.5);
         }
     }
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    let shot_frame = if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+    let shot_frame = if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         20.0
     }
     else if strength == *FIGHTER_RYU_STRENGTH_W {
@@ -254,7 +254,7 @@ unsafe fn ryu_specialn2_snd(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 24.0);
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE) {
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_ryu_hashogeki_denjin"));
             macros::PLAY_SE(agent, Hash40::new("vc_ryu_hashogeki_denjin"));
@@ -288,7 +288,7 @@ unsafe fn ryu_specialn2_exp(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 20.0);
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE)
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE)
     || strength == *FIGHTER_RYU_STRENGTH_S {
         if macros::is_excute(agent) {
             ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_attackll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -309,7 +309,7 @@ unsafe fn ryu_specialn2_exp(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 24.0);
     let strength = WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_STRENGTH);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::USED_DENJIN_CHARGE)
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE)
     || strength == *FIGHTER_RYU_STRENGTH_S {
         if macros::is_excute(agent) {
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackl"), 0);
@@ -494,7 +494,7 @@ unsafe fn ryu_specialairs2end_exp(agent: &mut L2CAgentBase) {
 unsafe fn ryu_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 51.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ryu::instance::flag::DENJIN_CHARGE);
+        VarModule::on_flag(agent.module_accessor, ryu::instance::flag::DENJIN_CHARGE);
     }
 }
 
@@ -514,7 +514,7 @@ unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        let eff_handle = VarModule::get_int(agent.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+        let eff_handle = VarModule::get_int(agent.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
         if EffectModule::is_exist_effect(agent.module_accessor, eff_handle) {
             EffectModule::kill(agent.module_accessor, eff_handle, true, true);
         }
@@ -537,7 +537,7 @@ unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
         let eff_handle = EffectModule::get_last_handle(agent.module_accessor);
         EffectModule::set_rgb(agent.module_accessor, eff_handle as u32, 0.3, 0.3, 2.0);
         EffectModule::set_rate(agent.module_accessor, eff_handle as u32, 1.5);
-        VarModule::set_int(agent.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE, eff_handle as i32);
+        VarModule::set_int(agent.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE, eff_handle as i32);
     }
     frame(agent.lua_state_agent, 52.0);
     if macros::is_excute(agent) {
@@ -574,7 +574,7 @@ unsafe fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_REMOVE_ARMOR);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_REMOVE_ARMOR);
     }
     if WorkModule::get_int(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT) == 2 {
         if macros::is_excute(agent) {
@@ -630,9 +630,9 @@ unsafe fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
         macros::PLAY_SE(agent, Hash40::new("vc_ryu_drive_impact"));
     }
     frame(agent.lua_state_agent, 23.0);
-    if VarModule::is_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
+    if VarModule::is_flag(agent.module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
         if macros::is_excute(agent) {
-            let mut vc_type = VarModule::get_int(agent.battle_object, ryu::instance::int::IMPACT_PUNISH_VC_TYPE);
+            let mut vc_type = VarModule::get_int(agent.module_accessor, ryu::instance::int::IMPACT_PUNISH_VC_TYPE);
             let vc = if vc_type == 0 {
                 hash40("vc_ryu_drive_impact_counter01")
             }
@@ -646,7 +646,7 @@ unsafe fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
             if vc_type > 2 {
                 vc_type = 0;
             }
-            VarModule::set_int(agent.battle_object, ryu::instance::int::IMPACT_PUNISH_VC_TYPE, vc_type);
+            VarModule::set_int(agent.module_accessor, ryu::instance::int::IMPACT_PUNISH_VC_TYPE, vc_type);
             macros::PLAY_SE(agent, Hash40::new_raw(vc));
         }
     }
@@ -742,16 +742,16 @@ unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_RESUME_ENERGY);
     }
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
-        VarModule::on_flag(agent.battle_object, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK);
+        VarModule::on_flag(agent.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+        VarModule::on_flag(agent.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK);
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, ryu::instance::flag::DENJIN_RUSH_INHERIT);
+        VarModule::off_flag(agent.module_accessor, ryu::instance::flag::DENJIN_RUSH_INHERIT);
     }
 }
 
@@ -774,7 +774,7 @@ unsafe fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
 unsafe fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_rush01"));
-        let mut vc_type = VarModule::get_int(agent.battle_object, ryu::instance::int::RUSH_VC_TYPE);
+        let mut vc_type = VarModule::get_int(agent.module_accessor, ryu::instance::int::RUSH_VC_TYPE);
         let vc = if vc_type == 0 {
             hash40("vc_ryu_drive_rush01")
         }
@@ -785,7 +785,7 @@ unsafe fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
         if vc_type > 1 {
             vc_type = 0;
         }
-        VarModule::set_int(agent.battle_object, ryu::instance::int::RUSH_VC_TYPE, vc_type);
+        VarModule::set_int(agent.module_accessor, ryu::instance::int::RUSH_VC_TYPE, vc_type);
         macros::PLAY_SE(agent, Hash40::new_raw(vc));
     }
 }

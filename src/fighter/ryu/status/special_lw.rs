@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn ryu_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F);
         return 1.into();
     }
@@ -212,8 +212,8 @@ unsafe fn ryu_special_lw_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn ryu_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE) {
-        let eff_handle = VarModule::get_int(fighter.battle_object, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
+    if !VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
+        let eff_handle = VarModule::get_int(fighter.module_accessor, ryu::instance::int::DENJIN_EFF_HANDLE) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, eff_handle) {
             EffectModule::kill(fighter.module_accessor, eff_handle, true, true);
         }

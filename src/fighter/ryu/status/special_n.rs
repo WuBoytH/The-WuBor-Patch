@@ -12,10 +12,10 @@ unsafe fn ryu_special_n_command(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe fn ryu_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         WorkModule::set_int(fighter.module_accessor, *WEAPON_RYU_HADOKEN_TYPE_SYAKUNETU, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE);
         ryu_denjin_remover(fighter);
-        VarModule::on_flag(fighter.battle_object, ryu::status::flag::USED_DENJIN_CHARGE);
+        VarModule::on_flag(fighter.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         ryu_special_n_substatus(fighter, false.into());

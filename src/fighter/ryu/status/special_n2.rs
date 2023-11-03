@@ -138,9 +138,9 @@ unsafe fn ryu_special_n2_command_init(fighter: &mut L2CFighterCommon) -> L2CValu
 
 #[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ryu_special_n2_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         ryu_denjin_remover(fighter);
-        VarModule::on_flag(fighter.battle_object, ryu::status::flag::USED_DENJIN_CHARGE);
+        VarModule::on_flag(fighter.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
     }
     if !StopModule::is_stop(fighter.module_accessor) {
         ryu_special_n2_substatus(fighter, false.into());

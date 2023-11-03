@@ -58,10 +58,10 @@ unsafe fn ken_special_hi_command_main(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe fn ken_special_hi_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     let air = sit == *SITUATION_KIND_AIR;
-    let step = VarModule::is_flag(fighter.battle_object, ken::instance::flag::QUICK_STEP_INHERIT);
+    let step = VarModule::is_flag(fighter.module_accessor, ken::instance::flag::QUICK_STEP_INHERIT);
     let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
     let mot = if step {
-        VarModule::on_flag(fighter.battle_object, ken::status::flag::QUICK_STEP_INHERITED);
+        VarModule::on_flag(fighter.module_accessor, ken::status::flag::QUICK_STEP_INHERITED);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_DECIDE_STRENGTH);
         if air {
             if command {
@@ -108,7 +108,7 @@ unsafe fn ken_special_hi_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue 
         false,
         false
     );
-    VarModule::off_flag(fighter.battle_object, ken::instance::flag::QUICK_STEP_INHERIT);
+    VarModule::off_flag(fighter.module_accessor, ken::instance::flag::QUICK_STEP_INHERIT);
     ItemModule::set_change_status_event(fighter.module_accessor, false);
     if !StopModule::is_stop(fighter.module_accessor) {
         ken_special_hi_substatus(fighter, false.into());

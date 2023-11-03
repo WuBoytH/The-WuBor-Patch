@@ -11,7 +11,7 @@ use {
 };
 
 pub unsafe extern "C" fn ryu_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DENJIN_CHARGE)
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE)
     && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_LW) {
         let pad_flag = fighter.global_table[PAD_FLAG].get_i32();

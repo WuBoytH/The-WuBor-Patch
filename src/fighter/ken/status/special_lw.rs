@@ -120,7 +120,7 @@ unsafe fn ken_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         mot = hash40("special_lw_start");
     }
     else {
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW);
+        VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
         correct = *GROUND_CORRECT_KIND_AIR;
         mot = hash40("special_air_lw_start");
     }
@@ -139,25 +139,25 @@ unsafe fn ken_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLE_ACTION) {
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLE_ACTION) {
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
-        VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLE_ACTION);
-        VarModule::on_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
+        VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLE_ACTION);
+        VarModule::on_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
     }
-    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_UNABLE_ACTION) {
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_UNABLE_ACTION) {
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S_COMMAND);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI);
         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI_COMMAND);
-        VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_UNABLE_ACTION);
-        VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
+        VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_UNABLE_ACTION);
+        VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
     }
-    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_RESET_GRAVITY) {
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             sv_kinetic_energy!(
                 reset_energy,
@@ -171,13 +171,13 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
                 0.0
             );
         }
-        VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
+        VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_RESET_GRAVITY);
     }
     if fighter.sub_wait_ground_check_common(false.into()).get_bool()
     || fighter.sub_air_check_fall_common().get_bool() {
         return 1.into();
     }
-    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION) {
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION) {
         if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_GUARD_TRIGGER != 0 {
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_S);
@@ -201,7 +201,7 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
                 false
             );
             ControlModule::clear_command(fighter.module_accessor, false);
-            VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
+            VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
             return 0.into();
         }
         if fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0 {
@@ -227,7 +227,7 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
                 false
             );
             ControlModule::clear_command(fighter.module_accessor, false);
-            VarModule::off_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
+            VarModule::off_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION);
             return 0.into();
         }
     }
@@ -254,7 +254,7 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
 #[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn ken_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
-    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION)
+    if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION)
     && [
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
@@ -262,10 +262,10 @@ unsafe fn ken_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
         *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
     ].contains(&status) {
-        VarModule::on_flag(fighter.battle_object, ken::instance::flag::QUICK_STEP_INHERIT)
+        VarModule::on_flag(fighter.module_accessor, ken::instance::flag::QUICK_STEP_INHERIT)
     }
     else {
-        VarModule::off_flag(fighter.battle_object, ken::instance::flag::QUICK_STEP_INHERIT)
+        VarModule::off_flag(fighter.module_accessor, ken::instance::flag::QUICK_STEP_INHERIT)
     }
     0.into()
 }

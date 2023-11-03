@@ -21,7 +21,7 @@ fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
 
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N
-        && VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL)
+        && VarModule::is_flag(fighter.module_accessor, fighter::status::flag::JUMP_CANCEL)
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
         && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IS_STOP].get_bool() {

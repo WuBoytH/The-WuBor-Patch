@@ -142,7 +142,7 @@ unsafe extern "C" fn trail_attackairn_main_loop(fighter: &mut L2CFighterCommon) 
             if cont {
                 if !only_jabs(fighter) {
                     let flags = ATTACK_AIR_F_MASK + ATTACK_AIR_B_MASK + ATTACK_AIR_HI_MASK + ATTACK_AIR_LW_MASK;
-                    VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, flags);
+                    VarModule::set_int(fighter.module_accessor, fighter::status::int::ENABLED_AERIALS, flags);
                     if aerial_cancel_common(fighter).get_bool() {
                         return 1.into();
                     }
@@ -221,7 +221,7 @@ unsafe fn trail_landingattackair_init(fighter: &mut L2CFighterCommon) -> L2CValu
     }
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, landing_param_type, landing_param);
     landing_lag *= motion_rate;
-    if VarModule::is_flag(fighter.battle_object, attack_air::flag::WHIFF) {
+    if VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
         landing_lag += 4.0;
     }
     if landing_lag != 0.0 {

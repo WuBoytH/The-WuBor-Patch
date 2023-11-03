@@ -25,9 +25,9 @@ unsafe extern "C" fn lucario_special_n_main_loop(fighter: &mut L2CFighterCommon)
     }
     else {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
-        && VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 2 {
+        && VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) > 2 {
             lucario_drain_aura(fighter, true);
-            VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB);
+            VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB);
             if fighter.global_table[SITUATION_KIND] == *SITUATION_KIND_GROUND {
                 WorkModule::set_customize_no(fighter.module_accessor, 1, 0);
             }
@@ -52,7 +52,7 @@ unsafe fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValu
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     let ground_mot;
     let air_mot;
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
+    if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
         ground_mot = hash40("special_n_hold2");
         air_mot = hash40("special_air_n_hold2");
     }
@@ -70,7 +70,7 @@ unsafe fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValu
     );
     lucario_special_n_hold_set_kinetic(fighter);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
-        VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_START_FROM_GROUND);
+        VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_START_FROM_GROUND);
     }
     ControlModule::set_add_jump_mini_button_life(fighter.module_accessor, 8);
     fighter.sub_shift_status_main(L2CValue::Ptr(lucario_special_n_hold_main_loop as *const () as _))
@@ -95,7 +95,7 @@ unsafe extern "C" fn lucario_special_n_hold_set_kinetic(fighter: &mut L2CFighter
         lucario_special_set_air(fighter);
         lucario_special_air_mot_helper(fighter);
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
+        if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
             let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             sv_kinetic_energy!(
@@ -142,7 +142,7 @@ unsafe fn lucario_special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CVal
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     let ground_mot;
     let air_mot;
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
+    if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
         ground_mot = hash40("special_n_shoot2");
         air_mot = hash40("special_air_n_shoot2");
     }
@@ -168,21 +168,21 @@ unsafe extern "C" fn lucario_special_n_shoot_main_loop(fighter: &mut L2CFighterC
             return 0.into();
         }
     }
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL) {
-        VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL);
+    if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL) {
+        VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL);
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING);
+            VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING);
         }
     }
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH) {
+    if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH) {
         let situation = fighter.global_table[SITUATION_KIND].clone();
         special_cancel_common(fighter, situation, [*FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_HI].to_vec());
     }
     if !MotionModule::is_end(fighter.module_accessor) {
         if !StatusModule::is_changing(fighter.module_accessor)
         && StatusModule::is_situation_changed(fighter.module_accessor) {
-            if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING)
+            if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING)
             && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING.into(), false.into());
                 return 0.into();
@@ -205,8 +205,8 @@ unsafe extern "C" fn lucario_special_n_shoot_set_kinetic(fighter: &mut L2CFighte
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         lucario_special_set_air(fighter);
         lucario_special_air_mot_helper(fighter);
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
-            if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING) {
+        if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
+            if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_FALLING) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
             else {
@@ -221,7 +221,7 @@ unsafe extern "C" fn lucario_special_n_shoot_set_kinetic(fighter: &mut L2CFighte
     else {
         lucario_special_set_ground(fighter);
         lucario_special_ground_mot_helper(fighter);
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
+        if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
         }
         else {

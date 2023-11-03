@@ -109,7 +109,7 @@ unsafe fn lucina_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         let ratio = get_damage_mul(agent.module_accessor);
-        if VarModule::is_flag(agent.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
+        if VarModule::is_flag(agent.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
             macros::ATTACK(agent, 0, 0, Hash40::new("kneer"), 4.0 * ratio, 0, 40, 10, 40, 3.6, 5.0, -1.0, 1.5, Some(1.5), Some(-1.0), Some(1.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_KICK);
         }
         else {
@@ -122,7 +122,7 @@ unsafe fn lucina_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         AttackModule::clear_all(agent.module_accessor);
-        VarModule::on_flag(agent.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
+        VarModule::on_flag(agent.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
     }
 }
 #[acmd_script( agent = "lucina", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
@@ -171,9 +171,9 @@ unsafe fn lucina_attackdash_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucina", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe fn lucina_attacks3(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, yu::instance::flag::HEROIC_GRAB) {
+    if VarModule::is_flag(agent.module_accessor, yu::instance::flag::HEROIC_GRAB) {
         macros::FT_MOTION_RATE(agent, 0.5);
-        VarModule::off_flag(agent.battle_object, yu::instance::flag::HEROIC_GRAB);
+        VarModule::off_flag(agent.module_accessor, yu::instance::flag::HEROIC_GRAB);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {

@@ -29,7 +29,7 @@ unsafe fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_STATUS_KIND_TURN_DASH
     ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32())
-    && VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_PIVOT_TURN_DASH) {
+    && VarModule::is_flag(fighter.module_accessor, dash::flag::DISABLE_PIVOT_TURN_DASH) {
         WorkModule::unable_transition_term_group_ex(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
     }
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_TURN_ATTACK_S4_REV_PAD);

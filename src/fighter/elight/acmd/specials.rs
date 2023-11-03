@@ -756,7 +756,7 @@ unsafe fn elight_speciallwattack(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 2, 0, Hash40::new("haver"), 15.5, 40, 78, 0, 45, 3.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 3, 0, Hash40::new("haver"), 15.5, 40, 78, 0, 45, 3.0, 0.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 4, 0, Hash40::new("haver"), 15.5, 40, 78, 0, 45, 3.0, 0.0, 16.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
-        VarModule::on_flag(agent.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
+        VarModule::on_flag(agent.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
     }
     frame(agent.lua_state_agent, 22.0);
     if macros::is_excute(agent) {
@@ -897,7 +897,7 @@ unsafe fn elight_specialairlwattack(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 2, 0, Hash40::new("haver"), 15.5, 40, 78, 0, 45, 3.0, 0.0, 8.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 3, 0, Hash40::new("haver"), 15.5, 40, 78, 0, 45, 3.0, 0.0, 12.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 4, 0, Hash40::new("haver"), 15.5, 40, 78, 0, 45, 3.0, 0.0, 16.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_magic"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_MAGIC, *ATTACK_REGION_SWORD);
-        VarModule::on_flag(agent.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
+        VarModule::on_flag(agent.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
     }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {

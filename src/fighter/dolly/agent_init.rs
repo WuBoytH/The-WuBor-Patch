@@ -36,7 +36,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
     && cat4 & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_N2_COMMAND != 0
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N2_COMMAND) {
-        VarModule::on_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND);
+        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND);
         fighter.change_status(FIGHTER_STATUS_KIND_ATTACK_DASH.into(), true.into());
         return true.into();
     }

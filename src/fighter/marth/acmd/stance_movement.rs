@@ -2,10 +2,10 @@ use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashf", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashf(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 15.0);
@@ -42,10 +42,10 @@ unsafe fn marth_speciallwdashf_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashb", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashb(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 15.0);

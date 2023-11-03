@@ -6,9 +6,9 @@ unsafe fn ryu_appealhi(agent: &mut L2CAgentBase) {
     if DamageModule::damage(agent.module_accessor, 0) >= 180.0 {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_ryu_6c_aura"));
-            VarModule::on_flag(agent.battle_object, ryu::instance::flag::SEC_SEN_STATE);
-            VarModule::on_flag(agent.battle_object, ryu::instance::flag::EX_FLASH);
-            VarModule::set_int(agent.battle_object, ryu::instance::int::FLASH_TIMER, 0);
+            VarModule::on_flag(agent.module_accessor, ryu::instance::flag::SEC_SEN_STATE);
+            VarModule::on_flag(agent.module_accessor, ryu::instance::flag::EX_FLASH);
+            VarModule::set_int(agent.module_accessor, ryu::instance::int::FLASH_TIMER, 0);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 1.4, true);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("neck"), 0, 0, 0, 0, 0, 0, 1, true);
             macros::EFFECT_FOLLOW(agent, Hash40::new("ryu_savingattack_aura"), Hash40::new("handl"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -21,15 +21,15 @@ unsafe fn ryu_appealhi(agent: &mut L2CAgentBase) {
         }
     }
     frame(agent.lua_state_agent, 30.0);
-    if VarModule::is_flag(agent.battle_object, ryu::instance::flag::SEC_SEN_STATE) {
+    if VarModule::is_flag(agent.module_accessor, ryu::instance::flag::SEC_SEN_STATE) {
         if macros::is_excute(agent) {
             macros::EFFECT_OFF_KIND(agent, Hash40::new("ryu_savingattack_aura"), false, true);
             macros::BURN_COLOR_NORMAL(agent);
             damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_NORMAL, 0);
             DamageModule::set_damage_lock(agent.module_accessor, false);
-            VarModule::off_flag(agent.battle_object, ryu::instance::flag::EX_FLASH);
+            VarModule::off_flag(agent.module_accessor, ryu::instance::flag::EX_FLASH);
             macros::COL_NORMAL(agent);
-            VarModule::off_flag(agent.battle_object, ryu::instance::flag::SEC_SEN_STATE);
+            VarModule::off_flag(agent.module_accessor, ryu::instance::flag::SEC_SEN_STATE);
             HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         }
     }

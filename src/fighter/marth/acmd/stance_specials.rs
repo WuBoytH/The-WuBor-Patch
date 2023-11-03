@@ -2,21 +2,21 @@ use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecials", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecials(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS);
     }
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::SPECIAL_S_DASH);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::SPECIAL_S_DASH);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -27,7 +27,7 @@ unsafe fn marth_speciallwspecials(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
-        VarModule::on_flag(agent.battle_object, marth::status::flag::SPECIAL_S_END);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::SPECIAL_S_END);
     }
     macros::FT_MOTION_RATE(agent, 0.5);
 }
@@ -112,21 +112,21 @@ unsafe fn marth_speciallwspecials_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecialairs", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::SPECIAL_S_ENABLE_SPECIALS);
     }
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::SPECIAL_S_DASH);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::SPECIAL_S_DASH);
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -137,7 +137,7 @@ unsafe fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_NORMAL);
-        VarModule::on_flag(agent.battle_object, marth::status::flag::SPECIAL_S_END);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::SPECIAL_S_END);
     }
     macros::FT_MOTION_RATE(agent, 0.5);
 }
@@ -146,25 +146,25 @@ unsafe fn marth_speciallwspecialairs(agent: &mut L2CAgentBase) {
 unsafe fn marth_speciallwspecialairs_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
-        let angle = VarModule::get_float(agent.battle_object, marth::status::float::SPECIAL_S_ANGLE);
+        let angle = VarModule::get_float(agent.module_accessor, marth::status::float::SPECIAL_S_ANGLE);
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, -8, angle, 180, 0, 1.5, true);
         macros::LAST_PARTICLE_SET_COLOR(agent, 0.4, 0.6, 1);
     }
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
-        let angle = VarModule::get_float(agent.battle_object, marth::status::float::SPECIAL_S_ANGLE);
+        let angle = VarModule::get_float(agent.module_accessor, marth::status::float::SPECIAL_S_ANGLE);
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, -8, angle, 180, 0, 1.5, true);
         macros::LAST_PARTICLE_SET_COLOR(agent, 0.4, 0.6, 1);
     }
     frame(agent.lua_state_agent, 22.0);
     if macros::is_excute(agent) {
-        let angle = VarModule::get_float(agent.battle_object, marth::status::float::SPECIAL_S_ANGLE);
+        let angle = VarModule::get_float(agent.module_accessor, marth::status::float::SPECIAL_S_ANGLE);
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, -8, angle, 180, 0, 1.5, true);
         macros::LAST_PARTICLE_SET_COLOR(agent, 0.4, 0.6, 1);
     }
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
-        let angle = VarModule::get_float(agent.battle_object, marth::status::float::SPECIAL_S_ANGLE);
+        let angle = VarModule::get_float(agent.module_accessor, marth::status::float::SPECIAL_S_ANGLE);
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 9, -8, angle, 180, 0, 1.5, true);
         macros::LAST_PARTICLE_SET_COLOR(agent, 0.4, 0.6, 1);
     }
@@ -278,7 +278,7 @@ unsafe fn marth_speciallwspecials2loop(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 1.0, 0, 12, 100, 60, 2.0, 0.0, 8.5, 20.0, Some(0.0), Some(8.5), Some(6.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 1.0, 30, 12, 100, 60, 2.0, 0.0, 4.0, 6.0, Some(0.0), Some(4.0), Some(20.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 3, 0, Hash40::new("top"), 1.0, 350, 12, 100, 60, 2.0, 0.0, 13.0, 6.0, Some(0.0), Some(13.0), Some(20.0), 0.5, 0.8, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, -4, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
-        let loop_count = VarModule::get_int(agent.battle_object, marth::status::int::SPECIAL_S2_LOOP_COUNT) - 1;
+        let loop_count = VarModule::get_int(agent.module_accessor, marth::status::int::SPECIAL_S2_LOOP_COUNT) - 1;
         let setoff_mul = 10.0 - (loop_count as f32 * 2.5);
         macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, setoff_mul);
         macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 1, setoff_mul);
@@ -293,7 +293,7 @@ unsafe fn marth_speciallwspecials2loop(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "effect_speciallwspecials2loop", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_speciallwspecials2loop_eff(agent: &mut L2CAgentBase) {
-    if VarModule::get_int(agent.battle_object, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
+    if VarModule::get_int(agent.module_accessor, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
         }
@@ -524,7 +524,7 @@ unsafe fn marth_speciallwspecialairs2loop(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "effect_speciallwspecialairs2loop", category = ACMD_EFFECT, low_priority )]
 unsafe fn marth_speciallwspecialairs2loop_eff(agent: &mut L2CAgentBase) {
-    if VarModule::get_int(agent.battle_object, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
+    if VarModule::get_int(agent.module_accessor, marth::status::int::SPECIAL_S2_LOOP_COUNT) == 1 {
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("marth_sword_blue"), Hash40::new("haver"), 0.0, 0, 0, 0, 0, 0, 1, true);
         }
@@ -648,10 +648,10 @@ unsafe fn marth_speciallwspecialairs2end_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwspecialhi", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwspecialhi(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 6.0);

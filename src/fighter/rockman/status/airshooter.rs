@@ -11,7 +11,7 @@ unsafe fn rockman_airshooter_regular_init(weapon: &mut L2CWeaponCommon) -> L2CVa
     let speed_x;
     let accel_x;
     let limit_speed_x;
-    match VarModule::get_int(weapon.battle_object, rockman_airshooter::instance::int::NUM) {
+    match VarModule::get_int(weapon.module_accessor, rockman_airshooter::instance::int::NUM) {
         1 => {
             speed_x = 0.1;
             accel_x = 0.035;
@@ -54,7 +54,7 @@ unsafe fn rockman_airshooter_regular_init(weapon: &mut L2CWeaponCommon) -> L2CVa
 
 #[status_script(agent = "rockman_airshooter", status = WEAPON_ROCKMAN_AIRSHOOTER_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn rockman_airshooter_regular_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if VarModule::is_flag(weapon.battle_object, rockman_airshooter::status::flag::MOVE) {
+    if VarModule::is_flag(weapon.module_accessor, rockman_airshooter::status::flag::MOVE) {
         let limit_speed_y = WorkModule::get_param_float(weapon.module_accessor, hash40("param_airshooter"), hash40("limit_speed"));
         sv_kinetic_energy!(
             set_limit_speed,
@@ -63,7 +63,7 @@ unsafe fn rockman_airshooter_regular_exec(weapon: &mut L2CWeaponCommon) -> L2CVa
             0.0,
             limit_speed_y
         );
-        VarModule::off_flag(weapon.battle_object, rockman_airshooter::status::flag::MOVE);
+        VarModule::off_flag(weapon.module_accessor, rockman_airshooter::status::flag::MOVE);
     }
     0.into()
 }

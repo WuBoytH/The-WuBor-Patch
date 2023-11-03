@@ -150,9 +150,9 @@ unsafe fn rockman_attackairb(agent: &mut L2CAgentBase) {
 //     macros::FT_MOTION_RATE(agent, 1.0);
 //     if macros::is_excute(agent) {
 //         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_AIRSHOOTER, false, -1);
-//         VarModule::inc_int(agent.battle_object, rockman::status::int::AIR_SHOOTER_NUM);
+//         VarModule::inc_int(agent.module_accessor, rockman::status::int::AIR_SHOOTER_NUM);
 //         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_AIRSHOOTER, false, -1);
-//         VarModule::inc_int(agent.battle_object, rockman::status::int::AIR_SHOOTER_NUM);
+//         VarModule::inc_int(agent.module_accessor, rockman::status::int::AIR_SHOOTER_NUM);
 //         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_AIRSHOOTER, false, -1);
 //     }
 //     frame(agent.lua_state_agent, 51.0);
@@ -169,7 +169,7 @@ unsafe fn rockman_airshooter_regular(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, rockman_airshooter::status::flag::MOVE);
+        VarModule::on_flag(agent.module_accessor, rockman_airshooter::status::flag::MOVE);
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {

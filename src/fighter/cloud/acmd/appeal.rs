@@ -4,37 +4,37 @@ use crate::imports::acmd_imports::*;
 unsafe fn cloud_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        VarModule::set_int64(agent.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_loop"));
-        let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
-        VarModule::set_int(agent.battle_object, appeal::int::ACTION_BUTTON, hold_button);
-        VarModule::on_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_CHECK);
-        VarModule::on_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
+        VarModule::set_int64(agent.module_accessor, appeal::int64::ACTION_MOT, hash40("appeal_s_loop"));
+        let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
+        VarModule::set_int(agent.module_accessor, appeal::int::ACTION_BUTTON, hold_button);
+        VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
+        VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
     }
     frame(agent.lua_state_agent, 22.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_CHECK);
-        VarModule::on_flag(agent.battle_object, appeal::flag::ENABLE_ACTION_IMM);
+        VarModule::off_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
+        VarModule::on_flag(agent.module_accessor, appeal::flag::ENABLE_ACTION_IMM);
     }
 }
 
 #[acmd_script( agent = "cloud", script = "game_appealsloop", category = ACMD_GAME, low_priority )]
 unsafe fn cloud_appealsloop(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VarModule::set_int(agent.battle_object, appeal::int::ACTION_FRAME, 12);
-        VarModule::on_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_CHECK);
+        VarModule::set_int(agent.module_accessor, appeal::int::ACTION_FRAME, 12);
+        VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
+        VarModule::on_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
     }
     frame(agent.lua_state_agent, 50.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
+        VarModule::off_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
     }
     frame(agent.lua_state_agent, 75.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, appeal::flag::ACTION_BUTTON_CHECK);
-        VarModule::on_flag(agent.battle_object, appeal::flag::ENABLE_ACTION_IMM);
+        VarModule::off_flag(agent.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
+        VarModule::on_flag(agent.module_accessor, appeal::flag::ENABLE_ACTION_IMM);
     }
 }
 
@@ -68,11 +68,11 @@ unsafe fn cloud_appealsloop_exp(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_appealhil", category = ACMD_GAME, low_priority )]
 unsafe fn cloud_appealhil(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
-    let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
+    let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
-                agent.battle_object,
+                agent.module_accessor,
                 false,
                 hash40("appeal_hi_l_loop"),
                 77
@@ -84,11 +84,11 @@ unsafe fn cloud_appealhil(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", script = "game_appealhir", category = ACMD_GAME, low_priority )]
 unsafe fn cloud_appealhir(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 72.0);
-    let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
+    let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
-                agent.battle_object,
+                agent.module_accessor,
                 false,
                 hash40("appeal_hi_r_loop"),
                 77
@@ -100,11 +100,11 @@ unsafe fn cloud_appealhir(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "cloud", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority )]
 unsafe fn cloud_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 60.0);
-    let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
+    let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
-                agent.battle_object,
+                agent.module_accessor,
                 false,
                 hash40("appeal_lw_loop"),
                 61

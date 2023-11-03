@@ -14,7 +14,7 @@ unsafe fn ryu_attackhi3s(agent: &mut L2CAgentBase) {
         macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);
         macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
         macros::HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
     }
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -39,7 +39,7 @@ unsafe fn ryu_attackhi3s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
-        VarModule::off_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
     }
 }
 

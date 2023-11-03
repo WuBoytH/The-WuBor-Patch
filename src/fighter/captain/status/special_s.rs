@@ -117,7 +117,7 @@ unsafe extern "C" fn captain_special_s_main_loop(fighter: &mut L2CFighterCommon)
             return 1.into();
         }
     }
-    let manual_input = VarModule::is_flag(fighter.battle_object, captain::status::flag::SPECIAL_S_ENABLE_MANUAL_ATTACK)
+    let manual_input = VarModule::is_flag(fighter.module_accessor, captain::status::flag::SPECIAL_S_ENABLE_MANUAL_ATTACK)
     && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_CAPTAIN_STATUS_WORK_ID_FLAG_FALCON_KNUCKLE_HIT)
     || manual_input {

@@ -35,21 +35,21 @@ unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
     // This makes a big assumption where if you ledge drop, you will have had ledge intangibility.
     // May cause unintended side effects but the logic should be pretty air-tight.
 
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::LEDGE_INTANGIBILITY) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::LEDGE_INTANGIBILITY) {
         if ![
             *FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
             *FIGHTER_STATUS_KIND_FALL_AERIAL,
             *FIGHTER_STATUS_KIND_FLY
         ].contains(&status) {
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::LEDGE_INTANGIBILITY);
+            VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::LEDGE_INTANGIBILITY);
             HitModule::set_xlu_frame_global(fighter.module_accessor, 0, 0);
         }
     }
 
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::JUMP_FROM_SQUAT) {
         let status = fighter.global_table[STATUS_KIND].get_i32();
-        if VarModule::get_int(fighter.battle_object, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS) < 2
+        if VarModule::get_int(fighter.module_accessor, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS) < 2
         && ![
             *FIGHTER_STATUS_KIND_FALL,
             *FIGHTER_STATUS_KIND_JUMP_AERIAL,
@@ -58,13 +58,13 @@ unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
             *FIGHTER_STATUS_KIND_ESCAPE_AIR,
             *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
         ].contains(&status) {
-            VarModule::inc_int(fighter.battle_object, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS);
+            VarModule::inc_int(fighter.module_accessor, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS);
         }
         else {
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT);
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
-            VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
-            VarModule::set_int(fighter.battle_object, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS, 0);
+            VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::JUMP_FROM_SQUAT);
+            VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
+            VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP_SET_MOMENTUM);
+            VarModule::set_int(fighter.module_accessor, fighter::instance::int::JUMP_FROM_SQUAT_COUNT_STATUS, 0);
         }
     }
 }

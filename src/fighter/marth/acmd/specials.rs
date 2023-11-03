@@ -514,7 +514,7 @@ unsafe fn marth_specialairhi_eff(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallw(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SHIELD);
         }

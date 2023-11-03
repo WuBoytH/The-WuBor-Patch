@@ -9,7 +9,7 @@ use {
     smash_script::*,
     smashline::*,
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
+    wubor_utils::{vars::*, table_const::*},
     super::vl,
 };
 
@@ -30,8 +30,8 @@ unsafe fn samusd_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe extern "C" fn samusd_attackair_substatus2(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_n")
-    && VarModule::is_flag(fighter.battle_object, samusd::status::flag::ATTACK_AIR_N_START_FLOAT) {
-        VarModule::on_flag(fighter.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT);
+    && VarModule::is_flag(fighter.module_accessor, samusd::status::flag::ATTACK_AIR_N_START_FLOAT) {
+        VarModule::on_flag(fighter.module_accessor, samusd::instance::flag::ATTACK_AIR_N_FLOAT);
         let sum_speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
         let mul = if sum_speed_y <= 0.0 {
@@ -418,13 +418,12 @@ unsafe extern "C" fn samusd_speciallw_air_is_end_helper(fighter: &mut L2CFighter
 #[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = MiscModule::get_battle_object_from_id(otarget_id);
+    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
     if [
         *FIGHTER_KIND_SAMUSD,
         *FIGHTER_KIND_KIRBY
-    ].contains(&utility::get_kind(&mut *oboma)) {
-        VarModule::set_int(object, samusd::instance::int::CSHOT_ID, weapon.global_table[OBJECT_ID].get_i32());
+    ].contains(&utility::get_kind(&mut *owner_module_accessor)) {
+        VarModule::set_int(owner_module_accessor, samusd::instance::int::CSHOT_ID, weapon.global_table[OBJECT_ID].get_i32());
     }
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_cshot"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
@@ -589,10 +588,9 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
 #[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let object = MiscModule::get_battle_object_from_id(otarget_id);
-    if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_KIRBY].contains(&utility::get_kind(&mut *oboma)) {
-        VarModule::set_int(object, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
+    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
+    if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_KIRBY].contains(&utility::get_kind(&mut *owner_module_accessor)) {
+        VarModule::set_int(owner_module_accessor, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
     }
     WorkModule::set_int(weapon.module_accessor, 0, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_EFH_BULLET);
     WorkModule::set_int(weapon.module_accessor, 0, *WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_EFH_BULLET_FOLLOW);

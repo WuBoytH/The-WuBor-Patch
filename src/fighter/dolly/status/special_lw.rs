@@ -11,11 +11,11 @@ unsafe fn dolly_speciallw_command_pre(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 unsafe extern "C" fn dolly_speciallw_pre_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_DISABLE_AIR_SPECIAL_LW);
     }
-    let attr = if VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL)
+    let attr = if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL)
     && fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ATTACK_DASH {
         0
     }
@@ -47,7 +47,7 @@ unsafe extern "C" fn dolly_speciallw_pre_main(fighter: &mut L2CFighterCommon) ->
         *FIGHTER_POWER_UP_ATTACK_BIT_SPECIAL_LW as u32,
         0
     );
-    VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
+    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     0.into()
 }
 
@@ -142,7 +142,7 @@ unsafe extern "C" fn dolly_speciallw_substatus(fighter: &mut L2CFighterCommon, _
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_INT_START_SITUATION);
     if start_sit == *SITUATION_KIND_GROUND
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
-        VarModule::on_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_ENABLE_BREAK);
+        VarModule::on_flag(fighter.module_accessor, dolly::status::flag::SPECIAL_LW_ENABLE_BREAK);
     }
     0.into()
 }
@@ -165,8 +165,8 @@ unsafe extern "C" fn dolly_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
     }
     if !fighter.global_table[IS_STOP].get_bool()
     && MotionModule::is_end(fighter.module_accessor)
-    || VarModule::is_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_CHECK_BREAK) {
-        if VarModule::is_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_BREAK) {
+    || VarModule::is_flag(fighter.module_accessor, dolly::status::flag::SPECIAL_LW_CHECK_BREAK) {
+        if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::SPECIAL_LW_BREAK) {
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             return 0.into()
         }
@@ -176,7 +176,7 @@ unsafe extern "C" fn dolly_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
             fighter.change_status(FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK.into(), false.into());
             return 0.into();
         }
-        if !VarModule::is_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_ENABLE_BREAK) {
+        if !VarModule::is_flag(fighter.module_accessor, dolly::status::flag::SPECIAL_LW_ENABLE_BREAK) {
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_JUMP);
             fighter.set_situation(SITUATION_KIND_AIR.into());
@@ -202,9 +202,9 @@ unsafe extern "C" fn dolly_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
         }
         else {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
-            VarModule::on_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_BREAK);
+            VarModule::on_flag(fighter.module_accessor, dolly::status::flag::SPECIAL_LW_BREAK);
         }
-        VarModule::off_flag(fighter.battle_object, dolly::status::flag::SPECIAL_LW_CHECK_BREAK);
+        VarModule::off_flag(fighter.module_accessor, dolly::status::flag::SPECIAL_LW_CHECK_BREAK);
     }
     0.into()
 }
@@ -222,7 +222,7 @@ unsafe fn dolly_speciallw_command_end(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe extern "C" fn dolly_speciallw_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK {
-        VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     }
     0.into()
 }
@@ -298,7 +298,7 @@ unsafe fn dolly_speciallw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue
     };
     let landing_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_lw"), param);
     WorkModule::set_float(fighter.module_accessor, landing_frame as f32, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
-    VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     0.into()
 }
 

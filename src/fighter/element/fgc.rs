@@ -14,8 +14,8 @@ use {
 unsafe extern "C" fn elight_attackair_set_cancels(fighter: &mut L2CFighterCommon) -> bool {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if mot == hash40("attack_air_n") {
-        VarModule::on_flag(fighter.battle_object, fighter::status::flag::ENABLE_AERIAL_STRING);
-        VarModule::set_int(fighter.battle_object, fighter::status::int::ENABLED_AERIALS, ATTACK_AIR_N_MASK);
+        VarModule::on_flag(fighter.module_accessor, fighter::status::flag::ENABLE_AERIAL_STRING);
+        VarModule::set_int(fighter.module_accessor, fighter::status::int::ENABLED_AERIALS, ATTACK_AIR_N_MASK);
     }
     false
 }

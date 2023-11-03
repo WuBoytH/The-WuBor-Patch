@@ -28,13 +28,13 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
 unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
-        VarModule::off_flag(fighter.battle_object, attack_air::flag::WHIFF);
+        VarModule::off_flag(fighter.module_accessor, attack_air::flag::WHIFF);
     }
-    else if !VarModule::is_flag(fighter.battle_object, attack_air::flag::WHIFF) {
+    else if !VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
         let part_size = AttackModule::part_size(fighter.module_accessor) as i32;
         for id in 0..part_size {
             if AttackModule::is_attack(fighter.module_accessor, id, false) {
-                VarModule::on_flag(fighter.battle_object, attack_air::flag::WHIFF);
+                VarModule::on_flag(fighter.module_accessor, attack_air::flag::WHIFF);
                 break;
             }
         }
@@ -111,7 +111,7 @@ unsafe fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValu
 unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, param_2.get_int(), 0) + param_3.get_f32();
-    if VarModule::is_flag(fighter.battle_object, attack_air::flag::WHIFF) {
+    if VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {
         landing_lag += 4.0;
     }
     let mut motion_rate = 1.0;

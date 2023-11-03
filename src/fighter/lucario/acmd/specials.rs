@@ -18,7 +18,7 @@ unsafe fn lucario_specialnshoot(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_N_ENABLE_SUPERDASH);
     }
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 12.0, 6.0);
 }
@@ -85,7 +85,7 @@ unsafe fn lucario_specialnshoot2(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 34.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB_ENABLE_FALL);
     }
 }
 
@@ -123,7 +123,7 @@ unsafe fn lucario_specialnshoot2_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario_auraball", scripts = [ "game_charge", "game_chargemax" ], category = ACMD_GAME, low_priority )]
 unsafe fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.5, 366, 49, 20, 60, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.1, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, -2.3, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
         }
@@ -132,7 +132,7 @@ unsafe fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario_auraball", script = "sound_charge", category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::PLAY_STATUS(agent, Hash40::new("se_lucario_special_n01_l"));
         }
@@ -141,7 +141,7 @@ unsafe fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
-    if !VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    if !VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 361, 42, 0, 14, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
             macros::ATTACK(agent, 1, 0, Hash40::new("top"), 12.0, 361, 49, 0, 35, 2.2, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2.3, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
@@ -164,7 +164,7 @@ unsafe fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_lucario_special_n01"));
         macros::STOP_SE(agent, Hash40::new_raw(0x16b0e86b15));
-        if VarModule::is_flag(agent.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+        if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
             macros::PLAY_STATUS(agent, Hash40::new("se_lucario_special_n01_l"));
         }
     }
@@ -244,7 +244,7 @@ unsafe fn lucario_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -335,7 +335,7 @@ unsafe fn lucario_specials2(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     }
 }
 
@@ -393,7 +393,7 @@ unsafe fn lucario_specialairs(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -484,7 +484,7 @@ unsafe fn lucario_specialairs2(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     }
 }
 
@@ -776,7 +776,7 @@ unsafe fn lucario_specialairsthrow(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     }
 }
 
@@ -869,7 +869,7 @@ unsafe fn lucario_specialairsthrow2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 35.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
     }
 }
 
@@ -987,7 +987,7 @@ unsafe fn lucario_specialairhi(agent: &mut L2CAgentBase) {
 unsafe fn lucario_specialhimove(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
-        if VarModule::get_int(agent.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
+        if VarModule::get_int(agent.module_accessor, lucario::status::int::AURA_ENHANCED_BY) > 0 {
             macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 2.0, 38, 70, 0, 50, 8.0, 0.0, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_aura"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_LUCARIO, *ATTACK_REGION_NONE);
         }
     }
@@ -1001,7 +1001,7 @@ unsafe fn lucario_specialhimove_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_sinsoku_hadou2"), Hash40::new("haver"), 0, 0, 0, 0, -30, 0, 1, true);
         EffectModule::enable_sync_init_pos_last(agent.module_accessor);
     }
-    if VarModule::get_int(agent.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
+    if VarModule::get_int(agent.module_accessor, lucario::status::int::AURA_ENHANCED_BY) > 0 {
         FGCModule::ex_flash(agent);
         if macros::is_excute(agent) {
             macros::EFFECT_FOLLOW(agent, Hash40::new("lucario_aura"), Hash40::new("rot"), 0, 0, 0, 180, 0, 0, 1.0, true);
@@ -1019,7 +1019,7 @@ unsafe fn lucario_specialhimove_eff(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "sound_specialhimove", category = ACMD_SOUND, low_priority )]
 unsafe fn lucario_specialhimove_snd(agent: &mut L2CAgentBase) {
-    if VarModule::get_int(agent.battle_object, lucario::status::int::AURA_ENHANCED_BY) > 0 {
+    if VarModule::get_int(agent.module_accessor, lucario::status::int::AURA_ENHANCED_BY) > 0 {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_common_waza_ex"));
         }
@@ -1047,7 +1047,7 @@ unsafe fn lucario_specialhimove_snd(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "lucario", script = "game_specialhiend", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialhiend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
-    if VarModule::is_flag(agent.battle_object, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL) {
+    if VarModule::is_flag(agent.module_accessor, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL) {
         CancelModule::enable_cancel(agent.module_accessor);
     }
 }
@@ -1059,7 +1059,7 @@ unsafe fn lucario_specialairhiend(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_MACH_STATUS_WORK_ID_FLAG_AIR_END_CONTROL_X);
     }
     frame(agent.lua_state_agent, 12.0);
-    if VarModule::is_flag(agent.battle_object, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL) {
+    if VarModule::is_flag(agent.module_accessor, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL) {
         CancelModule::enable_cancel(agent.module_accessor);
     }
 }
@@ -1073,7 +1073,7 @@ unsafe fn lucario_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -1110,10 +1110,10 @@ unsafe fn lucario_speciallw_snd(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "lucario", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe fn lucario_specialairlw(agent: &mut L2CAgentBase) {
-    if !VarModule::is_flag(agent.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR) {
+    if !VarModule::is_flag(agent.module_accessor, lucario::instance::flag::USED_AURA_CHARGE_AIR) {
         if macros::is_excute(agent) {
             KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.0, y: 0.4, z: 0.0});
-            VarModule::on_flag(agent.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR);
+            VarModule::on_flag(agent.module_accessor, lucario::instance::flag::USED_AURA_CHARGE_AIR);
         }
     }
     if macros::is_excute(agent) {
@@ -1121,7 +1121,7 @@ unsafe fn lucario_specialairlw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
+        VarModule::on_flag(agent.module_accessor, lucario::status::flag::SPECIAL_LW_ENABLE_CANCEL);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {

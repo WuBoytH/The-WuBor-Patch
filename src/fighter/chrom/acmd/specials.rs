@@ -4,7 +4,7 @@ use crate::imports::acmd_imports::*;
 unsafe fn chrom_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
+        VarModule::on_flag(agent.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 280, 80, 80, 0, 4.4, 0.0, 6.5, 12.5, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 7.0, 280, 80, 80, 0, 4.4, 0.0, 6.5, 18.5, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 7.0, 280, 80, 80, 0, 4.4, 0.0, 6.5, 6.0, None, None, None, 0.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CHROM_HIT, *ATTACK_REGION_SWORD);

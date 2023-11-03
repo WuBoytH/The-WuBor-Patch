@@ -179,8 +179,8 @@ unsafe extern "C" fn get_aura(object: *mut BattleObject) -> f32 {
         1.0
     }
     else {
-        let mut charge = VarModule::get_int(object, lucario::instance::int::AURA_LEVEL) as f32;
-        charge += VarModule::get_int(object, lucario::status::int::AURA_ENHANCED_BY) as f32;
+        let mut charge = VarModule::get_int(module_accessor, lucario::instance::int::AURA_LEVEL) as f32;
+        charge += VarModule::get_int(module_accessor, lucario::status::int::AURA_ENHANCED_BY) as f32;
         let min_aurapower = vl::aurapower::MIN_AURAPOWER;
         let max_aurapower = vl::aurapower::MAX_AURAPOWER;
         let diff = max_aurapower - min_aurapower;

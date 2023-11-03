@@ -15,7 +15,7 @@ unsafe fn fox_specialhi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fox::status::flag::SPECIAL_HI_ENABLE_SNAP);
+        VarModule::on_flag(agent.module_accessor, fox::status::flag::SPECIAL_HI_ENABLE_SNAP);
     }
 }
 

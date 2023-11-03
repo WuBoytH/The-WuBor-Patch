@@ -247,7 +247,7 @@ unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, toonlink::status::flag::SPECIAL_HI_MOVE) {
+    if VarModule::is_flag(fighter.module_accessor, toonlink::status::flag::SPECIAL_HI_MOVE) {
         let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
         let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;
         let ratio = hold / max_hold;

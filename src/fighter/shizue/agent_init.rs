@@ -13,7 +13,7 @@ use {
 unsafe extern "C" fn shizue_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if shizue_check_rocket_fire(fighter)
     && shizue_check_attack_cancel(fighter) {
-        VarModule::on_flag(fighter.battle_object, shizue::instance::flag::FIRE_ROCKET_ANYTIME);
+        VarModule::on_flag(fighter.module_accessor, shizue::instance::flag::FIRE_ROCKET_ANYTIME);
         ControlModule::clear_command_one(
             fighter.module_accessor,
             *FIGHTER_PAD_COMMAND_CATEGORY1,

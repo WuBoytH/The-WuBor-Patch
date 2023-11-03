@@ -3,17 +3,17 @@ use super::super::{vl, helper::*};
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn dolly_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let is_command = VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND);
-    let is_cancel = VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+    let is_command = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND);
+    let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     fighter.status_pre_AttackDash();
-    VarModule::set_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND, is_command);
-    VarModule::set_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
+    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND, is_command);
+    VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     0.into()
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND) {
+    if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
         let special_command_lr = ControlModule::get_special_command_lr(fighter.module_accessor, 1);
         if special_command_lr != 0.0 && PostureModule::lr(fighter.module_accessor) != special_command_lr {
             PostureModule::set_lr(fighter.module_accessor, special_command_lr);
@@ -41,7 +41,7 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         false,
         false
     );
-    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND) {
+    if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
         sv_kinetic_energy!(
             set_speed_mul,
             fighter,
@@ -76,12 +76,12 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
+    if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::RISING_FORCE) {
         if dolly_hit_cancel(fighter).get_i32() == 1 {
             return 1.into();
         }
     }
-    else if !VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND) {
+    else if !VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
         if dolly_hit_cancel(fighter).get_i32() == 1
         || dolly_attack_start_cancel(fighter).get_i32() == 1 {
             return 1.into();
@@ -93,18 +93,18 @@ unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND) {
-        VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
-        VarModule::off_flag(fighter.battle_object, dolly::status::flag::ATTACK_DASH_COMMAND);
+    if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
+        VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND);
     }
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if ![
         *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND
     ].contains(&status) {
-        if VarModule::is_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE) {
+        if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::RISING_FORCE) {
             EffectModule::clear_screen(fighter.module_accessor, 1, 0x14);
         }
-        VarModule::off_flag(fighter.battle_object, dolly::instance::flag::RISING_FORCE);
+        VarModule::off_flag(fighter.module_accessor, dolly::instance::flag::RISING_FORCE);
     }
     fighter.status_end_AttackDash();
     0.into()

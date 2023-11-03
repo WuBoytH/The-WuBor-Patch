@@ -34,7 +34,7 @@ unsafe extern "C" fn pikachu_dengekidama_regular_main_loop(weapon: &mut L2CWeapo
         let damage = (vl::dengekidama::DAMAGE_MIN + damage_diff * ratio).clamp(vl::dengekidama::DAMAGE_MIN, vl::dengekidama::DAMAGE_MAX);
         AttackModule::set_power(weapon.module_accessor, 0, damage, false);
     }
-    if VarModule::is_flag(weapon.battle_object, pikachu_dengekidama::status::flag::SPEED_UP) {
+    if VarModule::is_flag(weapon.module_accessor, pikachu_dengekidama::status::flag::SPEED_UP) {
         let lr = PostureModule::lr(weapon.module_accessor);
         sv_kinetic_energy!(
             set_accel,

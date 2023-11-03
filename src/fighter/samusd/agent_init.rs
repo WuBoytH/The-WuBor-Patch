@@ -30,7 +30,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
         if fighter_kind != *FIGHTER_KIND_SAMUSD {
             return;
         }
-        VarModule::set_int(fighter.battle_object, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
+        VarModule::set_int(fighter.module_accessor, samusd::instance::int::CSHOT_ID, *BATTLE_OBJECT_ID_INVALID);
     }
 }
 

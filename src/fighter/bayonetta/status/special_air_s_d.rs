@@ -22,7 +22,7 @@ unsafe fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CVal
 
 unsafe extern "C" fn bayonetta_specialairs_d_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool()
-    && VarModule::is_flag(fighter.battle_object, bayonetta::status::flag::SPECIAL_AIR_S_D_IS_BOUNCE)
+    && VarModule::is_flag(fighter.module_accessor, bayonetta::status::flag::SPECIAL_AIR_S_D_IS_BOUNCE)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_STATUS_WORK_ID_SPECIAL_AIR_S_D_FLAG_HIT) {
         fighter.change_status(FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_HIT.into(), false.into());
         fighter.global_table[SUB_STATUS2].assign(&L2CValue::I32(0));

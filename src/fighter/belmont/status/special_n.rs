@@ -9,7 +9,7 @@ pub unsafe fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2
         *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK |
         *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON
     ;
-    let axe_id = VarModule::get_int(fighter.battle_object, simon::instance::int::AXE_ID) as u32;
+    let axe_id = VarModule::get_int(fighter.module_accessor, simon::instance::int::AXE_ID) as u32;
     let axe_kind = if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SIMON {
         *WEAPON_KIND_SIMON_AXE
     }
@@ -39,7 +39,7 @@ pub unsafe fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2
 }
 
 unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, simon::status::flag::SPECIAL_N_SHOOT) {
+    if VarModule::is_flag(fighter.module_accessor, simon::status::flag::SPECIAL_N_SHOOT) {
         if ItemModule::is_have_item(fighter.module_accessor, 0) {
             let angle = if fighter.global_table[KIND].get_i32() == *FIGHTER_KIND_SIMON {
                 45.0
@@ -60,7 +60,7 @@ unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon)
         else {
             ArticleModule::shoot(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST), false);
         }
-        VarModule::off_flag(fighter.battle_object, simon::status::flag::SPECIAL_N_SHOOT);
+        VarModule::off_flag(fighter.module_accessor, simon::status::flag::SPECIAL_N_SHOOT);
     }
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()

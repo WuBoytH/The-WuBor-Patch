@@ -1,8 +1,8 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn rockman_check_special_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, rockman::instance::flag::CHARGE_SHOT_RELEASE)
-    && VarModule::is_flag(fighter.battle_object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
+    if VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE)
+    && VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
         fighter.global_table[CMD_CAT1].assign(&L2CValue::I32(*FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_N));
     }
     false.into()
@@ -15,7 +15,7 @@ unsafe extern "C" fn rockman_special_lw_uniq(fighter: &mut L2CFighterCommon) -> 
 unsafe extern "C" fn rockman_check_air_escape_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD)
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_ESCAPE_AIR) {
-        VarModule::on_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
+        VarModule::on_flag(fighter.module_accessor, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
     }
     false.into()
 }

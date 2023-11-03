@@ -20,9 +20,9 @@ pub unsafe extern "C" fn gaogaen_on_attack(vtable: u64, fighter: &mut Fighter, l
         *FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_LW_TURN
     ].contains(&status)
     && (*collision_log).collision_kind == 1
-    && VarModule::is_flag(object, gaogaen::status::flag::REVENGE_CRITICAL) {
+    && VarModule::is_flag(module_accessor, gaogaen::status::flag::REVENGE_CRITICAL) {
         MiscModule::call_critical(module_accessor, log, 0x47, 0x18dfb2f4 | 0x1000000000, 1, 0, 0, 0);
-        VarModule::off_flag(object, gaogaen::status::flag::REVENGE_CRITICAL);
+        VarModule::off_flag(module_accessor, gaogaen::status::flag::REVENGE_CRITICAL);
         return;
     }
     original!()(vtable, fighter, log)

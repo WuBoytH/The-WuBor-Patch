@@ -7,10 +7,10 @@ pub unsafe fn jack_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
         false
     }
     else {
-        VarModule::is_flag(fighter.battle_object, jack::status::flag::SPECIAL_N_FIRST)
+        VarModule::is_flag(fighter.module_accessor, jack::status::flag::SPECIAL_N_FIRST)
     };
     let ret = original!(fighter);
-    VarModule::set_flag(fighter.battle_object, jack::status::flag::SPECIAL_N_FIRST, keep_first);
+    VarModule::set_flag(fighter.module_accessor, jack::status::flag::SPECIAL_N_FIRST, keep_first);
     ret
 }
 

@@ -5,15 +5,15 @@ use super::super::helper::*;
 unsafe fn lucina_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CHARGE_MAX);
-    VarModule::on_flag(fighter.battle_object, yu::instance::flag::DISABLE_SPECIAL_N_S);
+    VarModule::on_flag(fighter.module_accessor, yu::instance::flag::DISABLE_SPECIAL_N_S);
     lucina_specialn_mot_helper(fighter);
-    if VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND)
-    && spent_meter(fighter.battle_object, false) {
-        let spent = VarModule::get_float(fighter.battle_object, yu::instance::float::SPENT_SP);
-        let meter_max = VarModule::get_float(fighter.battle_object, yu::instance::float::SP_GAUGE_MAX);
-        FGCModule::update_meter(fighter.battle_object, -spent, meter_max, yu::instance::float::SP_GAUGE);
-        VarModule::set_int(fighter.battle_object, yu::instance::int::SP_FLASH_TIMER, 40);
-        VarModule::on_flag(fighter.battle_object, yu::status::flag::IS_EX);
+    if VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND)
+    && spent_meter(fighter.module_accessor, false) {
+        let spent = VarModule::get_float(fighter.module_accessor, yu::instance::float::SPENT_SP);
+        let meter_max = VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX);
+        FGCModule::update_meter(fighter.module_accessor, -spent, meter_max, yu::instance::float::SP_GAUGE);
+        VarModule::set_int(fighter.module_accessor, yu::instance::int::SP_FLASH_TIMER, 40);
+        VarModule::on_flag(fighter.module_accessor, yu::status::flag::IS_EX);
         sp_diff_checker(fighter.module_accessor);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialn_main_loop as *const () as _))

@@ -43,7 +43,7 @@ unsafe fn mariod_speciallw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 55.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, mariod::status::flag::SPECIAL_N_ENABLE_ACTIONS);
+        VarModule::on_flag(agent.module_accessor, mariod::status::flag::SPECIAL_N_ENABLE_ACTIONS);
     }
 }
 
@@ -86,7 +86,7 @@ unsafe fn mariod_specialairlw(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 55.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, mariod::status::flag::SPECIAL_N_ENABLE_ACTIONS);
+        VarModule::on_flag(agent.module_accessor, mariod::status::flag::SPECIAL_N_ENABLE_ACTIONS);
     }
 }
 

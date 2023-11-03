@@ -43,7 +43,7 @@ pub unsafe fn battleobjectmoduleaccessor__finalize_modules(module_accessor: *mut
     // println!("[CustomVarManager] Finalize");
     // println!("[CustomVarManager] Finalizing VarModule for {:#x}", object_id);
     // println!("[CustomVarManager] VarModule Count before removing: {}", CustomVarManager::count());
-    CustomVarManager::remove_var_module_by_object_id(object_id);
+    CustomVarManager::remove_var_module(module_accessor);
     // println!("[CustomVarManager] VarModule Count after removing: {}", CustomVarManager::count());
     original!()(module_accessor)
 }

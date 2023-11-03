@@ -6,9 +6,9 @@ unsafe fn samusd_attackairn(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     frame(agent.lua_state_agent, 8.0);
-    if !VarModule::is_flag(agent.battle_object, samusd::instance::flag::ATTACK_AIR_N_FLOAT) {
+    if !VarModule::is_flag(agent.module_accessor, samusd::instance::flag::ATTACK_AIR_N_FLOAT) {
         if macros::is_excute(agent) {
-            VarModule::on_flag(agent.battle_object, samusd::status::flag::ATTACK_AIR_N_START_FLOAT);
+            VarModule::on_flag(agent.module_accessor, samusd::status::flag::ATTACK_AIR_N_START_FLOAT);
         }
     }
     for _ in 0..4 {
@@ -178,7 +178,7 @@ unsafe fn samusd_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
         macros::ATTACK(agent, 0, 0, Hash40::new("legr"), 12.0, 361, 90, 0, 30, 4.5, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
         macros::ATTACK(agent, 1, 0, Hash40::new("kneer"), 12.0, 361, 90, 0, 30, 4.5, 6.5, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
     }
@@ -193,7 +193,7 @@ unsafe fn samusd_attackairb(agent: &mut L2CAgentBase) {
     }
     wait(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
     }
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
@@ -204,7 +204,7 @@ unsafe fn samusd_attackairb(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "samusd", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn samusd_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
     macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
@@ -225,7 +225,7 @@ unsafe fn samusd_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }

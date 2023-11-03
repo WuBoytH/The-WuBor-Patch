@@ -2,13 +2,13 @@ use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if !VarModule::is_flag(weapon.battle_object, weapon::instance::flag::FROM_POCKET) {
+    if !VarModule::is_flag(weapon.module_accessor, weapon::instance::flag::FROM_POCKET) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
         if sv_battle_object::category(owner_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
         && sv_battle_object::kind(owner_id) == *FIGHTER_KIND_LUCARIO {
             let owner_object = MiscModule::get_battle_object_from_id(owner_id);
-            if VarModule::is_flag(owner_object, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
-                VarModule::on_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB);
+            if VarModule::is_flag((*owner_object).module_accessor, lucario::status::flag::SPECIAL_N_SPIRIT_BOMB) {
+                VarModule::on_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB);
                 let charge_max = WorkModule::get_param_float((*owner_object).module_accessor, hash40("param_special_n"), hash40("max_charge_frame"));
                 WorkModule::set_int(weapon.module_accessor, charge_max as i32, *WEAPON_LUCARIO_AURABALL_INSTANCE_WORK_ID_INT_PARAM_MAX_CHARGE_FRAME);
                 if StatusModule::situation_kind((*owner_object).module_accessor) == *SITUATION_KIND_GROUND {
@@ -25,23 +25,19 @@ unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if !VarModule::is_flag(weapon.battle_object, weapon::instance::flag::FROM_POCKET) {
-        // println!("We don't know if this auraball is outta pocket! Checking...");
-        MiscModule::get_vars_from_pocket(weapon.battle_object);
-        // println!("Was this auraball outta pocket? {}", VarModule::is_flag(weapon.battle_object, weapon::instance::flag::FROM_POCKET));
-    }
-    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    MiscModule::get_vars_from_pocket(weapon.module_accessor);
+    if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
         let owner_object = MiscModule::get_battle_object_from_id(owner_id);
         let lucario = sv_battle_object::category(owner_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
         && sv_battle_object::kind(owner_id) == *FIGHTER_KIND_LUCARIO
-        && VarModule::is_flag(owner_object, lucario::status::flag::SPECIAL_N_START_FROM_GROUND);
+        && VarModule::is_flag((*owner_object).module_accessor, lucario::status::flag::SPECIAL_N_START_FROM_GROUND);
         if StatusModule::situation_kind((*owner_object).module_accessor) == *SITUATION_KIND_GROUND
         || lucario {
             WorkModule::set_customize_no(weapon.module_accessor, 1, 0);
         }
         else {
-            VarModule::on_flag(weapon.battle_object, lucario_auraball::status::flag::FROM_AIR);
+            VarModule::on_flag(weapon.module_accessor, lucario_auraball::status::flag::FROM_AIR);
             WorkModule::set_customize_no(weapon.module_accessor, 2, 0);
         }
     }
@@ -80,7 +76,7 @@ unsafe fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -> L2CValue 
     let ratio = charge as f32 / max_charge as f32;
     AttackModule::set_lerp_ratio(weapon.module_accessor, ratio, 0);
     AttackModule::set_attack_scale(weapon.module_accessor, 1.0, false);
-    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         GroundModule::set_passable_check(weapon.module_accessor, true);
     }
     if !StopModule::is_stop(weapon.module_accessor) {
@@ -96,7 +92,7 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
         WorkModule::dec_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         let life = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
         if life <= 0 {
-            if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+            if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
                 MotionModule::change_motion(
                     weapon.module_accessor,
                     Hash40::new("explosion"),
@@ -118,7 +114,7 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
             }
         }
         let touch_flag = GroundModule::get_touch_moment_flag(weapon.module_accessor);
-        if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB)
+        if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB)
         && touch_flag & (*GROUND_TOUCH_FLAG_DOWN | *GROUND_TOUCH_FLAG_RIGHT | *GROUND_TOUCH_FLAG_LEFT) as u64 != 0
         && MotionModule::motion_kind(weapon.module_accessor) != hash40("explosion") {
             MotionModule::change_motion(
@@ -138,7 +134,7 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
             AttackModule::set_attack_scale(weapon.module_accessor, 1.0, false);
         }
         if touch_flag & (*GROUND_TOUCH_FLAG_LEFT | *GROUND_TOUCH_FLAG_RIGHT) as u64 != 0 {
-            if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB)
+            if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB)
             && MotionModule::motion_kind(weapon.module_accessor) != hash40("explosion") {
                 MotionModule::change_motion(
                     weapon.module_accessor,
@@ -177,13 +173,13 @@ unsafe extern "C" fn lucario_auraball_shoot_substatus(weapon: &mut L2CWeaponComm
 }
 
 unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeaponCommon) -> L2CValue {
-    if VarModule::is_flag(weapon.battle_object, lucario_auraball::instance::flag::SPIRIT_BOMB) {
+    if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_HIT)
         || AttackModule::is_infliction_status(weapon.module_accessor, *COLLISION_KIND_MASK_SHIELD)
         && !AttackModule::is_infliction(weapon.module_accessor, *COLLISION_KIND_MASK_REFLECTOR) {
-            if !VarModule::is_flag(weapon.battle_object, lucario_auraball::status::flag::EXPLOSION) {
+            if !VarModule::is_flag(weapon.module_accessor, lucario_auraball::status::flag::EXPLOSION) {
                 WorkModule::set_int(weapon.module_accessor, 30, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);
-                VarModule::on_flag(weapon.battle_object, lucario_auraball::status::flag::EXPLOSION);
+                VarModule::on_flag(weapon.module_accessor, lucario_auraball::status::flag::EXPLOSION);
             }
         }
     }

@@ -4,12 +4,12 @@ use super::super::vl;
 #[acmd_script( agent = "kirby", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
 unsafe fn kirby_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
-    let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
+    let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(agent.module_accessor, hold_button)
-    && !VarModule::is_flag(agent.battle_object, appeal::flag::LOOP) {
+    && !VarModule::is_flag(agent.module_accessor, appeal::flag::LOOP) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
-                agent.battle_object,
+                agent.module_accessor,
                 true,
                 hash40("appeal_s_loop"),
                 9
@@ -22,7 +22,7 @@ unsafe fn kirby_appeals(agent: &mut L2CAgentBase) {
         let effect;
         let sound_level;
         let sound;
-        let loops = VarModule::get_int(agent.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT);
+        let loops = VarModule::get_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
         if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 {
             damage = 20.0 + loops as f32 * 2.0;
             effect = Hash40::new("collision_attr_normal");
@@ -133,7 +133,7 @@ unsafe fn kirby_appeals_exp(agent: &mut L2CAgentBase) {
 unsafe fn kirby_appealsloop_eff(agent: &mut L2CAgentBase) {
     for x in 0..i32::MAX {
         if macros::is_excute(agent) {
-            VarModule::set_int(agent.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT, x + 1);
+            VarModule::set_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT, x + 1);
         }
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
@@ -149,7 +149,7 @@ unsafe fn kirby_appealsloop_eff(agent: &mut L2CAgentBase) {
 unsafe fn kirby_appealsloop_snd(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 4.0);
-        let loops = VarModule::get_int(agent.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT);
+        let loops = VarModule::get_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
         let sound;
         if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 + 20 {
             sound = Hash40::new("se_common_swing_06");
@@ -175,7 +175,7 @@ unsafe fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
     for _ in 0..i32::MAX {
-        let loops = VarModule::get_int(agent.battle_object, kirby::status::int::APPEAL_S_LOOP_COUNT);
+        let loops = VarModule::get_int(agent.module_accessor, kirby::status::int::APPEAL_S_LOOP_COUNT);
         let quake;
         let rbkind;
         if loops > vl::param_appeal_hi::appeal_hi_spin_level_3 + 20 {

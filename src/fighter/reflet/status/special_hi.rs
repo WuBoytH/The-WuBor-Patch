@@ -115,7 +115,7 @@ unsafe extern "C" fn reflet_special_hi_check_jump(fighter: &mut L2CFighterCommon
         KineticEnergyNormal::set_limit_speed(control_energy as *mut smash::app::KineticEnergyNormal, &Vector2f{x: air_speed_x_limit * control_mul, y: 0.0});
         KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_REFLET_STATUS_SPECIAL_HI_FLAG_JUMP);
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
+        VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);
     }
 }
 

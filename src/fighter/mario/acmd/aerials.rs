@@ -102,7 +102,7 @@ unsafe fn mario_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -115,7 +115,7 @@ unsafe fn mario_attackairhi(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 24.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
 }

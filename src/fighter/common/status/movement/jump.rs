@@ -4,7 +4,7 @@ use std::arch::asm;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP) {
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         if mini_jump {
             SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_hyperhop"), true, false, false, false, enSEType(0));
@@ -111,7 +111,7 @@ unsafe fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _age
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_Jump)]
 unsafe fn status_end_jump(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    // VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+    // VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
     0.into()
 }
 
@@ -224,8 +224,7 @@ unsafe fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
     let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
-    let object = MiscModule::get_battle_object_from_id(module_accessor.battle_object_id);
-    let mul = if VarModule::is_flag(object, fighter::instance::flag::SUPER_JUMP) {
+    let mul = if VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP) {
         1.2
     }
     else {

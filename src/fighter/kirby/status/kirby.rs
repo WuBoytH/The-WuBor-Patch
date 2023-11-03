@@ -19,7 +19,7 @@ unsafe fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, kirby::status::flag::ATTACK_LW3_BOUNCE) {
+    if !VarModule::is_flag(fighter.module_accessor, kirby::status::flag::ATTACK_LW3_BOUNCE) {
         if !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
         && !fighter.global_table[IS_STOP].get_bool()
         && AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
@@ -31,7 +31,7 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
             macros::SET_SPEED_EX(fighter, -0.5, 1.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             AttackModule::clear_all(fighter.module_accessor);
             FighterControlModuleImpl::update_attack_air_kind(fighter.module_accessor, true);
-            VarModule::on_flag(fighter.battle_object, kirby::status::flag::ATTACK_LW3_BOUNCE);
+            VarModule::on_flag(fighter.module_accessor, kirby::status::flag::ATTACK_LW3_BOUNCE);
         }
         return fighter.status_AttackLw3_Main();
     }

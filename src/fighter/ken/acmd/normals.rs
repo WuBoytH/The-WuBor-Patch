@@ -6,7 +6,7 @@ use crate::imports::acmd_imports::*;
 unsafe fn ken_attacks3w(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        VarModule::set_int(agent.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_DISABLE);
+        VarModule::set_int(agent.module_accessor, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_DISABLE);
     }
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -37,7 +37,7 @@ unsafe fn ken_attacks3w(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
     frame(agent.lua_state_agent, 26.0);
     if StatusModule::status_kind(agent.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_LW {
-        VarModule::set_int(agent.battle_object, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
+        VarModule::set_int(agent.module_accessor, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
         CancelModule::enable_cancel(agent.module_accessor);
     }
 }

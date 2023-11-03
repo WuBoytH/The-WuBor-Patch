@@ -4,7 +4,7 @@ use super::super::helper::*;
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_s") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
@@ -17,8 +17,8 @@ unsafe extern "C" fn lucario_special_s_set_kinetic(fighter: &mut L2CFighterCommo
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         lucario_special_set_air(fighter);
         lucario_special_air_mot_helper(fighter);
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENHANCE) {
-            if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_POST_GRAVITY) {
+        if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENHANCE) {
+            if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_POST_GRAVITY) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
             else {
@@ -44,18 +44,18 @@ unsafe extern "C" fn lucario_special_s_main_loop(fighter: &mut L2CFighterCommon)
         }
     }
     if !MotionModule::is_end(fighter.module_accessor) {
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE) {
-            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
+        if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE) {
+            VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_CHECK_ENHANCE);
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
                 WorkModule::set_int64(fighter.module_accessor, hash40("special_s2") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
                 WorkModule::set_int64(fighter.module_accessor, hash40("special_air_s2") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
-                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENHANCE);
+                VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENHANCE);
                 lucario_special_s_set_kinetic(fighter);
             }
         }
-        if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY) {
-            VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
-            VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
+        if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY) {
+            VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+            VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
             }
@@ -79,7 +79,7 @@ unsafe extern "C" fn lucario_special_s_main_loop(fighter: &mut L2CFighterCommon)
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn lucario_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENHANCE) {
+    if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENHANCE) {
         fighter.clear_lua_stack();
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_MOTION);
         let speed_x = sv_kinetic_energy::get_speed_x(fighter.lua_state_agent);
@@ -93,7 +93,7 @@ unsafe fn lucario_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
         );
     }
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW {
-        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
     }
     0.into()
 }
@@ -101,9 +101,9 @@ unsafe fn lucario_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucario_special_s_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
-    VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
-    VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
-    let enhance = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 0;
+    VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+    VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
+    let enhance = VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) > 0;
     let mot_g;
     let mot_a;
     if enhance && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -178,14 +178,14 @@ unsafe extern "C" fn lucario_special_s_throw_main_loop(fighter: &mut L2CFighterC
         //     }
         // }
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-            if VarModule::is_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY) {
+            if VarModule::is_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY) {
                 KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-                VarModule::off_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
-                VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
+                VarModule::off_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_ENABLE_GRAVITY);
+                VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_S_POST_GRAVITY);
             }
         }
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCARIO_POWER_PUNCH_STATUS_WORK_ID_FLAG_CRITICAL_HIT) {
-            if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) > 1 {
+            if VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) > 1 {
                 let mut pos = Vector3f{x: 0.0, y: 0.0, z: 0.0};
                 ModelModule::joint_global_position(
                     fighter.module_accessor,

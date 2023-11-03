@@ -64,7 +64,7 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop(fighter: &mut L2CFighterCommo
 
 unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.super_jump_punch_main();
-    if VarModule::is_flag(fighter.battle_object, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION) {
+    if VarModule::is_flag(fighter.module_accessor, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION) {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
             let mot = MotionModule::motion_kind(fighter.module_accessor);
             let mot2 = if mot == hash40("special_hi") {
@@ -83,7 +83,7 @@ unsafe extern "C" fn szerosuit_specialhi_main_loop_helper(fighter: &mut L2CFight
                 false
             );
         }
-        VarModule::off_flag(fighter.battle_object, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION);
+        VarModule::off_flag(fighter.module_accessor, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION);
     }
     if [
         hash40("special_hi_2"),

@@ -4,10 +4,10 @@ use crate::imports::status_imports::*;
 unsafe fn richter_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_uniq_process_exec();
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw")
-    && !VarModule::is_flag(fighter.battle_object, richter::status::flag::ATTACK_AIR_LW_IGNORE_BOUNCE)
+    && !VarModule::is_flag(fighter.module_accessor, richter::status::flag::ATTACK_AIR_LW_IGNORE_BOUNCE)
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_HIT) {
         if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {
-            VarModule::on_flag(fighter.battle_object, richter::status::flag::ATTACK_AIR_LW_IGNORE_BOUNCE);
+            VarModule::on_flag(fighter.module_accessor, richter::status::flag::ATTACK_AIR_LW_IGNORE_BOUNCE);
         }
         else {
             MotionModule::change_motion(

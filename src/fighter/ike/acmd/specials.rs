@@ -12,9 +12,9 @@ unsafe fn ike_specialnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ike_special_n_end_ray_check(agent);
     }
-    if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
         if macros::is_excute(agent) {
-            let eruption_pos = VarModule::get_float(agent.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
+            let eruption_pos = VarModule::get_float(agent.module_accessor, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 368, 90, 10, 50, 10.0, 0.0, 10.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             macros::ATTACK(agent, 1, 0, Hash40::new("top"), 8.0, 368, 90, 10, 50, 8.0, 0.0, 20.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
             macros::ATTACK(agent, 2, 0, Hash40::new("top"), 8.0, 368, 90, 10, 50, 4.0, 0.0, 28.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -32,9 +32,9 @@ unsafe fn ike_specialnend(agent: &mut L2CAgentBase) {
     }
     else {
         if macros::is_excute(agent) {
-            let count = VarModule::get_int(agent.battle_object, ike::status::int::ERUPTION_COUNT);
+            let count = VarModule::get_int(agent.module_accessor, ike::status::int::ERUPTION_COUNT);
             if count > vl::special_n::eruption_count_for_critical {
-                VarModule::on_flag(agent.battle_object, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
+                VarModule::on_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
             }
             let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 12.0, 0.0, 10.0, 8.6, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -47,13 +47,13 @@ unsafe fn ike_specialnend(agent: &mut L2CAgentBase) {
         AttackModule::clear_all(agent.module_accessor);
     }
     wait(agent.lua_state_agent, 7.0);
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-        if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
+        if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
-                let eruption_pos = VarModule::get_float(agent.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
-                let count = VarModule::get_int(agent.battle_object, ike::status::int::ERUPTION_COUNT);
+                let eruption_pos = VarModule::get_float(agent.module_accessor, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
+                let count = VarModule::get_int(agent.module_accessor, ike::status::int::ERUPTION_COUNT);
                 if count > vl::special_n::eruption_count_for_critical {
-                    VarModule::on_flag(agent.battle_object, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
+                    VarModule::on_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
                 }
                 let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
                 macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0 + damage_add, 80, 70, 0, 60, 12.0, 0.0, 10.0, eruption_pos - 1.4, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_BOMB);
@@ -79,11 +79,11 @@ unsafe fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
     }
     frame(agent.lua_state_agent, 11.0);
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
         if macros::is_excute(agent) {
             macros::EFFECT_OFF_KIND(agent, Hash40::new("ike_sword2"), false, false);
             macros::EFFECT(agent, Hash40::new("ike_volcano_ground"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
-            if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+            if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
                 macros::EFFECT(agent, Hash40::new("ike_volcano_max"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_add4"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_flash3_g"), Hash40::new("top"), 0, 0, 10, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
@@ -99,10 +99,10 @@ unsafe fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_OFF_KIND(agent, Hash40::new("ike_sword2"), false, false);
     }
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-        if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
+        if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
-                let eruption_pos = VarModule::get_float(agent.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
+                let eruption_pos = VarModule::get_float(agent.module_accessor, ike::status::float::SPECIAL_N_ERUPT_LOCATION);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_max"), Hash40::new("top"), 0, 0, eruption_pos, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_add4"), Hash40::new("top"), 0, 0, eruption_pos, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
                 macros::EFFECT(agent, Hash40::new("ike_volcano_flash3_g"), Hash40::new("top"), 0, 0, eruption_pos, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
@@ -120,7 +120,7 @@ unsafe fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        let count = VarModule::get_int(agent.battle_object, ike::status::int::ERUPTION_COUNT);
+        let count = VarModule::get_int(agent.module_accessor, ike::status::int::ERUPTION_COUNT);
         if count > vl::special_n::eruption_count_for_critical {
             macros::PLAY_SE(agent, Hash40::new("vc_ike_special_n02"));
         }
@@ -133,8 +133,8 @@ unsafe fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
         macros::PLAY_SE(agent, Hash40::new("se_ike_special_n07"));
     }
     frame(agent.lua_state_agent, 11.0);
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-        if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
+        if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
                 macros::PLAY_SE(agent, Hash40::new("se_ike_special_n08"));
             }
@@ -146,8 +146,8 @@ unsafe fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
         }
     }
     wait(agent.lua_state_agent, 10.0);
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-        if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
+        if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
                 macros::PLAY_SE(agent, Hash40::new("se_ike_special_n10"));
             } 
@@ -167,8 +167,8 @@ unsafe fn ike_specialnend_exp(agent: &mut L2CAgentBase) {
         macros::AREA_WIND_2ND_arg10(agent, 0, 3, 110, 300, 1, 0, 12, 30, 30, 40);
     }
     frame(agent.lua_state_agent, 11.0);
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-        if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
+        if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
                 macros::QUAKE(agent, *CAMERA_QUAKE_KIND_M);
                 macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosion"), 0);
@@ -196,8 +196,8 @@ unsafe fn ike_specialnend_exp(agent: &mut L2CAgentBase) {
         }
     }
     wait(agent.lua_state_agent, 10.0);
-    if !VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
-        if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
+    if !VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
+        if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION) {
             if macros::is_excute(agent) {
                 macros::QUAKE(agent, *CAMERA_QUAKE_KIND_L);
                 macros::RUMBLE_HIT(agent, Hash40::new("rbkind_explosionl"), 0);
@@ -214,7 +214,7 @@ unsafe fn ike_specialnend_exp(agent: &mut L2CAgentBase) {
 }
 
 unsafe extern "C" fn ike_special_n_end_ray_check(agent: &mut L2CAgentBase) {
-    let count = VarModule::get_int(agent.battle_object, ike::status::int::ERUPTION_COUNT);
+    let count = VarModule::get_int(agent.module_accessor, ike::status::int::ERUPTION_COUNT);
     let mut counter = 0;
     let mut x_distance = vl::special_n::ray_check_x_offset;
     for x in 1..=count {
@@ -239,9 +239,9 @@ unsafe extern "C" fn ike_special_n_end_ray_check(agent: &mut L2CAgentBase) {
         }
     }
     if counter > 0 {
-        VarModule::on_flag(agent.battle_object, ike::status::flag::SPECIAL_N_RANGED_ERUPTION);
+        VarModule::on_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_RANGED_ERUPTION);
         let eruption_pos = vl::special_n::ray_check_x_offset + (counter as f32 * vl::special_n::eruption_distance_add);
-        VarModule::set_float(agent.battle_object, ike::status::float::SPECIAL_N_ERUPT_LOCATION, eruption_pos);
+        VarModule::set_float(agent.module_accessor, ike::status::float::SPECIAL_N_ERUPT_LOCATION, eruption_pos);
     }
 }
 
@@ -252,8 +252,8 @@ unsafe fn ike_specialairnend(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR);
-        let count = VarModule::get_int(agent.battle_object, ike::status::int::ERUPTION_COUNT);
+        VarModule::on_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR);
+        let count = VarModule::get_int(agent.module_accessor, ike::status::int::ERUPTION_COUNT);
         let damage_add = count as f32 * vl::special_n::eruption_count_damage_add;
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0 + damage_add, 275, 70, 0, 45, 5.0, 0.0, 7.0, 8.6, Some(0.0), Some(-5.0), Some(8.6), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_SWORD);
     }
@@ -313,7 +313,7 @@ unsafe fn ike_specialairnend_exp(agent: &mut L2CAgentBase) {
         macros::AREA_WIND_2ND_arg10(agent, 0, 3, 110, 300, 1, 0, 12, 30, 30, 40);
     }
     frame(agent.lua_state_agent, 11.0);
-    if VarModule::is_flag(agent.battle_object, ike::status::flag::SPECIAL_N_AIR) {
+    if VarModule::is_flag(agent.module_accessor, ike::status::flag::SPECIAL_N_AIR) {
         if macros::is_excute(agent) {
             macros::QUAKE(agent, *CAMERA_QUAKE_KIND_S);
             macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashl"), 0);

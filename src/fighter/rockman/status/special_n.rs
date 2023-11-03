@@ -3,7 +3,7 @@ use super::{helper::*, super::vl};
 
 #[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
+    if !VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             let prev_escape = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE;
             WorkModule::set_flag(fighter.module_accessor, prev_escape, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_ROCKBUSTER_PREV_ESCAPE);
@@ -49,8 +49,8 @@ unsafe fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
-    let charge_frame = VarModule::get_int(fighter.battle_object, rockman::instance::int::CHARGE_SHOT_FRAME);
+    VarModule::on_flag(fighter.module_accessor, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
+    let charge_frame = VarModule::get_int(fighter.module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
     let top = charge_frame as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let bottom = vl::private::CHARGE_SHOT_MAX_FRAME as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
     let ratio = top / bottom;

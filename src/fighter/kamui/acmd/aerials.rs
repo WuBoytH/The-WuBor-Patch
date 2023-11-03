@@ -3,7 +3,7 @@ use crate::imports::acmd_imports::*;
 #[acmd_script( agent = "kamui", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackairf(agent: &mut L2CAgentBase) {
     let mut di = false;
-    if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+    if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
     }
     frame(agent.lua_state_agent, 7.0);
@@ -70,7 +70,7 @@ unsafe fn kamui_attackairf(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe fn kamui_attackairf_eff(agent: &mut L2CAgentBase) {
     let mut di = false;
-    if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+    if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
     }
     frame(agent.lua_state_agent, 7.0);
@@ -99,7 +99,7 @@ unsafe fn kamui_attackairf_eff(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackairb(agent: &mut L2CAgentBase) {
     let mut di = false;
-    if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+    if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
     }
     frame(agent.lua_state_agent, 6.0);
@@ -133,7 +133,7 @@ unsafe fn kamui_attackairb(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "kamui", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe fn kamui_attackairhi(agent: &mut L2CAgentBase) {
     let mut di = false;
-    if VarModule::get_float(agent.battle_object, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+    if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
     }
     frame(agent.lua_state_agent, 4.0);

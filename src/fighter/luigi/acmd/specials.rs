@@ -153,7 +153,7 @@ unsafe fn luigi_specialsend_exp(agent: &mut L2CAgentBase) {
 unsafe fn luigi_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, luigi::instance::flag::SPECIAL_HI_CANCEL);
+        VarModule::off_flag(agent.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL);
     }
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -163,7 +163,7 @@ unsafe fn luigi_specialhi(agent: &mut L2CAgentBase) {
     }
     wait(agent.lua_state_agent, 1.0);
     if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(agent.battle_object, luigi::instance::flag::SPECIAL_HI_CANCEL);
+        VarModule::on_flag(agent.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL);
     }
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("head"), 1.0, 80, 1, 0, 1, 5.8, 2.0, 2.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_PUNCH);
@@ -189,7 +189,7 @@ unsafe fn luigi_specialhi(agent: &mut L2CAgentBase) {
 unsafe fn luigi_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, luigi::instance::flag::SPECIAL_HI_CANCEL);
+        VarModule::off_flag(agent.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL);
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -199,7 +199,7 @@ unsafe fn luigi_specialairhi(agent: &mut L2CAgentBase) {
     }
     wait(agent.lua_state_agent, 1.0);
     if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-        VarModule::on_flag(agent.battle_object, luigi::instance::flag::SPECIAL_HI_CANCEL);
+        VarModule::on_flag(agent.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL);
     }
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("head"), 1.0, 80, 1, 0, 1, 5.8, 2.0, 2.2, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_coin"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_COIN, *ATTACK_REGION_PUNCH);

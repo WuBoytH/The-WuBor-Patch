@@ -308,7 +308,7 @@ unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommo
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_special)]
 unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::PURGED) {
         return false.into();
     }
     if fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].get_bool() {
@@ -494,7 +494,7 @@ unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) 
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_special)]
 unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::PURGED) {
         return false.into();
     }
     if fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].get_bool() {
@@ -727,7 +727,7 @@ unsafe fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_special_command)]
 unsafe fn sub_transition_group_check_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::PURGED) {
         return false.into();
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND) {

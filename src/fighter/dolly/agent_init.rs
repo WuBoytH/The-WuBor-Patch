@@ -86,7 +86,7 @@ pub unsafe extern "C" fn dolly_check_special_command(fighter: &mut L2CFighterCom
 }
 
 unsafe extern "C" fn dolly_check_super_special_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::PURGED) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::PURGED) {
         return false.into();
     }
     let cat4 = fighter.global_table[CMD_CAT4].get_i32();

@@ -89,8 +89,8 @@ pub unsafe extern "C" fn shulk_on_attack(vtable: u64, fighter: *mut Fighter, log
             let opponent_object = MiscModule::get_battle_object_from_id(log.opponent_object_id);
             if !opponent_object.is_null()
             && sv_battle_object::category(log.opponent_object_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-                VarModule::on_flag(opponent_object, fighter::instance::flag::PURGED);
-                VarModule::set_int(opponent_object, fighter::instance::int::PURGED_TIMER, 300);
+                VarModule::on_flag((*opponent_object).module_accessor, fighter::instance::flag::PURGED);
+                VarModule::set_int((*opponent_object).module_accessor, fighter::instance::int::PURGED_TIMER, 300);
             }
         }
     }

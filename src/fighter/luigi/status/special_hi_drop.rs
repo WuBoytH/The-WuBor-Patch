@@ -38,7 +38,7 @@ unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
         false,
         false
     );
-    if VarModule::is_flag(fighter.battle_object, luigi::instance::flag::SPECIAL_HI_CANCEL) {
+    if VarModule::is_flag(fighter.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL) {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
     fighter.sub_shift_status_main(L2CValue::Ptr(luigi_specialhi_drop_main_loop as *const () as _))

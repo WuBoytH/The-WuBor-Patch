@@ -38,7 +38,7 @@ unsafe extern "C" fn demon_attackstand2_get_mot(fighter: &mut L2CFighterCommon) 
     match combo {
         0 => hash40("attack_stand_21"),
         1 => {
-            if VarModule::is_flag(fighter.battle_object, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER) {
+            if VarModule::is_flag(fighter.module_accessor, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER) {
                 hash40("attack_stand_2f")
             }
             else {
@@ -46,7 +46,7 @@ unsafe extern "C" fn demon_attackstand2_get_mot(fighter: &mut L2CFighterCommon) 
             }
         },
         2 => {
-            if VarModule::is_flag(fighter.battle_object, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER) {
+            if VarModule::is_flag(fighter.module_accessor, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER) {
                 hash40("attack_stand_24")
             }
             else {
@@ -66,7 +66,7 @@ unsafe extern "C" fn demon_attackstand2_main_loop(fighter: &mut L2CFighterCommon
     && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO)
     && !StatusModule::is_changing(fighter.module_accessor) {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
-            VarModule::on_flag(fighter.battle_object, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER);
+            VarModule::on_flag(fighter.module_accessor, demon::status::flag::ATTACK_STAND_2_SPECIAL_FINISHER);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_FLAG_INC_STEP);
         }
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK) {

@@ -50,7 +50,7 @@ unsafe fn edge_special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CVal
 
 unsafe extern "C" fn edge_special_hi_landing_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
-        VarModule::off_flag(fighter.battle_object, edge::status::flag::SPECIAL_HI_CANCEL);
+        VarModule::off_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL);
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
             return 1.into();
@@ -75,8 +75,8 @@ unsafe extern "C" fn edge_special_hi_landing_main_loop(fighter: &mut L2CFighterC
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("edge_octaslash_line"), true, true);
-    if !VarModule::is_flag(fighter.battle_object, edge::status::flag::SPECIAL_HI_CANCEL) {
-        VarModule::set_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 0);
+    if !VarModule::is_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL) {
+        VarModule::set_int(fighter.module_accessor, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 0);
     }
     0.into()
 }

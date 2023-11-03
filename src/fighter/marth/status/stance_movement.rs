@@ -113,7 +113,7 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
         marth_stance_mot_end_helper(fighter);
     }
     else {
-        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+        if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
             return true.into();
         }
@@ -128,7 +128,7 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
 // Dash End
 
 unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
+    VarModule::off_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU);
     marth_stance_common_end(fighter);
     0.into()
 }

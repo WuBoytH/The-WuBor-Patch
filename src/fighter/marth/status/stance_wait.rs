@@ -40,7 +40,7 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
         if speed_y < 0.0
-        && !VarModule::is_flag(fighter.battle_object, marth::instance::flag::AIR_STANCE) {
+        && !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::AIR_STANCE) {
             sv_kinetic_energy!(
                 set_speed,
                 fighter,
@@ -62,7 +62,7 @@ unsafe extern "C" fn marth_speciallw_enter_main(fighter: &mut L2CFighterCommon) 
             FIGHTER_KINETIC_ENERGY_ID_CONTROL,
             vl::param_stance::fall_speed_x_mul
         );
-        VarModule::on_flag(fighter.battle_object, marth::instance::flag::AIR_STANCE);
+        VarModule::on_flag(fighter.module_accessor, marth::instance::flag::AIR_STANCE);
     }
     else {
         mot = Hash40::new("special_lw_enter");
@@ -190,7 +190,7 @@ unsafe extern "C" fn marth_speciallw_wait_main_loop(fighter: &mut L2CFighterComm
             return 0.into();
         }
     }
-    if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+    if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
         fighter.change_status(status.into(), true.into());
         return 1.into();
@@ -299,7 +299,7 @@ unsafe extern "C" fn marth_speciallw_squat_main_loop(fighter: &mut L2CFighterCom
         fighter.change_status(status.into(), true.into());
         return 0.into();
     }
-    if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+    if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
         fighter.change_status(status.into(), true.into());
         return 1.into();
@@ -343,7 +343,7 @@ unsafe extern "C" fn marth_speciallw_squat_wait_main_loop(fighter: &mut L2CFight
         fighter.change_status(status.into(), true.into());
         return 0.into();
     }
-    if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+    if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
         fighter.change_status(status.into(), true.into());
         return 1.into();
@@ -376,7 +376,7 @@ unsafe extern "C" fn marth_speciallw_squat_rv_main_loop(fighter: &mut L2CFighter
         fighter.change_status(status.into(), true.into());
         return 0.into();
     }
-    if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+    if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
         let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
         fighter.change_status(status.into(), true.into());
         return 1.into();

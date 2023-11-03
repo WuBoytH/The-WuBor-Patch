@@ -36,7 +36,7 @@ unsafe fn pikmin_attackhi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe fn pikmin_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackHi3_Common(Hash40::new("attack_hi3").into(), Hash40::new("attack_hi3").into());
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
-    VarModule::on_flag(fighter.battle_object, pikmin::instance::flag::ATTACK_HI3_LANDING);
+    VarModule::on_flag(fighter.module_accessor, pikmin::instance::flag::ATTACK_HI3_LANDING);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_LIGHT);
     let attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_WORK_INT_FRAME);
     let item_catch_frame_attack_3 = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("item_catch_frame_attack_3"));
@@ -67,8 +67,8 @@ unsafe extern "C" fn pikmin_attackhi3_substatus(fighter: &mut L2CFighterCommon, 
 }
 
 unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, pikmin::status::flag::ATTACK_HI3_DRIFT) {
-        VarModule::off_flag(fighter.battle_object, pikmin::status::flag::ATTACK_HI3_DRIFT);
+    if VarModule::is_flag(fighter.module_accessor, pikmin::status::flag::ATTACK_HI3_DRIFT) {
+        VarModule::off_flag(fighter.module_accessor, pikmin::status::flag::ATTACK_HI3_DRIFT);
         sv_kinetic_energy!(
             reset_energy,
             fighter,
@@ -118,7 +118,7 @@ unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) 
         }
     }
     if fighter.status_AttackHi3_Main_minjump().get_bool() {
-        VarModule::off_flag(fighter.battle_object, pikmin::instance::flag::ATTACK_HI3_LANDING);
+        VarModule::off_flag(fighter.module_accessor, pikmin::instance::flag::ATTACK_HI3_LANDING);
         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_LIGHT);
     }
     if MotionModule::is_end(fighter.module_accessor) {

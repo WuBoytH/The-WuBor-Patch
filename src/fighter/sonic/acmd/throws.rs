@@ -21,7 +21,7 @@ unsafe fn sonic_throwf(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::DASH_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::DASH_CANCEL);
     }
 }
 

@@ -3,7 +3,7 @@ use super::helper::*;
 
 #[status_script(agent = "gaogaen", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn gaogaen_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, gaogaen::status::flag::REVENGE_AUTO);
+    VarModule::off_flag(fighter.module_accessor, gaogaen::status::flag::REVENGE_AUTO);
     let mot;
     let correct;
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -36,7 +36,7 @@ unsafe fn gaogaen_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CVal
             return 1.into();
         }
     }
-    if VarModule::is_flag(fighter.battle_object, gaogaen::status::flag::REVENGE_AUTO) {
+    if VarModule::is_flag(fighter.module_accessor, gaogaen::status::flag::REVENGE_AUTO) {
         fighter.change_status(FIGHTER_GAOGAEN_STATUS_KIND_SPECIAL_LW_HIT.into(), false.into());
         return 1.into();
     }

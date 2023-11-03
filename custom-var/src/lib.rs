@@ -29,9 +29,9 @@ impl CustomVarManager {
     }
 
     #[export_name = "CustomVarManager__reset_var_module"]
-    pub extern "Rust" fn reset_var_module(object: *mut BattleObject, force: bool) -> bool {
+    pub extern "Rust" fn reset_var_module(module_accessor: *mut BattleObjectModuleAccessor, force: bool) -> bool {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         Self::reset_var_module_by_object_id(object_id, force)
 
@@ -62,9 +62,9 @@ impl CustomVarManager {
     }
 
     #[export_name = "CustomVarManager__remove_var_module"]
-    pub extern "Rust" fn remove_var_module(object: *mut BattleObject) -> bool {
+    pub extern "Rust" fn remove_var_module(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         Self::remove_var_module_by_object_id(object_id)
     }
@@ -107,11 +107,12 @@ pub struct VarModule {
     copy_int64: Vec<u64>,
     copy_float: Vec<f32>,
     copy_flag: Vec<bool>,
-    reset_status_pairs: HashMap<i32, Vec<i32>>
+    reset_status_pairs: HashMap<i32, Vec<i32>>,
+    start: bool
 }
 
-/// An additional module to be used with Smash's `BattleObject` class. This handles storing and retrieving primitive variables
-/// that you want to associate with a specific object (such as associating a gimmick timer with mario or dk)
+/// An additional module to be used with Smash's `BattleObjectModuleAccessor` class. This handles storing and retrieving primitive variables
+/// that you want to associate with a specific module_accessor (such as associating a gimmick timer with mario or dk)
 impl VarModule {
     /// Resets all integers that are within the instance array.
     pub const RESET_INSTANCE_INT:   u8 = 0b00000001;
@@ -160,7 +161,8 @@ impl VarModule {
             copy_int64: vec![0; 0x200],
             copy_float: vec![0.0; 0x200],
             copy_flag: vec![false; 0x200],
-            reset_status_pairs: HashMap::new()
+            reset_status_pairs: HashMap::new(),
+            start: false
         };
         varmodule.reset_status_pairs.insert(
             *FIGHTER_STATUS_KIND_DASH,
@@ -205,15 +207,50 @@ impl VarModule {
         varmodule
     }
 
-    /// Resets various `VarModule` arrays depending on the mask
+    /// Returns if the id's VarModule has "started".
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
-    /// * `mask` - A mask of the reset values to determine what to reset
-    #[export_name = "VarModule__reset"]
-    pub extern "Rust" fn reset(object: *mut BattleObject, mask: u8) {
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
+    #[export_name = "VarModule__is_started"]
+    pub extern "Rust" fn is_started(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
         // println!("[VarModule] Reset");
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
+        };
+        let mut manager = CUSTOM_VAR_MANAGER.read();
+        let mut modules = manager.modules.write();
+        if let Some(mut module) = modules.get_mut(&object_id) {
+            module.start
+        }
+        else {
+            false
+        }
+    }
+
+    /// "Starts" the VarModule for an id.
+    /// # Arguments
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
+    #[export_name = "VarModule__start"]
+    pub extern "Rust" fn start(module_accessor: *mut BattleObjectModuleAccessor) {
+        // println!("[VarModule] Reset");
+        let object_id = unsafe {
+            (*module_accessor).battle_object_id
+        };
+        let mut manager = CUSTOM_VAR_MANAGER.read();
+        let mut modules = manager.modules.write();
+        if let Some(mut module) = modules.get_mut(&object_id) {
+            module.start = true;
+        }
+    }
+
+    /// Resets various `VarModule` arrays depending on the mask
+    /// # Arguments
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
+    /// * `mask` - A mask of the reset values to determine what to reset
+    #[export_name = "VarModule__reset"]
+    pub extern "Rust" fn reset(module_accessor: *mut BattleObjectModuleAccessor, mask: u8) {
+        // println!("[VarModule] Reset");
+        let object_id = unsafe {
+            (*module_accessor).battle_object_id
         };
         // println!("[VarModule] object_id: {:#x}", object_id);
         let mut manager = CUSTOM_VAR_MANAGER.read();
@@ -249,9 +286,9 @@ impl VarModule {
 
     /// Copies the instance variable values from a VarModule instance.
     #[export_name = "VarModule__pocket_vars"]
-    pub extern "Rust" fn pocket_vars(object: *mut BattleObject, pocketed_object_id: u32) {
+    pub extern "Rust" fn pocket_vars(module_accessor: *mut BattleObjectModuleAccessor, pocketed_object_id: u32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -287,14 +324,14 @@ impl VarModule {
 
     /// Retrieves the instance variable values from a pocketed instance.
     #[export_name = "VarModule__retrieve_pocketed_vars"]
-    pub extern "Rust" fn retrieve_pocketed_vars(object: *mut BattleObject, owner_object_id: u32) {
+    pub extern "Rust" fn retrieve_pocketed_vars(module_accessor: *mut BattleObjectModuleAccessor, owner_object_id: u32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         Self::retrieve_pocketed_vars_by_object_id(object_id, owner_object_id)
     }
 
-    /// Retrieves the instance variable values from a pocketed instance using the object id directly.
+    /// Retrieves the instance variable values from a pocketed instance using the module_accessor id directly.
     #[export_name = "VarModule__retrieve_pocketed_vars_by_object_id"]
     pub extern "Rust" fn retrieve_pocketed_vars_by_object_id(object_id: u32, owner_object_id: u32) {
         let mut manager = CUSTOM_VAR_MANAGER.read();
@@ -367,14 +404,14 @@ impl VarModule {
 
     /// Retrieves an integer
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to retrieve
     /// # Returns
     /// The variable requested
     #[export_name = "VarModule__get_int"]
-    pub extern "Rust" fn get_int(object: *mut BattleObject, what: i32) -> i32 {
+    pub extern "Rust" fn get_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> i32 {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -390,14 +427,14 @@ impl VarModule {
 
     /// Retrieves a float
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to retrieve
     /// # Returns
     /// The variable requested
     #[export_name = "VarModule__get_float"]
-    pub extern "Rust" fn get_float(object: *mut BattleObject, what: i32) -> f32 {
+    pub extern "Rust" fn get_float(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> f32 {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -413,14 +450,14 @@ impl VarModule {
 
     /// Retrieves a 64-bit value
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to retrieve
     /// # Returns
     /// The variable requested
     #[export_name = "VarModule__get_int64"]
-    pub extern "Rust" fn get_int64(object: *mut BattleObject, what: i32) -> u64 {
+    pub extern "Rust" fn get_int64(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> u64 {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -436,21 +473,21 @@ impl VarModule {
 
     /// Retrieves a flag
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to retrieve
     /// # Returns
     /// The variable requested
     #[export_name = "VarModule__is_flag"]
-    pub extern "Rust" fn is_flag(object: *mut BattleObject, what: i32) -> bool {
+    pub extern "Rust" fn is_flag(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> bool {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         Self::is_flag_from_object_id(object_id, what)
     }
 
-    /// Retrieves a flag, but using the object id directly.
+    /// Retrieves a flag, but using the module_accessor id directly.
     /// # Arguments
-    /// * `object_id` - The battle object id of the object.
+    /// * `object_id` - The battle module_accessor id of the module_accessor.
     /// * `what` - The variable to retrieve
     /// # Returns
     /// The variable requested
@@ -470,20 +507,20 @@ impl VarModule {
 
     /// Sets an integer value
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_int"]
-    pub extern "Rust" fn set_int(object: *mut BattleObject, what: i32, val: i32) {
+    pub extern "Rust" fn set_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: i32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         Self::set_int_from_object_id(object_id, what, val)
     }
 
     /// Sets an integer value
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_int_from_object_id"]
@@ -499,13 +536,13 @@ impl VarModule {
 
     /// Sets a float value
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_float"]
-    pub extern "Rust" fn set_float(object: *mut BattleObject, what: i32, val: f32) {
+    pub extern "Rust" fn set_float(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: f32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -518,13 +555,13 @@ impl VarModule {
 
     /// Sets a 64-bit value
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_int64"]
-    pub extern "Rust" fn set_int64(object: *mut BattleObject, what: i32, val: u64) {
+    pub extern "Rust" fn set_int64(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: u64) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -537,20 +574,20 @@ impl VarModule {
 
     /// Sets a flag
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_flag"]
-    pub extern "Rust" fn set_flag(object: *mut BattleObject, what: i32, val: bool) {
+    pub extern "Rust" fn set_flag(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: bool) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         Self::set_flag_from_object_id(object_id, what, val)
     }
 
-    /// Sets a flag using the object id directly.
+    /// Sets a flag using the module_accessor id directly.
     /// # Arguments
-    /// * `object_id` - The battle object id of the object.
+    /// * `object_id` - The battle module_accessor id of the module_accessor.
     /// * `what` - The variable to set
     /// * `val` - The value to set the variable to
     #[export_name = "VarModule__set_flag_from_object_id"]
@@ -566,53 +603,53 @@ impl VarModule {
 
     /// Sets a flag to false
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// # Note
-    /// This method is equivalent to `VarModule::set_flag(object, what, false)`
+    /// This method is equivalent to `VarModule::set_flag(module_accessor, what, false)`
     #[export_name = "VarModule__off_flag"]
-    pub extern "Rust" fn off_flag(object: *mut BattleObject, what: i32) {
-        Self::set_flag(object, what, false);
+    pub extern "Rust" fn off_flag(module_accessor: *mut BattleObjectModuleAccessor, what: i32) {
+        Self::set_flag(module_accessor, what, false);
     }
 
     /// Sets a flag to true
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to set
     /// # Note
-    /// This method is equivalent to `VarModule::set_flag(object, what, true)`
+    /// This method is equivalent to `VarModule::set_flag(module_accessor, what, true)`
     #[export_name = "VarModule__on_flag"]
-    pub extern "Rust" fn on_flag(object: *mut BattleObject, what: i32) {
-        Self::set_flag(object, what, true);
+    pub extern "Rust" fn on_flag(module_accessor: *mut BattleObjectModuleAccessor, what: i32) {
+        Self::set_flag(module_accessor, what, true);
     }
 
     /// Countdowns an integer
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to count down
     /// * `min` - The minimum value that variable should be before we are done counting down
     /// # Returns
     /// * `true` - `what` was less than `min` before or after decrementing
     /// * `false` - `what` remains greater than or equal to `min` after decrementing
     #[export_name = "VarModule__countdown_int"]
-    pub extern "Rust" fn countdown_int(object: *mut BattleObject, what: i32, min: i32) -> bool {
-        if Self::get_int(object, what) <= min {
+    pub extern "Rust" fn countdown_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32, min: i32) -> bool {
+        if Self::get_int(module_accessor, what) <= min {
             false
         } else {
-            Self::dec_int(object, what);
-            Self::get_int(object, what) == min
+            Self::dec_int(module_accessor, what);
+            Self::get_int(module_accessor, what) == min
         }
     }
 
     /// Adds a value to an integer
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to add to
     /// * `amount` - The value to add to the variable
     #[export_name = "VarModule__add_int"]
-    pub extern "Rust" fn add_int(object: *mut BattleObject, what: i32, amount: i32) {
+    pub extern "Rust" fn add_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32, amount: i32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -625,13 +662,13 @@ impl VarModule {
 
     /// Subtracts a value from an integer
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to subtract from
     /// * `amount` - The value to subtract from the variable
     #[export_name = "VarModule__sub_int"]
-    pub extern "Rust" fn sub_int(object: *mut BattleObject, what: i32, amount: i32) {
+    pub extern "Rust" fn sub_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32, amount: i32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -644,35 +681,35 @@ impl VarModule {
 
     /// Increments an integer
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to increment
     /// # Note
-    /// This is functionally equivalent to `VarModule::add_int(object, what, 1)`
+    /// This is functionally equivalent to `VarModule::add_int(module_accessor, what, 1)`
     #[export_name = "VarModule__inc_int"]
-    pub extern "Rust" fn inc_int(object: *mut BattleObject, what: i32) {
-        Self::add_int(object, what, 1);
+    pub extern "Rust" fn inc_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32) {
+        Self::add_int(module_accessor, what, 1);
     }
 
     /// Decrements an integer
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to decrement
     /// # Note
-    /// This is functionally equivalent to `VarModule::sub_int(object, what, 1)`
+    /// This is functionally equivalent to `VarModule::sub_int(module_accessor, what, 1)`
     #[export_name = "VarModule__dec_int"]
-    pub extern "Rust" fn dec_int(object: *mut BattleObject, what: i32) {
-        Self::sub_int(object, what, 1);
+    pub extern "Rust" fn dec_int(module_accessor: *mut BattleObjectModuleAccessor, what: i32) {
+        Self::sub_int(module_accessor, what, 1);
     }
 
     /// Adds a value to float
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to add on to
     /// * `amount` - The amount to add to the variable
     #[export_name = "VarModule__add_float"]
-    pub extern "Rust" fn add_float(object: *mut BattleObject, what: i32, amount: f32) {
+    pub extern "Rust" fn add_float(module_accessor: *mut BattleObjectModuleAccessor, what: i32, amount: f32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -685,13 +722,13 @@ impl VarModule {
 
     /// Subtracts a value from a float
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - The variable to subtract from
     /// * `amount` - The amount to subtract from the variable
     #[export_name = "VarModule__sub_float"]
-    pub extern "Rust" fn sub_float(object: *mut BattleObject, what: i32, amount: f32) {
+    pub extern "Rust" fn sub_float(module_accessor: *mut BattleObjectModuleAccessor, what: i32, amount: f32) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -704,15 +741,15 @@ impl VarModule {
 
     /// Sets a 2-dimensional vector
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - Where to start setting the vector
     /// * `val` - The vector to set
     /// # Panics
     /// This function requires that the last 3 bytes of `what` are less than `0xFFF`
     #[export_name = "VarModule__set_vec2"]
-    pub extern "Rust" fn set_vec2(object: *mut BattleObject, what: i32, val: Vector2f) {
+    pub extern "Rust" fn set_vec2(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: Vector2f) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -729,15 +766,15 @@ impl VarModule {
 
     /// Sets a 3-dimensional vector
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - Where to start setting the vector
     /// * `val` - The vector to set
     /// # Panics
     /// This function requires that the last 3 bytes of `what` are less than `0xFFE`
     #[export_name = "VarModule__set_vec3"]
-    pub extern "Rust" fn set_vec3(object: *mut BattleObject, what: i32, val: Vector3f) {
+    pub extern "Rust" fn set_vec3(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: Vector3f) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -755,15 +792,15 @@ impl VarModule {
 
     /// Sets a 4-dimensional vector
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - Where to start setting the vector
     /// * `val` - The vector to set
     /// # Panics
     /// This function requires that the last 3 bytes of `what` are less than `0xFFD`
     #[export_name = "VarModule__set_vec4"]
-    pub extern "Rust" fn set_vec4(object: *mut BattleObject, what: i32, val: Vector4f) {
+    pub extern "Rust" fn set_vec4(module_accessor: *mut BattleObjectModuleAccessor, what: i32, val: Vector4f) {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -782,16 +819,16 @@ impl VarModule {
 
     /// Gets a 2-dimensional vector
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - Where to start setting the vector
     /// # Returns
     /// The 2-dimensional vector starting at the value specified
     /// # Panics
     /// This function requires that the last 3 bytes of `what` are less than `0xFFF`
     #[export_name = "VarModule__get_vec2"]
-    pub extern "Rust" fn get_vec2(object: *mut BattleObject, what: i32) -> Vector2f {
+    pub extern "Rust" fn get_vec2(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> Vector2f {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -813,16 +850,16 @@ impl VarModule {
 
     /// Gets a 3-dimensional vector
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - Where to start setting the vector
     /// # Returns
     /// The 3-dimensional vector starting at the value specified
     /// # Panics
     /// This function requires that the last 3 bytes of `what` are less than `0xFFE`
     #[export_name = "VarModule__get_vec3"]
-    pub extern "Rust" fn get_vec3(object: *mut BattleObject, what: i32) -> Vector3f {
+    pub extern "Rust" fn get_vec3(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> Vector3f {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();
@@ -846,16 +883,16 @@ impl VarModule {
 
     /// Gets a 4-dimensional vector
     /// # Arguments
-    /// * `object` - The owning `BattleObject` instance
+    /// * `module_accessor` - The owning `BattleObjectModuleAccessor` instance
     /// * `what` - Where to start setting the vector
     /// # Returns
     /// The 4-dimensional vector starting at the value specified
     /// # Panics
     /// This function requires that the last 3 bytes of `what` are less than `0xFFD`
     #[export_name = "VarModule__get_vec4"]
-    pub extern "Rust" fn get_vec4(object: *mut BattleObject, what: i32) -> Vector4f {
+    pub extern "Rust" fn get_vec4(module_accessor: *mut BattleObjectModuleAccessor, what: i32) -> Vector4f {
         let object_id = unsafe {
-            (*object).battle_object_id
+            (*module_accessor).battle_object_id
         };
         let mut manager = CUSTOM_VAR_MANAGER.read();
         let mut modules = manager.modules.write();

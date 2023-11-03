@@ -159,26 +159,26 @@ unsafe fn mario_longjumpstart_snd(_agent: &mut L2CAgentBase) {
 unsafe fn mario_longjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_B {
-            VarModule::on_flag(agent.battle_object, mario::status::flag::SPECIAL_LW_LANDING);
+        if VarModule::get_int(agent.module_accessor, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_B {
+            VarModule::on_flag(agent.module_accessor, mario::status::flag::SPECIAL_LW_LANDING);
         }
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, mario::status::flag::SPECIAL_LW_LANDING);
-        if [mario::LONG_JUMP_B, mario::LONG_JUMP_M].contains(&VarModule::get_int(agent.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND)) {
+        VarModule::on_flag(agent.module_accessor, mario::status::flag::SPECIAL_LW_LANDING);
+        if [mario::LONG_JUMP_B, mario::LONG_JUMP_M].contains(&VarModule::get_int(agent.module_accessor, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND)) {
             CancelModule::enable_cancel(agent.module_accessor);
         }
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_W {
+        if VarModule::get_int(agent.module_accessor, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_W {
             CancelModule::enable_cancel(agent.module_accessor);
         }
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        if VarModule::get_int(agent.battle_object, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_S {
+        if VarModule::get_int(agent.module_accessor, mario::status::int::SPECIAL_LW_LONG_JUMP_KIND) == mario::LONG_JUMP_S {
             CancelModule::enable_cancel(agent.module_accessor);
         }
     }

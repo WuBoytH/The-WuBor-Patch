@@ -8,7 +8,7 @@ pub unsafe fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2C
         }
     }
     let is_attack = element_is_change_attack(fighter.module_accessor);
-    VarModule::set_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK, is_attack);
+    VarModule::set_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK, is_attack);
     let cond = lua_bind::FighterManager::is_result_mode(singletons::FighterManager());
     WorkModule::set_flag(fighter.module_accessor, cond, *FIGHTER_ELEMENT_STATUS_SPECIAL_LW_IS_RESULT);
     element_special_lw_out_mot_helper(fighter, true);
@@ -17,7 +17,7 @@ pub unsafe fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, first: bool) {
-    let is_attack = VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK);
+    let is_attack = VarModule::is_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         let mot = if is_attack {
             hash40("special_air_lw_out_attack")
@@ -194,7 +194,7 @@ unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, firs
 
 unsafe fn element_special_lw_out_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cancel = CancelModule::is_enable_cancel(fighter.module_accessor);
-    let is_attack = VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK);
+    let is_attack = VarModule::is_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK);
     if cancel {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -219,7 +219,7 @@ unsafe fn element_special_lw_out_main_loop(fighter: &mut L2CFighterCommon) -> L2
         }
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
-        if VarModule::is_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL) {
+        if VarModule::is_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL) {
             let air_speed_y_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_y_stable"), 0);
             sv_kinetic_energy!(
                 set_stable_speed,
@@ -233,7 +233,7 @@ unsafe fn element_special_lw_out_main_loop(fighter: &mut L2CFighterCommon) -> L2
                 FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
                 air_speed_y_stable
             );
-            VarModule::off_flag(fighter.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
+            VarModule::off_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
         }
         if cancel && !KineticModule::is_enable_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL) {
             KineticModule::enable_energy(fighter.module_accessor,*FIGHTER_KINETIC_ENERGY_ID_CONTROL);

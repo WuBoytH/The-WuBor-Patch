@@ -31,7 +31,7 @@ unsafe fn wario_throwb(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, wario::status::flag::THROW_B_MOVE);
+        VarModule::on_flag(agent.module_accessor, wario::status::flag::THROW_B_MOVE);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -58,7 +58,7 @@ unsafe fn wario_throwb(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 48.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, wario::status::flag::THROW_B_MOVE);
+        VarModule::off_flag(agent.module_accessor, wario::status::flag::THROW_B_MOVE);
         KineticModule::unable_energy(agent.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
         macros::REVERSE_LR(agent);
         let target = WorkModule::get_int64(agent.module_accessor, *FIGHTER_STATUS_THROW_WORK_INT_TARGET_OBJECT);

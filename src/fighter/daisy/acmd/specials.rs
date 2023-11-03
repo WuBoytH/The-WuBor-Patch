@@ -4,7 +4,7 @@ use super::super::vl;
 #[acmd_script( agent = "daisy", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
 unsafe fn daisy_specialsjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::on_flag(agent.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
         JostleModule::set_status(agent.module_accessor, false);
         macros::SEARCH(agent, 0, 0, Hash40::new("hip"), 3.5, 0.0, 0.0, 0.0, None, None, None, *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
     }

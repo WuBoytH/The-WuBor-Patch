@@ -49,7 +49,7 @@ unsafe fn chrom_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn chrom_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
+    VarModule::on_flag(fighter.module_accessor, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_air_lw"),
@@ -80,7 +80,7 @@ unsafe fn chrom_speciallw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC) {
+    if VarModule::is_flag(fighter.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         sv_kinetic_energy!(
             reset_energy,
@@ -102,7 +102,7 @@ unsafe fn chrom_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
             *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN
         );
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
-        VarModule::off_flag(fighter.battle_object, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
+        VarModule::off_flag(fighter.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC);
     }
     0.into()
 }

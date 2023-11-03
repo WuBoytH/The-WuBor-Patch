@@ -44,7 +44,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut L2CFighter
         let shield_hp = WorkModule::get_float(fighter.module_accessor, shield_hp_const);
         let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
         ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
-        let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+        let shield_eff = VarModule::get_int(fighter.module_accessor, guard::int::SHIELD_EFF_ID) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
             let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
             let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
@@ -441,7 +441,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighter: &mut L2C
         let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
         let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
         ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
-        let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+        let shield_eff = VarModule::get_int(fighter.module_accessor, guard::int::SHIELD_EFF_ID) as u32;
         let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
         if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
             let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;

@@ -23,7 +23,7 @@ pub unsafe extern "C" fn special_n_pocket_set_flag(fighter: &mut L2CFighterCommo
         let pocket_object_cat = sv_battle_object::category(target_id);
         if pocket_object_cat == *BATTLE_OBJECT_CATEGORY_WEAPON {
             // println!("pocketed a weapon!");
-            VarModule::pocket_vars(fighter.battle_object, target_id);
+            VarModule::pocket_vars(fighter.module_accessor, target_id);
         }
     }
     0.into()

@@ -6,7 +6,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
     let was_parry = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_GUARD_DAMAGE;
-    let guard_trigger = VarModule::get_int(fighter.battle_object, fighter::instance::int::GUARD_TRIGGER);
+    let guard_trigger = VarModule::get_int(fighter.module_accessor, fighter::instance::int::GUARD_TRIGGER);
     // println!("Held Shield for {} frames, can parry? {}", guard_trigger, guard_trigger <= 5 || was_parry);
     if FighterUtil::is_valid_just_shield(fighter.module_accessor)
     && (
@@ -201,7 +201,7 @@ unsafe fn effect_guardoncommon(fighter: &mut L2CFighterAnimcmdEffectCommon) -> L
         lua_args!(agent, 0.6);
         LAST_EFFECT_SET_ALPHA(agent.lua_state_agent);
         let eff_id = EffectModule::get_last_handle(agent.module_accessor) as u32;
-        VarModule::set_int(agent.battle_object, guard::int::SHIELD_EFF_ID, eff_id as i32);
+        VarModule::set_int(agent.module_accessor, guard::int::SHIELD_EFF_ID, eff_id as i32);
     }
     0.into()
 }

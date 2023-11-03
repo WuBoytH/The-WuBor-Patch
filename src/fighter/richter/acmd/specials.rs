@@ -6,7 +6,7 @@ unsafe fn richter_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, richter::status::flag::SPECIAL_N_SHOOT);
+        VarModule::on_flag(agent.module_accessor, richter::status::flag::SPECIAL_N_SHOOT);
     }
 }
 
@@ -38,8 +38,8 @@ unsafe fn richter_specialnblank(agent: &mut L2CAgentBase) {
 unsafe fn richter_axe_fly(agent: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     if sv_battle_object::is_active(owner_id) {
-        let object = MiscModule::get_battle_object_from_id(owner_id);
-        VarModule::set_int(object, richter::instance::int::AXE_ID, agent.battle_object_id as i32);
+        let owner_module_accessor = sv_battle_object::module_accessor(owner_id);
+        VarModule::set_int(owner_module_accessor, richter::instance::int::AXE_ID, agent.battle_object_id as i32);
     }
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("axe"), 9.0, 130, 30, 0, 80, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
@@ -124,7 +124,7 @@ unsafe fn richter_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 22.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        VarModule::on_flag(agent.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
+        VarModule::on_flag(agent.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(agent.lua_state_agent, 32.0);
@@ -174,7 +174,7 @@ unsafe fn richter_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 22.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        VarModule::on_flag(agent.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
+        VarModule::on_flag(agent.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
     frame(agent.lua_state_agent, 32.0);

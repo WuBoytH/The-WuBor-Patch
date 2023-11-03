@@ -3,7 +3,7 @@ use crate::imports::status_imports::*;
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_specialn_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
-    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+    if VarModule::is_flag(fighter.module_accessor, yu::status::flag::IS_EX) {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end_max") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
         WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_end_max") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
     }
@@ -46,7 +46,7 @@ unsafe extern "C" fn lucina_specialn_end_main_loop(fighter: &mut L2CFighterCommo
 unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterCommon) {
     let ground_mot;
     let air_mot;
-    if VarModule::is_flag(fighter.battle_object, yu::status::flag::IS_EX) {
+    if VarModule::is_flag(fighter.module_accessor, yu::status::flag::IS_EX) {
         ground_mot = Hash40::new("special_n_end_max");
         air_mot = Hash40::new("special_air_n_end_max");
     }

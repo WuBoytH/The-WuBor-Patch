@@ -3,16 +3,16 @@ use crate::imports::acmd_imports::*;
 #[acmd_script( agent = "jack", script = "game_specialn1", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
         }
     }
     frame(agent.lua_state_agent, 10.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+            VarModule::on_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -63,17 +63,17 @@ unsafe fn jack_specialn1(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_specialairn1", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialairn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
         }
     }
     frame(agent.lua_state_agent, 10.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+            VarModule::on_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -133,16 +133,16 @@ unsafe fn jack_specialairn1(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_specialn1_ex", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
         }
     }
     frame(agent.lua_state_agent, 10.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+            VarModule::on_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -216,17 +216,17 @@ unsafe fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "jack", script = "game_specialairn1_ex", category = ACMD_GAME, low_priority )]
 unsafe fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             MotionModule::set_rate(agent.module_accessor, 12.0 / 15.0);
         }
     }
     frame(agent.lua_state_agent, 10.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BUTTON_RAPID);
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_FLAG_CHECK_BARRAGE_BUTTON_ON);
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_N_FIRST);
+            VarModule::on_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST);
         }
     }
     frame(agent.lua_state_agent, 11.0);
@@ -561,7 +561,7 @@ unsafe fn jack_specials1(agent: &mut L2CAgentBase) {
     }
     if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
         if macros::is_excute(agent) {
-            VarModule::on_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT);
+            VarModule::on_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT);
         }
         macros::FT_MOTION_RATE(agent, 5.0);
     }
@@ -569,7 +569,7 @@ unsafe fn jack_specials1(agent: &mut L2CAgentBase) {
         macros::FT_MOTION_RATE(agent, 1.0);
     }
     frame(agent.lua_state_agent, 13.0);
-    if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT) {
+    if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
         macros::FT_MOTION_RATE(agent, 1.0);
         if macros::is_excute(agent) {
             KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
@@ -585,7 +585,7 @@ unsafe fn jack_specials1(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT) {
+        if VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
             macros::FT_MOTION_RATE(agent, 0.5);
             HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
         }
@@ -597,7 +597,7 @@ unsafe fn jack_specials1(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT) {
+        if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
             AttackModule::clear_all(agent.module_accessor);
         }
     }
@@ -607,20 +607,20 @@ unsafe fn jack_specials1(agent: &mut L2CAgentBase) {
 unsafe fn jack_specials1_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT) {
+        if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
             macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_jack_sword1"), Hash40::new("tex_jack_sword2"), 14, Hash40::new("knife"), 0.0, 0.25, 0.15, Hash40::new("knife"), 0.0, 5.8, 0.0, false, Hash40::new("none"), Hash40::new("none"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.4, 0.1);
         }
     }
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
-        if VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT) {
+        if VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
             macros::LANDING_EFFECT(agent, Hash40::new("sys_h_smoke_a"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.6, 0, 0, 0, 0, 0, 0, false);
         }
     }
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
-        if !VarModule::is_flag(agent.battle_object, jack::status::flag::SPECIAL_S_FEINT) {
+        if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_S_FEINT) {
             macros::AFTER_IMAGE_OFF(agent, 0);
         }
     }

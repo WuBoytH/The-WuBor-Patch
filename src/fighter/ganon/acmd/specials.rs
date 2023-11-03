@@ -4,7 +4,7 @@ use crate::imports::acmd_imports::*;
 unsafe fn ganon_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::set_int(agent.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_INIT);
+        VarModule::set_int(agent.module_accessor, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_INIT);
     }
     macros::FT_MOTION_RATE(agent, 0.2);
     frame(agent.lua_state_agent, 25.0);
@@ -12,26 +12,26 @@ unsafe fn ganon_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         if StatusModule::situation_kind(agent.module_accessor) == *SITUATION_KIND_GROUND {
-            VarModule::on_flag(agent.battle_object, ganon::status::flag::TELEPORT_START_GROUND);
+            VarModule::on_flag(agent.module_accessor, ganon::status::flag::TELEPORT_START_GROUND);
         }
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
         let og_x = PostureModule::pos_x(agent.module_accessor);
         let og_y = PostureModule::pos_y(agent.module_accessor);
-        VarModule::set_vec2(agent.battle_object, ganon::status::float::TELEPORT_START_POS, Vector2f{x: og_x, y: og_y});
-        VarModule::on_flag(agent.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N);
+        VarModule::set_vec2(agent.module_accessor, ganon::status::float::TELEPORT_START_POS, Vector2f{x: og_x, y: og_y});
+        VarModule::on_flag(agent.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_N);
         KineticModule::change_kinetic(agent.module_accessor, *FIGHTER_KINETIC_TYPE_RESET);
-        VarModule::on_flag(agent.battle_object, ganon::status::flag::TELEPORT_STOP);
+        VarModule::on_flag(agent.module_accessor, ganon::status::flag::TELEPORT_STOP);
         HitModule::set_whole(agent.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         JostleModule::set_status(agent.module_accessor, false);
         GroundModule::set_correct(agent.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     }
     frame(agent.lua_state_agent, 34.0);
     if macros::is_excute(agent) {
-        VarModule::set_int(agent.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_MOVE);
+        VarModule::set_int(agent.module_accessor, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_MOVE);
     }
     frame(agent.lua_state_agent, 55.0);
     if macros::is_excute(agent) {
-        VarModule::set_int(agent.battle_object, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_CHECK_FEINT);
+        VarModule::set_int(agent.module_accessor, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_CHECK_FEINT);
     }
     frame(agent.lua_state_agent, 60.0);
     if macros::is_excute(agent) {
@@ -41,7 +41,7 @@ unsafe fn ganon_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 64.0);
     macros::FT_MOTION_RATE(agent, 5.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, ganon::status::flag::TELEPORT_STOP);
+        VarModule::off_flag(agent.module_accessor, ganon::status::flag::TELEPORT_STOP);
         JostleModule::set_status(agent.module_accessor, true);
         CancelModule::enable_cancel(agent.module_accessor);
     }

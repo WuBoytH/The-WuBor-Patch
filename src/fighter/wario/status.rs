@@ -24,10 +24,10 @@ unsafe fn wario_rebirth_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "wario", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, wario::status::flag::THROW_B_MOVE) {
+    if VarModule::is_flag(fighter.module_accessor, wario::status::flag::THROW_B_MOVE) {
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         // KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
-        if !VarModule::is_flag(fighter.battle_object, wario::status::flag::THROW_B_CONTROL_RESET) {
+        if !VarModule::is_flag(fighter.module_accessor, wario::status::flag::THROW_B_CONTROL_RESET) {
             sv_kinetic_energy!(
                 reset_energy,
                 fighter,
@@ -40,7 +40,7 @@ unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
                 0.0
             );
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            VarModule::on_flag(fighter.battle_object, wario::status::flag::THROW_B_CONTROL_RESET);
+            VarModule::on_flag(fighter.module_accessor, wario::status::flag::THROW_B_CONTROL_RESET);
         }
         sv_kinetic_energy!(
             set_stable_speed,

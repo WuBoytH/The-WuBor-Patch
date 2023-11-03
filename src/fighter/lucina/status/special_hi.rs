@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let turn = if !VarModule::is_flag(fighter.battle_object, yu::instance::flag::COMMAND) {
+    let turn = if !VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND) {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
     }
     else {

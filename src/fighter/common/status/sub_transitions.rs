@@ -42,7 +42,7 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON)
         && fighter.sub_check_command_guard().get_bool() {
             let guard_trigger = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF;
-            VarModule::set_int(fighter.battle_object, fighter::instance::int::GUARD_TRIGGER, guard_trigger);
+            VarModule::set_int(fighter.module_accessor, fighter::instance::int::GUARD_TRIGGER, guard_trigger);
             let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH == 0;
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_ON.into(), clear_buffer.into());
             return true.into();
@@ -422,7 +422,7 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
         let stick_y = fighter.global_table[STICK_Y].get_f32();
         let length = sv_math::vec2_length(stick_x, stick_y);
         let escape_air_slide_stick = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("escape_air_slide_stick"));
-        let cancel = !CancelModule::is_enable_cancel(fighter.module_accessor) && VarModule::is_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
+        let cancel = !CancelModule::is_enable_cancel(fighter.module_accessor) && VarModule::is_flag(fighter.module_accessor, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
         let status = if escape_air_slide_stick <= length
         || cancel {
             FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE
@@ -532,7 +532,7 @@ unsafe fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -
                     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CLIFF_CATCH) {
                         // println!("transition term");
                         if GroundModule::is_status_cliff(fighter.module_accessor)
-                        || VarModule::is_flag(fighter.battle_object, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK) {
+                        || VarModule::is_flag(fighter.module_accessor, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK) {
                             // println!("is status cliff");
                             if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_CLIFF_NO_CATCH_FRAME) == 0 {
                                 // println!("cliff frame passed");

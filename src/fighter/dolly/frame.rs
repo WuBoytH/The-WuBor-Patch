@@ -21,13 +21,13 @@ use {
 //         *FIGHTER_STATUS_KIND_DEAD,
 //         *FIGHTER_STATUS_KIND_REBIRTH
 //     ].contains(&status)  {
-//         VarModule::set_float(fighter.battle_object, dolly::instance::float::GO_METER, 0.0);
+//         VarModule::set_float(fighter.module_accessor, dolly::instance::float::GO_METER, 0.0);
 //     }
 // }
 
 unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_float(fighter.battle_object, dolly::instance::float::GO_METER) >= 200.0{
-        let eff = VarModule::get_int(fighter.battle_object, dolly::instance::int::SUPER_SPECIAL_AURA) as u32;
+    if VarModule::get_float(fighter.module_accessor, dolly::instance::float::GO_METER) >= 200.0{
+        let eff = VarModule::get_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA) as u32;
         if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
             EffectModule::req_follow(
                 fighter.module_accessor,
@@ -47,9 +47,9 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
             );
             let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
             EffectModule::set_rgb(fighter.module_accessor, eff, 1.0, 0.6, 0.2);
-            VarModule::set_int(fighter.battle_object, dolly::instance::int::SUPER_SPECIAL_AURA, eff as i32);
+            VarModule::set_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA, eff as i32);
         }
-        let eff = VarModule::get_int(fighter.battle_object, dolly::instance::int::SUPER_SPECIAL_AURA2) as u32;
+        let eff = VarModule::get_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA2) as u32;
         if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
             EffectModule::req_follow(
                 fighter.module_accessor,
@@ -69,12 +69,12 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
             );
             let eff = EffectModule::get_last_handle(fighter.module_accessor) as u32;
             EffectModule::set_rgb(fighter.module_accessor, eff, 1.0, 0.6, 0.2);
-            VarModule::set_int(fighter.battle_object, dolly::instance::int::SUPER_SPECIAL_AURA2, eff as i32);
+            VarModule::set_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA2, eff as i32);
         }
     }
     else {
-        let eff = VarModule::get_int(fighter.battle_object, dolly::instance::int::SUPER_SPECIAL_AURA) as u32;
-        let eff2 = VarModule::get_int(fighter.battle_object, dolly::instance::int::SUPER_SPECIAL_AURA2) as u32;
+        let eff = VarModule::get_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA) as u32;
+        let eff2 = VarModule::get_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA2) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, eff) {
             EffectModule::kill(fighter.module_accessor, eff, true, false);
             EffectModule::kill(fighter.module_accessor, eff2, true, false);
@@ -91,7 +91,7 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SUPER_SPECIAL);
         }
         if dolly_check_special_command(fighter).get_bool() {
-            VarModule::off_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL);
+            VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
         }
     }
 }

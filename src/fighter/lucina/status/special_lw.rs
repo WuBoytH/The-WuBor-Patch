@@ -2,8 +2,8 @@ use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::off_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
-    VarModule::off_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_ROMAN_MOVE);
+    VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
+    VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -36,15 +36,15 @@ unsafe fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_speciallw_substatus(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC) {
+    if VarModule::is_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC) {
         let dir = FGCModule::get_command_stick_direction(fighter, false);
         let movement = match dir {
             4 | 7 | 1 => -2.0,
             6 | 9 | 3 => 2.0,
             _ => 0.0
         };
-        VarModule::set_float(fighter.battle_object, yu::status::float::SPECIAL_LW_ROMAN_MOVE, movement);
-        VarModule::off_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
+        VarModule::set_float(fighter.module_accessor, yu::status::float::SPECIAL_LW_ROMAN_MOVE, movement);
+        VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
     }
     0.into()
 }
@@ -56,13 +56,13 @@ unsafe extern "C" fn lucina_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
             return 1.into();
         }
     }
-    if VarModule::is_flag(fighter.battle_object, yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
-        let move_x = VarModule::get_float(fighter.battle_object, yu::status::float::SPECIAL_LW_ROMAN_MOVE);
+    if VarModule::is_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE) {
+        let move_x = VarModule::get_float(fighter.module_accessor, yu::status::float::SPECIAL_LW_ROMAN_MOVE);
         PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
             x: move_x,
             y: 0.0
         });
-        VarModule::set_float(fighter.battle_object, yu::status::float::SPECIAL_LW_ROMAN_MOVE, move_x * 0.9);
+        VarModule::set_float(fighter.module_accessor, yu::status::float::SPECIAL_LW_ROMAN_MOVE, move_x * 0.9);
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {

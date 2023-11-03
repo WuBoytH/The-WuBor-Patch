@@ -21,10 +21,9 @@ pub unsafe extern "C" fn ike_critical_zoom(_vtable: u64, fighter: &mut Fighter, 
         status = *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END;
         param_hash = hash40("param_special_n");
     }
-    let object = &mut fighter.battle_object;
     if StatusModule::status_kind(module_accessor) == status
-    && VarModule::is_flag(object, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL) {
-        VarModule::off_flag(object, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
+    && VarModule::is_flag(module_accessor, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL) {
+        VarModule::off_flag(module_accessor, ike::status::flag::SPECIAL_N_ENABLE_CRITICAL);
         MiscModule::call_critical(module_accessor, unk, 0x23, param_hash, 1, 0, 0, 0);
     }
 }

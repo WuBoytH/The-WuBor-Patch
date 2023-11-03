@@ -26,7 +26,7 @@ unsafe fn szerosuit_specialhi(agent: &mut L2CAgentBase) {
     // }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION);
+        VarModule::on_flag(agent.module_accessor, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION);
         AttackModule::clear_all(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 26.0);
@@ -171,7 +171,7 @@ unsafe fn szerosuit_specialairhi(agent: &mut L2CAgentBase) {
     // }
     frame(agent.lua_state_agent, 23.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION);
+        VarModule::on_flag(agent.module_accessor, szerosuit::status::flag::SPECIAL_HI_DECIDE_MOTION);
         AttackModule::clear_all(agent.module_accessor);
     }
     frame(agent.lua_state_agent, 26.0);

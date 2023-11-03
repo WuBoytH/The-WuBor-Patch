@@ -27,7 +27,7 @@ unsafe fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {
         0,
         0
     );
-    VarModule::set_flag(fighter.battle_object, damage_fly_roll::flag::DISABLE_PASSIVE, disable_passive);
+    VarModule::set_flag(fighter.module_accessor, damage_fly_roll::flag::DISABLE_PASSIVE, disable_passive);
     0.into()
 }
 
@@ -59,7 +59,7 @@ unsafe fn status_damageflyroll_common(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_PASSIVE
     ];
     for x in passives.iter() {
-        let able = if VarModule::is_flag(fighter.battle_object, damage_fly_roll::flag::DISABLE_PASSIVE) {
+        let able = if VarModule::is_flag(fighter.module_accessor, damage_fly_roll::flag::DISABLE_PASSIVE) {
             WorkModule::unable_transition_term
         }
         else {

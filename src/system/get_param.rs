@@ -20,7 +20,7 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
             hash40("jump_speed_y")
         ].contains(&param_type) {
             let mut mul = 1.0;
-            if VarModule::is_flag(object, vars::fighter::instance::flag::SUPER_JUMP) {
+            if VarModule::is_flag(module_accessor, vars::fighter::instance::flag::SUPER_JUMP) {
                 mul *= 1.2;
             }
             return ret * mul;
@@ -33,17 +33,17 @@ pub unsafe fn get_param_float_replace(module: u64, param_type: u64, param_hash: 
             && sv_battle_object::kind(otarget_id) == *FIGHTER_KIND_KAMUI {
                 let object = MiscModule::get_battle_object_from_id(otarget_id);
                 if param_hash == hash40("speed_max") {
-                    if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+                    if VarModule::get_float(module_accessor, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                         return 1.2;
                     }
                 }
                 else if param_hash == hash40("life_max") {
-                    if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+                    if VarModule::get_float(module_accessor, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                         return 150.0;
                     }
                 }
                 else if param_hash == hash40("scale_max") {
-                    if VarModule::get_float(object, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
+                    if VarModule::get_float(module_accessor, vars::kamui::instance::float::DRAGON_INSTALL) > 0.0 {
                         return 1.7;
                     }
                 }

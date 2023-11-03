@@ -41,10 +41,10 @@ unsafe fn status_pre_jumpsquat_param(
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
 unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
-    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::JUMP_FROM_SQUAT);
+    VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::JUMP_FROM_SQUAT);
     jump_squat_check_special_jump(fighter);
     let /* mut */ jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP) {
         macros::EFFECT(fighter, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, -6, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
         // jump_squat_frame += 1.0;
     }
@@ -67,14 +67,14 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
 }
 
 unsafe fn jump_squat_check_special_jump(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_float(fighter.battle_object, fighter::instance::float::FLICK_DOWN) > 0.0
+    if VarModule::get_float(fighter.module_accessor, fighter::instance::float::FLICK_DOWN) > 0.0
     || (fighter.global_table[STICK_Y].get_f32() < -0.8
     && fighter.global_table[FLICK_Y].get_i32() < 4
     && fighter.global_table[FLICK_Y_DIR].get_f32() < 0.0) {
-        VarModule::on_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+        VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
     }
     else {
-        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+        VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
     }
 }
 
@@ -126,7 +126,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     } {
         return 1.into();
     }
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP) {
         let jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
         if fighter.global_table[STATUS_FRAME].get_f32() == jump_squat_frame - 1.0 {
             macros::LANDING_EFFECT(fighter, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -276,7 +276,7 @@ unsafe fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_JUMP {
-        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+        VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
     }
     0.into()
 }

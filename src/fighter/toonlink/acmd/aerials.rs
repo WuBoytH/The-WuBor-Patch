@@ -44,7 +44,7 @@ unsafe fn toonlink_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
         macros::ATTACK(agent, 0, 0, Hash40::new("sword2"), 14.0, 80, 95, 0, 25, 4.6, 5.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 1, 0, Hash40::new("sword2"), 14.0, 80, 95, 0, 25, 5.2, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
         macros::ATTACK(agent, 2, 0, Hash40::new("arml"), 14.0, 80, 95, 0, 25, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.1, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
@@ -69,7 +69,7 @@ unsafe fn toonlink_attackairhi(agent: &mut L2CAgentBase) {
     }
     wait(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, fighter::status::flag::JUMP_CANCEL);
+        VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
     }
 }
 
@@ -100,7 +100,7 @@ unsafe fn toonlink_attackairlw(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 14.0, 50, 98, 0, 40, 5.0, 1.0, -1.1, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::NORMAL_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::NORMAL_CANCEL);
     }
     frame(agent.lua_state_agent, 65.0);
     if macros::is_excute(agent) {

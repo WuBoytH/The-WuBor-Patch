@@ -16,18 +16,18 @@ use {
 #[acmd_script( agent = "edge", scripts = [ "game_appealsl", "game_appealsr" ], category = ACMD_GAME, low_priority )]
 unsafe fn edge_appeals(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 39.0);
-    let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
+    let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
-                agent.battle_object,
+                agent.module_accessor,
                 false,
                 hash40("appeal_s_loop"),
                 48
             );
-            VarModule::set_int64(agent.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
-            VarModule::set_int(agent.battle_object, appeal::int::ACTION_BUTTON, *CONTROL_PAD_BUTTON_ATTACK);
-            VarModule::on_flag(agent.battle_object, appeal::flag::ENABLE_ACTION);
+            VarModule::set_int64(agent.module_accessor, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
+            VarModule::set_int(agent.module_accessor, appeal::int::ACTION_BUTTON, *CONTROL_PAD_BUTTON_ATTACK);
+            VarModule::on_flag(agent.module_accessor, appeal::flag::ENABLE_ACTION);
         }
     }
 }
@@ -54,11 +54,11 @@ unsafe fn edge_appealsloop_eff(agent: &mut L2CAgentBase) {
         }
         frame(agent.lua_state_agent, 135.0);
         if macros::is_excute(agent) {
-            VarModule::set_int64(agent.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack_just"));
+            VarModule::set_int64(agent.module_accessor, appeal::int64::ACTION_MOT, hash40("appeal_s_attack_just"));
         }
         frame(agent.lua_state_agent, 138.0);
         if macros::is_excute(agent) {
-            VarModule::set_int64(agent.battle_object, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
+            VarModule::set_int64(agent.module_accessor, appeal::int64::ACTION_MOT, hash40("appeal_s_attack"));
         }
         agent.clear_lua_stack();
         wait_loop_sync_mot(agent.lua_state_agent);
@@ -370,11 +370,11 @@ unsafe fn edge_appealsattackjust_exp(agent: &mut L2CAgentBase) {
 #[acmd_script( agent = "edge", scripts = [ "game_appeallwl", "game_appeallwr" ], category = ACMD_GAME, low_priority )]
 unsafe fn edge_appeallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 39.0);
-    let hold_button = VarModule::get_int(agent.battle_object, appeal::int::HOLD_BUTTON);
+    let hold_button = VarModule::get_int(agent.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_on(agent.module_accessor, hold_button) {
         if macros::is_excute(agent) {
             MiscModule::set_appeal_loop(
-                agent.battle_object,
+                agent.module_accessor,
                 false,
                 hash40("appeal_lw_loop"),
                 60

@@ -3,7 +3,7 @@ use super::super::helper::*;
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn lucina_attack_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
+    VarModule::set_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("attack_dash"),
@@ -41,14 +41,14 @@ unsafe fn lucina_attack_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn lucina_attack_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if !VarModule::is_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE)
+    if !VarModule::is_flag(fighter.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE)
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0
-    && spent_meter(fighter.battle_object, false) {
-        VarModule::on_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE);
+    && spent_meter(fighter.module_accessor, false) {
+        VarModule::on_flag(fighter.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE);
     }
-    if VarModule::is_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
-    && VarModule::is_flag(fighter.battle_object, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
-        VarModule::on_flag(fighter.battle_object, yu::instance::flag::COMMAND);
+    if VarModule::is_flag(fighter.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE_TRANSITION)
+    && VarModule::is_flag(fighter.module_accessor, yu::status::flag::ATTACK_DASH_BIG_GAMBLE) {
+        VarModule::on_flag(fighter.module_accessor, yu::instance::flag::COMMAND);
         fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
         return 1.into();
     }

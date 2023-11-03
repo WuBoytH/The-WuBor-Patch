@@ -38,8 +38,8 @@ unsafe fn pikachu_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
 
 #[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_START);
-    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW);
+    VarModule::on_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_START);
+    VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_jump"),
@@ -84,7 +84,7 @@ unsafe fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 unsafe extern "C" fn pikachu_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_START) {
+    if VarModule::is_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_START) {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.set_situation(SITUATION_KIND_AIR.into());
             GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -99,13 +99,13 @@ unsafe extern "C" fn pikachu_special_lw_main_loop(fighter: &mut L2CFighterCommon
                 false,
                 false
             );
-            VarModule::off_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_START);
+            VarModule::off_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_START);
         }
     }
     else {
-        if VarModule::is_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY) {
+        if VarModule::is_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY) {
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
-            VarModule::off_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY);
+            VarModule::off_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY);
         }
         if CancelModule::is_enable_cancel(fighter.module_accessor) {
             if fighter.sub_wait_ground_check_common(false.into()).get_bool()
@@ -113,7 +113,7 @@ unsafe extern "C" fn pikachu_special_lw_main_loop(fighter: &mut L2CFighterCommon
                 return 0.into();
             }
         }
-        if VarModule::is_flag(fighter.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING)
+        if VarModule::is_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING)
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             WorkModule::set_float(fighter.module_accessor, 12.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());

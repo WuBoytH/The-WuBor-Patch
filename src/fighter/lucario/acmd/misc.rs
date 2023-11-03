@@ -6,12 +6,12 @@ unsafe fn lucario_appealhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if ControlModule::check_button_on(agent.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI) {
         if macros::is_excute(agent) {
-            VarModule::inc_int(agent.battle_object, lucario::instance::int::AURA_LEVEL);
+            VarModule::inc_int(agent.module_accessor, lucario::instance::int::AURA_LEVEL);
         }
     }
     else {
         if macros::is_excute(agent) {
-            VarModule::set_int(agent.battle_object, lucario::instance::int::AURA_LEVEL, 0);
+            VarModule::set_int(agent.module_accessor, lucario::instance::int::AURA_LEVEL, 0);
         }
     }
 }

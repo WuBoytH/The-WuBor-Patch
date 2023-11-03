@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackDash)]
 unsafe fn status_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::set_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
+    VarModule::set_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("attack_dash"),
@@ -53,7 +53,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     // This block is to force a ground correct type depending on if you enable sliding off or not.
     if situation == *SITUATION_KIND_GROUND {
-        if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_FALL) {
+        if VarModule::is_flag(fighter.module_accessor, attack_dash::flag::ENABLE_AIR_FALL) {
             if GroundModule::get_correct(fighter.module_accessor) != *GROUND_CORRECT_KIND_GROUND {
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
             }
@@ -66,11 +66,11 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     }
     // This block checks if you want to enable gravity. This code will only run once, and only while in the air,
     // but it enables another flag that will be checked when your situation changes and renable gravity there.
-    if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_GRAVITY)
+    if VarModule::is_flag(fighter.module_accessor, attack_dash::flag::ENABLE_GRAVITY)
     && situation != *SITUATION_KIND_GROUND {
-        VarModule::off_flag(fighter.battle_object, attack_dash::flag::ENABLE_GRAVITY);
-        VarModule::on_flag(fighter.battle_object, attack_dash::flag::GRAVITY_ENABLED);
-        let fall_mul = VarModule::get_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL);
+        VarModule::off_flag(fighter.module_accessor, attack_dash::flag::ENABLE_GRAVITY);
+        VarModule::on_flag(fighter.module_accessor, attack_dash::flag::GRAVITY_ENABLED);
+        let fall_mul = VarModule::get_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL);
         if fall_mul.signum() != -1.0 {
             let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
             sv_kinetic_energy!(
@@ -86,7 +86,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_situation_changed(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             // Checks if your dash attack should roll off or not.
-            if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE) {
+            if VarModule::is_flag(fighter.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE) {
                 GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
                 // Enables gravity.
                 sv_kinetic_energy!(
@@ -101,7 +101,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     0.0
                 );
                 KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-                let fall_mul = VarModule::get_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL);
+                let fall_mul = VarModule::get_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL);
                 if fall_mul.signum() != -1.0 {
                     let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                     sv_kinetic_energy!(
@@ -125,8 +125,8 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
                     );
                 }
                 // The previously mentioned flags that's only checked when your situation changes.
-                if VarModule::is_flag(fighter.battle_object, attack_dash::flag::GRAVITY_ENABLED) {
-                    let fall_mul = VarModule::get_float(fighter.battle_object, attack_dash::float::FALL_SPEED_Y_MUL);
+                if VarModule::is_flag(fighter.module_accessor, attack_dash::flag::GRAVITY_ENABLED) {
+                    let fall_mul = VarModule::get_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL);
                     if fall_mul.signum() != -1.0 {
                         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
                         sv_kinetic_energy!(
@@ -148,7 +148,7 @@ unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         else {
             // Checks if ENABLE_AIR_LANDING is enabled, and if it is, cancel into LANDING instead of continuing the dash attack.
-            if VarModule::is_flag(fighter.battle_object, attack_dash::flag::ENABLE_AIR_LANDING) {
+            if VarModule::is_flag(fighter.module_accessor, attack_dash::flag::ENABLE_AIR_LANDING) {
                 fighter.change_status(
                     FIGHTER_STATUS_KIND_LANDING.into(),
                     false.into()

@@ -117,7 +117,7 @@ unsafe fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikachu_dengekidama::status::flag::SPEED_UP);
+        VarModule::on_flag(agent.module_accessor, pikachu_dengekidama::status::flag::SPEED_UP);
     }
 }
 
@@ -296,7 +296,7 @@ unsafe fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
 unsafe fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING);
+        VarModule::on_flag(agent.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -313,7 +313,7 @@ unsafe fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY);
     }
 }
 

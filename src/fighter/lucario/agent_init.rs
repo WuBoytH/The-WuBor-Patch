@@ -13,25 +13,25 @@ pub unsafe extern "C" fn lucario_status_end_control(fighter: &mut L2CFighterComm
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
     || status == *FIGHTER_STATUS_KIND_REBIRTH {
-        VarModule::off_flag(fighter.battle_object, lucario::instance::flag::USED_AURA_CHARGE_AIR);
-        VarModule::off_flag(fighter.battle_object, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA);
-        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
+        VarModule::off_flag(fighter.module_accessor, lucario::instance::flag::USED_AURA_CHARGE_AIR);
+        VarModule::off_flag(fighter.module_accessor, lucario::instance::flag::EXTREME_SPEED_FORCE_NO_AURA);
+        VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
         if ![
             *FIGHTER_STATUS_KIND_LANDING,
             *FIGHTER_STATUS_KIND_LANDING_LIGHT,
             *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR
         ].contains(&status) {
-            VarModule::off_flag(fighter.battle_object, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
+            VarModule::off_flag(fighter.module_accessor, lucario::instance::flag::FORCE_LANDING_FALL_SPECIAL);
         }
     }
     if status == *FIGHTER_STATUS_KIND_REBIRTH {
-        VarModule::set_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL, 0);
+        VarModule::set_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL, 0);
     }
     0.into()
 }
 
 pub unsafe extern "C" fn lucario_special_s_uniq(fighter: &mut L2CFighterCommon) -> L2CValue {
-    (!VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S)).into()
+    (!VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S)).into()
 }
 
 #[fighter_reset]

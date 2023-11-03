@@ -4,7 +4,7 @@ use {
         lib::lua_const::*
     },
     custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    wubor_utils::vars::*
 };
 
 #[skyline::hook(offset = 0x971230)]
@@ -16,9 +16,7 @@ pub unsafe extern "C" fn dolly_check_super_special(work: u64, _damage: u64) -> u
     if smashball::is_training_mode() {
         return 1;
     }
-    let object_id = module_accessor.battle_object_id;
-    let object = MiscModule::get_battle_object_from_id(object_id);
-    let go_meter = VarModule::get_float(object, dolly::instance::float::GO_METER);
+    let go_meter = VarModule::get_float(module_accessor, dolly::instance::float::GO_METER);
     // println!("go_meter: {}", go_meter);
     if go_meter >= 100.0 {
         return 1;

@@ -121,6 +121,12 @@ unsafe fn ken_special_hi_substatus(fighter: &mut L2CFighterCommon, param_1: L2CV
     if !param_1.get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_HI_FLAG_REVERSE_LR);
+            let stick_x = fighter.global_table[STICK_X].get_f32();
+            let lr_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("lr_stick_x"));
+            if lr_stick_x < stick_x.abs() {
+                PostureModule::set_stick_lr(fighter.module_accessor, stick_x);
+                PostureModule::update_rot_y_lr(fighter.module_accessor);
+            }
         }
     }
     else {

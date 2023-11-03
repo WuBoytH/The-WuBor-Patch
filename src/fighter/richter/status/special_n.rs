@@ -13,6 +13,7 @@ unsafe fn richter_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        richter_special_n_main, richter_special_n_end
+        richter_special_n_main,
+        richter_special_n_end
     );
 }

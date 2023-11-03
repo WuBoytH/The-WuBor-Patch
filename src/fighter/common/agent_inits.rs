@@ -39,28 +39,28 @@ use {
 // }
 
 pub unsafe extern "C" fn specialn_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_N) {
         return 0.into();
     }
     1.into()
 }
 
 pub unsafe extern "C" fn specials_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S) {
         return 0.into();
     }
     1.into()
 }
 
 pub unsafe extern "C" fn specialhi_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI) {
         return 0.into();
     }
     1.into()
 }
 
 pub unsafe extern "C" fn speciallw_pre_generic(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_LW) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW) {
         return 0.into();
     }
     1.into()

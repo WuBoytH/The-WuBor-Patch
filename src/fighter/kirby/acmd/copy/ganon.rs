@@ -56,6 +56,7 @@ unsafe fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        kirby_ganonspecialn_eff, kirby_ganonspecialn_snd
+        kirby_ganonspecialn_eff,
+        kirby_ganonspecialn_snd
     );
 }

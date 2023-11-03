@@ -2,10 +2,10 @@ use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "marth", script = "game_speciallwattack11", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattack11(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 7.0);
@@ -69,15 +69,15 @@ unsafe fn marth_speciallwattack11_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattacklw3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattacklw3(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -150,7 +150,7 @@ unsafe fn marth_speciallwattacklw4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(agent.lua_state_agent, 13.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -293,15 +293,15 @@ unsafe fn marth_speciallwattacklw4_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattackhi3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattackhi3(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -430,23 +430,23 @@ unsafe fn marth_speciallwattackhi4_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattackf3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattackf3(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, marth::status::flag::ATTACK_3_CHANGE_MOTION);
+        VarModule::on_flag(agent.module_accessor, marth::status::flag::ATTACK_3_CHANGE_MOTION);
     }
     frame(agent.lua_state_agent, 4.0);
-    if !VarModule::is_flag(agent.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
+    if !VarModule::is_flag(agent.module_accessor, marth::status::flag::ATTACK_F3_HEAVY) {
         macros::FT_MOTION_RATE(agent, 1.5);
     }
     frame(agent.lua_state_agent, 6.0);
-    if !VarModule::is_flag(agent.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
+    if !VarModule::is_flag(agent.module_accessor, marth::status::flag::ATTACK_F3_HEAVY) {
         macros::FT_MOTION_RATE(agent, 1.0);
     }
     else {
@@ -459,7 +459,7 @@ unsafe fn marth_speciallwattackf3(agent: &mut L2CAgentBase) {
         let bkb;
         let kbg;
         let sound;
-        if VarModule::is_flag(agent.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
+        if VarModule::is_flag(agent.module_accessor, marth::status::flag::ATTACK_F3_HEAVY) {
             dmg = 6.0;
             bkb = 75;
             kbg = 54;
@@ -481,7 +481,7 @@ unsafe fn marth_speciallwattackf3(agent: &mut L2CAgentBase) {
         let bkb;
         let kbg;
         let sound;
-        if VarModule::is_flag(agent.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
+        if VarModule::is_flag(agent.module_accessor, marth::status::flag::ATTACK_F3_HEAVY) {
             dmg = 4.0;
             bkb = 60;
             kbg = 54;
@@ -519,7 +519,7 @@ unsafe fn marth_speciallwattackf3_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_dash_smoke"), Hash40::new("top"), 0, 0, -3, 0, 0, 0, 0.8, 0, 0, 0, 0, 0, 0, false);
     }
-    let size = if VarModule::is_flag(agent.battle_object, marth::status::flag::ATTACK_F3_HEAVY) {
+    let size = if VarModule::is_flag(agent.module_accessor, marth::status::flag::ATTACK_F3_HEAVY) {
         1.5
     }
     else {
@@ -578,10 +578,10 @@ unsafe fn marth_speciallwattackf3_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwattackb3", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwattackb3(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 12.0);
@@ -642,13 +642,41 @@ unsafe fn marth_speciallwattackb3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_speciallwattack11, marth_speciallwattack11_eff, marth_speciallwattack11_snd, marth_speciallwattack11_exp,
-        marth_speciallwattacklw3, marth_speciallwattacklw3_eff, marth_speciallwattacklw3_snd, marth_speciallwattacklw3_exp,
-        marth_speciallwattacklw4, marth_speciallwattacklw4f, marth_speciallwattacklw4b,
-        marth_speciallwattacklw4_eff, marth_speciallwattacklw4_snd, marth_speciallwattacklw4_exp,
-        marth_speciallwattackhi3, marth_speciallwattackhi3_eff, marth_speciallwattackhi3_snd, marth_speciallwattackhi3_exp,
-        marth_speciallwattackhi4, marth_speciallwattackhi4_eff, marth_speciallwattackhi4_snd, marth_speciallwattackhi4_exp,
-        marth_speciallwattackf3, marth_speciallwattackf3_eff, marth_speciallwattackf3_snd, marth_speciallwattackf3_exp,
-        marth_speciallwattackb3, marth_speciallwattackb3_eff, marth_speciallwattackb3_snd, marth_speciallwattackb3_exp
+        marth_speciallwattack11,
+        marth_speciallwattack11_eff,
+        marth_speciallwattack11_snd,
+        marth_speciallwattack11_exp,
+
+        marth_speciallwattacklw3,
+        marth_speciallwattacklw3_eff,
+        marth_speciallwattacklw3_snd,
+        marth_speciallwattacklw3_exp,
+
+        marth_speciallwattacklw4,
+        marth_speciallwattacklw4f,
+        marth_speciallwattacklw4b,
+        marth_speciallwattacklw4_eff,
+        marth_speciallwattacklw4_snd,
+        marth_speciallwattacklw4_exp,
+
+        marth_speciallwattackhi3,
+        marth_speciallwattackhi3_eff,
+        marth_speciallwattackhi3_snd,
+        marth_speciallwattackhi3_exp,
+
+        marth_speciallwattackhi4,
+        marth_speciallwattackhi4_eff,
+        marth_speciallwattackhi4_snd,
+        marth_speciallwattackhi4_exp,
+
+        marth_speciallwattackf3,
+        marth_speciallwattackf3_eff,
+        marth_speciallwattackf3_snd,
+        marth_speciallwattackf3_exp,
+
+        marth_speciallwattackb3,
+        marth_speciallwattackb3_eff,
+        marth_speciallwattackb3_snd,
+        marth_speciallwattackb3_exp
     );
 }

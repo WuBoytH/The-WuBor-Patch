@@ -117,7 +117,7 @@ unsafe fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikachu_dengekidama::status::flag::SPEED_UP);
+        VarModule::on_flag(agent.module_accessor, pikachu_dengekidama::status::flag::SPEED_UP);
     }
 }
 
@@ -296,7 +296,7 @@ unsafe fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
 unsafe fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING);
+        VarModule::on_flag(agent.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING);
     }
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -313,7 +313,7 @@ unsafe fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY);
+        VarModule::on_flag(agent.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_GRAVITY);
     }
 }
 
@@ -397,14 +397,33 @@ unsafe fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pikachu_specialn, pikachu_specialn_eff, pikachu_specialairn_eff, pikachu_specialn_snd, pikachu_specialn_exp,
+        pikachu_specialn,
+        pikachu_specialn_eff,
+        pikachu_specialairn_eff,
+        pikachu_specialn_snd,
+        pikachu_specialn_exp,
+
         pikachu_dengekidama_regular,
+
         pikachu_specialhistart,
+
         pikachu_specialhi1,
+
         pikachu_specialhi2,
-        pikachu_speciallw, pikachu_speciallw_eff, pikachu_speciallw_snd, pikachu_speciallw_exp,
-        pikachu_cloud_regular, pikachu_cloud_regular_eff,
+
+        pikachu_speciallw,
+        pikachu_speciallw_eff,
+        pikachu_speciallw_snd,
+        pikachu_speciallw_exp,
+
+        pikachu_cloud_regular,
+        pikachu_cloud_regular_eff,
+
         pikachu_kaminari_regular,
-        pikachu_speciallwstrike, pikachu_speciallwstrike_eff, pikachu_speciallwstrike_snd, pikachu_speciallwstrike_exp
+
+        pikachu_speciallwstrike,
+        pikachu_speciallwstrike_eff,
+        pikachu_speciallwstrike_snd,
+        pikachu_speciallwstrike_exp
     );
 }

@@ -21,7 +21,7 @@ unsafe fn sonic_throwf(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, fighter::status::flag::DASH_CANCEL);
+        VarModule::on_flag(agent.module_accessor, fighter::status::flag::DASH_CANCEL);
     }
 }
 
@@ -98,7 +98,11 @@ unsafe fn sonic_throwlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        sonic_throwf, sonic_throwf_eff, sonic_throwf_snd, sonic_throwf_exp,
+        sonic_throwf,
+        sonic_throwf_eff,
+        sonic_throwf_snd,
+        sonic_throwf_exp,
+
         sonic_throwlw
     );
 }

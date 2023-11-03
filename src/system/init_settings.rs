@@ -3,8 +3,7 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*,
     },
-    custom_var::*,
-    wubor_utils::wua_bind::*
+    custom_var::*
 };
 
 #[skyline::hook( replace = StatusModule::init_settings )]
@@ -38,8 +37,7 @@ pub unsafe fn init_settings_replace(
     && !status_pair {
         mask += VarModule::RESET_STATUS_FLOAT;
     }
-    let object = MiscModule::get_battle_object_from_id(object_id);
-    VarModule::reset(object, mask);
+    VarModule::reset(module_accessor, mask);
     original!()(
         module_accessor,
         situation,

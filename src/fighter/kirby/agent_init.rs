@@ -25,7 +25,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
             }
         }
         if copy_kind == *FIGHTER_KIND_GANON {
-            if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_N) {
+            if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_N) {
                 return 0.into();
             }
             else {

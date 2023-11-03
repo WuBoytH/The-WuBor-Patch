@@ -21,6 +21,7 @@ unsafe fn wiifit_specialhiend(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         wiifit_specialhijump,
+
         wiifit_specialhiend
     );
 }

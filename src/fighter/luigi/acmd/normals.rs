@@ -31,6 +31,7 @@ unsafe fn luigi_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         luigi_attackhi3,
+
         luigi_attacklw3
     );
 }

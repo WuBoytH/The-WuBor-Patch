@@ -3,6 +3,7 @@ mod aerials;
 mod specials;
 mod throws;
 mod escape;
+mod smashes;
 
 pub fn install() {
     normals::install();
@@ -10,4 +11,5 @@ pub fn install() {
     specials::install();
     throws::install();
     escape::install();
+    smashes::install();
 }

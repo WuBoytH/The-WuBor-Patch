@@ -10,7 +10,7 @@ unsafe fn packun_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 1.0);
         macros::ATTACK(agent, 0, 1, Hash40::new("top"), 1.2, 145, 100, 40, 0, 4.0, 0.0, 6.0, -8.0, Some(0.0), Some(6.0), Some(8.0), 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
-        VarModule::on_flag(agent.battle_object, packun::status::flag::SPECIAL_HI_ENABLE_CANCEL);
+        VarModule::on_flag(agent.module_accessor, packun::status::flag::SPECIAL_HI_ENABLE_CANCEL);
     }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {

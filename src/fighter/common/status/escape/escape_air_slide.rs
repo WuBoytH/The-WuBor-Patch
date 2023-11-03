@@ -314,18 +314,14 @@ pub unsafe fn escape_air_slide_end_inner(fighter: &mut L2CFighterCommon) -> L2CV
         lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_STOP);
         let speed_y = sv_kinetic_energy::get_speed_y(fighter.lua_state_agent);
         if escape_air_slide_landing_speed_max < landing_speed.abs() {
-            if landing_speed < 0.0 {
-                landing_speed = -escape_air_slide_landing_speed_max;
-            }
-            else {
-                landing_speed = escape_air_slide_landing_speed_max;
-            }
+            landing_speed = escape_air_slide_landing_speed_max * landing_speed.signum();
         }
+        let wavedash_mul = 0.85;
         sv_kinetic_energy!(
             set_speed,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_STOP,
-            landing_speed,
+            landing_speed * wavedash_mul,
             speed_y
         );
         if status == *FIGHTER_STATUS_KIND_LANDING {

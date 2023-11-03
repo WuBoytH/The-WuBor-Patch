@@ -210,6 +210,7 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
 pub fn install() {
     install_status_scripts!(
         demon_attack_main,
+
         demon_attackcombo_main
     );
 }

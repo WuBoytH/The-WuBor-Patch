@@ -117,8 +117,11 @@ pub fn install() {
     install_acmd_scripts!(
         metaknight_specialnstart,
         metaknight_specialnstart_eff,
+
         metaknight_specialnspin,
+
         metaknight_specialhi,
+
         metaknight_specialhiloop
     );
 }

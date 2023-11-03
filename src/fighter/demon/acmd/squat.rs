@@ -83,6 +83,7 @@ unsafe fn demon_attacksquat1(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         demon_attacksquat2,
+
         demon_attacksquat1
     );
 }

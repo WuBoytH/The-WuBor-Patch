@@ -14,18 +14,18 @@ use {
 
 unsafe fn ryu_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DISABLE_EX_FOCUS);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
-        VarModule::set_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 0.0);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::SECRET_SENSATION);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DISABLE_EX_FOCUS);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FLASH);
+        VarModule::set_float(fighter.module_accessor, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 0.0);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::SECRET_SENSATION);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_STATE);
     }
 }
 
 // move to status eventually
 unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
-    if !VarModule::is_flag(fighter.battle_object, ryu::instance::flag::DISABLE_EX_FOCUS) {
+    if !VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DISABLE_EX_FOCUS) {
         let mut can_exfadc = false;
         if ([*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND].contains(&fighter.global_table[STATUS_KIND].get_i32())
         && MotionModule::frame(fighter.module_accessor) > 16.0)
@@ -40,15 +40,15 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
             can_exfadc = true;
         }
         if can_exfadc && StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
-            VarModule::on_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
+            VarModule::on_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS);
         }
-        else if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS)
+        else if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS)
         && ![*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B].contains(&fighter.global_table[STATUS_KIND].get_i32()) {
-            VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
+            VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS);
         }
     }
 
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS)
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS)
     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL)
     && !fighter.global_table[IS_STOP].get_bool() {
         if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_COMMAND_4N4 != 0 {
@@ -63,57 +63,57 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
     }
 
     if [*FIGHTER_STATUS_KIND_SPECIAL_LW, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B].contains(&fighter.global_table[STATUS_KIND].get_i32())
-    && VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS) {
-        VarModule::on_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
-        VarModule::set_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER, 0);
-        VarModule::set_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 1200.0);
-        VarModule::on_flag(fighter.battle_object, ryu::instance::flag::DISABLE_EX_FOCUS);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FOCUS);
+    && VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS) {
+        VarModule::on_flag(fighter.module_accessor, ryu::instance::flag::EX_FLASH);
+        VarModule::set_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER, 0);
+        VarModule::set_float(fighter.module_accessor, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 1200.0);
+        VarModule::on_flag(fighter.module_accessor, ryu::instance::flag::DISABLE_EX_FOCUS);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS);
         macros::EFFECT_FLIP(fighter, Hash40::new("sys_flash"), Hash40::new("sys_flash"), Hash40::new("top"), -5, 10, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, true, *EF_FLIP_NONE);
         macros::PLAY_SE(fighter, Hash40::new("se_common_waza_ex_sf"));
     }
 
-    if VarModule::get_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER) > 0.0 {
-        VarModule::sub_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 1.0);
-        if VarModule::get_float(fighter.battle_object, ryu::instance::float::DISABLE_EX_FOCUS_TIMER) <= 0.0 {
+    if VarModule::get_float(fighter.module_accessor, ryu::instance::float::DISABLE_EX_FOCUS_TIMER) > 0.0 {
+        VarModule::sub_float(fighter.module_accessor, ryu::instance::float::DISABLE_EX_FOCUS_TIMER, 1.0);
+        if VarModule::get_float(fighter.module_accessor, ryu::instance::float::DISABLE_EX_FOCUS_TIMER) <= 0.0 {
             let pos: Vector3f = Vector3f{x: 0.0, y: 13.0, z: 0.0};
             let rot: Vector3f = Vector3f{x: 0.0, y: 90.0, z: 0.0};
             let focuseff: u32 = EffectModule::req_follow(fighter.module_accessor, Hash40::new("sys_counter_flash"), Hash40::new("top"), &pos, &rot, 1.0, false, 0, 0, 0, 0, 0, false, false) as u32;
             EffectModule::set_rgb(fighter.module_accessor, focuseff, 0.0, 0.0, 0.0);
-            VarModule::off_flag(fighter.battle_object, ryu::instance::flag::DISABLE_EX_FOCUS);
+            VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DISABLE_EX_FOCUS);
         }
     }
 }
 
 unsafe fn ryu_ex_flash(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH) {
-        let mut flash_timer = VarModule::get_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER);
-        if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::EX_FLASH) {
+        let mut flash_timer = VarModule::get_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER);
+        if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_STATE) {
             if flash_timer == 0 {
-                VarModule::set_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER, 8);
+                VarModule::set_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER, 8);
                 flash_timer = 8;
             }
             if flash_timer <= 4 {
                 macros::COL_NORMAL(fighter);
-                VarModule::dec_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER);
+                VarModule::dec_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER);
             }
             if flash_timer > 4 {
                 macros::FLASH(fighter, 0, 0.55, 1, 1.0);
-                VarModule::dec_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER);
+                VarModule::dec_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER);
             }
         }
         else {
             if flash_timer == 0 {
-                VarModule::set_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER, 13);
+                VarModule::set_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER, 13);
             }
             else if flash_timer == 1 {
                 macros::COL_NORMAL(fighter);
-                VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
-                VarModule::dec_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER);
+                VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FLASH);
+                VarModule::dec_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER);
             }
             else {
                 macros::FLASH(fighter, 1, 1, 0.0, 0.75);
-                VarModule::dec_int(fighter.battle_object, ryu::instance::int::FLASH_TIMER);
+                VarModule::dec_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER);
             }
         }
     }
@@ -147,19 +147,19 @@ unsafe fn ryu_secret_sensation_hit_cancel(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, ryu::instance::flag::SECRET_SENSATION) {
+    if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SECRET_SENSATION) {
         StopModule::end_stop(fighter.module_accessor);
         JostleModule::set_status(fighter.module_accessor, false);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
         DamageModule::set_damage_lock(fighter.module_accessor, true);
         DamageModule::set_no_reaction_no_effect(fighter.module_accessor, true);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 0.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8 }, 0.0);
-        if !VarModule::is_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_CAMERA) {
+        if !VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_CAMERA) {
             macros::PLAY_SE(fighter, Hash40::new("se_ryu_6c_exec"));
             if FighterUtil::get_opponent_fighter_num(fighter.module_accessor, true) < 2 {
                 macros::CAM_ZOOM_IN_arg5(fighter, 5.0, 0.0, 1.5, 0.0, 0.0);
             }
-            let target_id = VarModule::get_int(fighter.battle_object, fighter::instance::int::TARGET_ID) as u32;
+            let target_id = VarModule::get_int(fighter.module_accessor, fighter::instance::int::TARGET_ID) as u32;
             if sv_battle_object::is_active(target_id) {
                 let target_boma = sv_battle_object::module_accessor(target_id);
                 SlowModule::set(
@@ -175,49 +175,49 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             macros::FILL_SCREEN_MODEL_COLOR(fighter, 0, 3, 0.2, 0.2, 0.2, 0, 0, 0, 1, 1, 0, 205);
             let ryu_x = PostureModule::pos_x(fighter.module_accessor);
             let mut ryu_y = PostureModule::pos_y(fighter.module_accessor);
-            if ryu_x == VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_X) {
+            if ryu_x == VarModule::get_float(fighter.module_accessor, ryu::instance::float::TARGET_X) {
                 let opp_direc = 12.0 * PostureModule::lr(fighter.module_accessor);
-                VarModule::set_float(fighter.battle_object, ryu::instance::float::OPPONENT_DIREC, opp_direc);
+                VarModule::set_float(fighter.module_accessor, ryu::instance::float::OPPONENT_DIREC, opp_direc);
             }
-            else if ryu_x < VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_X) {
-                VarModule::set_float(fighter.battle_object, ryu::instance::float::OPPONENT_DIREC, 12.0);
+            else if ryu_x < VarModule::get_float(fighter.module_accessor, ryu::instance::float::TARGET_X) {
+                VarModule::set_float(fighter.module_accessor, ryu::instance::float::OPPONENT_DIREC, 12.0);
                 if PostureModule::lr(fighter.module_accessor) == -1.0 {
                     PostureModule::reverse_lr(fighter.module_accessor);
                 }
             }
             else {
-                VarModule::set_float(fighter.battle_object, ryu::instance::float::OPPONENT_DIREC, -12.0);
+                VarModule::set_float(fighter.module_accessor, ryu::instance::float::OPPONENT_DIREC, -12.0);
                 if PostureModule::lr(fighter.module_accessor) == 1.0 {
                     PostureModule::reverse_lr(fighter.module_accessor);
                 }
             }
             if sv_battle_object::is_active(target_id) && {
                 let target_boma = sv_battle_object::module_accessor(target_id);
-                (ryu_y - VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_Y)).abs() <= 12.0
+                (ryu_y - VarModule::get_float(fighter.module_accessor, ryu::instance::float::TARGET_Y)).abs() <= 12.0
                 && StatusModule::situation_kind(target_boma) == *SITUATION_KIND_GROUND }
             {
-                VarModule::set_float(fighter.battle_object, ryu::instance::float::VERT_EXTRA, 0.0);
+                VarModule::set_float(fighter.module_accessor, ryu::instance::float::VERT_EXTRA, 0.0);
             }
             else {
                 StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
                 WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
-                VarModule::set_float(fighter.battle_object, ryu::instance::float::VERT_EXTRA, 12.0);
+                VarModule::set_float(fighter.module_accessor, ryu::instance::float::VERT_EXTRA, 12.0);
                 ryu_y += 2.0;
                 PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{
                     x: 0.0,
                     y: 2.0
                 });
             }
-            VarModule::set_float(fighter.battle_object, ryu::instance::float::RYU_X, ryu_x);
-            VarModule::set_float(fighter.battle_object, ryu::instance::float::RYU_Y, ryu_y);
-            VarModule::on_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_CAMERA);
+            VarModule::set_float(fighter.module_accessor, ryu::instance::float::RYU_X, ryu_x);
+            VarModule::set_float(fighter.module_accessor, ryu::instance::float::RYU_Y, ryu_y);
+            VarModule::on_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_CAMERA);
         }
-        if VarModule::get_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER) >= 0.0 {
-            let target_id = VarModule::get_int(fighter.battle_object, fighter::instance::int::TARGET_ID) as u32;
-            let ryu_x = VarModule::get_float(fighter.battle_object, ryu::instance::float::RYU_X);
-            let ryu_y = VarModule::get_float(fighter.battle_object, ryu::instance::float::RYU_Y);
-            let target_x = VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_X);
-            let target_y = VarModule::get_float(fighter.battle_object, ryu::instance::float::TARGET_Y);
+        if VarModule::get_float(fighter.module_accessor, ryu::instance::float::SEC_SEN_TIMER) >= 0.0 {
+            let target_id = VarModule::get_int(fighter.module_accessor, fighter::instance::int::TARGET_ID) as u32;
+            let ryu_x = VarModule::get_float(fighter.module_accessor, ryu::instance::float::RYU_X);
+            let ryu_y = VarModule::get_float(fighter.module_accessor, ryu::instance::float::RYU_Y);
+            let target_x = VarModule::get_float(fighter.module_accessor, ryu::instance::float::TARGET_X);
+            let target_y = VarModule::get_float(fighter.module_accessor, ryu::instance::float::TARGET_Y);
             if sv_battle_object::is_active(target_id) {
                 let target_boma = sv_battle_object::module_accessor(target_id);
                 if (ryu_y - target_y).abs() <= 12.0
@@ -232,18 +232,18 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             if (ryu_y - target_y).abs() > 12.0 {
                 StatusModule::set_situation_kind(fighter.module_accessor, SituationKind(*SITUATION_KIND_AIR), true);
             }
-            let sec_sen_timer = VarModule::get_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER);
-            let opp_direc = VarModule::get_float(fighter.battle_object, ryu::instance::float::OPPONENT_DIREC);
-            let vert_extra = VarModule::get_float(fighter.battle_object, ryu::instance::float::VERT_EXTRA);
+            let sec_sen_timer = VarModule::get_float(fighter.module_accessor, ryu::instance::float::SEC_SEN_TIMER);
+            let opp_direc = VarModule::get_float(fighter.module_accessor, ryu::instance::float::OPPONENT_DIREC);
+            let vert_extra = VarModule::get_float(fighter.module_accessor, ryu::instance::float::VERT_EXTRA);
             PostureModule::set_pos_2d(fighter.module_accessor, &Vector2f{
                 x: (((target_x + opp_direc) * sec_sen_timer) + ryu_x * (1.0 - sec_sen_timer)),
                 y: (((target_y + vert_extra) * sec_sen_timer) + ryu_y * (1.0 - sec_sen_timer))
             });
         }
-        VarModule::add_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER, 0.08);
-        if VarModule::get_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER) > 1.0 {
-            VarModule::off_flag(fighter.battle_object, ryu::instance::flag::SECRET_SENSATION);
-            VarModule::off_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_CAMERA);
+        VarModule::add_float(fighter.module_accessor, ryu::instance::float::SEC_SEN_TIMER, 0.08);
+        if VarModule::get_float(fighter.module_accessor, ryu::instance::float::SEC_SEN_TIMER) > 1.0 {
+            VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::SECRET_SENSATION);
+            VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_CAMERA);
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_GRAVITY_STABLE_UNABLE);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
             macros::SET_SPEED_EX(fighter, 0, 0.5, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -257,11 +257,11 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
             macros::CANCEL_FILL_SCREEN(fighter, 0, 5);
             SlowModule::clear_whole(fighter.module_accessor);
             JostleModule::set_status(fighter.module_accessor, true);
-            VarModule::set_float(fighter.battle_object, ryu::instance::float::SEC_SEN_TIMER, -0.6);
+            VarModule::set_float(fighter.module_accessor, ryu::instance::float::SEC_SEN_TIMER, -0.6);
         }
     }
-    else if !VarModule::is_flag(fighter.battle_object, ryu::instance::flag::SECRET_SENSATION)
-    && VarModule::is_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE)
+    else if !VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SECRET_SENSATION)
+    && VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_STATE)
     && ![
         hash40("appeal_hi_l"),
         hash40("appeal_hi_r")
@@ -269,11 +269,11 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
         DamageModule::set_damage_lock(fighter.module_accessor, false);
         DamageModule::set_no_reaction_no_effect(fighter.module_accessor, false);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 1.0, HitStopMulTarget{_address: *HIT_STOP_MUL_TARGET_SELF as u8}, 0.0);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::EX_FLASH);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FLASH);
         macros::COL_NORMAL(fighter);
         macros::EFFECT_OFF_KIND(fighter, Hash40::new("ryu_savingattack_aura"), false, true);
         macros::BURN_COLOR_NORMAL(fighter);
-        VarModule::off_flag(fighter.battle_object, ryu::instance::flag::SEC_SEN_STATE);
+        VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_STATE);
         HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }

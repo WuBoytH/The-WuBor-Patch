@@ -44,6 +44,7 @@ unsafe fn miigunner_specialhi2(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         miigunner_specialhi1,
+
         miigunner_specialhi2
     );
 }

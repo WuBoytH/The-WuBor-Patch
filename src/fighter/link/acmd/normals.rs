@@ -89,9 +89,13 @@ unsafe fn link_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         link_attack13,
+
         link_attackdash,
+
         link_attacks3,
+
         link_attackhi3,
+
         link_attacklw3
     );
 }

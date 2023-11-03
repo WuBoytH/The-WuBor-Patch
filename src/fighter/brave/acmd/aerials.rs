@@ -191,9 +191,14 @@ unsafe fn brave_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         brave_attackairn,
+
         brave_attackairf,
+
         brave_attackairb,
-        brave_attackairhi, brave_attackairhi_eff,
+
+        brave_attackairhi,
+        brave_attackairhi_eff,
+
         brave_attackairlw
     );
 }

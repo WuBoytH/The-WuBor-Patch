@@ -38,6 +38,7 @@ unsafe fn reflet_specialhi2(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         reflet_specialhi,
+
         reflet_specialhi2
     );
 }

@@ -198,6 +198,7 @@ unsafe fn trail_speciallw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         trail_specialhi,
+
         trail_speciallw
     );
 }

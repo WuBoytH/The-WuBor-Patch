@@ -86,7 +86,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
         && fighter.global_table[CMD_CAT3].get_i32() & (*FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI | *FIGHTER_PAD_CMD_CAT3_ITEM_LIGHT_THROW_HI4) != 0) {
             if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                 ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-                VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+                VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
                 return true.into();
             }
@@ -95,7 +95,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if can_act {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
@@ -114,13 +114,13 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if can_act {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON) {
             ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
         if fighter.sub_check_button_jump().get_bool()
         || fighter.sub_check_button_frick().get_bool() {
-            VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
@@ -179,7 +179,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.change_status(FIGHTER_STATUS_KIND_CATCH.into(), true.into());
         }
         else {
-            VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
         }
         return true.into();
@@ -216,7 +216,7 @@ unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_ho
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND
         && !ItemModule::is_have_item(fighter.module_accessor, 0) {
             ControlModule::clear_command_one(fighter.module_accessor, 0, 0x1d); // FIGHTER_PAD_CMD_CAT1_CATCH
-            VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+            VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
             fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
             return true.into();
         }
@@ -238,7 +238,7 @@ unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_ho
             };
             if cont {
                 // fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
-                VarModule::on_flag(fighter.battle_object, guard::flag::ADD_BUFFER);
+                VarModule::on_flag(fighter.module_accessor, guard::flag::ADD_BUFFER);
                 fighter.change_status(FIGHTER_STATUS_KIND_GUARD_OFF.into(), false.into());
                 return true.into();
             }
@@ -254,7 +254,7 @@ unsafe fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighter
     let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
-    let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+    let shield_eff = VarModule::get_int(fighter.module_accessor, guard::int::SHIELD_EFF_ID) as u32;
     let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
     if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
         let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;
@@ -273,7 +273,7 @@ unsafe fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _
     let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: scale, y: scale, z: scale});
-    let shield_eff = VarModule::get_int(fighter.battle_object, guard::int::SHIELD_EFF_ID) as u32;
+    let shield_eff = VarModule::get_int(fighter.module_accessor, guard::int::SHIELD_EFF_ID) as u32;
     let shield_max = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD_MAX);
     if EffectModule::is_exist_effect(fighter.module_accessor, shield_eff) {
         let ratio = (shield_hp / shield_max).clamp(0.1, 1.0) * 0.1;

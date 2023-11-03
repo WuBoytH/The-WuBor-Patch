@@ -47,7 +47,7 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     FighterStatusModuleImpl::set_fighter_status_data(
         fighter.module_accessor,
-        true,
+        false,
         *FIGHTER_TREADED_KIND_ENABLE,
         true,
         false,
@@ -71,7 +71,7 @@ unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
         0.0
     };
     // New
-    let start_rate = if VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL) {
+    let start_rate = if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL) {
         0.75
     }
     else {
@@ -93,7 +93,7 @@ unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
 #[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Sub)]
 unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
     // New
-    let start_rate = if VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL) {
+    let start_rate = if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL) {
         0.75
     }
     else {
@@ -115,7 +115,7 @@ unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
 
 #[skyline::hook(replace = L2CFighterCommon_status_DashCommon)]
 unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
-    VarModule::off_flag(fighter.battle_object, dash::flag::DISABLE_RUN);
+    VarModule::off_flag(fighter.module_accessor, dash::flag::DISABLE_RUN);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     let transitions = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH,
@@ -149,6 +149,7 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_COMMAND_623NB,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_STAND,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_SQUAT,
+        *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH,
         // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B,
         // *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_F,
@@ -428,6 +429,14 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
         }
     }
 
+    if fighter.global_table[STATUS_FRAME].get_i32() != 0
+    && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN) 
+    && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN != 0 {
+        VarModule::on_flag(fighter.module_accessor, dash::flag::DISABLE_PIVOT_TURN_DASH);
+        fighter.change_status(FIGHTER_STATUS_KIND_TURN.into(), true.into());
+        return 1.into();
+    }
+
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH) 
     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
         fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
@@ -452,7 +461,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
             return 1.into();
         }
     }
-    if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+    if !VarModule::is_flag(fighter.module_accessor, dash::flag::DISABLE_RUN)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
         let stick_x = fighter.global_table[STICK_X].get_f32();
         let lr = PostureModule::lr(fighter.module_accessor);
@@ -480,6 +489,20 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
     else {
         fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
         return 1.into();
+    }
+    0.into()
+}
+
+#[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Main)]
+unsafe fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    if fighter.status_Dash_Main_common(0.into()).get_bool() {
+        return 1.into();
+    }
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
+        if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON) {
+            KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_DASH);
+            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_TURN_DASH_ON);
+        }
     }
     0.into()
 }
@@ -515,7 +538,7 @@ pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub unsafe fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // New
-    let start_rate = if VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL) {
+    let start_rate = if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL) {
         0.75
     }
     else {
@@ -711,7 +734,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 
     if !fighter.sub_transition_group_check_ground_jump().get_bool() {
-        if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+        if !VarModule::is_flag(fighter.module_accessor, dash::flag::DISABLE_RUN)
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) && {
             let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr = PostureModule::lr(fighter.module_accessor);
@@ -767,7 +790,7 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
             WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH);
             WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_SWING_DASH);
             // WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
-            VarModule::on_flag(fighter.battle_object, dash::flag::DISABLE_RUN);
+            VarModule::on_flag(fighter.module_accessor, dash::flag::DISABLE_RUN);
         }
     }
     let dash_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_COUNT);
@@ -791,7 +814,7 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_SLIP) {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DASH_FLAG_NO_SLIP);
     }
-    if !VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN)
+    if !VarModule::is_flag(fighter.module_accessor, dash::flag::DISABLE_RUN)
     && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
     }
@@ -799,6 +822,7 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
     if 0 <= turn_dash_frame {
         WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_DASH_WORK_INT_TURN_DASH_FRAME);
         if turn_dash_frame - 1 < 0 {
+            WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_TURN_DASH);
             WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ESCAPE_B);
         }
@@ -864,11 +888,11 @@ unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, pa
 }
 
 unsafe extern "C" fn check_dash_cancel_early_return(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL) {
+    if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL) {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN) {
-            VarModule::off_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
+            VarModule::off_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL);
             MotionModule::set_rate(fighter.module_accessor, 1.0);
-            if VarModule::is_flag(fighter.battle_object, dash::flag::DISABLE_RUN) {
+            if VarModule::is_flag(fighter.module_accessor, dash::flag::DISABLE_RUN) {
                 WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
                 WorkModule::enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_DASH_TO_RUN);
             }
@@ -889,6 +913,7 @@ fn nro_hook(info: &skyline::nro::NroInfo) {
             status_turndash_sub,
             status_dashcommon,
             status_dash_main_common,
+            status_turndash_main,
             sub_dash_uniq_process_main_internal
         );
     }

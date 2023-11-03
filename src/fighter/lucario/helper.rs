@@ -11,15 +11,15 @@ use {
 };
 
 pub unsafe extern "C" fn lucario_drain_aura(fighter: &mut L2CAgentBase, drain_all: bool) -> bool {
-    let aura_charge = VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+    let aura_charge = VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL);
     if aura_charge > 0 {
         if drain_all {
-            VarModule::set_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL, 0);
-            VarModule::set_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY, aura_charge);
+            VarModule::set_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL, 0);
+            VarModule::set_int(fighter.module_accessor, lucario::status::int::AURA_ENHANCED_BY, aura_charge);
         }
         else {
-            VarModule::dec_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
-            VarModule::inc_int(fighter.battle_object, lucario::status::int::AURA_ENHANCED_BY);
+            VarModule::dec_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL);
+            VarModule::inc_int(fighter.module_accessor, lucario::status::int::AURA_ENHANCED_BY);
         }
         true
     }
@@ -29,8 +29,8 @@ pub unsafe extern "C" fn lucario_drain_aura(fighter: &mut L2CAgentBase, drain_al
 }
 
 pub unsafe extern "C" fn lucario_gain_aura(fighter: &mut L2CAgentBase) -> bool {
-    if VarModule::get_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
-        VarModule::inc_int(fighter.battle_object, lucario::instance::int::AURA_LEVEL);
+    if VarModule::get_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL) < vl::private::AURA_CHARGE_MAX {
+        VarModule::inc_int(fighter.module_accessor, lucario::instance::int::AURA_LEVEL);
         FighterUtil::flash_eye_info(fighter.module_accessor);
         true
     }
@@ -203,7 +203,7 @@ pub unsafe extern "C" fn lucario_special_n_save_charge_status(fighter: &mut L2CF
 
 pub unsafe extern "C" fn lucario_special_lw_eff_remover(fighter: &mut L2CAgentBase) {
     for x in lucario::status::int::SPECIAL_LW_EFF1..=lucario::status::int::SPECIAL_LW_EFF3 {
-        let eff = VarModule::get_int(fighter.battle_object, x) as u32;
+        let eff = VarModule::get_int(fighter.module_accessor, x) as u32;
         if EffectModule::is_exist_effect(fighter.module_accessor, eff) {
             EffectModule::kill(fighter.module_accessor, eff, true, true);
         }

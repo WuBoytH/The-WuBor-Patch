@@ -2,10 +2,10 @@ use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashf", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashf(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 15.0);
@@ -42,10 +42,10 @@ unsafe fn marth_speciallwdashf_exp(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashb", category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallwdashb(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
-            VarModule::off_flag(agent.battle_object, marth::instance::flag::PARRY_XLU);
+            VarModule::off_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU);
         }
     }
     frame(agent.lua_state_agent, 15.0);
@@ -82,7 +82,14 @@ unsafe fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_speciallwdashf, marth_speciallwdashf_eff, marth_speciallwdashf_snd, marth_speciallwdashf_exp,
-        marth_speciallwdashb, marth_speciallwdashb_eff, marth_speciallwdashb_snd, marth_speciallwdashb_exp
+        marth_speciallwdashf,
+        marth_speciallwdashf_eff,
+        marth_speciallwdashf_snd,
+        marth_speciallwdashf_exp,
+
+        marth_speciallwdashb,
+        marth_speciallwdashb_eff,
+        marth_speciallwdashb_snd,
+        marth_speciallwdashb_exp
     );
 }

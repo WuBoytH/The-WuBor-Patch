@@ -191,10 +191,17 @@ unsafe fn mariod_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mariod_attackairn, mariod_attackairn_eff, mariod_attackairn_snd, mariod_attackairn_exp,
+        mariod_attackairn,
+        mariod_attackairn_eff,
+        mariod_attackairn_snd,
+        mariod_attackairn_exp,
+
         mariod_attackairf,
+
         mariod_attackairb,
+
         mariod_attackairhi,
+
         mariod_attackairlw
     );
 }

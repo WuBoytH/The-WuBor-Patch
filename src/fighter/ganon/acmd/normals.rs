@@ -69,18 +69,18 @@ unsafe fn ganon_attackhi3(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "ganon", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
 unsafe fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 15.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 15, -3, 180, 190, -90, 1.15, true);
-        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
-    }
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
+        macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_d"), Hash40::new("top"), 0, 15, -3, 180, 190, -90, 1.15, true);
+        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
+    }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 24, 2, 0, 0, 0, 1.5, true, 0.9);
+        macros::EFFECT_FOLLOW_ALPHA(agent, Hash40::new("sys_attack_impact"), Hash40::new("top"), 0, 28, 4, 0, 0, 0, 1.5, true, 0.9);
         macros::LAST_EFFECT_SET_RATE(agent, 2);
     }
     frame(agent.lua_state_agent, 50.0);
@@ -127,9 +127,16 @@ unsafe fn ganon_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ganon_attack11,
+
         ganon_attackdash,
+
         ganon_attacks3,
-        ganon_attackhi3, ganon_attackhi3_eff, ganon_attackhi3_snd, ganon_attackhi3_exp,
+
+        ganon_attackhi3,
+        ganon_attackhi3_eff,
+        ganon_attackhi3_snd,
+        ganon_attackhi3_exp,
+
         ganon_attacklw3
     );
 }

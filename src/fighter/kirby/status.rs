@@ -1,5 +1,6 @@
 mod kirby;
 mod purin;
+mod koopa;
 mod ganon;
 mod lucario;
 mod ike;
@@ -9,6 +10,7 @@ mod jack;
 pub fn install() {
     kirby::install();
     purin::install();
+    koopa::install();
     ganon::install();
     lucario::install();
     ike::install();

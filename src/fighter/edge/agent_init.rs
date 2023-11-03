@@ -19,7 +19,7 @@ pub unsafe extern "C" fn edge_status_end_control(fighter: &mut L2CFighterCommon)
             *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING,
             *FIGHTER_STATUS_KIND_JUMP_SQUAT
         ].contains(&status) {
-            VarModule::set_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 0);
+            VarModule::set_int(fighter.module_accessor, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 0);
         }
     }
     0.into()

@@ -95,7 +95,7 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // && 0.0 < anim_cancel_frame {
     //     motion_rate = anim_cancel_frame / guard_off_cancel_frame as f32;
     // }
-    if VarModule::is_flag(fighter.battle_object, guard::flag::ADD_BUFFER) {
+    if VarModule::is_flag(fighter.module_accessor, guard::flag::ADD_BUFFER) {
         ControlModule::set_command_life_extend(fighter.module_accessor, guard_off_cancel_frame as u8);
     }
     let guard_off_enable_shield_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("guard_off_enable_shield_frame"));
@@ -175,7 +175,7 @@ unsafe fn sub_ftstatusuniqprocessguardoff_exitstatus(fighter: &mut L2CFighterCom
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
     }
     ShieldModule::set_shield_type(fighter.module_accessor, ShieldType(guard_type), *FIGHTER_SHIELD_KIND_GUARD, 0);
-    if VarModule::is_flag(fighter.battle_object, guard::flag::ADD_BUFFER) {
+    if VarModule::is_flag(fighter.module_accessor, guard::flag::ADD_BUFFER) {
         ControlModule::set_command_life_extend(fighter.module_accessor, 0);
     }
     0.into()

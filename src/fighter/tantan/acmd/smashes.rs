@@ -55,6 +55,7 @@ unsafe fn tantan_beam_bigshoot(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         tantan_attackhi4,
+
         tantan_beam_bigshoot
     );
 }

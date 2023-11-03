@@ -31,7 +31,7 @@ fn mario_frame(fighter: &mut L2CFighterCommon) {
                 *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT,
                 *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE
             ].contains(&StatusModule::status_kind(fighter.module_accessor)) {
-                VarModule::set_int(fighter.battle_object, mario::instance::int::SPECIAL_LW_KIND, mario::SPECIAL_LW_KIND_LONG_JUMP);
+                VarModule::set_int(fighter.module_accessor, mario::instance::int::SPECIAL_LW_KIND, mario::SPECIAL_LW_KIND_LONG_JUMP);
             }
         }
     }

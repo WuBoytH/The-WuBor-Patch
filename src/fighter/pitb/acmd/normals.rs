@@ -29,6 +29,7 @@ unsafe fn pitb_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pitb_attacks3,
+
         pitb_attacklw3
     );
 }

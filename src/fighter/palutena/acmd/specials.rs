@@ -33,7 +33,9 @@ unsafe fn palutena_specialairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         palutena_specialhistart,
+
         palutena_specialhi,
+
         palutena_specialairhi
     );
 }

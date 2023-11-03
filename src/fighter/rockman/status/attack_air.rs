@@ -22,6 +22,7 @@ unsafe fn rockman_attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 pub fn install() {
     install_status_scripts!(
-        rockman_attack_air_main, rockman_attack_air_end
+        rockman_attack_air_main,
+        rockman_attack_air_end
     );
 }

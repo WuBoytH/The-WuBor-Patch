@@ -36,7 +36,9 @@ unsafe fn mewtwo_escapeairslide(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        mewtwo_escapeair, mewtwo_escapeair_eff,
+        mewtwo_escapeair,
+        mewtwo_escapeair_eff,
+
         mewtwo_escapeairslide
     );
 }

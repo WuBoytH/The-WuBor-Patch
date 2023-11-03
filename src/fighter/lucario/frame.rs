@@ -26,7 +26,7 @@ unsafe fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
 //     && !fighter.global_table[IS_STOP].get_bool()
 //     && !AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_ALL) {
 //         if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
-//             VarModule::on_flag(fighter.battle_object, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL);
+//             VarModule::on_flag(fighter.module_accessor, lucario::status::flag::SPECIAL_HI_SUPER_DASH_CANCEL);
 //         }
 //         fighter.change_status(FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END.into(), false.into());
 //     }

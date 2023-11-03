@@ -136,6 +136,8 @@ unsafe extern "C" fn pikachu_special_s_warp_1_main_loop(fighter: &mut L2CFighter
 
 pub fn install() {
     install_status_scripts!(
-        pikachu_special_s_warp_pre, pikachu_special_s_warp_init, pikachu_special_s_warp_main
+        pikachu_special_s_warp_pre,
+        pikachu_special_s_warp_init,
+        pikachu_special_s_warp_main
     );
 }

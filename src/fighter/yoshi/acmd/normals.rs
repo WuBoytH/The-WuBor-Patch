@@ -83,9 +83,13 @@ unsafe fn yoshi_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         yoshi_attacks3,
+
         yoshi_attacks3hi,
+
         yoshi_attacks3lw,
+
         yoshi_attackhi3,
+
         yoshi_attacklw3
     );
 }

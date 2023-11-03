@@ -34,6 +34,7 @@ unsafe fn zelda_attackdash(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         zelda_attacklw3,
+
         zelda_attackdash
     );
 }

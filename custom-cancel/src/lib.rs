@@ -441,7 +441,7 @@ impl CustomCancelManager {
                 if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     let alt_cancel = alt_enable.special_cancel;
@@ -467,7 +467,7 @@ impl CustomCancelManager {
                 let require_flag = if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     alt_enable.special_cancel_require_flag
@@ -477,7 +477,7 @@ impl CustomCancelManager {
                 };
 
                 let flag_check = if require_flag {
-                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::SPECIAL_CANCEL)
+                    VarModule::is_flag(fighter.module_accessor, fighter::status::flag::SPECIAL_CANCEL)
                 }
                 else {
                     cancel_window
@@ -498,7 +498,7 @@ impl CustomCancelManager {
                 if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     let alt_cancel = alt_enable.normal_cancel;
@@ -524,7 +524,7 @@ impl CustomCancelManager {
                 let require_flag = if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     alt_enable.normal_cancel_require_flag
@@ -534,7 +534,7 @@ impl CustomCancelManager {
                 };
                 
                 let flag_check = if require_flag {
-                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
+                    VarModule::is_flag(fighter.module_accessor, fighter::status::flag::NORMAL_CANCEL)
                 }
                 else {
                     cancel_window
@@ -555,7 +555,7 @@ impl CustomCancelManager {
                     if cancel_info.alt_info.is_some()
                     && {
                         let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                        VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                     } {
                         let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                         let alt_cancel = alt_enable.jump_cancel;
@@ -580,7 +580,7 @@ impl CustomCancelManager {
                     let require_flag = if cancel_info.alt_info.is_some()
                     && {
                         let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                        VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                        VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                     } {
                         let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                         alt_enable.jump_cancel_require_flag
@@ -590,7 +590,7 @@ impl CustomCancelManager {
                     };
                     
                     let flag_check = if require_flag {
-                        VarModule::is_flag(fighter.battle_object, fighter::status::flag::JUMP_CANCEL)
+                        VarModule::is_flag(fighter.module_accessor, fighter::status::flag::JUMP_CANCEL)
                     }
                     else {
                         cancel_window
@@ -605,7 +605,7 @@ impl CustomCancelManager {
                 if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     let alt_cancel = alt_enable.aerial_cancel;
@@ -630,7 +630,7 @@ impl CustomCancelManager {
                 let require_flag = if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     alt_enable.aerial_cancel_require_flag
@@ -640,7 +640,7 @@ impl CustomCancelManager {
                 };
                 
                 let flag_check = if require_flag {
-                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::NORMAL_CANCEL)
+                    VarModule::is_flag(fighter.module_accessor, fighter::status::flag::NORMAL_CANCEL)
                 }
                 else {
                     cancel_window
@@ -667,7 +667,7 @@ impl CustomCancelManager {
                 if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     let alt_cancel = alt_enable.dash_cancel;
@@ -692,7 +692,7 @@ impl CustomCancelManager {
                 let require_flag = if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     alt_enable.dash_cancel_require_flag
@@ -702,7 +702,7 @@ impl CustomCancelManager {
                 };
                 
                 let flag_check = if require_flag {
-                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
+                    VarModule::is_flag(fighter.module_accessor, fighter::status::flag::DASH_CANCEL)
                 }
                 else {
                     cancel_window
@@ -712,13 +712,13 @@ impl CustomCancelManager {
                     if dash_cancel_dir.contains(DashCancelDir::FORWARD)
                     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_DASH != 0 {
                         fighter.change_status(FIGHTER_STATUS_KIND_DASH.into(), true.into());
-                        VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
+                        VarModule::on_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL);
                         return true;
                     }
                     if dash_cancel_dir.contains(DashCancelDir::BACKWARD)
                     && fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_TURN_DASH != 0 {
                         fighter.change_status(FIGHTER_STATUS_KIND_TURN_DASH.into(), true.into());
-                        VarModule::on_flag(fighter.battle_object, fighter::status::flag::IS_DASH_CANCEL);
+                        VarModule::on_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL);
                         return true;
                     }
                 }
@@ -731,7 +731,7 @@ impl CustomCancelManager {
                 if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     let alt_cancel = alt_enable.airdash_cancel;
@@ -756,7 +756,7 @@ impl CustomCancelManager {
                 let require_flag = if cancel_info.alt_info.is_some()
                 && {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
-                    VarModule::is_flag(fighter.battle_object, alt_enable.flag)
+                    VarModule::is_flag(fighter.module_accessor, alt_enable.flag)
                 } {
                     let alt_enable = cancel_info.alt_info.as_ref().unwrap();
                     alt_enable.airdash_cancel_require_flag
@@ -766,14 +766,14 @@ impl CustomCancelManager {
                 };
                 
                 let flag_check = if require_flag {
-                    VarModule::is_flag(fighter.battle_object, fighter::status::flag::DASH_CANCEL)
+                    VarModule::is_flag(fighter.module_accessor, fighter::status::flag::DASH_CANCEL)
                 }
                 else {
                     cancel_window
                 };
                 
                 if condition && flag_check {
-                    VarModule::on_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
+                    VarModule::on_flag(fighter.module_accessor, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
                     if airdash_cancel_common(fighter, situation.into()).get_bool() {
                         return true;
                     }

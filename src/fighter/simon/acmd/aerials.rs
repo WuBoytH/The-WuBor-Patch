@@ -36,8 +36,8 @@ unsafe fn simon_attackairf(agent: &mut L2CAgentBase) {
                 -1
             );
         }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 55, 0, 80, 2.3, 0.0, 10.5, 43.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 361, 55, 0, 80, 2.3, 0.0, 10.5, 10.0, Some(0.0), Some(10.5), Some(43.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 361, 55, 0, 80, 2.3, 0.0, 10.5, 43.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 7.0, 361, 55, 0, 80, 2.3, 0.0, 10.5, 10.0, Some(0.0), Some(10.5), Some(43.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 2.0, 361, 55, 0, 80, 5.5, 0.0, 10.5, 8.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         search!(agent, MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
@@ -87,8 +87,8 @@ unsafe fn simon_attackairfhi(agent: &mut L2CAgentBase) {
                 -1
             );
         }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 55, 0, 80, 2.3, 0.0, 31.0, 39.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 361, 55, 0, 80, 2.3, 0.0, 16.0, 9.0, Some(0.0), Some(31.0), Some(39.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 361, 55, 0, 80, 2.3, 0.0, 31.0, 39.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 7.0, 361, 55, 0, 80, 2.3, 0.0, 16.0, 9.0, Some(0.0), Some(31.0), Some(39.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 2.0, 361, 55, 0, 80, 5.5, 0.0, 16.0, 7.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         search!(agent, MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
@@ -138,8 +138,8 @@ unsafe fn simon_attackairflw(agent: &mut L2CAgentBase) {
                 -1
             );
         }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 55, 0, 80, 2.3, 0.0, -2.0, 41.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 6.0, 361, 55, 0, 80, 2.3, 0.0, 9.0, 11.0, Some(0.0), Some(-2.0), Some(41.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 361, 55, 0, 80, 2.3, 0.0, -2.0, 41.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 7.0, 361, 55, 0, 80, 2.3, 0.0, 9.0, 11.0, Some(0.0), Some(-2.0), Some(41.0), 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_whip"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_SIMON_WHIP, *ATTACK_REGION_WHIP);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 2.0, 361, 55, 0, 80, 5.5, 0.0, 9.0, 9.5, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
         search!(agent, MA_MSC_CMD_SEARCH_SEARCH_SCH_CLR_ALL);
     }
@@ -412,10 +412,21 @@ pub fn install() {
         simon_attackairfhi,
         simon_attackairflw,
         simon_attackairf_snd,
+
         simon_attackairhi,
-        simon_attackairlw, simon_attackairlw_eff, simon_attackairlw_snd, simon_attackairlw_exp,
-        simon_whip_attackairlw, simon_whip_attackairlw_eff,
-        simon_landingairlw_eff, simon_landingairlw_snd, simon_landingairlw_exp,
+
+        simon_attackairlw,
+        simon_attackairlw_eff,
+        simon_attackairlw_snd,
+        simon_attackairlw_exp,
+
+        simon_whip_attackairlw,
+        simon_whip_attackairlw_eff,
+
+        simon_landingairlw_eff,
+        simon_landingairlw_snd,
+        simon_landingairlw_exp,
+
         simon_whip_landingairlw
     );
 }

@@ -379,11 +379,17 @@ unsafe fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         miifighter_specials3dash,
+
         miifighter_specialairs3dash,
+
         miifighter_specialhi12,
+
         miifighter_specialhi13,
+
         miifighter_specialhi2,
+
         miifighter_specialairhi2,
+
         miifighter_specialhi3
     );
 }

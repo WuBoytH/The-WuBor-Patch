@@ -199,18 +199,31 @@ unsafe fn pitb_dspecialhold(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        pitb_specialnstart, pitb_specialnstart_exp,
+        pitb_specialnstart,
+        pitb_specialnstart_exp,
+
         pitb_specialnhold_eff,
+
         pitb_specialairnhold_eff,
+
         pitb_specialnfire,
+
         pitb_specialnfirehi_eff,
+
         pitb_specialnairfirehi_eff,
+
         pitb_specialnfires_exp,
+
         pitb_specialsend,
+
         pitb_specialairsend,
+
         pitb_specialhistart,
+
         pitb_specialhi,
+
         pitb_specialhiend,
+
         pitb_dspecialhold
     );
 }

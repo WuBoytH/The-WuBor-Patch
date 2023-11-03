@@ -33,7 +33,7 @@ unsafe fn eflame_esword_fly(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 0.75);
-        VarModule::on_flag(agent.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
+        VarModule::on_flag(agent.module_accessor, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -43,7 +43,7 @@ unsafe fn eflame_esword_fly(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
+        VarModule::off_flag(agent.module_accessor, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
 }
 
@@ -52,7 +52,7 @@ unsafe fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 0.75);
-        VarModule::on_flag(agent.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
+        VarModule::on_flag(agent.module_accessor, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -62,7 +62,7 @@ unsafe fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
-        VarModule::off_flag(agent.battle_object, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
+        VarModule::off_flag(agent.module_accessor, eflame_esword::status::flag::ENABLE_EARLY_SPIN);
     }
 }
 
@@ -338,7 +338,7 @@ unsafe fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 60.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
+        VarModule::on_flag(agent.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK_FALL);
     }
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -506,11 +506,22 @@ unsafe fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         eflame_specials,
+
         eflame_esword_fly,
+
         eflame_esword_flyflick,
-        eflame_esword_rotate, eflame_esword_rotate_eff,
+
+        eflame_esword_rotate,
+        eflame_esword_rotate_eff,
+
         eflame_esword_reflected,
+
         eflame_specialairhijump,
-        eflame_speciallwattack, eflame_speciallwattack_eff, eflame_speciallwattack_snd, eflame_specialairlwattack_snd, eflame_speciallwattack_exp
+
+        eflame_speciallwattack,
+        eflame_speciallwattack_eff,
+        eflame_speciallwattack_snd,
+        eflame_specialairlwattack_snd,
+        eflame_speciallwattack_exp
     );
 }

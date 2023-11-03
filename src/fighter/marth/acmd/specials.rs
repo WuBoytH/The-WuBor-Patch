@@ -514,7 +514,7 @@ unsafe fn marth_specialairhi_eff(agent: &mut L2CAgentBase) {
 
 #[acmd_script( agent = "marth", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe fn marth_speciallw(agent: &mut L2CAgentBase) {
-    if VarModule::is_flag(agent.battle_object, marth::instance::flag::PARRY_XLU) {
+    if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SHIELD);
         }
@@ -554,17 +554,36 @@ unsafe fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_specialnend, marth_specialnend_eff,
-        marth_specialnendhi, marth_specialnendhi_eff,
-        marth_specialnendlw, marth_specialnendlw_eff,
-        marth_specialnendmax, marth_specialnendmax_eff,
-        marth_specialnendmaxhi, marth_specialnendmaxhi_eff,
-        marth_specialnendmaxlw, marth_specialnendmaxlw_eff,
-        marth_specialhi, marth_specialhi_eff, marth_specialairhi_eff,
+        marth_specialnend,
+        marth_specialnend_eff,
+
+        marth_specialnendhi,
+        marth_specialnendhi_eff,
+
+        marth_specialnendlw,
+        marth_specialnendlw_eff,
+
+        marth_specialnendmax,
+        marth_specialnendmax_eff,
+
+        marth_specialnendmaxhi,
+        marth_specialnendmaxhi_eff,
+
+        marth_specialnendmaxlw,
+        marth_specialnendmaxlw_eff,
+
+        marth_specialhi,
+        marth_specialhi_eff,
+        marth_specialairhi_eff,
+
         marth_speciallw,
+
         marth_speciallwenter,
+
         marth_speciallwexit,
+
         marth_speciallwairenter,
+
         marth_speciallwairexit
     );
 }

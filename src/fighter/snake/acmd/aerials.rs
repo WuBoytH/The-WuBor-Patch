@@ -144,7 +144,9 @@ unsafe fn snake_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         snake_attackairn,
+
         snake_attackairb,
+
         snake_attackairlw
     );
 }

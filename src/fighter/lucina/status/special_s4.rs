@@ -67,6 +67,7 @@ unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) 
 
 pub fn install() {
     install_status_scripts!(
-        lucina_specials4_pre, lucina_specials4_main
+        lucina_specials4_pre,
+        lucina_specials4_main
     );
 }

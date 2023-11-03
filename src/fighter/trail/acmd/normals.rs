@@ -95,6 +95,7 @@ unsafe fn trail_attacks3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         trail_attack11,
+
         trail_attacks3
     );
 }

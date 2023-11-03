@@ -35,25 +35,25 @@ unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2C
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_APPEAL_RANDOM) {
         let cat2 = fighter.global_table[CMD_CAT2].get_i32();
         if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0 {
-            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
+            VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_U;
         }
         else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_LW != 0 {
-            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
+            VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_D;
         }
         else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_L != 0 {
-            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
+            VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_L;
         }
         else if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_S_R != 0 {
-            VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
+            VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
             WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
             appeal_kind = *FIGHTER_APPEAL_KIND_R;
@@ -63,13 +63,13 @@ unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2C
         let rand = sv_math::rand(hash40("fighter"), 3);
         match rand {
             0 => {
-                VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
+                VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_HI);
                 WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
                 WorkModule::set_int64(fighter.module_accessor, hash40("appeal_hi_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
                 appeal_kind = *FIGHTER_APPEAL_KIND_U;
             },
             1 => {
-                VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
+                VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_LW);
                 WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_r") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R);
                 WorkModule::set_int64(fighter.module_accessor, hash40("appeal_lw_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
                 appeal_kind = *FIGHTER_APPEAL_KIND_D;
@@ -79,11 +79,11 @@ unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2C
                 WorkModule::set_int64(fighter.module_accessor, hash40("appeal_s_l") as i64, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_L);
                 let lr = sv_math::rand(hash40("fighter"), 2);
                 if lr == 0 {
-                    VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
+                    VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_R);
                     appeal_kind = *FIGHTER_APPEAL_KIND_R;
                 }
                 else {
-                    VarModule::set_int(fighter.battle_object, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
+                    VarModule::set_int(fighter.module_accessor, appeal::int::HOLD_BUTTON, *CONTROL_PAD_BUTTON_APPEAL_S_L);
                     appeal_kind = *FIGHTER_APPEAL_KIND_L;
                 }
             }
@@ -197,23 +197,23 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 // New Taunt Animation Logic
 unsafe fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
-    if VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_CHECK) {
-        let action_button = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_BUTTON);
+    if VarModule::is_flag(fighter.module_accessor, appeal::flag::ACTION_BUTTON_CHECK) {
+        let action_button = VarModule::get_int(fighter.module_accessor, appeal::int::ACTION_BUTTON);
         if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
-            let flag = if VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS) {
+            let flag = if VarModule::is_flag(fighter.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS) {
                 appeal::flag::ACTION_BUFFER_SUCCESS
             }
             else {
                 appeal::flag::ACTION_BUFFER_LOCKED
             };
-            VarModule::on_flag(fighter.battle_object, flag);
-            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_CHECK);
+            VarModule::on_flag(fighter.module_accessor, flag);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::ACTION_BUTTON_CHECK);
         }
     }
-    if VarModule::is_flag(fighter.battle_object, appeal::flag::HOLD)
-    || VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP) {
+    if VarModule::is_flag(fighter.module_accessor, appeal::flag::HOLD)
+    || VarModule::is_flag(fighter.module_accessor, appeal::flag::LOOP) {
         // New logic for taunt holds/loops/actions.
-        let loop_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::LOOP_MOT);
+        let loop_mot = VarModule::get_int64(fighter.module_accessor, appeal::int64::LOOP_MOT);
         if MotionModule::motion_kind(fighter.module_accessor) != loop_mot {
             MotionModule::change_motion(
                 fighter.module_accessor,
@@ -226,21 +226,21 @@ unsafe fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
                 false
             );
         }
-        let is_loop = VarModule::is_flag(fighter.battle_object, appeal::flag::LOOP);
+        let is_loop = VarModule::is_flag(fighter.module_accessor, appeal::flag::LOOP);
         taunt_holds(fighter, is_loop);
     }
-    if VarModule::is_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION)
-    || VarModule::is_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION_IMM) {
-        let action_button = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_BUTTON);
-        if !VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_LOCKED)
+    if VarModule::is_flag(fighter.module_accessor, appeal::flag::ENABLE_ACTION)
+    || VarModule::is_flag(fighter.module_accessor, appeal::flag::ENABLE_ACTION_IMM) {
+        let action_button = VarModule::get_int(fighter.module_accessor, appeal::int::ACTION_BUTTON);
+        if !VarModule::is_flag(fighter.module_accessor, appeal::flag::ACTION_BUFFER_LOCKED)
         && (
-            VarModule::is_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_SUCCESS)
+            VarModule::is_flag(fighter.module_accessor, appeal::flag::ACTION_BUFFER_SUCCESS)
             || ControlModule::check_button_on_trriger(fighter.module_accessor, action_button)
         ) {
-            VarModule::off_flag(fighter.battle_object, appeal::flag::HOLD);
-            VarModule::off_flag(fighter.battle_object, appeal::flag::LOOP);
-            let action_mot = VarModule::get_int64(fighter.battle_object, appeal::int64::ACTION_MOT);
-            let action_frame = VarModule::get_int(fighter.battle_object, appeal::int::ACTION_FRAME);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::HOLD);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::LOOP);
+            let action_mot = VarModule::get_int64(fighter.module_accessor, appeal::int64::ACTION_MOT);
+            let action_frame = VarModule::get_int(fighter.module_accessor, appeal::int::ACTION_FRAME);
             MotionModule::change_motion(
                 fighter.module_accessor,
                 Hash40::new_raw(action_mot),
@@ -251,19 +251,19 @@ unsafe fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
                 false,
                 false
             );
-            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_SUCCESS);
-            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUFFER_LOCKED);
-            VarModule::off_flag(fighter.battle_object, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
-            VarModule::off_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::ACTION_BUFFER_SUCCESS);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::ACTION_BUFFER_LOCKED);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::ACTION_BUTTON_ENABLE_SUCCESS);
+            VarModule::off_flag(fighter.module_accessor, appeal::flag::ENABLE_ACTION);
         }
-        VarModule::off_flag(fighter.battle_object, appeal::flag::ENABLE_ACTION_IMM);
+        VarModule::off_flag(fighter.module_accessor, appeal::flag::ENABLE_ACTION_IMM);
     }
 }
 
 /// Used specifically for taunts that we've made loop,
 /// but we want to break the loop early.
 unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
-    let button = VarModule::get_int(fighter.battle_object, appeal::int::HOLD_BUTTON);
+    let button = VarModule::get_int(fighter.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_off(fighter.module_accessor, button)
     && (
         !is_loop || MotionModule::frame(fighter.module_accessor) < 1.0
@@ -275,7 +275,7 @@ unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
         else {
             WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_APPEAL_WORK_INT_MOTION_KIND_R)
         };
-        let restart_frame = VarModule::get_int(fighter.battle_object, appeal::int::RESTART_FRAME) as f32;
+        let restart_frame = VarModule::get_int(fighter.module_accessor, appeal::int::RESTART_FRAME) as f32;
         MotionModule::change_motion_force_inherit_frame(
             fighter.module_accessor,
             Hash40::new_raw(mot),
@@ -283,8 +283,8 @@ unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
             1.0,
             0.0
         );
-        VarModule::off_flag(fighter.battle_object, appeal::flag::HOLD);
-        VarModule::off_flag(fighter.battle_object, appeal::flag::LOOP);
+        VarModule::off_flag(fighter.module_accessor, appeal::flag::HOLD);
+        VarModule::off_flag(fighter.module_accessor, appeal::flag::LOOP);
     }
 }
 

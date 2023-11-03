@@ -234,7 +234,9 @@ unsafe fn pickel_attackhi3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pickel_attackdash,
+
         pickel_attacks3,
+
         pickel_attackhi3
     );
 }

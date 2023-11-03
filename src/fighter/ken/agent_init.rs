@@ -11,7 +11,7 @@ use {
 
 unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_SPECIAL_LW
-    && VarModule::get_int(fighter.battle_object, ken::instance::int::QUICK_STEP_STATE) != ken::QUICK_STEP_STATE_DISABLE {
+    && VarModule::get_int(fighter.module_accessor, ken::instance::int::QUICK_STEP_STATE) != ken::QUICK_STEP_STATE_DISABLE {
         return 1.into();
     }
     0.into()

@@ -116,7 +116,7 @@ unsafe fn pikmin_attacks3loop_exp(agent: &mut L2CAgentBase) {
 unsafe fn pikmin_attacks3end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
-        let loops_real = VarModule::get_int(agent.battle_object, pikmin::instance::int::ATTACK_S3_LOOP_COUNT);
+        let loops_real = VarModule::get_int(agent.module_accessor, pikmin::instance::int::ATTACK_S3_LOOP_COUNT);
         let loops = loops_real.clamp(0, 6);
         let damage_add = 1.5 * loops as f32;
         let kbg_add = 5 * loops;
@@ -126,7 +126,7 @@ unsafe fn pikmin_attacks3end(agent: &mut L2CAgentBase) {
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 8.0 + damage_add, 361, 87 + kbg_add, 0, 35, 2.8, 0.0, 5.0, 11.0, Some(0.0), Some(5.0), Some(5.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -2 + shield_damage_add, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
         macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 0.8 + shieldstun_add);
         macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 1, 0.8 + shieldstun_add);
-        VarModule::set_int(agent.battle_object, pikmin::instance::int::ATTACK_S3_LOOP_COUNT, 0);
+        VarModule::set_int(agent.module_accessor, pikmin::instance::int::ATTACK_S3_LOOP_COUNT, 0);
     }
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -188,7 +188,7 @@ unsafe fn pikmin_attacks3end_exp(agent: &mut L2CAgentBase) {
 unsafe fn pikmin_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, pikmin::status::flag::ATTACK_HI3_DRIFT);
+        VarModule::on_flag(agent.module_accessor, pikmin::status::flag::ATTACK_HI3_DRIFT);
     }
     frame(agent.lua_state_agent, 6.0);
     for _ in 0..5 {
@@ -261,11 +261,26 @@ unsafe fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         pikmin_attack11,
-        pikmin_attackdash, pikmin_attackdash_exp,
-        pikmin_attacks3, pikmin_attacks3_snd,
-        pikmin_attacks3loop_eff, pikmin_attacks3loop_snd, pikmin_attacks3loop_exp,
-        pikmin_attacks3end, pikmin_attacks3end_eff, pikmin_attacks3end_snd, pikmin_attacks3end_exp,
-        pikmin_attackhi3, pikmin_attackhi3_eff, pikmin_attackhi3_snd,
+
+        pikmin_attackdash,
+        pikmin_attackdash_exp,
+
+        pikmin_attacks3,
+        pikmin_attacks3_snd,
+
+        pikmin_attacks3loop_eff,
+        pikmin_attacks3loop_snd,
+        pikmin_attacks3loop_exp,
+
+        pikmin_attacks3end,
+        pikmin_attacks3end_eff,
+        pikmin_attacks3end_snd,
+        pikmin_attacks3end_exp,
+
+        pikmin_attackhi3,
+        pikmin_attackhi3_eff,
+        pikmin_attackhi3_snd,
+
         pikmin_attacklw3
     );
 }

@@ -22,6 +22,7 @@ unsafe fn falco_speciallw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         falco_specialsstart,
+
         falco_speciallw
     );
 }

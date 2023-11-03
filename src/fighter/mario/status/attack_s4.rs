@@ -24,7 +24,9 @@ unsafe fn mario_attacks4_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 pub fn install() {
     install_status_scripts!(
         mario_attacks4_start_end,
+
         mario_attacks4_hold_end,
+
         mario_attacks4_end
     );
 }

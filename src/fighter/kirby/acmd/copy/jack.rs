@@ -17,6 +17,7 @@ unsafe fn kirby_jackspecialnjump_snd(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        jack_jackspecialnjump_eff, kirby_jackspecialnjump_snd
+        jack_jackspecialnjump_eff,
+        kirby_jackspecialnjump_snd
     );
 }

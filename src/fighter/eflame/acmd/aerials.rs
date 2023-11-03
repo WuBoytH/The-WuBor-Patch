@@ -418,10 +418,17 @@ unsafe fn eflame_attackairlw(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        eflame_attackairn, eflame_attackairn_eff, eflame_attackairn_snd, eflame_attackairn_exp,
+        eflame_attackairn,
+        eflame_attackairn_eff,
+        eflame_attackairn_snd,
+        eflame_attackairn_exp,
+
         eflame_attackairf,
+
         eflame_attackairb,
+
         eflame_attackairhi,
+
         eflame_attackairlw
     );
 }

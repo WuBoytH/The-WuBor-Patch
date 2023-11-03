@@ -132,7 +132,7 @@ unsafe extern "C" fn jack_special_n_escape_substatus(fighter: &mut L2CFighterCom
     if param_1.get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU) {
             if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_HIT_NORMAL_FRAME) {
-                if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_HIT_NORMAL_FRAME, 0) != 0 {
+                if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_HIT_NORMAL_FRAME, 0) {
                     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
                     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
                 }
@@ -140,7 +140,7 @@ unsafe extern "C" fn jack_special_n_escape_substatus(fighter: &mut L2CFighterCom
         }
         else {
             if 0 < WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_HIT_XLU_FRAME) {
-                if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_HIT_XLU_FRAME, 0) != 0 {
+                if WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_HIT_XLU_FRAME, 0) {
                     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
                     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_FLAG_HIT_XLU);
                 }

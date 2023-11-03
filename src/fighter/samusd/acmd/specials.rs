@@ -6,7 +6,7 @@ unsafe fn samusd_specialnstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 23.0 / 14.0);
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
-        let cshot_id = VarModule::get_int(agent.battle_object, samusd::instance::int::CSHOT_ID);
+        let cshot_id = VarModule::get_int(agent.module_accessor, samusd::instance::int::CSHOT_ID);
         if sv_battle_object::is_active(cshot_id as u32) {
             let boma = sv_battle_object::module_accessor(cshot_id as u32);
             if utility::get_category(&mut *boma) == *BATTLE_OBJECT_CATEGORY_WEAPON
@@ -300,14 +300,30 @@ unsafe fn samusd_supermissile_ready(_agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samusd_specialnstart,
-        samusd_special, samusd_specialair,
-        samusd_specials, samusd_specialairs,
+
+        samusd_special,
+
+        samusd_specialair,
+
+        samusd_specials,
+
+        samusd_specialairs,
+
         samusd_specialhi,
+
         samusd_specialairhi,
-        samusd_speciallw, samusd_specialairlw, samusd_speciallw_eff,
+
+        samusd_speciallw,
+
+        samusd_specialairlw,
+        samusd_speciallw_eff,
+
         samusd_cshot_shoot,
+
         samusd_missile_homing,
+
         samusd_missile_hburst,
+
         samusd_supermissile_ready
     );
 }

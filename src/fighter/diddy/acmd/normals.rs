@@ -3,9 +3,9 @@ use crate::imports::acmd_imports::*;
 #[acmd_script( agent = "diddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe fn diddy_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
-        VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
-        VarModule::set_float(agent.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 0.25);
+        VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(agent.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, 0.25);
     }
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -37,9 +37,9 @@ unsafe fn diddy_attackdash(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        VarModule::off_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
-        VarModule::off_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
-        VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_GRAVITY);
+        VarModule::off_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::off_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_GRAVITY);
     }
 }
 

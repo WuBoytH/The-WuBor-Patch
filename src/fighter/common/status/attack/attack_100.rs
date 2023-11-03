@@ -5,7 +5,7 @@ unsafe fn status_pre_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
-        *FIGHTER_KINETIC_TYPE_MOTION_RUN_STOP,
+        *FIGHTER_KINETIC_TYPE_MOTION/*_RUN_STOP*/,
         *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK as u32,
         GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,

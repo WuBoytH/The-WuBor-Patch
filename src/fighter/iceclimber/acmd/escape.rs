@@ -55,8 +55,11 @@ unsafe fn nana_escapeairslide_nana(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         popo_escapeairslide,
+
         popo_escapeairslide_nana,
+
         nana_escapeairslide,
+
         nana_escapeairslide_nana
     );
 }

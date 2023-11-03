@@ -21,11 +21,11 @@ unsafe fn richter_attack11(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
+        VarModule::on_flag(agent.module_accessor, richter::status::flag::ATTACK_JUST_INPUT);
     }
     frame(agent.lua_state_agent, 24.0);
     // if macros::is_excute(agent) {
-    //     VarModule::off_flag(agent.battle_object, richter::status::flag::ATTACK_JUST_INPUT);
+    //     VarModule::off_flag(agent.module_accessor, richter::status::flag::ATTACK_JUST_INPUT);
     // }
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -4.0);
 }
@@ -205,9 +205,9 @@ unsafe fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
 unsafe fn richter_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
-        VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
-        VarModule::set_float(agent.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 0.0);
+        VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(agent.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, 0.0);
     }
     for _ in 0..5 {
         if macros::is_excute(agent) {
@@ -228,10 +228,10 @@ unsafe fn richter_attackdash(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
-        VarModule::off_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_FALL);
-        VarModule::off_flag(agent.battle_object, attack_dash::flag::ENABLE_AIR_CONTINUE);
-        VarModule::set_float(agent.battle_object, attack_dash::float::FALL_SPEED_Y_MUL, 1.0);
-        VarModule::on_flag(agent.battle_object, attack_dash::flag::ENABLE_GRAVITY);
+        VarModule::off_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
+        VarModule::off_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);
+        VarModule::set_float(agent.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, 1.0);
+        VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_GRAVITY);
     }
 }
 
@@ -454,15 +454,34 @@ unsafe fn richter_attacklw32(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        richter_attack11, richter_attack11_eff, richter_attack11_snd, richter_attack11_exp,
-        richter_attack12, richter_attack12_eff, richter_attack12_snd, richter_attack12_exp,
-        richter_attack12f, richter_attack12f_eff, richter_attack12f_snd, richter_attack12f_exp,
+        richter_attack11,
+        richter_attack11_eff,
+        richter_attack11_snd,
+        richter_attack11_exp,
+
+        richter_attack12,
+        richter_attack12_eff,
+        richter_attack12_snd,
+        richter_attack12_exp,
+
+        richter_attack12f,
+        richter_attack12f_eff,
+        richter_attack12f_snd,
+        richter_attack12f_exp,
+
         richter_attackdash,
-        richter_attacks3, richter_attacks3_eff,
+
+        richter_attacks3,
+        richter_attacks3_eff,
+
         richter_whip_attacks3,
+
         richter_attackhi3,
+
         richter_whip_attackhi3,
+
         richter_attacklw3,
+
         richter_attacklw32
     );
 }

@@ -73,12 +73,12 @@ pub unsafe extern "C" fn edge_special_hi_param_helper_inner(hash: L2CValue, char
 }
 
 pub unsafe extern "C" fn edge_special_hi_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, edge::status::flag::SPECIAL_HI_CANCEL)
-    && VarModule::get_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT) < 2 {
-        VarModule::on_flag(fighter.battle_object, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
+    if VarModule::is_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL)
+    && VarModule::get_int(fighter.module_accessor, edge::instance::int::SPECIAL_HI_CANCEL_COUNT) < 2 {
+        VarModule::on_flag(fighter.module_accessor, fighter::status::flag::FORCE_ESCAPE_AIR_SLIDE_IN_STATUS);
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_HI != 0 {
-            VarModule::inc_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT);
+            VarModule::inc_int(fighter.module_accessor, edge::instance::int::SPECIAL_HI_CANCEL_COUNT);
             fighter.change_status(FIGHTER_STATUS_KIND_SPECIAL_HI.into(), true.into());
             return true.into();
         }
@@ -88,7 +88,7 @@ pub unsafe extern "C" fn edge_special_hi_cancel(fighter: &mut L2CFighterCommon) 
         || fighter.sub_transition_group_check_ground_jump().get_bool()
         || (cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0 && fighter.sub_transition_group_check_air_jump_attack().get_bool())
         || fighter.sub_transition_group_check_air_jump_aerial().get_bool() {
-            VarModule::set_int(fighter.battle_object, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 2);
+            VarModule::set_int(fighter.module_accessor, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 2);
             return true.into();
         }
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_ESCAPE);

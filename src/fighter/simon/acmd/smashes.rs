@@ -206,9 +206,13 @@ unsafe fn simon_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         simon_attacks4,
+
         simon_attacks4hi,
+
         simon_attacks4lw,
+
         simon_attackhi4,
+
         simon_attacklw4
     );
 }

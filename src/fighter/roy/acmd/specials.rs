@@ -90,6 +90,7 @@ unsafe fn roy_specialairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         roy_specialhi,
+
         roy_specialairhi
     );
 }

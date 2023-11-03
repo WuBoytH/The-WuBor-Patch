@@ -108,6 +108,7 @@ unsafe extern "C" fn demon_attacklw3_cancel_main_loop(fighter: &mut L2CFighterCo
 pub fn install() {
     install_status_scripts!(
         demon_attacklw3_main,
+
         demon_attacklw3_cancel_main
     );
 }

@@ -73,7 +73,9 @@ unsafe fn edge_specialairhi2end(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         edge_specialhi,
+
         edge_specialhi1,
+
         edge_specialairhi2end
     );
 }

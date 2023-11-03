@@ -116,8 +116,11 @@ unsafe fn packun_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         packun_attackairn,
+
         packun_attackairf,
+
         packun_attackairhi,
+
         packun_attackairlw
     );
 }

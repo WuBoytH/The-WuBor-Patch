@@ -175,7 +175,9 @@ unsafe fn miiswordsman_specialairhi3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         miiswordsman_specialhi1,
+
         miiswordsman_specialhi3,
+
         miiswordsman_specialairhi3
     );
 }

@@ -119,7 +119,9 @@ unsafe fn samus_specialairhi(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         samus_specialhi,
+
         samus_specialairhi,
+
         // samus_cshot_shoot
     );
 }

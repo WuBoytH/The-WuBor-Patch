@@ -1,69 +1,17 @@
 use crate::imports::status_imports::*;
-use super::super::super::param;
 use wubor_utils::controls::*;
 use std::arch::asm;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
 unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP) {
-        let base_speed_x;
-        let mut speed_x;
+    if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP) {
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         if mini_jump {
             SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_hyperhop"), true, false, false, false, enSEType(0));
-
-            let air_speed_x_stable = WorkModule::get_param_float(fighter.module_accessor, hash40("air_speed_x_stable"), 0);
-            speed_x = air_speed_x_stable;
-            speed_x *= param::jump::hyper_hop_air_speed_x_stable_mul;
-            speed_x = speed_x.clamp(1.22, 1.7);
-            base_speed_x = speed_x;
-            let stick_x = fighter.global_table[STICK_X].get_f32();
-            speed_x *= stick_x;
-            // println!("Hyper Hop Speed: {}", speed_x);
         }
         else {
             SoundModule::play_se(fighter.module_accessor, Hash40::new("se_common_superjump"), true, false, false, false, enSEType(0));
-
-            speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_ALL);
-            speed_x *= param::jump::super_jump_speed_x_mul;
-            base_speed_x = speed_x;
         }
-        sv_kinetic_energy!(
-            set_speed,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            speed_x
-        );
-        sv_kinetic_energy!(
-            mul_x_accel_mul,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            param::jump::special_jump_control_mul
-        );
-        sv_kinetic_energy!(
-            mul_x_accel_add,
-            fighter,
-            FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-            param::jump::special_jump_control_mul
-        );
-        if mini_jump {
-            let stable_speed = speed_x.abs().clamp(base_speed_x * 0.5, f32::MAX);
-            sv_kinetic_energy!(
-                set_stable_speed,
-                fighter,
-                FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-                stable_speed.abs()
-            );
-        }
-        // let jump_speed_x_max = WorkModule::get_param_float(fighter.module_accessor, hash40("jump_speed_x_max"), 0);
-        // if speed_x.abs() > jump_speed_x_max {
-        //     sv_kinetic_energy!(
-        //         set_limit_speed,
-        //         fighter,
-        //         FIGHTER_KINETIC_ENERGY_ID_CONTROL,
-        //         speed_x.abs()
-        //     );
-        // }
     }
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
@@ -163,7 +111,7 @@ unsafe fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _age
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_Jump)]
 unsafe fn status_end_jump(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    // VarModule::off_flag(fighter.battle_object, fighter::instance::flag::SUPER_JUMP);
+    // VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
     0.into()
 }
 
@@ -271,6 +219,21 @@ unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     asm!("fmov s0, w8", in("w8") left_stick_x)
 }
 
+#[skyline::hook(offset = 0x6d251c, inline)]
+unsafe fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
+    let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
+    let work_module = *ctx.registers[0].x.as_ref();
+    let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);
+    let mul = if VarModule::is_flag(module_accessor, fighter::instance::flag::SUPER_JUMP) {
+        1.2
+    }
+    else {
+        1.0
+    };
+    let jump_y = callable(work_module, hash40("jump_speed_y"), 0) * mul;
+    asm!("fmov s0, w8", in("w8") jump_y)
+}
+
 fn nro_hook(info: &skyline::nro::NroInfo) {
     if info.name == "common" {
         skyline::install_hooks!(
@@ -297,6 +260,12 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x6d115c).nop();
     skyline::patching::Patch::in_text(0x6ce26c).nop();
 
+    // Super Jump Speed Multiplier
+    skyline::patching::Patch::in_text(0x6d251c).nop();
+
+    // Always use Jump Speed Y
+    skyline::patching::Patch::in_text(0x6d215c).data(0x140000EBu32);
+
     skyline::install_hooks!(
         jump1_stick_x_hook,
         jump2_stick_x_hook,
@@ -306,5 +275,6 @@ pub fn install() {
         jump_aerial_2_stick_x_hook,
         jump_aerial_3_stick_x_hook,
         jump_aerial_4_stick_x_hook,
+        jump_speed_y_hook
     );
 }

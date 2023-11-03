@@ -66,7 +66,7 @@ unsafe extern "C" fn pikmin_attacks3_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 unsafe extern "C" fn pikmin_attacks3_handle_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let step = VarModule::get_int(fighter.battle_object, pikmin::status::int::ATTACK_S3_STEP);
+    let step = VarModule::get_int(fighter.module_accessor, pikmin::status::int::ATTACK_S3_STEP);
     if step != pikmin::ATTACK_S3_STEP_END {
         if fighter.sub_transition_group_check_ground_guard().get_bool() {
             return true.into();
@@ -77,7 +77,7 @@ unsafe extern "C" fn pikmin_attacks3_handle_loop(fighter: &mut L2CFighterCommon)
             mot = hash40("attack_s3_loop");
             step = pikmin::ATTACK_S3_STEP_LOOP;
             WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
-            VarModule::inc_int(fighter.battle_object, pikmin::instance::int::ATTACK_S3_LOOP_COUNT);
+            VarModule::inc_int(fighter.module_accessor, pikmin::instance::int::ATTACK_S3_LOOP_COUNT);
         }
         else {
             mot = hash40("attack_s3_end");
@@ -94,7 +94,7 @@ unsafe extern "C" fn pikmin_attacks3_handle_loop(fighter: &mut L2CFighterCommon)
             false,
             false
         );
-        VarModule::set_int(fighter.battle_object, pikmin::status::int::ATTACK_S3_STEP, step);
+        VarModule::set_int(fighter.module_accessor, pikmin::status::int::ATTACK_S3_STEP, step);
         false.into()
     }
     else {
@@ -106,7 +106,7 @@ unsafe extern "C" fn pikmin_attacks3_handle_loop(fighter: &mut L2CFighterCommon)
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn pikmin_attacks3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_GUARD_ON {
-        VarModule::set_int(fighter.battle_object, pikmin::instance::int::ATTACK_S3_LOOP_COUNT, 0);
+        VarModule::set_int(fighter.module_accessor, pikmin::instance::int::ATTACK_S3_LOOP_COUNT, 0);
     }
     fighter.status_end_AttackS3()
 }

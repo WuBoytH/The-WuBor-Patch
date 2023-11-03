@@ -22,7 +22,7 @@ unsafe fn dolly_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 unsafe extern "C" fn dolly_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0 {
         if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE
-        && !VarModule::is_flag(fighter.battle_object, dolly::status::flag::IS_SPECIAL_CANCEL) {
+        && !VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
             if dolly_attack_start_cancel(fighter).get_i32() == 1 {
                 return 1.into();
             }

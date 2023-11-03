@@ -168,10 +168,19 @@ unsafe fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        marth_attack11, marth_attack11_eff,
-        marth_attack12, marth_attack12_eff,
-        marth_attacks3, marth_attacks3_eff,
-        marth_attackhi3, marth_attackhi3_eff,
-        marth_attacklw3, marth_attacklw3_eff
+        marth_attack11,
+        marth_attack11_eff,
+
+        marth_attack12,
+        marth_attack12_eff,
+
+        marth_attacks3,
+        marth_attacks3_eff,
+
+        marth_attackhi3,
+        marth_attackhi3_eff,
+
+        marth_attacklw3,
+        marth_attacklw3_eff
     );
 }

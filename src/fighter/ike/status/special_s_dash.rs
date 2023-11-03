@@ -3,7 +3,7 @@ use super::helper;
 
 #[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn ike_special_s_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
-    VarModule::on_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_S);
+    VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -127,6 +127,7 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
 
 pub fn install() {
     install_status_scripts!(
-        ike_special_s_dash_pre, ike_special_s_dash_main
+        ike_special_s_dash_pre,
+        ike_special_s_dash_main
     );
 }

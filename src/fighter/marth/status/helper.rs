@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
 pub unsafe extern "C" fn marth_stance_cancel_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
-    if VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+    if VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             if marth_stance_special_cancel_helper(fighter).get_bool() {
                 return true.into();
@@ -149,7 +149,7 @@ pub unsafe extern "C" fn marth_stance_dash_cancel_helper(fighter: &mut L2CFighte
     let cancel = CancelModule::is_enable_cancel(fighter.module_accessor) || is_jab;
     let cancel = cancel && !fighter.global_table[IS_STOP].get_bool();
     if cancel || !require_cancel {
-        if VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+        if VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
             let cat1 = fighter.global_table[CMD_CAT1].get_i32();
             let cat2 = fighter.global_table[CMD_CAT2].get_i32();
             let lr = PostureModule::lr(fighter.module_accessor);
@@ -184,7 +184,7 @@ pub unsafe extern "C" fn marth_stance_dash_cancel_helper(fighter: &mut L2CFighte
 
 pub unsafe extern "C" fn marth_stance_mot_end_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     if MotionModule::is_end(fighter.module_accessor) {
-        if !VarModule::is_flag(fighter.battle_object, marth::instance::flag::IS_STANCE) {
+        if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
             let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
             let clear_buffer = fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_LW != 0;
             fighter.change_status(status.into(), clear_buffer.into());
@@ -204,8 +204,8 @@ pub unsafe extern "C" fn marth_stance_common_end(fighter: &mut L2CFighterCommon)
     && status != *FIGHTER_STATUS_KIND_SPECIAL_LW
     && status != *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT
     && status != *FIGHTER_STATUS_KIND_SPECIAL_HI {
-        VarModule::off_flag(fighter.battle_object, marth::instance::flag::IS_STANCE);
+        VarModule::off_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE);
     }
-    VarModule::off_flag(fighter.battle_object, marth::instance::flag::PARRY_XLU);
+    VarModule::off_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU);
     0.into()
 }

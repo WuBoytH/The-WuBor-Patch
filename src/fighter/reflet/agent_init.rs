@@ -6,7 +6,7 @@ pub unsafe extern "C" fn reflet_status_end_control(fighter: &mut L2CFighterCommo
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR
     || status == *FIGHTER_STATUS_KIND_REBIRTH
     || MiscModule::is_damage_check(fighter.module_accessor, false) {
-        VarModule::off_flag(fighter.battle_object, fighter::instance::flag::DISABLE_SPECIAL_HI);
+        VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);
     }
     0.into()
 }

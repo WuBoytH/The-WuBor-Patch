@@ -164,13 +164,21 @@ unsafe fn mariod_attacklw3(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         mariod_attack11,
+
         mariod_attack12,
+
         mariod_attack13,
+
         mariod_attackdash,
+
         mariod_attacks3,
+
         mariod_attacks3hi,
+
         mariod_attacks3lw,
+
         mariod_attackhi3,
+
         mariod_attacklw3
     );
 }

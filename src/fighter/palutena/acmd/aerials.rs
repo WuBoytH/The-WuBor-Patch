@@ -104,6 +104,7 @@ unsafe fn palutena_attackairb(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         palutena_attackairn,
+
         palutena_attackairb
     );
 }

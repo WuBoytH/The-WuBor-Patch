@@ -204,7 +204,16 @@ unsafe fn samus_attackhi3_exp(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        // samus_attacks3, samus_attacks3_eff, samus_attacks3hi_eff, samus_attacks3lw_eff, samus_attacks3_snd, samus_attacks3_exp,
-        samus_attackhi3, samus_attackhi3_eff, samus_attackhi3_snd, samus_attackhi3_exp
+        // samus_attacks3,
+        // samus_attacks3_eff,
+        // samus_attacks3hi_eff,
+        // samus_attacks3lw_eff,
+        // samus_attacks3_snd,
+        // samus_attacks3_exp,
+
+        samus_attackhi3,
+        samus_attackhi3_eff,
+        samus_attackhi3_snd,
+        samus_attackhi3_exp
     );
 }

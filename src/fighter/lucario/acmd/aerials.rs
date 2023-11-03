@@ -166,9 +166,13 @@ unsafe fn lucario_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucario_attackairn,
+
         lucario_attackairf,
+
         lucario_attackairb,
+
         lucario_attackairhi,
+
         lucario_attackairlw
     );
 }

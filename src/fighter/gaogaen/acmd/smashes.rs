@@ -86,7 +86,9 @@ unsafe fn gaogaen_attacklw4(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         gaogaen_attacks4,
+
         gaogaen_attackhi4,
+
         gaogaen_attacklw4
     );
 }

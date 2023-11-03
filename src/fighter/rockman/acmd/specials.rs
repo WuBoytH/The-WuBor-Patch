@@ -8,7 +8,7 @@ unsafe fn rockman_specialn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_ROCKMAN_GENERATE_ARTICLE_CHARGESHOT, false, -1);
-        VarModule::off_flag(agent.battle_object, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
+        VarModule::off_flag(agent.module_accessor, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
     }
 }
 
@@ -172,11 +172,23 @@ unsafe fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
 
 pub fn install() {
     install_acmd_scripts!(
-        rockman_specialn, rockman_specialn_eff, rockman_specialn_snd, rockman_specialn_exp,
+        rockman_specialn,
+        rockman_specialn_eff,
+        rockman_specialn_snd,
+        rockman_specialn_exp,
+
         rockman_chargeshot_regular,
+
         rockman_specialhi,
+
         rockman_speciallw,
+
         rockman_specialairlw,
-        rockman_leafshield_start, rockman_leafshield_shield, rockman_leafshield_fly
+
+        rockman_leafshield_start,
+
+        rockman_leafshield_shield,
+
+        rockman_leafshield_fly
     );
 }

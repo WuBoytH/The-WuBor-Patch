@@ -109,6 +109,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_main_loop(fighter: &mut
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_jump_squat_pre, rockman_rockbuster_shoot_jump_squat_main
+        rockman_rockbuster_shoot_jump_squat_pre,
+        rockman_rockbuster_shoot_jump_squat_main
     );
 }

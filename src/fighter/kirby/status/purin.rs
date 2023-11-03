@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
+#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_PURIN_SPECIAL_N_HIT_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn kirby_purin_specialn_hit_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     FighterMotionModuleImpl::change_motion_kirby_copy(
         fighter.module_accessor,

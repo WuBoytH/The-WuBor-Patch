@@ -148,6 +148,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_wait_main_loop(fighter: &mut L2CFi
 
 pub fn install() {
     install_status_scripts!(
-        rockman_rockbuster_shoot_wait_pre, rockman_rockbuster_shoot_wait_main
+        rockman_rockbuster_shoot_wait_pre,
+        rockman_rockbuster_shoot_wait_main
     );
 }

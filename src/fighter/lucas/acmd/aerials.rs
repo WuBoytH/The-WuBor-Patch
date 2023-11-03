@@ -156,9 +156,13 @@ unsafe fn lucas_attackairlw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         lucas_attackairn,
+
         lucas_attackairf,
+
         lucas_attackairb,
+
         lucas_attackairhi,
+
         lucas_attackairlw
     );
 }

@@ -1,4 +1,7 @@
-#![allow(non_upper_case_globals)]
+#![allow(
+    non_upper_case_globals,
+    dead_code
+)]
 
 pub mod shield {
     pub const guard_off_invalid_capture_frame_add : i32 = 9;
@@ -6,11 +9,11 @@ pub mod shield {
 
 pub mod passive {
     pub const invalid_passive_damage_add : f32 = 33.0;
+    pub const invalid_passive_reaction : f32 = 45.0;
 }
 
 pub mod jump {
     pub const special_jump_control_mul : f32 = 0.5;
-    pub const hyper_hop_air_speed_x_stable_mul : f32 = 1.45;
     pub const super_jump_speed_x_mul : f32 = 0.8;
 }
 

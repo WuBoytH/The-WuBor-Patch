@@ -45,7 +45,9 @@ unsafe fn snake_specialairhihang(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         snake_specialhistart,
+
         snake_specialairhihang,
+
         // snake_cypher_detach
     );
 }

@@ -249,13 +249,17 @@ pub fn install() {
     install_status_scripts!(
         daisy_attackair_pre,
         daisy_attackair_main,
+
         daisy_specialhi_main,
+
         daisy_speciallw_pre,
         daisy_speciallw_init,
+
         daisy_uniqfloatstart_pre,
         daisy_uniqfloatstart_exec,
         daisy_uniqfloatstart_main,
         daisy_uniqfloatstart_end,
+
         daisy_fallspecial_main
     );
 }

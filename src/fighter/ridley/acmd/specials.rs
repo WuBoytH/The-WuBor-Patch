@@ -113,9 +113,13 @@ unsafe fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
 pub fn install() {
     install_acmd_scripts!(
         ridley_specialsstart,
+
         ridley_specialairhichargef,
+
         ridley_specialairhichargeb,
+
         ridley_specialairhichargehi,
+
         ridley_specialairhichargelw
     );
 }

@@ -251,10 +251,30 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
+#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
+unsafe fn ken_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    if VarModule::is_flag(fighter.battle_object, ken::status::flag::SPECIAL_LW_ENABLED_ACTION)
+    && [
+        *FIGHTER_STATUS_KIND_SPECIAL_S,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND,
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND
+    ].contains(&status) {
+        VarModule::on_flag(fighter.battle_object, ken::instance::flag::QUICK_STEP_INHERIT)
+    }
+    else {
+        VarModule::off_flag(fighter.battle_object, ken::instance::flag::QUICK_STEP_INHERIT)
+    }
+    0.into()
+}
+
 pub fn install() {
     install_status_scripts!(
         ken_special_lw_pre,
         ken_special_lw_init,
-        ken_special_lw_main
+        ken_special_lw_main,
+        ken_special_lw_end
     );
 }

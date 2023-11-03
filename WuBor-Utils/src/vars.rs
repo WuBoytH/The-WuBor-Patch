@@ -784,6 +784,11 @@ pub mod ryu {
 }
 
 pub mod ken {
+    pub mod instance {
+        pub mod flag {
+            pub const QUICK_STEP_INHERIT : i32 = 0x0100;
+        }
+    }
     pub mod status {
         pub mod flag {
             pub const SPECIAL_LW_ENABLE_ACTION : i32 = 0x1100;
@@ -792,6 +797,7 @@ pub mod ken {
             pub const SPECIAL_LW_RESET_GRAVITY : i32 = 0x1103;
 
             pub use super::super::super::ryu::status::flag::SPECIAL_DECIDE_STRENGTH;
+            pub const QUICK_STEP_INHERITED : i32 = 0x1151;
         }
     }
 }

@@ -162,14 +162,17 @@ unsafe extern "C" fn ryu_ken_on_situation_change(_vtable: u64, fighter: &mut Fig
 unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64, some_float: f32) {
     let object = &mut fighter.battle_object;
     let module_accessor = (*object).module_accessor;
+    let kind = (*object).kind;
     let collision_log = log as *mut CollisionLogScuffed;
     let status = StatusModule::status_kind(module_accessor);
-    if (*object).kind == 0x3c {
+    let collision_kind = (*collision_log).collision_kind;
+    let opponent_object_id = (*collision_log).opponent_object_id;
+    if kind == 0x3c {
         if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B
         && VarModule::get_int(object, ryu::status::int::GUARD_SPECIAL_LW_KIND) == ryu::GUARD_SPECIAL_LW_KIND_IMPACT
         && !VarModule::is_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT) {
-            if (*collision_log).collision_kind == 1
-            && (*collision_log).opponent_object_id >> 0x1c == 0 {
+            if collision_kind == 1
+            && opponent_object_id >> 0x1c == 0 {
                 let armor_count = WorkModule::get_int(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_LW_INT_SUPER_ARMOUR_COUNT);
                 if armor_count != 2 {
                     SoundModule::play_se(
@@ -196,9 +199,9 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
                     VarModule::on_flag(object, ryu::status::flag::SPECIAL_LW_IMPACT_HIT);
                 }
             }
-            if (*collision_log).collision_kind == 2
+            if collision_kind == 2
             && (*collision_log).x28 == 0 {
-                let opponent_object = MiscModule::get_battle_object_from_id((*collision_log).opponent_object_id);
+                let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
                 let func: extern "C" fn(*mut BattleObject) -> u64 = std::mem::transmute(*((*(opponent_object as *const u64) + 0x2d0) as *const u64));
                 let flag = if func(opponent_object) == 0 {
                     ryu::status::flag::SPECIAL_LW_IMPACT_SHIELD
@@ -210,13 +213,69 @@ unsafe extern "C" fn ryu_ken_on_hit(vtable: u64, fighter: &mut Fighter, log: u64
             }
         }
         if status == *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F {
-            let opponent_object = MiscModule::get_battle_object_from_id((*collision_log).opponent_object_id);
+            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
             let opponent_module_accessor = (*opponent_object).module_accessor;
             let slow_frame = SlowModule::frame(opponent_module_accessor, 0);
             if slow_frame < 10 {
                 SlowModule::set(opponent_module_accessor, 0, 50, 10, false, 0x50000000);
             }
         }
+    }
+    if [
+        *FIGHTER_STATUS_KIND_SPECIAL_HI,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_JUMP,
+        *FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND
+    ].contains(&status) {
+        if collision_kind == 1 {
+            let opponent_object = MiscModule::get_battle_object_from_id(opponent_object_id);
+            if (*opponent_object).battle_object_id >> 0x1c == 0
+            && HitModule::get_status((*opponent_object).module_accessor, (*collision_log).receiver_id as i32, 0) == 0 {
+                if kind == 0x3c || !VarModule::is_flag(object, ken::status::flag::QUICK_STEP_INHERITED) {
+                    let attack_data = AttackModule::attack_data(module_accessor, (*collision_log).collider_id as i32, (*collision_log).x35);
+                    let mut angle = 0.0;
+                    if (*attack_data).vector != 0x169 {
+                        angle = (*attack_data).vector as f32 * 0.01745329;
+                    }
+                    let lr = PostureModule::lr(module_accessor);
+
+                    let rot = lr * 1.570796;
+
+                    let pos = &(*collision_log).location;
+
+                    let command = WorkModule::is_flag(module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
+
+                    let eff = if kind == 0x3c {
+                        if command {
+                            hash40("ryu_syoryuken_hit2")
+                        }
+                        else {
+                            hash40("ryu_syoryuken_hit")
+                        }
+                    }
+                    else {
+                        if command {
+                            hash40("ken_syoryuken_hit2")
+                        }
+                        else {
+                            hash40("ken_syoryuken_hit")
+                        }
+                    };
+
+                    EffectModule::req(
+                        module_accessor,
+                        Hash40::new_raw(eff),
+                        &Vector3f{x: pos.x, y: pos.y, z: pos.z},
+                        &Vector3f{x: 0.0, y: 0.0, z: rot * angle},
+                        1.0,
+                        0,
+                        -1,
+                        false,
+                        2
+                    );
+                }
+            }
+        }
+        return;
     }
     original!()(vtable, fighter, log, some_float);
 }
@@ -243,6 +302,8 @@ pub struct CollisionLogScuffed {
     collider_part_id: u8,
     receiver_id: u8,
     collider_id: u8,
+    x34: u8,
+    x35: bool
 }
 
 #[skyline::hook(offset = 0x10d7400)]

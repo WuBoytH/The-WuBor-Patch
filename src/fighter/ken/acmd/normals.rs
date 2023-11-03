@@ -116,7 +116,7 @@ unsafe fn ken_attacks3w(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
-    frame(agent.lua_state_agent, 12.0);
+    frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -167,12 +167,14 @@ unsafe fn ken_attacks3s2(agent: &mut L2CAgentBase) {
     }
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 65, 46, 20, 40, 3.8, 0.0, 14.0, 7.0, Some(0.0), Some(8.0), Some(7.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
-        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 4.0, false);
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 50, 30, 0, 60, 3.8, 0.0, 14.0, 7.0, Some(0.0), Some(8.0), Some(7.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KEN_PUNCH, *ATTACK_REGION_PUNCH);
     }
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
+    }
+    frame(agent.lua_state_agent, 18.0);
+    if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }

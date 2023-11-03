@@ -9,7 +9,7 @@ use {
 pub unsafe fn battleobjectmoduleaccessor__initialize_modules(module_accessor: *mut BattleObjectModuleAccessor, param_1: *const u64) {
     original!()(module_accessor, param_1);
     // println!("[CustomVarManager] Initialize");
-    // let object_id = (*module_accessor).battle_object_id;
+    let object_id = (*module_accessor).battle_object_id;
     // println!("[CustomVarManager] Initializing VarModule for {:#x}", object_id);
     // println!("[CustomVarManager] VarModule Count before adding: {}", CustomVarManager::count());
     if object_id != 0x50000000 {

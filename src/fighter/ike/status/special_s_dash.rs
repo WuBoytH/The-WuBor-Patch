@@ -125,9 +125,7 @@ unsafe extern "C" fn ike_special_s_dash_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ike_special_s_dash_pre,
-        ike_special_s_dash_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, ike_special_s_dash_pre);
+    agent.status(smashline::Main, *FIGHTER_IKE_STATUS_KIND_SPECIAL_S_DASH, ike_special_s_dash_main);
 }

@@ -13,8 +13,6 @@ unsafe extern "C" fn ganon_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ganon_escapeairslide
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_escapeairslide", ganon_escapeairslide);
 }

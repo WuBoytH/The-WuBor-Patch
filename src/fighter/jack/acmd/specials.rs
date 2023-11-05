@@ -893,26 +893,6 @@ unsafe extern "C" fn jack_wait4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack_doyle", script = "effect_appear", category = ACMD_EFFECT, low_priority )]
-unsafe extern "C" fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
-        macros::BURN_COLOR_FRAME(agent, 1, 0.02, 0.15, 2, 0.7);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
-        macros::LAST_EFFECT_SET_RATE(agent, 1.5);
-    }
-    frame(agent.lua_state_agent, 42.0);
-    if macros::is_excute(agent) {
-        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0.7);
-        macros::BURN_COLOR_FRAME(agent, 12, 0.02, 0.15, 2, 0);
-    }
-    frame(agent.lua_state_agent, 54.0);
-    if macros::is_excute(agent) {
-        macros::BURN_COLOR_NORMAL(agent);
-    }
-}
-
 #[acmd_script( agent = "jack", script = "effect_wait5", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_wait5_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -937,63 +917,38 @@ unsafe extern "C" fn jack_wait5_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack_doyle", script = "effect_return", category = ACMD_EFFECT, low_priority )]
-unsafe extern "C" fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_ALPHA(agent, 0.35);
-    }
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        macros::BURN_COLOR(agent, 0.02, 0.15, 2, 0);
-        macros::BURN_COLOR_FRAME(agent, 40, 0.02, 0.15, 2, 0.7);
-    }
-    frame(agent.lua_state_agent, 30.0);
-    if macros::is_excute(agent) {
-        macros::EFFECT_DETACH_KIND(agent, Hash40::new("jack_doyle_disappear"), -1);
-    }
-    frame(agent.lua_state_agent, 70.0);
-    if macros::is_excute(agent) {
-        macros::BURN_COLOR_NORMAL(agent);
-    }
-}
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn1", jack_specialn1);
 
-pub fn install() {
-    install_acmd_scripts!(
-        jack_specialn1,
+    agent.game_acmd("game_specialairn1", jack_specialairn1);
 
-        jack_specialairn1,
+    agent.game_acmd("game_specialn1_ex", jack_specialn1_ex);
 
-        jack_specialn1_ex,
+    agent.game_acmd("game_specialairn1_ex", jack_specialairn1_ex);
 
-        jack_specialairn1_ex,
+    agent.game_acmd("game_specialnjump", jack_specialnjump);
+    agent.effect_acmd("effect_specialnjump", jack_specialnjump_eff);
+    agent.sound_acmd("sound_specialnjump", jack_specialnjump_snd);
 
-        jack_specialnjump,
-        jack_specialnjump_eff,
-        jack_specialnjump_snd,
+    agent.game_acmd("game_specialairnshoot", jack_specialairnshoot);
 
-        jack_specialairnshoot,
+    agent.game_acmd("game_specials1", jack_specials1);
+    agent.effect_acmd("effect_specials1", jack_specials1_eff);
+    agent.sound_acmd("sound_specials1", jack_specials1_snd);
+    agent.expression_acmd("expression_specials1", jack_specials1_exp);
 
-        jack_specials1,
-        jack_specials1_eff,
-        jack_specials1_snd,
-        jack_specials1_exp,
+    agent.game_acmd("game_specialairs1", jack_specialairs1);
+    agent.effect_acmd("effect_specialairs1", jack_specialairs1_eff);
+    agent.sound_acmd("sound_specialairs1", jack_specialairs1_snd);
+    agent.expression_acmd("expression_specialairs1", jack_specialairs1_exp);
 
-        jack_specialairs1,
-        jack_specialairs1_eff,
-        jack_specialairs1_snd,
-        jack_specialairs1_exp,
+    agent.game_acmd("game_specialairhi", jack_specialairhi);
 
-        jack_specialairhi,
+    agent.game_acmd("game_specialhithrow", jack_specialhithrow);
 
-        jack_specialhithrow,
+    agent.game_acmd("game_specialairhithrow", jack_specialhithrow);
 
-        jack_wait4_eff,
+    agent.effect_acmd("effect_wait4", jack_wait4_eff);
 
-        jack_doyle_appear_eff,
-
-        jack_wait5_eff,
-
-        jack_doyle_return_eff
-    );
+    agent.effect_acmd("effect_wait5", jack_wait5_eff);
 }

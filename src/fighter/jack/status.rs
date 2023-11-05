@@ -5,15 +5,13 @@ pub mod special_s;
 pub mod special_lw;
 mod summon;
 mod dispatch;
-mod doyle;
 pub mod helper;
 
-pub fn install() {
-    special_n::install();
-    special_n_escape::install();
-    special_n_jump::install();
-    special_s::install();
-    summon::install();
-    dispatch::install();
-    doyle::install();
+pub fn install(agent : &mut smashline::Agent) {
+    special_n::install(agent);
+    special_n_escape::install(agent);
+    special_n_jump::install(agent);
+    special_s::install(agent);
+    summon::install(agent);
+    dispatch::install(agent);
 }

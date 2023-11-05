@@ -21,9 +21,7 @@ unsafe extern "C" fn gamewatch_catchattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_catchattack,
-        gamewatch_catchattack_snd
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_catchattack", gamewatch_catchattack);
+    agent.sound_acmd("sound_catchattack", gamewatch_catchattack_snd);
 }

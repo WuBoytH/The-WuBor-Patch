@@ -172,19 +172,17 @@ unsafe extern "C" fn ganon_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ganon_attackairn,
-        ganon_attackairn_eff,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", game_attackairn);
+    agent.effect_acmd("effect_attackairn", game_attackairn_eff);
 
-        ganon_attackairf,
+    agent.game_acmd("game_attackairf", ganon_attackairf);
 
-        // ganon_landingairf,
+    // agent.game_acmd("game_landingairf", ganon_landingairf);
 
-        ganon_attackairb,
+    agent.game_acmd("game_attackairb", ganon_attackairb);
 
-        ganon_attackairhi,
+    agent.game_acmd("game_attackairhi", ganon_attackairhi);
 
-        ganon_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", ganon_attackairlw);
 }

@@ -218,8 +218,6 @@ unsafe extern "C" fn jack_special_n_escape_next_status(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_special_n_escape_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_ESCAPE, jack_special_n_escape_main);
 }

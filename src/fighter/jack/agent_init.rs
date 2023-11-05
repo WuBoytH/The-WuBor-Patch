@@ -74,7 +74,7 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 #[fighter_reset]
-fn fighter_reset(fighter: &mut L2CFighterCommon) {
+fn on_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_JACK {
@@ -85,8 +85,6 @@ fn fighter_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_resets!(
-        fighter_reset
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_init(on_init);
 }

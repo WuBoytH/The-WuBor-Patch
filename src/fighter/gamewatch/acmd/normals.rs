@@ -137,16 +137,14 @@ unsafe extern "C" fn gamewatch_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_attack11,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", gamewatch_attack11);
 
-        gamewatch_attackdash,
-        gamewatch_attackdash_snd,
-        gamewatch_attackdash_exp,
+    agent.game_acmd("game_attackdash", gamewatch_attackdash);
+    agent.sound_acmd("sound_attackdash", gamewatch_attackdash_snd);
+    agent.expression_acmd("expression_attackdash", gamewatch_attackdash_exp);
 
-        gamewatch_attackhi3,
+    agent.game_acmd("game_attackhi3", gamewatch_attackhi3);
 
-        gamewatch_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", gamewatch_attacklw3);
 }

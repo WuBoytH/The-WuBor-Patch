@@ -137,8 +137,6 @@ unsafe extern "C" fn fox_special_hi_rush_handle_bound(fighter: &mut L2CFighterCo
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        fox_special_hi_rush_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH, fox_special_hi_rush_main);
 }

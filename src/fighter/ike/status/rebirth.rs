@@ -10,8 +10,6 @@ unsafe extern "C" fn ike_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ike_rebirth_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, ike_rebirth_main);
 }

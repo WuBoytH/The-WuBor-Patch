@@ -29,8 +29,6 @@ unsafe extern "C" fn gaogaen_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gaogaen_throwb
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwb", gaogaen_throwb);
 }

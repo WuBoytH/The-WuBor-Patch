@@ -165,8 +165,6 @@ pub unsafe extern "C" fn jack_special_n_jump_check_next(
     false.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_special_n_jump_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_JUMP, jack_special_n_jump_main);
 }

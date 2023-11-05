@@ -1,16 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{
-        vars::*,
-        table_const::*
-    }
-};
+use crate::imports::status_imports::*;
 
 #[fighter_frame( agent = FIGHTER_KIND_GANON, main )]
 fn ganon_frame(fighter: &mut L2CFighterCommon) {
@@ -29,8 +17,6 @@ fn ganon_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_frames!(
-        ganon_frame
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, ganon_frame);
 }

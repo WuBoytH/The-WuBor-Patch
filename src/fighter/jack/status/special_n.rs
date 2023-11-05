@@ -14,8 +14,6 @@ pub unsafe extern "C" fn jack_special_n_pre(fighter: &mut L2CFighterCommon) -> L
     ret
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_special_n_pre
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, jack_special_n_pre);
 }

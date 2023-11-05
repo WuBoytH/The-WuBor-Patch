@@ -93,9 +93,7 @@ unsafe extern "C" fn jack_summon_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_summon_pre,
-        jack_summon_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_JACK_STATUS_KIND_SUMMON, jack_summon_pre);
+    agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_SUMMON, jack_summon_main);
 }

@@ -21,9 +21,7 @@ unsafe extern "C" fn falco_appeal_end(fighter: &mut L2CFighterCommon) -> L2CValu
     fighter.status_end_Appeal()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        falco_appeal_main,
-        falco_appeal_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_APPEAL, falco_appeal_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_APPEAL, falco_appeal_end);
 }

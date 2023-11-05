@@ -5,8 +5,10 @@ mod vtable_hook;
 pub mod vl;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    agent_init::install();
+    let agent = &mut smashline::Agent::new("ike");
+    acmd::install(agent);
+    status::install(agent);
+    agent_init::install(agent);
     vtable_hook::install();
+    agent.install();
 }

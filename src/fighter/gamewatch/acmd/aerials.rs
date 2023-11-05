@@ -181,47 +181,20 @@ unsafe extern "C" fn gamewatch_attackairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-#[acmd_script( agent = "gamewatch_breath", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn gamewatch_breath_attackairhi(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.8, 97, 100, 63, 0, 3.8, 0.0, 2.4, 0.3, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 6, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
-    }
-    wait(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.8, 97, 100, 55, 0, 3.8, 0.0, 2.4, 0.3, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 6, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
-    }
-    wait(agent.lua_state_agent, 14.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.8, 97, 100, 40, 0, 3.8, 0.0, 2.4, 0.3, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 6, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
-    }
-    wait(agent.lua_state_agent, 7.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 80, 80, 0, 65, 4.3, 0.0, 1.8, 0.3, None, None, None, 0.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 6, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_NONE);
-    }
-}
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", gamewatch_attackairf);
+    agent.effect_acmd("effect_attackairf", gamewatch_attackairf_eff);
+    agent.sound_acmd("sound_attackairf", gamewatch_attackairf_snd);
+    agent.expression_acmd("expression_attackairf", gamewatch_attackairf_exp);
 
-pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_attackairf,
-        gamewatch_attackairf_eff,
-        gamewatch_attackairf_snd,
-        gamewatch_attackairf_exp,
+    agent.game_acmd("game_landingairf", gamewatch_landingairf);
+    agent.effect_acmd("effect_landingairf", gamewatch_landingairf_eff);
+    agent.sound_acmd("sound_landingairf", gamewatch_landingairf_snd);
+    agent.expression_acmd("expression_landingairf", gamewatch_landingairf_exp);
 
-        gamewatch_landingairf,
-        gamewatch_landingairf_eff,
-        gamewatch_landingairf_snd,
-        gamewatch_landingairf_exp,
+    agent.game_acmd("game_attackairb", gamewatch_attackairb);
 
-        gamewatch_attackairb,
+    agent.game_acmd("game_landingairb", gamewatch_landingairb);
 
-        gamewatch_landingairb,
-
-        gamewatch_attackairhi,
-
-        gamewatch_breath_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", gamewatch_attackairhi);
 }

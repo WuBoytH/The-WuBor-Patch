@@ -29,8 +29,6 @@ unsafe extern "C" fn falco_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        falco_attack_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK, falco_attack_pre);
 }

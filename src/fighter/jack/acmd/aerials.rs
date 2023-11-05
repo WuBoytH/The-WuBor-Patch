@@ -131,12 +131,10 @@ unsafe extern "C" fn jack_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        jack_attackairf,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", jack_attackairf);
 
-        jack_attackairb,
+    agent.game_acmd("game_attackairb", jack_attackairb);
 
-        jack_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", jack_attackairhi);
 }

@@ -414,24 +414,26 @@ unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ike_specialnend,
-        ike_specialnend_eff,
-        ike_specialnend_snd,
-        ike_specialnend_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialnend", ike_specialnend);
+    agent.effect_acmd("effect_specialnend", ike_specialnend_eff);
+    agent.sound_acmd("sound_specialnend", ike_specialnend_snd);
+    agent.expression_acmd("expression_specialnend", ike_specialnend_exp);
 
-        ike_specialairnend,
-        ike_specialairnend_eff,
-        ike_specialairnend_snd,
-        ike_specialairnend_exp,
+    agent.game_acmd("game_specialairnend", ike_specialairnend);
+    agent.effect_acmd("effect_specialairnend", ike_specialairnend_eff);
+    agent.sound_acmd("sound_specialairnend", ike_specialairnend_snd);
+    agent.expression_acmd("expression_specialairnend", ike_specialairnend_exp);
 
-        ike_specialsdash_snd,
+    agent.sound_acmd("sound_specialsdash", ike_specialsdash_snd);
 
-        ike_specialsend,
+    agent.game_acmd("game_specialsend", ike_specialsend);
 
-        ike_specialsattack,
-        ike_specialsattack_eff,
-        ike_specialsattack_snd
-    );
+    agent.game_acmd("game_specialsattack", ike_specialsattack);
+    agent.effect_acmd("effect_specialsattack", ike_specialsattack_eff);
+    agent.sound_acmd("sound_specialsattack", ike_specialsattack_snd);
+
+    agent.game_acmd("game_specialairsattack", ike_specialsattack);
+    agent.effect_acmd("effect_specialairsattack", ike_specialsattack_eff);
+    agent.sound_acmd("sound_specialairsattack", ike_specialsattack_snd);
 }

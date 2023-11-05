@@ -19,10 +19,10 @@ unsafe extern "C" fn falco_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        falco_specialsstart,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialsstart", falco_specialsstart);
 
-        falco_speciallw
-    );
+    agent.game_acmd("game_speciallw", falco_speciallw);
+
+    agent.game_acmd("game_specialairlw", falco_speciallw);
 }

@@ -30,10 +30,8 @@ unsafe extern "C" fn fox_speciallwstart(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        fox_specialhi,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", fox_specialhi);
 
-        fox_speciallwstart
-    );
+    agent.game_acmd("game_speciallwstart", fox_speciallwstart);
 }

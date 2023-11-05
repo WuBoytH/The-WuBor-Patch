@@ -173,22 +173,34 @@ unsafe extern "C" fn gamewatch_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gamewatch_specials2,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specials2", gamewatch_specials2);
 
-        gamewatch_specials3,
+    agent.game_acmd("game_specialairs2", gamewatch_specials2);
 
-        gamewatch_specials4,
+    agent.game_acmd("game_specials3", gamewatch_specials3);
 
-        gamewatch_specials5,
+    agent.game_acmd("game_specialairs3", gamewatch_specials3);
 
-        gamewatch_specials7,
+    agent.game_acmd("game_specials4", gamewatch_specials4);
 
-        gamewatch_specials8,
+    agent.game_acmd("game_specialairs4", gamewatch_specials4);
 
-        gamewatch_specials9, 
+    agent.game_acmd("game_specials5", gamewatch_specials5);
 
-        gamewatch_specialhi
-    );
+    agent.game_acmd("game_specialairs5", gamewatch_specials5);
+
+    agent.game_acmd("game_specials7", gamewatch_specials7);
+
+    agent.game_acmd("game_specialairs7", gamewatch_specials7);
+
+    agent.game_acmd("game_specials8", gamewatch_specials8);
+
+    agent.game_acmd("game_specialairs8", gamewatch_specials8);
+
+    agent.game_acmd("game_specials9", gamewatch_specials9);
+
+    agent.game_acmd("game_specialairs9", gamewatch_specials9);
+
+    agent.game_acmd("game_specialhi", gamewatch_specialhi);
 }

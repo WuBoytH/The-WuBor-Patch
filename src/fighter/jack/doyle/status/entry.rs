@@ -28,8 +28,6 @@ unsafe extern "C" fn jack_doyle_entry_main_loop(weapon: &mut L2CWeaponCommon) ->
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_doyle_entry_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY, jack_doyle_entry_main);
 }

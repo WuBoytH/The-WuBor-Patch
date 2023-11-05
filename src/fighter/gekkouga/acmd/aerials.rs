@@ -134,14 +134,12 @@ unsafe extern "C" fn gekkouga_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", gekkouga_attackairn);
 
-        gekkouga_attackairf,
+    agent.game_acmd("game_attackairf", gekkouga_attackairf);
 
-        gekkouga_attackairb,
+    agent.game_acmd("game_attackairb", gekkouga_attackairb);
 
-        gekkouga_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", gekkouga_attackairhi);
 }

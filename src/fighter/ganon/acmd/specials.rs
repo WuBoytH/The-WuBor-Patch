@@ -308,28 +308,28 @@ unsafe extern "C" fn ganon_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ganon_specialn,
-        ganon_specialn_eff,
-        ganon_specialn_snd,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", ganon_specialn);
+    agent.effect_acmd("effect_specialn", ganon_specialn_eff);
+    agent.sound_acmd("sound_specialn", ganon_specialn_snd);
 
-        ganon_specialsstart,
+    agent.game_acmd("game_specialairn", ganon_specialn);
+    agent.effect_acmd("effect_specialairn", ganon_specialn_eff);
+    agent.sound_acmd("sound_specialairn", ganon_specialn_snd);
 
-        ganon_specialairsstart,
+    agent.game_acmd("game_specialsstart", ganon_specialsstart);
 
-        ganon_specialairscatch,
+    agent.game_acmd("game_specialairsstart", ganon_specialairsstart);
 
-        ganon_specialairs,
+    agent.game_acmd("game_specialairscatch", ganon_specialairscatch);
 
-        ganon_specialhi,
+    agent.game_acmd("game_specialairs", ganon_specialairs);
 
-        ganon_specialhicatch,
+    agent.game_acmd("game_specialhi", ganon_specialhi);
 
-        ganon_specialhithrow,
+    agent.game_acmd("game_specialairhi", ganon_specialhi);
 
-        ganon_speciallw,
+    agent.game_acmd("game_speciallw", ganon_speciallw);
 
-        ganon_specialairlw
-    );
+    agent.game_acmd("game_specialairlw", ganon_specialairlw);
 }

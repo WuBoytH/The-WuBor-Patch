@@ -3,7 +3,7 @@ use crate::imports::acmd_imports::*;
 // Spinning Demon Finisher
 
 #[acmd_script( agent = "demon", script = "game_attackstand24", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstand24(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstand24(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 10.5, 53, 50, 0, 83, 2.0, 0.0, 13.0, 12.0, None, None, None, 0.4, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);
@@ -20,7 +20,7 @@ unsafe fn demon_attackstand24(agent: &mut L2CAgentBase) {
 // Spinning Demon 1 Finisher
 
 #[acmd_script( agent = "demon", script = "game_attackstand2f", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstand2f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstand2f(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -36,7 +36,7 @@ unsafe fn demon_attackstand2f(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "effect_attackstand2f", category = ACMD_EFFECT, low_priority )]
-unsafe fn demon_attackstand2f_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstand2f_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("demon_devil_sign_flash"), Hash40::new("head"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -54,7 +54,7 @@ unsafe fn demon_attackstand2f_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "sound_attackstand2f", category = ACMD_SOUND, low_priority )]
-unsafe fn demon_attackstand2f_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstand2f_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_demon_swing_long02"));
@@ -63,7 +63,7 @@ unsafe fn demon_attackstand2f_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "expression_attackstand2f", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn demon_attackstand2f_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstand2f_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_80_attackl"), 0);
@@ -90,7 +90,7 @@ unsafe fn demon_attackstand2f_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_attackstand32", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstand32(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstand32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("legr"), *HIT_STATUS_XLU);

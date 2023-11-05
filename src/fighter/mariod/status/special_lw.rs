@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn mariod_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mariod_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     mariod_speciallw_mot_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(mariod_speciallw_main_loop as *const () as _))
 }
@@ -89,7 +89,7 @@ unsafe extern "C" fn mariod_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 #[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_LIMIT_X_DEC) {
         let limit_x_dec_curr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLOAT_LIMIT_X_DEC);
         let limit_x_dec = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("limit_x_dec"));
@@ -143,7 +143,7 @@ unsafe fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-unsafe fn mariod_speciallw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mariod_speciallw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_RISE_PRECEDE) {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {

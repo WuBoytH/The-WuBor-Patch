@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
 #[acmd_script( agent = "marth", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -21,7 +21,7 @@ unsafe fn marth_attack11(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -35,7 +35,7 @@ unsafe fn marth_attack11_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -50,7 +50,7 @@ unsafe fn marth_attack12(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -64,7 +64,7 @@ unsafe fn marth_attack12_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -79,7 +79,7 @@ unsafe fn marth_attacks3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -93,7 +93,7 @@ unsafe fn marth_attacks3_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -124,7 +124,7 @@ unsafe fn marth_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));
@@ -138,7 +138,7 @@ unsafe fn marth_attackhi3_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -153,7 +153,7 @@ unsafe fn marth_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_blue"));

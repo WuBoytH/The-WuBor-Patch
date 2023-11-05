@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "luigi", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -24,7 +24,7 @@ unsafe fn luigi_attackairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -45,7 +45,7 @@ unsafe fn luigi_attackairf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

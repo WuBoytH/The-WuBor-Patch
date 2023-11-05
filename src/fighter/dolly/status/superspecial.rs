@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn dolly_super_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_super_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     let ret = original!(fighter);
     VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
@@ -9,7 +9,7 @@ unsafe fn dolly_super_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_super_special_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_super_special_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     dolly_super_special_main_helper(fighter, hash40("param_super_special").into());
     let eff_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SUPER_SPECIAL_WORK_INT_SCREEN_EFFECT_COUNT);
@@ -25,7 +25,7 @@ unsafe fn dolly_super_special_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn dolly_super_special2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_super_special2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     let ret = original!(fighter);
     VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
@@ -42,7 +42,7 @@ unsafe extern "C" fn dolly_super_special_main_helper(fighter: &mut L2CFighterCom
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_super_special2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_super_special2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW {
         VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
         ArticleModule::remove_exist(
@@ -57,7 +57,7 @@ unsafe fn dolly_super_special2_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_super_special2_blow_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_super_special2_blow_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_WAIT
     && status != *FIGHTER_STATUS_KIND_FALL

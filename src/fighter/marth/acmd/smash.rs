@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
 #[acmd_script( agent = "marth", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -23,7 +23,7 @@ unsafe fn marth_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attacks4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 5, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -49,7 +49,7 @@ unsafe fn marth_attacks4_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -73,7 +73,7 @@ unsafe fn marth_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attackhi4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attackhi4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -102,7 +102,7 @@ unsafe fn marth_attackhi4_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn marth_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -138,7 +138,7 @@ unsafe fn marth_attacklw4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword1"), -0.0, -0.0, 10, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);

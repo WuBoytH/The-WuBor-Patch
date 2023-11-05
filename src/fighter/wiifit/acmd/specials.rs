@@ -1,14 +1,14 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "wiifit", script = "game_specialhijump", category = ACMD_GAME, low_priority )]
-unsafe fn wiifit_specialhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wiifit_specialhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
 }
 
 #[acmd_script( agent = "wiifit", script = "game_specialhiend", category = ACMD_GAME, low_priority )]
-unsafe fn wiifit_specialhiend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wiifit_specialhiend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }

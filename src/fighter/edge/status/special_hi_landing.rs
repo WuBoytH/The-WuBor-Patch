@@ -10,7 +10,7 @@ extern "C" {
 }
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn edge_special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);
     let speed_mul = if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_USE_LANDING_SPEED_MUL) {
         edge_special_hi_param_float_helper(fighter, hash40("ground_speed_x_mul").into(), charged_rush.into()).get_f32()
@@ -73,7 +73,7 @@ unsafe extern "C" fn edge_special_hi_landing_main_loop(fighter: &mut L2CFighterC
 }
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("edge_octaslash_line"), true, true);
     if !VarModule::is_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL) {
         VarModule::set_int(fighter.module_accessor, edge::instance::int::SPECIAL_HI_CANCEL_COUNT, 0);

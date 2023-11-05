@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "master", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn master_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.3);
     if macros::is_excute(agent) {
@@ -74,7 +74,7 @@ unsafe fn master_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn master_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 3.0);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);
@@ -124,7 +124,7 @@ unsafe fn master_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn master_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_specialairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.0, 3.0);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_MASTER_STATUS_SPECIAL_LW_FLAG_INHERIT_LANDING_1);

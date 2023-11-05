@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "rockman", scripts = [ "game_busterchargeshot", "game_busterairchargeshot" ], category = ACMD_GAME, low_priority )]
-unsafe fn rockman_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     macros::FT_MOTION_RATE(agent, 1.0 / 7.0);
     frame(agent.lua_state_agent, 18.0);
@@ -13,7 +13,7 @@ unsafe fn rockman_specialn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", scripts = [ "effect_busterchargeshot", "effect_busterairchargeshot" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 8, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -32,7 +32,7 @@ unsafe fn rockman_specialn_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", scripts = [ "sound_busterchargeshot", "sound_busterairchargeshot" ], category = ACMD_SOUND, low_priority )]
-unsafe fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_rockman_smash_s02"));
@@ -40,7 +40,7 @@ unsafe fn rockman_specialn_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", scripts = [ "expression_busterchargeshot", "expression_busterairchargeshot" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_ROCKBUSTER, 5);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_RIGHT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 0);
@@ -63,7 +63,7 @@ unsafe fn rockman_specialn_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman_chargeshot", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         let is_charge_max = 1.0 <= WorkModule::get_float(agent.module_accessor, *WEAPON_ROCKMAN_CHARGESHOT_INSTANCE_WORK_ID_FLOAT_HOLD_RATE);
         let damage;
@@ -86,7 +86,7 @@ unsafe fn rockman_chargeshot_regular(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn rockman_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES); // Was ALWAYS_BOTH_SIDES
@@ -94,7 +94,7 @@ unsafe fn rockman_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn rockman_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -104,7 +104,7 @@ unsafe fn rockman_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn rockman_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 5.0);
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -114,7 +114,7 @@ unsafe fn rockman_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman_leafshield", scripts = [ "game_start", "game_startreverse" ], category = ACMD_GAME, low_priority )]
-unsafe fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
         if !WorkModule::is_flag(agent.module_accessor, 0x20000006) { // WEAPON_ROCKMAN_LEAFSHIELD_INSTANCE_WORK_ID_FLAG_DEAD_0
@@ -133,7 +133,7 @@ unsafe fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman_leafshield", scripts = [ "game_shield", "game_shieldreverse" ], category = ACMD_GAME, low_priority )]
-unsafe fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
         if !WorkModule::is_flag(agent.module_accessor, 0x20000006) { // WEAPON_ROCKMAN_LEAFSHIELD_INSTANCE_WORK_ID_FLAG_DEAD_0
@@ -152,7 +152,7 @@ unsafe fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "rockman_leafshield", scripts = [ "game_fly", "game_flyreverse" ], category = ACMD_GAME, low_priority )]
-unsafe fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
         if !WorkModule::is_flag(agent.module_accessor, 0x20000006) { // WEAPON_ROCKMAN_LEAFSHIELD_INSTANCE_WORK_ID_FLAG_DEAD_0

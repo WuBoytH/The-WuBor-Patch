@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
 #[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();
@@ -42,7 +42,7 @@ unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attack_combo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_combo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     demon_attack_combo_main_mot_helper(fighter, 2.into());
     MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_combo_main_loop as *const () as _))

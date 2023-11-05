@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "jack", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn jack_throwf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         let damage = if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             4.0
@@ -25,7 +25,7 @@ unsafe fn jack_throwf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn jack_throwb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_throwb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         let damage = if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             4.0
@@ -49,7 +49,7 @@ unsafe fn jack_throwb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn jack_throwhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_throwhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         let damage = if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             3.5
@@ -73,7 +73,7 @@ unsafe fn jack_throwhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "jack", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn jack_throwlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn jack_throwlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         let damage = if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE) {
             3.5

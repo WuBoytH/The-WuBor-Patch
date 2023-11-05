@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
-unsafe fn shulk_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 0.6);
     frame(agent.lua_state_agent, 31.0);
@@ -17,7 +17,7 @@ unsafe fn shulk_specials(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME, low_priority )]
-unsafe fn shulk_specialairsfall(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_specialairsfall(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
         macros::ATTACK(agent, 0, 0, Hash40::new("swordr"), 10.0, 361, 80, 0, 30, 3.5, 7.0, 0.0, 0.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 7, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -40,7 +40,7 @@ unsafe fn shulk_specialairsfall(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "shulk", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn shulk_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
@@ -93,7 +93,7 @@ unsafe fn shulk_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME, low_priority )]
-unsafe fn shulk_speciallwattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 50, 80, 0, 70, 12.0, 0.0, 10.5, 28.0, Some(0.0), Some(10.5), Some(20.5), 2.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -116,7 +116,7 @@ unsafe fn shulk_speciallwattack(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME, low_priority )]
-unsafe fn shulk_speciallwf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_speciallwf(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {

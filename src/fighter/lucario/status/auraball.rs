@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     if !VarModule::is_flag(weapon.module_accessor, weapon::instance::flag::FROM_POCKET) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
         if sv_battle_object::category(owner_id) == *BATTLE_OBJECT_CATEGORY_FIGHTER
@@ -24,7 +24,7 @@ unsafe fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MiscModule::get_vars_from_pocket(weapon.module_accessor);
     if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
@@ -57,7 +57,7 @@ unsafe fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 #[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_auraball"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_LIFE);

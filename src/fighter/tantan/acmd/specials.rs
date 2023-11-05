@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "tantan", scripts = [ "game_specialairhistart", "game_specialairhistart2" ], category = ACMD_GAME, low_priority )]
-unsafe fn tantan_specialairhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn tantan_specialairhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_TANTAN_STATUS_SPECIAL_HI_FLAG_REVERSE_LR);

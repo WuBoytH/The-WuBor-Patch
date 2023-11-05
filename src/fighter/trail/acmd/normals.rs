@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "trail", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn trail_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 6.0);
@@ -70,7 +70,7 @@ unsafe fn trail_attack11(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "trail", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn trail_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 7.2, 361, 110, 0, 48, 3.4, 0.0, 0.0, 0.0, None, None, None, 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_TRAIL_SLASH, *ATTACK_REGION_SWORD);

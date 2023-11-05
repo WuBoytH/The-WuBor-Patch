@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "simon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -43,7 +43,7 @@ unsafe fn simon_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacks4hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -85,7 +85,7 @@ unsafe fn simon_attacks4hi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacks4lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -127,7 +127,7 @@ unsafe fn simon_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.2);
     frame(agent.lua_state_agent, 5.0);
@@ -174,7 +174,7 @@ unsafe fn simon_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

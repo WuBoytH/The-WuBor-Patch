@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "samus", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn samus_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samus_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -56,7 +56,7 @@ unsafe fn samus_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn samus_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samus_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
     }
@@ -97,7 +97,7 @@ unsafe fn samus_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 // #[acmd_script( agent = "samus_cshot", script = "game_shoot", category = ACMD_GAME, low_priority )]
-// unsafe fn samus_cshot_shoot(agent: &mut L2CAgentBase) {
+// unsafe extern "C" fn samus_cshot_shoot(agent: &mut L2CAgentBase) {
 //     if macros::is_excute(agent) {
 //         let angle = WorkModule::get_float(agent.module_accessor, WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_ANGLE);
 //         if angle == -cshot_angle {

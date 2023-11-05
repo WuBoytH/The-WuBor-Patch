@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "ridley", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
-unsafe fn ridley_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -50,7 +50,7 @@ unsafe fn ridley_specialsstart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ridley", script = "game_specialairhichargef", category = ACMD_GAME, low_priority )]
-unsafe fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         macros::HIT_NODE(agent, Hash40::new("wingr2"), *HIT_STATUS_XLU);
@@ -65,7 +65,7 @@ unsafe fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ridley", script = "game_specialairhichargeb", category = ACMD_GAME, low_priority )]
-unsafe fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         macros::HIT_NODE(agent, Hash40::new("wingr2"), *HIT_STATUS_XLU);
@@ -81,7 +81,7 @@ unsafe fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ridley", script = "game_specialairhichargehi", category = ACMD_GAME, low_priority )]
-unsafe fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         macros::HIT_NODE(agent, Hash40::new("wingr2"), *HIT_STATUS_XLU);
@@ -97,7 +97,7 @@ unsafe fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ridley", script = "game_specialairhichargelw", category = ACMD_GAME, low_priority )]
-unsafe fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
         JostleModule::set_status(agent.module_accessor, false);

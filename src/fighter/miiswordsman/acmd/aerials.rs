@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miisword_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
     frame(agent.lua_state_agent, 6.0);
@@ -26,7 +26,7 @@ unsafe fn miisword_attackairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miisword_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -56,7 +56,7 @@ unsafe fn miisword_attackairb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miisword_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
     frame(agent.lua_state_agent, 9.0);

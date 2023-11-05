@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "master", script = "game_landingairn", category = ACMD_GAME, low_priority )]
-unsafe fn master_landingairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_landingairn(agent: &mut L2CAgentBase) {
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW) {
         if macros::is_excute(agent) {
             ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW, Hash40::new("landing_air_n"), false, -1.0);
@@ -14,7 +14,7 @@ unsafe fn master_landingairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn master_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);
     }

@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "dedede", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn dedede_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 32.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 6.0, 7.0);

@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
 #[acmd_script( agent = "lucina", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -22,7 +22,7 @@ unsafe fn lucina_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucina", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 5.0);
@@ -46,7 +46,7 @@ unsafe fn lucina_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucina", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn lucina_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 2.0);

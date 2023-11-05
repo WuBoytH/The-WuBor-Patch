@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "pickel", script = "game_specialsride", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_specialsride(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_specialsride(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 350, 100, 30, 10, 3.0, 0.0, 8.0, 4.5, Some(0.0), Some(4.0), Some(4.5), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA_d, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -12,7 +12,7 @@ unsafe fn pickel_specialsride(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "game_specialairsride", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_specialairsride(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_specialairsride(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -22,7 +22,7 @@ unsafe fn pickel_specialairsride(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel_trolley", script = "game_specialsdrivepartial", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_specialsdrivepartial(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_specialsdrivepartial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.5, 40, 45, 0, 45, 3.5, 0.0, 3.0, 1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 60, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -32,7 +32,7 @@ unsafe fn pickel_specialsdrivepartial(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 7.0, 60, 64, 0, 66, 1.0, 0.0, 5.0, -6.0, Some(0.0), Some(0.0), Some(-6.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 60, true, false, false, false, false, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -56,7 +56,7 @@ unsafe fn pickel_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pickel", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         // notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS);

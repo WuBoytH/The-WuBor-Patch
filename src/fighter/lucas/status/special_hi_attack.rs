@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucas", status = FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucas_special_hi_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucas_special_hi_attack_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),

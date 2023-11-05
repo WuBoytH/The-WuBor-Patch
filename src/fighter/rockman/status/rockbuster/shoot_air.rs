@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::helper::*;
 
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_attr_add = if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_N {
         fighter.sub_status_pre_SpecialNCommon();
         *FIGHTER_STATUS_ATTR_START_TURN
@@ -46,7 +46,7 @@ unsafe fn rockman_rockbuster_shoot_air_pre(fighter: &mut L2CFighterCommon) -> L2
 }
 
 #[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_rockbuster_shoot_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_rockbuster_shoot_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
     fighter.global_table[FLICK_X].assign(&L2CValue::I32(0xFE));

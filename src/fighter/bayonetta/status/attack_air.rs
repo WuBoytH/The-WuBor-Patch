@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air();
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     if mot == hash40("attack_air_lw") {
@@ -154,7 +154,7 @@ unsafe extern "C" fn bayonetta_attackair_loop_helper(fighter: &mut L2CFighterCom
 }
 
 #[status_script(agent = "bayonetta", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn bayonetta_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
     && status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
@@ -164,12 +164,12 @@ unsafe fn bayonetta_attackair_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn bayonetta_attackairf_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_attackairf_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_uniq_process_init()
 }
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn bayonetta_attackairf_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_attackairf_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_ATTACK_AIR {
         FGCModule::reset_used_aerials(fighter);

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn brave_special_lw_crash_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn brave_special_lw_crash_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -30,7 +30,7 @@ unsafe fn brave_special_lw_crash_end_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn brave_special_lw_crash_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn brave_special_lw_crash_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND));
         hash40("special_lw9_end")

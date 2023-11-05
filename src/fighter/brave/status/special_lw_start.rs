@@ -4,7 +4,7 @@ use crate::imports::status_imports::*;
 pub fn brave_special_lw_start_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue;
 
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_DECIDE_COMMAND);
     let mask = VarModule::get_int(fighter.module_accessor, brave::instance::int::USED_SPELL_MASK) | (1 << spell_kind);
     // println!("New Mask: {:#b}", mask);
@@ -29,7 +29,7 @@ unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_INT_ACTIVE_COMMAND);
     if spell_kind == *FIGHTER_BRAVE_SPECIAL_LW_COMMAND08_FULLBURST {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_FULLBURST_INTERRUPT) {

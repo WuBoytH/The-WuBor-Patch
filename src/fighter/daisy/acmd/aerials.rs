@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "daisy", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -26,7 +26,7 @@ unsafe fn daisy_attackairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -53,7 +53,7 @@ unsafe fn daisy_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn daisy_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 0, 6, -2, 70, 0, 0, 0.7, true, *EF_FLIP_YZ);
@@ -71,7 +71,7 @@ unsafe fn daisy_attackairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn daisy_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_daisy_rnd_attack"));
@@ -88,7 +88,7 @@ unsafe fn daisy_attackairlw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 5, false, *BATTLE_OBJECT_ID_INVALID as u32);

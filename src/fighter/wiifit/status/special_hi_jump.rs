@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "wiifit", status = FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn wiifit_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn wiifit_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),

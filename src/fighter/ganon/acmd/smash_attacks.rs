@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "ganon", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn ganon_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -29,7 +29,7 @@ unsafe fn ganon_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ganon", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn ganon_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attackhi4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);
@@ -51,7 +51,7 @@ unsafe fn ganon_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "ganon", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn ganon_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ganon_attacklw4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_GANON_GENERATE_ARTICLE_SWORD, false, 0);

@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::helper::*;
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.status_AttackS3Common();
     fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attack_s3_main_loop as *const () as _))

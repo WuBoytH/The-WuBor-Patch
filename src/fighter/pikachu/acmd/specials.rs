@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "pikachu", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     frame(agent.lua_state_agent, 13.0);
@@ -19,7 +19,7 @@ unsafe fn pikachu_specialn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "effect_specialn" , category = ACMD_EFFECT, low_priority )]
-unsafe fn pikachu_specialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
@@ -51,7 +51,7 @@ unsafe fn pikachu_specialn_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "effect_specialairn" , category = ACMD_EFFECT, low_priority )]
-unsafe fn pikachu_specialairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
@@ -79,7 +79,7 @@ unsafe fn pikachu_specialairn_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "sound_specialn", "sound_specialairn" ], category = ACMD_SOUND, low_priority )]
-unsafe fn pikachu_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_pikachu_002"));
@@ -91,7 +91,7 @@ unsafe fn pikachu_specialn_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "expression_specialn", "expression_specialairn" ], category = ACMD_SOUND, low_priority )]
-unsafe fn pikachu_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialn_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 3);
@@ -110,7 +110,7 @@ unsafe fn pikachu_specialn_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu_dengekidama", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 60, 30, 0, 35, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -1.9, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
@@ -124,12 +124,12 @@ unsafe fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
 // Actually Side Speceial Lmao
 
 #[acmd_script( agent = "pikachu", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialhistart(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 4.0);
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_specialhi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialhi1(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("neck"), 2.0, 70, 50, 0, 20, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         JostleModule::set_status(agent.module_accessor, false);
@@ -137,7 +137,7 @@ unsafe fn pikachu_specialhi1(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "game_specialhi2", "game_specialairhi2" ], category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_specialhi2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("neck"), 3.0, 70, 95, 0, 75, 1.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 5, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BODY);
         JostleModule::set_status(agent.module_accessor, false);
@@ -147,7 +147,7 @@ unsafe fn pikachu_specialhi2(agent: &mut L2CAgentBase) {
 // Actually Up Special Lmao
 
 #[acmd_script( agent = "pikachu", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 10.0 / 6.0);
     frame(agent.lua_state_agent, 7.0);
@@ -200,7 +200,7 @@ unsafe fn pikachu_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn pikachu_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_NO_STOP(agent, Hash40::new("pikachu_cheek"), Hash40::new("head"), 0, 0, 0, 0, -90, -90, 1, true);
@@ -235,7 +235,7 @@ unsafe fn pikachu_speciallw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "sound_speciallw", "sound_specialairlw" ], category = ACMD_SOUND, low_priority )]
-unsafe fn pikachu_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_pikachu_special_s01"));
@@ -251,7 +251,7 @@ unsafe fn pikachu_speciallw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", scripts = [ "expression_speciallw", "expression_specialairlw" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pikachu_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -265,7 +265,7 @@ unsafe fn pikachu_speciallw_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu_cloud", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_cloud_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_cloud_regular(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *WEAPON_PIKACHU_CLOUD_INSTANCE_WORK_ID_FLAG_ACTIVATE_KAMINARI);
@@ -273,14 +273,14 @@ unsafe fn pikachu_cloud_regular(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu_cloud", script = "effect_regular", category = ACMD_EFFECT, low_priority )]
-unsafe fn pikachu_cloud_regular_eff(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_cloud_regular_eff(_agent: &mut L2CAgentBase) {
     // if macros::is_excute(agent) {
     //     macros::EFFECT(agent, Hash40::new("pikachu_kaminari_cloud"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
     // }
 }
 
 #[acmd_script( agent = "pikachu_kaminari", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 42, 85, 0, 60, 6.0, 0.0, 2.0, 0.0, Some(0.0), Some(2.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
     }
@@ -293,7 +293,7 @@ unsafe fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
 // Down Special For Real Lmao
 
 #[acmd_script( agent = "pikachu", script = "game_speciallwstrike", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, pikachu::status::flag::SPECIAL_LW_ENABLE_LANDING);
@@ -318,7 +318,7 @@ unsafe fn pikachu_speciallwstrike(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "effect_speciallwstrike", category = ACMD_EFFECT, low_priority )]
-unsafe fn pikachu_speciallwstrike_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallwstrike_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, -90, 0.6, true, *EF_FLIP_YZ);
@@ -342,7 +342,7 @@ unsafe fn pikachu_speciallwstrike_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "sound_speciallwstrike", category = ACMD_SOUND, low_priority )]
-unsafe fn pikachu_speciallwstrike_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallwstrike_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_swing_02"));
@@ -358,7 +358,7 @@ unsafe fn pikachu_speciallwstrike_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "pikachu", script = "expression_speciallwstrike", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(

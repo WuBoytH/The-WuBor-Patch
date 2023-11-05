@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "elight", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn elight_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -37,7 +37,7 @@ unsafe fn elight_attackairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
-unsafe fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_attack100_hand"), Hash40::new("handl"), 1, 0.7, -0.2, 0, 0, 0, 0.37, true);
     }
@@ -55,7 +55,7 @@ unsafe fn elight_attackairn_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
-unsafe fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_swing_s01"));
@@ -63,7 +63,7 @@ unsafe fn elight_attackairn_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attacks"), 0);
     }
@@ -80,12 +80,12 @@ unsafe fn elight_attackairn_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_landingairn", category = ACMD_GAME, low_priority )]
-unsafe fn elight_landingairn(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_landingairn(_agent: &mut L2CAgentBase) {
     
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn elight_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -149,7 +149,7 @@ unsafe fn elight_attackairf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn elight_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 6.0);
@@ -214,7 +214,7 @@ unsafe fn elight_attackairb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn elight_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -277,7 +277,7 @@ unsafe fn elight_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn elight_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -343,7 +343,7 @@ unsafe fn elight_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("elight_sword_open"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
@@ -374,7 +374,7 @@ unsafe fn elight_attackairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_attackair_l01"));
@@ -388,7 +388,7 @@ unsafe fn elight_attackairlw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_79_lightairslash"), 0);
@@ -414,7 +414,7 @@ unsafe fn elight_attackairlw_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn elight_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_landingairlw(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, attack_air::flag::ENABLE_LANDING_ATTACK) {
         if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
             if macros::is_excute(agent) {
@@ -454,7 +454,7 @@ unsafe fn elight_landingairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "effect_landingairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_down_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -489,7 +489,7 @@ unsafe fn elight_landingairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "sound_landingairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_elight_landing02"));
@@ -503,7 +503,7 @@ unsafe fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "elight", script = "expression_landingairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_79_lands_light"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);

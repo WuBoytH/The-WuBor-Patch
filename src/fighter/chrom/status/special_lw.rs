@@ -4,7 +4,7 @@ use {
 };
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn chrom_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn chrom_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -33,12 +33,12 @@ unsafe fn chrom_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn chrom_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn chrom_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn chrom_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn chrom_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, fighter::status::flag::SKIP_IS_STATUS_CLIFF_CHECK);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -64,7 +64,7 @@ unsafe extern "C" fn chrom_special_lw_loop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 #[status_script(agent = "chrom", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn chrom_special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn chrom_special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, chrom::status::flag::SPECIAL_LW_CHANGE_KINETIC) {
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
         sv_kinetic_energy!(

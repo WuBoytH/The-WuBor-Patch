@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOn_initStatus_common)]
-unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFighterCommon) {
     // Original
     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
     // Additions
@@ -37,7 +37,7 @@ unsafe fn sub_ftstatusuniqprocessguardon_initstatus_common(fighter: &mut L2CFigh
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_on_common)]
-unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
     let shield_min_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("shield_min_frame"));
     WorkModule::set_int(fighter.module_accessor, shield_min_frame, *FIGHTER_STATUS_GUARD_ON_WORK_INT_MIN_FRAME);
     MotionModule::change_motion(
@@ -70,7 +70,7 @@ unsafe fn sub_status_guard_on_common(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_on_uniq)]
-unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool() {
         fighter.FighterStatusGuard__landing_effect_control();
     }
@@ -121,7 +121,7 @@ unsafe fn sub_guard_on_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOn_Main)]
-unsafe fn status_guardon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_guardon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_EFFECT) {
         // if fighter.global_table[STATUS_FRAME].get_f32() > 0.0 {
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x262a7a102d));
@@ -144,7 +144,7 @@ unsafe fn status_guardon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_end_guard_on_common)]
-unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_GUARD
     && (status != *FIGHTER_STATUS_KIND_GUARD_DAMAGE
@@ -158,7 +158,7 @@ unsafe fn sub_status_end_guard_on_common(fighter: &mut L2CFighterCommon, param_1
 }
 
 #[skyline::hook(replace = L2CFighterAnimcmdEffectCommon_effect_GuardOnCommon)]
-unsafe fn effect_guardoncommon(fighter: &mut L2CFighterAnimcmdEffectCommon) -> L2CValue {
+unsafe extern "C" fn effect_guardoncommon(fighter: &mut L2CFighterAnimcmdEffectCommon) -> L2CValue {
     let agent = &mut fighter.agent;
     agent.clear_lua_stack();
     is_excute(agent.lua_state_agent);

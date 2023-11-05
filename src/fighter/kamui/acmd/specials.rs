@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_specialsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_specialsjump(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -25,7 +25,7 @@ unsafe fn kamui_specialsjump(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -86,7 +86,7 @@ unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, 0);
         ArticleModule::set_visibility_whole(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -104,7 +104,7 @@ unsafe fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 12.0, 0.0, 6.0, 11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);

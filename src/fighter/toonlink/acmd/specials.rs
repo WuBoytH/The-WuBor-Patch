@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "toonlink", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOW, false, 0);
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOWARROW, false, 0);
@@ -15,7 +15,7 @@ unsafe fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, toonlink::status::flag::SPECIAL_HI_MOVE);
     }
@@ -59,7 +59,7 @@ unsafe fn toonlink_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 367, 100, 90, 0, 6.0, 0.0, 7.5, 13.5, Some(0.0), Some(7.5), Some(7.5), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_A, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_TOONLINK_HIT, *ATTACK_REGION_SWORD);
@@ -155,7 +155,7 @@ unsafe fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LINK_STATUS_WORK_ID_FLAG_BOMB_GENERATE_LINKBOMB);
@@ -170,7 +170,7 @@ unsafe fn toonlink_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink_bowarrow", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_bowarrow_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_bowarrow_fly(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 35, 0, 20, 1.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(agent.module_accessor);
@@ -178,7 +178,7 @@ unsafe fn toonlink_bowarrow_fly(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink_boomerang", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_boomerang_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_boomerang_fly(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.0, 361, 0, 0, 0, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, true, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_OBJECT);
         AttackModule::enable_safe_pos(agent.module_accessor);
@@ -186,7 +186,7 @@ unsafe fn toonlink_boomerang_fly(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "toonlink_boomerang", script = "game_turn", category = ACMD_GAME, low_priority )]
-unsafe fn toonlink_boomerang_turn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn toonlink_boomerang_turn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);

@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "miiswordsman", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
-unsafe fn miiswordsman_specialhi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.0, y: 0.5, z: 0.0});
@@ -41,7 +41,7 @@ unsafe fn miiswordsman_specialhi1(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialhi3", category = ACMD_GAME, low_priority )]
-unsafe fn miiswordsman_specialhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_specialhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 14.0, 45, 60, 0, 90, 4.0, 1.0, 1.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -73,7 +73,7 @@ unsafe fn miiswordsman_specialhi3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "miiswordsman", script = "game_specialairhi3", category = ACMD_GAME, low_priority )]
-unsafe fn miiswordsman_specialairhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_specialairhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 367, 100, 115, 0, 6.0, 0.0, 9.0, 7.0, Some(0.0), Some(6.0), Some(14.0), 1.0, 0.3, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);

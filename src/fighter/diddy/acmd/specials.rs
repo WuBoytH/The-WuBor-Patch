@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "diddy", script = "game_specialairsjump", category = ACMD_GAME, low_priority )]
-unsafe fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
@@ -19,7 +19,7 @@ unsafe fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "diddy", script = "game_specialairhijump", category = ACMD_GAME, low_priority )]
-unsafe fn diddy_specialairhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn diddy_specialairhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);

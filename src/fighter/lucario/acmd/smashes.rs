@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "lucario", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -21,7 +21,7 @@ unsafe fn lucario_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -59,7 +59,7 @@ unsafe fn lucario_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucario", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

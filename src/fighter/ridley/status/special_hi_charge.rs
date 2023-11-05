@@ -1,26 +1,26 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ridley_special_hi_charge_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_pre_inner(fighter)
 }
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ridley_special_hi_charge_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_pre_inner(fighter)
 }
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ridley_special_hi_charge_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_pre_inner(fighter)
 }
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ridley_special_hi_charge_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_pre_inner(fighter)
 }
 
-unsafe fn ridley_special_hi_charge_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -52,7 +52,7 @@ unsafe fn ridley_special_hi_charge_pre_inner(fighter: &mut L2CFighterCommon) -> 
 }
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ridley_special_hi_charge_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_main_inner(
         fighter,
         hash40("special_air_hi_charge_hi").into(),
@@ -64,7 +64,7 @@ unsafe fn ridley_special_hi_charge_hi_main(fighter: &mut L2CFighterCommon) -> L2
 }
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ridley_special_hi_charge_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_main_inner(
         fighter,
         hash40("special_air_hi_charge_f").into(),
@@ -76,7 +76,7 @@ unsafe fn ridley_special_hi_charge_f_main(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 #[status_script(agent = "ridley", status = FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ridley_special_hi_charge_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ridley_special_hi_charge_main_inner(
         fighter,
         hash40("special_air_hi_charge_b").into(),
@@ -87,7 +87,7 @@ unsafe fn ridley_special_hi_charge_b_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(ridley_special_hi_charge_hi_b_main_loop as *const () as _))
 }
 
-unsafe fn ridley_special_hi_charge_main_inner(
+unsafe extern "C" fn ridley_special_hi_charge_main_inner(
     fighter: &mut L2CFighterCommon,
     motion: L2CValue,
     frame_param: L2CValue,
@@ -168,7 +168,7 @@ unsafe fn ridley_special_hi_charge_main_inner(
     );
 }
 
-unsafe fn ridley_special_hi_charge_hi_b_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_hi_b_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Normally has stuff for bonking but it's removed
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
@@ -179,7 +179,7 @@ unsafe fn ridley_special_hi_charge_hi_b_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-unsafe fn ridley_special_hi_charge_f_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ridley_special_hi_charge_f_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Normally has stuff for bonking but it's removed
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();

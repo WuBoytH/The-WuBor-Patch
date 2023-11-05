@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::vl;
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn mario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE {
         VarModule::off_flag(fighter.module_accessor, mario::instance::flag::SPECIAL_LW_BLJ_PREV);
     }
@@ -46,7 +46,7 @@ unsafe extern "C" fn mario_speciallw_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn mario_speciallw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -75,7 +75,7 @@ unsafe fn mario_speciallw_shoot_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_FALL);
     // macros::SA_SET(fighter, *SITUATION_KIND_AIR);
     if VarModule::get_int(fighter.module_accessor, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
@@ -115,7 +115,7 @@ unsafe fn mario_speciallw_shoot_init(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::get_int(fighter.module_accessor, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let air_accel_mul = if KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN) > 0.0 {
@@ -152,7 +152,7 @@ unsafe fn mario_speciallw_shoot_exec(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
     if VarModule::get_int(fighter.module_accessor, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -211,7 +211,7 @@ unsafe extern "C" fn mario_speciallw_groundpound_fall_main_loop(fighter: &mut L2
 }
 
 #[status_script(agent = "mario", status = FIGHTER_MARIO_STATUS_KIND_SPECIAL_LW_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_speciallw_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::get_int(fighter.module_accessor, mario::instance::int::SPECIAL_LW_KIND) == mario::SPECIAL_LW_KIND_LONG_JUMP {
         MotionModule::change_motion(
             fighter.module_accessor,

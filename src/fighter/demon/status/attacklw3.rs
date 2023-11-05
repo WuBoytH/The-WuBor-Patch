@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_lw3_main_loop as *const () as _))
@@ -43,7 +43,7 @@ unsafe extern "C" fn demon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attack_lw3_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_lw3_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("attack_lw3_cancel"),

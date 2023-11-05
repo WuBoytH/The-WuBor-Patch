@@ -4,7 +4,7 @@ use crate::imports::status_imports::*;
 pub fn edge_special_hi_rush_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue;
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn edge_special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -36,7 +36,7 @@ unsafe fn edge_special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL);
     }

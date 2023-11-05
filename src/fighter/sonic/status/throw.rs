@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_THROW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn sonic_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sonic_throw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_Throw_Sub();
     fighter.sub_shift_status_main(L2CValue::Ptr(sonic_throw_main_loop as *const () as _))
 }

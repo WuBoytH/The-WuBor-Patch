@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "richter", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -31,7 +31,7 @@ unsafe fn richter_attackairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
-unsafe fn richter_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 4, 0, 0, 0, 0.6, true);
@@ -45,7 +45,7 @@ unsafe fn richter_attackairn_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "sound_attackairn", category = ACMD_SOUND, low_priority )]
-unsafe fn richter_attackairn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -58,7 +58,7 @@ unsafe fn richter_attackairn_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "expression_attackairn", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn richter_attackairn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairn_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -87,7 +87,7 @@ unsafe fn richter_attackairn_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -138,7 +138,7 @@ unsafe fn richter_attackairf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairfhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairfhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairfhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -189,7 +189,7 @@ unsafe fn richter_attackairfhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairflw", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairflw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairflw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -240,7 +240,7 @@ unsafe fn richter_attackairflw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_whip", scripts = [ "game_attackairf", "game_attackairfhi", "game_attackairflw" ], category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -262,7 +262,7 @@ unsafe fn richter_whip_attackairf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -313,7 +313,7 @@ unsafe fn richter_attackairb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairbhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairbhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairbhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -364,7 +364,7 @@ unsafe fn richter_attackairbhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairblw", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairblw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairblw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -415,7 +415,7 @@ unsafe fn richter_attackairblw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_whip", scripts = [ "game_attackairb", "game_attackairbhi", "game_attackairblw" ], category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.9);
     if macros::is_excute(agent) {
@@ -437,7 +437,7 @@ unsafe fn richter_whip_attackairb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 11.0);
@@ -487,7 +487,7 @@ unsafe fn richter_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_whip", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_whip_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.7);
     if macros::is_excute(agent) {
@@ -509,7 +509,7 @@ unsafe fn richter_whip_attackairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
         macros::SET_SPEED_EX(agent, 0, 0.6, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -552,7 +552,7 @@ unsafe fn richter_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn richter_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 12, 0, 38, 2.2, 0.0, 3.7, 7.0, Some(0.0), Some(3.7), Some(3.0), 0.85, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.5, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);

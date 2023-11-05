@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "samusd", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -22,7 +22,7 @@ unsafe fn samusd_attack11(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 1.2);
     if macros::is_excute(agent) {
@@ -35,7 +35,7 @@ unsafe fn samusd_attack12(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn samusd_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         let color = WorkModule::get_int64(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR) as i32;
@@ -51,7 +51,7 @@ unsafe fn samusd_attack12_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
-unsafe fn samusd_attack12_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack12_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_samusd_smash_s01"));
@@ -63,7 +63,7 @@ unsafe fn samusd_attack12_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samusd_attack12_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_SAMUSD_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -86,7 +86,7 @@ unsafe fn samusd_attack12_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     for _ in 0..4 {
         if macros::is_excute(agent) {
@@ -108,7 +108,7 @@ unsafe fn samusd_attackdash(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn samusd_attackdash_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackdash_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("hip"), -2, 0, 0, 0, 0, 0, 2.5, true);
         macros::EFFECT_FOLLOW(agent, Hash40::new("samusd_win3_aura"), Hash40::new("colonellm"), 2, 0, 0.5, 0, 0, 0, 2, true);
@@ -137,7 +137,7 @@ unsafe fn samusd_attackdash_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samusd_attackdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackdash_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_NONE);
     }
@@ -158,7 +158,7 @@ unsafe fn samusd_attackdash_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("hip"), 8.0, 67, 80, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -172,7 +172,7 @@ unsafe fn samusd_attacks3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("hip"), 9.0, 67, 80, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -187,7 +187,7 @@ unsafe fn samusd_attacks3hi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("hip"), 9.0, 67, 80, 0, 30, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -202,7 +202,7 @@ unsafe fn samusd_attacks3lw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 78, 110, 0, 50, 4.0, 0.0, 13.0, 12.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_PUNCH);
@@ -225,7 +225,7 @@ unsafe fn samusd_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
-unsafe fn samusd_attackhi3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackhi3_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
@@ -257,7 +257,7 @@ unsafe fn samusd_attackhi3_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
-unsafe fn samusd_attackhi3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackhi3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_samusd_attackhard_h01"));
@@ -265,7 +265,7 @@ unsafe fn samusd_attackhi3_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samusd_attackhi3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attackhi3_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_slashm"), 0);
@@ -274,7 +274,7 @@ unsafe fn samusd_attackhi3_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samusd", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn samusd_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samusd_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("armr"), 12.0, 40, 50, 0, 80, 3.8, 0.0, 0.0, 0.0, None, None, None, 0.65, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_BOMB);

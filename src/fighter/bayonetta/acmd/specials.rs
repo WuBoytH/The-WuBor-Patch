@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "bayonetta", script = "game_specialairsu", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -60,7 +60,7 @@ unsafe fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "bayonetta", script = "effect_specialairsu", category = ACMD_EFFECT, low_priority )]
-unsafe fn bayonetta_specialairsu_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialairsu_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -79,7 +79,7 @@ unsafe fn bayonetta_specialairsu_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "bayonetta", script = "game_specialairsd", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -118,7 +118,7 @@ unsafe fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "bayonetta", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -81,7 +81,7 @@ unsafe extern "C" fn bayonetta_specialairs_d_main_loop(fighter: &mut L2CFighterC
 }
 
 #[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_specialairs_d_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_specialairs_d_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("special_air_s_d_landing"));
     let rate = end_frame / 40.0;
     MotionModule::change_motion(

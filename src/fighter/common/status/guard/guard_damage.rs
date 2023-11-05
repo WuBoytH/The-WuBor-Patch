@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_GuardDamage)]
-unsafe fn status_pre_guarddamage(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_guarddamage(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -31,7 +31,7 @@ unsafe fn status_pre_guarddamage(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus)]
-unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_ftStatusUniqProcessGuardDamage_initStatus_Inner();
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         let prev_shield_scale_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_INT_PREV_SHIELD_SCALE_FRAME);
@@ -58,7 +58,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus(fighter: &mut L2CFighter
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_initStatus_Inner)]
-unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CFighterCommon) {
     let shield_power = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_POWER);
     // println!("shield power: {}", shield_power);
     let shield_setoff_mul_status = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_GUARD_DAMAGE_WORK_FLOAT_SHIELD_SETOFF_MUL);
@@ -219,7 +219,7 @@ unsafe fn sub_ftstatusuniqprocessguarddamage_initstatus_inner(fighter: &mut L2CF
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_common)]
-unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
     fighter.global_table[STICK_X].assign(&0xFE.into());
@@ -343,7 +343,7 @@ unsafe fn status_guarddamage_common(fighter: &mut L2CFighterCommon, param_1: L2C
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_GuardDamageUniq)]
-unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool() {
         fighter.FighterStatusGuard__landing_effect_control();
         return 0.into();
@@ -406,7 +406,7 @@ unsafe fn sub_guarddamageuniq(fighter: &mut L2CFighterCommon, param_1: L2CValue)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardDamage_Main)]
-unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_guard_damage_main_common_air().get_bool() {
         return 0.into();
     }
@@ -436,7 +436,7 @@ unsafe fn status_guarddamage_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardDamage_execStatus_common)]
-unsafe fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_ftstatusuniqprocessguarddamage_execstatus_common(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_GUARD_ON_WORK_FLAG_JUST_SHIELD) {
         let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
         let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();

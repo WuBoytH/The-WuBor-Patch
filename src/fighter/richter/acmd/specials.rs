@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "richter", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_specialn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -11,7 +11,7 @@ unsafe fn richter_specialn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn richter_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_specialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -28,14 +28,14 @@ unsafe fn richter_specialn_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["game_specialnblank", "game_specialairnblank"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_specialnblank(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_specialnblank(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.7);
     frame(agent.lua_state_agent, 30.0);
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
 #[acmd_script( agent = "richter_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe fn richter_axe_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_axe_fly(agent: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     if sv_battle_object::is_active(owner_id) {
         let owner_module_accessor = sv_battle_object::module_accessor(owner_id);
@@ -49,7 +49,7 @@ unsafe fn richter_axe_fly(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_specials1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.2);
     if macros::is_excute(agent) {
@@ -71,7 +71,7 @@ unsafe fn richter_specials1(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_cross", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe fn richter_cross_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_cross_fly(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 1, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
@@ -79,7 +79,7 @@ unsafe fn richter_cross_fly(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter_cross", script = "game_turn", category = ACMD_GAME, low_priority )]
-unsafe fn richter_cross_turn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_cross_turn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
         macros::ATTACK(agent, 1, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
@@ -87,7 +87,7 @@ unsafe fn richter_cross_turn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -134,7 +134,7 @@ unsafe fn richter_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn richter_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -184,7 +184,7 @@ unsafe fn richter_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "richter", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn richter_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.3);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);

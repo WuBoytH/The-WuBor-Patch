@@ -3,7 +3,7 @@ use crate::imports::status_imports::*;
 // Quick Attack is now on side b lol
 
 #[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pikachu_special_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),

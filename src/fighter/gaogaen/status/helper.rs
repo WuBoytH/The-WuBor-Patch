@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-pub unsafe fn gaogaen_special_lw_kinetic_helper(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+pub unsafe extern "C" fn gaogaen_special_lw_kinetic_helper(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

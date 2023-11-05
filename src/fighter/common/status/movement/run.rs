@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_RunBrake)]
-unsafe fn status_pre_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,7 +30,7 @@ unsafe fn status_pre_runbrake(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Run_Sub)]
-unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_run_sub(fighter: &mut L2CFighterCommon) {
     let start_frame = if [
         *FIGHTER_STATUS_KIND_DASH, *FIGHTER_STATUS_KIND_TURN_DASH
     ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
@@ -78,7 +78,7 @@ unsafe fn status_run_sub(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Run_Main)]
-unsafe fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_run_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[RUN_MAIN_UNIQ].get_bool() && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[RUN_MAIN_UNIQ].get_ptr());
         callable(fighter).get_bool()

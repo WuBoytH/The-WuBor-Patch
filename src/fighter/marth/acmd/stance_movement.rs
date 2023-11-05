@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashf", category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallwdashf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashf(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -15,7 +15,7 @@ unsafe fn marth_speciallwdashf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_speciallwdashf", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_speciallwdashf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashf_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, -4, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
     }
@@ -26,7 +26,7 @@ unsafe fn marth_speciallwdashf_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "sound_speciallwdashf", category = ACMD_SOUND, low_priority )]
-unsafe fn marth_speciallwdashf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashf_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_escape"));
@@ -34,14 +34,14 @@ unsafe fn marth_speciallwdashf_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "expression_speciallwdashf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn marth_speciallwdashf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashf_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
 }
 
 #[acmd_script( agent = "marth", script = "game_speciallwdashb", category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallwdashb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashb(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
@@ -55,7 +55,7 @@ unsafe fn marth_speciallwdashb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_speciallwdashb", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_speciallwdashb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashb_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 10, 4, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, true);
     }
@@ -66,7 +66,7 @@ unsafe fn marth_speciallwdashb_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "sound_speciallwdashb", category = ACMD_SOUND, low_priority )]
-unsafe fn marth_speciallwdashb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashb_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_marth_escape"));
@@ -74,7 +74,7 @@ unsafe fn marth_speciallwdashb_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "expression_speciallwdashb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }

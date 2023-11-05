@@ -1,16 +1,16 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_simon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_simon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)
 }
 
 #[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_richter_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_richter_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)
 }
 
-pub unsafe fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot_g;
     let mot_a;
     let mut log =
@@ -142,16 +142,16 @@ unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon)
 }
 
 #[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn kirby_simon_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_simon_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_end_inner(fighter)
 }
 
 #[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn kirby_richter_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_richter_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_end_inner(fighter)
 }
 
-pub unsafe fn belmont_special_n_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_n_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_N_FLAG_HAVE_AXE) {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
     }

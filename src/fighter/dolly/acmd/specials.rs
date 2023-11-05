@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::{helper::*, vl, vtable_hook::*};
 
 #[acmd_script( agent = "dolly", script = "game_specialn", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -30,7 +30,7 @@ unsafe fn dolly_specialn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairn", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_DECIDE_STRENGTH);
@@ -54,7 +54,7 @@ unsafe fn dolly_specialairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
@@ -92,7 +92,7 @@ unsafe fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normal(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_wave_normal(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
@@ -130,7 +130,7 @@ unsafe fn dolly_wave_normal(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalairw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
@@ -222,7 +222,7 @@ unsafe fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_wave", script = "game_normalair", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
@@ -296,7 +296,7 @@ unsafe fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialsfattack", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialsfattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialsfattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -367,7 +367,7 @@ unsafe fn dolly_specialsfattack(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialsbattackw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialsbattackw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialsbattackw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -402,7 +402,7 @@ unsafe fn dolly_specialsbattackw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialsbattack", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialsbattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialsbattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -463,7 +463,7 @@ unsafe fn dolly_specialsbattack(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_specialsbattack", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_specialsbattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialsbattack_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     let alpha: f32 = if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
@@ -492,7 +492,7 @@ unsafe fn dolly_specialsbattack_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_specialsbattack", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_specialsbattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialsbattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
@@ -509,7 +509,7 @@ unsafe fn dolly_specialsbattack_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_specialsbattack", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_specialsbattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialsbattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -527,7 +527,7 @@ unsafe fn dolly_specialsbattack_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_HI_WORK_FLAG_REVERSE_LR);
@@ -653,7 +653,7 @@ unsafe fn dolly_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", scripts = [ "game_specialhicommand", "game_specialairhicommand" ], category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialhicommand(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialhicommand(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
     }
@@ -872,7 +872,7 @@ unsafe fn dolly_specialhicommand(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_speciallwstart", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_speciallwstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_speciallwstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -893,7 +893,7 @@ unsafe fn dolly_speciallwstart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_speciallwstart", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_speciallwstart_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_speciallwstart_eff(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
             macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 10, 8, 0, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, false);
@@ -922,7 +922,7 @@ unsafe fn dolly_speciallwstart_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_speciallwstart", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_speciallwstart_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_speciallwstart_snd(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND) {
         if macros::is_excute(agent) {
             macros::PLAY_SE(agent, Hash40::new("se_dolly_command_success"));
@@ -937,7 +937,7 @@ unsafe fn dolly_speciallwstart_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_speciallwstart", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_speciallwstart_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_speciallwstart_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -964,7 +964,7 @@ unsafe fn dolly_speciallwstart_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairlwrisew", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialairlwrisew(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialairlwrisew(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -1005,7 +1005,7 @@ unsafe fn dolly_specialairlwrisew(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairlwrise", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialairlwrise(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialairlwrise(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -1046,7 +1046,7 @@ unsafe fn dolly_specialairlwrise(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if WorkModule::get_int64(agent.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_INT_STRENGTH) == *FIGHTER_DOLLY_STRENGTH_W as u64 {
         if macros::is_excute(agent) {
@@ -1285,7 +1285,7 @@ unsafe fn dolly_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_superspecial", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_superspecial(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(agent.module_accessor, -100.0, 200.0, dolly::instance::float::GO_METER);
@@ -1319,7 +1319,7 @@ unsafe fn dolly_superspecial(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_superspecial", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_superspecial_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial_eff(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("dolly_wave_aura"), Hash40::new("handr"), 1, 0, 0, 0, 0, 0, 1, true);
@@ -1337,7 +1337,7 @@ unsafe fn dolly_superspecial_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_superspecial", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_superspecial_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_super_kof"));
     }
@@ -1357,7 +1357,7 @@ unsafe fn dolly_superspecial_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_superspecial2start", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_superspecial2start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial2start(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, dolly::status::flag::DISABLE_METER_GAIN);
         FGCModule::update_meter(agent.module_accessor, -100.0, 200.0, dolly::instance::float::GO_METER);
@@ -1402,7 +1402,7 @@ unsafe fn dolly_superspecial2start(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_superspecial2start", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_superspecial2start_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial2start_eff(agent: &mut L2CAgentBase) {
     FGCModule::ex_flash(agent);
     if macros::is_excute(agent) {
         // macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), -15, 16, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -1427,7 +1427,7 @@ unsafe fn dolly_superspecial2start_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_superspecial2start", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_superspecial2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial2start_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_waza_super_kof"));
     }
@@ -1451,7 +1451,7 @@ unsafe fn dolly_superspecial2start_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_superspecial2", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_superspecial2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_superspecial2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, dolly::status::flag::DISABLE_METER_GAIN);
         VarModule::off_flag(agent.module_accessor, dolly::instance::flag::RISING_FORCE);
@@ -1485,7 +1485,7 @@ unsafe fn dolly_superspecial2(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly_burst", script = "game_superspecial", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);

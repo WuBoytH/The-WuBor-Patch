@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::helper::*;
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucina_attack_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_attack_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
     MotionModule::change_motion(
         fighter.module_accessor,

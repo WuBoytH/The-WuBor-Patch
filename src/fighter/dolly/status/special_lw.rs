@@ -42,12 +42,12 @@ unsafe extern "C" fn dolly_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_special_lw_main_inner(fighter)
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_special_lw_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_special_lw_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_COMMON_WORK_FLAG_COMMAND);
     dolly_special_lw_main_inner(fighter)
 }
@@ -208,7 +208,7 @@ unsafe extern "C" fn dolly_special_lw_end(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_special_lw_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_special_lw_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_lw_attack"),
@@ -269,7 +269,7 @@ unsafe extern "C" fn dolly_special_lw_attack_main_loop(fighter: &mut L2CFighterC
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_special_lw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_special_lw_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let param = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_SPECIAL_LW_WORK_FLAG_HIT) {
         hash40("landing_frame_hit")
     }

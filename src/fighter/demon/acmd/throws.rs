@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "demon", script = "game_catchattack", category = ACMD_GAME, low_priority )]
-unsafe fn demon_catchattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.7, 361, 100, 30, 0, 5.0, 0.0, 10.0, 10.0, None, None, None, 2.2, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_CATCHATTACK, *ATTACK_REGION_PUNCH);
@@ -14,7 +14,7 @@ unsafe fn demon_catchattack(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn demon_throwlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_throwlw(agent: &mut L2CAgentBase) {
     if !smash_rs::app::FighterCutInManager::is_vr_mode() {
         if smash_rs::app::FighterCutInManager::is_one_on_one_including_thrown(&*(agent.module_accessor as *const smash_rs::app::BattleObjectModuleAccessor)) {
             if macros::is_excute(agent) {
@@ -61,7 +61,7 @@ unsafe fn demon_throwlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "demon", script = "game_catchcommand", category = ACMD_GAME, low_priority )]
-unsafe fn demon_catchcommand(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, false);

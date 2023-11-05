@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
-unsafe fn lucina_run_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_run_eff(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 4.0);
         if macros::is_excute(agent) {
@@ -26,7 +26,7 @@ unsafe fn lucina_run_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND, low_priority )]
-unsafe fn lucina_run_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_run_snd(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
@@ -51,7 +51,7 @@ unsafe fn lucina_run_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "lucina", script = "expression_run", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucina_run_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_run_exp(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         if macros::is_excute(agent) {
             slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 6);

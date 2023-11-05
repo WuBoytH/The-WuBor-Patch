@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "rosetta", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
-unsafe fn rosetta_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn rosetta_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);

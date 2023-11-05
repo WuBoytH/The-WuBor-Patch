@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "brave", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_specialhi1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BRAVE_GENERATE_ARTICLE_TORNADO, false, -1);
@@ -21,7 +21,7 @@ unsafe fn brave_specialhi1(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_specialhi2", "game_specialairhi2" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_specialhi2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BRAVE_GENERATE_ARTICLE_TORNADO, false, -1);
@@ -41,7 +41,7 @@ unsafe fn brave_specialhi2(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_specialhi3", "game_specialairhi3" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_specialhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_specialhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BRAVE_GENERATE_ARTICLE_TORNADO, false, -1);
@@ -61,7 +61,7 @@ unsafe fn brave_specialhi3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "sound_speciallw9", "sound_specialairlw9" ], category = ACMD_SOUND, low_priority )]
-unsafe fn brave_speciallw9_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw9_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_brave_special_l03"));
@@ -70,7 +70,7 @@ unsafe fn brave_speciallw9_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_speciallw9end", "game_specialairlw9end" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_speciallw9end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw9end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::FT_ADD_DAMAGE(agent, 999.0);
@@ -79,7 +79,7 @@ unsafe fn brave_speciallw9end(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "effect_speciallw9end", "effect_specialairlw9end" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn brave_speciallw9end_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw9end_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_dead2"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.0, true);
@@ -87,7 +87,7 @@ unsafe fn brave_speciallw9end_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "sound_speciallw9end", "sound_specialairlw9end" ], category = ACMD_SOUND, low_priority )]
-unsafe fn brave_speciallw9end_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw9end_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_brave_final02"));
@@ -96,7 +96,7 @@ unsafe fn brave_speciallw9end_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "expression_speciallw9end", "expression_specialairlw9end" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn brave_speciallw9end_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw9end_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(
@@ -110,7 +110,7 @@ unsafe fn brave_speciallw9end_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_speciallw17", "game_specialairlw17" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_speciallw17(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw17(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 7.0);
@@ -171,7 +171,7 @@ unsafe fn brave_speciallw17(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_speciallw18", "game_specialairlw18" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_speciallw18(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw18(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 7.0);
@@ -246,7 +246,7 @@ unsafe fn brave_speciallw18(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_speciallw19", "game_specialairlw19" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_speciallw19(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw19(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
@@ -280,7 +280,7 @@ unsafe fn brave_speciallw19(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "brave", scripts = [ "game_speciallw20", "game_specialairlw20" ], category = ACMD_GAME, low_priority )]
-unsafe fn brave_speciallw20(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_speciallw20(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;

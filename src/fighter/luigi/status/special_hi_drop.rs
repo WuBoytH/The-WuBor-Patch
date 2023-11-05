@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fall_max_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_max_x"));
     fighter.clear_lua_stack();
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);

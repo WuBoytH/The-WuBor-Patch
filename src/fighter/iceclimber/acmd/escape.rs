@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "popo", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
-unsafe fn popo_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn popo_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -14,7 +14,7 @@ unsafe fn popo_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "popo", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
-unsafe fn popo_escapeairslide_nana(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn popo_escapeairslide_nana(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -27,7 +27,7 @@ unsafe fn popo_escapeairslide_nana(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "nana", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
-unsafe fn nana_escapeairslide(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn nana_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);
@@ -40,7 +40,7 @@ unsafe fn nana_escapeairslide(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "nana", script = "game_escapeairslide_nana", category = ACMD_GAME, low_priority )]
-unsafe fn nana_escapeairslide_nana(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn nana_escapeairslide_nana(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_FLAG_SLIDE_ENABLE_GRAVITY);

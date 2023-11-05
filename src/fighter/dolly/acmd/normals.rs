@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
 #[acmd_script( agent = "dolly", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -30,7 +30,7 @@ unsafe fn dolly_attack11(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -61,7 +61,7 @@ unsafe fn dolly_attack12(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 60, 20, 0, 97, 4.0, 0.0, 4.0, 4.0, Some(0.0), Some(15.0), Some(10.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_KICK, *ATTACK_REGION_KICK);
@@ -73,7 +73,7 @@ unsafe fn dolly_attack13(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         if !VarModule::is_flag(agent.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
@@ -141,7 +141,7 @@ unsafe fn dolly_attackdash(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -178,7 +178,7 @@ unsafe fn dolly_attacks3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -208,7 +208,7 @@ unsafe fn dolly_attacks3hi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacks3hi", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -223,7 +223,7 @@ unsafe fn dolly_attacks3hi_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_attacks3hi", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_attacks3hi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3hi_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_s01"));
@@ -235,7 +235,7 @@ unsafe fn dolly_attacks3hi_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_attacks3hi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_attacks3hi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3hi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -254,7 +254,7 @@ unsafe fn dolly_attacks3hi_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -296,7 +296,7 @@ unsafe fn dolly_attacks3lw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacks3lw", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP_ALPHA(agent, Hash40::new("dolly_attack_arc"), Hash40::new("dolly_attack_arc"), Hash40::new("top"), 0, 4, 1.5, -5.3, -51.7, 42.2, 0.4, true, *EF_FLIP_YZ, 1);
@@ -310,7 +310,7 @@ unsafe fn dolly_attacks3lw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_attacks3lw", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_attacks3lw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3lw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_s01"));
@@ -322,7 +322,7 @@ unsafe fn dolly_attacks3lw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_attacks3lw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_attacks3lw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks3lw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -345,7 +345,7 @@ unsafe fn dolly_attacks3lw_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -379,7 +379,7 @@ unsafe fn dolly_attackhi3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -409,7 +409,7 @@ unsafe fn dolly_attacklw3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "game_attacklw32", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacklw32(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -433,7 +433,7 @@ unsafe fn dolly_attacklw32(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "effect_attacklw32", category = ACMD_EFFECT, low_priority )]
-unsafe fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false)
@@ -445,7 +445,7 @@ unsafe fn dolly_attacklw32_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "sound_attacklw32", category = ACMD_SOUND, low_priority )]
-unsafe fn dolly_attacklw32_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacklw32_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_dolly_attackhard_l01"));
@@ -458,7 +458,7 @@ unsafe fn dolly_attacklw32_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "dolly", script = "expression_attacklw32", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn dolly_attacklw32_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacklw32_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_TOP, 2);
     }

@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::vl;
 
 #[acmd_script( agent = "daisy", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_specialsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialsjump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S);
         JostleModule::set_status(agent.module_accessor, false);
@@ -19,7 +19,7 @@ unsafe fn daisy_specialsjump(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialshitend", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_specialshitend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialshitend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 12.0, 110, 42, 0, 60, 7.7, 0.0, 5.0, 4.5, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 6, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_HIP);
     }
@@ -30,7 +30,7 @@ unsafe fn daisy_specialshitend(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -89,7 +89,7 @@ unsafe fn daisy_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_specialairhistart", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_specialairhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialairhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -148,7 +148,7 @@ unsafe fn daisy_specialairhistart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "game_fuwafuwastart", category = ACMD_GAME, low_priority )]
-unsafe fn daisy_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR, Hash40::new("special_hi_start"), false, -1.0);
@@ -180,7 +180,7 @@ unsafe fn daisy_specialairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "effect_fuwafuwastart", category = ACMD_EFFECT, low_priority )]
-unsafe fn daisy_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("daisy_bomber_jamp"), Hash40::new("top"), 0, 12, -6, 0, 0, 0, 0.8, true);
@@ -189,7 +189,7 @@ unsafe fn daisy_specialairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "sound_fuwafuwastart", category = ACMD_SOUND, low_priority )]
-unsafe fn daisy_specialairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_daisy_attack05"));
@@ -198,7 +198,7 @@ unsafe fn daisy_specialairlw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "daisy", script = "expression_fuwafuwastart", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohits"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);

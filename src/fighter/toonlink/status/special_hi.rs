@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::vl;
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
     fighter.sub_shift_status_main(L2CValue::Ptr(toonlink_specialhi_end_main_loop as *const () as _))
@@ -246,7 +246,7 @@ unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon
 }
 
 #[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, toonlink::status::flag::SPECIAL_HI_MOVE) {
         let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
         let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;

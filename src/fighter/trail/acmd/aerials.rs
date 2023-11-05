@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "trail", script = "game_attackairn3", category = ACMD_GAME, low_priority )]
-unsafe fn trail_attackairn3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_attackairn3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -25,7 +25,7 @@ unsafe fn trail_attackairn3(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "trail", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn trail_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     if macros::is_excute(agent) {
@@ -54,7 +54,7 @@ unsafe fn trail_attackairf(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "trail", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn trail_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -95,7 +95,7 @@ unsafe fn trail_attackairlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "trail", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn trail_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.5, 38, 82, 0, 54, 3.2, 0.0, 2.6, -7.2, Some(0.0), Some(2.6), Some(11.2), 0.6, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_NONE);

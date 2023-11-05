@@ -4,7 +4,7 @@ use {
 };
 
 #[skyline::hook(replace = L2CFighterCommon_sub_set_status_pre_msc_common_table)]
-unsafe fn sub_set_status_pre_msc_common_table(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_set_status_pre_msc_common_table(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
     fighter.sv_set_status_func(
         FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE.into(),
@@ -14,7 +14,7 @@ unsafe fn sub_set_status_pre_msc_common_table(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_set_init_status_msc_common_table)]
-unsafe fn sub_set_init_status_msc_common_table(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_set_init_status_msc_common_table(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
     fighter.sv_set_status_func(
         FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE.into(),
@@ -24,7 +24,7 @@ unsafe fn sub_set_init_status_msc_common_table(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_set_status_main_msc_common_table)]
-unsafe fn sub_set_status_main_msc_common_table(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_set_status_main_msc_common_table(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
     fighter.sv_set_status_func(
         FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE.into(),
@@ -34,7 +34,7 @@ unsafe fn sub_set_status_main_msc_common_table(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_set_status_end_msc_common_table)]
-unsafe fn sub_set_status_end_msc_common_table(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_set_status_end_msc_common_table(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
     fighter.sv_set_status_func(
         FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE.into(),
@@ -44,7 +44,7 @@ unsafe fn sub_set_status_end_msc_common_table(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_set_calc_param_common_table)]
-unsafe fn sub_set_calc_param_common_table(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_set_calc_param_common_table(fighter: &mut L2CFighterCommon) {
     original!()(fighter);
     fighter.sv_set_status_func(
         FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE.into(),

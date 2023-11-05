@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "littlemac", script = "game_specialhistart", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_specialhistart(agent: &mut L2CAgentBase) {
     //frame(agent.lua_state_agent, 1.0);
     //macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -17,7 +17,7 @@ unsafe fn littlemac_specialhistart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "littlemac", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);

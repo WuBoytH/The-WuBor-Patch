@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::helper::*;
 
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn edge_special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn edge_special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let rush_degree = WorkModule::get_float(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_RUSH_DEGREE);
     WorkModule::set_float(fighter.module_accessor, rush_degree, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLOAT_DECIDE_ROT_DEGREE);
     let charged_rush = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_EDGE_STATUS_SPECIAL_HI_FLAG_CHARGED_RUSH);

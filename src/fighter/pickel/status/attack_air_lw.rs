@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::helper::*;
 
 #[status_script(agent = "pickel", status = FIGHTER_PICKEL_STATUS_KIND_ATTACK_AIR_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn pickel_attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pickel_attack_air_lw_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if pickel_attack_que(fighter).get_bool() {
         return 0.into();
     }

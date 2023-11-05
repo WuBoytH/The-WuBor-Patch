@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "eflame", scripts = [ "game_specials", "game_specialairs", "game_specialsflick", "game_specialairsflick" ], category = ACMD_GAME, low_priority )]
-unsafe fn eflame_specials(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -29,7 +29,7 @@ unsafe fn eflame_specials(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "game_specialairhijump", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 85, 100, 64, 16, 2.5, 0.0, 18.0, 5.0, Some(0.0), Some(2.5), Some(5.0), 1.5, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
@@ -112,7 +112,7 @@ unsafe fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", scripts = [ "game_speciallwattack", "game_specialairlwattack" ], category = ACMD_GAME, low_priority )]
-unsafe fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
         if macros::is_excute(agent) {
@@ -166,7 +166,7 @@ unsafe fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", scripts = [ "effect_speciallwattack", "effect_specialairlwattack" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
     }
@@ -231,7 +231,7 @@ unsafe fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
-unsafe fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_eflame_attack04"));
@@ -255,7 +255,7 @@ unsafe fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
-unsafe fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_eflame_attack04"));
@@ -275,7 +275,7 @@ unsafe fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame", scripts = [ "expression_speciallwattack", "expression_specialairlwattack" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
         ControlModule::set_rumble(

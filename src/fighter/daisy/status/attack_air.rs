@@ -1,10 +1,10 @@
 use crate::imports::status_imports::*;
 
-unsafe fn daisy_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn daisy_attack_air_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_AttackAir()
 }
 
-unsafe fn daisy_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn daisy_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());
     fighter.sub_shift_status_main(L2CValue::Ptr(daisy_attack_air_main_loop as *const () as _))
 }

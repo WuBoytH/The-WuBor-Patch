@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "samus", script = "game_aircatch", category = ACMD_GAME, low_priority )]
-unsafe fn samus_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samus_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_AIR_LASSO_FLAG_CHECK);
@@ -22,7 +22,7 @@ unsafe fn samus_aircatch(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "samus", script = "expression_aircatch", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn samus_aircatch_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn samus_aircatch_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_SAMUS_GENERATE_ARTICLE_GUN, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));

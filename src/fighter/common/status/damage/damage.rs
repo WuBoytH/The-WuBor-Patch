@@ -4,7 +4,7 @@ use crate::imports::status_imports::*;
 use super::super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Damage)]
-unsafe fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -33,7 +33,7 @@ unsafe fn status_pre_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_ftStatusUniqProcessDamage_init_common)]
-unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) {
     let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_FLOAT_REACTION_FRAME);
     // println!("reaction frame: {}", reaction_frame);
     fighter.clear_lua_stack();
@@ -110,7 +110,7 @@ unsafe fn ftstatusuniqprocessdamage_init_common(fighter: &mut L2CFighterCommon) 
     }
 }
 
-unsafe fn fighterstatusdamage_init_damage_speed_up_by_speed(
+unsafe extern "C" fn fighterstatusdamage_init_damage_speed_up_by_speed(
     fighter: &mut L2CFighterCommon,
     factor: L2CValue, // Labeled this way because if shot out of a tornado, the game will pass in your hitstun frames instead of speed.
     angle: L2CValue,
@@ -148,7 +148,7 @@ unsafe fn fighterstatusdamage_init_damage_speed_up_by_speed(
     WorkModule::set_float(fighter.module_accessor, mag, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_SPEED_UP_MAX_MAG);
 }
 
-unsafe fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModuleAccessor, speed: f32) -> bool {
+unsafe extern "C" fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModuleAccessor, speed: f32) -> bool {
     let log = DamageModule::damage_log(module_accessor);
     if log != 0 {
         let log = log as *mut u8;
@@ -160,7 +160,7 @@ unsafe fn check_damage_speed_up_by_speed(module_accessor: *mut BattleObjectModul
     }
 }
 
-unsafe fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32, lower: f32, upper: f32) -> f32 {
+unsafe extern "C" fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32, lower: f32, upper: f32) -> f32 {
     let diff = angle - lower;
     let range = upper - lower;
     let ratio = (diff / range).clamp(0.0, 1.0);
@@ -169,7 +169,7 @@ unsafe fn init_damage_speed_up_inner(fighter: &mut L2CFighterCommon, angle: f32,
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusUniqProcessDamage_leave_stop)]
-unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, _arg2: L2CValue, arg3: L2CValue) -> L2CValue {
+unsafe extern "C" fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterCommon, _arg2: L2CValue, arg3: L2CValue) -> L2CValue {
     // <WuBor>
     ShakeModule::stop(fighter.module_accessor);
     // </WuBor>
@@ -312,7 +312,7 @@ unsafe fn fighterstatusuniqprocessdamage_leave_stop(fighter: &mut L2CFighterComm
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_damage_uniq_process_mainStop)]
-unsafe fn sub_damage_uniq_process_mainstop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_damage_uniq_process_mainstop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ELEC) {
         let stop_frame = FighterStopModuleImpl::get_damage_stop_frame(fighter.module_accessor);
@@ -347,7 +347,7 @@ unsafe fn sub_damage_uniq_process_mainstop(fighter: &mut L2CFighterCommon) -> L2
 }
 
 #[skyline::hook(replace = L2CFighterCommon_exec_damage_elec_hit_stop)]
-unsafe fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
     let mut hit_stop_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_WORK_INT_HIT_STOP_FRAME);
     if hit_stop_frame != 0 {
         hit_stop_frame -= 1;
@@ -443,7 +443,7 @@ unsafe fn exec_damage_elec_hit_stop(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusDamage__requestVectorAdjustEffect)]
-unsafe fn fighterstatusdamage__requestvectoradjusteffect(_fighter: &mut L2CFighterCommon, _arg1: L2CValue, _arg2: L2CValue, _arg3: L2CValue, _arg4: L2CValue, _arg5: L2CValue, _arg6: L2CValue,) {
+unsafe extern "C" fn fighterstatusdamage__requestvectoradjusteffect(_fighter: &mut L2CFighterCommon, _arg1: L2CValue, _arg2: L2CValue, _arg3: L2CValue, _arg4: L2CValue, _arg5: L2CValue, _arg6: L2CValue,) {
     // nothing lmao
 }
 

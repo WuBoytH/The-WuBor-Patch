@@ -3,7 +3,7 @@ use super::super::vl;
 use super::helper::*;
 
 #[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn marth_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn marth_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU);
     marth_speciallw_common_end(fighter);
     marth_stance_common_end(fighter);
@@ -11,7 +11,7 @@ unsafe fn marth_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn marth_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn marth_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU);
     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
     macros::PLAY_SE(fighter, Hash40::new("se_marth_special_l02"));
@@ -70,7 +70,7 @@ unsafe extern "C" fn marth_speciallw_hit_mot_helper(fighter: &mut L2CFighterComm
 }
 
 #[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn marth_speciallw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn marth_speciallw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU)
     && ![
         *FIGHTER_STATUS_KIND_SPECIAL_LW,

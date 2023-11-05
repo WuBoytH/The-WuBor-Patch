@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_DISPATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -30,7 +30,7 @@ pub unsafe fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_DISPATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("dispatch"),

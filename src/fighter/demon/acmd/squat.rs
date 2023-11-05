@@ -3,7 +3,7 @@ use crate::imports::acmd_imports::*;
 // Crouch Jab
 
 #[acmd_script( agent = "demon", script = "game_attacksquat2", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attacksquat2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attacksquat2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -31,7 +31,7 @@ unsafe fn demon_attacksquat2(agent: &mut L2CAgentBase) {
 // Tombstone Crusher
 
 #[acmd_script( agent = "demon", script = "game_attacksquat1", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attacksquat1(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attacksquat1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("shoulderr"), *HIT_STATUS_XLU);

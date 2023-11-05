@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "snake", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn snake_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -48,7 +48,7 @@ unsafe fn snake_attackairn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn snake_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if StatusModule::prev_status_kind(agent.module_accessor, 0) == *FIGHTER_STATUS_KIND_PASS {
         if macros::is_excute(agent) {
@@ -85,7 +85,7 @@ unsafe fn snake_attackairb(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "snake", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn snake_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

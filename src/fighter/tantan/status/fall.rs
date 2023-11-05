@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "tantan", status = FIGHTER_STATUS_KIND_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_pre_fall().get_bool() {
         return 1.into();
     }

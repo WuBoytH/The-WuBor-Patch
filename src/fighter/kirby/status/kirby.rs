@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::vl;
 
 #[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         set_speed_mul,
         fighter,
@@ -13,7 +13,7 @@ unsafe fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     fighter.sub_shift_status_main(L2CValue::Ptr(kirby_attacklw3_main_loop as *const () as _))
 }

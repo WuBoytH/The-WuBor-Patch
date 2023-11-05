@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-pub unsafe fn luigi_remove_thunderhand_eff(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn luigi_remove_thunderhand_eff(fighter: &mut L2CFighterCommon) {
     if ![
         *FIGHTER_STATUS_KIND_SPECIAL_S,
         *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE,

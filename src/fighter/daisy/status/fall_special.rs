@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-unsafe fn daisy_fall_special_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn daisy_fall_special_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
     MotionModule::change_motion(
         fighter.module_accessor,

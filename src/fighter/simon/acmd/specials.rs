@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "simon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
-unsafe fn simon_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, simon::status::flag::SPECIAL_N_SHOOT);
@@ -9,7 +9,7 @@ unsafe fn simon_specialn(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -26,7 +26,7 @@ unsafe fn simon_specialn_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe fn simon_axe_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_axe_fly(agent: &mut L2CAgentBase) {
     let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     if sv_battle_object::is_active(owner_id) {
         let owner_module_accessor = sv_battle_object::module_accessor(owner_id);
@@ -39,7 +39,7 @@ unsafe fn simon_axe_fly(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn simon_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -75,7 +75,7 @@ unsafe fn simon_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn simon_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -112,7 +112,7 @@ unsafe fn simon_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn simon_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
@@ -123,7 +123,7 @@ unsafe fn simon_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
@@ -139,7 +139,7 @@ unsafe fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
@@ -151,7 +151,7 @@ unsafe fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", scripts = ["sound_speciallw", "sound_specialairlw"], category = ACMD_SOUND, low_priority )]
-unsafe fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_simon_special_l01"));
@@ -160,7 +160,7 @@ unsafe fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "simon", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }

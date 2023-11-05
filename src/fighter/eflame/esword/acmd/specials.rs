@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "eflame_esword", scripts = [ "game_flyl", "game_flyr" ], category = ACMD_GAME, low_priority )]
-unsafe fn eflame_esword_fly(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_esword_fly(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 0.75);
@@ -20,7 +20,7 @@ unsafe fn eflame_esword_fly(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame_esword", scripts = [ "game_flyflickl", "game_flyflickr" ], category = ACMD_GAME, low_priority )]
-unsafe fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 0.75);
@@ -39,7 +39,7 @@ unsafe fn eflame_esword_flyflick(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame_esword", script = "game_rotate", category = ACMD_GAME, low_priority )]
-unsafe fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::disable_tip(agent.module_accessor);
     }
@@ -143,7 +143,7 @@ unsafe fn eflame_esword_rotate(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame_esword", script = "effect_rotate", category = ACMD_EFFECT, low_priority )]
-unsafe fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_blazeend_sword"), Hash40::new("sword1"), 0, 0, 0, 0, 90, 0, 1, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.8);
@@ -174,7 +174,7 @@ unsafe fn eflame_esword_rotate_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "eflame_esword", scripts = [ "game_reflectedl", "game_reflectedr" ], category = ACMD_GAME, low_priority )]
-unsafe fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn eflame_esword_reflected(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 1.5);

@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "gaogaen", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -22,7 +22,7 @@ unsafe fn gaogaen_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "gaogaen", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -47,7 +47,7 @@ unsafe fn gaogaen_attackhi4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "gaogaen", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false)

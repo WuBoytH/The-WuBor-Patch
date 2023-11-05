@@ -4,7 +4,7 @@ use {
 };
 
 #[status_script(agent = "donkey", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn donkey_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn donkey_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
     PostureModule::update_rot_y_lr(fighter.module_accessor);
     if !barrel_check(fighter.module_accessor) {
@@ -53,7 +53,7 @@ unsafe extern "C" fn donkey_special_s_main_loop(fighter: &mut L2CFighterCommon) 
 /// Checks how many barrels are on the screen.
 /// If there are more than (# of owned barrels allowed)
 /// existing at a time, DK will be unable to pull out a barrel.
-pub unsafe fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+pub unsafe extern "C" fn barrel_check(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let itemmanager = smash_rs::app::ItemManager::instance().unwrap();
     smash_rs::app::ItemManager::get_num_of_ownered_item(itemmanager, (*module_accessor).battle_object_id, smash_rs::app::ItemKind::Barrel)
     <

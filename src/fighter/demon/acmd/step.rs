@@ -3,7 +3,7 @@ use crate::imports::acmd_imports::*;
 // Wind God Fist
 
 #[acmd_script( agent = "demon", script = "game_attackstep2", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstep2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstep2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
         macros::HIT_NODE(agent, Hash40::new("bust"), *HIT_STATUS_XLU);
@@ -101,7 +101,7 @@ unsafe fn demon_attackstep2(agent: &mut L2CAgentBase) {
 // Electric Wind God Fist
 
 #[acmd_script( agent = "demon", script = "game_attackstep2f", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstep2f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstep2f(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
         macros::HIT_NODE(agent, Hash40::new("bust"), *HIT_STATUS_XLU);
@@ -208,7 +208,7 @@ unsafe fn demon_attackstep2f(agent: &mut L2CAgentBase) {
 // Dragon Uppercut
 
 #[acmd_script( agent = "demon", script = "game_attackstep2l", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstep2l(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstep2l(agent: &mut L2CAgentBase) {
     // macros::FT_MOTION_RATE(agent, 0.9);
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -286,7 +286,7 @@ unsafe fn demon_attackstep2l(agent: &mut L2CAgentBase) {
 // Spinning Demon to Left Hook
 
 #[acmd_script( agent = "demon", script = "game_attackstep2s", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackstep2s(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackstep2s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 65, 100, 55, 0, 1.0, 0.0, 8.25, 0.5, Some(0.0), Some(2.25), Some(0.5), 0.4, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, true, 2, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G_d, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_DEMON_KICK, *ATTACK_REGION_KICK);

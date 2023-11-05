@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "mario", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
@@ -23,7 +23,7 @@ unsafe fn mario_attacks4(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_attacks4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2.0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -40,7 +40,7 @@ unsafe fn mario_attacks4_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attacks4hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
@@ -62,7 +62,7 @@ unsafe fn mario_attacks4hi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "effect_attacks4hi", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_attacks4hi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4hi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2.0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -79,7 +79,7 @@ unsafe fn mario_attacks4hi_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attacks4lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
@@ -101,7 +101,7 @@ unsafe fn mario_attacks4lw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "effect_attacks4lw", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("handl"), 2.0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -118,7 +118,7 @@ unsafe fn mario_attacks4lw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", scripts = [ "sound_attacks4", "sound_attacks4hi", "sound_attacks4lw" ], category = ACMD_SOUND, low_priority )]
-unsafe fn mario_attacks4_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_common_smash_start"));
@@ -127,7 +127,7 @@ unsafe fn mario_attacks4_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", scripts = [ "expression_attacks4", "expression_attacks4hi", "expression_attacks4lw" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mario_attacks4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacks4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -156,7 +156,7 @@ unsafe fn mario_attacks4_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "mario", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);

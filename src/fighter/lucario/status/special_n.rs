@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::helper::*;
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucario_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_GROUND_MOT);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_start") as i64, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_INT_AIR_MOT);
@@ -42,13 +42,13 @@ unsafe extern "C" fn lucario_special_n_main_loop(fighter: &mut L2CFighterCommon)
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn lucario_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucario_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_n_save_charge_status(fighter);
     0.into()
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucario_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     let ground_mot;
     let air_mot;
@@ -132,13 +132,13 @@ unsafe extern "C" fn lucario_special_n_hold_set_kinetic(fighter: &mut L2CFighter
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn lucario_special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucario_special_n_hold_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_n_save_charge_status(fighter);
     0.into()
 }
 
 #[status_script(agent = "lucario", status = FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucario_special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucario_special_n_shoot_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_MOT_INHERIT);
     let ground_mot;
     let air_mot;

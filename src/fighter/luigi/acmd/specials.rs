@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "luigi_fireball", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_fireball_regular(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_fireball_regular(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 361, 25, 0, 20, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -3, 0.0, 6, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
         AttackModule::enable_safe_pos(agent.module_accessor);
@@ -13,7 +13,7 @@ unsafe fn luigi_fireball_regular(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
-unsafe fn luigi_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("havel"), &ZERO_VECTOR, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
         EffectModule::req_follow(agent.module_accessor, Hash40::new("sys_thunder"), smash::phx::Hash40::new("handr"), &Vector3f { x: 3.0, y: 0.0, z: 0.0 }, &ZERO_VECTOR, 0.6, true, 0, 0, 0, 0, 0, true, true);
@@ -29,7 +29,7 @@ unsafe fn luigi_specialsstart(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = ["game_specialshold", "game_specialairshold"], category = ACMD_GAME, low_priority )]
-unsafe fn luigi_specialshold(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialshold(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 0.0, 180, 120, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -40,7 +40,7 @@ unsafe fn luigi_specialshold(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = ["effect_specialshold", "effect_specialairshold"], category = ACMD_EFFECT, low_priority )]
-unsafe fn luigi_specialshold_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialshold_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 10, 11, 0, 0, 0, 1, true);
@@ -82,7 +82,7 @@ unsafe fn luigi_specialshold_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
-unsafe fn luigi_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.0, 366, 100, 45, 0, 7.0, 0.0, 9.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         macros::ATTACK(agent, 2, 0, Hash40::new("top"), 0.0, 180, 120, 45, 0, 6.0, 0.0, 8.0, 35.0, Some(0.0), Some(8.0), Some(8.0), 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, 0.0, 1, false, false, true, true, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
@@ -104,7 +104,7 @@ unsafe fn luigi_specialsend(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = [ "effect_specialsend", "effect_specialairsend" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn luigi_specialsend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialsend_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("luigi_rocket_hold"), Hash40::new("top"), 0, 10, 11, 0, 0, 0, 1, true);
     }
@@ -119,7 +119,7 @@ unsafe fn luigi_specialsend_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = ["sound_specialsend", "sound_specialairsend"], category = ACMD_SOUND, low_priority )]
-unsafe fn luigi_specialsend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialsend_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_luigi_special_s04"));
     }
@@ -131,7 +131,7 @@ unsafe fn luigi_specialsend_snd(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", scripts = ["expression_specialsend", "expression_specialairsend"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_specialsend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialsend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -150,7 +150,7 @@ unsafe fn luigi_specialsend_exp(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         VarModule::off_flag(agent.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL);
@@ -186,7 +186,7 @@ unsafe fn luigi_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         VarModule::off_flag(agent.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL);
@@ -222,7 +222,7 @@ unsafe fn luigi_specialairhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", script = "game_speciallw", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 3.0 / 7.0);
     frame(agent.lua_state_agent, 10.0);
@@ -255,7 +255,7 @@ unsafe fn luigi_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "luigi", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_specialairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 3.0 / 7.0);
     frame(agent.lua_state_agent, 10.0);

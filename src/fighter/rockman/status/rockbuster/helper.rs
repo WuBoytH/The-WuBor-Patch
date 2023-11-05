@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-pub unsafe fn rockman_rockbuster_pre_helper(
+pub unsafe extern "C" fn rockman_rockbuster_pre_helper(
     prev_status: L2CValue
 ) -> L2CValue {
     [
@@ -15,7 +15,7 @@ pub unsafe fn rockman_rockbuster_pre_helper(
     ].contains(&prev_status.get_i32()).into()
 }
 
-pub unsafe fn rockman_rockbuster_main_helper(
+pub unsafe extern "C" fn rockman_rockbuster_main_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
     is_jump_squat: L2CValue,
@@ -67,7 +67,7 @@ pub unsafe fn rockman_rockbuster_main_helper(
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT_MINI_JUMP_ATTACK);
 }
 
-pub unsafe fn rockman_rockbuster_main_loop_helper(
+pub unsafe extern "C" fn rockman_rockbuster_main_loop_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
     is_walk: L2CValue
@@ -127,7 +127,7 @@ pub unsafe fn rockman_rockbuster_main_loop_helper(
     ret.into()
 }
 
-pub unsafe fn rockman_rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn rockman_rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon) -> L2CValue {
     let step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_STEP);
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_INT_ROCKBUSTER_COUNT);
     if step == 1
@@ -146,7 +146,7 @@ pub unsafe fn rockman_rockbuster_can_turn_helper(fighter: &mut L2CFighterCommon)
     false.into()
 }
 
-pub unsafe fn rockman_rockbuster_shoot_end_helper(
+pub unsafe extern "C" fn rockman_rockbuster_shoot_end_helper(
     fighter: &mut L2CFighterCommon,
     _step: L2CValue,
     is_air: L2CValue,
@@ -169,7 +169,7 @@ pub unsafe fn rockman_rockbuster_shoot_end_helper(
     3.into()
 }
 
-pub unsafe fn rockman_rockbuster_change_motion_helper(
+pub unsafe extern "C" fn rockman_rockbuster_change_motion_helper(
     fighter: &mut L2CFighterCommon,
     is_air: L2CValue,
     step: L2CValue,

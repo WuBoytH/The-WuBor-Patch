@@ -9,7 +9,7 @@ pub enum AirDashTier {
     Teleport
 }
 
-pub unsafe fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
+pub unsafe extern "C" fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> AirDashTier {
     // don't do this
     let fighter_kind = fighter.global_table[KIND].get_i32();
     if [
@@ -87,7 +87,7 @@ pub struct AirDashParams {
     pub cancel_frame: f32
 }
 
-pub unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
+pub unsafe extern "C" fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParams {
     let attack_frame: f32;
     let cancel_frame: f32;
     if get_airdash_tier(fighter) == AirDashTier::Teleport {
@@ -101,7 +101,7 @@ pub unsafe fn get_airdash_params(fighter: &mut L2CFighterCommon) -> AirDashParam
     AirDashParams{attack_frame, cancel_frame}
 }
 
-pub unsafe fn escape_air_slide_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn escape_air_slide_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -129,7 +129,7 @@ pub unsafe fn escape_air_slide_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub unsafe fn escape_air_slide_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn escape_air_slide_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     if [
         *FIGHTER_STATUS_KIND_DAMAGE_FLY,
@@ -168,7 +168,7 @@ pub unsafe fn escape_air_slide_init(fighter: &mut L2CFighterCommon) -> L2CValue 
 
 
 #[skyline::hook(replace = L2CFighterCommon_setup_escape_air_slide_common)]
-pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
+pub unsafe extern "C" fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) {
     let mut stickx = param_1.get_f32();
     let mut sticky = param_2.get_f32();
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE {
@@ -257,7 +257,7 @@ pub unsafe fn setup_escape_air_slide_common(fighter: &mut L2CFighterCommon, para
     }
 }
 
-pub unsafe fn escape_air_slide_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn escape_air_slide_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sub_escape_air_slide_common(fighter);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -272,7 +272,7 @@ pub unsafe fn escape_air_slide_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_EscapeAir_Main as *const () as _))
 }
 
-unsafe fn sub_escape_air_slide_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_escape_air_slide_common(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
     WorkModule::unable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW);
@@ -290,7 +290,7 @@ unsafe fn sub_escape_air_slide_common(fighter: &mut L2CFighterCommon) {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_bind_address_call_sub_escape_air_uniq as *const () as _));
 }
 
-pub unsafe fn escape_air_slide_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn escape_air_slide_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_FALL
     || status == *FIGHTER_STATUS_KIND_LANDING {
@@ -345,7 +345,7 @@ pub unsafe fn escape_air_slide_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub unsafe fn escape_air_slide_calc_param(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn escape_air_slide_calc_param(fighter: &mut L2CFighterCommon) -> L2CValue {
     FighterWorkModuleImpl::calc_escape_air_slide_param(fighter.module_accessor, 0.0);
     0.into()
 }

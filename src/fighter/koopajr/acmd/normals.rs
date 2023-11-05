@@ -1,7 +1,7 @@
 use crate::imports::acmd_imports::*;
 
 #[acmd_script( agent = "koopajr", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

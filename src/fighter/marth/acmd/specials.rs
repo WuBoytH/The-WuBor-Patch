@@ -2,7 +2,7 @@ use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
 #[acmd_script( agent = "marth", script = "game_specialnend", category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialnend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -31,7 +31,7 @@ unsafe fn marth_specialnend(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialnend", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnend_eff(agent: &mut L2CAgentBase) {
     let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_purple"));
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -64,7 +64,7 @@ unsafe fn marth_specialnend_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_specialnendhi", category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialnendhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -95,7 +95,7 @@ unsafe fn marth_specialnendhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialnendhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialnendhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendhi_eff(agent: &mut L2CAgentBase) {
     let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_purple"));
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -128,7 +128,7 @@ unsafe fn marth_specialnendhi_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_specialnendlw", category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialnendlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_CUTUP);
@@ -159,7 +159,7 @@ unsafe fn marth_specialnendlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialnendlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialnendlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendlw_eff(agent: &mut L2CAgentBase) {
     let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_purple"));
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -192,7 +192,7 @@ unsafe fn marth_specialnendlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_specialnendmax", category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialnendmax(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendmax(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_FIRE);
@@ -221,7 +221,7 @@ unsafe fn marth_specialnendmax(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialnendmax", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialnendmax_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendmax_eff(agent: &mut L2CAgentBase) {
     let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_purple"));
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -262,7 +262,7 @@ unsafe fn marth_specialnendmax_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_specialnendmaxhi", category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialnendmaxhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendmaxhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_FIRE);
@@ -293,7 +293,7 @@ unsafe fn marth_specialnendmaxhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialnendmaxhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialnendmaxhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendmaxhi_eff(agent: &mut L2CAgentBase) {
     let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_purple"));
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -334,7 +334,7 @@ unsafe fn marth_specialnendmaxhi_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_specialnendmaxlw", category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialnendmaxlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendmaxlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         let unstance = marth_unstance_game(agent, hash40("collision_attr_sting"), *COLLISION_SOUND_ATTR_FIRE);
@@ -365,7 +365,7 @@ unsafe fn marth_specialnendmaxlw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialnendmaxlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialnendmaxlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialnendmaxlw_eff(agent: &mut L2CAgentBase) {
     let unstance = marth_unstance_effect(agent, hash40("tex_marth_sword1"), hash40("tex_marth_sword2"), hash40("marth_sword_purple"));
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new_raw(unstance.swordflare), Hash40::new("haver"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -406,7 +406,7 @@ unsafe fn marth_specialnendmaxlw_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn marth_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     let unstance = marth_unstance_game(agent, hash40("collision_attr_cutup"), *COLLISION_SOUND_ATTR_CUTUP);
     if macros::is_excute(agent) {
@@ -434,7 +434,7 @@ unsafe fn marth_specialhi(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialhi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_dolphin_swing"), Hash40::new("top"), 0, 12, -1, 14, -30, 37, 1, true);
@@ -474,7 +474,7 @@ unsafe fn marth_specialhi_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "effect_specialairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn marth_specialairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_specialairhi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("marth_dolphin_swing"), Hash40::new("top"), 0, 12, -1, 14, -30, 37, 1, true);
@@ -513,7 +513,7 @@ unsafe fn marth_specialairhi_eff(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallw(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, marth::instance::flag::PARRY_XLU) {
         if macros::is_excute(agent) {
             WorkModule::on_flag(agent.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_LW_FLAG_SHIELD);
@@ -533,22 +533,22 @@ unsafe fn marth_speciallw(agent: &mut L2CAgentBase) {
 }
 
 #[acmd_script( agent = "marth", script = "game_speciallwenter", category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallwenter(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwenter(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
 #[acmd_script( agent = "marth", script = "game_speciallwexit", category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallwexit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
 #[acmd_script( agent = "marth", script = "game_speciallwairenter", category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallwairenter(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwairenter(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
 #[acmd_script( agent = "marth", script = "game_speciallwairexit", category = ACMD_GAME, low_priority )]
-unsafe fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 

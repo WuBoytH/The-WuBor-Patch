@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn sonic_jumpaerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sonic_jumpaerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_ROCKETBELT) {
         let energy = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_ROCKETBELT_BURNER_ENERGY_VALUE);
         if 0.0 < energy {
@@ -16,7 +16,7 @@ unsafe fn sonic_jumpaerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "sonic", status = FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn sonic_screwjumpaerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sonic_screwjumpaerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_ItemScrewJumpAerialSub();
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_SONIC_STATUS_KIND_SPECIAL_S_DASH {
         sonic_set_jumps(fighter);

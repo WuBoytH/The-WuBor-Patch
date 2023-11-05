@@ -177,12 +177,10 @@ unsafe fn bayonetta_attackairf_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        bayonetta_attackair_main,
-        bayonetta_attackair_end,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackair_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackair_end);
 
-        bayonetta_attackairf_init,
-        bayonetta_attackairf_end
-    );
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackairf_init);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackairf_end);
 }

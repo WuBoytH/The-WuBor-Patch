@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::helper::*;
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn dolly_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let aerial = ControlModule::get_attack_air_kind(fighter.module_accessor);
     let mot= match aerial {
         2 => Hash40::new("attack_air_f"),
@@ -23,10 +23,10 @@ unsafe fn dolly_attackair_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     );
     WorkModule::set_int64(fighter.module_accessor, mot.hash as i64, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     fighter.sub_attack_air_common(false.into());
-    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attackair_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attack_air_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn dolly_attackair_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_attack_air_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         if dolly_hit_cancel(fighter).get_i32() == 1 {
             return 1.into();
@@ -84,8 +84,6 @@ unsafe extern "C" fn dolly_attackair_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        dolly_attackair_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_APPEAL, dolly_attack_air_main);
 }

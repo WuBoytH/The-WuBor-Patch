@@ -1,5 +1,8 @@
 use crate::imports::status_imports::*;
 
+#[smashline::in_target("lua2cpp_brave", 0x34900)]
+pub fn brave_special_lw_start_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue;
+
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_DECIDE_COMMAND);
@@ -22,7 +25,7 @@ unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue
             VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_4, -1);
         }
     }
-    original!(fighter)
+    brave_special_lw_start_pre_inner(fighter)
 }
 
 #[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
@@ -54,9 +57,7 @@ unsafe fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        brave_special_lw_start_pre,
-        brave_special_lw_start_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_pre);
+    agent.status(smashline::End, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_end);
 }

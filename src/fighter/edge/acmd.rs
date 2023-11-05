@@ -4,10 +4,10 @@ mod specials;
 mod escape;
 mod appeal;
 
-pub fn install() {
-    aerials::install();
-    throws::install();
-    specials::install();
-    escape::install();
-    appeal::install();
+pub fn install(agent : &mut smashline::Agent) {
+    aerials::install(agent);
+    throws::install(agent);
+    specials::install(agent);
+    escape::install(agent);
+    appeal::install(agent);
 }

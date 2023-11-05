@@ -1,13 +1,13 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn demon_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     WorkModule::set_int(fighter.module_accessor, -1, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS);
-    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attacklw3_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_lw3_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn demon_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_Main();
     if !StatusModule::is_changing(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
@@ -43,7 +43,7 @@ unsafe extern "C" fn demon_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attacklw3_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn demon_attack_lw3_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("attack_lw3_cancel"),
@@ -54,10 +54,10 @@ unsafe fn demon_attacklw3_cancel_main(fighter: &mut L2CFighterCommon) -> L2CValu
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attacklw3_cancel_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_lw3_cancel_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn demon_attacklw3_cancel_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_lw3_cancel_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !StatusModule::is_changing(fighter.module_accessor)
     && WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_LW_3_WORK_INT_CANCEL_STATUS) == *FIGHTER_STATUS_KIND_GUARD_ON {
         let mut status = -1;
@@ -105,10 +105,8 @@ unsafe extern "C" fn demon_attacklw3_cancel_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        demon_attacklw3_main,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, demon_attack_lw3_main);
 
-        demon_attacklw3_cancel_main
-    );
+    agent.status(smashline::Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_LW3_CANCEL, demon_attack_lw3_cancel_main);
 }

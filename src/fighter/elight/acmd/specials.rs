@@ -982,24 +982,22 @@ unsafe fn elight_specialairlwattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        elight_specialn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", elight_specialn);
 
-        elight_specialairn,
+    agent.game_acmd("game_specialairn", elight_specialairn);
 
-        elight_specialn2,
+    agent.game_acmd("game_specialn2", elight_specialn2);
 
-        elight_specialairn2,
+    agent.game_acmd("game_specialairn2", elight_specialairn2);
 
-        elight_speciallwattack,
-        elight_speciallwattack_eff,
-        elight_speciallwattack_snd,
-        elight_speciallwattack_exp,
+    agent.game_acmd("game_speciallwattack", elight_speciallwattack);
+    agent.effect_acmd("effect_speciallwattack", elight_speciallwattack_eff);
+    agent.sound_acmd("sound_speciallwattack", elight_speciallwattack_snd);
+    agent.expression_acmd("expression_speciallwattack", elight_speciallwattack_exp);
 
-        elight_specialairlwattack,
-        elight_specialairlwattack_eff,
-        elight_specialairlwattack_snd,
-        elight_specialairlwattack_exp
-    );
+    agent.game_acmd("game_specialairlwattack", elight_specialairlwattack);
+    agent.effect_acmd("effect_specialairlwattack", elight_specialairlwattack_eff);
+    agent.sound_acmd("sound_specialairlwattack", elight_specialairlwattack_snd);
+    agent.expression_acmd("expression_specialairlwattack", elight_specialairlwattack_exp);
 }

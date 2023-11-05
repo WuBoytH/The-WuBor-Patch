@@ -93,15 +93,13 @@ unsafe fn chrom_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        chrom_attack11,
-        chrom_attack11_eff,
-        chrom_attack11_snd,
-        chrom_attack11_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_dash", chrom_attack11);
+    agent.effect_acmd("effect_attack11", chrom_attack11_eff);
+    agent.sound_acmd("sound_attack11", chrom_attack11_snd);
+    agent.expression_acmd("expression_attack11", chrom_attack11_exp);
 
-        chrom_attacks3,
+    agent.game_acmd("chrom_attacks3", chrom_attacks3);
 
-        chrom_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", chrom_attacklw3);
 }

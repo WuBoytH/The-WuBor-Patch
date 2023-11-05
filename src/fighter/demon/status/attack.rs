@@ -42,13 +42,13 @@ unsafe extern "C" fn demon_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 #[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attackcombo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    demon_attackcombo_main_mot_helper(fighter, 2.into());
+unsafe fn demon_attack_combo_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    demon_attack_combo_main_mot_helper(fighter, 2.into());
     MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, false);
-    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attackcombo_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_combo_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn demon_attackcombo_main_mot_helper(fighter: &mut L2CFighterCommon, count: L2CValue) {
+unsafe extern "C" fn demon_attack_combo_main_mot_helper(fighter: &mut L2CFighterCommon, count: L2CValue) {
     let val = count.get_i32();
     WorkModule::set_int(fighter.module_accessor, val, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -76,7 +76,7 @@ unsafe extern "C" fn demon_attackcombo_main_mot_helper(fighter: &mut L2CFighterC
     );
 }
 
-unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_combo_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();
@@ -88,11 +88,11 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
     let mut next_status = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_NEXT_STATUS);
     if next_status != *FIGHTER_STATUS_KIND_NONE {
         if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2 {
-            next_status = demon_attackcombo_main_loop_helper_first(fighter, next_status);
+            next_status = demon_attack_combo_main_loop_helper_first(fighter, next_status);
         }
     }
     else {
-        next_status = demon_attackcombo_main_loop_helper_first(fighter, next_status);
+        next_status = demon_attack_combo_main_loop_helper_first(fighter, next_status);
     }
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_FLAG_CHANGE_STATUS) {
         let combo_count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
@@ -123,7 +123,7 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
             }
         }
         if next_status == *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO {
-            demon_attackcombo_main_mot_helper(fighter, (combo_count + 1).into());
+            demon_attack_combo_main_mot_helper(fighter, (combo_count + 1).into());
             notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2b94de0d96), FIGHTER_LOG_ACTION_CATEGORY_ATTACK, FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_16);
             return 0.into();
         }
@@ -142,19 +142,19 @@ unsafe extern "C" fn demon_attackcombo_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-unsafe extern "C" fn demon_attackcombo_main_loop_helper_first(fighter: &mut L2CFighterCommon, next_status: i32) -> i32 {
+unsafe extern "C" fn demon_attack_combo_main_loop_helper_first(fighter: &mut L2CFighterCommon, next_status: i32) -> i32 {
     let combo_step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_COMBO_WORK_INT_COMBO);
     let mut status = if combo_step != 4 {
         if combo_step == 6
         || combo_step == 7 {
-            demon_attackcombo_main_loop_helper_second(fighter, next_status)
+            demon_attack_combo_main_loop_helper_second(fighter, next_status)
         }
         else {
             next_status
         }
     }
     else {
-        demon_attackcombo_main_loop_helper_second(fighter, next_status)
+        demon_attack_combo_main_loop_helper_second(fighter, next_status)
     };
     if status == *FIGHTER_STATUS_KIND_NONE
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_ATTACK)
@@ -167,7 +167,7 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_first(fighter: &mut L2CF
     status
 }
 
-unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2CFighterCommon, next_status: i32) -> i32 {
+unsafe extern "C" fn demon_attack_combo_main_loop_helper_second(fighter: &mut L2CFighterCommon, next_status: i32) -> i32 {
     let mut status = next_status;
     if next_status != *FIGHTER_DEMON_STATUS_KIND_ATTACK_STEP_2 {
         if fighter.global_table[CMD_CAT4].get_i32() & *FIGHTER_PAD_CMD_CAT4_FLAG_SPECIAL_HI_COMMAND != 0 {
@@ -207,10 +207,8 @@ unsafe extern "C" fn demon_attackcombo_main_loop_helper_second(fighter: &mut L2C
     status
 }
 
-pub fn install() {
-    install_status_scripts!(
-        demon_attack_main,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK, demon_attack_main);
 
-        demon_attackcombo_main
-    );
+    agent.status(smashline::Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_COMBO, demon_attack_combo_main);
 }

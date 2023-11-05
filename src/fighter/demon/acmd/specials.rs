@@ -513,20 +513,20 @@ unsafe fn demon_specialairlw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_specialhi,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", demon_specialhi);
 
-        demon_specialhigroundair,
+    agent.game_acmd("game_specialhiground", demon_specialhigroundair);
+    agent.game_acmd("game_specialhiair", demon_specialhigroundair);
 
-        demon_attackragedrive,
+    agent.game_acmd("game_attackragedrive", demon_attackragedrive);
+    agent.game_acmd("game_attackairragedrive", demon_attackragedrive);
 
-        demon_15cb9d3406,
+    agent.game_acmd(0x15cb9d3406, demon_15cb9d3406);
 
-        demon_15b52c48bb,
+    agent.game_acmd(0x15b52c48bb, demon_15b52c48bb);
 
-        demon_speciallw,
+    agent.game_acmd("game_speciallw", demon_speciallw);
 
-        demon_specialairlw
-    );
+    agent.game_acmd("game_specialairlw", demon_specialairlw);
 }

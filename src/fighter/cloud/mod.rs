@@ -1,5 +1,7 @@
 mod acmd;
 
 pub fn install() {
-    acmd::install();
+    let agent = &mut smashline::Agent::new("cloud");
+    acmd::install(agent);
+    agent.install();
 }

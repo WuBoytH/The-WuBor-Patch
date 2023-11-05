@@ -20,8 +20,6 @@ unsafe fn cloud_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_catch
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_catch", cloud_catch);
 }

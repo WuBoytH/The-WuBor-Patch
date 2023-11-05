@@ -20,8 +20,6 @@ unsafe fn dedede_speciallwmax(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dedede_speciallwmax
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_speciallwmax", dedede_speciallwmax);
 }

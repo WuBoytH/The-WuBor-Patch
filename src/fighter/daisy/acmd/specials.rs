@@ -209,19 +209,17 @@ unsafe fn daisy_specialairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        daisy_specialsjump,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialsjump", daisy_specialsjump);
 
-        daisy_specialshitend,
+    agent.game_acmd("game_specialshitend", daisy_specialshitend);
 
-        daisy_specialhistart,
+    agent.game_acmd("game_specialhistart", daisy_specialhistart);
 
-        daisy_specialairhistart,
+    agent.game_acmd("game_specialairhistart", daisy_specialairhistart);
 
-        daisy_specialairlw,
-        daisy_specialairlw_eff,
-        daisy_specialairlw_snd,
-        daisy_specialairlw_exp
-    );
+    agent.game_acmd("game_specialairlw", daisy_specialairlw);
+    agent.effect_acmd("game_specialairlw", daisy_specialairlw_eff);
+    agent.sound_acmd("game_specialairlw", daisy_specialairlw_snd);
+    agent.expression_acmd("game_specialairlw", daisy_specialairlw_exp);
 }

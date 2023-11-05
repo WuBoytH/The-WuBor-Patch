@@ -70,11 +70,9 @@ unsafe fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_attackairb,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairb", cloud_attackairb);
 
-        cloud_attackairhi,
-        cloud_attackairhi_exp
-    );
+    agent.game_acmd("game_attackairhi", cloud_attackairhi);
+    agent.expression_acmd("expression_attackairhi", cloud_attackairhi_exp);
 }

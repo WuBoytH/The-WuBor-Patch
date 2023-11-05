@@ -289,20 +289,20 @@ unsafe fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_specialn,
-        cloud_specialn_eff,
-        cloud_specialairn_eff,
-        cloud_specialn_exp,
-        cloud_specialairn_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", cloud_specialn);
+    agent.effect_acmd("effect_specialn", cloud_specialn_eff);
+    agent.expression_acmd("expression_specialn", chrom_attackairlw_exp);
 
-        cloud_specialhi,
+    agent.game_acmd("game_specialairn", cloud_specialn);
+    agent.effect_acmd("effect_specialairn", cloud_specialairn_eff);
+    agent.expression_acmd("expression_specialairn", cloud_specialairn_exp);
 
-        cloud_specialhi2,
+    agent.game_acmd("game_specialhi", cloud_specialhi);
 
-        cloud_specialhi2fall,
+    agent.game_acmd("game_specialhi2", cloud_specialhi2);
 
-        cloud_specialhi_lb
-    );
+    agent.game_acmd("game_specialhi2fall", cloud_specialhi2fall);
+
+    agent.game_acmd("game_specialhi_lb", cloud_specialhi_lb);
 }

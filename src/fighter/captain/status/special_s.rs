@@ -127,8 +127,6 @@ unsafe extern "C" fn captain_special_s_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        captain_special_s_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, captain_special_s_main);
 }

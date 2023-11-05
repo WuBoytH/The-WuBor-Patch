@@ -1,14 +1,4 @@
-use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    smashline::*,
-    wubor_utils::vars::*
-};
+use crate::imports::status_imports::*;
 
 #[weapon_frame( agent = WEAPON_KIND_EFLAME_ESWORD, main )]
 fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
@@ -23,8 +13,6 @@ fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
     }
 }
 
-pub fn install() {
-    install_agent_frames!(
-        eflame_esword_frame
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, eflame_esword_frame);
 }

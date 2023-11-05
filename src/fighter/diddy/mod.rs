@@ -1,7 +1,7 @@
 mod acmd;
-mod status;
 
 pub fn install() {
-    acmd::install();
-    status::install();
+    let agent = &mut smashline::Agent::new("diddy");
+    acmd::install(agent);
+    agent.install();
 }

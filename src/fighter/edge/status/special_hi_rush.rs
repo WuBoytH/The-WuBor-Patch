@@ -1,5 +1,8 @@
 use crate::imports::status_imports::*;
 
+#[smashline::in_target("lua2cpp_edge", 0xa6c0)]
+pub fn edge_special_hi_rush_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue;
+
 #[status_script(agent = "edge", status = FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe fn edge_special_hi_rush_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
@@ -37,12 +40,10 @@ unsafe fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
         VarModule::on_flag(fighter.module_accessor, edge::status::flag::SPECIAL_HI_CANCEL);
     }
-    original!(fighter)
+    edge_special_hi_rush_end_inner(fighter)
 }
 
-pub fn install() {
-    install_status_scripts!(
-        edge_special_hi_rush_pre,
-        edge_special_hi_rush_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_pre);
+    agent.status(smashline::Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_end);
 }

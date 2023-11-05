@@ -80,12 +80,10 @@ unsafe fn donkey_specialairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        donkey_specials,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specials", donkey_specials);
 
-        donkey_specialairs,
+    agent.game_acmd("game_specialairs", donkey_specialairs);
 
-        donkey_specialairhi
-    );
+    agent.game_acmd("game_specialairhi", donkey_specialairhi);
 }

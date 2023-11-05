@@ -8,8 +8,6 @@ unsafe fn dolly_guarddamage_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_guarddamage_snd
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.sound_acmd("sound_guarddamage", dolly_guarddamage_snd);
 }

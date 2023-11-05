@@ -6,12 +6,12 @@ mod specials;
 mod escape;
 mod misc;
 
-pub fn install() {
-    normals::install();
-    smashes::install();
-    throws::install();
-    aerials::install();
-    specials::install();
-    escape::install();
-    misc::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    smashes::install(agent);
+    throws::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    escape::install(agent);
+    misc::install(agent);
 }

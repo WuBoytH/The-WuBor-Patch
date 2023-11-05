@@ -120,14 +120,12 @@ unsafe fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        duckhunt_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", duckhunt_attackairn);
 
-        duckhunt_attackairf,
+    agent.game_acmd("game_attackairf", duckhunt_attackairf);
 
-        duckhunt_attackairhi,
+    agent.game_acmd("game_attackairb", duckhunt_attackairb);
 
-        duckhunt_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", duckhunt_attackairlw);
 }

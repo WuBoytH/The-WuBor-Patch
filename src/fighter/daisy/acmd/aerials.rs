@@ -107,13 +107,11 @@ unsafe fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        daisy_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", daisy_attackairn);
 
-        daisy_attackairlw,
-        daisy_attackairlw_eff,
-        daisy_attackairlw_snd,
-        daisy_attackairlw_exp
-    );
+    agent.game_acmd("game_attackairn", daisy_attackairlw);
+    agent.effect_acmd("effect_attackairn", daisy_attackairlw_eff);
+    agent.sound_acmd("sound_attackairn", daisy_attackairlw_snd);
+    agent.expression_acmd("expression_attackairn", daisy_attackairlw_exp);
 }

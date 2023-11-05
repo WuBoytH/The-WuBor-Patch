@@ -32,10 +32,8 @@ unsafe fn demon_appealhir(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_appealhil,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_appealhil", demon_appealhil);
 
-        demon_appealhir
-    );
+    agent.game_acmd("game_appealhir", demon_appealhir);
 }

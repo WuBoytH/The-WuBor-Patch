@@ -502,28 +502,45 @@ unsafe fn elight_landingairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        elight_attackairn,
-        elight_attackairn_eff,
-        elight_attackairn_snd,
-        elight_attackairn_exp,
+#[acmd_script( agent = "elight", script = "expression_landingairlw", category = ACMD_EXPRESSION, low_priority )]
+unsafe fn elight_landingairlw_exp(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_TOP);
+        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_79_lands_light"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if VarModule::is_flag(agent.module_accessor, attack_air::flag::ENABLE_LANDING_ATTACK) {
+        if macros::is_excute(agent) {
+            macros::RUMBLE_HIT(agent, Hash40::new("rbkind_79_slashlarge"), 0);
+        }
+    }
+    frame(agent.lua_state_agent, 27.0);
+    if macros::is_excute(agent) {
+        slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 9);
+    }
+}
 
-        elight_landingairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", elight_attackairn);
+    agent.effect_acmd("effect_attackairn", elight_attackairn_eff);
+    agent.sound_acmd("sound_attackairn", elight_attackairn_snd);
+    agent.expression_acmd("expression_attackairn", elight_attackairn_exp);
 
-        elight_attackairf,
+    agent.game_acmd("game_landingairn", elight_landingairn);
 
-        elight_attackairb,
+    agent.game_acmd("game_attackairf", elight_attackairf);
 
-        elight_attackairhi,
+    agent.game_acmd("game_attackairb", elight_attackairb);
 
-        elight_attackairlw,
-        elight_attackairlw_eff,
-        elight_attackairlw_snd,
-        elight_attackairlw_exp,
+    agent.game_acmd("game_attackairhi", elight_attackairhi);
 
-        elight_landingairlw,
-        elight_landingairlw_eff,
-        elight_landingairlw_snd
-    );
+    agent.game_acmd("game_attackairlw", elight_attackairlw);
+    agent.effect_acmd("effect_attackairlw", elight_attackairlw_eff);
+    agent.sound_acmd("sound_attackairlw", elight_attackairlw_snd);
+    agent.expression_acmd("expression_attackairlw", elight_attackairlw_exp);
+
+    agent.game_acmd("game_landingairlw", elight_landingairlw);
+    agent.effect_acmd("effect_landingairlw", elight_landingairlw_eff);
+    agent.sound_acmd("sound_landingairlw", elight_attackairlw_snd);
+    agent.expression_acmd("expression_landingairlw", elight_landingairlw_exp);
 }

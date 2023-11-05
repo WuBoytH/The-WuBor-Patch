@@ -91,12 +91,10 @@ unsafe fn demon_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attackairf,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", demon_attackairf);
 
-        demon_attackairhi,
+    agent.game_acmd("game_attackairhi", demon_attackairhi);
 
-        demon_landingairlw
-    );
+    agent.game_acmd("game_landingairlw", demon_landingairlw);
 }

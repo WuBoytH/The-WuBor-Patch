@@ -42,16 +42,14 @@ unsafe fn elight_escapeairslideforesight(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        elight_escapen,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_escapen", elight_escapen);
 
-        elight_escapef,
+    agent.game_acmd("game_escapef", elight_escapef);
 
-        elight_escapeb,
+    agent.game_acmd("game_escapeb", elight_escapeb);
 
-        elight_escapeairslide,
+    agent.game_acmd("game_escapeairslide", elight_escapeairslide);
 
-        elight_escapeairslideforesight
-    );
+    agent.game_acmd("game_escapeairslideforesight", elight_escapeairslideforesight);
 }

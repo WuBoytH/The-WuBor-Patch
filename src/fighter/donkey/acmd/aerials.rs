@@ -25,8 +25,6 @@ unsafe fn donkey_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        donkey_attackairb
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairb", donkey_attackairb);
 }

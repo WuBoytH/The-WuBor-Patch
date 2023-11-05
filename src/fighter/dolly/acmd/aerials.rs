@@ -173,16 +173,14 @@ unsafe fn dolly_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", dolly_attackairn);
 
-        dolly_attackairf,
+    agent.game_acmd("game_attackairf", dolly_attackairf);
 
-        dolly_attackairb,
+    agent.game_acmd("game_attackairb", dolly_attackairb);
 
-        dolly_attackairhi,
+    agent.game_acmd("game_attackairhi", dolly_attackairhi);
 
-        dolly_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", dolly_attackairlw);
 }

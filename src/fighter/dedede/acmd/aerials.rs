@@ -68,12 +68,10 @@ unsafe fn dedede_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dedede_attackairf,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", dedede_attackairf);
 
-        dedede_attackairb,
+    agent.game_acmd("dedede_attackairb", dedede_attackairb);
 
-        dedede_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", dedede_attackairlw);
 }

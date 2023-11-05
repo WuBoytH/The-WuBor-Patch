@@ -1,18 +1,5 @@
-use {
-    smash::{
-        lua2cpp::*,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*
-    }
-};
+use crate::imports::status_imports::*;
 
-#[fighter_frame( agent = FIGHTER_KIND_DAISY, main )]
 fn daisy_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_S)
@@ -23,8 +10,6 @@ fn daisy_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_frames!(
-        daisy_frame
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, daisy_frame);
 }

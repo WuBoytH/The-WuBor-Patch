@@ -65,9 +65,7 @@ unsafe extern "C" fn brave_special_lw_crash_end_main_loop(fighter: &mut L2CFight
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        brave_special_lw_crash_end_pre,
-        brave_special_lw_crash_end_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END, brave_special_lw_crash_end_pre);
+    agent.status(smashline::Main, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_CRASH_END, brave_special_lw_crash_end_main);
 }

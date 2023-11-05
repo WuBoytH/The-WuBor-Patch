@@ -53,6 +53,248 @@ unsafe fn dolly_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
+#[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
+    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+    let oboma = sv_battle_object::module_accessor(otarget_id);
+    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
+    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
+    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
+        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
+    }
+    if macros::is_excute(agent) {
+        let mut damage = 6.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL)  {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        let mut damage = 6.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        let mut damage = 6.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
+#[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_wave_normal(agent: &mut L2CAgentBase) {
+    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+    let oboma = sv_battle_object::module_accessor(otarget_id);
+    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
+    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
+    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
+        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
+    }
+    if macros::is_excute(agent) {
+        let mut damage = 8.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(agent.lua_state_agent, 2.0);
+    if macros::is_excute(agent) {
+        let mut damage = 8.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    frame(agent.lua_state_agent, 6.0);
+    if macros::is_excute(agent) {
+        let mut damage = 8.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
+#[acmd_script( agent = "dolly_wave", script = "game_normalairw", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
+    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+    let oboma = sv_battle_object::module_accessor(otarget_id);
+    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
+    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
+    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
+        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
+    }
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 10.0, -2.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -3.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 9.4, -0.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -4.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 8.8, 0.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -6.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 8.2, 1.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -7.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 7.6, 2.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -9.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 7.0, 4.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -11.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 5.8, 6.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -14.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 5.2, 7.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -15.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 10.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 4.6, 8.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -17.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
+#[acmd_script( agent = "dolly_wave", script = "game_normalair", category = ACMD_GAME, low_priority )]
+unsafe fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
+    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
+    let oboma = sv_battle_object::module_accessor(otarget_id);
+    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
+    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
+    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
+    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
+        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
+    }
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 10.0, -2.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -3.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 9.2, -0.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -5.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 8.4, 1.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -7.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 7.6, 3.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -10.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 6.8, 5.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -12.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 6.0, 7.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -15.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+    wait(agent.lua_state_agent, 1.0);
+    if macros::is_excute(agent) {
+        let mut damage = 11.0;
+        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
+            damage *= vl::param_private::special_cancel_damage_mul;
+        }
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 5.2, 8.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -17.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
+    }
+}
+
 #[acmd_script( agent = "dolly", script = "game_specialsfattack", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_specialsfattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 0.0);
@@ -1242,248 +1484,6 @@ unsafe fn dolly_superspecial2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
-    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
-        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
-    }
-    if macros::is_excute(agent) {
-        let mut damage = 6.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL)  {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    frame(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        let mut damage = 6.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        let mut damage = 6.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-}
-
-#[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normal(agent: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
-    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
-        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
-    }
-    if macros::is_excute(agent) {
-        let mut damage = 8.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 12.0, -5.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -10.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    frame(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        let mut damage = 8.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 9.0, -4.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -8.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        let mut damage = 8.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 2.4, 0.0, 6.5, -2.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 55, 20, 0, 50, 1.8, 0.0, 2.0, -6.0, Some(0.0), Some(2.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, -4, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-}
-
-#[acmd_script( agent = "dolly_wave", script = "game_normalairw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
-    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
-        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
-    }
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 10.0, -2.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -3.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 9.4, -0.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -4.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 8.8, 0.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -6.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 8.2, 1.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -7.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 7.6, 2.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -9.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 7.0, 4.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -11.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 5.8, 6.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -14.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 5.2, 7.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -15.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 10.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 4.6, 8.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -17.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-}
-
-#[acmd_script( agent = "dolly_wave", script = "game_normalair", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
-    let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    let oboma = sv_battle_object::module_accessor(otarget_id);
-    let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
-    if utility::get_category(&mut *oboma) == *BATTLE_OBJECT_CATEGORY_FIGHTER
-    && utility::get_kind(&mut *oboma) == *FIGHTER_KIND_DOLLY
-    && VarModule::is_flag(owner_module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
-        VarModule::on_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL);
-    }
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 10.0, -2.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -3.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 9.2, -0.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -5.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 8.4, 1.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -7.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 7.6, 3.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -10.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 6.8, 5.2, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -12.6, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 6.0, 7.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -15.0, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        let mut damage = 11.0;
-        if VarModule::is_flag(agent.module_accessor, dolly_wave::instance::flag::FROM_CANCEL) {
-            damage *= vl::param_private::special_cancel_damage_mul;
-        }
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 5.2, 8.8, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), damage, 45, 30, 0, 85, 3.0, 0.0, 0.0, -17.4, Some(0.0), Some(0.0), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3.2, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_DOLLY_PUNCH, *ATTACK_REGION_ENERGY);
-    }
-}
-
 #[acmd_script( agent = "dolly_burst", script = "game_superspecial", category = ACMD_GAME, low_priority )]
 unsafe fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
@@ -1542,54 +1542,60 @@ unsafe fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_specialn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", dolly_specialn);
 
-        dolly_specialairn,
+    agent.game_acmd("game_specialairn", dolly_specialairn);
 
-        dolly_specialsfattack,
+    let wave = &mut smashline::Agent::new("dolly_wave");
+    wave.game_acmd("game_normalw", dolly_wave_normalw);
 
-        dolly_specialsbattackw,
+    wave.game_acmd("game_normal", dolly_wave_normal);
 
-        dolly_specialsbattack,
-        dolly_specialsbattack_eff,
-        dolly_specialsbattack_snd,
-        dolly_specialsbattack_exp,
+    wave.game_acmd("game_normalairw", dolly_wave_normalairw);
 
-        dolly_specialhi,
+    wave.game_acmd("game_normalair", dolly_wave_normalair);
+    wave.install();
 
-        dolly_specialhicommand,
+    agent.game_acmd("game_specialsfattack", dolly_specialsfattack);
 
-        dolly_speciallwstart,
-        dolly_speciallwstart_eff,
-        dolly_speciallwstart_snd,
-        dolly_speciallwstart_exp,
+    agent.game_acmd("game_specialsbattackw", dolly_specialsbattackw);
 
-        dolly_specialairlwrisew,
+    agent.game_acmd("game_specialsbattack", dolly_specialsbattack);
+    agent.effect_acmd("effect_specialsbattack", dolly_specialsbattack_eff);
+    agent.sound_acmd("sound_specialsbattack", dolly_specialsbattack_snd);
+    agent.expression_acmd("expression_specialsbattack", dolly_specialsbattack_exp);
 
-        dolly_specialairlwrise,
+    agent.game_acmd("game_specialhi1", dolly_specialhi);
 
-        dolly_specialairlw,
+    agent.game_acmd("game_specialairhi1", dolly_specialhi);
 
-        dolly_superspecial,
-        dolly_superspecial_eff,
-        dolly_superspecial_snd,
+    agent.game_acmd("game_specialhicommand", dolly_specialhicommand);
 
-        dolly_superspecial2start,
-        dolly_superspecial2start_eff,
-        dolly_superspecial2start_snd,
+    agent.game_acmd("game_specialairhicommand", dolly_specialhicommand);
 
-        dolly_superspecial2,
+    agent.game_acmd("game_speciallwstart", dolly_speciallwstart);
+    agent.effect_acmd("effect_speciallwstart", dolly_speciallwstart_eff);
+    agent.sound_acmd("sound_speciallwstart", dolly_speciallwstart_snd);
+    agent.expression_acmd("expression_speciallwstart", dolly_speciallwstart_exp);
 
-        dolly_wave_normalw,
+    agent.game_acmd("game_specialairlwrisew", dolly_specialairlwrisew);
 
-        dolly_wave_normal,
+    agent.game_acmd("game_specialairlwrise", dolly_specialairlwrise);
 
-        dolly_wave_normalairw,
+    agent.game_acmd("game_specialairlw", dolly_specialairlw);
 
-        dolly_wave_normalair,
+    agent.game_acmd("game_superspecial", dolly_superspecial);
+    agent.effect_acmd("effect_superspecial", dolly_superspecial_eff);
+    agent.sound_acmd("sound_superspecial", dolly_superspecial_snd);
 
-        dolly_burst_superspecial
-    );
+    agent.game_acmd("game_superspecial2start", dolly_superspecial2start);
+    agent.effect_acmd("effect_superspecial2start", dolly_superspecial2start_eff);
+    agent.sound_acmd("sound_superspecial2start", dolly_superspecial2start_snd);
+
+    agent.game_acmd("game_superspecial2", dolly_superspecial2);
+
+    let burst = &mut smashline::Agent::new("dolly_burst");
+    burst.game_acmd("game_superspecial", dolly_burst_superspecial);
+    burst.install();
 }

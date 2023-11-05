@@ -416,19 +416,17 @@ unsafe fn eflame_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        eflame_attackairn,
-        eflame_attackairn_eff,
-        eflame_attackairn_snd,
-        eflame_attackairn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", eflame_attackairn);
+    agent.effect_acmd("effect_attackairn", eflame_attackairn_eff);
+    agent.sound_acmd("sound_attackairn", eflame_attackairn_snd);
+    agent.expression_acmd("expression_attackairn", eflame_attackairn_exp);
 
-        eflame_attackairf,
+    agent.game_acmd("game_attackairf", eflame_attackairf);
 
-        eflame_attackairb,
+    agent.game_acmd("game_attackairb", eflame_attackairb);
 
-        eflame_attackairhi,
+    agent.game_acmd("game_attackairhi", eflame_attackairhi);
 
-        eflame_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", eflame_attackairlw);
 }

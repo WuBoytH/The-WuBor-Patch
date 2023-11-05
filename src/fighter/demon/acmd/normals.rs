@@ -38,10 +38,8 @@ unsafe fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attacklw3,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacklw3", demon_attacklw3);
 
-        demon_attacklw3cancel
-    );
+    agent.game_acmd("game_attacklw3cancel", demon_attacklw3cancel);
 }

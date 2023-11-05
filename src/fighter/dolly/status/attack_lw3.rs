@@ -2,13 +2,13 @@ use crate::imports::status_imports::*;
 use super::super::helper::*;
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn dolly_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.status_AttackLw3_common();
-    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attacklw3_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attack_lw3_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         VarModule::set_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT, 0);
     }
@@ -68,15 +68,14 @@ unsafe extern "C" fn dolly_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_attacklw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn dolly_attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
         VarModule::set_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT, 0);
     }
     fighter.status_end_AttackLw3()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        dolly_attacklw3_main, dolly_attacklw3_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, dolly_attack_lw3_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_LW3, dolly_attack_lw3_end);
 }

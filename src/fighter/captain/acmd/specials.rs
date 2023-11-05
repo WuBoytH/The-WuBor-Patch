@@ -62,10 +62,10 @@ unsafe fn captain_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        captain_specialsstart,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialsstart", captain_specialsstart);
 
-        captain_specialhi
-    );
+    agent.game_acmd("game_specialhi", captain_specialhi);
+
+    agent.game_acmd("game_specialairhi", captain_specialhi);
 }

@@ -113,18 +113,17 @@ unsafe fn cloud_appeallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_appeals,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_appealsl", cloud_appeals);
+    agent.game_acmd("game_appealsr", cloud_appeals);
 
-        cloud_appealsloop,
-        cloud_appealsloop_snd,
-        cloud_appealsloop_exp,
+    agent.game_acmd("game_appealsloop", cloud_appealsloop);
+    agent.sound_acmd("sound_appealsloop", cloud_appealsloop_snd);
+    agent.expression_acmd("expression_appealsloop", cloud_appealsloop_exp);
 
-        cloud_appealhil,
+    agent.game_acmd("game_appealhil", cloud_appealhil);
+    agent.game_acmd("game_appealhir", cloud_appealhir);
 
-        cloud_appealhir,
-
-        cloud_appeallw
-    );
+    agent.game_acmd("game_appeallwl", cloud_appeallw);
+    agent.game_acmd("game_appeallwr", cloud_appeallw);
 }

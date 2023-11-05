@@ -422,27 +422,27 @@ unsafe fn edge_appeallwloop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        edge_appeals,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_appealsl", edge_appeals);
+    agent.game_acmd("game_appealsr", edge_appeals);
 
-        edge_appealsloop_eff,
-        edge_appealsloop_snd,
-        edge_appealsloop_exp,
+    agent.effect_acmd("effect_appealsloop", edge_appealsloop_eff);
+    agent.sound_acmd("sound_appealsloop", edge_appealsloop_snd);
+    agent.expression_acmd("expression_appealsloop", edge_appealsloop_exp);
 
-        edge_appealsattack,
-        edge_appealsattack_eff,
-        edge_appealsattack_snd,
-        edge_appealsattack_exp,
+    agent.game_acmd("game_appealsattack", edge_appealsattack);
+    agent.effect_acmd("effect_appealsattack", edge_appealsattack_eff);
+    agent.sound_acmd("sound_appealsattack", edge_appealsattack_snd);
+    agent.expression_acmd("expression_appealsattack", edge_appealsattack_exp);
 
-        edge_appealsattackjust,
-        edge_appealsattackjust_eff,
-        edge_appealsattackjust_snd,
-        edge_appealsattackjust_exp,
+    agent.game_acmd("game_appealsattackjust", edge_appealsattackjust);
+    agent.effect_acmd("effect_appealsattackjust", edge_appealsattackjust_eff);
+    agent.sound_acmd("sound_appealsattackjust", edge_appealsattackjust_snd);
+    agent.expression_acmd("expression_appealsattackjust", edge_appealsattackjust_exp);
 
-        edge_appeallw,
+    agent.game_acmd("game_appeallwl", edge_appeallw);
+    agent.game_acmd("game_appeallwr", edge_appeallw);
 
-        edge_appeallwloop_eff,
-        edge_appeallwloop_exp
-    );
+    agent.effect_acmd("effect_appeallwloop", edge_appeallwloop_eff);
+    agent.expression_acmd("expression_appeallwloop", edge_appeallwloop_exp);
 }

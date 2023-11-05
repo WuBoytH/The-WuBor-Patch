@@ -168,18 +168,16 @@ unsafe fn buddy_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        buddy_attackdash,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", buddy_attackdash);
 
-        buddy_attacks3,
+    agent.game_acmd("game_attacks3", buddy_attacks3);
 
-        buddy_attacks3hi,
+    agent.game_acmd("game_attacks3hi", buddy_attacks3hi);
 
-        buddy_attacks3lw,
+    agent.game_acmd("game_attacks3lw", buddy_attacks3lw);
 
-        buddy_attackhi3,
+    agent.game_acmd("game_attackhi3", buddy_attackhi3);
 
-        buddy_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", buddy_attacklw3);
 }

@@ -199,14 +199,13 @@ unsafe fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 7.0 / 11.0);
 }
 
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialairsu", bayonetta_specialairsu);
+    agent.effect_acmd("effect_specialairsu", bayonetta_specialairsu_eff);
 
-pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_specialairsu,
-        bayonetta_specialairsu_eff,
+    agent.game_acmd("game_specialairsd", bayonetta_specialairsd);
 
-        bayonetta_specialairsd,
+    agent.game_acmd("game_specialhi", bayonetta_specialhi);
 
-        bayonetta_specialhi
-    );
+    agent.game_acmd("game_specialairhi", bayonetta_specialhi);
 }

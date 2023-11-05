@@ -81,9 +81,7 @@ unsafe fn edge_special_hi_landing_end(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        edge_special_hi_landing_main,
-        edge_special_hi_landing_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, edge_special_hi_landing_main);
+    agent.status(smashline::End, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_LANDING, edge_special_hi_landing_end);
 }

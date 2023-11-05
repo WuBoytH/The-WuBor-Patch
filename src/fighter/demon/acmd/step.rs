@@ -332,14 +332,12 @@ unsafe fn demon_attackstep2s(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attackstep2,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackstep2", demon_attackstep2);
 
-        demon_attackstep2f,
+    agent.game_acmd("game_attackstep2f", demon_attackstep2f);
 
-        demon_attackstep2l,
+    agent.game_acmd("game_attackstep2l", demon_attackstep2l);
 
-        demon_attackstep2s
-    );
+    agent.game_acmd("game_attackstep2s", demon_attackstep2s);
 }

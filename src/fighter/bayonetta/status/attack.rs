@@ -147,8 +147,6 @@ unsafe extern "C" fn bayonetta_attack_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        bayonetta_attack_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK, bayonetta_attack_main);
 }

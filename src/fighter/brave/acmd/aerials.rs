@@ -188,17 +188,15 @@ unsafe fn brave_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        brave_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", brave_attackairn);
 
-        brave_attackairf,
+    agent.game_acmd("game_attackairf", brave_attackairf);
 
-        brave_attackairb,
+    agent.game_acmd("game_attackairb", brave_attackairb);
 
-        brave_attackairhi,
-        brave_attackairhi_eff,
+    agent.game_acmd("game_attackairhi", brave_attackairhi);
+    agent.effect_acmd("effect_attackairhi", brave_attackairhi_eff);
 
-        brave_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", brave_attackairlw);
 }

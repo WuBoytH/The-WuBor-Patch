@@ -20,6 +20,13 @@ unsafe fn duckhunt_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
+pub fn install(agent : &mut smashline::Agent) {
+    let clay = &mut smashline::Agent::new("duckhunt_clay");
+    clay.game_acmd("game_fly", duckhunt_clay_fly);
+    clay.install();
+
+    agent.game_acmd("game_specialhi", duckhunt_specialhi);
+}
 pub fn install() {
     install_acmd_scripts!(
         duckhunt_clay_fly,

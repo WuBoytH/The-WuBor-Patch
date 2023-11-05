@@ -98,16 +98,14 @@ unsafe fn daisy_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        daisy_attack12,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack12", daisy_attack12);
 
-        daisy_attackdash,
+    agent.game_acmd("game_attackdash", daisy_attackdash);
 
-        daisy_attacks3,
+    agent.game_acmd("game_attacks3", daisy_attacks3);
 
-        daisy_attackhi3,
+    agent.game_acmd("game_attackhi3", daisy_attackhi3);
 
-        daisy_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", daisy_attacklw3);
 }

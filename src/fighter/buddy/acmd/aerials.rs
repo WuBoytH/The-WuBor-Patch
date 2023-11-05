@@ -111,14 +111,12 @@ unsafe fn buddy_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        buddy_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", buddy_attackairn);
 
-        buddy_attackairhi,
+    agent.game_acmd("game_attackairhi", buddy_attackairhi);
 
-        buddy_attackairlw,
+    agent.game_acmd("game_attackairlw", buddy_attackairlw);
 
-        buddy_landingairlw
-    );
+    agent.game_acmd("game_landingairlw", buddy_landingairlw);
 }

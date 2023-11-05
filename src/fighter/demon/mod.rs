@@ -3,6 +3,8 @@ mod status;
 pub mod helper;
 
 pub fn install() {
-    acmd::install();
-    status::install();
+    let agent = &mut smashline::Agent::new("demon");
+    acmd::install(agent);
+    status::install(agent);
+    agent.install();
 }

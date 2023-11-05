@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::{vl, helper::*};
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn dolly_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn dolly_attack_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_command = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND);
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     fighter.status_pre_AttackDash();
@@ -12,7 +12,7 @@ unsafe fn dolly_attackdash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn dolly_attack_dash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
         let special_command_lr = ControlModule::get_special_command_lr(fighter.module_accessor, 1);
         if special_command_lr != 0.0 && PostureModule::lr(fighter.module_accessor) != special_command_lr {
@@ -72,10 +72,10 @@ unsafe fn dolly_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         }
         fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(L2CFighterCommon_sub_attack_dash_uniq as *const () as _));
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attackdash_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attack_dash_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_attack_dash_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::RISING_FORCE) {
         if dolly_hit_cancel(fighter).get_i32() == 1 {
             return 1.into();
@@ -92,7 +92,7 @@ unsafe extern "C" fn dolly_attackdash_main_loop(fighter: &mut L2CFighterCommon) 
 }
 
 #[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe fn dolly_attack_dash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
         VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
         VarModule::off_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND);
@@ -110,10 +110,8 @@ unsafe fn dolly_attackdash_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        dolly_attackdash_pre,
-        dolly_attackdash_main,
-        dolly_attackdash_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_end);
 }

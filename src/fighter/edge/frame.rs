@@ -63,8 +63,6 @@ fn edge_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_frames!(
-        edge_frame
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, edge_frame);
 }

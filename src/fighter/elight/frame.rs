@@ -22,8 +22,6 @@ fn elight_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_frames!(
-        elight_frame
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, elight_frame);
 }

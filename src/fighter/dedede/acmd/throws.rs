@@ -27,8 +27,6 @@ unsafe fn dedede_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dedede_throwlw
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwlw", dedede_throwlw);
 }

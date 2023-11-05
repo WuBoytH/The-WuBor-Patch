@@ -213,18 +213,16 @@ unsafe fn bayonetta_attackdash(agent: &mut L2CAgentBase) {
     // }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_attack11,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", bayonetta_attack11);
 
-        bayonetta_attack100end,
+    agent.game_acmd("game_attack100end", bayonetta_attack100end);
 
-        bayonetta_attacks32,
+    agent.game_acmd("game_attacks32", bayonetta_attacks32);
 
-        bayonetta_attacks33,
+    agent.game_acmd("game_attacks33", bayonetta_attacks33);
 
-        bayonetta_attacklw3,
+    agent.game_acmd("game_attacklw3", bayonetta_attacklw3);
 
-        bayonetta_attackdash
-    );
+    agent.game_acmd("game_attackdash", bayonetta_attackdash);
 }

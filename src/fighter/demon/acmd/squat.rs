@@ -80,10 +80,8 @@ unsafe fn demon_attacksquat1(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attacksquat2,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacksquat2", demon_attacksquat2);
 
-        demon_attacksquat1
-    );
+    agent.game_acmd("game_attacksquat1", demon_attacksquat1);
 }

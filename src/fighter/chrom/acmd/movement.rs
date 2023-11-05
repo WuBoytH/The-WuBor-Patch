@@ -20,10 +20,8 @@ unsafe fn chrom_turndash(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        chrom_dash,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_dash", chrom_dash);
 
-        chrom_turndash
-    );
+    agent.game_acmd("game_turndash", chrom_turndash);
 }

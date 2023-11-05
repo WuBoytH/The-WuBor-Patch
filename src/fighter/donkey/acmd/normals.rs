@@ -143,20 +143,18 @@ unsafe fn donkey_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        donkey_attack12,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack12", donkey_attack12);
 
-        donkey_attackdash,
+    agent.game_acmd("game_attackdash", donkey_attackdash);
 
-        donkey_attacks3,
+    agent.game_acmd("game_attacks3", donkey_attacks3);
 
-        donkey_attacks3hi,
+    agent.game_acmd("game_attacks3hi", donkey_attacks3hi);
 
-        donkey_attacks3lw,
+    agent.game_acmd("game_attacks3lw", donkey_attacks3lw);
 
-        donkey_attackhi3,
+    agent.game_acmd("game_attackhi3", donkey_attackhi3);
 
-        donkey_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", donkey_attacklw3);
 }

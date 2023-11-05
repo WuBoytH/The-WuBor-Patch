@@ -233,16 +233,14 @@ unsafe fn elight_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        elight_attack100end,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack100end", elight_attack100end);
 
-        elight_attackdash,
+    agent.game_acmd("game_attackdash", elight_attackdash);
 
-        elight_attacks3,
+    agent.game_acmd("game_attacks3", elight_attacks3);
 
-        elight_attackhi3,
+    agent.game_acmd("game_attackhi3", elight_attackhi3);
 
-        elight_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", elight_attacklw3);
 }

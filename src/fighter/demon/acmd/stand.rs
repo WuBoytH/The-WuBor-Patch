@@ -133,15 +133,13 @@ unsafe fn demon_attackstand32(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attackstand24,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackstand24", demon_attackstand24);
 
-        demon_attackstand2f,
-        demon_attackstand2f_eff,
-        demon_attackstand2f_snd,
-        demon_attackstand2f_exp,
+    agent.game_acmd("game_attackstand2f", demon_attackstand2f);
+    agent.effect_acmd("effect_attackstand2f", demon_attackstand2f_eff);
+    agent.sound_acmd("sound_attackstand2f", demon_attackstand2f_snd);
+    agent.expression_acmd("expression_attackstand2f", demon_attackstand2f_exp);
 
-        demon_attackstand32
-    );
+    agent.game_acmd("game_attackstand32", demon_attackstand32);
 }

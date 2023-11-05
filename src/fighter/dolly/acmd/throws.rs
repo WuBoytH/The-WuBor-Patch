@@ -93,14 +93,12 @@ unsafe fn dolly_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_throwf,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", dolly_throwf);
 
-        dolly_throwb,
+    agent.game_acmd("game_throwb", dolly_throwb);
 
-        dolly_throwhi,
+    agent.game_acmd("game_throwhi", dolly_throwhi);
 
-        dolly_throwlw
-    );
+    agent.game_acmd("game_throwlw", dolly_throwlw);
 }

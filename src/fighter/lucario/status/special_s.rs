@@ -254,10 +254,9 @@ unsafe extern "C" fn lucario_special_s_throw_substatus(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucario_special_s_main,
-        lucario_special_s_end,
-        lucario_special_s_throw_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, lucario_special_s_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, lucario_special_s_end);
+
+    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_S_THROW, lucario_special_s_throw_main);
 }

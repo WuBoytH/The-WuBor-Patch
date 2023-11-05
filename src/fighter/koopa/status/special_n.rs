@@ -124,10 +124,8 @@ unsafe extern "C" fn koopa_special_n_exec_stop(_fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        koopa_special_n_main,
-        koopa_special_n_exec,
-        koopa_special_n_exec_stop
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, koopa_special_n_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_N, koopa_special_n_exec);
+    agent.status(smashline::ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_N, koopa_special_n_exec_stop);
 }

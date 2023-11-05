@@ -5,11 +5,11 @@ mod copy;
 mod escape;
 mod misc;
 
-pub fn install() {
-    normals::install();
-    aerials::install();
-    specials::install();
-    copy::install();
-    escape::install();
-    misc::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    copy::install(agent);
+    escape::install(agent);
+    misc::install(agent);
 }

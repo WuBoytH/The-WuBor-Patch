@@ -1,0 +1,37 @@
+use crate::imports::acmd_imports::*;
+
+#[acmd_script( agent = "koopa_breath", script = "game_move", category = ACMD_GAME, low_priority )]
+unsafe extern "C" fn koopa_breath_move(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 15.0, 50, 60, 0, 72, 4.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 0.8, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
+        AttackModule::enable_safe_pos(agent.module_accessor);
+    }
+}
+
+#[acmd_script( agent = "koopa_breath", script = "effect_move", category = ACMD_EFFECT, low_priority )]
+unsafe extern "C" fn koopa_breath_move_eff(agent: &mut L2CAgentBase) {
+    for _ in 0..i32::MAX {
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
+            macros::EFFECT_FOLLOW(agent, Hash40::new("koopa_breath_m_fire"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1.0, true);
+        }
+        wait(agent.lua_state_agent, 15.0);
+        if macros::is_excute(agent) {
+            macros::EFFECT_FOLLOW(agent, Hash40::new("sys_damage_fire_fly"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, true);
+        }
+        wait(agent.lua_state_agent, 15.0);
+    }
+}
+
+#[acmd_script( agent = "koopa_breath", script = "sound_move", category = ACMD_SOUND, low_priority )]
+unsafe extern "C" fn koopa_breath_move_snd(agent: &mut L2CAgentBase) {
+    if macros::is_excute(agent) {
+        macros::PLAY_STATUS(agent, Hash40::new("se_koopa_special_n02"));
+    }
+}
+
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_move", koopa_breath_move);
+    agent.effect_acmd("effect_move", koopa_breath_move_eff);
+    agent.sound_acmd("sound_move", koopa_breath_move_snd);
+}

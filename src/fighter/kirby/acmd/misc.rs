@@ -216,15 +216,18 @@ unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_appeals,
-        kirby_appeals_eff,
-        kirby_appeals_snd,
-        kirby_appeals_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_appealsl", kirby_appeals);
+    agent.effect_acmd("effect_appealsl", kirby_appeals_eff);
+    agent.sound_acmd("sound_appealsl", kirby_appeals_snd);
+    agent.expression_acmd("expression_appealsl", kirby_appeals_exp);
 
-        kirby_appealsloop_eff,
-        kirby_appealsloop_snd,
-        kirby_appealsloop_exp
-    );
+    agent.game_acmd("game_appealsr", kirby_appeals);
+    agent.effect_acmd("effect_appealsr", kirby_appeals_eff);
+    agent.sound_acmd("sound_appealsr", kirby_appeals_snd);
+    agent.expression_acmd("expression_appealsr", kirby_appeals_exp);
+
+    agent.effect_acmd("effect_appealsloop", kirby_appealsloop_eff);
+    agent.sound_acmd("sound_appealsloop", kirby_appealsloop_snd);
+    agent.expression_acmd("expression_appealsloop", kirby_appealsloop_exp);
 }

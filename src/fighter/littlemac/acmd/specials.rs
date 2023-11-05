@@ -45,10 +45,8 @@ unsafe extern "C" fn littlemac_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        littlemac_specialhistart,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhistart", littlemac_specialhistart);
 
-        littlemac_specialhi
-    );
+    agent.game_acmd("game_specialhi", littlemac_specialhi);
 }

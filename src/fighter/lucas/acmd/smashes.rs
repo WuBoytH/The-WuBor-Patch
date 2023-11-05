@@ -73,8 +73,6 @@ unsafe extern "C" fn lucas_attackhi4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucas_attackhi4
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackhi4", lucas_attackhi4);
 }

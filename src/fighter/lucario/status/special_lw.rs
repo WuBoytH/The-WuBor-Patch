@@ -331,11 +331,9 @@ unsafe extern "C" fn lucario_special_lw_end(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucario_special_lw_pre,
-        lucario_special_lw_init,
-        lucario_special_lw_main,
-        lucario_special_lw_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_pre);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, lucario_special_lw_end);
 }

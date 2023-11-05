@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe extern "C" fn lucina_specials_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_turn = if !VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND) {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
     }
@@ -37,7 +37,7 @@ unsafe extern "C" fn lucina_specials_pre(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe extern "C" fn lucina_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     VarModule::on_flag(fighter.module_accessor, yu::instance::flag::DISABLE_SPECIAL_N_S);
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
@@ -75,9 +75,7 @@ unsafe extern "C" fn lucina_raginglion_loop(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_specials_pre,
-        lucina_specials_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, lucina_special_s_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, lucina_special_s_main);
 }

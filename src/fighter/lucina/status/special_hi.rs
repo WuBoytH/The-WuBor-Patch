@@ -35,11 +35,6 @@ unsafe extern "C" fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe extern "C" fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
 #[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
@@ -117,10 +112,13 @@ unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_specialhi_pre,
-        lucina_specialhi_exec,
-        lucina_specialhi_main
-    );
+#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe extern "C" fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_exec);
 }

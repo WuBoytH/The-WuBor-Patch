@@ -38,8 +38,6 @@ unsafe extern "C" fn krool_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        krool_attackairlw
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairlw", krool_attackairlw);
 }

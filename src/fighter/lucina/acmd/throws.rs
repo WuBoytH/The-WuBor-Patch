@@ -35,8 +35,6 @@ unsafe extern "C" fn lucina_throwhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucina_throwhi
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwhi", lucina_throwhi);
 }

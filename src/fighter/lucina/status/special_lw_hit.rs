@@ -34,11 +34,6 @@ unsafe extern "C" fn lucina_speciallw_hit_init(_fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe extern "C" fn lucina_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucina_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -88,11 +83,14 @@ unsafe extern "C" fn lucina_shadowfrenzy_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_speciallw_hit_pre,
-        lucina_speciallw_hit_init,
-        lucina_speciallw_hit_exec,
-        lucina_speciallw_hit_main
-    );
+#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
+unsafe extern "C" fn lucina_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_pre);
+    agent.status(smashline::Init, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_init);
+    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_main);
+    agent.status(smashline::Exec, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_exec);
 }

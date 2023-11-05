@@ -74,24 +74,14 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
     ret.into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
+#[fighter_init]
+fn on_start(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_LUCINA {
             return;
         }
         cancel::install();
-    }
-}
-
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_LUCINA {
-            return;
-        }
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
         VarModule::set_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX, 100.0);
         fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
@@ -109,12 +99,7 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
+pub fn install(agent : &mut smashline::Agent) {
     CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucina"));
-    install_agent_resets!(
-        agent_reset
-    );
-    install_agent_init_callback!(
-        agent_init
-    );
+    agent.on_start(on_start);
 }

@@ -524,15 +524,13 @@ unsafe extern "C" fn lucario_special_hi_end(fighter: &mut L2CFighterCommon, stat
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucario_special_hi_pre,
-        lucario_special_hi_init,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucario_special_hi_pre);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucario_special_hi_init);
 
-        lucario_special_hi_rush_pre,
-        lucario_special_hi_rush_main,
+    agent.status(smashline::Pre, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_pre);
+    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH, lucario_special_hi_rush_main);
 
-        lucario_special_hi_rush_end_main,
-        lucario_special_hi_rush_end_end
-    );
+    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_main);
+    agent.status(smashline::End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH_END, lucario_special_hi_rush_end_end);
 }

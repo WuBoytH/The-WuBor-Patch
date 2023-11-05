@@ -163,16 +163,14 @@ unsafe extern "C" fn lucario_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucario_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", lucario_attackairn);
 
-        lucario_attackairf,
+    agent.game_acmd("game_attackairf", lucario_attackairf);
 
-        lucario_attackairb,
+    agent.game_acmd("game_attackairb", lucario_attackairb);
 
-        lucario_attackairhi,
+    agent.game_acmd("game_attackairhi", lucario_attackairhi);
 
-        lucario_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", lucario_attackairlw);
 }

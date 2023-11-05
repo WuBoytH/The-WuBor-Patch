@@ -54,7 +54,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 #[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+fn on_start(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_KIRBY {
@@ -64,8 +64,6 @@ fn agent_init(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_start(on_start);
 }

@@ -296,28 +296,26 @@ unsafe extern "C" fn lucina_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucina_attack11,
-        lucina_attack11_eff,
-        lucina_attack11_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", lucina_attack11);
+    agent.effect_acmd("effect_attack11", lucina_attack11_eff);
+    agent.expression_acmd("expression_attack11", lucina_attack11_exp);
 
-        lucina_attack12,
-        lucina_attack12_eff,
-        lucina_attack12_exp,
+    agent.game_acmd("game_attack12", lucina_attack12);
+    agent.effect_acmd("effect_attack12", lucina_attack12_eff);
+    agent.expression_acmd("expression_attack12", lucina_attack12_exp);
 
-        lucina_attackdash,
-        lucina_attackdash_eff,
-        lucina_attackdash_snd,
-        lucina_attackdash_exp,
+    agent.game_acmd("game_attackdash", lucina_attackdash);
+    agent.effect_acmd("effect_attackdash", lucina_attackdash_eff);
+    agent.sound_acmd("sound_attackdash", lucina_attackdash_snd);
+    agent.expression_acmd("expression_attackdash", lucina_attackdash_exp);
 
-        lucina_attacks3,
+    agent.game_acmd("game_attacks3", lucina_attacks3);
 
-        lucina_attackhi3,
-        lucina_attackhi3_eff,
-        lucina_attackhi3_snd,
-        lucina_attackhi3_exp,
+    agent.game_acmd("game_attackhi3", lucina_attackhi3);
+    agent.effect_acmd("effect_attackhi3", lucina_attackhi3_eff);
+    agent.sound_acmd("sound_attackhi3", lucina_attackhi3_snd);
+    agent.expression_acmd("expression_attackhi3", lucina_attackhi3_exp);
 
-        lucina_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", lucina_attacklw3);
 }

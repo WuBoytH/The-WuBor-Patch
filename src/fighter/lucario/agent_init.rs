@@ -35,7 +35,7 @@ pub unsafe extern "C" fn lucario_special_s_uniq(fighter: &mut L2CFighterCommon) 
 }
 
 #[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
+fn on_start(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_LUCARIO {
@@ -46,8 +46,6 @@ fn agent_reset(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_resets!(
-        agent_reset
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_start(on_start);
 }

@@ -1,7 +1,7 @@
 mod special_hi;
 mod special_hi_air_end;
 
-pub fn install() {
-    special_hi::install();
-    special_hi_air_end::install();
+pub fn install(agent : &mut smashline::Agent) {
+    special_hi::install(agent);
+    special_hi_air_end::install(agent);
 }

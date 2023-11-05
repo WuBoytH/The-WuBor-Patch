@@ -9,8 +9,6 @@ unsafe extern "C" fn koopajr_rebirth_main(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        koopajr_rebirth_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_REBIRTH, koopa_rebirth_main);
 }

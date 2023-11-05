@@ -19,10 +19,12 @@ unsafe extern "C" fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_belmontspecialn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.expression_acmd("expression_simonspecialn", kirby_belmontspecialn_exp);
 
-        kirby_belmontspecialairn_exp
-    );
+    agent.expression_acmd("expression_simonspecialairn", kirby_belmontspecialairn_exp);
+
+    agent.expression_acmd("expression_richterspecialn", kirby_belmontspecialn_exp);
+
+    agent.expression_acmd("expression_richterspecialairn", kirby_belmontspecialairn_exp);
 }

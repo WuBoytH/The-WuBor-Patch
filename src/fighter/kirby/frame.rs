@@ -52,8 +52,6 @@ fn kirby_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_agent_frames!(
-        kirby_frame
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, kirby_frame);
 }

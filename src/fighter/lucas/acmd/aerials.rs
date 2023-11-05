@@ -153,16 +153,14 @@ unsafe extern "C" fn lucas_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucas_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", lucas_attackairn);
 
-        lucas_attackairf,
+    agent.game_acmd("game_attackairf", lucas_attackairf);
 
-        lucas_attackairb,
+    agent.game_acmd("game_attackairb", lucas_attackairb);
 
-        lucas_attackairhi,
+    agent.game_acmd("game_attackairhi", lucas_attackairhi);
 
-        lucas_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", lucas_attackairlw);
 }

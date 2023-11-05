@@ -7,13 +7,13 @@ mod ike;
 mod belmont;
 mod jack;
 
-pub fn install() {
-    kirby::install();
-    purin::install();
-    koopa::install();
-    ganon::install();
-    lucario::install();
-    ike::install();
-    belmont::install();
-    jack::install();
+pub fn install(agent : &mut smashline::Agent) {
+    kirby::install(agent);
+    purin::install(agent);
+    koopa::install(agent);
+    ganon::install(agent);
+    lucario::install(agent);
+    ike::install(agent);
+    belmont::install(agent);
+    jack::install(agent);
 }

@@ -22,8 +22,6 @@ unsafe extern "C" fn koopa_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        koopa_attackdash
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", koopa_attackdash);
 }

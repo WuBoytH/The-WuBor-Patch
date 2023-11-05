@@ -230,14 +230,12 @@ unsafe extern "C" fn lucario_special_n_shoot_set_kinetic(fighter: &mut L2CFighte
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucario_special_n_main,
-        lucario_special_n_end,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, lucario_special_n_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_N, lucario_special_n_end);
 
-        lucario_special_n_hold_main,
-        lucario_special_n_hold_end,
+    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_main);
+    agent.status(smashline::End, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_HOLD, lucario_special_n_hold_end);
 
-        lucario_special_n_shoot_main
-    );
+    agent.status(smashline::Main, *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_N_SHOOT, lucario_special_n_shoot_main);
 }

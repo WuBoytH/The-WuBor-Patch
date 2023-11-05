@@ -86,16 +86,14 @@ unsafe extern "C" fn link_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        link_attack13,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack13", link_attack13);
 
-        link_attackdash,
+    agent.game_acmd("game_attackdash", link_attackdash);
 
-        link_attacks3,
+    agent.game_acmd("game_attacks3", link_attacks3);
 
-        link_attackhi3,
+    agent.game_acmd("game_attackhi3", link_attackhi3);
 
-        link_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", link_attacklw3);
 }

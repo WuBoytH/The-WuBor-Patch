@@ -85,16 +85,16 @@ unsafe extern "C" fn kirby_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_specialsstart,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialsstart", kirby_specialsstart);
 
-        kirby_specialairsstart,
+    agent.game_acmd("game_specialairsstart", kirby_specialairsstart);
 
-        kirby_specialairs,
+    agent.game_acmd("game_specialairs", kirby_specialairs);
 
-        kirby_specialairss,
+    agent.game_acmd("game_specialairss", game_specialairss);
 
-        kirby_specialhi
-    );
+    agent.game_acmd("game_specialhi", kirby_specialhi);
+
+    agent.game_acmd("game_specialairhi", kirby_specialhi);
 }

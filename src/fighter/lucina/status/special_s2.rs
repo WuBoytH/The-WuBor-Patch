@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe extern "C" fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_s2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -13,10 +13,10 @@ unsafe extern "C" fn lucina_specials2_main(fighter: &mut L2CFighterCommon) -> L2
         false,
         false
     );
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specials2_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_special_s2_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_s2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -57,8 +57,6 @@ unsafe extern "C" fn lucina_specials2_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_specials2_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, lucina_special_s2_main);
 }

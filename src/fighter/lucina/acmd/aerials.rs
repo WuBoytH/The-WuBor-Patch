@@ -333,28 +333,26 @@ unsafe extern "C" fn lucina_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucina_attackairn,
-        lucina_attackairn_eff,
-        lucina_attackairn_snd,
-        lucina_attackairn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", lucina_attackairn);
+    agent.effect_acmd("effect_attackairn", lucina_attackairn_eff);
+    agent.sound_acmd("sound_attackairn", lucina_attackairn_snd);
+    agent.expression_acmd("expression_attackairn", lucina_attackairn_exp);
 
-        lucina_attackairf,
-        lucina_attackairf_eff,
-        lucina_attackairf_snd,
-        lucina_attackairf_exp,
+    agent.game_acmd("game_attackairf", lucina_attackairf);
+    agent.effect_acmd("effect_attackairf", lucina_attackairf_eff);
+    agent.sound_acmd("sound_attackairf", lucina_attackairf_snd);
+    agent.expression_acmd("expression_attackairf", lucina_attackairf_exp);
 
-        lucina_attackairb,
-        lucina_attackairb_eff,
-        lucina_attackairb_snd,
-        lucina_attackairb_exp,
+    agent.game_acmd("game_attackairb", lucina_attackairb);
+    agent.effect_acmd("effect_attackairb", lucina_attackairb_eff);
+    agent.sound_acmd("sound_attackairb", lucina_attackairb_snd);
+    agent.expression_acmd("expression_attackairb", lucina_attackairb_exp);
 
-        lucina_attackairhi,
+    agent.game_acmd("game_attackairhi", lucina_attackairhi);
 
-        lucina_attackairlw,
-        lucina_attackairlw_eff,
-        lucina_attackairlw_snd,
-        lucina_attackairlw_exp
-    );
+    agent.game_acmd("game_attackairlw", lucina_attackairlw);
+    agent.effect_acmd("effect_attackairlw", lucina_attackairlw_eff);
+    agent.sound_acmd("sound_attackairlw", lucina_attackairlw_snd);
+    agent.expression_acmd("expression_attackairlw", lucina_attackairlw_exp);
 }

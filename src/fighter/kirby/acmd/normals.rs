@@ -127,14 +127,12 @@ unsafe extern "C" fn kirby_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_attackdash,
-        kirby_attackdash_eff,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", kirby_attackdash);
+    agent.effect_acmd("effect_attackdash", kirby_attackdash_eff);
 
-        kirby_attackhi3,
+    agent.game_acmd("game_attackhi3", kirby_attackhi3);
 
-        kirby_attacklw3,
-        kirby_attacklw3_eff
-    );
+    agent.game_acmd("game_attacklw3", kirby_attacklw3);
+    agent.effect_acmd("effect_attacklw3", kirby_attacklw3_eff);
 }

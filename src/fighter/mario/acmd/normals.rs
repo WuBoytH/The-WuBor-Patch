@@ -89,16 +89,14 @@ unsafe extern "C" fn mario_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mario_attack11,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", mario_attack11);
 
-        mario_attack12,
+    agent.game_acmd("game_attack12", mario_attack12);
 
-        mario_attack13,
+    agent.game_acmd("game_attack13", mario_attack13);
 
-        mario_attackhi3,
+    agent.game_acmd("game_attackhi3", mario_attackhi3);
 
-        mario_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", mario_attacklw3);
 }

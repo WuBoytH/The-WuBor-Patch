@@ -1,5 +1,5 @@
-mod special_lw;
+mod specials;
 
 pub fn install(agent : &mut smashline::Agent) {
-    special_lw::install(agent);
+    specials::install(agent);
 }

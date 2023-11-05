@@ -167,23 +167,21 @@ unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        luigi_catch,
-        luigi_catch_eff,
-        luigi_catch_snd,
-        luigi_catch_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_catch", luigi_catch);
+    agent.effect_acmd("effect_catch", luigi_catch_eff);
+    agent.sound_acmd("sound_catch", luigi_catch_snd);
+    agent.expression_acmd("expression_catch", luigi_catch_exp);
 
-        luigi_catchdash,
-        luigi_catchdash_snd,
-        luigi_catchdash_exp,
+    agent.game_acmd("game_catchdash", luigi_catchdash);
+    agent.sound_acmd("sound_catchdash", luigi_catchdash_snd);
+    agent.expression_acmd("expression_catchdash", luigi_catchdash_exp);
 
-        luigi_catchturn,
-        luigi_catchturn_snd,
-        luigi_catchturn_exp,
+    agent.game_acmd("game_catchturn", luigi_catchturn);
+    agent.sound_acmd("sound_catchturn", luigi_catchturn_snd);
+    agent.expression_acmd("expression_catchturn", luigi_catchturn_exp);
 
-        luigi_catchattack,
-        luigi_catchattack_eff,
-        luigi_catchattack_exp
-    );
+    agent.game_acmd("game_catchattack", luigi_catchattack);
+    agent.effect_acmd("effect_catchattack", luigi_catchattack_eff);
+    agent.expression_acmd("expression_catchattack", luigi_catchattack_exp);
 }

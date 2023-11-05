@@ -1,17 +1,15 @@
-mod smash_attacks;
-mod throws;
 mod normals;
+mod smashes;
 mod aerials;
 mod specials;
+mod throws;
 mod escape;
-// mod misc;
 
-pub fn install() {
-    smash_attacks::install();
-    throws::install();
-    normals::install();
-    aerials::install();
-    specials::install();
-    escape::install();
-    // misc::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    smashes::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    throws::install(agent);
+    escape::install(agent);
 }

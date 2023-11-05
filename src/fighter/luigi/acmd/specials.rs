@@ -1,17 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "luigi_fireball", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn luigi_fireball_regular(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 361, 25, 0, 20, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -3, 0.0, 6, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-        AttackModule::enable_safe_pos(agent.module_accessor);
-    }
-    frame(agent.lua_state_agent, 29.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 361, 25, 0, 20, 2.4, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -2.5, 0.0, 6, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_NONE);
-    }
-}
-
 #[acmd_script( agent = "luigi", scripts = ["game_specialsstart", "game_specialairsstart"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn luigi_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -289,26 +277,32 @@ unsafe extern "C" fn luigi_specialairlw(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 45.0, -15.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        luigi_fireball_regular,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialsstart", luigi_specialsstart);
 
-        luigi_specialsstart,
+    agent.game_acmd("game_specialairsstart", luigi_specialsstart);
 
-        luigi_specialshold,
-        luigi_specialshold_eff,
+    agent.game_acmd("game_specialshold", luigi_specialshold);
+    agent.effect_acmd("effect_specialshold", luigi_specialshold_eff);
 
-        luigi_specialsend,
-        luigi_specialsend_eff,
-        luigi_specialsend_snd,
-        luigi_specialsend_exp,
+    agent.game_acmd("game_specialairshold", luigi_specialshold);
+    agent.effect_acmd("effect_specialairshold", luigi_specialshold_eff);
 
-        luigi_specialhi,
+    agent.game_acmd("game_specialsend", luigi_specialsend);
+    agent.effect_acmd("effect_specialsend", luigi_specialsend_eff);
+    agent.sound_acmd("sound_specialsend", luigi_specialsend_snd);
+    agent.expression_acmd("expression_specialsend", luigi_specialsend_exp);
 
-        luigi_specialairhi,
+    agent.game_acmd("game_specialairsend", luigi_specialsend);
+    agent.effect_acmd("effect_specialairsend", luigi_specialsend_eff);
+    agent.sound_acmd("sound_specialairsend", luigi_specialsend_snd);
+    agent.expression_acmd("expression_specialairsend", luigi_specialsend_exp);
 
-        luigi_speciallw,
+    agent.game_acmd("game_specialhi", luigi_specialhi);
 
-        luigi_specialairlw
-    );
+    agent.game_acmd("game_specialairhi", luigi_specialairhi);
+
+    agent.game_acmd("game_speciallw", luigi_speciallw);
+
+    agent.game_acmd("game_specialairlw", luigi_specialairlw);
 }

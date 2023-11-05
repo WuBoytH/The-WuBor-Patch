@@ -1,12 +1,12 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe extern "C" fn mario_specials_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_special_s_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 #[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe extern "C" fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mario_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
         let air_accel_y = WorkModule::get_param_float(fighter.module_accessor, hash40("air_accel_y"), 0);
@@ -56,9 +56,13 @@ unsafe extern "C" fn mario_specials_exec(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_S, mario_special_s_init);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, mario_special_s_exec);
+}
 pub fn install() {
     install_status_scripts!(
-        mario_specials_init,
-        mario_specials_exec
+        mario_special_s_init,
+        mario_special_s_exec
     );
 }

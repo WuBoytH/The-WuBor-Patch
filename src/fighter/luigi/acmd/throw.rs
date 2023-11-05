@@ -326,26 +326,24 @@ unsafe extern "C" fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        luigi_throwf,
-        luigi_throwf_eff,
-        luigi_throwf_snd,
-        luigi_throwf_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", luigi_throwf);
+    agent.effect_acmd("effect_throwf", luigi_throwf_eff);
+    agent.sound_acmd("sound_throwf", luigi_throwf_snd);
+    agent.expression_acmd("expression_throwf", luigi_throwf_exp);
 
-        luigi_throwb,
-        luigi_throwb_eff,
-        luigi_throwb_snd,
-        luigi_throwb_exp,
+    agent.game_acmd("game_throwb", luigi_throwb);
+    agent.effect_acmd("effect_throwb", luigi_throwb_eff);
+    agent.sound_acmd("sound_throwb", luigi_throwb_snd);
+    agent.expression_acmd("expression_throwb", luigi_throwb_exp);
 
-        luigi_throwhi,
-        luigi_throwhi_eff,
-        luigi_throwhi_snd,
-        luigi_throwhi_exp,
+    agent.game_acmd("game_throwhi", luigi_throwhi);
+    agent.effect_acmd("effect_throwhi", luigi_throwhi_eff);
+    agent.sound_acmd("sound_throwhi", luigi_throwhi_snd);
+    agent.expression_acmd("expression_throwhi", luigi_throwhi_exp);
 
-        luigi_throwlw,
-        luigi_throwlw_eff,
-        luigi_throwlw_snd,
-        luigi_throwlw_exp
-    );
+    agent.game_acmd("game_throwlw", luigi_throwlw);
+    agent.effect_acmd("effect_throwlw", luigi_throwlw_eff);
+    agent.sound_acmd("sound_throwlw", luigi_throwlw_snd);
+    agent.expression_acmd("expression_throwlw", luigi_throwlw_exp);
 }

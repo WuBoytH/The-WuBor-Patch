@@ -189,19 +189,17 @@ unsafe extern "C" fn mariod_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mariod_attackairn,
-        mariod_attackairn_eff,
-        mariod_attackairn_snd,
-        mariod_attackairn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", mariod_attackairn);
+    agent.effect_acmd("effect_attackairn", mariod_attackairn_eff);
+    agent.sound_acmd("sound_attackairn", mariod_attackairn_snd);
+    agent.expression_acmd("expression_attackairn", mariod_attackairn_exp);
 
-        mariod_attackairf,
+    agent.game_acmd("game_attackairf", mariod_attackairf);
 
-        mariod_attackairb,
+    agent.game_acmd("game_attackairb", mariod_attackairb);
 
-        mariod_attackairhi,
+    agent.game_acmd("game_attackairhi", mariod_attackairhi);
 
-        mariod_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", mariod_attackairlw);
 }

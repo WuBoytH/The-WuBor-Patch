@@ -31,8 +31,6 @@ unsafe extern "C" fn mariod_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mariod_throwb
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwb", mariod_throwb);
 }

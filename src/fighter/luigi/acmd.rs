@@ -5,11 +5,11 @@ mod catch;
 mod throw;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    aerials::install();
-    specials::install();
-    catch::install();
-    throw::install();
-    escape::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    catch::install(agent);
+    throw::install(agent);
+    escape::install(agent);
 }

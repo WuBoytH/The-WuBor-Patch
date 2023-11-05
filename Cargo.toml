@@ -14,7 +14,7 @@ crate-type = ["cdylib"]
 skyline = "0.2.1"
 skyline_smash = { git = "https://github.com/blu-dev/skyline-smash.git", features = ["weak_l2cvalue"] }
 smash_script = { git = "https://github.com/blu-dev/smash-script.git", branch = "development" }
-smashline = { git = "https://github.com/blu-dev/smashline-2" }
+smashline = { git = "https://github.com/HDR-Development/smashline" }
 wubor_utils = { path = "./WuBor-Utils" }
 custom_status = { path = "./custom-status" }
 custom_var = { path = "./custom-var" }

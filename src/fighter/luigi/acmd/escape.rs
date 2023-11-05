@@ -13,8 +13,6 @@ unsafe extern "C" fn luigi_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        luigi_escapeairslide
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_escapeairslide", luigi_escapeairslide);
 }

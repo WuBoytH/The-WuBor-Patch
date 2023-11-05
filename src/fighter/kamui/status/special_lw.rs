@@ -101,9 +101,7 @@ unsafe extern "C" fn kamui_special_lw_end(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kamui_special_lw_main,
-        kamui_special_lw_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, kamui_special_lw_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, kamui_special_lw_end);
 }

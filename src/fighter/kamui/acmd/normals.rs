@@ -183,16 +183,14 @@ unsafe extern "C" fn kamui_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kamui_attack12,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack12", kamui_attack12);
 
-        kamui_attack13,
+    agent.game_acmd("game_attack13", kamui_attack13);
 
-        kamui_attacks3,
+    agent.game_acmd("game_attacks3", kamui_attacks3);
 
-        kamui_attackhi3,
+    agent.game_acmd("game_attackhi3", kamui_attackhi3);
 
-        kamui_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", kamui_attacklw3);
 }

@@ -537,13 +537,13 @@ unsafe extern "C" fn marth_speciallwenter(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwexit", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn marth_speciallwexit(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "marth", script = "game_speciallwairenter", category = ACMD_GAME, low_priority )]
+unsafe extern "C" fn marth_speciallwairenter(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-#[acmd_script( agent = "marth", script = "game_speciallwairenter", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn marth_speciallwairenter(agent: &mut L2CAgentBase) {
+#[acmd_script( agent = "marth", script = "game_speciallwexit", category = ACMD_GAME, low_priority )]
+unsafe extern "C" fn marth_speciallwexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
@@ -552,38 +552,40 @@ unsafe extern "C" fn marth_speciallwairexit(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        marth_specialnend,
-        marth_specialnend_eff,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialnend", marth_specialnend);
+    agent.effect_acmd("effect_specialnend", marth_specialnend_eff);
 
-        marth_specialnendhi,
-        marth_specialnendhi_eff,
+    agent.game_acmd("game_specialnendhi", marth_specialnendhi);
+    agent.effect_acmd("effect_specialnendhi", marth_specialnendhi_eff);
 
-        marth_specialnendlw,
-        marth_specialnendlw_eff,
+    agent.game_acmd("game_specialnendlw", marth_specialnendlw);
+    agent.effect_acmd("effect_specialnendlw", marth_specialnendlw_eff);
 
-        marth_specialnendmax,
-        marth_specialnendmax_eff,
+    agent.game_acmd("game_specialnendmax", marth_specialnendmax);
+    agent.effect_acmd("effect_specialnendmax", marth_specialnendmax_eff);
 
-        marth_specialnendmaxhi,
-        marth_specialnendmaxhi_eff,
+    agent.game_acmd("game_specialnendmaxhi", marth_specialnendmaxhi);
+    agent.effect_acmd("effect_specialnendmaxhi", marth_specialnendmaxhi_eff);
 
-        marth_specialnendmaxlw,
-        marth_specialnendmaxlw_eff,
+    agent.game_acmd("game_specialnendmaxlw", marth_specialnendmaxlw);
+    agent.effect_acmd("effect_specialnendmaxlw", marth_specialnendmaxlw_eff);
 
-        marth_specialhi,
-        marth_specialhi_eff,
-        marth_specialairhi_eff,
+    agent.game_acmd("game_specialhi", marth_specialhi);
+    agent.effect_acmd("effect_specialhi", marth_specialhi_eff);
 
-        marth_speciallw,
+    agent.game_acmd("game_specialairhi", marth_specialhi);
+    agent.effect_acmd("effect_specialairhi", marth_specialairhi_eff);
 
-        marth_speciallwenter,
+    agent.game_acmd("game_speciallw", marth_speciallw);
 
-        marth_speciallwexit,
+    agent.game_acmd("game_specialairlw", marth_speciallw);
 
-        marth_speciallwairenter,
+    agent.game_acmd("game_speciallwenter", marth_speciallwenter);
 
-        marth_speciallwairexit
-    );
+    agent.game_acmd("game_speciallwairenter", marth_speciallwairenter);
+
+    agent.game_acmd("game_speciallwexit", marth_speciallwexit);
+
+    agent.game_acmd("game_speciallwairexit", marth_speciallwairexit);
 }

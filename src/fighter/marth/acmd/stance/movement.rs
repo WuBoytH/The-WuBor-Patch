@@ -80,16 +80,14 @@ unsafe extern "C" fn marth_speciallwdashb_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        marth_speciallwdashf,
-        marth_speciallwdashf_eff,
-        marth_speciallwdashf_snd,
-        marth_speciallwdashf_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_speciallwdashf", marth_speciallwdashf);
+    agent.effect_acmd("effect_speciallwdashf", marth_speciallwdashf_eff);
+    agent.sound_acmd("sound_speciallwdashf", marth_speciallwdashf_snd);
+    agent.expression_acmd("expression_speciallwdashf", marth_speciallwdashf_exp);
 
-        marth_speciallwdashb,
-        marth_speciallwdashb_eff,
-        marth_speciallwdashb_snd,
-        marth_speciallwdashb_exp
-    );
+    agent.game_acmd("game_speciallwdashb", marth_speciallwdashb);
+    agent.effect_acmd("effect_speciallwdashb", marth_speciallwdashb_eff);
+    agent.sound_acmd("sound_speciallwdashb", marth_speciallwdashb_snd);
+    agent.expression_acmd("expression_speciallwdashb", marth_speciallwdashb_exp);
 }

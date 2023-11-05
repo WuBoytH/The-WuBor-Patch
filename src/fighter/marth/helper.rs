@@ -5,7 +5,6 @@ use {
         app::lua_bind::*,
         lib::lua_const::*
     },
-    custom_status::*,
     wubor_utils::vars::*
 };
 
@@ -70,8 +69,8 @@ pub unsafe fn marth_is_unstance(fighter: &mut L2CAgentBase) -> bool {
             prev_status = StatusModule::prev_status_kind(fighter.module_accessor, 1);
         }
     }
-    let range_lw = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_DASH_F);
-    let range_hi = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S);
+    let range_lw = marth::status::STANCE_DASH_F;
+    let range_hi = marth::status::STANCE_SPECIAL_S;
     let stance_range = (range_lw..range_hi).contains(&prev_status);
     prev_status == *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT || stance_range
 }

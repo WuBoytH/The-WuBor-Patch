@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
-use super::super::vl;
-use super::helper::*;
+use super::super::super::vl;
+use super::super::helper::*;
 
 // Note to self: Implement PARRY_XLU when dash anims are done
 
@@ -105,9 +105,8 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
             }
         }
         let cat1 = fighter.global_table[CMD_CAT1].get_i32();
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SPECIAL_S);
         if cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_S != 0 {
-            fighter.change_status(status.into(), true.into());
+            fighter.change_status(marth::status::STANCE_SPECIAL_S.into(), true.into());
             return true.into();
         }
         marth_stance_mot_end_helper(fighter);
@@ -118,8 +117,7 @@ unsafe extern "C" fn marth_speciallw_dash_main_loop(fighter: &mut L2CFighterComm
             return true.into();
         }
         else {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
-            fighter.change_status(status.into(), false.into());
+            fighter.change_status(marth::status::STANCE_WAIT.into(), false.into());
         }
     }
     0.into()
@@ -133,21 +131,12 @@ unsafe extern "C" fn marth_speciallw_dash_end(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_DASH_F,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_dash_pre)
-            .with_main(marth_speciallw_dash_f_main)
-            .with_end(marth_speciallw_dash_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_DASH_B,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_dash_pre)
-            .with_main(marth_speciallw_dash_b_main)
-            .with_end(marth_speciallw_dash_end)
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, marth::status::STANCE_DASH_F, marth_speciallw_dash_pre);
+    agent.status(smashline::Main, marth::status::STANCE_DASH_F, marth_speciallw_dash_f_main);
+    agent.status(smashline::End, marth::status::STANCE_DASH_F, marth_speciallw_dash_end);
+
+    agent.status(smashline::Pre, marth::status::STANCE_DASH_B, marth_speciallw_dash_pre);
+    agent.status(smashline::Main, marth::status::STANCE_DASH_B, marth_speciallw_dash_b_main);
+    agent.status(smashline::End, marth::status::STANCE_DASH_B, marth_speciallw_dash_end);
 }

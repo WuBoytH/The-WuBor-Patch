@@ -19,10 +19,11 @@ A mod for Super Smash Bros. Ultimate that brings character overhauls and mechani
 
 ## Special Thanks
 
-* blujay - For being a funny and smart coding guy, as well as creating CustomStatusModule that I adapted for use in this project.
+* blujay - For being a funny and smart coding guy, as well as creating VarModule that I adapted for use in this project.
 * Claude - For helping this project gain footing, coding wise, when it was just starting out.
 * LemonPunk - For creating animations for the project and pitching funny LemonMan ideas.
-* SM8 - For creating animations for the proeject.
+* Hypernova - For creating animations for the project.
+* SM8 - For creating animations for the project.
 
 ## Notes
 

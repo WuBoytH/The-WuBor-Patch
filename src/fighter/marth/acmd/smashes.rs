@@ -186,15 +186,13 @@ unsafe extern "C" fn marth_attacklw4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        marth_attacks4,
-        marth_attacks4_eff,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4", marth_attacks4);
+    agent.effect_acmd("effect_attacks4", marth_attacks4_eff);
 
-        marth_attackhi4,
-        marth_attackhi4_eff,
+    agent.game_acmd("game_attackhi4", marth_attackhi4);
+    agent.effect_acmd("effect_attackhi4", marth_attackhi4_eff);
 
-        marth_attacklw4,
-        marth_attacklw4_eff
-    );
+    agent.game_acmd("game_attacklw4", marth_attacklw4);
+    agent.effect_acmd("effect_attacklw4", marth_attacklw4_eff);
 }

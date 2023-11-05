@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
-use super::super::vl;
-use super::helper::*;
+use super::super::super::vl;
+use super::super::helper::*;
 
 // FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_ENTER
 
@@ -185,14 +185,12 @@ unsafe extern "C" fn marth_speciallw_wait_main_loop(fighter: &mut L2CFighterComm
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if fighter.sub_check_command_squat().get_bool() {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SQUAT);
-            fighter.change_status(status.into(), false.into());
+            fighter.change_status(marth::status::STANCE_SQUAT.into(), false.into());
             return 0.into();
         }
     }
     if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_EXIT.into(), true.into());
         return 1.into();
     }
     if StatusModule::is_situation_changed(fighter.module_accessor) {
@@ -295,18 +293,15 @@ unsafe extern "C" fn marth_speciallw_squat_main_loop(fighter: &mut L2CFighterCom
         return 1.into();
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_WAIT.into(), true.into());
         return 0.into();
     }
     if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_EXIT.into(), true.into());
         return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SQUAT_WAIT);
-        fighter.change_status(status.into(), false.into());
+        fighter.change_status(marth::status::STANCE_SQUAT_WAIT.into(), false.into());
     }
     0.into()
 }
@@ -333,19 +328,16 @@ unsafe extern "C" fn marth_speciallw_squat_wait_main_loop(fighter: &mut L2CFight
     }
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if !fighter.sub_check_command_squat().get_bool() {
-            let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_SQUAT_RV);
-            fighter.change_status(status.into(), false.into());
+            fighter.change_status(marth::status::STANCE_SQUAT_RV.into(), false.into());
             return 0.into();
         }
     }
     else {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_WAIT.into(), true.into());
         return 0.into();
     }
     if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_EXIT.into(), true.into());
         return 1.into();
     }
     0.into()
@@ -372,18 +364,15 @@ unsafe extern "C" fn marth_speciallw_squat_rv_main_loop(fighter: &mut L2CFighter
         return 1.into();
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_WAIT.into(), true.into());
         return 0.into();
     }
     if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_EXIT);
-        fighter.change_status(status.into(), true.into());
+        fighter.change_status(marth::status::STANCE_EXIT.into(), true.into());
         return 1.into();
     }
     if MotionModule::is_end(fighter.module_accessor) {
-        let status = CustomStatusModule::get_agent_status_kind(fighter.battle_object, marth::status::STANCE_WAIT);
-        fighter.change_status(status.into(), false.into());
+        fighter.change_status(marth::status::STANCE_WAIT.into(), false.into());
     }
     0.into()
 }
@@ -473,53 +462,28 @@ unsafe extern "C" fn marth_speciallw_exit_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install() {
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_ENTER,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_enter_pre)
-            .with_main(marth_speciallw_enter_main)
-            .with_end(marth_stance_common_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_WAIT,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_wait_pre)
-            .with_main(marth_speciallw_wait_main)
-            .with_end(marth_stance_common_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_SQUAT,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_squat_pre)
-            .with_main(marth_speciallw_squat_main)
-            .with_end(marth_stance_common_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_SQUAT_WAIT,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_squat_pre)
-            .with_main(marth_speciallw_squat_wait_main)
-            .with_end(marth_stance_common_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_SQUAT_RV,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_squat_pre)
-            .with_main(marth_speciallw_squat_rv_main)
-            .with_end(marth_stance_common_end)
-    );
-    CustomStatusManager::add_new_agent_status_script(
-        Hash40::new("fighter_kind_marth"),
-        marth::status::STANCE_EXIT,
-        StatusInfo::new()
-            .with_pre(marth_speciallw_exit_pre)
-            .with_main(marth_speciallw_exit_main)
-            .with_end(marth_stance_common_end)
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, marth::status::STANCE_ENTER, marth_speciallw_enter_pre);
+    agent.status(smashline::Main, marth::status::STANCE_ENTER, marth_speciallw_enter_main);
+    agent.status(smashline::End, marth::status::STANCE_ENTER, marth_stance_common_end);
+
+    agent.status(smashline::Pre, marth::status::STANCE_WAIT, marth_speciallw_wait_pre);
+    agent.status(smashline::Main, marth::status::STANCE_WAIT, marth_speciallw_wait_main);
+    agent.status(smashline::End, marth::status::STANCE_WAIT, marth_stance_common_end);
+
+    agent.status(smashline::Pre, marth::status::STANCE_SQUAT, marth_speciallw_squat_pre);
+    agent.status(smashline::Main, marth::status::STANCE_SQUAT, marth_speciallw_squat_main);
+    agent.status(smashline::End, marth::status::STANCE_SQUAT, marth_stance_common_end);
+
+    agent.status(smashline::Pre, marth::status::STANCE_SQUAT_WAIT, marth_speciallw_squat_pre);
+    agent.status(smashline::Main, marth::status::STANCE_SQUAT_WAIT, marth_speciallw_squat_wait_main);
+    agent.status(smashline::End, marth::status::STANCE_SQUAT_WAIT, marth_stance_common_end);
+
+    agent.status(smashline::Pre, marth::status::STANCE_SQUAT_RV, marth_speciallw_squat_pre);
+    agent.status(smashline::Main, marth::status::STANCE_SQUAT_RV, marth_speciallw_squat_rv_main);
+    agent.status(smashline::End, marth::status::STANCE_SQUAT_RV, marth_stance_common_end);
+
+    agent.status(smashline::Pre, marth::status::STANCE_EXIT, marth_speciallw_exit_pre);
+    agent.status(smashline::Main, marth::status::STANCE_EXIT, marth_speciallw_exit_main);
+    agent.status(smashline::End, marth::status::STANCE_EXIT, marth_stance_common_end);
 }

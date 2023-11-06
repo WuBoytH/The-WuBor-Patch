@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-unsafe fn trail_landing_attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn trail_landing_attack_air_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_WORK_INT_MOTION_KIND);
     let mut motion_rate: f32 = 1.0;
     let landing_param_type;

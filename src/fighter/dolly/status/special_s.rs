@@ -1,16 +1,14 @@
 use crate::imports::status_imports::*;
 
-#[smashline::in_target("lua2cpp_dolly", 0x29fc0)]
-pub fn dolly_special_sb_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue;
-
 unsafe extern "C" fn dolly_special_sb_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let original = smashline::api::get_target_function("dolly", 0x29fc0);
-    if dolly_special_sb_pre_inner(fighter).get_i32() == 1 {
+    let status = fighter.global_table[STATUS_KIND].get_i32();
+    let original = smashline::original_status(smashline::Pre, fighter, status);
+    if original(fighter).get_i32() == 1 {
         return 1.into();
     }
     VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
-    ret
+    0.into()
 }
 
 unsafe extern "C" fn dolly_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {

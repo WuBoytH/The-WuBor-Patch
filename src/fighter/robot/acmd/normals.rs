@@ -180,5 +180,5 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacklw3", robot_attacklw3);
     agent.effect_acmd("effect_attacklw3", robot_attacklw3_eff);
     agent.sound_acmd("sound_attacklw3", robot_attacklw3_snd);
-    agent.expressoin_acmd("expressoin_attacklw3", robot_attacklw3_exp);
+    agent.expression_acmd("expressoin_attacklw3", robot_attacklw3_exp);
 }

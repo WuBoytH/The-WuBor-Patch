@@ -12,7 +12,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-unsafe fn ryu_reset_vars(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::DISABLE_EX_FOCUS);
         VarModule::off_flag(fighter.module_accessor, ryu::instance::flag::EX_FOCUS);
@@ -24,7 +24,7 @@ unsafe fn ryu_reset_vars(fighter: &mut L2CFighterCommon) {
 }
 
 // move to status eventually
-unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
     if !VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DISABLE_EX_FOCUS) {
         let mut can_exfadc = false;
         if ([*FIGHTER_STATUS_KIND_SPECIAL_N, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N2_COMMAND].contains(&fighter.global_table[STATUS_KIND].get_i32())
@@ -85,7 +85,7 @@ unsafe fn ryu_ex_focus(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn ryu_ex_flash(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_ex_flash(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::EX_FLASH) {
         let mut flash_timer = VarModule::get_int(fighter.module_accessor, ryu::instance::int::FLASH_TIMER);
         if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SEC_SEN_STATE) {
@@ -119,7 +119,7 @@ unsafe fn ryu_ex_flash(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn ryu_secret_sensation_hit_cancel(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_secret_sensation_hit_cancel(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[CMD_CAT2].get_i32() & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
     && [
         *FIGHTER_STATUS_KIND_ATTACK,
@@ -146,7 +146,7 @@ unsafe fn ryu_secret_sensation_hit_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::SECRET_SENSATION) {
         StopModule::end_stop(fighter.module_accessor);
         JostleModule::set_status(fighter.module_accessor, false);
@@ -279,14 +279,12 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn ryu_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        ryu_reset_vars(fighter);
-        ryu_ex_focus(fighter);
-        ryu_ex_flash(fighter);
-        if DamageModule::damage(fighter.module_accessor, 0) >= 180.0 {
-            ryu_secret_sensation_hit_cancel(fighter);
-            ryu_secret_sensation(fighter);
-        }
+    ryu_reset_vars(fighter);
+    ryu_ex_focus(fighter);
+    ryu_ex_flash(fighter);
+    if DamageModule::damage(fighter.module_accessor, 0) >= 180.0 {
+        ryu_secret_sensation_hit_cancel(fighter);
+        ryu_secret_sensation(fighter);
     }
 }
 

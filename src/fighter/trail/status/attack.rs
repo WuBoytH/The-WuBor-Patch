@@ -1,9 +1,6 @@
-use {
-    crate::imports::status_imports::*,
-    crate::fighter::common::status::attack::attack::*
-};
+use crate::imports::status_imports::*;
 
-unsafe fn trail_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn trail_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.check_attack_mtrans();

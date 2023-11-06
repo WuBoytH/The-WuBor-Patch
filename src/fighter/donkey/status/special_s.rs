@@ -60,5 +60,5 @@ pub unsafe extern "C" fn barrel_check(module_accessor: *mut BattleObjectModuleAc
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, donkey_special_s_main)
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, donkey_special_s_main);
 }

@@ -525,6 +525,6 @@ pub fn install(agent : &mut smashline::Agent) {
 
     agent.game_acmd("game_landingairlw", elight_landingairlw);
     agent.effect_acmd("effect_landingairlw", elight_landingairlw_eff);
-    agent.sound_acmd("sound_landingairlw", elight_attackairlw_snd);
+    agent.sound_acmd("sound_landingairlw", elight_landingairlw_snd);
     agent.expression_acmd("expression_landingairlw", elight_landingairlw_exp);
 }

@@ -8,7 +8,8 @@ pub unsafe extern "C" fn jack_special_n_pre(fighter: &mut L2CFighterCommon) -> L
     else {
         VarModule::is_flag(fighter.module_accessor, jack::status::flag::SPECIAL_N_FIRST)
     };
-    let ret = original!(fighter);
+    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
+    let ret = original(fighter);
     VarModule::set_flag(fighter.module_accessor, jack::status::flag::SPECIAL_N_FIRST, keep_first);
     ret
 }

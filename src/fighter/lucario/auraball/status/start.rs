@@ -22,8 +22,6 @@ unsafe extern "C" fn lucario_auraball_start_end(weapon: &mut L2CWeaponCommon) ->
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucario_auraball_start_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::End, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_START, lucario_auraball_start_end);
 }

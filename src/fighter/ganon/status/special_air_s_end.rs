@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-unsafe fn ganon_special_air_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_special_air_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -28,7 +28,7 @@ unsafe fn ganon_special_air_s_end_pre(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-unsafe fn ganon_special_air_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_special_air_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_s"), 0.0, 1.0, false, 0.0, false, false);
     sv_kinetic_energy!(
         set_speed_mul,

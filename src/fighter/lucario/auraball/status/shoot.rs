@@ -197,9 +197,7 @@ unsafe extern "C" fn lucario_auraball_shoot_main_fastshift(weapon: &mut L2CWeapo
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucario_auraball_shoot_pre,
-        lucario_auraball_shoot_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_pre);
+    agent.status(smashline::Main, *WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, lucario_auraball_shoot_main);
 }

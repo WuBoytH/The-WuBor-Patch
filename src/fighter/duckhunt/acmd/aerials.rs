@@ -121,7 +121,7 @@ pub fn install(agent : &mut smashline::Agent) {
 
     agent.game_acmd("game_attackairf", duckhunt_attackairf);
 
-    agent.game_acmd("game_attackairb", duckhunt_attackairb);
+    agent.game_acmd("game_attackairhi", duckhunt_attackairhi);
 
     agent.game_acmd("game_attackairlw", duckhunt_attackairlw);
 }

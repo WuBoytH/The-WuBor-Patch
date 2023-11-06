@@ -3,7 +3,7 @@ use {
     super::helper::*
 };
 
-unsafe fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode()
     && [
         *FIGHTER_STATUS_KIND_GUARD_ON,
@@ -19,7 +19,7 @@ unsafe fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// unsafe fn lucario_super_dash_cancel(fighter: &mut L2CFighterCommon) {
+// unsafe extern "C" fn lucario_super_dash_cancel(fighter: &mut L2CFighterCommon) {
 //     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_LUCARIO_STATUS_KIND_SPECIAL_HI_RUSH
 //     && (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
 //     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD))
@@ -33,10 +33,8 @@ unsafe fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
 // }
 
 unsafe extern "C" fn lucario_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        lucario_training_tools(fighter);
-        // lucario_super_dash_cancel(fighter);
-    }
+    lucario_training_tools(fighter);
+    // lucario_super_dash_cancel(fighter);
 }
 
 pub fn install(agent : &mut smashline::Agent) {

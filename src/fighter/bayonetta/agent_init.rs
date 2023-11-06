@@ -34,19 +34,13 @@ use crate::imports::status_imports::*;
 // }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_BAYONETTA {
-            return;
-        }
-        VarModule::add_reset_statuses(
-            fighter.battle_object_id,
-            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-            vec![
-                *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
-            ]
-        );
-    }
+    VarModule::add_reset_statuses(
+        fighter.battle_object_id,
+        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        vec![
+            *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F
+        ]
+    );
 }
 
 pub fn install(agent: &mut smashline::Agent) {

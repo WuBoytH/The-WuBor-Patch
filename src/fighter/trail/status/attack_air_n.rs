@@ -1,6 +1,9 @@
-use crate::imports::status_imports::*;
+use {
+    crate::imports::status_imports::*,
+    crate::fighter::common::status::attack::attack::*
+};
 
-unsafe fn trail_attack_air_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn trail_attack_air_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     ControlModule::reset_attack_air_kind(fighter.module_accessor);
     if !StopModule::is_stop(fighter.module_accessor) {

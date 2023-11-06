@@ -317,6 +317,10 @@ pub fn install(agent : &mut smashline::Agent) {
 
     agent.game_acmd("game_specialairhi", ganon_specialhi);
 
+    agent.game_acmd("game_specialhicatch", ganon_specialhicatch);
+
+    agent.game_acmd("game_specialhithrow", ganon_specialhithrow);
+
     agent.game_acmd("game_speciallw", ganon_speciallw);
 
     agent.game_acmd("game_specialairlw", ganon_specialairlw);

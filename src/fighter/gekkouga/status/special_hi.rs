@@ -9,6 +9,6 @@ unsafe extern "C" fn gekkouga_special_hi_exec(_fighter: &mut L2CFighterCommon) -
 }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, gekkousa_special_hi_init);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, gekkouga_special_hi_init);
     agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, gekkouga_special_hi_exec);
 }

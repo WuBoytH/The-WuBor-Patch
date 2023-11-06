@@ -3,7 +3,7 @@ use {
     super::super::helper::*
 };
 
-unsafe fn ganon_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
             fighter.module_accessor,

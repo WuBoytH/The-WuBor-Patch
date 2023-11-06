@@ -55,5 +55,5 @@ unsafe extern "C" fn lucina_attack_dash_main_loop(fighter: &mut L2CFighterCommon
 }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_DASH, lucina_attack_dash_main);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, lucina_attack_dash_main);
 }

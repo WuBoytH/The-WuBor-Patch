@@ -2,10 +2,9 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         phx::*,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    smashline::*,
     custom_var::*,
     custom_cancel::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*},
@@ -75,27 +74,21 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_LUCINA {
-            return;
-        }
-        cancel::install();
-        WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
-        VarModule::set_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX, 100.0);
-        fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
-        FGCModule::set_command_input_button(fighter.module_accessor, 0, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 1, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 2, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 3, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 8, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 9, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 10, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
-    }
+    cancel::install();
+    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
+    VarModule::set_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX, 100.0);
+    fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(yu_speciallw_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(yu_check_special_command as *const () as _));
+    FGCModule::set_command_input_button(fighter.module_accessor, 0, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 1, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 2, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 3, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 8, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 9, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 10, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
 }
 
 pub fn install(agent : &mut smashline::Agent) {

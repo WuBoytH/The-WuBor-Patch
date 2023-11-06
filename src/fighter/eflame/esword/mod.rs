@@ -4,6 +4,6 @@ mod frame;
 pub fn install() {
     let agent = &mut smashline::Agent::new("eflame_esword");
     acmd::install(agent);
-    frame::install(frame);
+    frame::install(agent);
     agent.install();
 }

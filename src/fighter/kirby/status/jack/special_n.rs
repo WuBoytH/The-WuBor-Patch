@@ -8,13 +8,12 @@ pub unsafe extern "C" fn kirby_jack_special_n_pre(fighter: &mut L2CFighterCommon
     else {
         VarModule::is_flag(fighter.module_accessor, jack::status::flag::SPECIAL_N_FIRST)
     };
-    let ret = original!(fighter);
+    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N);
+    let ret = original(fighter);
     VarModule::set_flag(fighter.module_accessor, jack::status::flag::SPECIAL_N_FIRST, keep_first);
     ret
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_jack_special_n_pre
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N, kirby_jack_special_n_pre);
 }

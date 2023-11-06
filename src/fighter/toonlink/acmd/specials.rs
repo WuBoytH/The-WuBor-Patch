@@ -172,7 +172,7 @@ pub fn install(agent : &mut smashline::Agent) {
 
     agent.game_acmd("game_specialhi", toonlink_specialhi);
 
-    agent.game_acmd("game_specialairhi", toonlink_specialhi);
+    agent.game_acmd("game_specialairhi", toonlink_specialairhi);
 
     agent.game_acmd("game_speciallw", toonlink_speciallw);
 

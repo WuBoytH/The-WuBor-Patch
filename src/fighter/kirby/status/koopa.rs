@@ -121,10 +121,8 @@ unsafe extern "C" fn kirby_koopa_special_n_exec_stop(_fighter: &mut L2CFighterCo
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_koopa_special_n_main,
-        kirby_koopa_special_n_exec,
-        kirby_koopa_special_n_exec_stop
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, kirby_koopa_special_n_main);
+    agent.status(smashline::Exec, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, kirby_koopa_special_n_exec);
+    agent.status(smashline::ExecStop, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, kirby_koopa_special_n_exec_stop);
 }

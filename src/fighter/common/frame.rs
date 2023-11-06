@@ -9,7 +9,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
     let frame = fighter.global_table[STATUS_FRAME].get_f32();
     let hit_frame = VarModule::get_float(fighter.module_accessor, fighter::status::float::HIT_FRAME);
 
@@ -31,7 +31,7 @@ unsafe fn hit_cancel_frame_set(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
     if VarModule::get_float(fighter.module_accessor, fighter::instance::float::FLICK_DOWN) > 0.0
     && !fighter.global_table[IS_STOP].get_bool() {
         VarModule::sub_float(fighter.module_accessor, fighter::instance::float::FLICK_DOWN, 1.0);
@@ -45,18 +45,13 @@ unsafe fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
 }
 
 // Use this for general per-frame fighter-level hooks
-#[fighter_frame_callback( main )]
-fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
-            hit_cancel_frame_set(fighter);
-            special_jump_stick_flick(fighter);
-        }
+unsafe extern "C" fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
+    if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
+        hit_cancel_frame_set(fighter);
+        special_jump_stick_flick(fighter);
     }
 }
 
 pub fn install() {
-    install_agent_frame_callbacks!(
-        common_fighter_frame
-    );
+    smashline::api::install_line_callback(None, StatusLine::Main, common_fighter_frame as *const ());
 }

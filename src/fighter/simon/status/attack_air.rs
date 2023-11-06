@@ -1,7 +1,8 @@
 use crate::imports::status_imports::*;
 
 unsafe extern "C" fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let ret = original!(fighter);
+    let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_STATUS_KIND_SPECIAL_N);
+    let ret = original(fighter);
     let motion = MotionModule::motion_kind(fighter.module_accessor);
     let new_mot = if motion == hash40("attack_air_b") { hash40("attack_air_f") }
     else if motion == hash40("attack_air_b_hi") { hash40("attack_air_f_hi") }

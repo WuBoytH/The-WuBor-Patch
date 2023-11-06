@@ -159,11 +159,10 @@ pub unsafe extern "C" fn belmont_special_n_end_inner(fighter: &mut L2CFighterCom
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_simon_specialn_main,
-        kirby_richter_specialn_main,
-        kirby_simon_specialn_end,
-        kirby_richter_specialn_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, kirby_simon_specialn_main);
+    agent.status(smashline::End, *FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, kirby_simon_specialn_end);
+
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, kirby_richter_specialn_main);
+    agent.status(smashline::End, *FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, kirby_richter_specialn_end);
 }

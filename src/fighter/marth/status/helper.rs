@@ -87,29 +87,29 @@ pub unsafe extern "C" fn marth_stance_ground_cancel_helper(fighter: &mut L2CFigh
     let lr = PostureModule::lr(fighter.module_accessor);
     let turn = FighterControlModuleImpl::get_attack_s3_turn(fighter.module_accessor) as i32;
     let is_back = (lr == 1.0 && turn == *FIGHTER_COMMAND_TURN_LR_LEFT) || (lr == -1.0 && turn == *FIGHTER_COMMAND_TURN_LR_RIGHT);
-    if curr_status < status
+    if curr_status < marth::status::STANCE_ATTACK_F3
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0
     && !is_back {
         fighter.change_status(marth::status::STANCE_ATTACK_F3.into(), true.into());
         return true.into();
     }
-    if curr_status < status
+    if curr_status < marth::status::STANCE_ATTACK_B3
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_S3 != 0
     && is_back {
         fighter.change_status(marth::status::STANCE_ATTACK_B3.into(), true.into());
         return true.into();
     }
-    if curr_status < status
+    if curr_status < marth::status::STANCE_ATTACK_HI3
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_HI3 != 0 {
         fighter.change_status(marth::status::STANCE_ATTACK_HI3.into(), true.into());
         return true.into();
     }
-    if curr_status < status
+    if curr_status < marth::status::STANCE_ATTACK_LW3
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_LW3 != 0 {
         fighter.change_status(marth::status::STANCE_ATTACK_LW3.into(), true.into());
         return true.into();
     }
-    if curr_status < status
+    if curr_status < marth::status::STANCE_ATTACK
     && cat1 & *FIGHTER_PAD_CMD_CAT1_FLAG_ATTACK_N != 0
     && only_jabs(fighter) {
         fighter.change_status(marth::status::STANCE_ATTACK.into(), true.into());

@@ -2,7 +2,8 @@ use crate::imports::status_imports::*;
 
 unsafe extern "C" fn dolly_super_special_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let ret = original!(fighter);
+    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL);
+    let ret = original(fighter);
     VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     ret
 }
@@ -24,7 +25,8 @@ unsafe extern "C" fn dolly_super_special_end(fighter: &mut L2CFighterCommon) -> 
 
 unsafe extern "C" fn dolly_super_special2_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
-    let ret = original!(fighter);
+    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2);
+    let ret = original(fighter);
     VarModule::set_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL, is_cancel);
     ret
 }

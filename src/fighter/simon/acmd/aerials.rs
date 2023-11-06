@@ -337,12 +337,14 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_attackairflw", simon_attackairflw);
     agent.sound_acmd("sound_attackairflw", simon_attackairf_snd);
 
+    agent.game_acmd("game_attackairhi", simon_attackairhi);
+
     agent.game_acmd("game_attackairlw", simon_attackairlw);
     agent.effect_acmd("effect_attackairlw", simon_attackairlw_eff);
     agent.sound_acmd("sound_attackairlw", simon_attackairlw_snd);
-    agent.expression("expression_attackairlw", simon_attackairlw_exp);
+    agent.expression_acmd("expression_attackairlw", simon_attackairlw_exp);
 
     agent.effect_acmd("effect_landingairlw", simon_landingairlw_eff);
     agent.sound_acmd("sound_landingairlw", simon_landingairlw_snd);
-    agent.expression("expression_landingairlw", simon_landingairlw_exp);
+    agent.expression_acmd("expression_landingairlw", simon_landingairlw_exp);
 }

@@ -10,7 +10,7 @@ use {
 };
 
 // #[inline(always)]
-// pub unsafe fn captain_fgc(fighter: &mut L2CFighterCommon) {
+// pub unsafe extern "C" fn captain_fgc(fighter: &mut L2CFighterCommon) {
 //     let status = StatusModule::status_kind(fighter.module_accessor);
 //     let mut allowed_cancels : Vec<i32> = [].to_vec();
 //     MiscModule::set_hp(fighter, 90.0);

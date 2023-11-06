@@ -10,7 +10,9 @@ unsafe extern "C" fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_AERIAL);
         return 1.into();
     }
-    original!(fighter)
+
+    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_STATUS_KIND_FALL);
+    original(fighter)
 }
 
 pub fn install(agent : &mut smashline::Agent) {

@@ -473,10 +473,10 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.sound_acmd("sound_attacks3hi", dolly_attacks3hi_snd);
     agent.expression_acmd("expression_attacks3hi", dolly_attacks3hi_exp);
 
-    agent.game_acmd("game_attacks3lw", dolly_attacks3hi);
-    agent.effect_acmd("effect_attacks3lw", dolly_attacks3hi_eff);
-    agent.sound_acmd("sound_attacks3lw", dolly_attacks3hi_snd);
-    agent.expression_acmd("expression_attacks3lw", dolly_attacks3hi_exp);
+    agent.game_acmd("game_attacks3lw", dolly_attacks3lw);
+    agent.effect_acmd("effect_attacks3lw", dolly_attacks3lw_eff);
+    agent.sound_acmd("sound_attacks3lw", dolly_attacks3lw_snd);
+    agent.expression_acmd("expression_attacks3lw", dolly_attacks3lw_exp);
 
     agent.game_acmd("game_attackhi3", dolly_attackhi3);
 

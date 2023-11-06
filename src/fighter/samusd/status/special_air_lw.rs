@@ -1,9 +1,9 @@
 use {
     crate::imports::status_imports::*,
-    super::vl,
+    super::super::vl
 };
 
-unsafe fn samusd_special_air_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn samusd_special_air_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     samusd_speciallw_helper(fighter);
     samusd_special_air_lw_mot_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(samusd_special_air_lw_main_loop as *const () as _))

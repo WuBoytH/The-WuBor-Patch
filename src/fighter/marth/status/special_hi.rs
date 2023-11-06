@@ -134,7 +134,8 @@ unsafe extern "C" fn marth_special_hi_main_loop(fighter: &mut L2CFighterCommon) 
 
 unsafe extern "C" fn marth_special_hi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, marth::instance::flag::IS_STANCE) {
-        original!(fighter);
+        let original = smashline::original_status(smashline::Exec, fighter, *FIGHTER_STATUS_KIND_SPECIAL_HI);
+        original(fighter);
     }
     0.into()
 }

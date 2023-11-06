@@ -28,5 +28,5 @@ unsafe extern "C" fn richter_attack_air_exec(fighter: &mut L2CFighterCommon) -> 
 }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_AIR, richter_attack_air_exec);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, richter_attack_air_exec);
 }

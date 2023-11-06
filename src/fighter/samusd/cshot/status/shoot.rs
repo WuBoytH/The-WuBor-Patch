@@ -1,9 +1,6 @@
-use {
-    crate::imports::status_imports::*,
-    super::super::super::vl,
-};
+use crate::imports::status_imports::*;
 
-unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
     if [
@@ -142,7 +139,7 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     weapon.clear_lua_stack();
     lua_args!(weapon, WEAPON_KINETIC_TYPE_NORMAL);
     let speed_x = sv_kinetic_energy::get_speed_x(weapon.lua_state_agent);
@@ -171,7 +168,7 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
+unsafe extern "C" fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
     if [*FIGHTER_KIND_SAMUSD, *FIGHTER_KIND_KIRBY].contains(&utility::get_kind(&mut *owner_module_accessor)) {
@@ -184,7 +181,7 @@ unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
 }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.status(smashline::Init, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_end);
+    agent.status(smashline::Init, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_init);
     agent.status(smashline::Exec, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_exec);
     agent.status(smashline::End, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_end);
 }

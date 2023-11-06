@@ -188,8 +188,6 @@ unsafe extern "C" fn kirby_jack_special_n_escape_next_status(fighter: &mut L2CFi
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_jack_special_n_escape_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_ESCAPE, kirby_jack_special_n_escape_main);
 }

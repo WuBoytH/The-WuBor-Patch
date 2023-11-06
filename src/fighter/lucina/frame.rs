@@ -7,13 +7,12 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*},
     super::{vl, helper::*}
 };
 
-unsafe fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::off_flag(fighter.module_accessor, yu::instance::flag::DISABLE_SPECIAL_N_S);
         VarModule::set_int(fighter.module_accessor, yu::instance::int::SP_GLOW_TIMER, 0);
@@ -29,7 +28,7 @@ unsafe fn lucina_reset_vars(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_meter_controller(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_meter_controller(fighter: &mut L2CFighterCommon) {
     if VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE) >= 25.0
     || VarModule::is_flag(fighter.module_accessor, yu::instance::flag::SHADOW_FRENZY) {
         if VarModule::get_int(fighter.module_accessor, yu::instance::int::SP_GLOW_TIMER) == 0 {
@@ -40,7 +39,7 @@ unsafe fn lucina_meter_controller(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_training_tools(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_training_tools(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode()
     && [
         *FIGHTER_STATUS_KIND_GUARD_ON,
@@ -73,7 +72,7 @@ unsafe fn lucina_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_meter_display(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_meter_display(fighter: &mut L2CFighterCommon) {
     let level = VarModule::get_int(fighter.module_accessor, yu::instance::int::SP_LEVEL);
     let sp = VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE);
     let new_level = sp / vl::param_private::sp_single;
@@ -93,7 +92,7 @@ unsafe fn lucina_meter_display(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon) {
     if shadow_id(fighter.module_accessor) {
         let eff = VarModule::get_int(fighter.module_accessor, yu::instance::int::SHADOW_EFF_ID) as u32;
         if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
@@ -158,7 +157,7 @@ unsafe fn lucina_normal_shadow_effects(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_on_empty_sp_meter(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_on_empty_sp_meter(fighter: &mut L2CFighterCommon) {
     if VarModule::get_float(fighter.module_accessor, yu::instance::float::SP_GAUGE) <= 0.0 {
         VarModule::set_float(fighter.module_accessor, yu::instance::float::SP_GAUGE, 0.0);
         VarModule::off_flag(fighter.module_accessor, yu::instance::flag::SHADOW_FRENZY);
@@ -166,7 +165,7 @@ unsafe fn lucina_on_empty_sp_meter(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     // if status == *FIGHTER_STATUS_KIND_THROW {
     //     if !CatchModule::is_catch(fighter.module_accessor)
@@ -212,7 +211,7 @@ unsafe fn lucina_one_more_check(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
     if VarModule::get_int(fighter.module_accessor, yu::instance::int::SP_FLASH_TIMER) > 0 {
         if VarModule::get_int(fighter.module_accessor, yu::instance::int::SP_FLASH_TIMER) % 10 == 0 {
             if VarModule::is_flag(fighter.module_accessor, yu::instance::flag::SHADOW_FRENZY) {
@@ -230,16 +229,14 @@ unsafe fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn lucina_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        lucina_reset_vars(fighter);
-        lucina_meter_controller(fighter);
-        lucina_training_tools(fighter);
-        lucina_normal_shadow_effects(fighter);
-        lucina_on_empty_sp_meter(fighter);
-        lucina_meter_display(fighter);
-        lucina_one_more_check(fighter);
-        lucina_sb_flash(fighter);
-    }
+    lucina_reset_vars(fighter);
+    lucina_meter_controller(fighter);
+    lucina_training_tools(fighter);
+    lucina_normal_shadow_effects(fighter);
+    lucina_on_empty_sp_meter(fighter);
+    lucina_meter_display(fighter);
+    lucina_one_more_check(fighter);
+    lucina_sb_flash(fighter);
 }
 
 pub fn install(agent : &mut smashline::Agent) {

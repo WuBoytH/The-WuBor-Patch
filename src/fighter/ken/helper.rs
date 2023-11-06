@@ -8,7 +8,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*,}
 };
 
-pub unsafe fn add_vgauge(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
+pub unsafe extern "C" fn add_vgauge(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
     let meter_max = 900.0;
     let meter_const = ken::instance::float::V_GAUGE;
     if MotionModule::motion_kind(module_accessor) != hash40("special_lw")

@@ -28,8 +28,6 @@ unsafe extern "C" fn kirby_purin_specialn_hit_end_main_loop(fighter: &mut L2CFig
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_purin_specialn_hit_end_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_PURIN_SPECIAL_N_HIT_END, kirby_purin_specialn_hit_end_main);
 }

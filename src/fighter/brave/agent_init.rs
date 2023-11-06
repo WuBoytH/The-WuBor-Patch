@@ -20,18 +20,12 @@ pub unsafe extern "C" fn brave_status_end_control(fighter: &mut L2CFighterCommon
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_BRAVE {
-            return;
-        }
-        fighter.global_table[CHECK_SPECIAL_HI_UNIQ].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));
-        fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(brave_status_end_control as *const () as _));
-        VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_1, -1);
-        VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_2, -1);
-        VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_3, -1);
-        VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_4, -1);
-    }
+    fighter.global_table[CHECK_SPECIAL_HI_UNIQ].assign(&L2CValue::Ptr(specialhi_pre_generic as *const () as _));
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(brave_status_end_control as *const () as _));
+    VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_1, -1);
+    VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_2, -1);
+    VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_3, -1);
+    VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_4, -1);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

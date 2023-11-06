@@ -1,5 +1,6 @@
 use crate::imports::status_imports::*;
 
+#[repr(C)]
 #[derive(PartialEq)]
 pub enum AirDashTier {
     Average,
@@ -82,6 +83,7 @@ pub unsafe extern "C" fn get_airdash_tier(fighter: &mut L2CFighterCommon) -> Air
     AirDashTier::Average
 }
 
+#[repr(C)]
 pub struct AirDashParams {
     pub attack_frame: f32,
     pub cancel_frame: f32

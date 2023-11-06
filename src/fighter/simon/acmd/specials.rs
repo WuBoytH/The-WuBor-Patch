@@ -156,10 +156,10 @@ unsafe extern "C" fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
 
 pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_specialn", simon_specialn);
-    agent.expression("expression_specialn", simon_specialn_exp);
+    agent.expression_acmd("expression_specialn", simon_specialn_exp);
 
     agent.game_acmd("game_specialairn", simon_specialn);
-    agent.expression("expression_specialairn", simon_specialn_exp);
+    agent.expression_acmd("expression_specialairn", simon_specialn_exp);
 
     agent.game_acmd("game_specialhi", simon_specialhi);
 
@@ -168,10 +168,10 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_speciallw", simon_speciallw);
     agent.effect_acmd("effect_speciallw", simon_speciallw_eff);
     agent.sound_acmd("sound_speciallw", simon_speciallw_snd);
-    agent.expression("expression_speciallw", simon_speciallw_exp);
+    agent.expression_acmd("expression_speciallw", simon_speciallw_exp);
 
     agent.game_acmd("game_specialairlw", simon_speciallw);
     agent.effect_acmd("effect_specialairlw", simon_specialairlw_eff);
     agent.sound_acmd("sound_specialairlw", simon_speciallw_snd);
-    agent.expression("expression_specialairlw", simon_speciallw_exp);
+    agent.expression_acmd("expression_specialairlw", simon_speciallw_exp);
 }

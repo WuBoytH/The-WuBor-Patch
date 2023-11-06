@@ -2,10 +2,9 @@ use {
     smash::{
         lua2cpp::L2CFighterCommon,
         hash40,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    smashline::*,
     wubor_utils::table_const::*,
     crate::fighter::common::agent_inits::*
 };
@@ -40,19 +39,13 @@ pub unsafe extern "C" fn daisy_itemtoss_pre(fighter: &mut L2CFighterCommon) -> L
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_DAISY {
-            return;
-        }
-        fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&false.into());
-        fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));
-        fighter.global_table[CHECK_AIR_ITEM_THROW_UNIQ].assign(&false.into());
-        fighter.global_table[CHECK_AIR_JUMP_UNIQ].assign(&false.into());
-        fighter.global_table[CHECK_AIR_JUMP_AERIAL_UNIQ].assign(&false.into());
-        fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(daisy_speciallw_pre as *const () as _));
-    }
+    fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&false.into());
+    fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].assign(&L2CValue::Ptr(daisy_itemtoss_pre as *const () as _));
+    fighter.global_table[CHECK_AIR_ITEM_THROW_UNIQ].assign(&false.into());
+    fighter.global_table[CHECK_AIR_JUMP_UNIQ].assign(&false.into());
+    fighter.global_table[CHECK_AIR_JUMP_AERIAL_UNIQ].assign(&false.into());
+    fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(specials_pre_generic as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(daisy_speciallw_pre as *const () as _));
 }
 
 pub fn install(agent : &mut smashline::Agent) {

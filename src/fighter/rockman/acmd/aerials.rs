@@ -154,17 +154,15 @@ unsafe extern "C" fn rockman_attackairb(agent: &mut L2CAgentBase) {
 //     }
 // }
 
-pub fn install() {
-    install_acmd_scripts!(
-        rockman_attackairn,
-        rockman_attackairn_eff,
-        rockman_attackairn_snd,
-        rockman_attackairn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", rockman_attackairn);
+    agent.effect_acmd("effect_attackairn", rockman_attackairn_eff);
+    agent.sound_acmd("sound_attackairn", rockman_attackairn_snd);
+    agent.expression_acmd("expression_attackairn", rockman_attackairn_exp);
 
-        rockman_attackairf,
+    agent.game_acmd("game_attackairf", rockman_attackairf);
 
-        rockman_attackairb,
+    agent.game_acmd("game_attackairb", rockman_attackairb);
 
-        // rockman_attackairhi
-    );
+    // agent.game_acmd("game_attackairhi", rockman_attackairhi);
 }

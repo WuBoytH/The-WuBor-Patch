@@ -315,8 +315,6 @@ unsafe extern "C" fn demon_attack142_exp(agent: &mut L2CAgentBase) {
 pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_attack11", demon_attack11);
 
-    agent.game_acmd("game_attack12", demon_attack12);
-
     agent.game_acmd("game_attack13", demon_attack13);
 
     agent.game_acmd("game_attack14", demon_attack14);

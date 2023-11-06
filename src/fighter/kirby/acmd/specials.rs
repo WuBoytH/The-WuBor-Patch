@@ -87,7 +87,7 @@ pub fn install(agent : &mut smashline::Agent) {
 
     agent.game_acmd("game_specialairs", kirby_specialairs);
 
-    agent.game_acmd("game_specialairss", game_specialairss);
+    agent.game_acmd("game_specialairss", kirby_specialairss);
 
     agent.game_acmd("game_specialhi", kirby_specialhi);
 

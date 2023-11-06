@@ -1,13 +1,10 @@
-use {
-    smash::{
-        lua2cpp::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    smashline::*,
+use smash::{
+    lua2cpp::*,
+    app::{lua_bind::*, *},
+    lib::lua_const::*
 };
 
-unsafe fn wario_training_tools(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn wario_training_tools(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode() {
         if ControlModule::check_button_on_trriger(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_LW) {
             let count = WorkModule::get_int(fighter.module_accessor, 0x100000bf);
@@ -23,9 +20,7 @@ unsafe fn wario_training_tools(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn wario_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        wario_training_tools(fighter);
-    }
+    wario_training_tools(fighter);
 }
 
 pub fn install(agent : &mut smashline::Agent) {

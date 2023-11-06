@@ -1,13 +1,5 @@
 use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
+    crate::imports::status_imports::*,
     super::agent_init::*
 };
 
@@ -15,7 +7,7 @@ use {
 // vc_ken_special_l01 is "I hit my boiling point!"
 // vc_ken_special_l02 is "Shoryureppa"
 
-// unsafe fn dolly_reset_vars(fighter: &mut L2CFighterCommon) {
+// unsafe extern "C" fn dolly_reset_vars(fighter: &mut L2CFighterCommon) {
 //     let status = fighter.global_table[STATUS_KIND].get_i32();
 //     if [
 //         *FIGHTER_STATUS_KIND_DEAD,
@@ -25,8 +17,8 @@ use {
 //     }
 // }
 
-unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
-    if VarModule::get_float(fighter.module_accessor, dolly::instance::float::GO_METER) >= 200.0{
+unsafe extern "C" fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
+    if VarModule::get_float(fighter.module_accessor, dolly::instance::float::GO_METER) >= 200.0 {
         let eff = VarModule::get_int(fighter.module_accessor, dolly::instance::int::SUPER_SPECIAL_AURA) as u32;
         if !EffectModule::is_exist_effect(fighter.module_accessor, eff) {
             EffectModule::req_follow(
@@ -82,7 +74,7 @@ unsafe fn dolly_super_special_aura(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_DOLLY_STATUS_KIND_SUPER_SPECIAL2_BLOW
     && fighter.global_table[STATUS_FRAME].get_f32() < 8.0 {
@@ -97,11 +89,9 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn dolly_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        // dolly_reset_vars(fighter);
-        dolly_super_special_aura(fighter);
-        dolly_super_super_cancels(fighter);
-    }
+    // dolly_reset_vars(fighter);
+    dolly_super_special_aura(fighter);
+    dolly_super_super_cancels(fighter);
 }
 
 pub fn install(agent : &mut smashline::Agent) {

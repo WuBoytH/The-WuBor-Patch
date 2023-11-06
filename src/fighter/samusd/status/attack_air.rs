@@ -1,9 +1,9 @@
 use {
     crate::imports::status_imports::*,
-    super::vl,
+    super::super::vl,
 };
 
-unsafe fn samusd_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn samusd_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());
     if !StopModule::is_stop(fighter.module_accessor) {
         samusd_attack_air_substatus2(fighter);

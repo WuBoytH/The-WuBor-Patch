@@ -289,6 +289,10 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.effect_acmd("effect_specialairs", mario_specialairs_eff);
     agent.expression_acmd("expression_specialairs", mario_specials_exp);
 
+    agent.game_acmd("game_specialhi", mario_specialhi);
+
+    agent.game_acmd("game_specialairhi", mario_specialhi);
+
     agent.sound_acmd("sound_speciallwstart", mario_longjumpstart_snd);
 
     agent.game_acmd("game_speciallwjump", mario_longjump);

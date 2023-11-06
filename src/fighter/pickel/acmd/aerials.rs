@@ -549,5 +549,5 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_attackairlw", pickel_attackairlw);
 
     agent.game_acmd("game_attackairlw2", pickel_attackairlw2);
-    agent.expression_acmd("expression_attackairlw2", pickel_attackairlw2);
+    agent.expression_acmd("expression_attackairlw2", pickel_attackairlw2_exp);
 }

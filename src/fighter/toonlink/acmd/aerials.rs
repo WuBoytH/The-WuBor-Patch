@@ -140,5 +140,5 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", toonlink_attackairhi);
 
     agent.game_acmd("game_attackairlw", toonlink_attackairlw);
-    agent.effect_acmd_acmd("effect_attackairlw", toonlink_attackairlw_eff);
+    agent.effect_acmd("effect_attackairlw", toonlink_attackairlw_eff);
 }

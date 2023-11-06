@@ -1,9 +1,6 @@
-use {
-    crate::imports::status_imports::*,
-    super::vl,
-};
+use crate::imports::status_imports::*;
 
-unsafe fn samusd_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn samusd_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_AIR_STOP);
@@ -249,7 +246,7 @@ unsafe extern "C" fn samusd_special_n_hold_main_loop(fighter: &mut L2CFighterCom
     1.into()
 }
 
-unsafe fn samusd_special_n_hold_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn samusd_special_n_hold_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_F
     || status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_E {

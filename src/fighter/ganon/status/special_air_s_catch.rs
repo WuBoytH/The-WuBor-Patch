@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-unsafe fn ganon_special_air_s_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ganon_special_air_s_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     MotionModule::set_rate(fighter.module_accessor, 0.0);
     fighter.sub_shift_status_main(L2CValue::Ptr(ganon_special_air_s_catch_main_loop as *const () as _))

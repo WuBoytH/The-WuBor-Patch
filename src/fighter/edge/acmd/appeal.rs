@@ -7,7 +7,6 @@ use {
         lib::lua_const::*
     },
     smash_script::*,
-    smashline::*,
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*},
     // super::super::vars::*

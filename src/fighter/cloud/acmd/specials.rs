@@ -283,7 +283,7 @@ unsafe extern "C" fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
 pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn", cloud_specialn);
     agent.effect_acmd("effect_specialn", cloud_specialn_eff);
-    agent.expression_acmd("expression_specialn", chrom_attackairlw_exp);
+    agent.expression_acmd("expression_specialn", cloud_specialn_exp);
 
     agent.game_acmd("game_specialairn", cloud_specialn);
     agent.effect_acmd("effect_specialairn", cloud_specialairn_eff);

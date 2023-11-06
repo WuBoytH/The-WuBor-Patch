@@ -42,7 +42,7 @@ unsafe extern "C" fn lucas_special_hi_reflect_main_loop(fighter: &mut L2CFighter
         return 1.into();
     }
 
-    if fighter.global_table[SITUATION_KIND].get_int() == *SITUATION_KIND_GROUND {
+    if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_LUCAS_STATUS_SPECIAL_HI_FLAG_REFLECT_GROUND) {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
         }
@@ -61,5 +61,5 @@ unsafe extern "C" fn lucas_special_hi_reflect_main_loop(fighter: &mut L2CFighter
 }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.status(smashline::Pre, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_ATTACK, lucas_special_hi_attack_pre);
+    agent.status(smashline::Main, *FIGHTER_LUCAS_STATUS_KIND_SPECIAL_HI_REFLECT, lucas_special_hi_reflect_main);
 }

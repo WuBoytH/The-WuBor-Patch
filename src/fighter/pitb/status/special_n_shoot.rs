@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-unsafe fn pitb_specialn_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pitb_specialn_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     pitb_specialn_endremove(fighter)
 }
 

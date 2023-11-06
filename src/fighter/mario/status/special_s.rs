@@ -58,9 +58,3 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_S, mario_special_s_init);
     agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, mario_special_s_exec);
 }
-pub fn install() {
-    install_status_scripts!(
-        mario_special_s_init,
-        mario_special_s_exec
-    );
-}

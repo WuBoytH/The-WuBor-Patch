@@ -7,7 +7,6 @@ use {
         lib::{lua_const::*, L2CValue}
     },
     smash_script::*,
-    smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*},
     // crate::function_hooks::get_touch_normal_consider_gravity_2,

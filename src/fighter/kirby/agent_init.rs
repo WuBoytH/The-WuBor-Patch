@@ -1,10 +1,9 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::{lua_bind::*, *},
+        app::lua_bind::*,
         lib::{lua_const::*, L2CValue}
     },
-    smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };
@@ -54,13 +53,7 @@ unsafe extern "C" fn kirby_specialn_pre(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_KIRBY {
-            return;
-        }
-        fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
-    }
+    fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(kirby_specialn_pre as *const () as _));
 }
 
 pub fn install(agent : &mut smashline::Agent) {

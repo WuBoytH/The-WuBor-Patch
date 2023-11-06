@@ -125,7 +125,7 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
     original!()(vtable, fighter);
 }
 
-unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+unsafe extern "C" fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
@@ -148,7 +148,7 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
     ].contains(&status)
 }
 
-unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor) {
+unsafe extern "C" fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor) {
     VarModule::off_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_CHARGING);
     VarModule::off_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX);
     VarModule::off_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE);
@@ -162,13 +162,13 @@ unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor) 
 }
 
 #[skyline::hook(offset = 0x1083bcc, inline)]
-unsafe fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
 #[skyline::hook(offset = 0x10838c0, inline)]
-unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
@@ -247,15 +247,14 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
 // }
 
 #[skyline::hook(offset = 0x1080264, inline)]
-unsafe fn rockman_check_remove_metal_blade(ctx: &mut skyline::hooks::InlineCtx) {
-    let fighter = *ctx.registers[20].x.as_ref() as &mut Fighter;
-    let status = if fighter.battle_object.kind == 0x31 {
-        0x1dd
+unsafe extern "C" fn rockman_check_remove_metal_blade(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = *ctx.registers[20].x.as_ref() as *mut Fighter;
+    if (*fighter).battle_object.kind == 0x31 {
+        asm!("cmp w0, #0x1dd");
     }
     else {
-        0x1dc
-    };
-    asm!("cmp w0, #", in("#") status);
+        asm!("cmp w0, #0x1dc");
+    }
 }
 
 pub fn install() {

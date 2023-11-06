@@ -3,7 +3,7 @@ use crate::imports::status_imports::*;
 unsafe extern "C" fn dolly_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     let mut mask = *FIGHTER_LOG_MASK_FLAG_ACTION_TRIGGER_ON | *FIGHTER_LOG_MASK_FLAG_ACTION_CATEGORY_ATTACK;
-    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_SPECIAL_HI_COMMAND {
+    if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND {
         mask |= *FIGHTER_LOG_MASK_FLAG_ATTACK_KIND_SPECIAL_HI_COMMAND;
     }
     else {
@@ -14,7 +14,7 @@ unsafe extern "C" fn dolly_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2C
         SituationKind(*SITUATION_KIND_NONE),
         *FIGHTER_KINETIC_TYPE_UNIQ,
         *GROUND_CORRECT_KIND_KEEP as u32,
-        GroundCliffCheckKind(*GROULD_CLIFF_CHECK_KIND_NONE),
+        GroundCliffCheckKind(*GROUND_CLIFF_CHECK_KIND_NONE),
         true,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_FLAG,
         *FIGHTER_STATUS_WORK_KEEP_FLAG_NONE_INT,

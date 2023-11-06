@@ -1,8 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[smashline::in_target("lua2cpp_brave", 0x34900)]
-pub fn brave_special_lw_start_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue;
-
 unsafe extern "C" fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_DECIDE_COMMAND);
     let mask = VarModule::get_int(fighter.module_accessor, brave::instance::int::USED_SPELL_MASK) | (1 << spell_kind);
@@ -24,7 +21,8 @@ unsafe extern "C" fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) 
             VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_4, -1);
         }
     }
-    brave_special_lw_start_pre_inner(fighter)
+    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START);
+    original(fighter)
 }
 
 unsafe extern "C" fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {

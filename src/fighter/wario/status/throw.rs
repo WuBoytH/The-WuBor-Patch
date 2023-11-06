@@ -3,7 +3,7 @@ use {
     super::super::vl
 };
 
-unsafe fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn wario_throw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, wario::status::flag::THROW_B_MOVE) {
         // KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
         // KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);

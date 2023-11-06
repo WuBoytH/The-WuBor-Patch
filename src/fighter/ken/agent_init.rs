@@ -18,13 +18,7 @@ unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 unsafe extern "C" fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_KEN {
-            return;
-        }
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(ken_speciallw_pre as *const () as _));
-    }
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(ken_speciallw_pre as *const () as _));
 }
 
 pub fn install() {

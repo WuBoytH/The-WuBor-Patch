@@ -201,4 +201,4 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.game_acmd("game_speciallw", trail_speciallw);
 
     agent.game_acmd("game_specialairlw", trail_speciallw);
-}=
+}

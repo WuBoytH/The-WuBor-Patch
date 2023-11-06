@@ -9,8 +9,7 @@ unsafe extern "C" fn trail_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2C
     false.into()
 }
 
-#[fighter_init]
-fn on_start(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_TRAIL {

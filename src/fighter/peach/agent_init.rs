@@ -9,8 +9,7 @@ use {
     crate::fighter::daisy::agent_init::*
 };
 
-#[fighter_init]
-fn on_start(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_PEACH {

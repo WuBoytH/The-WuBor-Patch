@@ -17,8 +17,7 @@ unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn agent_init(fighter: &mut L2CFighterCommon) {
     unsafe {
         let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
         if fighter_kind != *FIGHTER_KIND_KEN {

@@ -28,12 +28,10 @@ unsafe extern "C" fn shizue_clayrocket_burst(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        shizue_clayrocket_ready,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_ready", shizue_clayrocket_ready);
 
-        shizue_clayrocket_fly,
+    agent.game_acmd("game_fly", shizue_clayrocket_fly);
 
-        shizue_clayrocket_burst
-    );
+    agent.game_acmd("game_burst", shizue_clayrocket_burst);
 }

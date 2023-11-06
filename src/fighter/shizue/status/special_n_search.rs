@@ -6,8 +6,6 @@ unsafe extern "C" fn shizue_special_n_search_end(fighter: &mut L2CFighterCommon)
     special_n_pocket_set_flag(fighter)
 }
 
-pub fn install() {
-    install_status_scripts!(
-        shizue_special_n_search_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::End, *FIGHTER_MURABITO_STATUS_KIND_SPECIAL_N_SEARCH, shizue_special_n_search_end);
 }

@@ -267,63 +267,26 @@ unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd_cshot", script = "game_shoot", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn samusd_cshot_shoot(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 85, 20, 0, 80, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 9.0, 85, 20, 0, 80, 5.6, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
-        attack!(agent, MA_MSC_CMD_ATTACK_SET_LERP, 0, 1);
-    }
-}
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialnstart", samusd_specialnstart);
 
-#[acmd_script( agent = "samusd_missile", script = "game_homing", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn samusd_missile_homing(_agent: &mut L2CAgentBase) {
-}
+    agent.game_acmd("game_specialairnstart", samusd_specialnstart);
 
-#[acmd_script( agent = "samusd_missile", script = "game_hburst", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn samusd_missile_hburst(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 30, 25, 0, 45, 15.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 1, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_fire"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_FIRE, *ATTACK_REGION_OBJECT);
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_erase"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_explosion"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
-        notify_event_msc_cmd!(agent, Hash40::new_raw(0x199c462b5d));
-    }
-}
+    agent.game_acmd("game_special", samusd_special);
 
-#[acmd_script( agent = "samusd_supermissile", script = "game_ready", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn samusd_supermissile_ready(_agent: &mut L2CAgentBase) {
-}
+    agent.game_acmd("game_specialair", samusd_specialair);
 
-pub fn install() {
-    install_acmd_scripts!(
-        samusd_specialnstart,
+    agent.game_acmd("game_specials", samusd_specials);
 
-        samusd_special,
+    agent.game_acmd("game_specialairs", samusd_specialairs);
 
-        samusd_specialair,
+    agent.game_acmd("game_specialhi", samusd_specialhi);
 
-        samusd_specials,
+    agent.game_acmd("game_specialairhi", samusd_specialairhi);
 
-        samusd_specialairs,
+    agent.game_acmd("game_speciallw", samusd_speciallw);
+    agent.effect_acmd("effect_speciallw", samusd_speciallw_eff);
 
-        samusd_specialhi,
-
-        samusd_specialairhi,
-
-        samusd_speciallw,
-
-        samusd_specialairlw,
-        samusd_speciallw_eff,
-
-        samusd_cshot_shoot,
-
-        samusd_missile_homing,
-
-        samusd_missile_hburst,
-
-        samusd_supermissile_ready
-    );
+    agent.game_acmd("game_specialairlw", samusd_specialairlw);
+    agent.effect_acmd("effect_specialairlw", samusd_speciallw_eff);
 }

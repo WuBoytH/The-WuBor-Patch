@@ -19,7 +19,6 @@ unsafe extern "C" fn sheik_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "sheik", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 // unsafe extern "C" fn sheik_attackhi3(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 5.0);
 //     if macros::is_excute(agent) {
@@ -63,12 +62,10 @@ unsafe extern "C" fn sheik_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        sheik_attacks3,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks3", sheik_attacks3);
 
-        // sheik_attackhi3,
+    // agent.game_acmd("game_attackhi3", sheik_attackhi3);
 
-        sheik_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", sheik_attacklw3);
 }

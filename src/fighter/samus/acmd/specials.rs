@@ -96,32 +96,8 @@ unsafe extern "C" fn samus_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "samus_cshot", script = "game_shoot", category = ACMD_GAME, low_priority )]
-// unsafe extern "C" fn samus_cshot_shoot(agent: &mut L2CAgentBase) {
-//     if macros::is_excute(agent) {
-//         let angle = WorkModule::get_float(agent.module_accessor, WEAPON_SAMUS_CSHOT_INSTANCE_WORK_ID_INT_ANGLE);
-//         if angle == -cshot_angle {
-//             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 0, 20, 50, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
-//         }
-//         else if angle == cshot_angle {
-//             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 50, 0, 25, 50, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
-//         }
-//         else {
-//             macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 361, 0, 60, 69, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
-//         }
-//     }
-//     wait(agent.lua_state_agent, 4.0);
-//     if macros::is_excute(agent) {
-//         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.0, 361, 0, 0, 0, 1.9, 0.0, 0.0, 0.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 0, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_ENERGY);
-//     }
-// }
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", samus_specialhi);
 
-pub fn install() {
-    install_acmd_scripts!(
-        samus_specialhi,
-
-        samus_specialairhi,
-
-        // samus_cshot_shoot
-    );
+    agent.game_acmd("game_specialairhi", samus_specialairhi);
 }

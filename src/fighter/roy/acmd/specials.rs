@@ -87,10 +87,8 @@ unsafe extern "C" fn roy_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        roy_specialhi,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", roy_specialhi);
 
-        roy_specialairhi
-    );
+    agent.game_acmd("game_specialairhi", roy_specialairhi);
 }

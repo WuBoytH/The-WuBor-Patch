@@ -77,12 +77,10 @@ unsafe extern "C" fn shizue_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        shizue_attack11,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", shizue_attack11);
 
-        shizue_attacks3,
+    agent.game_acmd("game_attacks3", shizue_attacks3);
 
-        shizue_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", shizue_attacklw3);
 }

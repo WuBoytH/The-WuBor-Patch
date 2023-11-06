@@ -249,12 +249,13 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
 #[skyline::hook(offset = 0x1080264, inline)]
 unsafe extern "C" fn rockman_check_remove_metal_blade(ctx: &mut skyline::hooks::InlineCtx) {
     let fighter = *ctx.registers[20].x.as_ref() as *mut Fighter;
-    if (*fighter).battle_object.kind == 0x31 {
-        asm!("cmp w0, #0x1dd");
+    let status = if (*fighter).battle_object.kind == 0x31 {
+        0x1dd
     }
     else {
-        asm!("cmp w0, #0x1dc");
-    }
+        0x1dc
+    };
+    asm!("cmp w0, w8", in("w8") status);
 }
 
 pub fn install() {

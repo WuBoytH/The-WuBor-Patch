@@ -268,8 +268,8 @@ pub fn install(agent : &mut smashline::Agent) {
     agent.sound_acmd("sound_attack13", rockman_attack13_snd);
     agent.expression_acmd("expression_attack13", rockman_attack13_exp);
 
-    agent.game_acmd("game_attacks3", rockman_attacks3);
-    agent.effect_acmd("effect_attacks3", rockman_attacks3_eff);
-    agent.sound_acmd("sound_attacks3", rockman_attacks3_snd);
-    agent.expression_acmd("expression_attacks3", rockman_attacks3_exp);
+    agent.game_acmd("game_attacks3melee", rockman_attacks3);
+    agent.effect_acmd("effect_attacks3melee", rockman_attacks3_eff);
+    agent.sound_acmd("sound_attacks3melee", rockman_attacks3_snd);
+    agent.expression_acmd("expression_attacks3melee", rockman_attacks3_exp);
 }

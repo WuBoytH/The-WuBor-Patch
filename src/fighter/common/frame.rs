@@ -52,6 +52,6 @@ unsafe extern "C" fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    smashline::api::install_line_callback(None, StatusLine::Main, common_fighter_frame as *const ());
+pub fn install_common_frame(agent : &mut smashline::Agent) {
+    agent.on_line(smashline::Main, common_fighter_frame);
 }

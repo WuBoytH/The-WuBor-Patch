@@ -5,7 +5,8 @@ use {
         phx::*,
         app::{lua_bind::*, *},
         lib::lua_const::*
-    }
+    },
+    crate::fighter::common::frame::install_common_frame
 };
 
 unsafe extern "C" fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
@@ -22,4 +23,5 @@ unsafe extern "C" fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
 
 pub fn install(agent: &mut smashline::Agent) {
     agent.on_line(smashline::Main, bayonetta_frame);
+    agent::install_common_frame(agent);
 }

@@ -57,8 +57,6 @@ unsafe extern "C" fn toonlink_boomerang_fly_main_fastshift(weapon: &mut L2CWeapo
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        toonlink_boomerang_fly_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *WN_LINK_BOOMERANG_STATUS_KIND_FLY, toonlink_boomerang_fly_main);
 }

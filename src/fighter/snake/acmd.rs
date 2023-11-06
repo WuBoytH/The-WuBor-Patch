@@ -3,9 +3,9 @@
 mod specials;
 mod escape;
 
-pub fn install () {
+pub fn install(agent : &mut smashline::Agent) {
     // normals::install();
     // aerials::install();
-    specials::install();
-    escape::install();
+    specials::install(agent);
+    escape::install(agent);
 }

@@ -15,9 +15,7 @@ unsafe extern "C" fn yoshi_guard_damage_exec_stop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        yoshi_guard_damage_exec,
-        yoshi_guard_damage_exec_stop
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, yoshi_guard_damage_exec);
+    agent.status(smashline::ExecStop, *FIGHTER_STATUS_KIND_GUARD_DAMAGE, yoshi_guard_damage_exec_stop);
 }

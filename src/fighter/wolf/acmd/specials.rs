@@ -27,8 +27,8 @@ unsafe extern "C" fn wolf_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wolf_specialsend
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialsend", wolf_specialsend);
+
+    agent.game_acmd("game_specialairsend", wolf_specialsend);
 }

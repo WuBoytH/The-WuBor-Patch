@@ -32,14 +32,12 @@ unsafe extern "C" fn simon_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2
 }
 
 #[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_CHECK_ATTACK)]
-unsafe extern "C" fn simon_attack_air_check_attack(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn simon_attack_air_check_attack(_fighter: &mut L2CFighterCommon, _param_1: &L2CValue, _param_2: &L2CValue) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        simon_attack_air_main,
-        simon_attack_air_exec,
-        simon_attack_air_check_attack
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_exec);
+    agent.status(smashline::CheckAttack, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_check_attack);
 }

@@ -24,10 +24,12 @@ unsafe extern "C" fn zelda_specialsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        zelda_specialsstart,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialsstart", zelda_specialsstart);
 
-        zelda_specialsend
-    );
+    agent.game_acmd("game_specialairsstart", zelda_specialsstart);
+
+    agent.game_acmd("game_specialsend", zelda_specialsend);
+
+    agent.game_acmd("game_specialairsend", zelda_specialsend);
 }

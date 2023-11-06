@@ -18,8 +18,6 @@ unsafe extern "C" fn wolf_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wolf_attackhi3
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackhi3", wolf_attackhi3);
 }

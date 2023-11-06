@@ -26,8 +26,8 @@ unsafe extern "C" fn tantan_specialairhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        tantan_specialairhistart
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialairhistart", tantan_specialairhistart);
+
+    agent.game_acmd("game_specialairhistart2", tantan_specialairhistart);
 }

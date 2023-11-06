@@ -96,13 +96,11 @@ unsafe extern "C" fn sonic_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        sonic_throwf,
-        sonic_throwf_eff,
-        sonic_throwf_snd,
-        sonic_throwf_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", sonic_throwf);
+    agent.effect_acmd("effect_throwf", sonic_throwf_eff);
+    agent.game_acmd("sound_throwf", sonic_throwf_snd);
+    agent.game_acmd("expression_throwf", sonic_throwf_exp);
 
-        sonic_throwlw
-    );
+    agent.game_acmd("game_throwlw", sonic_throwlw);
 }

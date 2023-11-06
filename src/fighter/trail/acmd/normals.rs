@@ -92,10 +92,8 @@ unsafe extern "C" fn trail_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        trail_attack11,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", trail_attack11);
 
-        trail_attacks3
-    );
+    agent.game_acmd("game_attacks3", trail_attacks3);
 }

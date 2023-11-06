@@ -74,12 +74,10 @@ unsafe extern "C" fn wolf_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wolf_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", wolf_attackairn);
 
-        wolf_attackairb,
+    agent.game_acmd("game_attackairb", wolf_attackairb);
 
-        wolf_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", wolf_attackairlw);
 }

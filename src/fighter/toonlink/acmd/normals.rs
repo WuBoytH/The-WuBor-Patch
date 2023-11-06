@@ -19,8 +19,6 @@ unsafe extern "C" fn toonlink_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        toonlink_attackdash
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", toonlink_attackdash);
 }

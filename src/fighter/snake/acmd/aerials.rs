@@ -141,12 +141,10 @@ unsafe extern "C" fn snake_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        snake_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", snake_attackairn);
 
-        snake_attackairb,
+    agent.game_acmd("game_attackairb", snake_attackairb);
 
-        snake_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", snake_attackairlw);
 }

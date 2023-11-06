@@ -40,10 +40,8 @@ unsafe extern "C" fn szerosuit_attacks4lw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_attacks4hi,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4hi", szerosuit_attacks4hi);
 
-        szerosuit_attacks4lw
-    );
+    agent.game_acmd("game_attacks4lw", szerosuit_attacks4lw);
 }

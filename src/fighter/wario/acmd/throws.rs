@@ -114,14 +114,12 @@ unsafe extern "C" fn wario_throwlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wario_throwf,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", wario_throwf);
 
-        wario_throwb,
+    agent.game_acmd("game_throwb", wario_throwb);
 
-        wario_throwhi,
+    agent.game_acmd("game_throwhi", wario_throwhi);
 
-        wario_throwlw
-    );
+    agent.game_acmd("game_throwlw", wario_throwlw);
 }

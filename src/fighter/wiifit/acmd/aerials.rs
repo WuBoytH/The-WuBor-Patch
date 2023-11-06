@@ -57,10 +57,8 @@ unsafe extern "C" fn wiifit_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wiifit_attackairf,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", wiifit_attackairf);
 
-        wiifit_attackairb
-    );
+    agent.game_acmd("game_attackairb", wiifit_attackairb);
 }

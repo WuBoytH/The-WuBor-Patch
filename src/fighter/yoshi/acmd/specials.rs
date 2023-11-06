@@ -43,10 +43,10 @@ unsafe extern "C" fn yoshi_specialsloop(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        yoshi_specialn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", yoshi_specialn);
 
-        yoshi_specialsloop
-    );
+    agent.game_acmd("game_specialairn", yoshi_specialn);
+
+    agent.game_acmd("game_specialsloop", yoshi_specialsloop);
 }

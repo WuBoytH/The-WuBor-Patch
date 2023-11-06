@@ -19,8 +19,8 @@ unsafe extern "C" fn sonic_throw_main_loop(fighter: &mut L2CFighterCommon) -> L2
     fighter.status_Throw_Main()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        sonic_throw_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_THROW, sonic_throw_main);
+
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL, sonic_screw_jump_aerial_main);
 }

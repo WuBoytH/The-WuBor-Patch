@@ -2,8 +2,8 @@ mod throws;
 mod specials;
 mod escape;
 
-pub fn install() {
-    throws::install();
-    specials::install();
-    escape::install();
+pub fn install(agent : &mut smashline::Agent) {
+    throws::install(agent);
+    specials::install(agent);
+    escape::install(agent);
 }

@@ -18,10 +18,8 @@ unsafe extern "C" fn wiifit_specialhiend(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wiifit_specialhijump,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhijump", wiifit_specialhijump);
 
-        wiifit_specialhiend
-    );
+    agent.game_acmd("game_specialhiend", wiifit_specialhiend);
 }

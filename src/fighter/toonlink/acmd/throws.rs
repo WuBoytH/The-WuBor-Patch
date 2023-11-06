@@ -27,8 +27,6 @@ unsafe extern "C" fn toonlink_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        toonlink_throwlw
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwlw", toonlink_throwlw);
 }

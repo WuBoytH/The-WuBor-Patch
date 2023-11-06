@@ -203,16 +203,14 @@ unsafe extern "C" fn simon_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        simon_attacks4,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4", simon_attacks4);
 
-        simon_attacks4hi,
+    agent.game_acmd("game_attacks4hi", simon_attacks4hi);
 
-        simon_attacks4lw,
+    agent.game_acmd("game_attacks4lw", simon_attacks4lw);
 
-        simon_attackhi4,
+    agent.game_acmd("game_attackhi4", simon_attackhi4);
 
-        simon_attacklw4
-    );
+    agent.game_acmd("game_attacklw4", simon_attacklw4);
 }

@@ -124,14 +124,12 @@ unsafe extern "C" fn zelda_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        zelda_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", zelda_attackairn);
 
-        zelda_attackairf,
+    agent.game_acmd("game_attackairf", zelda_attackairf);
 
-        zelda_attackairb,
+    agent.game_acmd("game_attackairb", zelda_attackairb);
 
-        zelda_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", zelda_attackairlw);
 }

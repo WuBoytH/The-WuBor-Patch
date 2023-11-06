@@ -38,16 +38,10 @@ unsafe extern "C" fn snake_specialairhihang(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
-// unsafe extern "C" fn snake_cypher_detach(_agent: &mut L2CAgentBase) {
-// }
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhistart", snake_specialhistart);
 
-pub fn install() {
-    install_acmd_scripts!(
-        snake_specialhistart,
+    agent.game_acmd("game_specialairhistart", snake_specialhistart);
 
-        snake_specialairhihang,
-
-        // snake_cypher_detach
-    );
+    agent.game_acmd("game_specialairhihang", snake_specialairhihang);
 }

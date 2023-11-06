@@ -9,8 +9,6 @@ unsafe extern "C" fn szerosuit_rebirth_main(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        szerosuit_rebirth_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, szerosuit_rebirth_main);
 }

@@ -1,7 +1,13 @@
 mod acmd;
 mod status;
 
+mod beam;
+
 pub fn install() {
-    acmd::install();
-    status::install();
+    let agent = smashline::Agent::new("tantan");
+    acmd::install(agent);
+    status::install(agent);
+    agent.install();
+
+    beam::install();
 }

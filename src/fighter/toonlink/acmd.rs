@@ -5,11 +5,11 @@ mod specials;
 mod lasso;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    aerials::install();
-    throws::install();
-    specials::install();
-    lasso::install();
-    escape::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    aerials::install(agent);
+    throws::install(agent);
+    specials::install(agent);
+    lasso::install(agent);
+    escape::install(agent);
 }

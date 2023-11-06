@@ -1,7 +1,7 @@
 mod special_hi;
 mod rebirth;
 
-pub fn install() {
-    special_hi::install();
-    rebirth::install();
+pub fn install(agent : &mut smashline::Agent) {
+    special_hi::install(agent);
+    rebirth::install(agent);
 }

@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn lucina_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -29,12 +28,10 @@ unsafe extern "C" fn lucina_speciallw_hit_pre(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn lucina_speciallw_hit_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucina_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
@@ -83,7 +80,6 @@ unsafe extern "C" fn lucina_shadowfrenzy_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn lucina_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }

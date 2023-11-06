@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "rockman_chargeshot", status = WEAPON_ROCKMAN_CHARGESHOT_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn rockman_chargeshot_regular_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     // Original Implementation
     // let life_min = WorkModule::get_param_int(weapon.module_accessor, hash40("param_chargeshot"), hash40("life_min"));

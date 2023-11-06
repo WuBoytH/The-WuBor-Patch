@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn pitb_special_n_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_FLAG_DIR_S) {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_hold_hi") as i64, *FIGHTER_PIT_STATUS_SPECIAL_N_CHARGE_INT_MOTION);

@@ -1,11 +1,9 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn kirby_simon_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn kirby_richter_specialn_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_main_inner(fighter)
 }
@@ -141,12 +139,10 @@ unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_SIMON_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn kirby_simon_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_end_inner(fighter)
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_RICHTER_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn kirby_richter_specialn_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     belmont_special_n_end_inner(fighter)
 }

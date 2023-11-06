@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -37,7 +36,6 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_pre(fighter: &mut L2CFi
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP_SQUAT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn rockman_rockbuster_shoot_jump_squat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stick_jump_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     if stick_jump_life == 0 || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {

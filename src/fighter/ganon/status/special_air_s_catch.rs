@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ganon", status = FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn ganon_special_air_s_catch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION_AIR);
     MotionModule::set_rate(fighter.module_accessor, 0.0);

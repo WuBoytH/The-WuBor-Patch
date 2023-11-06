@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn lucina_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_turn = if !VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND) {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
@@ -36,7 +35,6 @@ unsafe extern "C" fn lucina_special_s_pre(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucina_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     VarModule::on_flag(fighter.module_accessor, yu::instance::flag::DISABLE_SPECIAL_N_S);

@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "richter", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn richter_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_uniq_process_exec();
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw")

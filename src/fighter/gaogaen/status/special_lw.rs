@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "gaogaen", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn gaogaen_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, gaogaen::status::flag::REVENGE_AUTO);
     let mot;

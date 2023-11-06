@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn pikmin_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS3Common();
     fighter.sub_shift_status_main(L2CValue::Ptr(pikmin_attack_s3_main_loop as *const () as _))
@@ -103,7 +102,6 @@ unsafe extern "C" fn pikmin_attack_s3_handle_loop(fighter: &mut L2CFighterCommon
     }
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn pikmin_attack_s3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_GUARD_ON {
         VarModule::set_int(fighter.module_accessor, pikmin::instance::int::ATTACK_S3_LOOP_COUNT, 0);

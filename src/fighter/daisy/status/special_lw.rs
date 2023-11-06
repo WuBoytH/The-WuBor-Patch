@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         StatusModule::set_status_kind_interrupt(fighter.module_accessor, *FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START);
@@ -33,7 +32,6 @@ unsafe extern "C" fn daisy_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn daisy_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         FighterSpecializer_Peach::special_lw_check_num_of_item(fighter.global_table[MODULE_ACCESSOR].get_ptr() as *mut FighterModuleAccessor);

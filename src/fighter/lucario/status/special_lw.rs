@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::super::{vl, helper::*};
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,7 +30,6 @@ unsafe extern "C" fn lucario_special_lw_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let stop_energy = KineticModule::get_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_STOP);
     let speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -72,7 +70,6 @@ unsafe extern "C" fn lucario_special_lw_init(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucario_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_STEP, lucario::SPECIAL_LW_STEP_START);
     VarModule::set_int(fighter.module_accessor, lucario::status::int::SPECIAL_LW_CHARGE_TIME, 0);
@@ -325,7 +322,6 @@ unsafe extern "C" fn lucario_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-#[status_script(agent = "lucario", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn lucario_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     lucario_special_lw_eff_remover(fighter);
     0.into()

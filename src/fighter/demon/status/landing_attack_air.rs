@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn demon_landing_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_LandingAttackAirSub();
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_landing_attack_air_main_loop as *const () as _))

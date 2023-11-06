@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "jack_doyle", status = WEAPON_JACK_DOYLE_STATUS_KIND_ENTRY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 pub unsafe extern "C" fn jack_doyle_entry_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = LinkModule::get_parent_id(weapon.module_accessor, *LINK_NO_CONSTRAINT, true) as u32;
     let owner = sv_battle_object::module_accessor(owner_id);

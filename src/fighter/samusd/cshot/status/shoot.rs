@@ -3,7 +3,6 @@ use {
     super::super::super::vl,
 };
 
-#[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
@@ -143,7 +142,6 @@ unsafe fn samusd_cshot_shoot_init(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     weapon.clear_lua_stack();
     lua_args!(weapon, WEAPON_KINETIC_TYPE_NORMAL);
@@ -173,7 +171,6 @@ unsafe fn samusd_cshot_shoot_exec(weapon: &mut L2CWeaponCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "samusd_cshot", status = WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let otarget_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);

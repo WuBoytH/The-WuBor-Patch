@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn marth_specials_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, marth::status::flag::DISABLE_STANCE_CHANGE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
@@ -49,7 +48,6 @@ unsafe extern "C" fn marth_specials_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn marth_specials2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     marth_specials_reset_helper(fighter);
@@ -104,7 +102,6 @@ unsafe extern "C" fn marth_specials2_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(marth_specials_main_loop as *const () as _))
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn marth_specials3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_CONTINUE_MOT);
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_S_FLAG_INPUT_LW) {
@@ -175,7 +172,6 @@ unsafe extern "C" fn marth_specials3_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S3, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
 unsafe extern "C" fn marth_specials3_exec_stop(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }

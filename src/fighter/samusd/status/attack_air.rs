@@ -3,7 +3,6 @@ use {
     super::vl,
 };
 
-#[status_script(agent = "samusd", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn samusd_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_common(true.into());
     if !StopModule::is_stop(fighter.module_accessor) {

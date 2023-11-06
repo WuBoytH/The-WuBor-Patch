@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pitb", status = FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe fn pitb_specialn_shoot_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     pitb_specialn_endremove(fighter)
 }

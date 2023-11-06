@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn demon_attack_stand_2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !demon_attack_common(fighter).get_bool() {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);

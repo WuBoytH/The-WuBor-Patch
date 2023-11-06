@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "snake", status = FIGHTER_STATUS_KIND_REBIRTH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn snake_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if [

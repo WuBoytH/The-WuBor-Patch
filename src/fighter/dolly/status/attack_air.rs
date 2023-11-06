@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn dolly_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let aerial = ControlModule::get_attack_air_kind(fighter.module_accessor);
     let mot= match aerial {

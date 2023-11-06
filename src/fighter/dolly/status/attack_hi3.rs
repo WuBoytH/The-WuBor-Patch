@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn dolly_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.clear_lua_stack();

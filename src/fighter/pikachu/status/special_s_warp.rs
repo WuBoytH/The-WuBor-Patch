@@ -2,7 +2,6 @@ use crate::imports::status_imports::*;
 
 // Quick Attack is now on side b lol
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -34,7 +33,6 @@ unsafe extern "C" fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     if count == 0 {
@@ -78,7 +76,6 @@ unsafe extern "C" fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon)
     }
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn pikachu_special_s_warp_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();

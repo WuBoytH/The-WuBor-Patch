@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let ret = original!(fighter);
     let motion = MotionModule::motion_kind(fighter.module_accessor);
@@ -26,12 +25,10 @@ unsafe extern "C" fn simon_attack_air_main(fighter: &mut L2CFighterCommon) -> L2
     ret
 }
 
-#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn simon_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_uniq_process_exec()
 }
 
-#[status_script(agent = "simon", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_CHECK_ATTACK)]
 unsafe extern "C" fn simon_attack_air_check_attack(_fighter: &mut L2CFighterCommon, _param_1: &L2CValue, _param_2: &L2CValue) -> L2CValue {
     0.into()
 }

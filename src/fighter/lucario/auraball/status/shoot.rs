@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) -> L2CValue {
     MiscModule::get_vars_from_pocket(weapon.module_accessor);
     if VarModule::is_flag(weapon.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
@@ -33,7 +32,6 @@ unsafe extern "C" fn lucario_auraball_shoot_pre(weapon: &mut L2CWeaponCommon) ->
     0.into()
 }
 
-#[status_script(agent = "lucario_auraball", status = WEAPON_LUCARIO_AURABALL_STATUS_KIND_SHOOT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucario_auraball_shoot_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let life = WorkModule::get_param_int(weapon.module_accessor, hash40("param_auraball"), hash40("life"));
     WorkModule::set_int(weapon.module_accessor, life, *WEAPON_INSTANCE_WORK_ID_INT_INIT_LIFE);

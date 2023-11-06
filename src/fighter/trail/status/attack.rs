@@ -3,7 +3,6 @@ use {
     crate::fighter::common::status::attack::attack::*
 };
 
-#[status_script(agent = "trail", status = FIGHTER_STATUS_KIND_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn trail_attack_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_status_AttackCommon();
     if !StopModule::is_stop(fighter.module_accessor) {

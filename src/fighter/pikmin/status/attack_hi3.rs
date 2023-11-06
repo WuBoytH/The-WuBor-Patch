@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn pikmin_attack_hi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,7 +31,6 @@ unsafe extern "C" fn pikmin_attack_hi3_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn pikmin_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackHi3_Common(Hash40::new("attack_hi3").into(), Hash40::new("attack_hi3").into());
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);

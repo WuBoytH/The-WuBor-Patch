@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn dolly_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_cancel = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     let ret = original!(fighter);
@@ -8,7 +7,6 @@ unsafe extern "C" fn dolly_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CV
     ret
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn dolly_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_set_special_start_common_kinetic_setting(hash40("param_special_n").into());
     fighter.sub_change_motion_by_situation(Hash40::new("special_n").into(), Hash40::new("special_air_n").into(), false.into());
@@ -115,7 +113,6 @@ unsafe extern "C" fn dolly_special_n_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_special_n_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     0.into()

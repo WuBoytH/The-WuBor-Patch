@@ -1,21 +1,17 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn pikmin_landing_light_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_init_inner(fighter)
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
 unsafe extern "C" fn pikmin_landing_light_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn pikmin_landing_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_init_inner(fighter)
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn pikmin_landing_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_landing_uniq_process_exec();
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_LANDING {
@@ -28,17 +24,14 @@ unsafe extern "C" fn pikmin_landing_exec(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
 unsafe extern "C" fn pikmin_landing_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
 unsafe extern "C" fn pikmin_landing_attack_air_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }
 
-#[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
 unsafe extern "C" fn pikmin_landing_fall_special_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }

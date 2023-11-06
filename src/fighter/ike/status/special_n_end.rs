@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::super::vl;
 
-#[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ike_special_n_end_init_inner(fighter)
 }
@@ -22,7 +21,6 @@ pub unsafe extern "C" fn ike_special_n_end_init_inner(fighter: &mut L2CFighterCo
     0.into()
 }
 
-#[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn ike_special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     ike_special_n_end_mot_helper(fighter);

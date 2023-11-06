@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn lucina_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_DECIDE_ROMAN_DIREC);
     VarModule::off_flag(fighter.module_accessor, yu::status::flag::SPECIAL_LW_ROMAN_MOVE);

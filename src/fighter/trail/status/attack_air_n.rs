@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "trail", status = FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn trail_attack_air_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     ControlModule::reset_attack_air_kind(fighter.module_accessor);

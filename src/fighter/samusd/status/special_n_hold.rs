@@ -3,7 +3,6 @@ use {
     super::vl,
 };
 
-#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn samusd_special_n_hold_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -250,7 +249,6 @@ unsafe extern "C" fn samusd_special_n_hold_main_loop(fighter: &mut L2CFighterCom
     1.into()
 }
 
-#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
 unsafe fn samusd_special_n_hold_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status_kind = fighter.global_table[STATUS_KIND].get_i32();
     if status_kind == *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_F

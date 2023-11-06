@@ -23,7 +23,6 @@ unsafe extern "C" fn dolly_special_s_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_special_f_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_F_END {
@@ -32,7 +31,6 @@ unsafe extern "C" fn dolly_special_f_attack_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_ATTACK, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_special_b_attack_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_B_LANDING {
         VarModule::off_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL);

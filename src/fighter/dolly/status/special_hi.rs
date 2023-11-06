@@ -37,12 +37,10 @@ unsafe extern "C" fn dolly_special_hi_pre(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     dolly_special_hi_end_main(fighter)
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_special_hi_command_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP {
         if VarModule::is_flag(fighter.module_accessor, dolly::instance::flag::RISING_FORCE) {
@@ -64,7 +62,6 @@ unsafe extern "C" fn dolly_special_hi_end_main(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_special_hi_jump_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_HI_JUMP

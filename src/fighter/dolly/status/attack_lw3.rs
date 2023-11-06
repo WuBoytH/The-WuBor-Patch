@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn dolly_attack_lw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.status_AttackLw3_common();
@@ -67,7 +66,6 @@ unsafe extern "C" fn dolly_attack_lw3_main_loop(fighter: &mut L2CFighterCommon) 
     1.into()
 }
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn dolly_attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_LW3 {
         VarModule::set_int(fighter.module_accessor, dolly::instance::int::D_TILT_CHAIN_COUNT, 0);

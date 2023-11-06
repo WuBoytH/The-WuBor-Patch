@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn luigi_special_s_charge_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_DISCHARGE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_LUIGI_STATUS_SPECIAL_S_CHARGE_FLAG_FLASHING);
@@ -98,7 +97,6 @@ unsafe extern "C" fn luigi_special_s_charge_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn luigi_special_s_charge_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     luigi_remove_thunderhand_eff(fighter);
     0.into()

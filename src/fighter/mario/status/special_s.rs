@@ -1,11 +1,9 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
 unsafe extern "C" fn mario_special_s_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "mario", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn mario_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);

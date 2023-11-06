@@ -2,12 +2,10 @@ use {
     crate::imports::status_imports::*
 };
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn ryu_speciallw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_speciallw_step_pre(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn ryu_speciallw_step_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_speciallw_step_pre(fighter)
 }

@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ridley_breath", status = WEAPON_RIDLEY_BREATH_STATUS_KIND_FLY, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn ridley_breath_fly_main(weapon: &mut L2CWeaponCommon) -> L2CValue {
     let owner_id = WorkModule::get_int(weapon.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let owner_object = MiscModule::get_battle_object_from_id(owner_id);

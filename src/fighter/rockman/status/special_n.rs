@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 use super::{helper::*, super::vl};
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -47,7 +46,6 @@ unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
     let charge_frame = VarModule::get_int(fighter.module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
@@ -93,7 +91,6 @@ unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }

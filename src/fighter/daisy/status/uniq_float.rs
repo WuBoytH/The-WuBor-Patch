@@ -3,7 +3,6 @@ use {
     super::super::vl
 };
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 unsafe extern "C" fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,7 +31,6 @@ unsafe extern "C" fn daisy_uniqfloatstart_pre(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn daisy_uniqfloatstart_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_float(fighter.module_accessor, 10.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
     MotionModule::change_motion(
@@ -56,7 +54,6 @@ unsafe extern "C" fn daisy_uniqfloatstart_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
 unsafe extern "C" fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if KineticModule::get_kinetic_type(fighter.module_accessor) == *FIGHTER_KINETIC_TYPE_FALL {
         KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
@@ -71,7 +68,6 @@ unsafe extern "C" fn daisy_uniqfloatstart_exec(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-#[status_script(agent = "daisy", status = FIGHTER_PEACH_STATUS_KIND_UNIQ_FLOAT_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn daisy_uniqfloatstart_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL
     && ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DAISY_GENERATE_ARTICLE_KASSAR) {

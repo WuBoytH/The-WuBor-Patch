@@ -2,7 +2,6 @@ use crate::imports::status_imports::*;
 use super::super::super::vl;
 use super::super::helper::*;
 
-#[status_script(agent = "marth", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn marth_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU);
     marth_speciallw_common_end(fighter);
@@ -10,7 +9,6 @@ unsafe extern "C" fn marth_speciallw_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn marth_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU);
     HitModule::set_whole(fighter.module_accessor, HitStatus(*HIT_STATUS_XLU), 0);
@@ -69,7 +67,6 @@ unsafe extern "C" fn marth_speciallw_hit_mot_helper(fighter: &mut L2CFighterComm
     );
 }
 
-#[status_script(agent = "marth", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
 unsafe extern "C" fn marth_speciallw_hit_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, marth::instance::flag::PARRY_XLU)
     && ![

@@ -3,7 +3,6 @@ use {
     super::vl,
 };
 
-#[status_script(agent = "samusd", status = FIGHTER_SAMUS_STATUS_KIND_SPECIAL_AIR_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe fn samusd_special_air_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     samusd_speciallw_helper(fighter);
     samusd_special_air_lw_mot_helper(fighter);

@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_HI_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn ken_specialhi_command(fighter: &mut L2CFighterCommon) -> L2CValue {
     ken_specialhi_main(fighter);
     0.into()

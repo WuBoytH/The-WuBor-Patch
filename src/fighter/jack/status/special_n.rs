@@ -1,6 +1,5 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "jack", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
 pub unsafe extern "C" fn jack_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let prev_status = fighter.global_table[PREV_STATUS_KIND].get_i32();
     let keep_first = if prev_status != *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_ESCAPE {

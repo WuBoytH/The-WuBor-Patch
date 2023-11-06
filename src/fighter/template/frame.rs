@@ -1,21 +1,12 @@
 use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    smashline::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
-    crate::fighter::common::frame::install_common_frame
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
 unsafe extern "C" fn template_frame(fighter: &mut L2CFighterCommon) {
-    
+    common_fighter_frame(fighter);
 }
 
 pub fn install(agent : &mut smashline::Agent) {
     agent.on_line(smashline::Main, template_frame);
-    install_common_frame(agent);
 }

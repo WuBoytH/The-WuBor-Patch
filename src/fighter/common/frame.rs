@@ -45,13 +45,9 @@ unsafe extern "C" fn special_jump_stick_flick(fighter: &mut L2CFighterCommon) {
 }
 
 // Use this for general per-frame fighter-level hooks
-unsafe extern "C" fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn common_fighter_frame(fighter: &mut L2CFighterCommon) {
     if utility::get_category(&mut *fighter.module_accessor) == *BATTLE_OBJECT_CATEGORY_FIGHTER {
         hit_cancel_frame_set(fighter);
         special_jump_stick_flick(fighter);
     }
-}
-
-pub fn install_common_frame(agent : &mut smashline::Agent) {
-    agent.on_line(smashline::Main, common_fighter_frame);
 }

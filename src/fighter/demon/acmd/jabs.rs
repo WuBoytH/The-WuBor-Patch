@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -27,7 +26,6 @@ unsafe extern "C" fn demon_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack13(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 9.0 / 6.0);
     frame(agent.lua_state_agent, 4.0);
@@ -57,7 +55,6 @@ unsafe extern "C" fn demon_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack14", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack14(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -84,7 +81,6 @@ unsafe extern "C" fn demon_attack14(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack15", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack15(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -113,7 +109,6 @@ unsafe extern "C" fn demon_attack15(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack16", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack16(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -153,7 +148,6 @@ unsafe extern "C" fn demon_attack16(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack17", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack17(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -180,7 +174,6 @@ unsafe extern "C" fn demon_attack17(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack18", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack18(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -209,7 +202,6 @@ unsafe extern "C" fn demon_attack18(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attack19", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack19(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -237,7 +229,6 @@ unsafe extern "C" fn demon_attack19(agent: &mut L2CAgentBase) {
 
 // Twin Fangs Stature Smash
 
-#[acmd_script( agent = "demon", script = "game_attack142", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attack142(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -272,7 +263,6 @@ unsafe extern "C" fn demon_attack142(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "effect_attack142", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn demon_attack142_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("null"), Hash40::new("top"), 5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -289,7 +279,6 @@ unsafe extern "C" fn demon_attack142_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "sound_attack142", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn demon_attack142_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -298,7 +287,6 @@ unsafe extern "C" fn demon_attack142_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "expression_attack142", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn demon_attack142_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

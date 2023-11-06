@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wario", scripts = [ "game_specialnopenwait", "game_specialairnopenwait" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_specialnopenwait(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -25,7 +24,6 @@ unsafe extern "C" fn wario_specialnopenwait(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = [ "game_specialnbite", "game_specialairnbite" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_specialnbite(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 21.0);
@@ -44,7 +42,6 @@ unsafe extern "C" fn wario_specialnbite(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_specialhijump", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_specialhijump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -86,7 +83,6 @@ unsafe extern "C" fn wario_specialhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_speciallwsr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -99,7 +95,6 @@ unsafe extern "C" fn wario_speciallwsr(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwmr", "game_specialairlwmr"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_speciallwmr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -119,7 +114,6 @@ unsafe extern "C" fn wario_speciallwmr(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_speciallwlr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.6);
@@ -138,7 +132,6 @@ unsafe extern "C" fn wario_speciallwlr(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {

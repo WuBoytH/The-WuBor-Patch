@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "master", script = "game_landingairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn master_landingairn(agent: &mut L2CAgentBase) {
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_MASTER_GENERATE_ARTICLE_BOW) {
         if macros::is_excute(agent) {
@@ -13,7 +12,6 @@ unsafe extern "C" fn master_landingairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn master_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SPEAR, false, 0);

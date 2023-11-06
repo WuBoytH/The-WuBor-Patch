@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "richter_whip", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -26,7 +25,6 @@ unsafe extern "C" fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

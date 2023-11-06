@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "robot", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn robot_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -15,7 +14,6 @@ unsafe extern "C" fn robot_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn robot_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -31,7 +29,6 @@ unsafe extern "C" fn robot_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn robot_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -47,7 +44,6 @@ unsafe extern "C" fn robot_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn robot_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -69,7 +65,6 @@ unsafe extern "C" fn robot_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn robot_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -82,7 +77,6 @@ unsafe extern "C" fn robot_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -138,7 +132,6 @@ unsafe extern "C" fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -152,7 +145,6 @@ unsafe extern "C" fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);

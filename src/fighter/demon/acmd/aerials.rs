@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -30,7 +29,6 @@ unsafe extern "C" fn demon_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -74,7 +72,6 @@ unsafe extern "C" fn demon_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_landingairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::SET_SPEED_EX(agent, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 use super::super::vl;
 
-#[acmd_script( agent = "samusd", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specialnstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 23.0 / 14.0);
     frame(agent.lua_state_agent, 2.0);
@@ -23,7 +22,6 @@ unsafe extern "C" fn samusd_specialnstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_special", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_special(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
@@ -34,7 +32,6 @@ unsafe extern "C" fn samusd_special(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialair", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specialair(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
@@ -49,7 +46,6 @@ unsafe extern "C" fn samusd_specialair(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specials", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
@@ -60,7 +56,6 @@ unsafe extern "C" fn samusd_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairs", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specialairs(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.667);
@@ -75,7 +70,6 @@ unsafe extern "C" fn samusd_specialairs(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
@@ -130,7 +124,6 @@ unsafe extern "C" fn samusd_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SAMUS_STATUS_SPECIAL_HI_FLAG_DISABLE_LR);
@@ -171,7 +164,6 @@ unsafe extern "C" fn samusd_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samusd", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -217,7 +209,6 @@ unsafe extern "C" fn samusd_speciallw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-#[acmd_script( agent = "samusd", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samusd_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -255,7 +246,6 @@ unsafe extern "C" fn samusd_specialairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.6);
 }
 
-#[acmd_script( agent = "samusd", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {

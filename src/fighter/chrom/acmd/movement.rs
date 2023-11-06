@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "chrom", script = "game_dash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_dash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -8,7 +7,6 @@ unsafe extern "C" fn chrom_dash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_turndash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_turndash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {

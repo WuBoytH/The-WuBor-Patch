@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn koopa_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.5);

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "szerosuit", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn szerosuit_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -56,7 +55,6 @@ unsafe extern "C" fn szerosuit_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn szerosuit_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -112,7 +110,6 @@ unsafe extern "C" fn szerosuit_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn szerosuit_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -151,7 +148,6 @@ unsafe extern "C" fn szerosuit_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_specialhi2", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn szerosuit_specialhi2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
@@ -171,7 +167,6 @@ unsafe extern "C" fn szerosuit_specialhi2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_specialhi2", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn szerosuit_specialhi2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
@@ -179,7 +174,6 @@ unsafe extern "C" fn szerosuit_specialhi2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_specialhi2", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn szerosuit_specialhi2_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {
@@ -201,7 +195,6 @@ unsafe extern "C" fn szerosuit_specialhi2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_specialairhi2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn szerosuit_specialairhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
@@ -240,7 +233,6 @@ unsafe extern "C" fn szerosuit_specialairhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "effect_specialairhi2", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn szerosuit_specialairhi2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 25.0);
     if macros::is_excute(agent) {
@@ -260,7 +252,6 @@ unsafe extern "C" fn szerosuit_specialairhi2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "sound_specialairhi2", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn szerosuit_specialairhi2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 40.0);
     if macros::is_excute(agent) {
@@ -268,7 +259,6 @@ unsafe extern "C" fn szerosuit_specialairhi2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "expression_specialairhi2", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 42.0);
     if macros::is_excute(agent) {

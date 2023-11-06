@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -38,7 +37,6 @@ unsafe extern "C" fn lucario_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -64,7 +62,6 @@ unsafe extern "C" fn lucario_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.09);
@@ -92,7 +89,6 @@ unsafe extern "C" fn lucario_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 1.0, 4.0, 4.0, 4.0);
@@ -122,7 +118,6 @@ unsafe extern "C" fn lucario_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 8.0, 2.0);

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ridley", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ridley_specialsstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -49,7 +48,6 @@ unsafe extern "C" fn ridley_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargef", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
@@ -64,7 +62,6 @@ unsafe extern "C" fn ridley_specialairhichargef(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargeb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
@@ -80,7 +77,6 @@ unsafe extern "C" fn ridley_specialairhichargeb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargehi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);
@@ -96,7 +92,6 @@ unsafe extern "C" fn ridley_specialairhichargehi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ridley", script = "game_specialairhichargelw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 2);

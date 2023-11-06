@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucina", script = "game_throwhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucina_throwhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         if VarModule::is_flag(agent.module_accessor, yu::instance::flag::HEROIC_GRAB) {

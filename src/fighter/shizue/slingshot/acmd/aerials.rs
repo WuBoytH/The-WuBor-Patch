@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "shizue_slingshot", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shizue_slingshot_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *WEAPON_SHIZUE_SLINGSHOT_GENERATE_ARTICLE_BULLET, false, -1);
@@ -14,7 +13,6 @@ unsafe extern "C" fn shizue_slingshot_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shizue_slingshot", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shizue_slingshot_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *WEAPON_SHIZUE_SLINGSHOT_GENERATE_ARTICLE_BULLET, false, -1);

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "link", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn link_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -18,7 +17,6 @@ unsafe extern "C" fn link_attack13(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "link", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn link_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
@@ -34,7 +32,6 @@ unsafe extern "C" fn link_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn link_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -55,7 +52,6 @@ unsafe extern "C" fn link_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "link", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn link_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -70,7 +66,6 @@ unsafe extern "C" fn link_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "link", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn link_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.7);

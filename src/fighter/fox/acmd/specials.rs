@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "fox", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn fox_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -19,7 +18,6 @@ unsafe extern "C" fn fox_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "fox", script = "game_speciallwstart", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn fox_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);

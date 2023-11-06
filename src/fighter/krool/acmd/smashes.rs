@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "krool", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn krool_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -22,7 +21,6 @@ unsafe extern "C" fn krool_attacks4(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 22.0, -7.0);
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn krool_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
@@ -40,7 +38,6 @@ unsafe extern "C" fn krool_attacks4hi(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 22.0, -7.0);
 }
 
-#[acmd_script( agent = "krool", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn krool_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {

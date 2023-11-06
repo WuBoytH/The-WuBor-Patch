@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "chrom", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -17,7 +16,6 @@ unsafe extern "C" fn chrom_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -33,7 +31,6 @@ unsafe extern "C" fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn chrom_attacks4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -45,7 +42,6 @@ unsafe extern "C" fn chrom_attacks4_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn chrom_attacks4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
@@ -61,7 +57,6 @@ unsafe extern "C" fn chrom_attacks4_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
@@ -86,7 +81,6 @@ unsafe extern "C" fn chrom_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -104,7 +98,6 @@ unsafe extern "C" fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn chrom_attackhi4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -116,7 +109,6 @@ unsafe extern "C" fn chrom_attackhi4_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));

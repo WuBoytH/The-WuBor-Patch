@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "eflame", scripts = [ "game_specials", "game_specialairs", "game_specialsflick", "game_specialairsflick" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn eflame_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
@@ -28,7 +27,6 @@ unsafe extern "C" fn eflame_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "game_specialairhijump", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -111,7 +109,6 @@ unsafe extern "C" fn eflame_specialairhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "game_speciallwattack", "game_specialairlwattack" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_EFLAME_GENERATE_ARTICLE_ESWORD) {
@@ -165,7 +162,6 @@ unsafe extern "C" fn eflame_speciallwattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "effect_speciallwattack", "effect_specialairlwattack" ], category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("eflame_change_end"), Hash40::new("top"), 0, 10, 0, 0, 0, 0, 1.3, true);
@@ -230,7 +226,6 @@ unsafe extern "C" fn eflame_speciallwattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_speciallwattack", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -254,7 +249,6 @@ unsafe extern "C" fn eflame_speciallwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", script = "sound_specialairlwattack", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -274,7 +268,6 @@ unsafe extern "C" fn eflame_specialairlwattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "eflame", scripts = [ "expression_speciallwattack", "expression_specialairlwattack" ], category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

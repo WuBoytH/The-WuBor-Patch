@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 use super::super::super::{helper::*, vl, vtable_hook::*};
 
-#[acmd_script( agent = "dolly_burst", script = "game_superspecial", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn dolly_burst_superspecial(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);

@@ -1,10 +1,8 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "elight", script = "game_escapen", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_escapen(_agent: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "elight", script = "game_escapef", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_escapef(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -12,11 +10,9 @@ unsafe extern "C" fn elight_escapef(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_escapeb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_escapeb(_agent: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "elight", script = "game_escapeairslide", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_escapeairslide(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -29,7 +25,6 @@ unsafe extern "C" fn elight_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_escapeairslideforesight", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_escapeairslideforesight(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {

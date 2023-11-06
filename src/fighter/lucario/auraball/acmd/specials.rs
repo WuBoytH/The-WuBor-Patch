@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario_auraball", scripts = [ "game_charge", "game_chargemax" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
@@ -9,7 +8,6 @@ unsafe extern "C" fn lucario_auraball_charge(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "sound_charge", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
@@ -18,7 +16,6 @@ unsafe extern "C" fn lucario_auraball_charge_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "game_shoot", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
     if !VarModule::is_flag(agent.module_accessor, lucario_auraball::instance::flag::SPIRIT_BOMB) {
         if macros::is_excute(agent) {
@@ -38,7 +35,6 @@ unsafe extern "C" fn lucario_auraball_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "sound_shoot", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_lucario_special_n01"));
@@ -89,7 +85,6 @@ unsafe extern "C" fn lucario_auraball_shoot_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "game_explosion", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -103,7 +98,6 @@ unsafe extern "C" fn lucario_auraball_explosion(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario_auraball", script = "effect_explosion", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn lucario_auraball_explosion_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new_raw(0x15cff20136), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, 0, 0, 0, 0, 0, true);

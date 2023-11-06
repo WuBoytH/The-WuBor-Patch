@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "toonlink", script = "game_aircatch", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {

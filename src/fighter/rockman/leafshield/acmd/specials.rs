@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "rockman_leafshield", scripts = [ "game_start", "game_startreverse" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
@@ -19,7 +18,6 @@ unsafe extern "C" fn rockman_leafshield_start(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman_leafshield", scripts = [ "game_shield", "game_shieldreverse" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {
@@ -38,7 +36,6 @@ unsafe extern "C" fn rockman_leafshield_shield(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman_leafshield", scripts = [ "game_fly", "game_flyreverse" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 4.0 / 3.0);
     if macros::is_excute(agent) {

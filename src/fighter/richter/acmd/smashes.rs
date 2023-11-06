@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "richter", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -50,7 +49,6 @@ unsafe extern "C" fn richter_attacks4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -100,7 +98,6 @@ unsafe extern "C" fn richter_attacks4hi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -150,7 +147,6 @@ unsafe extern "C" fn richter_attacks4lw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.2);
@@ -197,7 +193,6 @@ unsafe extern "C" fn richter_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {

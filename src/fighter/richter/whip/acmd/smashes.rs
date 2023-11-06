@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "richter_whip", scripts = [ "game_attacks4", "game_attacks4hi", "game_attacks4lw" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_whip_attacks4(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);

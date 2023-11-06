@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn szerosuit_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -36,7 +35,6 @@ unsafe extern "C" fn szerosuit_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn szerosuit_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

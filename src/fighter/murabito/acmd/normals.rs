@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "murabito", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn murabito_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);    
     macros::FT_MOTION_RATE(agent, 0.75);
@@ -18,7 +17,6 @@ unsafe extern "C" fn murabito_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn murabito_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MURABITO_GENERATE_ARTICLE_UMBRELLA, false, -1);
@@ -43,7 +41,6 @@ unsafe extern "C" fn murabito_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn murabito_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -77,7 +74,6 @@ unsafe extern "C" fn murabito_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "murabito", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn murabito_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

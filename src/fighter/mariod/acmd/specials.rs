@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mariod", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mariod_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -20,7 +19,6 @@ unsafe extern "C" fn mariod_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mariod_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -44,7 +42,6 @@ unsafe extern "C" fn mariod_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mariod_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -91,7 +88,6 @@ unsafe extern "C" fn mariod_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mariod", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mariod_specialairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {

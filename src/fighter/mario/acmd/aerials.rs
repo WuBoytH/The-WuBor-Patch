@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mario_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -34,7 +33,6 @@ unsafe extern "C" fn mario_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn mario_attackairf_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -44,7 +42,6 @@ unsafe extern "C" fn mario_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn mario_attackairf_snd(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
@@ -53,7 +50,6 @@ unsafe extern "C" fn mario_attackairf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn mario_attackairf_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -65,7 +61,6 @@ unsafe extern "C" fn mario_attackairf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_landingairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mario_landingairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -74,7 +69,6 @@ unsafe extern "C" fn mario_landingairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mario_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -97,7 +91,6 @@ unsafe extern "C" fn mario_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mario_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -120,7 +113,6 @@ unsafe extern "C" fn mario_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mario_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 6.0/9.0);
@@ -148,7 +140,6 @@ unsafe extern "C" fn mario_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn mario_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -200,7 +191,6 @@ unsafe extern "C" fn mario_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn mario_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -209,7 +199,6 @@ unsafe extern "C" fn mario_attackairlw_snd(agent: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "mario", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn mario_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -221,7 +210,6 @@ unsafe extern "C" fn mario_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mario_landingairlw(_agent: &mut L2CAgentBase) {
 }
 

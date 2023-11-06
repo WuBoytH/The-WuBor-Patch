@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "trail", script = "game_attackairn3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn trail_attackairn3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -24,7 +23,6 @@ unsafe extern "C" fn trail_attackairn3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn trail_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 2.0);
@@ -53,7 +51,6 @@ unsafe extern "C" fn trail_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn trail_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -94,7 +91,6 @@ unsafe extern "C" fn trail_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "trail", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn trail_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

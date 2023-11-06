@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "elight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attack100end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -17,7 +16,6 @@ unsafe extern "C" fn elight_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "elight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -60,7 +58,6 @@ unsafe extern "C" fn elight_attackdash(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.75);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -110,7 +107,6 @@ unsafe extern "C" fn elight_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -189,7 +185,6 @@ unsafe extern "C" fn elight_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "elight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);

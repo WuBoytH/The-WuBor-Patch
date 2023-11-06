@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "toonlink", scripts = ["game_specialnstart", "game_specialairnstart"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_TOONLINK_GENERATE_ARTICLE_BOW, false, 0);
@@ -14,7 +13,6 @@ unsafe extern "C" fn toonlink_specialnstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, toonlink::status::flag::SPECIAL_HI_MOVE);
@@ -58,7 +56,6 @@ unsafe extern "C" fn toonlink_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -154,7 +151,6 @@ unsafe extern "C" fn toonlink_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {

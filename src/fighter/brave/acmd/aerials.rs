@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "brave", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn brave_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -35,7 +34,6 @@ unsafe extern "C" fn brave_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn brave_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -70,7 +68,6 @@ unsafe extern "C" fn brave_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn brave_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -105,7 +102,6 @@ unsafe extern "C" fn brave_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn brave_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 2.0, 3.0, 3.0, 5.0);
@@ -129,7 +125,6 @@ unsafe extern "C" fn brave_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn brave_attackairhi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -137,7 +132,6 @@ unsafe extern "C" fn brave_attackairhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn brave_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 7.0, 3.0);

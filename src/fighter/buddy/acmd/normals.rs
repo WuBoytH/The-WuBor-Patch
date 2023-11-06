@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
@@ -20,7 +19,6 @@ unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn buddy_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -51,7 +49,6 @@ unsafe extern "C" fn buddy_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -82,7 +79,6 @@ unsafe extern "C" fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
@@ -113,7 +109,6 @@ unsafe extern "C" fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NO(agent, 12, *HIT_STATUS_NORMAL);
@@ -154,7 +149,6 @@ unsafe extern "C" fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn buddy_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "diddy", script = "game_specialairsjump", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -18,7 +17,6 @@ unsafe extern "C" fn diddy_specialairsjump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "diddy", script = "game_specialairhijump", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn diddy_specialairhijump(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);

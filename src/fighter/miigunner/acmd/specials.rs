@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "miigunner", scripts = [ "game_specialhi1", "game_specialairhi1" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn miigunner_specialhi1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -20,7 +19,6 @@ unsafe extern "C" fn miigunner_specialhi1(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "miigunner", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn miigunner_specialhi2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {

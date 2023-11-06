@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pitb", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pitb_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -21,7 +20,6 @@ unsafe extern "C" fn pitb_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pitb_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -51,7 +49,6 @@ unsafe extern "C" fn pitb_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pitb", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pitb_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {

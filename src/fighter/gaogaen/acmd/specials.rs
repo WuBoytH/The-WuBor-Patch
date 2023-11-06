@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gaogaen", script = "game_specialn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -167,7 +166,6 @@ unsafe extern "C" fn gaogaen_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -308,7 +306,6 @@ unsafe extern "C" fn gaogaen_specialairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -354,7 +351,6 @@ unsafe extern "C" fn gaogaen_specialsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairsstart", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialairsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -401,7 +397,6 @@ unsafe extern "C" fn gaogaen_specialairsstart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialsshoulder", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialsshoulder(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
@@ -446,7 +441,6 @@ unsafe extern "C" fn gaogaen_specialsshoulder(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairsshoulder", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialairsshoulder(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
@@ -491,7 +485,6 @@ unsafe extern "C" fn gaogaen_specialairsshoulder(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "game_specialslariat", "game_specialairslariat" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialslariat(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 11.99);
@@ -526,7 +519,6 @@ unsafe extern "C" fn gaogaen_specialslariat(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialhistart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -589,7 +581,6 @@ unsafe extern "C" fn gaogaen_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhifall", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialairhifall(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -623,7 +614,6 @@ unsafe extern "C" fn gaogaen_specialairhifall(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_specialairhifall2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_specialairhifall2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -657,7 +647,6 @@ unsafe extern "C" fn gaogaen_specialairhifall2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = ["game_speciallwstart", "game_specialairlwstart"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_speciallwstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -683,7 +672,6 @@ unsafe extern "C" fn gaogaen_speciallwstart(agent: &mut L2CAgentBase) {
     // macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "effect_speciallwstart", "effect_specialairlwstart" ], category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn gaogaen_speciallwstart_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -710,7 +698,6 @@ unsafe extern "C" fn gaogaen_speciallwstart_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, gaogaen::status::flag::REVENGE_AUTO) {
@@ -746,7 +733,6 @@ unsafe extern "C" fn gaogaen_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn gaogaen_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -760,7 +746,6 @@ unsafe extern "C" fn gaogaen_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "game_speciallwturn", "game_specialairlwturn" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gaogaen_speciallwturn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, gaogaen::status::flag::REVENGE_AUTO) {
@@ -800,7 +785,6 @@ unsafe extern "C" fn gaogaen_speciallwturn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", scripts = [ "effect_speciallwturn", "effect_specialairlwturn" ], category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn gaogaen_speciallwturn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {

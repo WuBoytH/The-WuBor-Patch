@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "elight", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if ArticleModule::is_exist(agent.module_accessor, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {
@@ -65,7 +64,6 @@ unsafe extern "C" fn elight_attacks4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.91);
 }
 
-#[acmd_script( agent = "elight", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn elight_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::IS_EXIST_ARTICLE(agent, *FIGHTER_ELIGHT_GENERATE_ARTICLE_ESWORD) {

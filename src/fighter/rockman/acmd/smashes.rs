@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "rockman", script = "game_attacks4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -20,7 +19,6 @@ unsafe extern "C" fn rockman_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn rockman_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -36,7 +34,6 @@ unsafe extern "C" fn rockman_attacks4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn rockman_attacks4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -44,7 +41,6 @@ unsafe extern "C" fn rockman_attacks4_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn rockman_attacks4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 10);
@@ -90,7 +86,6 @@ unsafe extern "C" fn rockman_attacks4_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attacks4hi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attacks4hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -111,7 +106,6 @@ unsafe extern "C" fn rockman_attacks4hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attacks4hi", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn rockman_attacks4hi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -131,7 +125,6 @@ unsafe extern "C" fn rockman_attacks4hi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attacks4hi", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn rockman_attacks4hi_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
@@ -139,7 +132,6 @@ unsafe extern "C" fn rockman_attacks4hi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attacks4hi", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn rockman_attacks4hi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 10);
@@ -178,7 +170,6 @@ unsafe extern "C" fn rockman_attacks4hi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attacks4lw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attacks4lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -198,7 +189,6 @@ unsafe extern "C" fn rockman_attacks4lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attacks4lw", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn rockman_attacks4lw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -211,7 +201,6 @@ unsafe extern "C" fn rockman_attacks4lw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attacks4lw", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn rockman_attacks4lw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
@@ -219,7 +208,6 @@ unsafe extern "C" fn rockman_attacks4lw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attacks4lw", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn rockman_attacks4lw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x1f5b14bb65), *FIGHTER_ROCKMAN_ARM_LEFT, *FIGHTER_ROCKMAN_ARMFORM_HAND, 10);
@@ -262,7 +250,6 @@ unsafe extern "C" fn rockman_attacks4lw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attacks4charge", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn rockman_attacks4charge_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -276,7 +263,6 @@ unsafe extern "C" fn rockman_attacks4charge_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attacks4charge", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn rockman_attacks4charge_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -284,7 +270,6 @@ unsafe extern "C" fn rockman_attacks4charge_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attacks4charge", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn rockman_attacks4charge_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         physics!(agent, *MA_MSC_CMD_PHYSICS_START_CHARGE, 0.8, 0.8, -1, 0.8, 0.8, -1, Hash40::new("invalid"));

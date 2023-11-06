@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "fox", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn fox_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -76,7 +75,6 @@ unsafe extern "C" fn fox_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "fox", script = "game_landingairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn fox_landingairf(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_FOX_STATUS_ATTACK_AIR_FLAG_LANDING_DISABLE_ATTACK) {
         if macros::is_excute(agent) {
@@ -95,7 +93,6 @@ if macros::is_excute(agent) {
 }
 }
 
-#[acmd_script( agent = "fox", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn fox_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -116,7 +113,6 @@ unsafe extern "C" fn fox_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "fox", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn fox_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {

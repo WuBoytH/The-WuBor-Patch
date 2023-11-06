@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -17,7 +16,6 @@ unsafe extern "C" fn lucario_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_LUCARIO_INSTANCE_WORK_ID_FLAG_FORCE_AURAPOWER_ATTACK_POWER_MUL);
@@ -38,7 +36,6 @@ unsafe extern "C" fn lucario_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -56,7 +53,6 @@ unsafe extern "C" fn lucario_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -74,7 +70,6 @@ unsafe extern "C" fn lucario_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -94,7 +89,6 @@ unsafe extern "C" fn lucario_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -108,7 +102,6 @@ unsafe extern "C" fn lucario_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucario_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.6);

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pickel_trolley", script = "game_specialsdrivepartial", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pickel_trolley_specialsdrivepartial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);
@@ -10,7 +9,6 @@ unsafe extern "C" fn pickel_trolley_specialsdrivepartial(agent: &mut L2CAgentBas
     }
 }
 
-#[acmd_script( agent = "pickel_trolley", script = "game_specialsdriveemptypartial", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pickel_trolley_specialsdriveemptypartial(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::clear_all(agent.module_accessor);

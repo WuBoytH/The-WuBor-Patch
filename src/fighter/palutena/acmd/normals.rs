@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "palutena", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn palutena_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.6);
@@ -27,7 +26,6 @@ unsafe extern "C" fn palutena_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn palutena_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.75);
@@ -54,7 +52,6 @@ unsafe extern "C" fn palutena_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn palutena_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {

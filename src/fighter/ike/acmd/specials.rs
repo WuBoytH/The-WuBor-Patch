@@ -3,7 +3,6 @@ use super::super::vl;
 
 // Special N
 
-#[acmd_script( agent = "ike", script = "game_specialnend", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ike_specialnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         KineticModule::set_consider_ground_friction(agent.module_accessor, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -69,7 +68,6 @@ unsafe extern "C" fn ike_specialnend(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -15.0);
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialnend", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -112,7 +110,6 @@ unsafe extern "C" fn ike_specialnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "sound_specialnend", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -159,7 +156,6 @@ unsafe extern "C" fn ike_specialnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "expression_specialnend", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn ike_specialnend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -245,7 +241,6 @@ unsafe extern "C" fn ike_special_n_end_ray_check(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialairnend", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ike_specialairnend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         KineticModule::set_consider_ground_friction(agent.module_accessor, false, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -269,7 +264,6 @@ unsafe extern "C" fn ike_specialairnend(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -15.0);
 }
 
-#[acmd_script( agent = "ike", script = "effect_specialairnend", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn ike_specialairnend_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ike_sword2"), Hash40::new("sword"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -285,7 +279,6 @@ unsafe extern "C" fn ike_specialairnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "sound_specialairnend", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn ike_specialairnend_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -305,7 +298,6 @@ unsafe extern "C" fn ike_specialairnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "expression_specialairnend", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn ike_specialairnend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -330,7 +322,6 @@ unsafe extern "C" fn ike_specialairnend_exp(agent: &mut L2CAgentBase) {
 
 // Special S
 
-#[acmd_script( agent = "ike", scripts = [ "sound_specialsdash", "sound_specialairsdash" ], category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn ike_specialsdash_snd(agent: &mut L2CAgentBase) {
     // if macros::is_excute(agent) {
     //     macros::PLAY_SE(agent, Hash40::new("vc_ike_special_s01"));
@@ -341,7 +332,6 @@ unsafe extern "C" fn ike_specialsdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ike_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 1.0, -8.0);
@@ -350,7 +340,6 @@ unsafe extern "C" fn ike_specialsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "ike", scripts = [ "game_specialsattack", "game_specialairsattack" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ike_specialsattack(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -371,7 +360,6 @@ unsafe extern "C" fn ike_specialsattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", scripts = [ "effect_specialsattack", "effect_specialairsattack" ], category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn ike_specialsattack_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -405,7 +393,6 @@ unsafe extern "C" fn ike_specialsattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ike", scripts = [ "sound_specialsattack", "sound_specialairsattack" ], category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_ike_special_s01"));

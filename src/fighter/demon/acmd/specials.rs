@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_specialhi(agent: &mut L2CAgentBase) {
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_DEMON_STATUS_SPECIAL_HI_FLAG_AIR) {
         FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 2.0);
@@ -102,7 +101,6 @@ unsafe extern "C" fn demon_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", scripts = [ "game_specialhiground", "game_specialhiair" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_specialhigroundair(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 2.0);
     if macros::is_excute(agent) {
@@ -153,7 +151,6 @@ unsafe extern "C" fn demon_specialhigroundair(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", scripts = [ "game_attackragedrive", "game_attackairragedrive" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackragedrive(agent: &mut L2CAgentBase) {
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_DEMON_INSTANCE_WORK_ID_FLAG_ATTACK_RAGE_CAPTURE) {
         FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
@@ -261,7 +258,6 @@ unsafe extern "C" fn demon_attackragedrive(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = 0x15cb9d3406, category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_15cb9d3406(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     macros::FT_MOTION_RATE(agent, 0.7);
@@ -330,7 +326,6 @@ unsafe extern "C" fn demon_15cb9d3406(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = 0x15b52c48bb, category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_15b52c48bb(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     if macros::is_excute(agent) {
@@ -373,7 +368,6 @@ unsafe extern "C" fn demon_15b52c48bb(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = "game_speciallw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_speciallw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     if macros::is_excute(agent) {
@@ -443,7 +437,6 @@ unsafe extern "C" fn demon_speciallw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", script = "game_specialairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_specialairlw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     if macros::is_excute(agent) {

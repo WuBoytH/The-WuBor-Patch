@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "toonlink", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -34,7 +33,6 @@ unsafe extern "C" fn toonlink_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -73,7 +71,6 @@ unsafe extern "C" fn toonlink_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn toonlink_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_NO_SPEED_OPERATION_CHK);
@@ -115,7 +112,6 @@ unsafe extern "C" fn toonlink_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "toonlink", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn toonlink_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {

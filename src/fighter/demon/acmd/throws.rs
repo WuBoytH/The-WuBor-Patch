@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_catchattack", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -13,7 +12,6 @@ unsafe extern "C" fn demon_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_throwlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_throwlw(agent: &mut L2CAgentBase) {
     if !smash_rs::app::FighterCutInManager::is_vr_mode() {
         if smash_rs::app::FighterCutInManager::is_one_on_one_including_thrown(&*(agent.module_accessor as *const smash_rs::app::BattleObjectModuleAccessor)) {
@@ -60,7 +58,6 @@ unsafe extern "C" fn demon_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_catchcommand", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_catchcommand(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

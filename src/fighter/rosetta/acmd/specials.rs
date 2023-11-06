@@ -1,11 +1,9 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "rosetta", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rosetta_specialhistart(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 8.0);
 }
 
-#[acmd_script( agent = "rosetta", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rosetta_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -16,7 +14,6 @@ unsafe extern "C" fn rosetta_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rosetta", script = "game_specialhiend", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rosetta_specialhiend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);

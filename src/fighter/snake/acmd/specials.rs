@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "snake", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn snake_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CORRECT(agent, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
@@ -16,7 +15,6 @@ unsafe extern "C" fn snake_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairhihang", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn snake_specialairhihang(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "chrom", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -25,7 +24,6 @@ unsafe extern "C" fn chrom_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn chrom_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -38,7 +36,6 @@ unsafe extern "C" fn chrom_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn chrom_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -46,7 +43,6 @@ unsafe extern "C" fn chrom_attack11_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn chrom_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -61,7 +57,6 @@ unsafe extern "C" fn chrom_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -79,7 +74,6 @@ unsafe extern "C" fn chrom_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn chrom_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "bayonetta", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -34,7 +33,6 @@ unsafe extern "C" fn bayonetta_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attack100end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2bfb02b69a), true);
@@ -81,7 +79,6 @@ unsafe extern "C" fn bayonetta_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attacks32", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attacks32(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
@@ -120,7 +117,6 @@ unsafe extern "C" fn bayonetta_attacks32(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attacks33", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attacks33(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::off_flag(agent.module_accessor, fighter::status::flag::JUMP_CANCEL);
@@ -154,7 +150,6 @@ unsafe extern "C" fn bayonetta_attacks33(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -185,7 +180,6 @@ unsafe extern "C" fn bayonetta_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     // if macros::is_excute(agent) {

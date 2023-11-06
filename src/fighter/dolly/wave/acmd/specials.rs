@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 use super::super::super::{helper::*, vl, vtable_hook::*};
 
-#[acmd_script( agent = "dolly_wave", script = "game_normalw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -39,7 +38,6 @@ unsafe extern "C" fn dolly_wave_normalw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly_wave", script = "game_normal", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn dolly_wave_normal(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -77,7 +75,6 @@ unsafe extern "C" fn dolly_wave_normal(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly_wave", script = "game_normalairw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);
@@ -169,7 +166,6 @@ unsafe extern "C" fn dolly_wave_normalairw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly_wave", script = "game_normalair", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
     let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
     let oboma = sv_battle_object::module_accessor(otarget_id);

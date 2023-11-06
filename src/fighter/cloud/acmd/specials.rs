@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "cloud", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn cloud_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -30,7 +29,6 @@ unsafe extern "C" fn cloud_specialn(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 21.0 / 38.0);
 }
 
-#[acmd_script( agent = "cloud", script = "effect_specialn", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn cloud_specialn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -58,7 +56,6 @@ unsafe extern "C" fn cloud_specialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "effect_specialairn", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn cloud_specialairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -80,7 +77,6 @@ unsafe extern "C" fn cloud_specialairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "expression_specialn", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn cloud_specialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -106,7 +102,6 @@ unsafe extern "C" fn cloud_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "expression_specialairn", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn cloud_specialairn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -121,7 +116,6 @@ unsafe extern "C" fn cloud_specialairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn cloud_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -186,7 +180,6 @@ unsafe extern "C" fn cloud_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialhi2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn cloud_specialhi2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -199,7 +192,6 @@ unsafe extern "C" fn cloud_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_specialhi2fall", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn cloud_specialhi2fall(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -216,7 +208,6 @@ unsafe extern "C" fn cloud_specialhi2fall(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", scripts = [ "game_specialhi_lb", "game_specialairhi_lb" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn cloud_specialhi_lb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);

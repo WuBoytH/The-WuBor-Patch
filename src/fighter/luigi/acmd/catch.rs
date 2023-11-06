@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "luigi", script = "game_catch", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn luigi_catch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -19,11 +18,9 @@ unsafe extern "C" fn luigi_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_catch", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn luigi_catch_eff(_agent: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "luigi", script = "sound_catch", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn luigi_catch_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -35,7 +32,6 @@ unsafe extern "C" fn luigi_catch_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_catch", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn luigi_catch_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -46,7 +42,6 @@ unsafe extern "C" fn luigi_catch_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_catchdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn luigi_catchdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -65,7 +60,6 @@ unsafe extern "C" fn luigi_catchdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_catchdash", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn luigi_catchdash_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -85,7 +79,6 @@ unsafe extern "C" fn luigi_catchdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_catchdash", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn luigi_catchdash_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -96,7 +89,6 @@ unsafe extern "C" fn luigi_catchdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_catchturn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn luigi_catchturn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -115,7 +107,6 @@ unsafe extern "C" fn luigi_catchturn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_catchturn", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn luigi_catchturn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -127,7 +118,6 @@ unsafe extern "C" fn luigi_catchturn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_catchturn", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn luigi_catchturn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_LR, 5);
@@ -138,7 +128,6 @@ unsafe extern "C" fn luigi_catchturn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_catchattack", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn luigi_catchattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     if macros::is_excute(agent) {
@@ -151,7 +140,6 @@ unsafe extern "C" fn luigi_catchattack(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_catchattack", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn luigi_catchattack_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 15.0);
     if macros::is_excute(agent) {
@@ -159,7 +147,6 @@ unsafe extern "C" fn luigi_catchattack_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_catchattack", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);

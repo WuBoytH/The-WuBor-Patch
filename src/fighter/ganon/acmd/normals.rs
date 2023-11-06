@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ganon", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ganon_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -19,7 +18,6 @@ unsafe extern "C" fn ganon_attack11(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.9);
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ganon_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -35,7 +33,6 @@ unsafe extern "C" fn ganon_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ganon_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -49,7 +46,6 @@ unsafe extern "C" fn ganon_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ganon_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.0/3.0);
@@ -67,7 +63,6 @@ unsafe extern "C" fn ganon_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "effect_attackhi3", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
@@ -89,7 +84,6 @@ unsafe extern "C" fn ganon_attackhi3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "sound_attackhi3", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn ganon_attackhi3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 21.0);
     if macros::is_excute(agent) {
@@ -98,7 +92,6 @@ unsafe extern "C" fn ganon_attackhi3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "expression_attackhi3", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn ganon_attackhi3_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
@@ -110,7 +103,6 @@ unsafe extern "C" fn ganon_attackhi3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ganon", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn ganon_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {

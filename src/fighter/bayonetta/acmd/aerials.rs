@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairn", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -46,7 +45,6 @@ unsafe extern "C" fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -83,7 +81,6 @@ unsafe extern "C" fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -120,7 +117,6 @@ unsafe extern "C" fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -155,7 +151,6 @@ unsafe extern "C" fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -200,7 +195,6 @@ unsafe extern "C" fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

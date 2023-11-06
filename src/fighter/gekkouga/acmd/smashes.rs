@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gekkouga", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn gekkouga_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {

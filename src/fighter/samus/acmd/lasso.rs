@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "samus", script = "game_aircatch", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn samus_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -21,7 +20,6 @@ unsafe extern "C" fn samus_aircatch(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "samus", script = "expression_aircatch", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn samus_aircatch_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VisibilityModule::set_int64(agent.module_accessor, hash40("body") as i64, hash40("body_hide_gun") as i64);

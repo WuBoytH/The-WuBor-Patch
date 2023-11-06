@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "rockman", script = "game_attackairnmelee", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -28,7 +27,6 @@ unsafe extern "C" fn rockman_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "effect_attackairnmelee", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -41,7 +39,6 @@ unsafe extern "C" fn rockman_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "sound_attackairnmelee", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn rockman_attackairn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -49,7 +46,6 @@ unsafe extern "C" fn rockman_attackairn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "expression_attackairnmelee", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -66,7 +62,6 @@ unsafe extern "C" fn rockman_attackairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -96,7 +91,6 @@ unsafe extern "C" fn rockman_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "rockman", script = "game_attackairb", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
@@ -139,8 +133,7 @@ unsafe extern "C" fn rockman_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "rockman", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-// unsafe extern "C" fn rockman_attackairhi(agent: &mut L2CAgentBase) {
+// // unsafe extern "C" fn rockman_attackairhi(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 2.0);
 //     if macros::is_excute(agent) {
 //         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);

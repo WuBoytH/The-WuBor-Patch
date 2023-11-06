@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "simon", script = "game_attackairf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn simon_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -51,7 +50,6 @@ unsafe extern "C" fn simon_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackairfhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn simon_attackairfhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -102,7 +100,6 @@ unsafe extern "C" fn simon_attackairfhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackairflw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn simon_attackairflw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.8);
@@ -153,7 +150,6 @@ unsafe extern "C" fn simon_attackairflw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = [ "sound_attackairf", "sound_attackairfhi", "sound_attackairflw" ], category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn simon_attackairf_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
@@ -173,7 +169,6 @@ unsafe extern "C" fn simon_attackairf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn simon_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -223,7 +218,6 @@ unsafe extern "C" fn simon_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn simon_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -267,12 +261,10 @@ unsafe extern "C" fn simon_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn simon_attackairlw_eff(_agent: &mut L2CAgentBase) {
     
 }
 
-#[acmd_script( agent = "simon", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn simon_attackairlw_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
@@ -292,7 +284,6 @@ unsafe extern "C" fn simon_attackairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn simon_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -310,14 +301,12 @@ unsafe extern "C" fn simon_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_landingairlw", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn simon_landingairlw_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_landing_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-#[acmd_script( agent = "simon", script = "sound_landingairlw", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn simon_landingairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -325,7 +314,6 @@ unsafe extern "C" fn simon_landingairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "expression_landingairlw", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn simon_landingairlw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "zelda", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn zelda_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {

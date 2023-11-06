@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "metaknight", script = "game_attack11", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -22,7 +21,6 @@ unsafe extern "C" fn metaknight_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attack11_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -40,7 +38,6 @@ unsafe extern "C" fn metaknight_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -49,7 +46,6 @@ unsafe extern "C" fn metaknight_attack11_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn metaknight_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -78,7 +74,6 @@ unsafe extern "C" fn metaknight_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -96,7 +91,6 @@ unsafe extern "C" fn metaknight_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attack12_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -113,7 +107,6 @@ unsafe extern "C" fn metaknight_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attack12_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -122,7 +115,6 @@ unsafe extern "C" fn metaknight_attack12_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn metaknight_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -151,7 +143,6 @@ unsafe extern "C" fn metaknight_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attack13", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0 / 2.0);
@@ -180,7 +171,6 @@ unsafe extern "C" fn metaknight_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attack13", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attack13_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("metaknight_sword"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -197,7 +187,6 @@ unsafe extern "C" fn metaknight_attack13_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attack13", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attack13_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -206,7 +195,6 @@ unsafe extern "C" fn metaknight_attack13_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attack13", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn metaknight_attack13_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -235,14 +223,12 @@ unsafe extern "C" fn metaknight_attack13_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attack100start", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attack100start_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attack100start", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attack100start_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_metaknight_special_s03"));
@@ -253,7 +239,6 @@ unsafe extern "C" fn metaknight_attack100start_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attack100", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attack100(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 1.0);
@@ -290,7 +275,6 @@ unsafe extern "C" fn metaknight_attack100_internal(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attack100end", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attack100end(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
@@ -308,7 +292,6 @@ unsafe extern "C" fn metaknight_attack100end(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attack100end", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attack100end_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, false);
@@ -326,7 +309,6 @@ unsafe extern "C" fn metaknight_attack100end_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attack100end", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attack100end_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
@@ -334,7 +316,6 @@ unsafe extern "C" fn metaknight_attack100end_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attack100end", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn metaknight_attack100end_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -360,7 +341,6 @@ unsafe extern "C" fn metaknight_attack100end_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -374,7 +354,6 @@ unsafe extern "C" fn metaknight_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 8.0 / 9.0);
@@ -394,7 +373,6 @@ unsafe extern "C" fn metaknight_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -414,7 +392,6 @@ unsafe extern "C" fn metaknight_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attacks3", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attacks3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -423,7 +400,6 @@ unsafe extern "C" fn metaknight_attacks3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attacks3", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn metaknight_attacks3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -452,7 +428,6 @@ unsafe extern "C" fn metaknight_attacks3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -474,7 +449,6 @@ unsafe extern "C" fn metaknight_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn metaknight_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         sv_kinetic_energy!(
@@ -511,7 +485,6 @@ unsafe extern "C" fn metaknight_attacklw3(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 28.0, 13.0);
 }
 
-#[acmd_script( agent = "metaknight", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn metaknight_attacklw3_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), -2, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -531,7 +504,6 @@ unsafe extern "C" fn metaknight_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn metaknight_attacklw3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
@@ -547,7 +519,6 @@ unsafe extern "C" fn metaknight_attacklw3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "metaknight", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn metaknight_attacklw3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);

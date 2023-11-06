@@ -2,7 +2,6 @@ use crate::imports::acmd_imports::*;
 
 // Wind God Fist
 
-#[acmd_script( agent = "demon", script = "game_attackstep2", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackstep2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -100,7 +99,6 @@ unsafe extern "C" fn demon_attackstep2(agent: &mut L2CAgentBase) {
 
 // Electric Wind God Fist
 
-#[acmd_script( agent = "demon", script = "game_attackstep2f", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackstep2f(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("head"), *HIT_STATUS_XLU);
@@ -207,7 +205,6 @@ unsafe extern "C" fn demon_attackstep2f(agent: &mut L2CAgentBase) {
 
 // Dragon Uppercut
 
-#[acmd_script( agent = "demon", script = "game_attackstep2l", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackstep2l(agent: &mut L2CAgentBase) {
     // macros::FT_MOTION_RATE(agent, 0.9);
     frame(agent.lua_state_agent, 7.0);
@@ -285,7 +282,6 @@ unsafe extern "C" fn demon_attackstep2l(agent: &mut L2CAgentBase) {
 
 // Spinning Demon to Left Hook
 
-#[acmd_script( agent = "demon", script = "game_attackstep2s", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn demon_attackstep2s(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {

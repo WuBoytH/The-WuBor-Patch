@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "jack_doyle", script = "effect_appear", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_appear"), Hash40::new("hip"), 0, 0, 0, 0, 0, 0, 1, true);
@@ -20,7 +19,6 @@ unsafe extern "C" fn jack_doyle_appear_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack_doyle", script = "effect_return", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear"), Hash40::new("top"), 0, 6, 0, 0, 0, 0, 1, true);

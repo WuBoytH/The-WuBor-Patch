@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucas", scripts = ["game_speciallwend", "game_specialairlwend"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn lucas_speciallwend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

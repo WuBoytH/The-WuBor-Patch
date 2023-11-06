@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "shulk", scripts = ["game_specials", "game_specialairs"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shulk_specials(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     macros::FT_MOTION_RATE(agent, 0.6);
@@ -16,7 +15,6 @@ unsafe extern "C" fn shulk_specials(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "game_specialairsfall", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shulk_specialairsfall(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -39,7 +37,6 @@ unsafe extern "C" fn shulk_specialairsfall(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shulk_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -92,7 +89,6 @@ unsafe extern "C" fn shulk_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", scripts = ["game_speciallwattack", "game_specialairlwattack"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shulk_speciallwattack(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -115,7 +111,6 @@ unsafe extern "C" fn shulk_speciallwattack(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-#[acmd_script( agent = "shulk", script = "game_speciallwf", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn shulk_speciallwf(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
     frame(agent.lua_state_agent, 25.0);

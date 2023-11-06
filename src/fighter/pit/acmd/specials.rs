@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pit", script = "game_specialsend", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pit_specialsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
@@ -16,7 +15,6 @@ unsafe extern "C" fn pit_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pit", script = "game_specialairsend", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pit_specialairsend(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         shield!(agent, *MA_MSC_CMD_SHIELD_ON, *COLLISION_KIND_REFLECTOR, *FIGHTER_PIT_REFLECTOR_KIND_SPECIAL_S, *FIGHTER_PIT_REFLECTOR_GROUP_SPECIAL_S);
@@ -38,12 +36,10 @@ unsafe extern "C" fn pit_specialairsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.83);
 }
 
-#[acmd_script( agent = "pit", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pit_specialhistart(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 6.0);
 }
 
-#[acmd_script( agent = "pit", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn pit_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);

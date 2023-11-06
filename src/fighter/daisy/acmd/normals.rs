@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "daisy", script = "game_attack12", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn daisy_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -14,7 +13,6 @@ unsafe extern "C" fn daisy_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn daisy_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
@@ -39,7 +37,6 @@ unsafe extern "C" fn daisy_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn daisy_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -62,7 +59,6 @@ unsafe extern "C" fn daisy_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn daisy_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
@@ -75,7 +71,6 @@ unsafe extern "C" fn daisy_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "daisy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn daisy_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {

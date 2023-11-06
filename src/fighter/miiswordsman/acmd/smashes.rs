@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn miiswordsman_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);

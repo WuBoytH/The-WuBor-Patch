@@ -1,12 +1,10 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "falco", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn falco_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.88);
 }
 
-#[acmd_script( agent = "falco", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn falco_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {

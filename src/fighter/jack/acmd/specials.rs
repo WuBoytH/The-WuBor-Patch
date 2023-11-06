@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "jack", script = "game_specialn1", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
@@ -60,7 +59,6 @@ unsafe extern "C" fn jack_specialn1(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairn1", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialairn1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
@@ -130,7 +128,6 @@ unsafe extern "C" fn jack_specialairn1(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialn1_ex", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
@@ -213,7 +210,6 @@ unsafe extern "C" fn jack_specialn1_ex(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairn1_ex", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !VarModule::is_flag(agent.module_accessor, jack::status::flag::SPECIAL_N_FIRST) {
@@ -303,7 +299,6 @@ unsafe extern "C" fn jack_specialairn1_ex(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialnjump", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialnjump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.375);
@@ -319,11 +314,9 @@ unsafe extern "C" fn jack_specialnjump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "effect_specialnjump", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_specialnjump_eff(_agent: &mut L2CAgentBase) {
 }
 
-#[acmd_script( agent = "jack", script = "sound_specialnjump", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn jack_specialnjump_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     for _ in 0..4 {
@@ -334,7 +327,6 @@ unsafe extern "C" fn jack_specialnjump_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairnshoot", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialairnshoot(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -548,7 +540,6 @@ unsafe extern "C" fn jack_specialairnshoot(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specials1", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specials1(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 14.0 / 9.0);
     frame(agent.lua_state_agent, 8.0);
@@ -603,7 +594,6 @@ unsafe extern "C" fn jack_specials1(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "effect_specials1", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_specials1_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -633,7 +623,6 @@ unsafe extern "C" fn jack_specials1_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "sound_specials1", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn jack_specials1_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -645,7 +634,6 @@ unsafe extern "C" fn jack_specials1_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "expression_specials1", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn jack_specials1_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -663,7 +651,6 @@ unsafe extern "C" fn jack_specials1_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairs1", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialairs1(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 14.0 / 9.0);
     frame(agent.lua_state_agent, 8.0);
@@ -700,7 +687,6 @@ unsafe extern "C" fn jack_specialairs1(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-#[acmd_script( agent = "jack", script = "effect_specialairs1", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_specialairs1_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -713,7 +699,6 @@ unsafe extern "C" fn jack_specialairs1_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "sound_specialairs1", category = ACMD_SOUND, low_priority )]
 unsafe extern "C" fn jack_specialairs1_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
@@ -725,7 +710,6 @@ unsafe extern "C" fn jack_specialairs1_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "expression_specialairs1", category = ACMD_EXPRESSION, low_priority )]
 unsafe extern "C" fn jack_specialairs1_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -743,7 +727,6 @@ unsafe extern "C" fn jack_specialairs1_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, -1);
@@ -815,7 +798,6 @@ unsafe extern "C" fn jack_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", scripts = [ "game_specialhithrow", "game_specialairhithrow" ], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn jack_specialhithrow(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_JACK_GENERATE_ARTICLE_WIREROPE, false, -1);
@@ -846,7 +828,6 @@ unsafe extern "C" fn jack_specialhithrow(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "effect_wait4", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_wait4_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -893,7 +874,6 @@ unsafe extern "C" fn jack_wait4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "jack", script = "effect_wait5", category = ACMD_EFFECT, low_priority )]
 unsafe extern "C" fn jack_wait5_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("jack_doyle_disappear2"), Hash40::new("mask"), 0, 0, 0, 0, 0, 0, 1, true);

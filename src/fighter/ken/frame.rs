@@ -187,8 +187,7 @@ unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KEN, main )]
-fn ken_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ken_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         ken_reset_vars(fighter);
         ken_vgauge_flash(fighter);

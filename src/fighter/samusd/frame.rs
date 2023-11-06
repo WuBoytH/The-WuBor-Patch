@@ -12,8 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SAMUSD, main )]
-fn samusd_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn samusd_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
     
         // Morph Ball Drop Bounce

@@ -229,8 +229,7 @@ unsafe fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_LUCINA, main )]
-fn lucina_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         lucina_reset_vars(fighter);
         lucina_meter_controller(fighter);

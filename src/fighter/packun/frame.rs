@@ -9,8 +9,7 @@ unsafe fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PACKUN, main )]
-fn packun_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn packun_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         piranhacopter_early_cancel(fighter);
     }

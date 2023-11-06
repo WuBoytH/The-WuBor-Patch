@@ -96,8 +96,7 @@ unsafe fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_DOLLY, main )]
-fn dolly_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn dolly_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         // dolly_reset_vars(fighter);
         dolly_super_special_aura(fighter);

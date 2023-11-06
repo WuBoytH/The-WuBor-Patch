@@ -11,8 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_KAMUI, main )]
-fn kamui_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn kamui_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
             VarModule::set_float(fighter.module_accessor, kamui::instance::float::DRAGON_INSTALL, 0.0);

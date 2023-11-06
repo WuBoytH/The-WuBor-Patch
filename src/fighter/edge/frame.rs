@@ -9,8 +9,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_EDGE, main )]
-fn edge_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn edge_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         let status = fighter.global_table[STATUS_KIND].get_i32();
 

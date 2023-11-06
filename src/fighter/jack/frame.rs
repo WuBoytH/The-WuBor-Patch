@@ -3,8 +3,7 @@ use {
     wubor_utils::cancels::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_JACK, main )]
-fn jack_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn jack_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_JACK_INSTANCE_WORK_ID_FLAG_DOYLE)
         && StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_THROW

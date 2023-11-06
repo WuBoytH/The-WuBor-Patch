@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[fighter_frame( agent = FIGHTER_KIND_BRAVE, main )]
-fn brave_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn brave_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if smashball::is_training_mode() {
             if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {

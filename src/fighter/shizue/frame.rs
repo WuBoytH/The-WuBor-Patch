@@ -14,8 +14,7 @@ use {
     super::helper::*,
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SHIZUE, main )]
-fn shizue_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn shizue_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.module_accessor, shizue::instance::flag::FIRE_ROCKET_ANYTIME) {
             ArticleModule::shoot(

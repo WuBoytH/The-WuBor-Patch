@@ -10,8 +10,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_SHULK, main )]
-fn shulk_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn shulk_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         
         // Reset Vars

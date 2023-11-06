@@ -9,8 +9,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_ELIGHT, main )]
-fn elight_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn elight_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_hi_jump") {
             let stick_x = fighter.global_table[STICK_X].get_f32();

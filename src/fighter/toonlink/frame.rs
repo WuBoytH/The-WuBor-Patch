@@ -11,8 +11,7 @@ use {
     wubor_utils::{vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_TOONLINK, main )]
-fn toonlink_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn toonlink_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         // Down Air Bounce

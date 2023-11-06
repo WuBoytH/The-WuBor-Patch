@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[weapon_frame( agent = WEAPON_KIND_EFLAME_ESWORD, main )]
-fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
+unsafe extern "C" fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
     unsafe {
         if StatusModule::status_kind(weapon.module_accessor) == *WEAPON_EFLAME_ESWORD_STATUS_KIND_SPECIAL_S_FLY
         && VarModule::is_flag(weapon.module_accessor, eflame_esword::status::flag::ENABLE_EARLY_SPIN)

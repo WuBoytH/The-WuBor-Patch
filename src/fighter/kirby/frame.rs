@@ -11,8 +11,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*, table_const::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_KIRBY, main )]
-fn kirby_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn kirby_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         // Incin Darkest Lariat Jump Cancel

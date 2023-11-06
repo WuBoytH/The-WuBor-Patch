@@ -9,8 +9,7 @@ use {
     wubor_utils::table_const::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_GEKKOUGA, main )]
-fn gekkouga_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn gekkouga_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if [
             hash40("appeal_lw_l"),

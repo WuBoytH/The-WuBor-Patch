@@ -9,8 +9,7 @@ use {
     smashline::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_DEDEDE, main )]
-fn dedede_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn dedede_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         // Jet Hammer Movement

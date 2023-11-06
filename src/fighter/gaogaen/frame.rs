@@ -13,8 +13,7 @@ use {
     }
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_GAOGAEN, main )]
-fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn gaogaen_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         
         // Darkest Lariat Jump Cancel

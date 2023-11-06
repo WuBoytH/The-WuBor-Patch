@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[fighter_frame( agent = FIGHTER_KIND_GANON, main )]
-fn ganon_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ganon_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_N)
         && (StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_CLIFF

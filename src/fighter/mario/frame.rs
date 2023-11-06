@@ -12,8 +12,7 @@ use {
     wubor_utils::vars::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_MARIO, main )]
-fn mario_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn mario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
 
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {

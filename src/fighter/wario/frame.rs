@@ -22,8 +22,7 @@ unsafe fn wario_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_WARIO, main )]
-fn wario_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn wario_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         wario_training_tools(fighter);
     }

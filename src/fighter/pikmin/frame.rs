@@ -57,8 +57,7 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PIKMIN, main )]
-fn pikmin_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn pikmin_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         pikmin_antenna_indicator(fighter);
     }

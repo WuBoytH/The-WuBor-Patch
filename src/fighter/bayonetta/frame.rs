@@ -9,8 +9,7 @@ use {
     smashline::*
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_BAYONETTA, main )]
-fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn bayonetta_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         WorkModule::set_float(fighter.module_accessor, 0.0, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLOAT_SPECIAL_LANDING_FRAME);
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK_DASH {

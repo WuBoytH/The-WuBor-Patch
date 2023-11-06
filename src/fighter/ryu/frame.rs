@@ -278,8 +278,7 @@ unsafe fn ryu_secret_sensation(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_RYU, main )]
-fn ryu_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ryu_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         ryu_reset_vars(fighter);
         ryu_ex_focus(fighter);

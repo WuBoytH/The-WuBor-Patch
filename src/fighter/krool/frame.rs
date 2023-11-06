@@ -8,8 +8,7 @@ unsafe fn krool_propeller_early_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KROOL, main )]
-fn krool_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn krool_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         krool_propeller_early_cancel(fighter);
     }

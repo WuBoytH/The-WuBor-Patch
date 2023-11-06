@@ -33,8 +33,7 @@ unsafe fn marth_stance_toggle_handler(fighter: &mut L2CFighterCommon, stance: bo
     );
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_MARTH, main )]
-fn marth_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn marth_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
             VarModule::off_flag(fighter.module_accessor, marth::instance::flag::AIR_STANCE);

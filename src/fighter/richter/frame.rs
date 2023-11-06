@@ -9,8 +9,7 @@ use {
     wubor_utils::{wua_bind::*, vars::*}
 };
 
-#[fighter_frame( agent = FIGHTER_KIND_RICHTER, main )]
-fn richter_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn richter_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
         if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI)
         && (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH

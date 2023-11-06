@@ -376,20 +376,24 @@ unsafe extern "C" fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        miifighter_specials3dash,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specials3dash", miifighter_specials3dash);
 
-        miifighter_specialairs3dash,
+    agent.game_acmd("game_specialairs3dash", miifighter_specialairs3dash);
 
-        miifighter_specialhi12,
+    agent.game_acmd("game_specialhi12", miifighter_specialhi12);
 
-        miifighter_specialhi13,
+    agent.game_acmd("game_specialairhi12", miifighter_specialhi12);
 
-        miifighter_specialhi2,
+    agent.game_acmd("game_specialhi13", miifighter_specialhi13);
 
-        miifighter_specialairhi2,
+    agent.game_acmd("game_specialairhi13", miifighter_specialhi13);
 
-        miifighter_specialhi3
-    );
+    agent.game_acmd("game_specialhi2", miifighter_specialhi2);
+
+    agent.game_acmd("game_specialairhi2", miifighter_specialairhi2);
+
+    agent.game_acmd("game_specialhi3", miifighter_specialhi3);
+
+    agent.game_acmd("game_specialairhi3", miifighter_specialhi3);
 }

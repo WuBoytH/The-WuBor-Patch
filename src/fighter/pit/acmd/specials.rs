@@ -60,14 +60,14 @@ unsafe extern "C" fn pit_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pit_specialsend,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialsend", pit_specialsend);
 
-        pit_specialairsend,
+    agent.game_acmd("game_specialairsend", pit_specialairsend);
 
-        pit_specialhistart,
+    agent.game_acmd("game_specialhistart", pit_specialhistart);
 
-        pit_specialhi
-    );
+    agent.game_acmd("game_specialairhistart", pit_specialhistart);
+
+    agent.game_acmd("game_specialhi", pit_specialhi);
 }

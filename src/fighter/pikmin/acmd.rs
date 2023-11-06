@@ -1,7 +1,7 @@
 mod normals;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    escape::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    escape::install(agent);
 }

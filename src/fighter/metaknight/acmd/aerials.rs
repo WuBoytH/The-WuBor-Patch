@@ -266,22 +266,20 @@ unsafe extern "C" fn metaknight_landingairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        metaknight_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", metaknight_attackairn);
 
-        metaknight_attackairf,
+    agent.game_acmd("game_attackairf", metaknight_attackairf);
 
-        metaknight_attackairhi,
-        metaknight_attackairhi_eff,
+    agent.game_acmd("game_attackairhi", metaknight_attackairhi);
+    agent.effect_acmd("effect_attackairhi", metaknight_attackairhi_eff);
 
-        metaknight_attackairlw,
-        metaknight_attackairlw_eff,
-        metaknight_attackairlw_snd,
-        metaknight_attackairlw_exp,
+    agent.game_acmd("game_attackairlw", metaknight_attackairlw);
+    agent.effect_acmd("effect_attackairlw", metaknight_attackairlw_eff);
+    agent.sound_acmd("sound_attackairlw", metaknight_attackairlw_snd);
+    agent.expression_acmd("expression_attackairlw", metaknight_attackairlw_exp);
 
-        metaknight_landingairlw,
-        metaknight_landingairlw_eff,
-        metaknight_landingairlw_snd
-    );
+    agent.game_acmd("game_landingairlw", metaknight_landingairlw);
+    agent.effect_acmd("effect_landingairlw", metaknight_landingairlw_eff);
+    agent.sound_acmd("sound_landingairlw", metaknight_landingairlw_snd);
 }

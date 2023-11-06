@@ -109,18 +109,6 @@ unsafe extern "C" fn pikachu_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu_dengekidama", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 6.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.0, 60, 30, 0, 35, 3.0, 0.0, 0.0, 0.0, None, None, None, 0.5, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_F, false, -1.9, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_NO_FLOOR, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
-    }
-    frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        VarModule::on_flag(agent.module_accessor, pikachu_dengekidama::status::flag::SPEED_UP);
-    }
-}
-
 // Actually Side Speceial Lmao
 
 #[acmd_script( agent = "pikachu", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
@@ -264,32 +252,6 @@ unsafe extern "C" fn pikachu_speciallw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu_cloud", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn pikachu_cloud_regular(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *WEAPON_PIKACHU_CLOUD_INSTANCE_WORK_ID_FLAG_ACTIVATE_KAMINARI);
-    }
-}
-
-#[acmd_script( agent = "pikachu_cloud", script = "effect_regular", category = ACMD_EFFECT, low_priority )]
-unsafe extern "C" fn pikachu_cloud_regular_eff(_agent: &mut L2CAgentBase) {
-    // if macros::is_excute(agent) {
-    //     macros::EFFECT(agent, Hash40::new("pikachu_kaminari_cloud"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
-    // }
-}
-
-#[acmd_script( agent = "pikachu_kaminari", script = "game_regular", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn pikachu_kaminari_regular(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 42, 85, 0, 60, 6.0, 0.0, 2.0, 0.0, Some(0.0), Some(2.0), Some(0.0), 0.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
-    }
-    wait(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 42, 85, 0, 60, 4.0, 0.0, 4.0, 0.0, Some(0.0), Some(14.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_NONE);
-    }
-}
-
 // Down Special For Real Lmao
 
 #[acmd_script( agent = "pikachu", script = "game_speciallwstrike", category = ACMD_GAME, low_priority )]
@@ -395,35 +357,41 @@ unsafe extern "C" fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pikachu_specialn,
-        pikachu_specialn_eff,
-        pikachu_specialairn_eff,
-        pikachu_specialn_snd,
-        pikachu_specialn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", pikachu_specialn);
+    agent.effect_acmd("effect_specialn", pikachu_specialn_eff);
+    agent.sound_acmd("sound_specialn", pikachu_specialn_snd);
+    agent.expression_acmd("expression_specialn", pikachu_specialn_exp);
 
-        pikachu_dengekidama_regular,
+    agent.game_acmd("game_specialairn", pikachu_specialn);
+    agent.effect_acmd("effect_specialairn", pikachu_specialairn_eff);
+    agent.sound_acmd("sound_specialairn", pikachu_specialn_snd);
+    agent.expression_acmd("expression_specialairn", pikachu_specialn_exp);
 
-        pikachu_specialhistart,
+    agent.game_acmd("game_specialhistart", pikachu_specialhistart);
 
-        pikachu_specialhi1,
+    agent.game_acmd("game_specialairhistart", pikachu_specialhistart);
 
-        pikachu_specialhi2,
+    agent.game_acmd("game_specialhi1", pikachu_specialhi1);
 
-        pikachu_speciallw,
-        pikachu_speciallw_eff,
-        pikachu_speciallw_snd,
-        pikachu_speciallw_exp,
+    agent.game_acmd("game_specialairhi1", pikachu_specialhi1);
 
-        pikachu_cloud_regular,
-        pikachu_cloud_regular_eff,
+    agent.game_acmd("game_specialhi2", pikachu_specialhi2);
 
-        pikachu_kaminari_regular,
+    agent.game_acmd("game_specialairhi2", pikachu_specialhi2);
 
-        pikachu_speciallwstrike,
-        pikachu_speciallwstrike_eff,
-        pikachu_speciallwstrike_snd,
-        pikachu_speciallwstrike_exp
-    );
+    agent.game_acmd("game_speciallw", pikachu_speciallw);
+    agent.effect_acmd("effect_speciallw", pikachu_speciallw_eff);
+    agent.sound_acmd("sound_speciallw", pikachu_speciallw_snd);
+    agent.expression_acmd("expression_speciallw", pikachu_speciallw_exp);
+
+    agent.game_acmd("game_specialairlw", pikachu_speciallw);
+    agent.effect_acmd("effect_specialairlw", pikachu_speciallw_eff);
+    agent.sound_acmd("sound_specialairlw", pikachu_speciallw_snd);
+    agent.expression_acmd("expression_specialairlw", pikachu_speciallw_exp);
+
+    agent.game_acmd("game_speciallwstrike", pikachu_speciallwstrike);
+    agent.effect_acmd("effect_speciallwstrike", pikachu_speciallwstrike_eff);
+    agent.sound_acmd("sound_speciallwstrike", pikachu_speciallwstrike_snd);
+    agent.expression_acmd("expression_speciallwstrike", pikachu_speciallwstrike_exp);
 }

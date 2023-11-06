@@ -44,10 +44,8 @@ unsafe extern "C" fn mewtwo_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attackairb,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairb", mewtwo_attackairb);
 
-        mewtwo_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", mewtwo_attackairhi);
 }

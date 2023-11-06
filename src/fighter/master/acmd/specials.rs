@@ -177,12 +177,10 @@ unsafe extern "C" fn master_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        master_specialairhi,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialairhi", master_specialairhi);
 
-        master_speciallw,
+    agent.game_acmd("game_speciallw", master_speciallw);
 
-        master_specialairlw
-    );
+    agent.game_acmd("game_specialairlw", master_specialairlw);
 }

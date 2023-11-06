@@ -13,8 +13,6 @@ unsafe extern "C" fn plizardon_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        plizardon_escapeairslide
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_escapeairslide", plizardon_escapeairslide);
 }

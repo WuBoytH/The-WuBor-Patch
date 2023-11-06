@@ -13,8 +13,6 @@ unsafe extern "C" fn pickel_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pickel_escapeairslide
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_escapeairslide", pickel_escapeairslide);
 }

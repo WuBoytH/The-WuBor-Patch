@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe extern "C" fn pikmin_attackhi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_hi3_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -33,7 +33,7 @@ unsafe extern "C" fn pikmin_attackhi3_pre(fighter: &mut L2CFighterCommon) -> L2C
 }
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_HI3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe extern "C" fn pikmin_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_hi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackHi3_Common(Hash40::new("attack_hi3").into(), Hash40::new("attack_hi3").into());
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_LANDING);
     VarModule::on_flag(fighter.module_accessor, pikmin::instance::flag::ATTACK_HI3_LANDING);
@@ -47,13 +47,13 @@ unsafe extern "C" fn pikmin_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2
         }
     }
     if !StopModule::is_stop(fighter.module_accessor) {
-        pikmin_attackhi3_substatus(fighter, false.into());
+        pikmin_attack_hi3_substatus(fighter, false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(pikmin_attackhi3_substatus as *const () as _));
-    fighter.sub_shift_status_main(L2CValue::Ptr(pikmin_attackhi3_main_loop as *const () as _))
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(pikmin_attack_hi3_substatus as *const () as _));
+    fighter.sub_shift_status_main(L2CValue::Ptr(pikmin_attack_hi3_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn pikmin_attackhi3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_hi3_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK)
         || WorkModule::count_down_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME, 0) {
@@ -66,7 +66,7 @@ unsafe extern "C" fn pikmin_attackhi3_substatus(fighter: &mut L2CFighterCommon, 
     0.into()
 }
 
-unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_hi3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, pikmin::status::flag::ATTACK_HI3_DRIFT) {
         VarModule::off_flag(fighter.module_accessor, pikmin::status::flag::ATTACK_HI3_DRIFT);
         sv_kinetic_energy!(
@@ -128,9 +128,7 @@ unsafe extern "C" fn pikmin_attackhi3_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikmin_attackhi3_pre,
-        pikmin_attackhi3_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_HI3, pikmin_attack_hi3_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_HI3, pikmin_attack_hi3_main);
 }

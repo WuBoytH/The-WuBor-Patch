@@ -123,12 +123,10 @@ unsafe extern "C" fn pikachu_special_s_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikachu_special_s_pre,
-        pikachu_special_s_init,
-        pikachu_special_s_main,
-        pikachu_special_s_exec,
-        pikachu_special_s_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_pre);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_exec);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_end);
 }

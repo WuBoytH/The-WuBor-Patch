@@ -142,10 +142,8 @@ unsafe extern "C" fn rockman_special_s_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_special_s_pre,
-        rockman_special_s_main,
-        rockman_special_s_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, rockman_special_s_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, rockman_special_s_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, rockman_special_s_end);
 }

@@ -5,8 +5,6 @@ unsafe extern "C" fn mewtwo_escape_air_main(fighter: &mut L2CFighterCommon) -> L
     fighter.status_EscapeAir()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        mewtwo_escape_air_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ESCAPE_AIR, mewtwo_escape_air_main);
 }

@@ -195,17 +195,15 @@ unsafe extern "C" fn ridley_special_hi_charge_f_main_loop(fighter: &mut L2CFight
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ridley_special_hi_charge_hi_pre,
-        ridley_special_hi_charge_hi_main,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI, ridley_special_hi_charge_hi_pre);
+    agent.status(smashline::Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI, ridley_special_hi_charge_hi_main);
 
-        ridley_special_hi_charge_f_pre,
-        ridley_special_hi_charge_f_main,
+    agent.status(smashline::Pre, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F, ridley_special_hi_charge_f_pre);
+    agent.status(smashline::Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_F, ridley_special_hi_charge_f_main);
 
-        ridley_special_hi_charge_b_pre,
-        ridley_special_hi_charge_b_main,
+    agent.status(smashline::Pre, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B, ridley_special_hi_charge_b_pre);
+    agent.status(smashline::Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_B, ridley_special_hi_charge_b_main);
 
-        ridley_special_hi_charge_lw_pre
-    );
+    agent.status(smashline::Pre, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_LW, ridley_special_hi_charge_lw_pre);
 }

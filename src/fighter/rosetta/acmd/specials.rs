@@ -5,11 +5,6 @@ unsafe extern "C" fn rosetta_specialhistart(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 8.0);
 }
 
-#[acmd_script( agent = "rosetta_tico", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn rosetta_tico_specialhistart(agent: &mut L2CAgentBase) {
-    MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, 8.0);
-}
-
 #[acmd_script( agent = "rosetta", script = "game_specialhi", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rosetta_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
@@ -29,14 +24,12 @@ unsafe extern "C" fn rosetta_specialhiend(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        rosetta_specialhistart,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialhistart", rosetta_specialhistart);
 
-        rosetta_tico_specialhistart,
+    agent.game_acmd("game_specialairhistart", rosetta_specialhistart);
 
-        rosetta_specialhi,
+    agent.game_acmd("game_specialhi", rosetta_specialhi);
 
-        rosetta_specialhiend
-    );
+    agent.game_acmd("game_specialhiend", rosetta_specialhiend);
 }

@@ -129,17 +129,15 @@ unsafe extern "C" fn pikachu_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pikachu_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", pikachu_attackairn);
 
-        pikachu_attackairb,
-        pikachu_attackairb_eff,
-        pikachu_attackairb_snd,
-        pikachu_attackairb_exp,
+    agent.game_acmd("game_attackairb", pikachu_attackairb);
+    agent.effect_acmd("effect_attackairb", pikachu_attackairb_eff);
+    agent.sound_acmd("sound_attackairb", pikachu_attackairb_snd);
+    agent.expression_acmd("expression_attackairb", pikachu_attackairb_exp);
 
-        pikachu_landingairb,
+    agent.game_acmd("game_landingairb", pikachu_landingairb);
 
-        pikachu_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", pikachu_attackairhi);
 }

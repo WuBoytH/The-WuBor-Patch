@@ -34,11 +34,9 @@ unsafe extern "C" fn mewtwo_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_escapeair,
-        mewtwo_escapeair_eff,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_escapeair", mewtwo_escapeair);
+    agent.effect_acmd("effect_escapeair", mewtwo_escapeair_eff);
 
-        mewtwo_escapeairslide
-    );
+    agent.game_acmd("game_escapeairslide", mewtwo_escapeairslide);
 }

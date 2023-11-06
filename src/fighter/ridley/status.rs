@@ -1,7 +1,5 @@
-pub mod breath;
 mod special_hi_charge;
 
-pub fn install() {
-    breath::install();
-    special_hi_charge::install();
+pub fn install(agent : &mut smashline::Agent) {
+    special_hi_charge::install(agent);
 }

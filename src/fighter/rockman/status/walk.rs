@@ -12,8 +12,6 @@ unsafe extern "C" fn rockman_walk_exec(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_walk_exec
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_WALK, rockman_walk_exec);
 }

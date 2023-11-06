@@ -1,12 +1,12 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe extern "C" fn pikmin_attacks3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackS3Common();
-    fighter.sub_shift_status_main(L2CValue::Ptr(pikmin_attacks3_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(pikmin_attack_s3_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn pikmin_attacks3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 0.into();
@@ -54,7 +54,7 @@ unsafe extern "C" fn pikmin_attacks3_main_loop(fighter: &mut L2CFighterCommon) -
             }
         }
         if MotionModule::is_end(fighter.module_accessor) {
-            if pikmin_attacks3_handle_loop(fighter).get_bool() {
+            if pikmin_attack_s3_handle_loop(fighter).get_bool() {
                 return 0.into();
             }
         }
@@ -65,7 +65,7 @@ unsafe extern "C" fn pikmin_attacks3_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-unsafe extern "C" fn pikmin_attacks3_handle_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_s3_handle_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let step = VarModule::get_int(fighter.module_accessor, pikmin::status::int::ATTACK_S3_STEP);
     if step != pikmin::ATTACK_S3_STEP_END {
         if fighter.sub_transition_group_check_ground_guard().get_bool() {
@@ -104,16 +104,14 @@ unsafe extern "C" fn pikmin_attacks3_handle_loop(fighter: &mut L2CFighterCommon)
 }
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe extern "C" fn pikmin_attacks3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_attack_s3_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_GUARD_ON {
         VarModule::set_int(fighter.module_accessor, pikmin::instance::int::ATTACK_S3_LOOP_COUNT, 0);
     }
     fighter.status_end_AttackS3()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikmin_attacks3_main,
-        pikmin_attacks3_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_S3, pikmin_attack_s3_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_S3, pikmin_attack_s3_end);
 }

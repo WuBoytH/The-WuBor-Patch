@@ -20,9 +20,7 @@ unsafe extern "C" fn rockman_ladder_attack_end(fighter: &mut L2CFighterCommon) -
     fighter.status_end_LadderAttack()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_ladder_attack_main,
-        rockman_ladder_attack_end
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_LADDER_ATTACK, rockman_ladder_attack_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_LADDER_ATTACK, rockman_ladder_attack_end);
 }

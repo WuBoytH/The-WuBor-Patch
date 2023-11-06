@@ -1,6 +1,5 @@
 use crate::imports::acmd_imports::*;
 
-
 #[acmd_script( agent = "rockman", script = "game_attack11melee", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn rockman_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
@@ -269,26 +268,24 @@ unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        rockman_attack11,
-        rockman_attack11_eff,
-        rockman_attack11_snd,
-        rockman_attack11_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", rockman_attack11);
+    agent.effect_acmd("effect_attack11", rockman_attack11_eff);
+    agent.sound_acmd("sound_attack11", rockman_attack11_snd);
+    agent.expression_acmd("expression_attack11", rockman_attack11_exp);
 
-        rockman_attack12,
-        rockman_attack12_eff,
-        rockman_attack12_snd,
-        rockman_attack12_exp,
+    agent.game_acmd("game_attack12", rockman_attack12);
+    agent.effect_acmd("effect_attack12", rockman_attack12_eff);
+    agent.sound_acmd("sound_attack12", rockman_attack12_snd);
+    agent.expression_acmd("expression_attack12", rockman_attack12_exp);
 
-        rockman_attack13,
-        rockman_attack13_eff,
-        rockman_attack13_snd,
-        rockman_attack13_exp,
+    agent.game_acmd("game_attack13", rockman_attack13);
+    agent.effect_acmd("effect_attack13", rockman_attack13_eff);
+    agent.sound_acmd("sound_attack13", rockman_attack13_snd);
+    agent.expression_acmd("expression_attack13", rockman_attack13_exp);
 
-        rockman_attacks3,
-        rockman_attacks3_eff,
-        rockman_attacks3_snd,
-        rockman_attacks3_exp
-    );
+    agent.game_acmd("game_attacks3", rockman_attacks3);
+    agent.effect_acmd("effect_attacks3", rockman_attacks3_eff);
+    agent.sound_acmd("sound_attacks3", rockman_attacks3_snd);
+    agent.expression_acmd("expression_attacks3", rockman_attacks3_exp);
 }

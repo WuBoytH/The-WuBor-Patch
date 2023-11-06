@@ -1,7 +1,13 @@
 mod acmd;
 mod status;
 
+mod sword;
+
 pub fn install() {
-    acmd::install();
-    status::install();
+    let agent = &mut smashline::Agent::new("master");
+    acmd::install(agent);
+    status::install(agent);
+    agent.install();
+
+    sword::install();
 }

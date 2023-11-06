@@ -29,8 +29,6 @@ unsafe extern "C" fn robot_special_hi_keep_pre(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        robot_special_hi_keep_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, robot_special_hi_keep_pre);
 }

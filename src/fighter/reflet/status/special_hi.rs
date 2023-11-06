@@ -132,8 +132,6 @@ unsafe extern "C" fn reflet_special_hi_try_2nd(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        reflet_special_hi_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, reflet_special_hi_main);
 }

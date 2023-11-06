@@ -41,10 +41,10 @@ unsafe extern "C" fn miigunner_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        miigunner_specialhi1,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi1", miigunner_specialhi1);
 
-        miigunner_specialhi2
-    );
+    agent.game_acmd("game_specialairhi1", miigunner_specialhi1);
+
+    agent.game_acmd("game_specialhi2", miigunner_specialhi2);
 }

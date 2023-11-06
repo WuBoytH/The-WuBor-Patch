@@ -12,8 +12,6 @@ unsafe extern "C" fn pit_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pit_attacks3
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks3", pit_attacks3);
 }

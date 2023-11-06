@@ -4,10 +4,10 @@ mod specials;
 mod throws;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    aerials::install();
-    specials::install();
-    throws::install();
-    escape::install();
+pub fn install(agent : &mut smashline::Agent) {
+    normals::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    throws::install(agent);
+    escape::install(agent);
 }

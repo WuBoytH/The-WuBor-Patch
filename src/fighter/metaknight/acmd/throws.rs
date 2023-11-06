@@ -30,8 +30,6 @@ unsafe extern "C" fn metaknight_throwf(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 10.0, -4.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        metaknight_throwf
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", metaknight_throwf);
 }

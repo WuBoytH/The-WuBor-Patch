@@ -101,10 +101,8 @@ unsafe extern "C" fn palutena_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        palutena_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", palutena_attackairn);
 
-        palutena_attackairb
-    );
+    agent.game_acmd("game_attackairb", palutena_attackairb);
 }

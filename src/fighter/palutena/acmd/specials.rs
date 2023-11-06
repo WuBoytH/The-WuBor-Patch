@@ -30,12 +30,12 @@ unsafe extern "C" fn palutena_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        palutena_specialhistart,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhistart", palutena_specialhistart);
 
-        palutena_specialhi,
+    agent.game_acmd("game_specialairhistart", palutena_specialhistart);
 
-        palutena_specialairhi
-    );
+    agent.game_acmd("game_specialhi", palutena_specialhi);
+
+    agent.game_acmd("game_specialairhi", palutena_specialairhi);
 }

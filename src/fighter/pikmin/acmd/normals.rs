@@ -258,29 +258,27 @@ unsafe extern "C" fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 13.0, -5.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pikmin_attack11,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", pikmin_attack11);
 
-        pikmin_attackdash,
-        pikmin_attackdash_exp,
+    agent.game_acmd("game_attackdash", pikmin_attackdash);
+    agent.expression_acmd("expression_attack_dash", pikmin_attackdash_exp);
 
-        pikmin_attacks3,
-        pikmin_attacks3_snd,
+    agent.game_acmd("game_attacks3", pikmin_attacks3);
+    agent.sound_acmd("sound_attacks3", pikmin_attacks3_snd);
 
-        pikmin_attacks3loop_eff,
-        pikmin_attacks3loop_snd,
-        pikmin_attacks3loop_exp,
+    agent.effect_acmd("effect_attacks3loop", pikmin_attacks3loop_eff);
+    agent.sound_acmd("sound_attacks3loop", pikmin_attacks3loop_snd);
+    agent.expression_acmd("expression_attacks3loop", pikmin_attacks3loop_exp);
 
-        pikmin_attacks3end,
-        pikmin_attacks3end_eff,
-        pikmin_attacks3end_snd,
-        pikmin_attacks3end_exp,
+    agent.game_acmd("game_attacks3end", pikmin_attacks3end);
+    agent.effect_acmd("effect_attacks3end", pikmin_attacks3end_eff);
+    agent.sound_acmd("sound_attacks3end", pikmin_attacks3end_snd);
+    agent.expression_acmd("expression_attacks3end", pikmin_attacks3end_exp);
 
-        pikmin_attackhi3,
-        pikmin_attackhi3_eff,
-        pikmin_attackhi3_snd,
+    agent.game_acmd("game_attackhi3", pikmin_attackhi3);
+    agent.effect_acmd("effect_attackhi3", pikmin_attackhi3_eff);
+    agent.sound_acmd("sound_attackhi3", pikmin_attackhi3_snd);
 
-        pikmin_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", pikmin_attacklw3);
 }

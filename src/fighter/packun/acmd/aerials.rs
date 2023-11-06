@@ -113,14 +113,12 @@ unsafe extern "C" fn packun_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        packun_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairlw", packun_attackairn);
 
-        packun_attackairf,
+    agent.game_acmd("game_attackairf", packun_attackairf);
 
-        packun_attackairhi,
+    agent.game_acmd("game_attackairhi", packun_attackairhi);
 
-        packun_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", packun_attackairlw);
 }

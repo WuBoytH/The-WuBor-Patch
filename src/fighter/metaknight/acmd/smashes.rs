@@ -29,8 +29,6 @@ unsafe extern "C" fn metaknight_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        metaknight_attacklw4
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacklw4", metaknight_attacklw4);
 }

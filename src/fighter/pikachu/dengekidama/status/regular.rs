@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use super::super::vl;
+use super::super::super::vl;
 
 #[status_script(agent = "pikachu_dengekidama", status = WEAPON_PIKACHU_DENGEKIDAMA_STATUS_KIND_REGULAR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
 unsafe extern "C" fn pikachu_dengekidama_regular_main(weapon: &mut L2CWeaponCommon) -> L2CValue {

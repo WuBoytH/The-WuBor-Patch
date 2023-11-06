@@ -33,8 +33,6 @@ unsafe extern "C" fn ness_special_hi_attack_pre(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ness_special_hi_attack_pre
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_NESS_STATUS_KIND_SPECIAL_HI_ATTACK, ness_special_hi_attack_pre);
 }

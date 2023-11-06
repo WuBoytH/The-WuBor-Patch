@@ -34,35 +34,6 @@ unsafe extern "C" fn mewtwo_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mewtwo", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn mewtwo_attacks3hi(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("s_tail2"), 10.0, 361, 75, 0, 70, 5.0, 1.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        macros::ATTACK(agent, 1, 0, Hash40::new("s_tail4"), 11.0, 361, 75, 0, 70, 4.6, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        macros::ATTACK(agent, 2, 0, Hash40::new("s_tail6"), 12.0, 361, 75, 0, 70, 4.2, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-    }
-    wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-}
-
-#[acmd_script( agent = "mewtwo", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn mewtwo_attacks3lw(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 10.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("s_tail2"), 10.0, 361, 75, 0, 70, 5.0, 1.5, 0.0, 0.0, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        macros::ATTACK(agent, 1, 0, Hash40::new("s_tail4"), 11.0, 361, 75, 0, 70, 4.6, 2.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        macros::ATTACK(agent, 2, 0, Hash40::new("s_tail6"), 12.0, 361, 75, 0, 70, 4.2, 2.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_TAIL);
-        AttackModule::set_attack_height_all(agent.module_accessor, AttackHeight(*ATTACK_HEIGHT_LOW), false);
-    }
-    wait(agent.lua_state_agent, 2.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-}
-
 #[acmd_script( agent = "mewtwo", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn mewtwo_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
@@ -107,18 +78,16 @@ unsafe extern "C" fn mewtwo_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mewtwo_attackdash,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", mewtwo_attackdash);
 
-        mewtwo_attacks3,
+    agent.game_acmd("game_attacks3", mewtwo_attacks3);
 
-        mewtwo_attacks3hi,
+    agent.game_acmd("game_attacks3hi", mewtwo_attacks3);
 
-        mewtwo_attacks3lw,
+    agent.game_acmd("game_attacks3lw", mewtwo_attacks3);
 
-        mewtwo_attackhi3,
+    agent.game_acmd("game_attackhi3", mewtwo_attackhi3);
 
-        mewtwo_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", mewtwo_attacklw3);
 }

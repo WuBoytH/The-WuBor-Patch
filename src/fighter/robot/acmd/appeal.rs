@@ -16,8 +16,8 @@ unsafe extern "C" fn robot_appealhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        robot_appealhi
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_appealhil", robot_appealhi);
+
+    agent.game_acmd("game_appealhir", robot_appealhi);
 }

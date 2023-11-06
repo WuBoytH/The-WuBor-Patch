@@ -34,20 +34,6 @@ unsafe extern "C" fn richter_specialnblank(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "richter_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn richter_axe_fly(agent: &mut L2CAgentBase) {
-    let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    if sv_battle_object::is_active(owner_id) {
-        let owner_module_accessor = sv_battle_object::module_accessor(owner_id);
-        VarModule::set_int(owner_module_accessor, richter::instance::int::AXE_ID, agent.battle_object_id as i32);
-    }
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("axe"), 9.0, 130, 30, 0, 80, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 2, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 0, 5.0, false);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 1.1);
-    }
-}
-
 #[acmd_script( agent = "richter", scripts = ["game_specials1", "game_specialairs1"], category = ACMD_GAME, low_priority )]
 unsafe extern "C" fn richter_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
@@ -67,22 +53,6 @@ unsafe extern "C" fn richter_specials1(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 26.0);
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_S_FLAG_FALL);
-    }
-}
-
-#[acmd_script( agent = "richter_cross", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn richter_cross_fly(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(agent, 1, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
-    }
-}
-
-#[acmd_script( agent = "richter_cross", script = "game_turn", category = ACMD_GAME, low_priority )]
-unsafe extern "C" fn richter_cross_turn(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 3.7, 0.0, Some(0.0), Some(-3.7), Some(0.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(agent, 1, 0, Hash40::new("rot"), 6.0, 90, 20, 0, 75, 1.2, 0.0, 0.0, 3.7, Some(0.0), Some(0.0), Some(-3.7), 0.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, -6, -1.0, 24, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_RICHTER_CROSS, *ATTACK_REGION_OBJECT);
     }
 }
 
@@ -196,25 +166,26 @@ unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        richter_specialn,
-        richter_specialn_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", richter_specialn);
+    agent.expression_acmd("expression_specialn", richter_specialn_exp);
 
-        richter_specialnblank,
+    agent.game_acmd("game_specialairn", richter_specialn);
+    agent.expression_acmd("expression_specialairn", richter_specialn_exp);
 
-        richter_axe_fly,
+    agent.game_acmd("game_specialnblank", richter_specialnblank);
 
-        richter_specials1,
+    agent.game_acmd("game_specialairnblank", richter_specialnblank);
 
-        richter_cross_fly,
+    agent.game_acmd("game_specials1", richter_specials1);
 
-        richter_cross_turn,
+    agent.game_acmd("game_specialairs1", richter_specials1);
 
-        richter_specialhi,
+    agent.game_acmd("game_specialhi", richter_specialhi);
 
-        richter_specialairhi,
+    agent.game_acmd("game_specialairhi", richter_specialairhi);
 
-        richter_speciallw
-    );
+    agent.game_acmd("game_speciallw", richter_speciallw);
+
+    agent.game_acmd("game_specialairlw", richter_speciallw);
 }

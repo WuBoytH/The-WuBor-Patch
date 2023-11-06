@@ -63,9 +63,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_jump_main_loop(fighter: &mut L2CFi
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_rockbuster_shoot_jump_pre,
-        rockman_rockbuster_shoot_jump_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP, rockman_rockbuster_shoot_jump_pre);
+    agent.status(smashline::Main, *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_JUMP, rockman_rockbuster_shoot_jump_main);
 }

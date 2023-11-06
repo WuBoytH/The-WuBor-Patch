@@ -49,10 +49,8 @@ unsafe extern "C" fn master_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        master_landingairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_landingairn", master_landingairn);
 
-        master_attackairf
-    );
+    agent.game_acmd("game_attackairf", master_attackairf);
 }

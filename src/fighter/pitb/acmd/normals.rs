@@ -26,10 +26,8 @@ unsafe extern "C" fn pitb_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.72);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pitb_attacks3,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks3", pitb_attacks3);
 
-        pitb_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", pitb_attacklw3);
 }

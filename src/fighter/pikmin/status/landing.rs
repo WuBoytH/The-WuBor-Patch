@@ -1,12 +1,12 @@
 use crate::imports::status_imports::*;
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe extern "C" fn pikmin_landinglight_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_landing_light_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_init_inner(fighter)
 }
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_LIGHT, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe extern "C" fn pikmin_landinglight_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_landing_light_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }
 
@@ -34,12 +34,12 @@ unsafe extern "C" fn pikmin_landing_exit(fighter: &mut L2CFighterCommon) -> L2CV
 }
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe extern "C" fn pikmin_landingattackair_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_landing_attack_air_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }
 
 #[status_script(agent = "pikmin", status = FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, condition = LUA_SCRIPT_STATUS_FUNC_EXIT_STATUS)]
-unsafe extern "C" fn pikmin_landingfallspecial_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikmin_landing_fall_special_exit(fighter: &mut L2CFighterCommon) -> L2CValue {
     pikmin_landing_exit_inner(fighter)
 }
 
@@ -57,17 +57,15 @@ unsafe extern "C" fn pikmin_landing_exit_inner(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikmin_landinglight_init,
-        pikmin_landinglight_exit,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_LANDING_LIGHT, pikmin_landing_light_init);
+    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING_LIGHT, pikmin_landing_light_exit);
 
-        pikmin_landing_init,
-        pikmin_landing_exec,
-        pikmin_landing_exit,
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_init);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_exec);
+    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING, pikmin_landing_exit);
 
-        pikmin_landingattackair_exit,
+    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, pikmin_landing_attack_air_exit);
 
-        pikmin_landingfallspecial_exit
-    );
+    agent.status(smashline::Exit, *FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL, pikmin_landing_fall_special_exit);
 }

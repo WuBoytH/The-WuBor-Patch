@@ -1,7 +1,7 @@
 mod specials;
 mod escape;
 
-pub fn install() {
-    specials::install();
-    escape::install();
+pub fn install(agent : &mut smashline::Agent) {
+    specials::install(agent);
+    escape::install(agent);
 }

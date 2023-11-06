@@ -13,8 +13,6 @@ unsafe extern "C" fn pacman_specialhistart(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pacman_specialhistart
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_specialhistart", pacman_specialhistart);
 }

@@ -298,25 +298,23 @@ unsafe extern "C" fn rockman_attacks4charge_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        rockman_attacks4,
-        rockman_attacks4_eff,
-        rockman_attacks4_snd,
-        rockman_attacks4_exp,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4", rockman_attacks4);
+    agent.effect_acmd("effect_attacks4", rockman_attacks4_eff);
+    agent.sound_acmd("sound_attacks4", rockman_attacks4_snd);
+    agent.expression_acmd("expression_attacks4", rockman_attacks4_exp);
 
-        rockman_attacks4hi,
-        rockman_attacks4hi_eff,
-        rockman_attacks4hi_snd,
-        rockman_attacks4hi_exp,
+    agent.game_acmd("game_attacks4hi", rockman_attacks4hi);
+    agent.effect_acmd("effect_attacks4hi", rockman_attacks4hi_eff);
+    agent.sound_acmd("sound_attacks4hi", rockman_attacks4hi_snd);
+    agent.expression_acmd("expression_attacks4hi", rockman_attacks4hi_exp);
 
-        rockman_attacks4lw,
-        rockman_attacks4lw_eff,
-        rockman_attacks4lw_snd,
-        rockman_attacks4lw_exp,
+    agent.game_acmd("game_attacks4lw", rockman_attacks4lw);
+    agent.effect_acmd("effect_attacks4lw", rockman_attacks4lw_eff);
+    agent.sound_acmd("sound_attacks4lw", rockman_attacks4lw_snd);
+    agent.expression_acmd("expression_attacks4lw", rockman_attacks4lw_exp);
 
-        rockman_attacks4charge_eff,
-        rockman_attacks4charge_snd,
-        rockman_attacks4charge_exp
-    );
+    agent.effect_acmd("effect_attacks4charge", rockman_attacks4charge_eff);
+    agent.sound_acmd("sound_attacks4charge", rockman_attacks4charge_snd);
+    agent.expression_acmd("expression_attacks4charge", rockman_attacks4charge_exp);
 }

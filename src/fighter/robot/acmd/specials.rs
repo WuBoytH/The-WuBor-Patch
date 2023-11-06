@@ -13,8 +13,6 @@ unsafe extern "C" fn robot_specialairsend(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.1);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        robot_specialairsend
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialairsend", robot_specialairsend);
 }

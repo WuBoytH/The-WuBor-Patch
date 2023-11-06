@@ -78,12 +78,10 @@ unsafe extern "C" fn pitb_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pitb_attackairn,
+pub fn install(agent : &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", pitb_attackairn);
 
-        pitb_attackairf,
+    agent.game_acmd("game_attackairf", pitb_attackairf);
 
-        pitb_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", pitb_attackairlw);
 }

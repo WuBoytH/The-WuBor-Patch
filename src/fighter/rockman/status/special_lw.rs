@@ -46,8 +46,6 @@ unsafe extern "C" fn rockman_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_special_lw_main
-    );
+pub fn install(agent : &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, rockman_special_lw_main);
 }

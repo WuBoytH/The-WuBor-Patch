@@ -15,5 +15,5 @@ pub unsafe extern "C" fn kirby_jack_special_n_pre(fighter: &mut L2CFighterCommon
 }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N, kirby_jack_special_n_pre);
+    agent.status(smashline::Pre, *FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N, kirby_jack_special_n_pre);
 }

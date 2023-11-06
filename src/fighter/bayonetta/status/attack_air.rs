@@ -177,6 +177,6 @@ pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackair_main);
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackair_end);
 
-    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackairf_init);
-    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_AIR, bayonetta_attackairf_end);
+    agent.status(smashline::Init, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, bayonetta_attackairf_init);
+    agent.status(smashline::End, *FIGHTER_BAYONETTA_STATUS_KIND_ATTACK_AIR_F, bayonetta_attackairf_end);
 }

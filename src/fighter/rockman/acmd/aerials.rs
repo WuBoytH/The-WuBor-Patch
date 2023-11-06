@@ -155,10 +155,10 @@ unsafe extern "C" fn rockman_attackairb(agent: &mut L2CAgentBase) {
 // }
 
 pub fn install(agent : &mut smashline::Agent) {
-    agent.game_acmd("game_attackairn", rockman_attackairn);
-    agent.effect_acmd("effect_attackairn", rockman_attackairn_eff);
-    agent.sound_acmd("sound_attackairn", rockman_attackairn_snd);
-    agent.expression_acmd("expression_attackairn", rockman_attackairn_exp);
+    agent.game_acmd("game_attackairnmelee", rockman_attackairn);
+    agent.effect_acmd("effect_attackairnmelee", rockman_attackairn_eff);
+    agent.sound_acmd("sound_attackairnmelee", rockman_attackairn_snd);
+    agent.expression_acmd("expression_attackairnmelee", rockman_attackairn_exp);
 
     agent.game_acmd("game_attackairf", rockman_attackairf);
 

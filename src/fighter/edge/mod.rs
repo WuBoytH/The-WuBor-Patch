@@ -7,4 +7,5 @@ pub fn install() {
     acmd::install(agent);
     status::install(agent);
     agent_init::install(agent);
+    agent.install();
 }

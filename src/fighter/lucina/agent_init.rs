@@ -75,7 +75,6 @@ unsafe extern "C" fn yu_check_special_command(fighter: &mut L2CFighterCommon) ->
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     cancel::install();
-    WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_CAN_SPECIAL_COMMAND);
     VarModule::set_float(fighter.module_accessor, yu::instance::float::SP_GAUGE_MAX, 100.0);
     fighter.global_table[CHECK_SPECIAL_N_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));
     fighter.global_table[CHECK_SPECIAL_S_UNIQ].assign(&L2CValue::Ptr(yu_specialns_pre as *const () as _));

@@ -1,5 +1,6 @@
 use {
     crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame,
     super::helper::*
 };
 
@@ -33,6 +34,7 @@ unsafe extern "C" fn lucario_training_tools(fighter: &mut L2CFighterCommon) {
 // }
 
 unsafe extern "C" fn lucario_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
     lucario_training_tools(fighter);
     // lucario_super_dash_cancel(fighter);
 }

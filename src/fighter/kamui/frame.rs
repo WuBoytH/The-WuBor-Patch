@@ -1,16 +1,9 @@
 use {
-    smash::{
-        lua2cpp::*,
-        phx::Hash40,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*}
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
-unsafe extern "C" fn kamui_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn kamui_dragon_install_handler(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::set_float(fighter.module_accessor, kamui::instance::float::DRAGON_INSTALL, 0.0);
         VarModule::set_float(fighter.module_accessor, kamui::instance::float::DRAGON_INSTALL_TIMER, 0.0);
@@ -50,6 +43,11 @@ unsafe extern "C" fn kamui_frame(fighter: &mut L2CFighterCommon) {
             }
         }
     }
+}
+
+unsafe extern "C" fn kamui_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    kamui_dragon_install_handler(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

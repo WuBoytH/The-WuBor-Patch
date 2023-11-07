@@ -4,7 +4,6 @@ use {
         app::{lua_bind::*, *},
         lib::lua_const::*
     },
-    smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };

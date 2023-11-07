@@ -1,11 +1,8 @@
 use {
     crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame,
     super::agent_init::*
 };
-
-// Notes:
-// vc_ken_special_l01 is "I hit my boiling point!"
-// vc_ken_special_l02 is "Shoryureppa"
 
 // unsafe extern "C" fn dolly_reset_vars(fighter: &mut L2CFighterCommon) {
 //     let status = fighter.global_table[STATUS_KIND].get_i32();
@@ -90,6 +87,7 @@ unsafe extern "C" fn dolly_super_super_cancels(fighter: &mut L2CFighterCommon) {
 
 unsafe extern "C" fn dolly_frame(fighter: &mut L2CFighterCommon) {
     // dolly_reset_vars(fighter);
+    common_fighter_frame(fighter);
     dolly_super_special_aura(fighter);
     dolly_super_super_cancels(fighter);
 }

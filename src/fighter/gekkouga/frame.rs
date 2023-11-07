@@ -1,14 +1,9 @@
 use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    wubor_utils::table_const::*
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
-unsafe extern "C" fn gekkouga_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn gekkouga_taunt_cancel(fighter: &mut L2CFighterCommon) {
     if [
         hash40("appeal_lw_l"),
         hash40("appeal_lw_r")
@@ -17,6 +12,11 @@ unsafe extern "C" fn gekkouga_frame(fighter: &mut L2CFighterCommon) {
     && !fighter.global_table[IS_STOP].get_bool() {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
+}
+
+unsafe extern "C" fn gekkouga_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    gekkouga_taunt_cancel(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

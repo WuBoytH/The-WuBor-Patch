@@ -72,11 +72,11 @@ unsafe extern "C" fn jack_special_lw_uniq(fighter: &mut L2CFighterCommon) -> L2C
     1.into()
 }
 
-unsafe extern "C" fn on_init(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     set_move_customizer(fighter, jack_move_customizer);
     fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_init(on_init);
+    agent.on_start(on_start);
 }

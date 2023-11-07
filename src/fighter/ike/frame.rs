@@ -3,10 +3,10 @@ use {
     crate::fighter::common::frame::common_fighter_frame
 };
 
-unsafe extern "C" fn cloud_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ike_frame(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {
-    agent.on_line(smashline::Main, cloud_frame);
+    agent.on_line(smashline::Main, ike_frame);
 }

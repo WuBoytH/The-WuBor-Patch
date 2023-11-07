@@ -1,14 +1,6 @@
 use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{wua_bind::*, vars::*, table_const::*},
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame,
     super::{vl, helper::*}
 };
 
@@ -229,6 +221,7 @@ unsafe extern "C" fn lucina_sb_flash(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn lucina_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
     lucina_reset_vars(fighter);
     lucina_meter_controller(fighter);
     lucina_training_tools(fighter);

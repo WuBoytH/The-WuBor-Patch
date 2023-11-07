@@ -1,11 +1,5 @@
 use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
+    crate::imports::status_imports::*,
     crate::fighter::common::frame::common_fighter_frame
 };
 

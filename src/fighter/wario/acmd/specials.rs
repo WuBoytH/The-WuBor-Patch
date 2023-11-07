@@ -155,7 +155,7 @@ unsafe extern "C" fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialnopenwait", wario_specialnopenwait);
 
     agent.game_acmd("game_specialairnopenwait", wario_specialnopenwait);

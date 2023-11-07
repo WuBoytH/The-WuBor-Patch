@@ -40,6 +40,6 @@ unsafe extern "C" fn daisy_specialhi_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, daisy_specialhi_main);
 }

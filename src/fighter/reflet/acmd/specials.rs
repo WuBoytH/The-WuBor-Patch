@@ -33,7 +33,7 @@ unsafe extern "C" fn reflet_specialhi2(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", reflet_specialhi);
 
     agent.game_acmd("game_specialairhi", reflet_specialhi);

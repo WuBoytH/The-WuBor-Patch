@@ -18,7 +18,7 @@ unsafe extern "C" fn mario_attack_s4_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_S4_START, mario_attack_s4_start_end);
 
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_S4_HOLD, mario_attack_s4_hold_end);

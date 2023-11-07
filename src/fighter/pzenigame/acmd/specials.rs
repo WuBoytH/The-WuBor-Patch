@@ -36,7 +36,7 @@ unsafe extern "C" fn pzenigame_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", pzenigame_specialhi);
 
     agent.game_acmd("game_specialairhi", pzenigame_specialhi);

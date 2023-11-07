@@ -183,7 +183,7 @@ unsafe extern "C" fn pitb_dspecialhold(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialnstart", pitb_specialnstart);
     agent.expression_acmd("expression_specialnstart", pitb_specialnstart_exp);
 

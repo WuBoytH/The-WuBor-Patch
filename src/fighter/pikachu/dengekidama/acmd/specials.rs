@@ -11,6 +11,6 @@ unsafe extern "C" fn pikachu_dengekidama_regular(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_regular", pikachu_dengekidama_regular);
 }

@@ -241,7 +241,7 @@ unsafe extern "C" fn edge_special_hi_ground_touch_down(fighter: &mut L2CFighterC
     normalize
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, edge_special_hi_pre);
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, edge_special_hi_main);
 }

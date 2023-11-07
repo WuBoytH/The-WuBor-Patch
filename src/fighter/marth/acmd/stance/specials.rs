@@ -702,7 +702,7 @@ unsafe extern "C" fn marth_speciallwspecialhi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_speciallwspecials", marth_speciallwspecials);
     agent.effect_acmd("effect_speciallwspecials", marth_speciallwspecials_eff);
     agent.sound_acmd("sound_speciallwspecials", marth_speciallwspecials_snd);

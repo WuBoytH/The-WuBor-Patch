@@ -228,7 +228,7 @@ unsafe extern "C" fn elight_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack100end", elight_attack100end);
 
     agent.game_acmd("game_attackdash", elight_attackdash);

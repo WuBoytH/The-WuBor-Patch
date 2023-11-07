@@ -32,7 +32,7 @@ unsafe extern "C" fn duckhunt_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.74);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackhi3", duckhunt_attackhi3);
 
     agent.game_acmd("game_attacklw3", duckhunt_attacklw3);

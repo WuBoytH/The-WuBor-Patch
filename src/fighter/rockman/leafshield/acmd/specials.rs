@@ -54,7 +54,7 @@ unsafe extern "C" fn rockman_leafshield_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_start", rockman_leafshield_start);
 
     agent.game_acmd("game_startreverse", rockman_leafshield_start);

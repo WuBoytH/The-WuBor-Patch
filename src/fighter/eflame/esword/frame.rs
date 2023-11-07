@@ -10,6 +10,6 @@ unsafe extern "C" fn eflame_esword_frame(weapon: &mut L2CFighterBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_line(smashline::Main, eflame_esword_frame);
 }

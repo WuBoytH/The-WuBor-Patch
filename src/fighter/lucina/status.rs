@@ -10,7 +10,7 @@ mod special_lw;
 mod special_lw_hit;
 mod rebirth;
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     attack_dash::install(agent);
     special_n::install(agent);
     special_n_loop::install(agent);

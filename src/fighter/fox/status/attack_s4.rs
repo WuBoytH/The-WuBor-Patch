@@ -32,6 +32,6 @@ unsafe extern "C" fn fox_attack_s4_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_S4, fox_attack_s4_pre);
 }

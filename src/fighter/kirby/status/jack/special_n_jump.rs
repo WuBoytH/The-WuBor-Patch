@@ -156,6 +156,6 @@ pub unsafe extern "C" fn kirby_jack_special_n_jump_check_next(
     false.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_JACK_SPECIAL_N_JUMP, kirby_jack_special_n_jump_main);
 }

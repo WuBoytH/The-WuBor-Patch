@@ -64,7 +64,7 @@ unsafe extern "C" fn richter_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_throwb", richter_throwb);
 
     agent.game_acmd("game_throwhi", richter_throwhi);

@@ -97,7 +97,7 @@ unsafe extern "C" fn murabito_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackdash", murabito_attackdash);
 
     agent.game_acmd("game_attacks3", murabito_attacks3);

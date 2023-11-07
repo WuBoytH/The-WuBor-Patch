@@ -31,7 +31,7 @@ unsafe extern "C" fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_speciallwhit", kamui_waterdragon_speciallwhit);
 
     agent.game_acmd("game_specialairlwhit", kamui_waterdragon_speciallwhit);

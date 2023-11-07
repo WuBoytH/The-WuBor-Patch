@@ -129,6 +129,6 @@ unsafe extern "C" fn trail_attack_air_n_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N, trail_attack_air_n_main);
 }

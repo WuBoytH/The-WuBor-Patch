@@ -102,7 +102,7 @@ unsafe extern "C" fn daisy_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", daisy_attackairn);
 
     agent.game_acmd("game_attackairn", daisy_attackairlw);

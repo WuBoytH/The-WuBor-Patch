@@ -63,7 +63,7 @@ unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, lucina_special_s4_pre);
     agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, lucina_special_s4_main);
 }

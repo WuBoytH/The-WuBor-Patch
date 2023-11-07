@@ -280,7 +280,7 @@ unsafe extern "C" fn szerosuit_specialairhi2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", szerosuit_specialhi);
 
     agent.game_acmd("game_specialairhi", szerosuit_specialairhi);

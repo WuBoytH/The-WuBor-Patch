@@ -116,7 +116,7 @@ unsafe extern "C" fn duckhunt_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", duckhunt_attackairn);
 
     agent.game_acmd("game_attackairf", duckhunt_attackairf);

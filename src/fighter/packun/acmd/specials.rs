@@ -53,7 +53,7 @@ unsafe extern "C" fn packun_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", packun_specialhi);
 
     agent.game_acmd("game_specialairhi", packun_specialhi);

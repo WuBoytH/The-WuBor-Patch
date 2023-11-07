@@ -199,7 +199,7 @@ unsafe extern "C" fn demon_attacklw4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks4", demon_attacks4);
     agent.game_acmd("game_attacks4transform", demon_attacks4);
 

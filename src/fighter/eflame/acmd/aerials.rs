@@ -408,7 +408,7 @@ unsafe extern "C" fn eflame_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", eflame_attackairn);
     agent.effect_acmd("effect_attackairn", eflame_attackairn_eff);
     agent.sound_acmd("sound_attackairn", eflame_attackairn_snd);

@@ -257,7 +257,7 @@ unsafe extern "C" fn samusd_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialnstart", samusd_specialnstart);
 
     agent.game_acmd("game_specialairnstart", samusd_specialnstart);

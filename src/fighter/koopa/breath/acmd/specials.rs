@@ -27,7 +27,7 @@ unsafe extern "C" fn koopa_breath_move_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_move", koopa_breath_move);
     agent.effect_acmd("effect_move", koopa_breath_move_eff);
     agent.sound_acmd("sound_move", koopa_breath_move_snd);

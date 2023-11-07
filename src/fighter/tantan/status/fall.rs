@@ -15,6 +15,6 @@ unsafe extern "C" fn tantan_fall_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     original(fighter)
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_FALL, tantan_fall_pre);
 }

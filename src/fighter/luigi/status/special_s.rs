@@ -6,6 +6,6 @@ unsafe extern "C" fn luigi_special_s_end(fighter: &mut L2CFighterCommon) -> L2CV
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, luigi_special_s_end);
 }

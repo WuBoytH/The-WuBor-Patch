@@ -209,7 +209,7 @@ unsafe extern "C" fn kirby_appealsloop_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_appealsl", kirby_appeals);
     agent.effect_acmd("effect_appealsl", kirby_appeals_eff);
     agent.sound_acmd("sound_appealsl", kirby_appeals_snd);

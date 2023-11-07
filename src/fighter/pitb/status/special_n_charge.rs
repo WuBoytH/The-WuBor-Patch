@@ -139,6 +139,6 @@ unsafe extern "C" fn pitb_special_n_charge_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_CHARGE, pitb_special_n_charge_main);
 }

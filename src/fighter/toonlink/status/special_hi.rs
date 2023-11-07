@@ -272,7 +272,7 @@ unsafe extern "C" fn toonlink_special_hi_end_exec(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, toonlink_special_hi_end_main);
     agent.status(smashline::Exec, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, toonlink_special_hi_end_exec);
 }

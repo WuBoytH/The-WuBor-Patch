@@ -133,7 +133,7 @@ unsafe extern "C" fn pikachu_special_s_warp_1_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_pre);
     agent.status(smashline::Init, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_init);
     agent.status(smashline::Main, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_main);

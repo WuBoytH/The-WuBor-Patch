@@ -327,7 +327,7 @@ unsafe extern "C" fn simon_landingairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairf", simon_attackairf);
     agent.sound_acmd("sound_attackairf", simon_attackairf_snd);
 

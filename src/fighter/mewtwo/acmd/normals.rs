@@ -74,7 +74,7 @@ unsafe extern "C" fn mewtwo_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackdash", mewtwo_attackdash);
 
     agent.game_acmd("game_attacks3", mewtwo_attacks3);

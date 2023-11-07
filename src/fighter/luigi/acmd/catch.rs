@@ -154,7 +154,7 @@ unsafe extern "C" fn luigi_catchattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_catch", luigi_catch);
     agent.effect_acmd("effect_catch", luigi_catch_eff);
     agent.sound_acmd("sound_catch", luigi_catch_snd);

@@ -74,7 +74,7 @@ unsafe extern "C" fn koopa_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialscatch", koopa_specialscatch);
 
     agent.game_acmd("game_specialairscatch", koopa_specialsaircatch);

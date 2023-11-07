@@ -75,7 +75,7 @@ unsafe extern "C" fn lucina_run_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.effect_acmd("effect_run", lucina_run_eff);
     agent.sound_acmd("sound_run", lucina_run_snd);
     agent.expression_acmd("expression_run", lucina_run_exp);

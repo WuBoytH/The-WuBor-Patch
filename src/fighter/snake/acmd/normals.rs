@@ -80,7 +80,7 @@ unsafe extern "C" fn snake_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks3s2", snake_attacks3s2);
 
     agent.game_acmd("game_attackhi3", snake_attackhi3);

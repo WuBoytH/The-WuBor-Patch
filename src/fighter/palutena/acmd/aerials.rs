@@ -99,7 +99,7 @@ unsafe extern "C" fn palutena_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", palutena_attackairn);
 
     agent.game_acmd("game_attackairb", palutena_attackairb);

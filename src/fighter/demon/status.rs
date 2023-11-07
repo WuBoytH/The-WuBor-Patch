@@ -4,7 +4,7 @@ mod attacklw3;
 mod attackstand2;
 mod landing_attack_air;
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     dash::install(agent);
     attack::install(agent);
     attacklw3::install(agent);

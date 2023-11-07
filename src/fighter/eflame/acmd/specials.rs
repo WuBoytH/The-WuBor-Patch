@@ -309,7 +309,7 @@ unsafe extern "C" fn eflame_speciallwattack_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specials", eflame_specials);
 
     agent.game_acmd("game_specialairs", eflame_specials);

@@ -341,7 +341,7 @@ unsafe extern "C" fn pikachu_speciallwstrike_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn", pikachu_specialn);
     agent.effect_acmd("effect_specialn", pikachu_specialn_eff);
     agent.sound_acmd("sound_specialn", pikachu_specialn_snd);

@@ -34,7 +34,7 @@ unsafe extern "C" fn pickel_forge_wait(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_fallattack", pickel_forge_fallattack);
 
     agent.game_acmd("game_fallattackride", pickel_forge_fallattackride);

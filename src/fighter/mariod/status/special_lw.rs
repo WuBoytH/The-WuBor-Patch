@@ -150,7 +150,7 @@ unsafe extern "C" fn mariod_special_lw_exec_stop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, mariod_special_lw_main);
     agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, mariod_special_lw_exec);
     agent.status(smashline::ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_LW, mariod_special_lw_exec_stop);

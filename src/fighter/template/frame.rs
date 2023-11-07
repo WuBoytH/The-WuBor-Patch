@@ -7,6 +7,6 @@ unsafe extern "C" fn template_frame(fighter: &mut L2CFighterCommon) {
     common_fighter_frame(fighter);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_line(smashline::Main, template_frame);
 }

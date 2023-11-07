@@ -117,7 +117,7 @@ unsafe extern "C" fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11", szerosuit_attack11);
 
     agent.game_acmd("game_attacks3", szerosuit_attacks3);

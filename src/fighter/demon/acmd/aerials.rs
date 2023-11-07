@@ -88,7 +88,7 @@ unsafe extern "C" fn demon_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairf", demon_attackairf);
 
     agent.game_acmd("game_attackairhi", demon_attackairhi);

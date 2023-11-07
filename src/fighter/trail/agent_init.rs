@@ -21,6 +21,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     );
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_start(on_start);
 }

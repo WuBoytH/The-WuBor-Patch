@@ -110,7 +110,7 @@ unsafe extern "C" fn wario_throwlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_throwf", wario_throwf);
 
     agent.game_acmd("game_throwb", wario_throwb);

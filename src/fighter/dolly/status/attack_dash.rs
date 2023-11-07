@@ -107,7 +107,7 @@ unsafe extern "C" fn dolly_attack_dash_end(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_pre);
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_main);
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_DASH, dolly_attack_dash_end);

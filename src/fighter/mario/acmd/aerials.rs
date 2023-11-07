@@ -213,7 +213,7 @@ unsafe extern "C" fn mario_attackairlw_exp(agent: &mut L2CAgentBase) {
 unsafe extern "C" fn mario_landingairlw(_agent: &mut L2CAgentBase) {
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairf", mario_attackairf);
     agent.effect_acmd("effect_attackairf", mario_attackairf_eff);
     agent.sound_acmd("sound_attackairf", mario_attackairf_snd);

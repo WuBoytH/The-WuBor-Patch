@@ -10,7 +10,7 @@ mod squat;
 mod escape;
 mod appeal;
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     jabs::install(agent);
     normals::install(agent);
     smashes::install(agent);

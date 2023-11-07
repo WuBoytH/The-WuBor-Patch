@@ -34,6 +34,6 @@ unsafe extern "C" fn lucina_special_n_loop_main_loop(fighter: &mut L2CFighterCom
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_LOOP, lucina_special_n_loop_main);
 }

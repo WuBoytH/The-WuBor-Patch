@@ -369,7 +369,7 @@ unsafe extern "C" fn miifighter_specialhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specials3dash", miifighter_specials3dash);
 
     agent.game_acmd("game_specialairs3dash", miifighter_specialairs3dash);

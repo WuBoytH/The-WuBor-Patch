@@ -28,6 +28,6 @@ unsafe extern "C" fn wiifit_special_hi_jump_pre(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_WIIFIT_STATUS_KIND_SPECIAL_HI_JUMP, wiifit_special_hi_jump_pre);
 }

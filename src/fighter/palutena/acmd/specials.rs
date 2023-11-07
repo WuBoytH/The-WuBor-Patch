@@ -27,7 +27,7 @@ unsafe extern "C" fn palutena_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhistart", palutena_specialhistart);
 
     agent.game_acmd("game_specialairhistart", palutena_specialhistart);

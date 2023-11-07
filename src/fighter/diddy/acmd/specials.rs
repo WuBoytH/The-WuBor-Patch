@@ -52,7 +52,7 @@ unsafe extern "C" fn diddy_specialairhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialairsjump", diddy_specialairsjump);
 
     agent.game_acmd("game_specialairhijump", diddy_specialairhijump);

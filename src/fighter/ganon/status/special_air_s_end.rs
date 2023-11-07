@@ -55,7 +55,7 @@ unsafe extern "C" fn ganon_special_air_s_end_main_loop(fighter: &mut L2CFighterC
     1.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, ganon_special_air_s_end_pre);
     agent.status(smashline::Main, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_END, ganon_special_air_s_end_main);
 }

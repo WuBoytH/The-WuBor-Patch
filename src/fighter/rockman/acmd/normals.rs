@@ -252,7 +252,7 @@ unsafe extern "C" fn rockman_attacks3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11melee", rockman_attack11);
     agent.effect_acmd("effect_attack11melee", rockman_attack11_eff);
     agent.sound_acmd("sound_attack11melee", rockman_attack11_snd);

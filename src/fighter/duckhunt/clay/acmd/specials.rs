@@ -11,6 +11,6 @@ unsafe extern "C" fn duckhunt_clay_fly(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_fly", duckhunt_clay_fly);
 }

@@ -6,7 +6,7 @@ mod special_hi;
 mod special_lw;
 mod holywater;
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     attack::install(agent);
     attack_lw3::install(agent);
     attack_air::install(agent);

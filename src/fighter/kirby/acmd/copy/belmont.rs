@@ -17,7 +17,7 @@ unsafe extern "C" fn kirby_belmontspecialairn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.expression_acmd("expression_simonspecialn", kirby_belmontspecialn_exp);
 
     agent.expression_acmd("expression_simonspecialairn", kirby_belmontspecialairn_exp);

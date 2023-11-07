@@ -88,6 +88,6 @@ unsafe extern "C" fn trail_landing_attack_air_init(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Init, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, trail_landing_attack_air_init);
 }

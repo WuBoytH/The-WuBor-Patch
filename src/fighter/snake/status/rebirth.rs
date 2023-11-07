@@ -33,6 +33,6 @@ unsafe extern "C" fn snake_rebirth_end(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_REBIRTH, snake_rebirth_end);
 }

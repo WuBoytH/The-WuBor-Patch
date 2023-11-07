@@ -239,6 +239,6 @@ unsafe extern "C" fn lucina_frame(fighter: &mut L2CFighterCommon) {
     lucina_sb_flash(fighter);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_line(smashline::Main, lucina_frame);
 }

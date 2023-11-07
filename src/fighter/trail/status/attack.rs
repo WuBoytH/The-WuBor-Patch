@@ -29,6 +29,6 @@ unsafe extern "C" fn trail_attack_substatus(fighter: &mut L2CFighterCommon, para
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK, trail_attack_main);
 }

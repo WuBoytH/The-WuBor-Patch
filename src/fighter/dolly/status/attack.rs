@@ -69,6 +69,6 @@ unsafe extern "C" fn dolly_attack_main_loop(fighter: &mut L2CFighterCommon) -> L
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK, dolly_attack_main);
 }

@@ -108,7 +108,7 @@ unsafe extern "C" fn metaknight_specialhiloop(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialnstart", metaknight_specialnstart);
     agent.effect_acmd("effect_specialnstart", metaknight_specialnstart_eff);
 

@@ -17,6 +17,6 @@ unsafe extern "C" fn pitb_specialn_endremove(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::End, *FIGHTER_PIT_STATUS_KIND_SPECIAL_N_SHOOT, pitb_specialn_shoot_end);
 }

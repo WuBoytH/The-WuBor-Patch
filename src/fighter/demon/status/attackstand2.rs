@@ -94,6 +94,6 @@ unsafe extern "C" fn demon_attack_stand_2_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, demon_attack_stand_2_main);
 }

@@ -401,7 +401,7 @@ unsafe extern "C" fn ike_specialsattack_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialnend", ike_specialnend);
     agent.effect_acmd("effect_specialnend", ike_specialnend_eff);
     agent.sound_acmd("sound_specialnend", ike_specialnend_snd);

@@ -277,7 +277,7 @@ unsafe extern "C" fn marth_speciallw_attack_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, marth::status::STANCE_ATTACK, marth_speciallw_attack_pre);
     agent.status(smashline::Main, marth::status::STANCE_ATTACK, marth_speciallw_attack_main);
     agent.status(smashline::End, marth::status::STANCE_ATTACK, marth_speciallw_attack_end);

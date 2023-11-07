@@ -187,7 +187,7 @@ unsafe extern "C" fn eflame_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11", eflame_attack11);
 
     agent.game_acmd("game_attack100end", eflame_attack100end);

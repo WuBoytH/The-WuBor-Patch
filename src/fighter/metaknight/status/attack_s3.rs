@@ -28,6 +28,6 @@ unsafe extern "C" fn metaknight_attack_s3_pre(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_S3, metaknight_attack_s3_pre);
 }

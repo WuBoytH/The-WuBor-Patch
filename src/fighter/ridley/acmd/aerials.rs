@@ -63,7 +63,7 @@ unsafe extern "C" fn ridley_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairlw", ridley_attackairlw);
 
     agent.game_acmd("game_landingairlw", ridley_landingairlw);

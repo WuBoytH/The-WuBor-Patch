@@ -55,7 +55,7 @@ unsafe extern "C" fn krool_attacks4lw(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 22.0, -7.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("krool_attacks4", krool_attacks4);
 
     agent.game_acmd("game_attacks4hi", krool_attacks4hi);

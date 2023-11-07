@@ -170,7 +170,7 @@ unsafe extern "C" fn gamewatch_attackairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairf", gamewatch_attackairf);
     agent.effect_acmd("effect_attackairf", gamewatch_attackairf_eff);
     agent.sound_acmd("sound_attackairf", gamewatch_attackairf_snd);

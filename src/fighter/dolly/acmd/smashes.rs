@@ -56,7 +56,7 @@ unsafe extern "C" fn dolly_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks4", dolly_attacks4);
 
     agent.game_acmd("game_attacklw4", dolly_attacklw4);

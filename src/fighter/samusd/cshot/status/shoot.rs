@@ -180,7 +180,7 @@ unsafe extern "C" fn samusd_cshot_shoot_end(weapon: &mut L2CWeaponCommon) -> L2C
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Init, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_init);
     agent.status(smashline::Exec, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_exec);
     agent.status(smashline::End, *WEAPON_SAMUS_CSHOT_STATUS_KIND_SHOOT, samusd_cshot_shoot_end);

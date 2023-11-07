@@ -13,7 +13,7 @@ unsafe extern "C" fn yoshi_guard_on_exec_stop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_GUARD_ON, yoshi_guard_on_exec);
     agent.status(smashline::ExecStop, *FIGHTER_STATUS_KIND_GUARD_ON, yoshi_guard_on_exec_stop);
 }

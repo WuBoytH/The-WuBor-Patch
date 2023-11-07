@@ -12,6 +12,6 @@ unsafe extern "C" fn ness_escapeairslide(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_escapeairslide", ness_escapeairslide);
 }

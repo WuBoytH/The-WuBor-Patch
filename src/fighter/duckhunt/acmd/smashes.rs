@@ -21,6 +21,6 @@ unsafe extern "C" fn duckhunt_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks4", duckhunt_attacks4);
 }

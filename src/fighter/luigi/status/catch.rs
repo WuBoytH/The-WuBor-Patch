@@ -48,7 +48,7 @@ unsafe extern "C" fn luigi_throw_end(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.status_end_Throw()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_CATCH, luigi_catch_end);
 
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_CATCH_DASH, luigi_catch_dash_end);

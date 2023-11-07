@@ -278,7 +278,7 @@ unsafe extern "C" fn dolly_special_lw_attack_end(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_pre);
     agent.status(smashline::Pre, *FIGHTER_DOLLY_STATUS_KIND_SPECIAL_LW_COMMAND, dolly_special_lw_pre);
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, dolly_special_lw_main);

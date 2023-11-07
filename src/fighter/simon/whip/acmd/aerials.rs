@@ -64,7 +64,7 @@ unsafe extern "C" fn simon_whip_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairlw", simon_whip_attackairlw);
     agent.effect_acmd("effect_attackairlw", simon_whip_attackairlw_eff);
 

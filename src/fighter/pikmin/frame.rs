@@ -60,6 +60,6 @@ unsafe extern "C" fn pikmin_frame(fighter: &mut L2CFighterCommon) {
     pikmin_antenna_indicator(fighter);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_line(smashline::Main, pikmin_frame);
 }

@@ -239,7 +239,7 @@ unsafe extern "C" fn dolly_wave_normalair(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     wave.game_acmd("game_normalw", dolly_wave_normalw);
 
     wave.game_acmd("game_normal", dolly_wave_normal);

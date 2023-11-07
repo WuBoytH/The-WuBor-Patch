@@ -116,7 +116,7 @@ unsafe extern "C" fn rockman_rockbuster_shoot_turn_main_loop(fighter: &mut L2CFi
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN, rockman_rockbuster_shoot_turn_pre);
     agent.status(smashline::Main, *FIGHTER_ROCKMAN_STATUS_KIND_ROCKBUSTER_SHOOT_TURN, rockman_rockbuster_shoot_turn_main);
 }

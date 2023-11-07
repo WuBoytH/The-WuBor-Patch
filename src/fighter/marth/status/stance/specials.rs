@@ -1036,7 +1036,7 @@ unsafe extern "C" fn marth_speciallw_specials2_end2_main_loop(fighter: &mut L2CF
 //     0.into()
 // }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, marth_speciallw_end);
 
     agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, marth_speciallw_hit_main);

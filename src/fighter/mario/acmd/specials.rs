@@ -280,7 +280,7 @@ unsafe extern "C" fn mario_groundpoundland_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specials", mario_specials);
     agent.effect_acmd("effect_specials", mario_specials_eff);
     agent.expression_acmd("expression_specials", mario_specials_exp);

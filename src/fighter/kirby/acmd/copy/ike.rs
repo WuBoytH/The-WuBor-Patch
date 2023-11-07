@@ -191,7 +191,7 @@ unsafe extern "C" fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.effect_acmd("effect_ikespecialnend", kirby_ikespecialnend_eff);
     agent.sound_acmd("sound_ikespecialnend", kirby_ikespecialnend_snd);
     agent.expression_acmd("expression_ikespecialnend", kirby_ikespecialnend_exp);

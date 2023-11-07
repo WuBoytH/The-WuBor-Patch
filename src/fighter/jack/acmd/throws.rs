@@ -96,7 +96,7 @@ unsafe extern "C" fn jack_throwlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_throwf", jack_throwf);
 
     agent.game_acmd("game_throwb", jack_throwb);

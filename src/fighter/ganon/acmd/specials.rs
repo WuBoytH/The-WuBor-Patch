@@ -296,7 +296,7 @@ unsafe extern "C" fn ganon_specialairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn", ganon_specialn);
     agent.effect_acmd("effect_specialn", ganon_specialn_eff);
     agent.sound_acmd("sound_specialn", ganon_specialn_snd);

@@ -178,7 +178,7 @@ unsafe extern "C" fn kamui_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairf", kamui_attackairf);
     agent.effect_acmd("game_attackairf_eff", kamui_attackairf_eff);
 

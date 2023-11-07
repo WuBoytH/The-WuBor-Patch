@@ -34,7 +34,7 @@ unsafe extern "C" fn simon_attack_air_check_attack(_fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_main);
     agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_exec);
     agent.status(smashline::CheckAttack, *FIGHTER_STATUS_KIND_ATTACK_AIR, simon_attack_air_check_attack);

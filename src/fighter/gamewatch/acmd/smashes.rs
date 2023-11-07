@@ -94,7 +94,7 @@ unsafe extern "C" fn gamewatch_attacklw4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks4", gamewatch_attacks4);
 
     agent.game_acmd("game_attackhi4", gamewatch_attackhi4);

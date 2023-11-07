@@ -55,6 +55,6 @@ unsafe extern "C" fn pikachu_dengekidama_regular_main_loop(weapon: &mut L2CWeapo
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *WEAPON_PIKACHU_DENGEKIDAMA_STATUS_KIND_REGULAR, pikachu_dengekidama_regular_main);
 }

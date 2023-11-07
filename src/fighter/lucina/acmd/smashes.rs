@@ -90,7 +90,7 @@ unsafe extern "C" fn lucina_attacklw4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks4", lucina_attacks4);
 
     agent.game_acmd("game_attackhi4", lucina_attackhi4);

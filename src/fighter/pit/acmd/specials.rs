@@ -56,7 +56,7 @@ unsafe extern "C" fn pit_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialsend", pit_specialsend);
 
     agent.game_acmd("game_specialairsend", pit_specialairsend);

@@ -20,6 +20,6 @@ unsafe extern "C" fn lucas_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_throwlw", lucas_throwlw);
 }

@@ -131,7 +131,7 @@ unsafe extern "C" fn gamewatch_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11", gamewatch_attack11);
 
     agent.game_acmd("game_attackdash", gamewatch_attackdash);

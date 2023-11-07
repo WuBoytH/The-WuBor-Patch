@@ -9,6 +9,6 @@ unsafe extern "C" fn shizue_special_lw_fire_main(fighter: &mut L2CFighterCommon)
     original(fighter)
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_SHIZUE_STATUS_KIND_SPECIAL_LW_FIRE, shizue_special_lw_fire_main);
 }

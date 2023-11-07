@@ -37,6 +37,6 @@ unsafe extern "C" fn lucario_frame(fighter: &mut L2CFighterCommon) {
     // lucario_super_dash_cancel(fighter);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_line(smashline::Main, lucario_frame);
 }

@@ -102,7 +102,7 @@ unsafe extern "C" fn luigi_special_s_charge_end(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, luigi_special_s_charge_main);
     agent.status(smashline::End, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_S_CHARGE, luigi_special_s_charge_end);
 }

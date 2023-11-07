@@ -897,7 +897,7 @@ unsafe extern "C" fn jack_wait5_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn1", jack_specialn1);
 
     agent.game_acmd("game_specialairn1", jack_specialairn1);

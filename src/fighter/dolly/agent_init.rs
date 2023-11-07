@@ -238,6 +238,6 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_start(on_start);
 }

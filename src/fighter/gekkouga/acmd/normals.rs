@@ -49,7 +49,7 @@ unsafe extern "C" fn gekkouga_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks3", gekkouga_attacks3);
 
     agent.game_acmd("game_attacks3hi", gekkouga_attacks3);

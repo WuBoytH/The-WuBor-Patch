@@ -62,6 +62,6 @@ unsafe extern "C" fn gamewatch_special_hi_fall_main_loop(fighter: &mut L2CFighte
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, gamewatch_special_hi_fall_main);
 }

@@ -127,7 +127,7 @@ unsafe extern "C" fn demon_attackstand32(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackstand24", demon_attackstand24);
 
     agent.game_acmd("game_attackstand2f", demon_attackstand2f);

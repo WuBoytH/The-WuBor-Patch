@@ -39,7 +39,7 @@ unsafe extern "C" fn jack_doyle_return_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.effect_acmd("effect_appear", jack_doyle_appear_eff);
 
     agent.effect_acmd("effect_return", jack_doyle_return_eff);

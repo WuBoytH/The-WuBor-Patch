@@ -34,7 +34,7 @@ unsafe extern "C" fn sonic_set_jumps(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, sonic_jump_aerial_main);
 
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ITEM_SCREW_JUMP_AERIAL, sonic_screw_jump_aerial_main);

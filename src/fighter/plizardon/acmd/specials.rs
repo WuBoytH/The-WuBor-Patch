@@ -47,7 +47,7 @@ unsafe extern "C" fn plizardon_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", plizardon_specialhi);
 
     agent.game_acmd("game_specialairhi", plizardon_specialhi);

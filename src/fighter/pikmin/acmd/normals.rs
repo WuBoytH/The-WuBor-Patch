@@ -242,7 +242,7 @@ unsafe extern "C" fn pikmin_attacklw3(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 13.0, -5.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11", pikmin_attack11);
 
     agent.game_acmd("game_attackdash", pikmin_attackdash);

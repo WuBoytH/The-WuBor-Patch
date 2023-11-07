@@ -44,7 +44,7 @@ unsafe extern "C" fn pickel_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialsride", pickel_specialsride);
 
     agent.game_acmd("game_specialairsride", pickel_specialairsride);

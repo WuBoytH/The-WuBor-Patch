@@ -94,7 +94,7 @@ unsafe extern "C" fn samus_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", samus_specialhi);
 
     agent.game_acmd("game_specialairhi", samus_specialairhi);

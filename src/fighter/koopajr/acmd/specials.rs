@@ -7,7 +7,7 @@ unsafe extern "C" fn koopajr_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_speciallw", koopajr_speciallw);
 
     agent.game_acmd("game_specialairlw", koopajr_speciallw);

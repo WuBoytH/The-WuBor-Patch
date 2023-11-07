@@ -39,7 +39,7 @@ unsafe extern "C" fn edge_special_hi_rush_end(fighter: &mut L2CFighterCommon) ->
     original(fighter)
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_pre);
     agent.status(smashline::Main, *FIGHTER_EDGE_STATUS_KIND_SPECIAL_HI_RUSH, edge_special_hi_rush_end);
 }

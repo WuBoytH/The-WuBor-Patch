@@ -193,7 +193,7 @@ unsafe extern "C" fn trail_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", trail_specialhi);
 
     agent.game_acmd("game_specialairhi", trail_specialhi);

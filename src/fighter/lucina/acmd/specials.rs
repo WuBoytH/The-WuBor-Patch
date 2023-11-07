@@ -814,7 +814,7 @@ unsafe extern "C" fn lucina_lightningflash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.effect_acmd("effect_specialnstart", lucina_specialnstart_eff);
     agent.sound_acmd("sound_specialnstart", lucina_specialnstart_snd);
 

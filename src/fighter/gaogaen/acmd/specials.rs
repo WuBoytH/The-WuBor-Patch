@@ -798,7 +798,7 @@ unsafe extern "C" fn gaogaen_speciallwturn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn", gaogaen_specialn);
 
     agent.game_acmd("game_specialairn", gaogaen_specialairn);

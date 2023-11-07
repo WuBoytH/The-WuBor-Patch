@@ -105,7 +105,7 @@ unsafe extern "C" fn ridley_specialairhichargelw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialsstart", ridley_specialsstart);
 
     agent.game_acmd("game_specialairsstart", ridley_specialsstart);

@@ -22,6 +22,6 @@ unsafe extern "C" fn ganon_special_air_s_catch_main_loop(fighter: &mut L2CFighte
     ret.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_GANON_STATUS_KIND_SPECIAL_AIR_S_CATCH, ganon_special_air_s_catch_main);
 }

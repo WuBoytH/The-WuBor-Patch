@@ -84,7 +84,7 @@ unsafe extern "C" fn mario_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attack11", mario_attack11);
 
     agent.game_acmd("game_attack12", mario_attack12);

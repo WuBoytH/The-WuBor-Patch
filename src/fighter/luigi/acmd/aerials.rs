@@ -62,7 +62,7 @@ unsafe extern "C" fn luigi_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", luigi_attackairn);
 
     agent.game_acmd("game_attackairf", luigi_attackairf);

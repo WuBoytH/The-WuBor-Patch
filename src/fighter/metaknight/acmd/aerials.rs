@@ -255,7 +255,7 @@ unsafe extern "C" fn metaknight_landingairlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", metaknight_attackairn);
 
     agent.game_acmd("game_attackairf", metaknight_attackairf);

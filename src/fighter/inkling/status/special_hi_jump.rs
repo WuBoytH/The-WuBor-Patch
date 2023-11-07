@@ -32,6 +32,6 @@ unsafe extern "C" fn inkling_special_hi_jump_pre(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_JUMP, inkling_special_hi_jump_pre);
 }

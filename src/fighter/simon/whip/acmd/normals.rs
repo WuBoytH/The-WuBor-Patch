@@ -163,7 +163,7 @@ unsafe extern "C" fn simon_whip_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackdash", simon_whip_attackdash);
 
     agent.game_acmd("game_attacks3", simon_whip_attacks3);

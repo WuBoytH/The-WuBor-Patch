@@ -310,7 +310,7 @@ unsafe extern "C" fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_throwf", luigi_throwf);
     agent.effect_acmd("effect_throwf", luigi_throwf_eff);
     agent.sound_acmd("sound_throwf", luigi_throwf_snd);

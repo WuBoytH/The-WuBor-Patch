@@ -28,6 +28,6 @@ unsafe extern "C" fn purin_special_n_hit_end_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_PURIN_STATUS_KIND_SPECIAL_N_HIT_END, purin_special_n_hit_end_main);
 }

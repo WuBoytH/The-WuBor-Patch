@@ -490,7 +490,7 @@ unsafe extern "C" fn richter_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", richter_attackairn);
     agent.effect_acmd("effect_attackairn", richter_attackairn_eff);
     agent.sound_acmd("sound_attackairn", richter_attackairn_snd);

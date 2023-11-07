@@ -73,7 +73,7 @@ unsafe extern "C" fn dolly_attack_lw3_end(fighter: &mut L2CFighterCommon) -> L2C
     fighter.status_end_AttackLw3()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, dolly_attack_lw3_main);
     agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_LW3, dolly_attack_lw3_end);
 }

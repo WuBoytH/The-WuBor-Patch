@@ -16,6 +16,6 @@ unsafe extern "C" fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackhi3", koopajr_attackhi3);
 }

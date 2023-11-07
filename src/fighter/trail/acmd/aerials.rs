@@ -103,7 +103,7 @@ unsafe extern "C" fn trail_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn3", trail_attackairn3);
 
     agent.game_acmd("game_attackairf", trail_attackairf);

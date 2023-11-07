@@ -77,6 +77,6 @@ unsafe extern "C" fn on_init(fighter: &mut L2CFighterCommon) {
     fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(jack_special_lw_uniq as *const () as _));
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.on_init(on_init);
 }

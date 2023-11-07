@@ -75,7 +75,7 @@ unsafe extern "C" fn yoshi_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.9);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks3", yoshi_attacks3);
 
     agent.game_acmd("game_attacks3hi", yoshi_attacks3hi);

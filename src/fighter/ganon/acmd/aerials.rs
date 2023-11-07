@@ -165,7 +165,7 @@ unsafe extern "C" fn ganon_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attackairn", ganon_attackairn);
     agent.effect_acmd("effect_attackairn", ganon_attackairn_eff);
 

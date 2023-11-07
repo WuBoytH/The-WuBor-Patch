@@ -8,6 +8,6 @@ unsafe extern "C" fn samusd_cshot_shoot(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_shoot", samusd_cshot_shoot);
 }

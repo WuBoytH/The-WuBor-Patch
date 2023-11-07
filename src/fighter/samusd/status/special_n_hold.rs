@@ -277,7 +277,7 @@ unsafe extern "C" fn samusd_get_max_charge_frame(fighter: &mut L2CFighterCommon)
     WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_n"), hash40("cshot_charge_frame")).into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, samusd_special_n_hold_main);
     agent.status(smashline::Exit, *FIGHTER_SAMUS_STATUS_KIND_SPECIAL_N_H, samusd_special_n_hold_exit);
 }

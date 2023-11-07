@@ -83,7 +83,7 @@ unsafe extern "C" fn rockman_specialairlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_busterchargeshot", rockman_specialn);
     agent.effect_acmd("effect_busterchargeshot", rockman_specialn_eff);
     agent.sound_acmd("sound_busterchargeshot", rockman_specialn_snd);

@@ -23,6 +23,6 @@ unsafe extern "C" fn simon_throwhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_throwhi", simon_throwhi);
 }

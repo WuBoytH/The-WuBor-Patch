@@ -90,7 +90,7 @@ unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     CustomCancelManager::initialize_agent(Hash40::new("fighter_kind_lucina"));
     agent.on_start(on_start);
 }

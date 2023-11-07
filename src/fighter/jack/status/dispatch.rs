@@ -83,7 +83,7 @@ unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_pre);
     agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_main);
 }

@@ -32,6 +32,6 @@ unsafe extern "C" fn pickel_special_hi_gliding_pre(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_PICKEL_STATUS_KIND_SPECIAL_HI_GLIDING, pickel_special_hi_gliding_pre);
 }

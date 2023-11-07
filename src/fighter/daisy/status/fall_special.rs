@@ -57,6 +57,6 @@ unsafe extern "C" fn daisy_fall_special_main_loop_helper(fighter: &mut L2CFighte
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_FALL_SPECIAL, daisy_fall_special_main);
 }

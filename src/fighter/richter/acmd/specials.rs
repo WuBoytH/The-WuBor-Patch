@@ -159,7 +159,7 @@ unsafe extern "C" fn richter_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn", richter_specialn);
     agent.expression_acmd("expression_specialn", richter_specialn_exp);
 

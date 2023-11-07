@@ -6,7 +6,7 @@ mod attacks;
 
 mod specials;
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     wait::install(agent);
 
     movement::install(agent);

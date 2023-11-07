@@ -27,6 +27,6 @@ unsafe extern "C" fn zelda_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacklw4", zelda_attacklw4);
 }

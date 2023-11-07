@@ -154,7 +154,7 @@ unsafe extern "C" fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialn", simon_specialn);
     agent.expression_acmd("expression_specialn", simon_specialn_exp);
 

@@ -76,7 +76,7 @@ unsafe extern "C" fn lucario_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks4", lucario_attacks4);
 
     agent.game_acmd("game_attackhi4", lucario_attackhi4);

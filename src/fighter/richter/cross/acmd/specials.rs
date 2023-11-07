@@ -14,7 +14,7 @@ unsafe extern "C" fn richter_cross_turn(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_fly", richter_cross_fly);
 
     agent.game_acmd("game_turn", richter_cross_turn);

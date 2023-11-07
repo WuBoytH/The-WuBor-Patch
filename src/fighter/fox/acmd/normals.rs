@@ -36,7 +36,7 @@ unsafe extern "C" fn fox_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_attacks3", fox_attacks3);
 
     agent.game_acmd("game_attacks3hi", fox_attacks3);

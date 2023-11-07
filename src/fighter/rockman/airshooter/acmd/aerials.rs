@@ -17,6 +17,6 @@ unsafe extern "C" fn rockman_airshooter_regular(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_regular", rockman_airshooter_regular);
 }

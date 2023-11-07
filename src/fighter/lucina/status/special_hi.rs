@@ -114,7 +114,7 @@ unsafe extern "C" fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_pre);
     agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_main);
     agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_exec);

@@ -188,7 +188,7 @@ unsafe extern "C" fn ridley_special_hi_charge_f_main_loop(fighter: &mut L2CFight
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI, ridley_special_hi_charge_hi_pre);
     agent.status(smashline::Main, *FIGHTER_RIDLEY_STATUS_KIND_SPECIAL_HI_CHARGE_HI, ridley_special_hi_charge_hi_main);
 

@@ -31,6 +31,6 @@ unsafe extern "C" fn toonlink_speciallw_pre(fighter: &mut L2CFighterCommon) -> L
     0.into()
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, toonlink_speciallw_pre);
 }

@@ -506,7 +506,7 @@ unsafe extern "C" fn demon_specialairlw(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-pub fn install(agent : &mut smashline::Agent) {
+pub fn install(agent: &mut smashline::Agent) {
     agent.game_acmd("game_specialhi", demon_specialhi);
 
     agent.game_acmd("game_specialhiground", demon_specialhigroundair);

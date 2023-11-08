@@ -1,18 +1,9 @@
 use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        phx::*,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::vars::*
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
-unsafe extern "C" fn samusd_frame(fighter: &mut L2CFighterCommon) {
-    // Morph Ball Drop Bounce
+unsafe extern "C" fn samusd_special_lw_bounce(fighter: &mut L2CFighterCommon) {
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("special_lw")
     || MotionModule::motion_kind(fighter.module_accessor) == hash40("special_air_lw") {
         if (AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
@@ -34,12 +25,20 @@ unsafe extern "C" fn samusd_frame(fighter: &mut L2CFighterCommon) {
             VarModule::on_flag(fighter.module_accessor, samusd::status::flag::SPECIAL_LW_BOUNCE);
         }
     }
+}
 
+unsafe extern "C" fn samusd_reset_attack_air_n_float(fighter: &mut L2CFighterCommon) {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         if VarModule::is_flag(fighter.module_accessor, samusd::instance::flag::ATTACK_AIR_N_FLOAT) {
             VarModule::off_flag(fighter.module_accessor, samusd::instance::flag::ATTACK_AIR_N_FLOAT);
         }
     }
+}
+
+unsafe extern "C" fn samusd_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    samusd_special_lw_bounce(fighter);
+    samusd_reset_attack_air_n_float(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

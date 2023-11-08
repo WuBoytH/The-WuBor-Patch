@@ -1,13 +1,6 @@
 use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*},
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame,
     super::vl
 };
 
@@ -32,7 +25,7 @@ unsafe extern "C" fn marth_stance_toggle_handler(fighter: &mut L2CFighterCommon,
     );
 }
 
-unsafe extern "C" fn marth_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn marth_check_stance(fighter: &mut L2CFighterCommon) {
     if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_GROUND {
         VarModule::off_flag(fighter.module_accessor, marth::instance::flag::AIR_STANCE);
     }
@@ -61,6 +54,11 @@ unsafe extern "C" fn marth_frame(fighter: &mut L2CFighterCommon) {
     if VarModule::get_int(fighter.module_accessor, marth::instance::int::STANCE_CHANGE_LOCKOUT) > 0 {
         VarModule::dec_int(fighter.module_accessor, marth::instance::int::STANCE_CHANGE_LOCKOUT);
     }
+}
+
+unsafe extern "C" fn marth_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    marth_check_stance(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

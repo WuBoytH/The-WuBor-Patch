@@ -1,4 +1,7 @@
-use crate::imports::status_imports::*;
+use {
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
+};
 
 unsafe extern "C" fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
@@ -10,6 +13,7 @@ unsafe extern "C" fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) 
 }
 
 unsafe extern "C" fn packun_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
     piranhacopter_early_cancel(fighter);
 }
 

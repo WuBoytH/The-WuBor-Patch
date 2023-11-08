@@ -1,5 +1,6 @@
 mod acmd;
 mod status;
+mod frame;
 mod agent_init;
 mod fgc;
 mod vtable_hook;
@@ -13,6 +14,7 @@ pub fn install() {
     let agent = &mut smashline::Agent::new("rockman");
     acmd::install(agent);
     status::install(agent);
+    frame::install(agent);
     agent_init::install(agent);
     fgc::install();
     vtable_hook::install();

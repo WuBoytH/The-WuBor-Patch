@@ -1,19 +1,10 @@
 use {
-    smash::{
-        lua2cpp::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    custom_var::*,
-    wubor_utils::{
-        wua_bind::*,
-        vars::*,
-        table_const::*
-    },
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame,
     super::helper::*,
 };
 
-unsafe extern "C" fn shizue_frame(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn shizue_clayrocket_fire_handler(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, shizue::instance::flag::FIRE_ROCKET_ANYTIME) {
         ArticleModule::shoot(
             fighter.module_accessor,
@@ -36,6 +27,11 @@ unsafe extern "C" fn shizue_frame(fighter: &mut L2CFighterCommon) {
             *FIGHTER_PAD_CMD_CAT1_SPECIAL_LW
         );
     }
+}
+
+unsafe extern "C" fn shizue_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    shizue_clayrocket_fire_handler(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

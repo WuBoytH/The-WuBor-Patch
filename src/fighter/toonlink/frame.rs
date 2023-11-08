@@ -1,18 +1,9 @@
 use {
-    smash::{
-        lua2cpp::*,
-        hash40,
-        app::lua_bind::*,
-        lib::lua_const::*
-    },
-    smash_script::*,
-    custom_var::*,
-    wubor_utils::{vars::*, table_const::*}
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
-unsafe extern "C" fn toonlink_frame(fighter: &mut L2CFighterCommon) {
-    // Down Air Bounce
-
+unsafe extern "C" fn toonlink_attack_air_lw_bounce(fighter: &mut L2CFighterCommon) {
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw") {
         if AttackModule::is_infliction(fighter.module_accessor, *COLLISION_KIND_MASK_HIT) {
             VarModule::on_flag(fighter.module_accessor, toonlink::status::flag::ATTACK_AIR_LW_BOUNCE);
@@ -32,6 +23,11 @@ unsafe extern "C" fn toonlink_frame(fighter: &mut L2CFighterCommon) {
             }
         }
     }
+}
+
+unsafe extern "C" fn toonlink_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    toonlink_attack_air_lw_bounce(fighter);
 }
 
 pub fn install(agent: &mut smashline::Agent) {

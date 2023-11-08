@@ -1,7 +1,6 @@
-use smash::{
-    lua2cpp::*,
-    app::{lua_bind::*, *},
-    lib::lua_const::*
+use {
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
 unsafe extern "C" fn wario_training_tools(fighter: &mut L2CFighterCommon) {
@@ -20,6 +19,7 @@ unsafe extern "C" fn wario_training_tools(fighter: &mut L2CFighterCommon) {
 }
 
 unsafe extern "C" fn wario_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
     wario_training_tools(fighter);
 }
 

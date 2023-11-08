@@ -3,8 +3,7 @@ use {
     super::super::helper::*
 };
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ryu_attack_lw4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_attack_lw4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -36,15 +35,12 @@ unsafe fn ryu_attack_lw4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_ATTACK_LW4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_attack_lw4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_attack_reset(fighter);
     fighter.status_AttackLw4()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_attack_lw4_pre,
-        ryu_attack_lw4_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_ATTACK_LW4, ryu_attack_lw4_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW4, ryu_attack_lw4_main);
 }

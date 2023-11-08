@@ -35,39 +35,39 @@ mod special_lw_step_f;
 // Reused for Denjin Impact / Denjin Reversal
 mod special_lw_step_b;
 
-pub fn install() {
-    rebirth::install();
+pub fn install(agent: &mut smashline::Agent) {
+    rebirth::install(agent);
 
-    dash_back::install();
+    dash_back::install(agent);
 
-    guard_on::install();
-    guard::install();
-    guard_damage::install();
+    guard_on::install(agent);
+    guard::install(agent);
+    guard_damage::install(agent);
 
-    attack::install();
+    attack::install(agent);
 
-    attack_s3::install();
-    attack_hi3::install();
-    attack_lw3::install();
+    attack_s3::install(agent);
+    attack_hi3::install(agent);
+    attack_lw3::install(agent);
 
-    attack_lw4_start::install();
-    attack_lw4::install();
+    attack_lw4_start::install(agent);
+    attack_lw4::install(agent);
 
-    attack_air::install();
+    attack_air::install(agent);
 
-    special_n::install();
+    special_n::install(agent);
 
-    special_n2::install();
+    special_n2::install(agent);
 
-    special_s::install();
-    special_s_loop::install();
-    special_s_end::install();
+    special_s::install(agent);
+    special_s_loop::install(agent);
+    special_s_end::install(agent);
 
-    special_hi::install();
+    special_hi::install(agent);
 
-    special_lw::install();
+    special_lw::install(agent);
 
-    special_lw_step_f::install();
+    special_lw_step_f::install(agent);
 
-    special_lw_step_b::install();
+    special_lw_step_b::install(agent);
 }

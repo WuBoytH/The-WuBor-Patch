@@ -1,8 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "ryu", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     // if macros::is_excute(agent) {
     //     WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -42,8 +41,7 @@ unsafe fn ryu_attacklw4(agent: &mut L2CAgentBase) {
     // }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attacklw4", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_attacklw4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attacklw4_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -70,9 +68,7 @@ unsafe fn ryu_attacklw4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ryu_attacklw4,
-        ryu_attacklw4_eff
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacklw4", ryu_attacklw4);
+    agent.effect_acmd("effect_attacklw4", ryu_attacklw4_eff);
 }

@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ken_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -33,8 +32,7 @@ unsafe fn ken_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ken_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut speed_x = KineticModule::get_sum_speed_x(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN).clamp(-0.5, 0.5);
     let reset_type = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         let lr = PostureModule::lr(fighter.module_accessor);
@@ -111,8 +109,7 @@ unsafe fn ken_special_lw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let correct;
     let mot;
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -251,8 +248,7 @@ unsafe extern "C" fn ken_special_lw_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn ken_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if VarModule::is_flag(fighter.module_accessor, ken::status::flag::SPECIAL_LW_ENABLED_ACTION)
     && [
@@ -270,11 +266,9 @@ unsafe fn ken_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ken_special_lw_pre,
-        ken_special_lw_init,
-        ken_special_lw_main,
-        ken_special_lw_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, ken_special_lw_pre);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, ken_special_lw_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, ken_special_lw_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_LW, ken_special_lw_end);
 }

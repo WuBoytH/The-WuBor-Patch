@@ -3,8 +3,7 @@ use {
     super::super::helper::*
 };
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ryu_special_lw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -36,8 +35,7 @@ unsafe fn ryu_special_lw_step_f_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_special_lw_step_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_f_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         ryu_denjin_remover(fighter);
         VarModule::on_flag(fighter.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
@@ -87,7 +85,7 @@ unsafe fn ryu_special_lw_step_f_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_lw_step_f_main_loop as *const () as _))
 }
 
-unsafe fn ryu_special_lw_step_f_substatus(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_f_substatus(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, ryu::status::flag::SPECIAL_LW_RUSH_ENABLE_ATTACK) {
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ATTACK);
         WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_CATCH);
@@ -119,7 +117,7 @@ unsafe fn ryu_special_lw_step_f_substatus(fighter: &mut L2CFighterCommon, _param
     0.into()
 }
 
-unsafe fn ryu_special_lw_step_f_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_f_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_wait_ground_check_common(false.into()).get_bool()
     || fighter.sub_air_check_fall_common().get_bool() {
         return 1.into();
@@ -147,8 +145,7 @@ unsafe fn ryu_special_lw_step_f_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ![
         *FIGHTER_STATUS_KIND_ATTACK,
         *FIGHTER_STATUS_KIND_ATTACK_S3,
@@ -174,10 +171,8 @@ unsafe fn ryu_special_lw_step_f_end(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_special_lw_step_f_pre,
-        ryu_special_lw_step_f_main,
-        ryu_special_lw_step_f_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_pre);
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_main);
+    agent.status(smashline::End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_F, ryu_special_lw_step_f_end);
 }

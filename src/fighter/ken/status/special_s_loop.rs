@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ken_special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let current_sit = fighter.global_table[SITUATION_KIND].get_i32();
     WorkModule::set_int(fighter.module_accessor, current_sit, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
@@ -154,10 +153,10 @@ unsafe fn ken_special_s_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
-        return original!(fighter);
+        let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP);
+        return original(fighter);
     }
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
     MotionModule::change_motion(
@@ -193,7 +192,7 @@ unsafe fn ken_special_s_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(ken_special_s2_loop_main_loop as *const () as _))
 }
 
-unsafe fn ken_special_s2_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s2_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         WorkModule::set_float(fighter.module_accessor, 16.0, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
@@ -221,8 +220,7 @@ unsafe fn ken_special_s2_loop_main_loop(fighter: &mut L2CFighterCommon) -> L2CVa
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn ken_special_s_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s_loop_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     ken_special_s_loop_end_inner(fighter)
 }
 
@@ -243,10 +241,8 @@ pub unsafe extern "C" fn ken_special_s_loop_end_inner(fighter: &mut L2CFighterCo
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ken_special_s_loop_init,
-        ken_special_s_loop_main,
-        ken_special_s_loop_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_init);
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_main);
+    agent.status(smashline::End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, ken_special_s_loop_end);
 }

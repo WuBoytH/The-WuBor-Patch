@@ -1,8 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "ryu", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -52,8 +51,7 @@ unsafe fn ryu_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attackairn", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_attackairn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairn_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -67,8 +65,7 @@ unsafe fn ryu_attackairn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -107,8 +104,7 @@ unsafe fn ryu_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_attackairf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairf_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -126,8 +122,7 @@ unsafe fn ryu_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairf_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_swing_kick_l"));
@@ -135,8 +130,7 @@ unsafe fn ryu_attackairf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_attackairf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairf_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitm"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -147,8 +141,7 @@ unsafe fn ryu_attackairf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -168,8 +161,7 @@ unsafe fn ryu_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attackairb", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_attackairb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairb_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -188,8 +180,7 @@ unsafe fn ryu_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -230,8 +221,7 @@ unsafe fn ryu_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairhi_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -254,8 +244,7 @@ unsafe fn ryu_attackairhi_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -279,8 +268,7 @@ unsafe fn ryu_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_attackairlw_eff(agent: &mut L2CAgentBase) {
     if VarModule::is_flag(agent.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE) {
         if macros::is_excute(agent) {
             ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
@@ -303,23 +291,21 @@ unsafe fn ryu_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ryu_attackairn,
-        ryu_attackairn_eff,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", ryu_attackairn);
+    agent.effect_acmd("effect_attackairn", ryu_attackairn_eff);
 
-        ryu_attackairf,
-        ryu_attackairf_eff,
-        ryu_attackairf_snd,
-        ryu_attackairf_exp,
+    agent.game_acmd("game_attackairf", ryu_attackairf);
+    agent.effect_acmd("effect_attackairf", ryu_attackairf_eff);
+    agent.sound_acmd("sound_attackairf", ryu_attackairf_snd);
+    agent.expression_acmd("expression_attackairf", ryu_attackairf_exp);
 
-        ryu_attackairb,
-        ryu_attackairb_eff,
+    agent.game_acmd("game_attackairb", ryu_attackairb);
+    agent.effect_acmd("effect_attackairb", ryu_attackairb_eff);
 
-        ryu_attackairhi,
-        ryu_attackairhi_eff,
+    agent.game_acmd("game_attackairhi", ryu_attackairhi);
+    agent.effect_acmd("effect_attackairhi", ryu_attackairhi_eff);
 
-        ryu_attackairlw,
-        ryu_attackairlw_eff
-    );
+    agent.game_acmd("game_attackairlw", ryu_attackairlw);
+    agent.effect_acmd("effect_attackairlw", ryu_attackairlw_eff);
 }

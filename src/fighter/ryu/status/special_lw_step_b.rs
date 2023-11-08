@@ -3,8 +3,7 @@ use {
     super::super::helper::*
 };
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ryu_special_lw_step_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -36,13 +35,11 @@ unsafe fn ryu_special_lw_step_b_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ryu_special_lw_step_b_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_b_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         ryu_denjin_remover(fighter);
         VarModule::on_flag(fighter.module_accessor, ryu::status::flag::USED_DENJIN_CHARGE);
@@ -96,7 +93,7 @@ unsafe fn ryu_special_lw_step_b_main(fighter: &mut L2CFighterCommon) -> L2CValue
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_lw_step_b_main_loop as *const () as _))
 }
 
-unsafe fn ryu_special_lw_step_b_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_lw_step_b_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, ryu::status::flag::SPECIAL_LW_IMPACT_REMOVE_ARMOR) {
         DamageModule::reset_no_reaction_mode_status(fighter.module_accessor);
         HitModule::set_hit_stop_mul(fighter.module_accessor, 1.0, HitStopMulTarget{ _address: *HIT_STOP_MUL_TARGET_ALL as u8 }, 0.0);
@@ -119,10 +116,8 @@ unsafe fn ryu_special_lw_step_b_main_loop(fighter: &mut L2CFighterCommon) -> L2C
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_special_lw_step_b_pre,
-        ryu_special_lw_step_b_init,
-        ryu_special_lw_step_b_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, ryu_special_lw_step_b_pre);
+    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, ryu_special_lw_step_b_init);
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_LW_STEP_B, ryu_special_lw_step_b_main);
 }

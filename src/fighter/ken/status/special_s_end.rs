@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_MOTION_FIRST);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_s_end") as i64, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_MOTION_GROUND);
     let mot_air = if VarModule::is_flag(fighter.module_accessor, ken::status::flag::QUICK_STEP_INHERITED) {
@@ -18,7 +17,7 @@ unsafe fn ken_special_s_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(ken_special_s_end_main_loop as *const () as _))
 }
 
-unsafe fn ken_special_s_end_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn ken_special_s_end_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool() {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_FLAG_GROUND);
@@ -34,7 +33,7 @@ unsafe fn ken_special_s_end_substatus(fighter: &mut L2CFighterCommon, param_1: L
     0.into()
 }
 
-unsafe fn ken_special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -178,8 +177,7 @@ unsafe fn ken_special_s_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn ken_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionAnimcmdModule::flush(fighter.module_accessor, false);
     EffectModule::kill_kind(
         fighter.module_accessor,
@@ -190,9 +188,7 @@ unsafe fn ken_special_s_end_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ken_special_s_end_main,
-        ken_special_s_end_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, ken_special_s_end_main);
+    agent.status(smashline::End, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_END, ken_special_s_end_end);
 }

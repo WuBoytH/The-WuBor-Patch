@@ -13,19 +13,19 @@ mod special_hi;
 
 mod special_lw;
 
-pub fn install() {
-    dash_back::install();
+pub fn install(agent: &mut smashline::Agent) {
+    dash_back::install(agent);
 
-    attack::install();
+    attack::install(agent);
 
-    attack_lw4_start::install();
-    attack_lw4::install();
+    attack_lw4_start::install(agent);
+    attack_lw4::install(agent);
 
-    special_s::install();
-    special_s_loop::install();
-    special_s_end::install();
+    special_s::install(agent);
+    special_s_loop::install(agent);
+    special_s_end::install(agent);
 
-    special_hi::install();
+    special_hi::install(agent);
 
-    special_lw::install();
+    special_lw::install(agent);
 }

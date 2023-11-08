@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ken", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn ken_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -35,8 +34,7 @@ unsafe fn ken_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn ken_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_attackairf(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.34);
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
@@ -64,8 +62,7 @@ unsafe fn ken_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn ken_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -85,8 +82,7 @@ unsafe fn ken_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn ken_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
@@ -114,8 +110,7 @@ unsafe fn ken_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ken", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn ken_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ken_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
@@ -146,12 +141,14 @@ unsafe fn ken_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ken_attackairn,
-        ken_attackairf,
-        ken_attackairb,
-        ken_attackairhi,
-        ken_attackairlw
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", ken_attackairn);
+
+    agent.game_acmd("game_attackairf", ken_attackairf);
+
+    agent.game_acmd("game_attackairb", ken_attackairb);
+
+    agent.game_acmd("game_attackairhi", ken_attackairhi);
+
+    agent.game_acmd("game_attackairlw", ken_attackairlw);
 }

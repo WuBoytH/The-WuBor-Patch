@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use crate::fighter::ryu::helper::*;
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_ATTACK_LW4_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_attack_lw4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_attack_lw4_start_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_attack_reset(fighter);
     fighter.status_AttackLw4Start_common();
     fighter.sub_shift_status_main(L2CValue::Ptr(ken_attack_lw4_start_main_loop as *const () as _))
@@ -21,8 +20,6 @@ unsafe extern "C" fn ken_attack_lw4_start_main_loop(fighter: &mut L2CFighterComm
     fighter.status_AttackLw4Start_Main()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ken_attack_lw4_start_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW4_START, ken_attack_lw4_start_main);
 }

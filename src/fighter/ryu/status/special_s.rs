@@ -1,17 +1,15 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ryu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_special_s_init_inner(fighter)
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ryu_special_s_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_s_command_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
     ryu_special_s_init_inner(fighter)
 }
 
-unsafe fn ryu_special_s_init_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_s_init_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let sit = fighter.global_table[SITUATION_KIND].get_i32();
     WorkModule::set_int(fighter.module_accessor, sit, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     let command = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND);
@@ -117,17 +115,7 @@ unsafe fn ryu_special_s_init_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ryu_special_s_main_inner(fighter)
-}
-
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_special_s_command_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ryu_special_s_main_inner(fighter)
-}
-
-pub unsafe extern "C" fn ryu_special_s_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn ryu_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(ryu_special_s_substatus as *const () as _));
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_s_main_loop as *const () as _))
 }
@@ -223,11 +211,9 @@ unsafe extern "C" fn ryu_special_s_mot_helper(fighter: &mut L2CFighterCommon) {
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_special_s_init,
-        ryu_special_s_command_init,
-        ryu_special_s_main,
-        ryu_special_s_command_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_S, ryu_special_s_init);
+    agent.status(smashline::Init, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, ryu_special_s_command_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, ryu_special_s_main);
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_S_COMMAND, ryu_special_s_main);
 }

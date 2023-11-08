@@ -1,8 +1,7 @@
 use crate::imports::acmd_imports::*;
 use super::super::helper::*;
 
-#[acmd_script( agent = "ryu", scripts = [ "game_specialn", "game_specialairn" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, ryu::status::flag::SPECIAL_DECIDE_STRENGTH);
@@ -49,8 +48,7 @@ unsafe fn ryu_specialn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "sound_specialn", "sound_specialairn" ], category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_specialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_FLAG_FAILED) {
         wait(agent.lua_state_agent, 10.0);
@@ -89,37 +87,7 @@ unsafe fn ryu_specialn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu_hadoken", scripts = [ "game_movew", "game_movem", "game_moves" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadoken_move(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 65, 10, 0, 65, 4.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, -1.0, 0, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_ENERGY);
-        AttackModule::enable_safe_pos(agent.module_accessor);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.2);
-    }
-}
-
-#[acmd_script( agent = "ryu_hadoken", scripts = [ "game_movespw", "game_movespm", "game_movesps" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadoken_movesp(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 361, 10, 0, 42, 4.0, 0.0, 0.0, 0.0, None, None, None, 3.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 2, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-        AttackModule::enable_safe_pos(agent.module_accessor);
-    }
-}
-
-#[acmd_script( agent = "ryu_hadoken", scripts = ["game_movespw_last", "game_movespm_last", "game_movesps_last"], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_hadoken_movesp_last(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-    }
-    frame(agent.lua_state_agent, 3.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 361, 40, 0, 60, 5.0, 0.0, 0.0, -1.0, None, None, None, 1.0, 0.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 5, true, true, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_elec"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_ELEC, *ATTACK_REGION_ENERGY);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 2.2);
-    }
-}
-
-#[acmd_script( agent = "ryu", scripts = [ "game_specialn2", "game_specialairn2" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialn2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 8.0 / 14.0);
     frame(agent.lua_state_agent, 15.0);
@@ -210,8 +178,7 @@ unsafe fn ryu_specialn2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "effect_specialn2", "effect_specialairn2" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_specialn2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialn2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("top"), 0, 11, -7, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -246,8 +213,7 @@ unsafe fn ryu_specialn2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "sound_specialn2", "sound_specialairn2" ], category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_specialn2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialn2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_hashogeki_start"));
@@ -280,8 +246,7 @@ unsafe fn ryu_specialn2_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "expression_specialn2", "expression_specialairn2" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_specialn2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialn2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
@@ -327,16 +292,14 @@ unsafe fn ryu_specialn2_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "game_specialsstart", "game_specialairsstart" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_speciasstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 1.0, 3.5, 8.5, 8.5);
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairs2start", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_specialairs2start(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2start(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_end_frame(agent, 0.0, -2.0);
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -344,8 +307,7 @@ unsafe fn ryu_specialairs2start(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialairs2start", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_specialairs2start_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2start_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
         if macros::is_excute(agent) {
@@ -354,8 +316,7 @@ unsafe fn ryu_specialairs2start_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "sound_specialairs2start", category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_specialairs2start_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2start_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if !WorkModule::is_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_FLAG_COMMAND) {
         wait(agent.lua_state_agent, 7.0);
@@ -374,16 +335,14 @@ unsafe fn ryu_specialairs2start_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "expression_specialairs2start", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_specialairs2start_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2start_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairs2", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_specialairs2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("kneel"), *HIT_STATUS_XLU);
     }
@@ -431,8 +390,7 @@ unsafe fn ryu_specialairs2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_specialairs2", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_specialairs2_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -441,16 +399,14 @@ unsafe fn ryu_specialairs2_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "sound_specialairs2", category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_specialairs2_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_special_s01"));
     }
 }
 
-#[acmd_script( agent = "ryu", script = "expression_specialairs2", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_specialairs2_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::AREA_WIND_2ND_arg10(agent, 0, 1, 110, 8, 0.8, 0, 9, 40, 18, 80);
     }
@@ -471,16 +427,14 @@ unsafe fn ryu_specialairs2_exp(agent: &mut L2CAgentBase) {
     wait_loop_sync_mot(agent.lua_state_agent);
 }
 
-#[acmd_script( agent = "ryu", script = "game_specialairs2end", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_specialairs2end(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2end(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
         HitModule::set_status_all(agent.module_accessor, HitStatus(*HIT_STATUS_NORMAL), 0);
     }
 }
 
-#[acmd_script( agent = "ryu", script = "expression_specialairs2end", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_specialairs2end_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_specialairs2end_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -490,16 +444,14 @@ unsafe fn ryu_specialairs2end_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 51.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, ryu::instance::flag::DENJIN_CHARGE);
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "effect_speciallw", "effect_specialairlw" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -548,8 +500,7 @@ unsafe fn ryu_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "sound_speciallw", "sound_specialairlw" ], category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_denjin_charge"));
@@ -557,8 +508,7 @@ unsafe fn ryu_speciallw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "expression_speciallw", "expression_specialairlw" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -568,8 +518,7 @@ unsafe fn ryu_speciallw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_speciallwimpact", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 26.0 / 21.0);
     frame(agent.lua_state_agent, 21.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -593,8 +542,7 @@ unsafe fn ryu_speciallwimpact(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_speciallwimpact", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_whirlwind_l"), Hash40::new("top"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.4, true);
         macros::LAST_EFFECT_SET_RATE(agent, 0.75);
@@ -620,8 +568,7 @@ unsafe fn ryu_speciallwimpact_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "sound_speciallwimpact", category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_impact"));
     }
@@ -652,8 +599,7 @@ unsafe fn ryu_speciallwimpact_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "expression_speciallwimpact", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_speciallwimpact_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwimpact_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll_l"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -664,8 +610,7 @@ unsafe fn ryu_speciallwimpact_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_speciallwimpactarmor", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_speciallwimpactarmor_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwimpactarmor_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
         EFFECT_STENCIL_ON(agent.lua_state_agent);
@@ -674,16 +619,14 @@ unsafe fn ryu_speciallwimpactarmor_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_speciallwimpactonshield", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_speciallwimpactonshield(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwimpactonshield(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 6, 1, Hash40::new("top"), 0.0, 50, 100, 65, 0, 12.0, 0.0, 10.0, 10.0, None, None, None, 0.0, 0.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, true, f32::NAN, -1.0, 0, false, false, false, false, false, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_FIGHTER, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_none"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_NONE);
         AttackModule::set_add_reaction_frame_revised(agent.module_accessor, 6, 10.0, false);
     }
 }
 
-#[acmd_script( agent = "ryu", script = "game_speciallwreversal", category = ACMD_GAME, low_priority )]
-unsafe fn ryu_speciallwreversal(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwreversal(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 20.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 0, 0, 80, 4.0, 0.0, 10.0, 3.0, Some(0.0), Some(10.0), Some(6.0), 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, true, 0, -1.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_RYU_PUNCH, *ATTACK_REGION_PUNCH);
@@ -695,8 +638,7 @@ unsafe fn ryu_speciallwreversal(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "effect_speciallwreversal", category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_speciallwreversal_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwreversal_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_flash"), Hash40::new("top"), 0.0, 12.0, 6.0, 0.0, 0.0, 0.0, 1.4, true);
         ryu_saving_aura_handler(agent, 0.1, 0.1, 0.1);
@@ -707,8 +649,7 @@ unsafe fn ryu_speciallwreversal_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "sound_speciallwreversal", category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_speciallwreversal_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwreversal_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_reversal"));
     }
@@ -718,8 +659,7 @@ unsafe fn ryu_speciallwreversal_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", script = "expression_speciallwimpact", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn ryu_speciallwreversal_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwreversal_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
         ControlModule::set_rumble(agent.module_accessor, Hash40::new("rbkind_nohitll"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
@@ -730,8 +670,7 @@ unsafe fn ryu_speciallwreversal_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "game_speciallwrush", "game_specialairlwrush" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 15.0, 0.0, 10.0, -15.0, Some(0.0), Some(10.0), Some(15.0), *COLLISION_KIND_MASK_AHS, *HIT_STATUS_MASK_ALL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false);
@@ -755,8 +694,7 @@ unsafe fn ryu_speciallwrush(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "effect_speciallwrush", "effect_specialairlwrush" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ryu_saving_aura_handler(agent, 0.1, 1.0, 0.2);
     }
@@ -770,8 +708,7 @@ unsafe fn ryu_speciallwrush_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "ryu", scripts = [ "sound_speciallwrush", "sound_specialairlwrush" ], category = ACMD_SOUND, low_priority )]
-unsafe fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ryu_drive_rush01"));
         let mut vc_type = VarModule::get_int(agent.module_accessor, ryu::instance::int::RUSH_VC_TYPE);
@@ -790,56 +727,69 @@ unsafe fn ryu_speciallwrush_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        ryu_specialn,
-        ryu_specialn_snd,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", ryu_specialn);
+    agent.sound_acmd("sound_specialn", ryu_specialn_snd);
 
-        ryu_hadoken_move,
-        ryu_hadoken_movesp,
-        ryu_hadoken_movesp_last,
+    agent.game_acmd("game_specialairn", ryu_specialn);
+    agent.sound_acmd("sound_specialairn", ryu_specialn_snd);
 
-        ryu_specialn2,
-        ryu_specialn2_eff,
-        ryu_specialn2_snd,
-        ryu_specialn2_exp,
+    agent.game_acmd("game_specialn2", ryu_specialn2);
+    agent.effect_acmd("effect_specialn2", ryu_specialn2_eff);
+    agent.sound_acmd("sound_specialn2", ryu_specialn2_snd);
+    agent.expression_acmd("expression_specialn2", ryu_specialn2_exp);
 
-        ryu_speciasstart,
+    agent.game_acmd("game_specialairn2", ryu_specialn2);
+    agent.effect_acmd("effect_specialairn2", ryu_specialn2_eff);
+    agent.sound_acmd("sound_specialairn2", ryu_specialn2_snd);
+    agent.expression_acmd("expression_specialairn2", ryu_specialn2_exp);
 
-        ryu_specialairs2start,
-        ryu_specialairs2start_eff,
-        ryu_specialairs2start_snd,
-        ryu_specialairs2start_exp,
+    agent.game_acmd("game_specialsstart", ryu_specialsstart);
 
-        ryu_specialairs2,
-        ryu_specialairs2_eff,
-        ryu_specialairs2_snd,
-        ryu_specialairs2_exp,
+    agent.game_acmd("game_specialairsstart", ryu_specialsstart);
 
-        ryu_speciallw,
-        ryu_speciallw_eff,
-        ryu_speciallw_snd,
-        ryu_speciallw_exp,
+    agent.game_acmd("game_specialairs2start", ryu_specialairs2start);
+    agent.effect_acmd("effect_specialairs2start", ryu_specialairs2start_eff);
+    agent.sound_acmd("sound_specialairs2start", ryu_specialairs2start_snd);
+    agent.expression_acmd("expression_specialairs2start", ryu_specialairs2start_exp);
 
-        ryu_specialairs2end,
-        ryu_specialairs2end_exp,
+    agent.game_acmd("game_specialairs2", ryu_specialairs2);
+    agent.effect_acmd("effect_specialairs2", ryu_specialairs2_eff);
+    agent.sound_acmd("sound_specialairs2", ryu_specialairs2_snd);
+    agent.expression_acmd("expression_specialairs2", ryu_specialairs2_exp);
 
-        ryu_speciallwimpact,
-        ryu_speciallwimpact_eff,
-        ryu_speciallwimpact_snd,
-        ryu_speciallwimpact_exp,
+    agent.game_acmd("game_specialairs2end", ryu_specialairs2end);
+    agent.expression_acmd("expression_specialairs2end", ryu_specialairs2end_exp);
 
-        ryu_speciallwimpactarmor_eff,
+    agent.game_acmd("game_speciallw", ryu_speciallw);
+    agent.effect_acmd("effect_speciallw", ryu_speciallw_eff);
+    agent.sound_acmd("sound_speciallw", ryu_speciallw_snd);
+    agent.expression_acmd("expression_speciallw", ryu_speciallw_exp);
 
-        ryu_speciallwimpactonshield,
+    agent.game_acmd("game_specialairlw", ryu_speciallw);
+    agent.effect_acmd("effect_specialairlw", ryu_speciallw_eff);
+    agent.sound_acmd("sound_specialairlw", ryu_speciallw_snd);
+    agent.expression_acmd("expression_specialairlw", ryu_speciallw_exp);
 
-        ryu_speciallwreversal,
-        ryu_speciallwreversal_eff,
-        ryu_speciallwreversal_snd,
-        ryu_speciallwreversal_exp,
+    agent.game_acmd("game_speciallwimpact", ryu_speciallwimpact);
+    agent.effect_acmd("effect_speciallwimpact", ryu_speciallwimpact_eff);
+    agent.sound_acmd("sound_speciallwimpact", ryu_speciallwimpact_snd);
+    agent.expression_acmd("expression_speciallwimpact", ryu_speciallwimpact_exp);
 
-        ryu_speciallwrush,
-        ryu_speciallwrush_eff,
-        ryu_speciallwrush_snd
-    );
+    agent.effect_acmd("effect_speciallwimpactarmor", ryu_speciallwimpactarmor_eff);
+
+    agent.game_acmd("game_speciallwimpactonshield", ryu_speciallwimpactonshield);
+
+    agent.game_acmd("game_speciallwreversal", ryu_speciallwreversal);
+    agent.effect_acmd("effect_speciallwreversal", ryu_speciallwreversal_eff);
+    agent.sound_acmd("sound_speciallwreversal", ryu_speciallwreversal_snd);
+    agent.expression_acmd("expression_speciallwreversal", ryu_speciallwreversal_exp);
+
+    agent.game_acmd("game_speciallwrush", ryu_speciallwrush);
+    agent.effect_acmd("effect_speciallwrush", ryu_speciallwrush_eff);
+    agent.sound_acmd("sound_speciallwrush", ryu_speciallwrush_snd);
+
+    agent.game_acmd("game_specialairlwrush", ryu_speciallwrush);
+    agent.effect_acmd("effect_specialairlwrush", ryu_speciallwrush_eff);
+    agent.sound_acmd("sound_specialairlwrush", ryu_speciallwrush_snd);
 }

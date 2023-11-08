@@ -1,17 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "ryu", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_special_n(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ryu_special_n_main(fighter)
-}
-
-#[status_script(agent = "ryu", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ryu_special_n_command(fighter: &mut L2CFighterCommon) -> L2CValue {
-    ryu_special_n_main(fighter)
-}
-
-unsafe fn ryu_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, ryu::instance::flag::DENJIN_CHARGE) {
         WorkModule::set_int(fighter.module_accessor, *WEAPON_RYU_HADOKEN_TYPE_SYAKUNETU, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_N_INT_TYPE);
         ryu_denjin_remover(fighter);
@@ -24,7 +14,7 @@ unsafe fn ryu_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(ryu_special_n_main_loop as *const () as _))
 }
 
-unsafe fn ryu_special_n_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn ryu_special_n_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         WorkModule::inc_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_COMMON_INT_BUTTON_ON_TIMER);
     }
@@ -40,7 +30,7 @@ unsafe fn ryu_special_n_substatus(fighter: &mut L2CFighterCommon, param_1: L2CVa
     0.into()
 }
 
-unsafe fn ryu_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ryu_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -133,9 +123,7 @@ unsafe fn ryu_special_n_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ryu_special_n,
-        ryu_special_n_command
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, ryu_special_n_main);
+    agent.status(smashline::Main, *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND, ryu_special_n_main);
 }

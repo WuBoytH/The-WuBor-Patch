@@ -1,23 +1,13 @@
 mod normals;
-mod smash;
-// mod throws;
-// mod aerials;
+mod smashes;
 mod specials;
-mod stance_movement;
-mod stance_normals;
-mod stance_specials;
+mod stance;
 mod escape;
-// mod misc;
 
-pub fn install() {
-    normals::install();
-    smash::install();
-    // throws::install();
-    // aerials::install();
-    specials::install();
-    stance_movement::install();
-    stance_normals::install();
-    stance_specials::install();
-    escape::install();
-    // misc::install();
+pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
+    smashes::install(agent);
+    specials::install(agent);
+    stance::install(agent);
+    escape::install(agent);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gaogaen", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -24,8 +23,7 @@ unsafe fn gaogaen_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -45,8 +43,7 @@ unsafe fn gaogaen_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gaogaen", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn gaogaen_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gaogaen_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -76,12 +73,10 @@ unsafe fn gaogaen_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gaogaen_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", gaogaen_attackairn);
 
-        gaogaen_attackairb,
+    agent.game_acmd("game_attackairb", gaogaen_attackairb);
 
-        gaogaen_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", gaogaen_attackairlw);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "captain", script = "game_specialsstart", category = ACMD_GAME, low_priority )]
-unsafe fn captain_specialsstart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_specialsstart(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.75);
     frame(agent.lua_state_agent, 9.0);
@@ -25,8 +24,7 @@ unsafe fn captain_specialsstart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "captain", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn captain_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn captain_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_FLAG_MOVE_TRANS);
@@ -62,10 +60,10 @@ unsafe fn captain_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        captain_specialsstart,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialsstart", captain_specialsstart);
 
-        captain_specialhi
-    );
+    agent.game_acmd("game_specialhi", captain_specialhi);
+
+    agent.game_acmd("game_specialairhi", captain_specialhi);
 }

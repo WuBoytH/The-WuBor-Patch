@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wolf", scripts = [ "game_specialsend", "game_specialairsend" ], category = ACMD_GAME, low_priority )]
-unsafe fn wolf_specialsend(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wolf_specialsend(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         AttackModule::clear_inflict_kind_status(agent.module_accessor);
@@ -27,8 +26,8 @@ unsafe fn wolf_specialsend(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wolf_specialsend
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialsend", wolf_specialsend);
+
+    agent.game_acmd("game_specialairsend", wolf_specialsend);
 }

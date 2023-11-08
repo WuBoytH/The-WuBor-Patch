@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(offset = 0x853cc0)]
-unsafe fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {
+unsafe extern "C" fn handle_psyche_up_hit(_vtable: u64, fighter: &mut Fighter) {
     let module_accessor = fighter.battle_object.module_accessor;
     if !WorkModule::is_flag(module_accessor, 0x200000ea)
     || !WorkModule::is_flag(module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_FLAG_CRITICAL_HIT) {

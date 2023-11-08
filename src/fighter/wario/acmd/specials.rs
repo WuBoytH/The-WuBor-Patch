@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wario", scripts = [ "game_specialnopenwait", "game_specialairnopenwait" ], category = ACMD_GAME, low_priority )]
-unsafe fn wario_specialnopenwait(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_specialnopenwait(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::CATCH(agent, 0, Hash40::new("head"), 3.7, -2.0, 2.5, 1.0, None, None, None, *FIGHTER_STATUS_KIND_BITTEN_WARIO_START, *COLLISION_SITUATION_MASK_A);
@@ -25,8 +24,7 @@ unsafe fn wario_specialnopenwait(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = [ "game_specialnbite", "game_specialairnbite" ], category = ACMD_GAME, low_priority )]
-unsafe fn wario_specialnbite(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_specialnbite(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 21.0);
         if macros::is_excute(agent) {
@@ -44,8 +42,7 @@ unsafe fn wario_specialnbite(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_specialhijump", category = ACMD_GAME, low_priority )]
-unsafe fn wario_specialhijump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_specialhijump(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 127, 100, 110, 0, 3.0, 0.0, 5.0, -1.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_rush"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_BODY);
@@ -86,8 +83,7 @@ unsafe fn wario_specialhijump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwsr", "game_specialairlwsr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_speciallwsr(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_speciallwsr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 16.0);
     macros::FT_MOTION_RATE(agent, 1.0);
     if macros::is_excute(agent) {
@@ -99,8 +95,7 @@ unsafe fn wario_speciallwsr(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwmr", "game_specialairlwmr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_speciallwmr(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_speciallwmr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 6.0, 85, 50, 0, 90, 10.0, 0.0, 4.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_BOMB, *ATTACK_REGION_NONE);
@@ -119,8 +114,7 @@ unsafe fn wario_speciallwmr(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwlr", "game_specialairlwlr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_speciallwlr(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_speciallwlr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.6);
     frame(agent.lua_state_agent, 5.0);
@@ -138,8 +132,7 @@ unsafe fn wario_speciallwlr(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "wario", scripts = ["game_speciallwflyr", "game_specialairlwflyr"], category = ACMD_GAME, low_priority )]
-unsafe fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -162,20 +155,30 @@ unsafe fn wario_speciallwflyr(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wario_specialnopenwait,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialnopenwait", wario_specialnopenwait);
 
-        wario_specialnbite,
+    agent.game_acmd("game_specialairnopenwait", wario_specialnopenwait);
 
-        wario_specialhijump,
+    agent.game_acmd("game_specialnbite", wario_specialnbite);
 
-        wario_speciallwsr,
+    agent.game_acmd("game_specialairnbite", wario_specialnbite);
 
-        wario_speciallwmr,
+    agent.game_acmd("game_specialhijump", wario_specialhijump);
 
-        wario_speciallwlr,
+    agent.game_acmd("game_speciallwsr", wario_speciallwsr);
 
-        wario_speciallwflyr
-    );
+    agent.game_acmd("game_specialairlwsr", wario_speciallwsr);
+
+    agent.game_acmd("game_speciallwmr", wario_speciallwmr);
+
+    agent.game_acmd("game_specialairlwmr", wario_speciallwmr);
+
+    agent.game_acmd("game_speciallwlr", wario_speciallwlr);
+
+    agent.game_acmd("game_specialairlwlr", wario_speciallwlr);
+
+    agent.game_acmd("game_speciallwflyr", wario_speciallwflyr);
+
+    agent.game_acmd("game_specialairlwflyr", wario_speciallwflyr);
 }

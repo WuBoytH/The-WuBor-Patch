@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-pub unsafe fn jack_special_n_substatus_stick_check(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn jack_special_n_substatus_stick_check(fighter: &mut L2CFighterCommon) {
     let stick_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_JACK_STATUS_SPECIAL_N_INT_STICK_FRAME);
     if 0 < stick_frame {
         if stick_frame - 1 == 0 {
@@ -10,7 +10,7 @@ pub unsafe fn jack_special_n_substatus_stick_check(fighter: &mut L2CFighterCommo
     }
 }
 
-pub unsafe fn jack_special_n_check_next(
+pub unsafe extern "C" fn jack_special_n_check_next(
     fighter: &mut L2CFighterCommon,
     change_status_func: L2CValue,
     stick_frame: L2CValue
@@ -177,7 +177,7 @@ pub unsafe fn jack_special_n_check_next(
     false.into()
 }
 
-pub unsafe fn jack_special_n_landing_handler(fighter: &mut L2CFighterCommon, landing_frame: L2CValue) {
+pub unsafe extern "C" fn jack_special_n_landing_handler(fighter: &mut L2CFighterCommon, landing_frame: L2CValue) {
     if !CancelModule::is_enable_cancel(fighter.module_accessor) {
         WorkModule::set_float(fighter.module_accessor, landing_frame.get_f32(), *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);

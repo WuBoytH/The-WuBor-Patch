@@ -2,14 +2,14 @@ use crate::imports::status_imports::*;
 use super::super::param;
 
 #[skyline::hook(replace = L2CFighterCommon_is_enable_passive)]
-unsafe fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn is_enable_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_PACKMAN_EYE) {
         return false.into();
     }
     true.into()
 }
 
-pub unsafe fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     // let weight = WorkModule::get_param_float(fighter.module_accessor, hash40("weight"), 0);
     // let damage = DamageModule::damage(fighter.module_accessor, 0);
     // (weight + param::passive::invalid_passive_damage_add <= damage).into()
@@ -21,13 +21,13 @@ pub unsafe fn is_bad_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button)]
-// unsafe fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+// unsafe extern "C" fn sub_check_passive_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
 //     let passive_input = ControlModule::get_trigger_count(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD as u8) & 0xFF < param_1.get_i32();
 //     passive_input.into()
 // }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_check_passive_button_for_damage)]
-unsafe fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     let reaction_frame = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_DAMAGE_REACTION_FRAME);
     if reaction_frame <= 0.0
     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
@@ -37,7 +37,7 @@ unsafe fn sub_check_passive_button_for_damage(fighter: &mut L2CFighterCommon, pa
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassive)]
-unsafe fn sub_airchkpassive(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_airchkpassive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -68,7 +68,7 @@ unsafe fn sub_airchkpassive(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassive_for_damage)]
-unsafe fn sub_airchkpassive_for_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_airchkpassive_for_damage(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -99,7 +99,7 @@ unsafe fn sub_airchkpassive_for_damage(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassiveWall)]
-unsafe fn sub_airchkpassivewall(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_airchkpassivewall(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -116,7 +116,7 @@ unsafe fn sub_airchkpassivewall(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassiveWallJump)]
-unsafe fn sub_airchkpassivewalljump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_airchkpassivewalljump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -147,7 +147,7 @@ unsafe fn sub_airchkpassivewalljump(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_AirChkPassiveCeil)]
-unsafe fn sub_airchkpassiveceil(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_airchkpassiveceil(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.is_enable_passive().get_bool() {
         return false.into();
     }
@@ -163,14 +163,14 @@ unsafe fn sub_airchkpassiveceil(fighter: &mut L2CFighterCommon) -> L2CValue {
     false.into()
 }
 
-unsafe fn check_tech(fighter: &mut L2CFighterCommon) -> bool {
+unsafe extern "C" fn check_tech(fighter: &mut L2CFighterCommon) -> bool {
     let passive_trigger_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("passive_trigger_frame")) as f32;
     let passive_trigger_frame_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("passive_trigger_frame_mul"), 0);
     fighter.sub_check_passive_button_for_damage((passive_trigger_frame * passive_trigger_frame_mul).into()).get_bool()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Passive)]
-unsafe fn status_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x219c184305));
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
     MotionModule::change_motion(
@@ -187,7 +187,7 @@ unsafe fn status_passive(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_PassiveFB)]
-unsafe fn status_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_passivefb(fighter: &mut L2CFighterCommon) -> L2CValue {
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x219c184305));
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_LANDING_CANCEL);
     let lr = PostureModule::lr(fighter.module_accessor);

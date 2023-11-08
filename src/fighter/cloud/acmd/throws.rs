@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "cloud", script = "game_catch", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_catch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_catch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         GrabModule::set_rebound(agent.module_accessor, true);
@@ -20,8 +19,6 @@ unsafe fn cloud_catch(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_catch
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_catch", cloud_catch);
 }

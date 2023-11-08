@@ -3,9 +3,9 @@ mod ike;
 mod belmont;
 mod jack;
 
-pub fn install() {
-    ganon::install();
-    ike::install();
-    belmont::install();
-    jack::install();
+pub fn install(agent: &mut smashline::Agent) {
+    ganon::install(agent);
+    ike::install(agent);
+    belmont::install(agent);
+    jack::install(agent);
 }

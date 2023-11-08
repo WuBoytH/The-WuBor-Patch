@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "inkling", status = FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_JUMP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn inkling_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn inkling_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -33,8 +32,6 @@ unsafe fn inkling_special_hi_jump_pre(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        inkling_special_hi_jump_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_INKLING_STATUS_KIND_SPECIAL_HI_JUMP, inkling_special_hi_jump_pre);
 }

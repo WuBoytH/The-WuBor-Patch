@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_GuardOff)]
-unsafe fn status_pre_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,7 +30,7 @@ unsafe fn status_pre_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_initStatus)]
-unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCommon) -> L2CValue {
     // Original, except we're using NONE OF IT HAHAHAHAHHAHA
     // if FighterUtil::is_valid_just_shield(fighter.module_accessor) {
     //     ShieldModule::set_status(fighter.module_accessor, *FIGHTER_SHIELD_KIND_GUARD, ShieldStatus(*SHIELD_STATUS_NORMAL), 0);
@@ -46,7 +46,7 @@ unsafe fn sub_ftstatusuniqprocessguardoff_initstatus(_fighter: &mut L2CFighterCo
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_GuardOff_Common)]
-unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     let enabled_terms = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD,
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_JUMP_SQUAT_BUTTON,
@@ -110,7 +110,7 @@ unsafe fn status_guardoff_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_off_uniq)]
-unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if param_1.get_bool() {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME) > 0 {
             WorkModule::dec_int(fighter.module_accessor, *FIGHTER_STATUS_GUARD_OFF_WORK_INT_CANCEL_FRAME);
@@ -123,7 +123,7 @@ unsafe fn sub_guard_off_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_cancel)]
-unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return true.into();
@@ -133,7 +133,7 @@ unsafe fn sub_status_guard_off_main_common_cancel(fighter: &mut L2CFighterCommon
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_guard_off_main_common_control)]
-unsafe fn sub_status_guard_off_main_common_control(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_status_guard_off_main_common_control(_fighter: &mut L2CFighterCommon) -> L2CValue {
     // if fighter.sub_transition_group_check_ground_jump().get_bool() {
     //     return true.into();
     // }
@@ -141,14 +141,14 @@ unsafe fn sub_status_guard_off_main_common_control(_fighter: &mut L2CFighterComm
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_GuardOff)]
-unsafe fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_guardoff(fighter: &mut L2CFighterCommon) -> L2CValue {
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: 1.0, y: 1.0, z: 1.0});
     // WorkModule::unable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_GUARD_ON);
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardOff_exitStatus)]
-unsafe fn sub_ftstatusuniqprocessguardoff_exitstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_ftstatusuniqprocessguardoff_exitstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     let guard_type = if FighterUtil::get_shield_type_of_guard(fighter.global_table[KIND].get_i32()) {
         *SHIELD_TYPE_GUARD

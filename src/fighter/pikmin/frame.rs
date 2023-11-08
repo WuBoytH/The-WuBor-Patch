@@ -1,12 +1,6 @@
 use {
-    smash::{
-        lua2cpp::*,
-        phx::*,
-        app::{lua_bind::*, *},
-        lib::lua_const::*
-    },
-    smashline::*,
-    wubor_utils::table_const::*
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
 };
 
 #[repr(C)]
@@ -20,7 +14,7 @@ struct TroopManager {
   // big shoutouts to Blujay for this one
 }
 
-unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ENTRY
     || sv_information::is_ready_go() {
         let troops = WorkModule::get_int64(fighter.module_accessor, 0x100000C0);
@@ -57,15 +51,11 @@ unsafe fn pikmin_antenna_indicator(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PIKMIN, main )]
-fn pikmin_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        pikmin_antenna_indicator(fighter);
-    }
+unsafe extern "C" fn pikmin_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    pikmin_antenna_indicator(fighter);
 }
 
-pub fn install() {
-    install_agent_frames!(
-        pikmin_frame
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_line(smashline::Main, pikmin_frame);
 }

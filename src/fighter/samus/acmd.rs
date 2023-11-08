@@ -3,9 +3,9 @@ mod specials;
 mod lasso;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    specials::install();
-    lasso::install();
-    escape::install();
+pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
+    specials::install(agent);
+    lasso::install(agent);
+    escape::install(agent);
 }

@@ -3,7 +3,7 @@ mod special_hi_gliding;
 
 pub mod helper;
 
-pub fn install() {
-    attack_air_lw::install();
-    special_hi_gliding::install();
+pub fn install(agent: &mut smashline::Agent) {
+    attack_air_lw::install(agent);
+    special_hi_gliding::install(agent);
 }

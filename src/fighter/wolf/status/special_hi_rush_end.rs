@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "wolf", status = FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn wolf_special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn wolf_special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -32,8 +31,6 @@ unsafe fn wolf_special_hi_rush_end_pre(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        wolf_special_hi_rush_end_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_FOX_STATUS_KIND_SPECIAL_HI_RUSH_END, wolf_special_hi_rush_end_pre);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "robot", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -33,8 +32,7 @@ unsafe fn robot_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -89,10 +87,8 @@ unsafe fn robot_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        robot_attackairf,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", robot_attackairf);
 
-        robot_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", robot_attackairhi);
 }

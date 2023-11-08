@@ -9,27 +9,18 @@ unsafe extern "C" fn trail_guard_cont_pre(fighter: &mut L2CFighterCommon) -> L2C
     false.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_TRAIL {
-            return;
-        }
-        fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
-        VarModule::add_reset_statuses(
-            fighter.battle_object_id,
-            *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
-            vec![
-                *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N,
-                *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F
-            ]
-        );
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(trail_guard_cont_pre as *const () as _));
+    VarModule::add_reset_statuses(
+        fighter.battle_object_id,
+        *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR,
+        vec![
+            *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_N,
+            *FIGHTER_TRAIL_STATUS_KIND_ATTACK_AIR_F
+        ]
+    );
 }
 
-pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_start(on_start);
 }

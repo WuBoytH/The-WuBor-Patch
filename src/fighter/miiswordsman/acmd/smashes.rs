@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "miiswordsman", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn miisword_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn miiswordsman_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     macros::FT_MOTION_RATE(agent, 2.0/3.0);
     frame(agent.lua_state_agent, 9.0);
@@ -55,8 +54,6 @@ unsafe fn miisword_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        miisword_attackhi4
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackhi4", miiswordsman_attackhi4);
 }

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackDash)]
-unsafe fn status_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::set_float(fighter.module_accessor, attack_dash::float::FALL_SPEED_Y_MUL, -1.0);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -40,7 +40,7 @@ unsafe fn status_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackDash_Main)]
-unsafe fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool()
     || fighter.sub_air_check_fall_common().get_bool() {

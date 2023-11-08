@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_SPECIAL_N_ESCAPE, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jack_special_n_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_special_n_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_sub_x(fighter.module_accessor);
     fighter.global_table[FLICK_X].assign(&L2CValue::I32(0xFE));
@@ -218,8 +217,6 @@ unsafe extern "C" fn jack_special_n_escape_next_status(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_special_n_escape_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_SPECIAL_N_ESCAPE, jack_special_n_escape_main);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "dolly", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -30,8 +29,7 @@ unsafe fn dolly_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -70,8 +68,7 @@ unsafe fn dolly_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackairb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
@@ -112,8 +109,7 @@ unsafe fn dolly_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -142,8 +138,7 @@ unsafe fn dolly_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
@@ -173,16 +168,14 @@ unsafe fn dolly_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", dolly_attackairn);
 
-        dolly_attackairf,
+    agent.game_acmd("game_attackairf", dolly_attackairf);
 
-        dolly_attackairb,
+    agent.game_acmd("game_attackairb", dolly_attackairb);
 
-        dolly_attackairhi,
+    agent.game_acmd("game_attackairhi", dolly_attackairhi);
 
-        dolly_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", dolly_attackairlw);
 }

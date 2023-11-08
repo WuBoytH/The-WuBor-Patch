@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "bayonetta", script = "game_specialairsu", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -59,8 +58,7 @@ unsafe fn bayonetta_specialairsu(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "effect_specialairsu", category = ACMD_EFFECT, low_priority )]
-unsafe fn bayonetta_specialairsu_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialairsu_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 13.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -78,8 +76,7 @@ unsafe fn bayonetta_specialairsu_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_specialairsd", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
     }
@@ -117,8 +114,7 @@ unsafe fn bayonetta_specialairsd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -199,14 +195,13 @@ unsafe fn bayonetta_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 7.0 / 11.0);
 }
 
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialairsu", bayonetta_specialairsu);
+    agent.effect_acmd("effect_specialairsu", bayonetta_specialairsu_eff);
 
-pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_specialairsu,
-        bayonetta_specialairsu_eff,
+    agent.game_acmd("game_specialairsd", bayonetta_specialairsd);
 
-        bayonetta_specialairsd,
+    agent.game_acmd("game_specialhi", bayonetta_specialhi);
 
-        bayonetta_specialhi
-    );
+    agent.game_acmd("game_specialairhi", bayonetta_specialhi);
 }

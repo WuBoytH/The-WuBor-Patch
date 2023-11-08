@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFlyRoll)]
-unsafe fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {
     let disable_passive = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_FLAG_DISABLE_PASSIVE);
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -32,7 +32,7 @@ unsafe fn status_pre_damageflyroll(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageFlyRoll_Common)]
-unsafe fn status_damageflyroll_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_damageflyroll_common(fighter: &mut L2CFighterCommon) {
     MotionAnimcmdModule::call_script_single(
         fighter.module_accessor,
         *FIGHTER_ANIMCMD_EXPRESSION,

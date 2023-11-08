@@ -4,7 +4,7 @@ use crate::system::func_links;
 pub static mut RICHTER_HOLYWATER : usize = 0x758e00;
 
 #[skyline::hook(replace = RICHTER_HOLYWATER)]
-unsafe fn richter_holywater_born_some_status(item: &mut L2CAgent) -> L2CValue {
+unsafe extern "C" fn richter_holywater_born_some_status(item: &mut L2CAgent) -> L2CValue {
     // (item.unk20 as L2CValue)[0x1257816e00 as u64].assign(&L2CValue::I32(0));
     item.clear_lua_stack();
     lua_args!(item, ITEM_AREA_KIND_BODY);

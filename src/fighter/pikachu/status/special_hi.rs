@@ -1,12 +1,10 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn pikachu_special_hi_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_hi_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn pikachu_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_HI);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_lw") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_lw") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND_AIR);
@@ -62,21 +60,17 @@ unsafe extern "C" fn pikachu_special_hi_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn pikachu_special_hi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_hi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn pikachu_special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_hi_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.super_jump_punch_end(L2CValue::Ptr(L2CFighterCommon_super_jump_punch_reset_common_condition as *const () as _));
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikachu_special_hi_init,
-        pikachu_special_hi_main,
-        pikachu_special_hi_exec,
-        pikachu_special_hi_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_HI, pikachu_special_hi_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, pikachu_special_hi_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, pikachu_special_hi_exec);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_HI, pikachu_special_hi_end);
 }

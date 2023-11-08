@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use wubor_utils::controls::*;
 
 #[skyline::hook(replace = smash::lua2cpp::L2CFighterCommon_sub_is_dive)]
-pub unsafe fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn sub_is_dive(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {
         return false.into();
     }

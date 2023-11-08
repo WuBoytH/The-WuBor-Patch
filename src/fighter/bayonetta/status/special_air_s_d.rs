@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_specialairs_d_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_BAYONETTA_SPECIAL_AIR_S);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -80,8 +79,7 @@ unsafe extern "C" fn bayonetta_specialairs_d_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-#[status_script(agent = "bayonetta", status = FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn bayonetta_specialairs_d_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn bayonetta_specialairs_d_landing_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let end_frame = MotionModule::end_frame_from_hash(fighter.module_accessor, Hash40::new("special_air_s_d_landing"));
     let rate = end_frame / 40.0;
     MotionModule::change_motion(
@@ -131,10 +129,8 @@ unsafe extern "C" fn bayonetta_reset_witchtwist(fighter: &mut L2CFighterCommon) 
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_BAYONETTA_INSTANCE_WORK_ID_FLAG_SPECIAL_HI_AFTER_ACTION);
 }
 
-pub fn install() {
-    install_status_scripts!(
-        bayonetta_specialairs_d_main,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D, bayonetta_specialairs_d_main);
 
-        bayonetta_specialairs_d_landing_main
-    );
+    agent.status(smashline::Main, *FIGHTER_BAYONETTA_STATUS_KIND_SPECIAL_AIR_S_D_LANDING, bayonetta_specialairs_d_landing_main);
 }

@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_WAIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn dolly_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_pre_Wait_check_interrupt().get_i32() != 0 {
         return 1.into();
     }
@@ -23,8 +22,6 @@ unsafe fn dolly_wait_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        dolly_wait_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_WAIT, dolly_wait_pre);
 }

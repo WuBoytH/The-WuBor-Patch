@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_TreadJump)]
-unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_HI)
     || ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_APPEAL_S_L)
@@ -34,7 +34,7 @@ unsafe fn status_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_tread_jump_uniq_check)]
-unsafe fn sub_tread_jump_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_tread_jump_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TREAD_FLAG_NO_REACTION) {
         let jump_mini = if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TREAD_FLAG_BUTTON) {
             ControlModule::check_button_off(fighter.module_accessor, *CONTROL_PAD_BUTTON_JUMP)
@@ -55,7 +55,7 @@ unsafe fn sub_tread_jump_uniq_check(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_TreadJump)]
-unsafe fn status_end_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_treadjump(fighter: &mut L2CFighterCommon) -> L2CValue {
     let tread_jump_disable_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("common"), hash40("tread_jump_disable_frame"));
     WorkModule::set_int(fighter.module_accessor, tread_jump_disable_frame, *FIGHTER_INSTANCE_WORK_ID_INT_NO_TREAD_FRAME);
     // if fighter.global_table[STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_JUMP {

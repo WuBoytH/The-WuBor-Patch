@@ -104,7 +104,7 @@ unsafe extern "C" fn ken_special_hi_substatus(fighter: &mut L2CFighterCommon, pa
             let stick_x = fighter.global_table[STICK_X].get_f32();
             let lr_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("lr_stick_x"));
             if lr_stick_x < stick_x.abs() {
-                PostureModule::set_stick_lr(fighter.module_accessor, stick_x);
+                PostureModule::set_stick_lr(fighter.module_accessor, 0.0);
                 PostureModule::update_rot_y_lr(fighter.module_accessor);
             }
         }

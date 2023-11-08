@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "metaknight", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn metaknight_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn metaknight_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -29,8 +28,6 @@ unsafe fn metaknight_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        metaknight_attacklw4
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacklw4", metaknight_attacklw4);
 }

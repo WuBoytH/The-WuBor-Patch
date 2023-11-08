@@ -10,7 +10,7 @@ use {
     super::{vtable_hook::*, vl}
 };
 
-pub unsafe fn add_go(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
+pub unsafe extern "C" fn add_go(module_accessor: *mut BattleObjectModuleAccessor, mut amount: f32) {
     if !VarModule::is_flag(module_accessor, dolly::status::flag::DISABLE_METER_GAIN) {
         let meter_max = 200.0;
         let meter_const = dolly::instance::float::GO_METER;
@@ -159,12 +159,13 @@ pub unsafe extern "C" fn dolly_kara_cancel(fighter: &mut L2CFighterCommon) -> L2
     val
 }
 
+#[repr(C)]
 pub struct SpecialCancelStats {
     pub dmg: f32,
     pub bkb: i32
 }
 
-pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
+pub unsafe extern "C" fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32, mut bkb: i32) -> SpecialCancelStats {
     if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::IS_SPECIAL_CANCEL) {
         dmg *= vl::param_private::special_cancel_damage_mul;
         bkb = (bkb as f32 * vl::param_private::special_cancel_bkb_mul) as i32;
@@ -172,7 +173,7 @@ pub unsafe fn dolly_calc_special_cancel(fighter: &mut L2CAgentBase, mut dmg: f32
     SpecialCancelStats{dmg, bkb}
 }
 
-pub unsafe fn dolly_status_end_control_lr_status_check(status: L2CValue) -> L2CValue {
+pub unsafe extern "C" fn dolly_status_end_control_lr_status_check(status: L2CValue) -> L2CValue {
     if [
         *FIGHTER_STATUS_KIND_DASH,
         *FIGHTER_RYU_STATUS_KIND_DASH_BACK,

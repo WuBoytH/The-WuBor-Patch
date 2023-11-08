@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucario", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -38,8 +37,7 @@ unsafe fn lucario_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -64,8 +62,7 @@ unsafe fn lucario_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.09);
     frame(agent.lua_state_agent, 4.0);
@@ -92,8 +89,7 @@ unsafe fn lucario_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 1.0, 4.0, 4.0, 4.0);
     }
@@ -122,8 +118,7 @@ unsafe fn lucario_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn lucario_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucario_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 8.0, 2.0);
     }
@@ -163,16 +158,14 @@ unsafe fn lucario_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucario_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", lucario_attackairn);
 
-        lucario_attackairf,
+    agent.game_acmd("game_attackairf", lucario_attackairf);
 
-        lucario_attackairb,
+    agent.game_acmd("game_attackairb", lucario_attackairb);
 
-        lucario_attackairhi,
+    agent.game_acmd("game_attackairhi", lucario_attackairhi);
 
-        lucario_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", lucario_attackairlw);
 }

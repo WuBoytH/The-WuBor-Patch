@@ -1,17 +1,16 @@
 use crate::imports::status_imports::*;
 use super::super::vl;
 
-#[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn toonlink_specialhi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_special_hi_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-    fighter.sub_shift_status_main(L2CValue::Ptr(toonlink_specialhi_end_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(toonlink_special_hi_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_special_hi_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !fighter.sub_transition_group_check_air_cliff().get_bool() {
         if !CancelModule::is_enable_cancel(fighter.module_accessor) {
-            if toonlink_specialhi_end_situation_check(fighter).get_bool() {
+            if toonlink_special_hi_end_situation_check(fighter).get_bool() {
                 if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
                     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
@@ -68,7 +67,7 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                     return 0.into();
                 }
             }
-            if toonlink_specialhi_end_situation_check(fighter).get_bool() {
+            if toonlink_special_hi_end_situation_check(fighter).get_bool() {
                 if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
                     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI);
                     GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -98,7 +97,7 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                     }
                     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
                     WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-                    fighter.shift(L2CValue::Ptr(toonlink_specialhi_end_shift as *const () as _));
+                    fighter.shift(L2CValue::Ptr(toonlink_special_hi_end_shift as *const () as _));
                     return 0.into();
                 }
                 fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
@@ -120,7 +119,7 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
         else {
             if !fighter.sub_wait_ground_check_common(false.into()).get_bool()
             && !fighter.sub_air_check_fall_common().get_bool() {
-                if toonlink_specialhi_end_situation_check(fighter).get_bool() {
+                if toonlink_special_hi_end_situation_check(fighter).get_bool() {
                     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
                         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_GROUND_STOP);
                         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP_ATTACK));
@@ -153,7 +152,7 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                         return 0.into();
                     }
                 }
-                if toonlink_specialhi_end_situation_check(fighter).get_bool() {
+                if toonlink_special_hi_end_situation_check(fighter).get_bool() {
                     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
                         KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_LINK_SPECIAL_AIR_HI);
                         GroundModule::correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
@@ -183,7 +182,7 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
                         }
                         WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL);
                         WorkModule::unable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_WAIT);
-                        fighter.shift(L2CValue::Ptr(toonlink_specialhi_end_shift as *const () as _));
+                        fighter.shift(L2CValue::Ptr(toonlink_special_hi_end_shift as *const () as _));
                         return 0.into();
                     }
                     fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), false.into());
@@ -206,7 +205,7 @@ unsafe extern "C" fn toonlink_specialhi_end_main_loop(fighter: &mut L2CFighterCo
     0.into()
 }
 
-unsafe extern "C" fn toonlink_specialhi_end_situation_check(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_special_hi_end_situation_check(fighter: &mut L2CFighterCommon) -> L2CValue {
     if StatusModule::is_changing(fighter.module_accessor) {
         return 1.into();
     }
@@ -223,7 +222,7 @@ unsafe extern "C" fn toonlink_specialhi_end_situation_check(fighter: &mut L2CFig
     0.into()
 }
 
-unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_special_hi_end_shift(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_FALL_SPECIAL) {
         if MotionModule::is_end(fighter.module_accessor) {
             fighter.change_status(FIGHTER_STATUS_KIND_FALL_SPECIAL.into(), true.into());
@@ -236,7 +235,7 @@ unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon
             fighter.change_status(FIGHTER_STATUS_KIND_WAIT.into(), false.into());
             return 1.into();
         }
-        if toonlink_specialhi_end_situation_check(fighter).get_bool()
+        if toonlink_special_hi_end_situation_check(fighter).get_bool()
         && fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             fighter.change_status(FIGHTER_STATUS_KIND_LANDING_FALL_SPECIAL.into(), true.into());
             return 1.into();
@@ -245,8 +244,7 @@ unsafe extern "C" fn toonlink_specialhi_end_shift(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-#[status_script(agent = "toonlink", status = FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn toonlink_special_hi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, toonlink::status::flag::SPECIAL_HI_MOVE) {
         let hold = WorkModule::get_float(fighter.module_accessor, *FIGHTER_LINK_STATUS_RSLASH_WORK_HOLD_FRAME);
         let max_hold = WorkModule::get_param_int(fighter.module_accessor, hash40("param_special_hi"), hash40("rslash_hold_frame")) as f32;
@@ -274,9 +272,7 @@ unsafe fn toonlink_specialhi_end_exec(fighter: &mut L2CFighterCommon) -> L2CValu
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        toonlink_specialhi_end_main,
-        toonlink_specialhi_end_exec
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, toonlink_special_hi_end_main);
+    agent.status(smashline::Exec, *FIGHTER_LINK_STATUS_KIND_SPECIAL_HI_END, toonlink_special_hi_end_exec);
 }

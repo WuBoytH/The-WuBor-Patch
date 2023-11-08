@@ -4,7 +4,6 @@ use {
         app::{lua_bind::*, *},
         lib::{lua_const::*, L2CValue}
     },
-    smashline::*,
     custom_var::*,
     wubor_utils::{wua_bind::*, vars::*, table_const::*},
     super::helper::*
@@ -222,32 +221,23 @@ unsafe extern "C" fn dolly_status_end_control(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-#[fighter_init]
-fn agent_init(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_DOLLY {
-            return;
-        }
-        fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
-        fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
-        fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
-        fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
-        // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
-        FGCModule::set_command_input_button(fighter.module_accessor, 0, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 1, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 2, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 3, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 7, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 8, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 9, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 10, 2);
-        FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[GUARD_CONT_UNIQ].assign(&L2CValue::Ptr(dolly_guard_cont_pre as *const () as _));
+    fighter.global_table[CHECK_SPECIAL_COMMAND].assign(&L2CValue::Ptr(dolly_check_special_command as *const () as _));
+    fighter.global_table[CHECK_GROUND_CATCH_UNIQ].assign(&L2CValue::Ptr(dolly_check_ground_catch_pre as *const () as _));
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(dolly_status_end_control as *const () as _));
+    // fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Bool(false));
+    FGCModule::set_command_input_button(fighter.module_accessor, 0, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 1, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 2, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 3, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 7, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 8, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 9, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 10, 2);
+    FGCModule::set_command_input_button(fighter.module_accessor, 11, 2);
 }
 
-pub fn install() {
-    install_agent_init_callbacks!(
-        agent_init
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_start(on_start);
 }

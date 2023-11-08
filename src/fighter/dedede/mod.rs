@@ -2,6 +2,8 @@ mod acmd;
 mod frame;
 
 pub fn install() {
-    acmd::install();
-    frame::install();
+    let agent = &mut smashline::Agent::new("dedede");
+    acmd::install(agent);
+    frame::install(agent);
+    agent.install();
 }

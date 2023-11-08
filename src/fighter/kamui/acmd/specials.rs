@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kamui", script = "game_specialsjump", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_specialsjump(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_specialsjump(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -24,8 +23,7 @@ unsafe fn kamui_specialsjump(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
     }
@@ -85,8 +83,7 @@ unsafe fn kamui_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-#[acmd_script( agent = "kamui", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, 0);
         ArticleModule::set_visibility_whole(agent.module_accessor, *FIGHTER_KAMUI_GENERATE_ARTICLE_WATERDRAGON, false, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -103,46 +100,14 @@ unsafe fn kamui_speciallwhit(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui_waterdragon", scripts = ["game_speciallwhit", "game_specialairlwhit"], category = ACMD_GAME, low_priority )]
-unsafe fn kamui_waterdragon_speciallwhit(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 26.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 12.0, 0.0, 6.0, 11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(agent, 1, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 12.0, 0.0, 6.0, -11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 0, 14.0, false);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 1, 14.0, false);
-        AttackModule::set_optional_hit_sound(agent.module_accessor, 0, Hash40::new("se_kamui_criticalhit"));
-        AttackModule::set_optional_hit_sound(agent.module_accessor, 1, Hash40::new("se_kamui_criticalhit"));
-    }
-    wait(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 2, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 8.0, 0.0, 21.0, 11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
-        macros::ATTACK(agent, 3, 0, Hash40::new("top"), 8.0, 361, 30, 0, 60, 8.0, 0.0, 21.0, -11.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_POS, false, f32::NAN, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_water"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_WATER, *ATTACK_REGION_OBJECT);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 2, 14.0, false);
-        AttackModule::set_add_reaction_frame(agent.module_accessor, 3, 14.0, false);
-        AttackModule::set_optional_hit_sound(agent.module_accessor, 2, Hash40::new("se_kamui_criticalhit"));
-        AttackModule::set_optional_hit_sound(agent.module_accessor, 3, Hash40::new("se_kamui_criticalhit"));
-    }
-    frame(agent.lua_state_agent, 31.0);
-    if macros::is_excute(agent) {
-        AttackModule::clear_all(agent.module_accessor);
-        if AttackModule::is_infliction_status(agent.module_accessor, *COLLISION_KIND_MASK_HIT) {
-            let otarget_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-            let owner_module_accessor = sv_battle_object::module_accessor(otarget_id);
-            VarModule::set_float(owner_module_accessor, kamui::instance::float::DRAGON_INSTALL, 600.0);
-            VarModule::set_float(owner_module_accessor, kamui::instance::float::DRAGON_INSTALL_TIMER, 24.0);
-        }
-    }
-}
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialsjump", kamui_specialsjump);
 
-pub fn install() {
-    install_acmd_scripts!(
-        kamui_specialsjump,
+    agent.game_acmd("game_specialhi", kamui_specialhi);
 
-        kamui_specialhi,
+    agent.game_acmd("game_specialairhi", kamui_specialhi);
 
-        kamui_speciallwhit,
+    agent.game_acmd("game_speciallwhit", kamui_speciallwhit);
 
-        kamui_waterdragon_speciallwhit
-    );
+    agent.game_acmd("game_specialairlwhit", kamui_speciallwhit);
 }

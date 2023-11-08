@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Attack)]
-unsafe fn status_pre_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,7 +30,7 @@ unsafe fn status_pre_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_AttackCommon)]
-unsafe fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {
     if fighter.global_table[PREV_STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK {
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_STATUS_ATTACK_WORK_INT_100_HIT_NEAR_COUNT);
     }
@@ -47,7 +47,7 @@ unsafe fn sub_status_attackcommon(fighter: &mut L2CFighterCommon) {
 // The following five are reimplemented to make sure only Neutral Attack inputs
 // can trigger Jab followups.
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_none_uniq_chk_button)]
-unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+unsafe extern "C" fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if !param_1.get_bool() {
         if ControlModule::check_button_on(fighter.module_accessor, param_2.get_i32())
         && only_jabs(fighter) {
@@ -71,7 +71,7 @@ unsafe fn attack_combo_none_uniq_chk_button(fighter: &mut L2CFighterCommon, para
 }
 
 #[skyline::hook(replace = L2CFighterCommon_attack_combo_uniq_chk_button)]
-unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+unsafe extern "C" fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     if !param_1.get_bool() {
         fighter.attack_uniq_chk_command(param_3.clone());
         if fighter.global_table[CMD_CAT1].get_i32() & param_3.get_i32() != 0
@@ -136,7 +136,7 @@ unsafe fn attack_combo_uniq_chk_button(fighter: &mut L2CFighterCommon, param_1: 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_attack_uniq_chk_command)]
-unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if cat1 & param_1.get_i32() != 0
     && only_jabs(fighter) {
@@ -145,7 +145,7 @@ unsafe fn attack_uniq_chk_command(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 #[skyline::hook(replace = L2CFighterCommon_check_100_count_button)]
-unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let button = param_1.get_i32();
     if only_jabs(fighter) {
         if fighter.global_table[IS_STOP].get_bool() {
@@ -166,7 +166,7 @@ unsafe fn check_100_count_button(fighter: &mut L2CFighterCommon, param_1: L2CVal
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Attack_Main_button)]
-unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     fighter.check_100_count_button(param_1.clone());
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
@@ -247,7 +247,7 @@ unsafe fn status_attack_main_button(fighter: &mut L2CFighterCommon, param_1: L2C
 
 // The following three are reimplemented for resetting ground normals.
 #[skyline::hook(replace = L2CFighterCommon_status_end_Attack)]
-unsafe fn status_end_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if 0 < attack_kind {
@@ -258,7 +258,7 @@ unsafe fn status_end_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_Attack100)]
-unsafe fn status_end_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if 0 < attack_kind {
@@ -270,7 +270,7 @@ unsafe fn status_end_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackDash)]
-unsafe fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if 0 < attack_kind {
@@ -282,7 +282,7 @@ unsafe fn status_end_attackdash(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 /// Checks if your attack input is strictly a Neutral Attack input.
 #[inline(always)]
-pub unsafe fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
+pub unsafe extern "C" fn only_jabs(fighter: &mut L2CFighterCommon) -> bool {
     !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CSTICK_ON)
     && !ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_CATCH)
     && fighter.global_table[CMD_CAT1].get_i32() & (

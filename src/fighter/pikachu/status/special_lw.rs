@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::vl;
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pikachu_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -31,13 +30,11 @@ unsafe fn pikachu_special_lw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn pikachu_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_lw_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, pikachu::status::flag::SPECIAL_LW_START);
     VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
     MotionModule::change_motion(
@@ -126,10 +123,8 @@ unsafe extern "C" fn pikachu_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikachu_special_lw_pre,
-        pikachu_special_lw_init,
-        pikachu_special_lw_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_LW, pikachu_special_lw_pre);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_LW, pikachu_special_lw_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, pikachu_special_lw_main);
 }

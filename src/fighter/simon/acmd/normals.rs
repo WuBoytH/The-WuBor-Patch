@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "simon", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attackdash(agent: &mut L2CAgentBase) {
     sv_kinetic_energy!(
         set_speed_mul,
         agent,
@@ -41,8 +40,7 @@ unsafe fn simon_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_attackdash", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_attackdash_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attackdash_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_jump_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 1, false);
@@ -64,8 +62,7 @@ unsafe fn simon_attackdash_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "sound_attackdash", category = ACMD_SOUND, low_priority )]
-unsafe fn simon_attackdash_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attackdash_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -88,8 +85,7 @@ unsafe fn simon_attackdash_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "expression_attackdash", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_attackdash_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attackdash_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -111,69 +107,7 @@ unsafe fn simon_attackdash_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon_whip", script = "game_attackdash" , category = ACMD_GAME, low_priority )]
-unsafe fn simon_whip_attackdash(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-                object as *mut smash::app::Weapon
-            );
-            WeaponSpecializer_SimonWhip::set_node_fix_flag_list(
-                object as *mut smash::app::Weapon,
-                0,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12,
-                13,
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-                20,
-                21,
-                22,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1
-            );
-        }
-    }
-    frame(agent.lua_state_agent, 48.0);
-    if macros::is_excute(agent) {
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-                object as *mut smash::app::Weapon
-            );
-        }
-    }
-    wait(agent.lua_state_agent, 21.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
-    }
-}
-
-#[acmd_script( agent = "simon", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -216,8 +150,7 @@ unsafe fn simon_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -260,8 +193,7 @@ unsafe fn simon_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -304,8 +236,7 @@ unsafe fn simon_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = [ "effect_attacks3", "effect_attacks3hi", "effect_attacks3lw" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -316,8 +247,7 @@ unsafe fn simon_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = [ "sound_attacks3", "sound_attacks3hi", "sound_attacks3lw" ], category = ACMD_SOUND, low_priority )]
-unsafe fn simon_attacks3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks3_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -331,8 +261,7 @@ unsafe fn simon_attacks3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = [ "expression_attacks3", "expression_attacks3hi", "expression_attacks3lw" ], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_attacks3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacks3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -352,63 +281,7 @@ unsafe fn simon_attacks3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon_whip", scripts = [ "game_attacks3", "game_attacks3hi", "game_attacks3lw" ], category = ACMD_GAME, low_priority )]
-unsafe fn simon_whip_attacks3(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-                object as *mut smash::app::Weapon
-            );
-        }
-    }
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
-    frame(agent.lua_state_agent, 11.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(agent.lua_state_agent, 23.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
-    }
-}
-
-#[acmd_script( agent = "simon_whip", scripts = [ "effect_attacks3", "effect_attacks3hi", "effect_attacks3lw" ], category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_whip_attacks3_eff(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 13.0);
-    if macros::is_excute(agent) {
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::set_chain_2_visibility(
-                object as *mut smash::app::Weapon,
-                true
-            );
-        }
-        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_light"), Hash40::new("hookshot6"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_RATE(agent, 1.3);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(agent.lua_state_agent, 17.0);
-    if macros::is_excute(agent) {
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::set_chain_2_visibility(
-                object as *mut smash::app::Weapon,
-                false
-            );
-        }
-    }
-}
-
-#[acmd_script( agent = "simon", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn simon_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::SEARCH(agent, 0, 0, Hash40::new("top"), 2.5, 0.0, 7.0, 5.0, Some(0.0), Some(7.0), Some(34.0), *COLLISION_KIND_MASK_HIT, *HIT_STATUS_MASK_NORMAL, 1, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_IG, *COLLISION_PART_MASK_ALL, false);
@@ -443,8 +316,7 @@ unsafe fn simon_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -455,8 +327,7 @@ unsafe fn simon_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
-unsafe fn simon_attacklw3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacklw3_snd(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_simon_whip_holding"));
     }
@@ -470,8 +341,7 @@ unsafe fn simon_attacklw3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_attacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_attacklw3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -491,86 +361,29 @@ unsafe fn simon_attacklw3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon_whip", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn simon_whip_attacklw3(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-                object as *mut smash::app::Weapon
-            );
-        }
-    }
-    frame(agent.lua_state_agent, 8.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(agent.lua_state_agent, 20.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
-    }
-}
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", simon_attackdash);
+    agent.effect_acmd("effect_attackdash", simon_attackdash_eff);
+    agent.sound_acmd("sound_attackdash", simon_attackdash_snd);
+    agent.expression_acmd("expression_attackdash", simon_attackdash_exp);
 
-#[acmd_script( agent = "simon_whip", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_whip_attacklw3_eff(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 11.0);
-    if macros::is_excute(agent) {
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::set_chain_2_visibility(
-                object as *mut smash::app::Weapon,
-                true
-            );
-        }
-        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_light"), Hash40::new("hookshot6"), 0, 0, 0, 0, 0, 0, 1, true);
-        macros::LAST_EFFECT_SET_RATE(agent, 1.3);
-        macros::EFFECT_FOLLOW(agent, Hash40::new("simon_whip_flash_top"), Hash40::new("hookshot27"), 1, 0, 0, 0, 0, 0, 1, true);
-    }
-    frame(agent.lua_state_agent, 15.0);
-    if macros::is_excute(agent) {
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::set_chain_2_visibility(
-                object as *mut smash::app::Weapon,
-                false
-            );
-        }
-    }
-}
+    agent.game_acmd("game_attacks3", simon_attacks3);
+    agent.effect_acmd("effect_attacks3", simon_attacks3_eff);
+    agent.sound_acmd("sound_attacks3", simon_attacks3_snd);
+    agent.expression_acmd("expression_attacks3", simon_attacks3_exp);
 
-pub fn install() {
-    install_acmd_scripts!(
-        simon_attackdash,
-        simon_attackdash_eff,
-        simon_attackdash_snd,
-        simon_attackdash_exp,
+    agent.game_acmd("game_attacks3hi", simon_attacks3hi);
+    agent.effect_acmd("effect_attacks3hi", simon_attacks3_eff);
+    agent.sound_acmd("sound_attacks3hi", simon_attacks3_snd);
+    agent.expression_acmd("expression_attacks3hi", simon_attacks3_exp);
 
-        simon_whip_attackdash,
+    agent.game_acmd("game_attacks3lw", simon_attacks3lw);
+    agent.effect_acmd("effect_attacks3lw", simon_attacks3_eff);
+    agent.sound_acmd("sound_attacks3lw", simon_attacks3_snd);
+    agent.expression_acmd("expression_attacks3lw", simon_attacks3_exp);
 
-        simon_attacks3,
-
-        simon_attacks3hi,
-
-        simon_attacks3lw,
-
-        simon_attacks3_eff,
-        simon_attacks3_snd,
-        simon_attacks3_exp,
-
-        simon_whip_attacks3,
-        simon_whip_attacks3_eff,
-
-        simon_attacklw3,
-        simon_attacklw3_eff,
-        simon_attacklw3_snd,
-        simon_attacklw3_exp,
-
-        simon_whip_attacklw3,
-        simon_whip_attacklw3_eff,
-    );
+    agent.game_acmd("game_attacklw3", simon_attacklw3);
+    agent.effect_acmd("effect_attacklw3", simon_attacklw3_eff);
+    agent.sound_acmd("sound_attacklw3", simon_attacklw3_snd);
+    agent.expression_acmd("expression_attacklw3", simon_attacklw3_exp);
 }

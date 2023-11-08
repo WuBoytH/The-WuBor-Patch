@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_INSTANCE_WORK_ID_INT_SPECIAL_LW_DECIDE_COMMAND);
     let mask = VarModule::get_int(fighter.module_accessor, brave::instance::int::USED_SPELL_MASK) | (1 << spell_kind);
     // println!("New Mask: {:#b}", mask);
@@ -22,11 +21,11 @@ unsafe fn brave_special_lw_start_pre(fighter: &mut L2CFighterCommon) -> L2CValue
             VarModule::set_int(fighter.module_accessor, brave::instance::int::SPELL_SLOT_4, -1);
         }
     }
-    original!(fighter)
+    let original = smashline::original_status(smashline::Pre, fighter, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START);
+    original(fighter)
 }
 
-#[status_script(agent = "brave", status = FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let spell_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_INT_ACTIVE_COMMAND);
     if spell_kind == *FIGHTER_BRAVE_SPECIAL_LW_COMMAND08_FULLBURST {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_BRAVE_STATUS_SPECIAL_LW_START_FLAG_FULLBURST_INTERRUPT) {
@@ -54,9 +53,7 @@ unsafe fn brave_special_lw_start_end(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        brave_special_lw_start_pre,
-        brave_special_lw_start_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_pre);
+    agent.status(smashline::End, *FIGHTER_BRAVE_STATUS_KIND_SPECIAL_LW_START, brave_special_lw_start_end);
 }

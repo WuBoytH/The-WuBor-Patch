@@ -1,11 +1,11 @@
 mod normals;
-mod smash_attacks;
+mod smashes;
 mod specials;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    smash_attacks::install();
-    specials::install();
-    escape::install();
+pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
+    smashes::install(agent);
+    specials::install(agent);
+    escape::install(agent);
 }

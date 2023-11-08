@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mario", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
@@ -34,8 +33,7 @@ unsafe fn mario_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackairf", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_attackairf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairf_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 18.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("sys_attack_arc_b"), Hash40::new("top"), 0, 7, -1, -3, -11, -140, 1.5, true, *EF_FLIP_YZ);
@@ -44,8 +42,7 @@ unsafe fn mario_attackairf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attackairf", category = ACMD_SOUND, low_priority )]
-unsafe fn mario_attackairf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairf_snd(agent: &mut L2CAgentBase) {
     wait(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -53,8 +50,7 @@ unsafe fn mario_attackairf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "expression_attackairf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mario_attackairf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairf_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -65,8 +61,7 @@ unsafe fn mario_attackairf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_landingairf", category = ACMD_GAME, low_priority )]
-unsafe fn mario_landingairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_landingairf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::remove_exist(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MARIO_GENERATE_ARTICLE_MANTLE, false, -1);
@@ -74,8 +69,7 @@ unsafe fn mario_landingairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -97,8 +91,7 @@ unsafe fn mario_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -120,8 +113,7 @@ unsafe fn mario_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn mario_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 6.0/9.0);
     frame(agent.lua_state_agent, 9.0);
@@ -148,8 +140,7 @@ unsafe fn mario_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "effect_attackairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn mario_attackairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_spin_wind"), Hash40::new("sys_spin_wind"), Hash40::new("top"), 0, 6.0, 0, 0, 0, 0, 0.6, true, *EF_FLIP_YZ);
@@ -200,8 +191,7 @@ unsafe fn mario_attackairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "sound_attackairlw", category = ACMD_SOUND, low_priority )]
-unsafe fn mario_attackairlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_mario_002"));
@@ -209,8 +199,7 @@ unsafe fn mario_attackairlw_snd(agent: &mut L2CAgentBase) {
     } 
 }
 
-#[acmd_script( agent = "mario", script = "expression_attackairlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn mario_attackairlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_attackairlw_exp(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::RUMBLE_HIT(agent, Hash40::new("rbkind_attackss"), 5);
@@ -221,28 +210,25 @@ unsafe fn mario_attackairlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "mario", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn mario_landingairlw(_agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mario_landingairlw(_agent: &mut L2CAgentBase) {
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mario_attackairf,
-        mario_attackairf_eff,
-        mario_attackairf_snd,
-        mario_attackairf_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairf", mario_attackairf);
+    agent.effect_acmd("effect_attackairf", mario_attackairf_eff);
+    agent.sound_acmd("sound_attackairf", mario_attackairf_snd);
+    agent.expression_acmd("expression_attackairf", mario_attackairf_exp);
 
-        mario_landingairf,
+    agent.game_acmd("game_landingairf", mario_landingairf);
 
-        mario_attackairb,
+    agent.game_acmd("game_attackairb", mario_attackairb);
 
-        mario_attackairhi,
+    agent.game_acmd("game_attackairhi", mario_attackairhi);
 
-        mario_attackairlw,
-        mario_attackairlw_eff,
-        mario_attackairlw_snd,
-        mario_attackairlw_exp,
+    agent.game_acmd("game_attackairlw", mario_attackairlw);
+    agent.effect_acmd("effect_attackairlw", mario_attackairlw_eff);
+    agent.sound_acmd("sound_attackairlw", mario_attackairlw_snd);
+    agent.expression_acmd("expression_attackairlw", mario_attackairlw_exp);
 
-        mario_landingairlw
-    );
+    agent.game_acmd("game_landingairlw", mario_landingairlw);
 }

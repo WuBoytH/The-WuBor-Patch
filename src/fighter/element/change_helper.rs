@@ -5,14 +5,14 @@ use smash::{
 
 pub static mut IS_CHANGE_ATTACK : [bool; 8] = [false; 8];
 
-pub unsafe fn element_set_change_attack(module_accessor: *mut BattleObjectModuleAccessor, is_attack: bool) {
+pub unsafe extern "C" fn element_set_change_attack(module_accessor: *mut BattleObjectModuleAccessor, is_attack: bool) {
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if (0..8).contains(&entry_id) {
         IS_CHANGE_ATTACK[entry_id] = is_attack;
     }
 }
 
-pub unsafe fn element_is_change_attack(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+pub unsafe extern "C" fn element_is_change_attack(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     let entry_id = WorkModule::get_int(module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize;
     if (0..8).contains(&entry_id) {
         IS_CHANGE_ATTACK[entry_id]

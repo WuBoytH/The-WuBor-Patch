@@ -3,7 +3,7 @@ use wubor_utils::controls::*;
 use std::arch::asm;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_sub)]
-unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue) -> L2CValue {
     if VarModule::is_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP) {
         let mini_jump = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_JUMP_MINI);
         if mini_jump {
@@ -85,7 +85,7 @@ unsafe fn status_jump_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, par
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Jump_Main)]
-unsafe fn status_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -105,18 +105,18 @@ unsafe fn status_jump_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_Jump)]
-unsafe fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+unsafe extern "C" fn bind_address_call_status_end_jump(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     fighter.status_end_Jump()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_Jump)]
-unsafe fn status_end_jump(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_jump(_fighter: &mut L2CFighterCommon) -> L2CValue {
     // VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::SUPER_JUMP);
     0.into()
 }
 
 #[skyline::hook(offset = 0x6ce6b8, inline)]
-unsafe fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -129,7 +129,7 @@ unsafe fn jump1_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6d19a4, inline)]
-unsafe fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -142,7 +142,7 @@ unsafe fn jump2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6d1af0, inline)]
-unsafe fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -155,7 +155,7 @@ unsafe fn jump3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6d0434, inline)]
-unsafe fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -168,7 +168,7 @@ unsafe fn jump4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6ce7b0, inline)]
-unsafe fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -181,7 +181,7 @@ unsafe fn jump_aerial_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6d05ac, inline)]
-unsafe fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -194,7 +194,7 @@ unsafe fn jump_aerial_2_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6d115c, inline)]
-unsafe fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -207,7 +207,7 @@ unsafe fn jump_aerial_3_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6ce26c, inline)]
-unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let control_module = *ctx.registers[0].x.as_ref();
     let boma = *(control_module as *mut *mut BattleObjectModuleAccessor).add(1);    
     let left_stick_x = if Buttons::from_bits_unchecked(ControlModule::get_button(boma)).intersects(Buttons::CStickOverride) {
@@ -220,7 +220,7 @@ unsafe fn jump_aerial_4_stick_x_hook(ctx: &mut skyline::hooks::InlineCtx) {
 }
 
 #[skyline::hook(offset = 0x6d251c, inline)]
-unsafe fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn jump_speed_y_hook(ctx: &mut skyline::hooks::InlineCtx) {
     let callable: extern "C" fn(u64, u64, u64) -> f32 = std::mem::transmute(*ctx.registers[8].x.as_ref());
     let work_module = *ctx.registers[0].x.as_ref();
     let module_accessor = &mut *(*((work_module as *mut u64).offset(1)) as *mut BattleObjectModuleAccessor);

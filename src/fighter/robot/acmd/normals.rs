@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "robot", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 361, 77, 0, 48, 2.5, 0.0, 9.0, 0.9, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -15,8 +14,7 @@ unsafe fn robot_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 361, 77, 0, 48, 2.5, 0.0, 9.0, 0.9, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -31,8 +29,7 @@ unsafe fn robot_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 9.0, 361, 77, 0, 48, 2.5, 0.0, 9.0, 0.9, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -47,8 +44,7 @@ unsafe fn robot_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -69,8 +65,7 @@ unsafe fn robot_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn robot_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 60, 90, 0, 20, 3.4, 0.0, 1.7, 21.0, Some(0.0), Some(7.0), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.2, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_PUNCH);
@@ -82,8 +77,7 @@ unsafe fn robot_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "effect_attacklw3", category = ACMD_EFFECT, low_priority )]
-unsafe fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         let color = WorkModule::get_int(agent.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_COLOR);
@@ -138,8 +132,7 @@ unsafe fn robot_attacklw3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "sound_attacklw3", category = ACMD_SOUND, low_priority )]
-unsafe fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_robot_rnd_attack"));
@@ -152,8 +145,7 @@ unsafe fn robot_attacklw3_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "robot", script = "expression_attacklw3", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 3);
     }
@@ -176,19 +168,17 @@ unsafe fn robot_attacklw3_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        robot_attacks3,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacks3", robot_attacks3);
 
-        robot_attacks3hi,
+    agent.game_acmd("game_attacks3hi", robot_attacks3hi);
 
-        robot_attacks3lw,
+    agent.game_acmd("game_attacks3lw", robot_attacks3lw);
 
-        robot_attackhi3,
+    agent.game_acmd("game_attackhi3", robot_attackhi3);
 
-        robot_attacklw3,
-        robot_attacklw3_eff,
-        robot_attacklw3_snd,
-        robot_attacklw3_exp
-    );
+    agent.game_acmd("game_attacklw3", robot_attacklw3);
+    agent.effect_acmd("effect_attacklw3", robot_attacklw3_eff);
+    agent.sound_acmd("sound_attacklw3", robot_attacklw3_snd);
+    agent.expression_acmd("expressoin_attacklw3", robot_attacklw3_exp);
 }

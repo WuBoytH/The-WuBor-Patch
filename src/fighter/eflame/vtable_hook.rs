@@ -1,6 +1,4 @@
-use {
-    smash_rs::app::*
-};
+use smash_rs::app::*;
 
 // Original Groups
 // const EFLAME_DISABLE_GROUPS: [WorkId; 6] = [

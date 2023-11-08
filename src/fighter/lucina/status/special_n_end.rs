@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucina_specialn_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_MARTH_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     if VarModule::is_flag(fighter.module_accessor, yu::status::flag::IS_EX) {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end_max") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
@@ -11,10 +10,10 @@ unsafe fn lucina_specialn_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         WorkModule::set_int64(fighter.module_accessor, hash40("special_n_end") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_MOTION);
         WorkModule::set_int64(fighter.module_accessor, hash40("special_air_n_end") as i64, *FIGHTER_MARTH_STATUS_SPECIAL_N_WORK_INT_END_AIR_MOTION);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_specialn_end_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(lucina_special_n_end_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn lucina_specialn_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_n_end_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -26,11 +25,11 @@ unsafe extern "C" fn lucina_specialn_end_main_loop(fighter: &mut L2CFighterCommo
     }
     if !StatusModule::is_changing(fighter.module_accessor) {
         if StatusModule::is_situation_changed(fighter.module_accessor) {
-            lucina_specialn_end_mot_helper(fighter);
+            lucina_special_n_end_mot_helper(fighter);
         }
     }
     else {
-        lucina_specialn_end_mot_helper(fighter);
+        lucina_special_n_end_mot_helper(fighter);
     }
     if MotionModule::is_end(fighter.module_accessor) {
         if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -43,7 +42,7 @@ unsafe extern "C" fn lucina_specialn_end_main_loop(fighter: &mut L2CFighterCommo
     0.into()
 }
 
-unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn lucina_special_n_end_mot_helper(fighter: &mut L2CFighterCommon) {
     let ground_mot;
     let air_mot;
     if VarModule::is_flag(fighter.module_accessor, yu::status::flag::IS_EX) {
@@ -128,8 +127,6 @@ unsafe extern "C" fn lucina_specialn_end_mot_helper(fighter: &mut L2CFighterComm
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_specialn_end_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_N_END, lucina_special_n_end_main);
 }

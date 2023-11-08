@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kirby", scripts = ["effect_ganonspecialn", "effect_ganonspecialairn"], category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_ganonspecialn_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ganonspecialn_eff(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("ganon_majinken_start"), Hash40::new("havel"), 0, 0, 0, 0, 0, 0, 1, true);
         WorkModule::set_flag(agent.module_accessor, false, *FIGHTER_INSTANCE_WORK_ID_FLAG_NAME_CURSOR);
@@ -36,8 +35,7 @@ unsafe fn kirby_ganonspecialn_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", scripts = ["sound_ganonspecialn", "sound_ganonspecialairn"], category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_ganon_appear01"));
@@ -54,9 +52,10 @@ unsafe fn kirby_ganonspecialn_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_ganonspecialn_eff,
-        kirby_ganonspecialn_snd
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.effect_acmd("effect_ganonspecialn", kirby_ganonspecialn_eff);
+    agent.sound_acmd("sound_ganonspecialn", kirby_ganonspecialn_snd);
+
+    agent.effect_acmd("effect_ganonspecialairn", kirby_ganonspecialn_eff);
+    agent.sound_acmd("sound_ganonspecialairn", kirby_ganonspecialn_snd);
 }

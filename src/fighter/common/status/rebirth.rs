@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_rebirth_common_pre)]
-unsafe fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
     CameraModule::reset_all(fighter.module_accessor);
     ControlModule::reset_trigger(fighter.module_accessor);
     ControlModule::clear_command(fighter.module_accessor, false);
@@ -30,7 +30,7 @@ unsafe fn sub_rebirth_common_pre(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Rebirth_Main)]
-unsafe fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_rebirth_common().get_bool() {
         return 1.into();
     }
@@ -44,7 +44,7 @@ unsafe fn status_rebirth_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     if mot == hash40("down_wait_d") {
         let elapsed = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_REBIRTH_WORK_INT_MOVE_ELAPSED_FRAME);
@@ -113,7 +113,7 @@ unsafe fn rebirth_motion_handler(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn appeal_motion_uniq_handler(fighter: &mut L2CFighterCommon) -> bool {
+unsafe extern "C" fn appeal_motion_uniq_handler(fighter: &mut L2CFighterCommon) -> bool {
     let mot = MotionModule::motion_kind(fighter.module_accessor);
     let check_basic_taunts = [
         hash40("appeal_hi_l"),

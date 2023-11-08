@@ -1,14 +1,13 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "dolly", status = FIGHTER_STATUS_KIND_ATTACK_S3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn dolly_attacks3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_attack_s3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DOLLY_STATUS_ATTACK_WORK_FLAG_HIT_CANCEL);
     fighter.status_AttackS3Common();
-    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attacks3_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(dolly_attack_s3_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn dolly_attacks3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn dolly_attack_s3_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if dolly_hit_cancel(fighter).get_i32() == 0
     && dolly_attack_start_cancel(fighter).get_i32() == 0 {
         if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_s3_lw")
@@ -34,13 +33,13 @@ unsafe extern "C" fn dolly_attacks3_main_loop(fighter: &mut L2CFighterCommon) ->
                 return 1.into();
             }
         }
-        dolly_attacks3_main_loop_inner(fighter, FIGHTER_COMBO_KIND_S3.into());
+        dolly_attack_s3_main_loop_inner(fighter, FIGHTER_COMBO_KIND_S3.into());
         return 0.into();
     }
     1.into()
 }
 
-unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn dolly_attack_s3_main_loop_inner(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 0.into();
@@ -54,11 +53,11 @@ unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterComm
         if combo < s3_combo_max
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO_PRECEDE)
         && WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO) {
-            dolly_attacks3_mtrans_param(fighter, param_1);
+            dolly_attack_s3_mtrans_param(fighter, param_1);
         }
     }
     else {
-        dolly_attacks3_mtrans_param(fighter, param_1);
+        dolly_attack_s3_mtrans_param(fighter, param_1);
     }
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_AIR {
         let jump_attack_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_ATTACK_MINI_JUMP_ATTACK_FRAME);
@@ -97,7 +96,7 @@ unsafe extern "C" fn dolly_attacks3_main_loop_inner(fighter: &mut L2CFighterComm
     0.into()
 }
 
-unsafe extern "C" fn dolly_attacks3_mtrans_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn dolly_attack_s3_mtrans_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     ControlModule::reset_trigger(fighter.module_accessor);
     ControlModule::clear_command(fighter.module_accessor, false);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -178,8 +177,6 @@ unsafe extern "C" fn dolly_attacks3_mtrans_param(fighter: &mut L2CFighterCommon,
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        dolly_attacks3_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_S3, dolly_attack_s3_main);
 }

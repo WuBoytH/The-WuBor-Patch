@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-pub unsafe fn rockman_special_motion_helper(
+pub unsafe extern "C" fn rockman_special_motion_helper(
     fighter: &mut L2CFighterCommon,
     mot_g: L2CValue,
     mot_a: L2CValue,

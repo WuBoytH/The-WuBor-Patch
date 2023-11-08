@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 // #[skyline::hook(replace = L2CFighterCommon_status_pre_CapturePulled)]
-// unsafe fn status_pre_capturepulled(fighter: &mut L2CFighterCommon) -> L2CValue {
+// unsafe extern "C" fn status_pre_capturepulled(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     let mut situation = SITUATION_KIND_NONE;
 //     let mut correct = GROUND_CORRECT_KIND_KEEP;
 //     if LinkModule::is_link(fighter.module_accessor, *LINK_NO_CAPTURE) {
@@ -24,7 +24,7 @@ use crate::imports::status_imports::*;
 // }
 
 #[skyline::hook(replace = L2CFighterCommon_CapturePulledCommon)]
-unsafe fn capturepulledcommon(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn capturepulledcommon(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, *SITUATION_KIND_NONE, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_SITUATION);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CAPTURE_WAIT);
     if LinkModule::is_link(fighter.module_accessor, *LINK_NO_CAPTURE) {
@@ -51,7 +51,7 @@ unsafe fn capturepulledcommon(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_CapturePulledCommon_Main)]
-unsafe fn capturepulledcommon_main(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn capturepulledcommon_main(fighter: &mut L2CFighterCommon) {
     let situation = fighter.global_table[SITUATION_KIND].get_i32();
     let pulled_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_CAPTURE_PULLED_WORK_INT_SITUATION);
     if situation == pulled_sit {

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Catch)]
-unsafe fn status_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
     ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     fighter.sub_status_Catch();
     GrabModule::set_rebound(fighter.module_accessor, true);
@@ -9,7 +9,7 @@ unsafe fn status_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchDash)]
-unsafe fn status_catchdash(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_catchdash(fighter: &mut L2CFighterCommon) -> L2CValue {
     ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     fighter.sub_status_CatchDash();
     GrabModule::set_rebound(fighter.module_accessor, true);
@@ -17,7 +17,7 @@ unsafe fn status_catchdash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchTurn)]
-unsafe fn status_catchturn(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_catchturn(fighter: &mut L2CFighterCommon) -> L2CValue {
     ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     fighter.sub_status_CatchTurn();
     GrabModule::set_rebound(fighter.module_accessor, true);
@@ -25,7 +25,7 @@ unsafe fn status_catchturn(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_CatchCont)]
-unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         let mut throw_f = false;
         let mut throw_b = false;
@@ -108,7 +108,7 @@ unsafe fn catchcont(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusCapture_set_invalid_capture)]
-unsafe fn fighterstatuscapture_set_invalid_capture(_fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn fighterstatuscapture_set_invalid_capture(_fighter: &mut L2CFighterCommon) {
     // Haha there's nothing here now
 }
 

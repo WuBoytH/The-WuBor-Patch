@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack3_uniq_check_param)]
-unsafe fn sub_attack3_uniq_check_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, is_attack_lw3: L2CValue, is_button: L2CValue) {
+unsafe extern "C" fn sub_attack3_uniq_check_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, is_attack_lw3: L2CValue, is_button: L2CValue) {
     if param_1.get_bool() == false {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(is_button.get_ptr());
         if callable.get_bool()

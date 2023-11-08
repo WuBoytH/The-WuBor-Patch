@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "koopa", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("arml"), *HIT_STATUS_XLU);
@@ -20,8 +19,7 @@ unsafe fn koopa_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::HIT_NODE(agent, Hash40::new("armr"), *HIT_STATUS_XLU);
@@ -36,8 +34,7 @@ unsafe fn koopa_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "koopa", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn koopa_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn koopa_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 10.0);
@@ -58,10 +55,10 @@ unsafe fn koopa_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        koopa_attack11,
-        koopa_attack12,
-        koopa_attackdash
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", koopa_attack11);
+
+    agent.game_acmd("game_attack12", koopa_attack12);
+
+    agent.game_acmd("game_attackdash", koopa_attackdash);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "duckhunt", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("shoulderl"), 2.0, 60, 100, 25, 0, 1.8, 0.0, 4.0, 6.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -18,8 +17,7 @@ unsafe fn duckhunt_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 1.5, 55, 100, 25, 0, 3.0, 0.0, 3.5, 2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_HEAD);
@@ -40,8 +38,7 @@ unsafe fn duckhunt_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 5.0, 60, 125, 0, 50, 5.0, 0.0, 4.5, 1.5, Some(0.0), Some(5.5), Some(8.5), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -52,8 +49,7 @@ unsafe fn duckhunt_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attack100", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_attack100(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack100(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 2.0);
         duckhunt_attack100_inner(agent);
@@ -76,7 +72,7 @@ unsafe fn duckhunt_attack100(agent: &mut L2CAgentBase) {
 }
 
 #[inline(always)]
-unsafe fn duckhunt_attack100_inner(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attack100_inner(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 4.5, 0.5);
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.4, 361, 15, 0, 16, 4.5, 0.0, 7.5, 4.5, None, None, None, 0.5, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
@@ -92,8 +88,7 @@ unsafe fn duckhunt_attack100_inner(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -112,8 +107,7 @@ unsafe fn duckhunt_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "duckhunt", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn duckhunt_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn duckhunt_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 8.0, 60, 60, 0, 50, 3.5, 0.0, 2.0, 13.0, Some(0.0), Some(2.0), Some(7.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
@@ -126,14 +120,16 @@ unsafe fn duckhunt_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.74);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        duckhunt_attack11,
-        duckhunt_attack12,
-        duckhunt_attack13,
-        duckhunt_attack100,
-        duckhunt_attackhi3,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", duckhunt_attack11);
 
-        duckhunt_attacklw3
-    );
+    agent.game_acmd("game_attack12", duckhunt_attack12);
+
+    agent.game_acmd("game_attack13", duckhunt_attack13);
+
+    agent.game_acmd("game_attack100", duckhunt_attack100);
+
+    agent.game_acmd("game_attackhi3", duckhunt_attackhi3);
+
+    agent.game_acmd("game_attacklw3", duckhunt_attacklw3);
 }

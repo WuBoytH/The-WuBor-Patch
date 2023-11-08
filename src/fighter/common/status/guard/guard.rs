@@ -3,7 +3,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Guard)]
-unsafe fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -32,7 +32,7 @@ unsafe fn status_pre_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont_pre)]
-unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_GUARD);
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_GUARD_ON {
         if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_DASH {
@@ -60,7 +60,7 @@ unsafe fn sub_guard_cont_pre(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_guard_cont)]
-unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[GUARD_CONT_UNIQ].get_bool() && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[GUARD_CONT_UNIQ].get_ptr());
         callable(fighter).get_bool()
@@ -188,7 +188,7 @@ unsafe fn sub_guard_cont(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_guard_main_common)]
-unsafe fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     // Shield Breaks no longer happen if you just hold Shield
     // let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     // if shield_hp < 0.0 {
@@ -208,7 +208,7 @@ unsafe fn status_guard_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_check_guard_attack_special_hi)]
-unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_hold: L2CValue) -> L2CValue {
+unsafe extern "C" fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_hold: L2CValue) -> L2CValue {
     let cat1 = fighter.global_table[CMD_CAT1].get_i32();
     if !guard_hold.get_bool() {
         if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_HI4_START)
@@ -249,7 +249,7 @@ unsafe fn check_guard_attack_special_hi(fighter: &mut L2CFighterCommon, guard_ho
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_ftStatusUniqProcessGuardFunc_updateShield)]
-unsafe fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighterCommon, _param_1: L2CValue) {
+unsafe extern "C" fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighterCommon, _param_1: L2CValue) {
     // There used to be code here for shield tilting, but nope not anymore
     let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();
@@ -263,12 +263,12 @@ unsafe fn sub_ftstatusuniqprocessguardfunc_updateshield(fighter: &mut L2CFighter
 }
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_FighterStatusGuard__set_shield_scale)]
-unsafe fn bind_address_call_fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn bind_address_call_fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent, param_1: L2CValue) -> L2CValue {
     fighter.FighterStatusGuard__set_shield_scale(param_1)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusGuard__set_shield_scale)]
-unsafe fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn fighterstatusguard__set_shield_scale(fighter: &mut L2CFighterCommon, _param_1: L2CValue) -> L2CValue {
     // There used to be code here for shield tilting, but nope not anymore
     let shield_hp = WorkModule::get_float(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLOAT_GUARD_SHIELD);
     let scale = fighter.FighterStatusGuard__calc_shield_scale(shield_hp.into()).get_f32();

@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "demon", status = FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_landing_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_landing_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_LandingAttackAirSub();
     fighter.sub_shift_status_main(L2CValue::Ptr(demon_landing_attack_air_main_loop as *const () as _))
 }
@@ -17,8 +16,6 @@ unsafe extern "C" fn demon_landing_attack_air_main_loop(fighter: &mut L2CFighter
     fighter.status_LandingAttackAir_Main()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        demon_landing_attack_air_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_LANDING_ATTACK_AIR, demon_landing_attack_air_main);
 }

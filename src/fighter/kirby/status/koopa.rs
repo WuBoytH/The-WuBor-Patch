@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_koopa_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_koopa_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     kirby_koopa_special_n_mtrans_reset(fighter);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE_START);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_KOOPA_STATUS_BREATH_FLAG_CONTINUE);
@@ -114,20 +113,16 @@ unsafe extern "C" fn kirby_koopa_special_n_main_loop(fighter: &mut L2CFighterCom
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn kirby_koopa_special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_koopa_special_n_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-unsafe fn kirby_koopa_special_n_exec_stop(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_koopa_special_n_exec_stop(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_koopa_special_n_main,
-        kirby_koopa_special_n_exec,
-        kirby_koopa_special_n_exec_stop
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, kirby_koopa_special_n_main);
+    agent.status(smashline::Exec, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, kirby_koopa_special_n_exec);
+    agent.status(smashline::ExecStop, *FIGHTER_KIRBY_STATUS_KIND_KOOPA_SPECIAL_N, kirby_koopa_special_n_exec_stop);
 }

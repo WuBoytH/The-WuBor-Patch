@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucina_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -29,18 +28,11 @@ unsafe fn lucina_speciallw_hit_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn lucina_speciallw_hit_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_speciallw_hit_init(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn lucina_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucina_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_speciallw_hit_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(
             fighter.module_accessor,
@@ -88,11 +80,13 @@ unsafe extern "C" fn lucina_shadowfrenzy_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_speciallw_hit_pre,
-        lucina_speciallw_hit_init,
-        lucina_speciallw_hit_exec,
-        lucina_speciallw_hit_main
-    );
+unsafe extern "C" fn lucina_speciallw_hit_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_pre);
+    agent.status(smashline::Init, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_init);
+    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_main);
+    agent.status(smashline::Exec, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_LW_HIT, lucina_speciallw_hit_exec);
 }

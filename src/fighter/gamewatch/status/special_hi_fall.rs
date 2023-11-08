@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "gamewatch", status = FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn gamewatch_special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn gamewatch_special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let attack_air_kind = WorkModule::get_int(fighter.module_accessor, *FIGHTER_GAMEWATCH_STATUS_SPECIAL_HI_WORK_INT_ATTACK_AIR_KIND);
     ControlModule::set_attack_air_kind(fighter.module_accessor, attack_air_kind);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_SPECIAL);
@@ -32,7 +31,7 @@ unsafe fn gamewatch_special_hi_fall_main(fighter: &mut L2CFighterCommon) -> L2CV
     fighter.sub_shift_status_main(L2CValue::Ptr(gamewatch_special_hi_fall_main_loop as *const () as _))
 }
 
-unsafe fn gamewatch_special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn gamewatch_special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
@@ -63,8 +62,6 @@ unsafe fn gamewatch_special_hi_fall_main_loop(fighter: &mut L2CFighterCommon) ->
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        gamewatch_special_hi_fall_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_GAMEWATCH_STATUS_KIND_SPECIAL_HI_FALL, gamewatch_special_hi_fall_main);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "younglink", script = "game_aircatch", category = ACMD_GAME, low_priority )]
-unsafe fn younglink_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn younglink_aircatch(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -52,8 +51,6 @@ unsafe fn younglink_aircatch(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        younglink_aircatch
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_aircatch", younglink_aircatch);
 }

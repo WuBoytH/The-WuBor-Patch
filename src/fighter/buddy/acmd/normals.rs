@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
-
-#[acmd_script( agent = "buddy", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attack11(agent: &mut L2CAgentBase) {
+\
+unsafe extern "C" fn buddy_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.2, 361, 26, 0, 45, 2.4, 0.0, 6.0, 4.8, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -18,8 +17,7 @@ unsafe fn buddy_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         KineticModule::add_speed(agent.module_accessor, &Vector3f{x: 0.75, y: 0.0, z: 0.0});
@@ -45,8 +43,7 @@ unsafe fn buddy_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -64,8 +61,7 @@ unsafe fn buddy_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attack100", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attack100(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack100(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 1.0);
         buddy_attack100_inner(agent);
@@ -88,7 +84,7 @@ unsafe fn buddy_attack100(agent: &mut L2CAgentBase) {
 }
 
 #[inline(always)]
-unsafe fn buddy_attack100_inner(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attack100_inner(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 0.4, 361, 10, 0, 16, 3.8, 0.0, 6.8, 4.0, None, None, None, 0.6, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
         macros::ATTACK(agent, 1, 0, Hash40::new("top"), 0.4, 361, 10, 0, 12, 3.8, 0.0, 6.8, 10.0, None, None, None, 0.6, 0.1, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, true, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_sting"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_HEAD);
@@ -106,9 +102,8 @@ unsafe fn buddy_attack100_inner(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
     }
 }
-
-#[acmd_script( agent = "buddy", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attackdash(agent: &mut L2CAgentBase) {
+\
+unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {\
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);
@@ -127,8 +122,7 @@ unsafe fn buddy_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_s"), false, -1.0);
@@ -158,8 +152,7 @@ unsafe fn buddy_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_hi"), false, -1.0);
@@ -189,8 +182,7 @@ unsafe fn buddy_attacks3hi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_BUDDY_GENERATE_ARTICLE_PARTNER, Hash40::new("attack_s3_lw"), false, -1.0);
@@ -220,8 +212,7 @@ unsafe fn buddy_attacks3lw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::HIT_NO(agent, 12, *HIT_STATUS_NORMAL);
         macros::HIT_NO(agent, 13, *HIT_STATUS_NORMAL);
@@ -261,8 +252,7 @@ unsafe fn buddy_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "buddy", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn buddy_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn buddy_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 12.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 7.0, 32, 74, 0, 64, 3.6, 0.0, 3.6, 4.0, None, None, None, 0.8, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
@@ -275,22 +265,24 @@ unsafe fn buddy_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        buddy_attack11,
-        buddy_attack12,
-        buddy_attack13,
-        buddy_attack100,
-        buddy_attackdash,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", buddy_attack11);
 
-        buddy_attacks3,
+    agent.game_acmd("game_attack12", buddy_attack12);
 
-        buddy_attacks3hi,
+    agent.game_acmd("game_attack13", buddy_attack13);
 
-        buddy_attacks3lw,
+    agent.game_acmd("game_attack100", buddy_attack100);
 
-        buddy_attackhi3,
+    agent.game_acmd("game_attackdash", buddy_attackdash);
 
-        buddy_attacklw3
-    );
+    agent.game_acmd("game_attacks3", buddy_attacks3);
+
+    agent.game_acmd("game_attacks3hi", buddy_attacks3hi);
+
+    agent.game_acmd("game_attacks3lw", buddy_attacks3lw);
+
+    agent.game_acmd("game_attackhi3", buddy_attackhi3);
+
+    agent.game_acmd("game_attacklw3", buddy_attacklw3);
 }

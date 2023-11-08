@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_DISPATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -29,8 +28,7 @@ pub unsafe fn jack_dispatch_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_DISPATCH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_dispatch_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("dispatch"),
@@ -85,9 +83,7 @@ unsafe extern "C" fn jack_dispatch_main_loop(fighter: &mut L2CFighterCommon) -> 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_dispatch_pre,
-        jack_dispatch_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_pre);
+    agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_DISPATCH, jack_dispatch_main);
 }

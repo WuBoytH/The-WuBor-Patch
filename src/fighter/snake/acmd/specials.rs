@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "snake", scripts = [ "game_specialhistart", "game_specialairhistart" ], category = ACMD_GAME, low_priority )]
-unsafe fn snake_specialhistart(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_specialhistart(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::CORRECT(agent, *GROUND_CORRECT_KIND_GROUND_CLIFF_STOP);
     }
@@ -16,8 +15,7 @@ unsafe fn snake_specialhistart(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "snake", script = "game_specialairhihang", category = ACMD_GAME, low_priority )]
-unsafe fn snake_specialairhihang(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn snake_specialairhihang(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 7);
         GroundModule::select_cliff_hangdata(agent.module_accessor, 1);
@@ -38,16 +36,10 @@ unsafe fn snake_specialairhihang(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "snake_cypher", script = "game_detach", category = ACMD_GAME, low_priority )]
-// unsafe fn snake_cypher_detach(_agent: &mut L2CAgentBase) {
-// }
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialhistart", snake_specialhistart);
 
-pub fn install() {
-    install_acmd_scripts!(
-        snake_specialhistart,
+    agent.game_acmd("game_specialairhistart", snake_specialhistart);
 
-        snake_specialairhihang,
-
-        // snake_cypher_detach
-    );
+    agent.game_acmd("game_specialairhihang", snake_specialairhihang);
 }

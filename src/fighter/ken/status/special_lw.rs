@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -29,8 +28,7 @@ unsafe fn ken_speciallw_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         reset_energy,
         fighter,
@@ -93,8 +91,7 @@ unsafe fn ken_speciallw_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "ken", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_SPECIAL_LW);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         GroundModule::set_correct(fighter.module_accessor, GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));

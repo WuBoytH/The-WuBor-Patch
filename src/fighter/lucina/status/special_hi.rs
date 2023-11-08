@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let turn = if !VarModule::is_flag(fighter.module_accessor, yu::instance::flag::COMMAND) {
         *FIGHTER_STATUS_ATTR_START_TURN as u32
     }
@@ -35,13 +34,7 @@ unsafe fn lucina_specialhi_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
-    0.into()
-}
-
-#[status_script(agent = "lucina", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_AIR_CLIFF);
     WorkModule::enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_LANDING_FALL_SPECIAL);
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
@@ -117,10 +110,12 @@ unsafe extern "C" fn lucina_specialhi_main_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_specialhi_pre,
-        lucina_specialhi_exec,
-        lucina_specialhi_main
-    );
+unsafe extern "C" fn lucina_specialhi_exec(_fighter: &mut L2CFighterCommon) -> L2CValue {
+    0.into()
+}
+
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_HI, lucina_specialhi_exec);
 }

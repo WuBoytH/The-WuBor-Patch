@@ -1,7 +1,7 @@
 mod jump;
 mod throw;
 
-pub fn install() {
-    jump::install();
-    throw::install();
+pub fn install(agent: &mut smashline::Agent) {
+    jump::install(agent);
+    throw::install(agent);
 }

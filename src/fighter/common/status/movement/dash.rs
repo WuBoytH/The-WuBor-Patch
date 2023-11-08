@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Dash)]
-unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -31,7 +31,7 @@ unsafe fn status_pre_dash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnDash)]
-unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -61,7 +61,7 @@ unsafe fn status_pre_turndash(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Dash_Sub)]
-unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_dash_sub(fighter: &mut L2CFighterCommon) {
     let start_frame = if [
         *FIGHTER_STATUS_KIND_LANDING, *FIGHTER_STATUS_KIND_LANDING_LIGHT
     ].contains(&fighter.global_table[PREV_STATUS_KIND].get_i32()) {
@@ -91,7 +91,7 @@ unsafe fn status_dash_sub(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Sub)]
-unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
     // New
     let start_rate = if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL) {
         0.75
@@ -114,7 +114,7 @@ unsafe fn status_turndash_sub(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_DashCommon)]
-unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_dashcommon(fighter: &mut L2CFighterCommon) {
     VarModule::off_flag(fighter.module_accessor, dash::flag::DISABLE_RUN);
     WorkModule::enable_transition_term_group(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_JUMP);
     let transitions = [
@@ -203,7 +203,7 @@ unsafe fn status_dashcommon(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Dash_Main_common)]
-unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if fighter.global_table[DASH_COMMON_UNIQ].get_bool() && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[DASH_COMMON_UNIQ].get_ptr());
         callable(fighter).get_bool()
@@ -494,7 +494,7 @@ unsafe fn status_dash_main_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnDash_Main)]
-unsafe fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.status_Dash_Main_common(0.into()).get_bool() {
         return 1.into();
     }
@@ -507,7 +507,7 @@ unsafe fn status_turndash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_pre_DashCommon();
     StatusModule::init_settings(
         fighter.module_accessor,
@@ -536,7 +536,7 @@ pub unsafe fn fgc_dashback_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub unsafe fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn fgc_dashback_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // New
     let start_rate = if VarModule::is_flag(fighter.module_accessor, fighter::status::flag::IS_DASH_CANCEL) {
         0.75
@@ -780,7 +780,7 @@ unsafe extern "C" fn fgc_dashback_main_loop(fighter: &mut L2CFighterCommon) -> L
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_dash_uniq_process_main_internal)]
-unsafe fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn sub_dash_uniq_process_main_internal(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if !WorkModule::is_enable_transition_term_forbid(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_DASH) {
         let stick_x = fighter.global_table[STICK_X].get_f32();
         let walk_threshold = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), 0x206138766c);

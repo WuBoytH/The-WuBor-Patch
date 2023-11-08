@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "master", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn master_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("shoulderl"), 1.5, 361, 60, 0, 45, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_PUNCH, *ATTACK_REGION_PUNCH);
@@ -22,8 +21,7 @@ unsafe fn master_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn master_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("kneer"), 2.0, 0, 9, 0, 45, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -44,8 +42,7 @@ unsafe fn master_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn master_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("legl"), 4.5, 361, 98, 0, 66, 3.0, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -58,8 +55,7 @@ unsafe fn master_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn master_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 4.0);
@@ -86,8 +82,7 @@ unsafe fn master_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn master_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn master_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, false, 0);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_MASTER_GENERATE_ARTICLE_SWORD, Hash40::new("attack_lw3"), false, 0.0);
@@ -111,35 +106,14 @@ unsafe fn master_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "master_sword", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn master_sword_attacklw3(agent: &mut L2CAgentBase) {
-    if macros::is_excute(agent) {
-        WorkModule::set_float(agent.module_accessor, 6.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_GRAVITY);
-        WorkModule::set_float(agent.module_accessor, 0.0, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLOAT_2ND_AIR_RESISTANCE);
-    }
-    frame(agent.lua_state_agent, 3.0);
-    macros::FT_MOTION_RATE(agent, 0.5);
-    frame(agent.lua_state_agent, 9.0);
-    macros::FT_MOTION_RATE(agent, 1);
-    frame(agent.lua_state_agent, 24.0);
-    if macros::is_excute(agent) {
-        WorkModule::on_flag(agent.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
-    }
-    frame(agent.lua_state_agent, 34.0);
-    if macros::is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *WEAPON_MASTER_SWORD_INSTANCE_WORK_ID_FLAG_PHYSICS);
-    }
-}
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", master_attack11);
 
-pub fn install() {
-    install_acmd_scripts!(
-        master_attack11,
-        master_attack12,
-        master_attack13,
-        master_attacks3,
+    agent.game_acmd("game_attack12", master_attack12);
 
-        master_attacklw3,
+    agent.game_acmd("game_attack13", master_attack13);
 
-        master_sword_attacklw3
-    );
+    agent.game_acmd("game_attacks3", master_attacks3);
+
+    agent.game_acmd("game_attacklw3", master_attacklw3);
 }

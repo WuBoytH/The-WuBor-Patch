@@ -3,9 +3,9 @@ mod aerials;
 mod specials;
 mod escape;
 
-pub fn install() {
-    throws::install();
-    aerials::install();
-    specials::install();
-    escape::install();
+pub fn install(agent: &mut smashline::Agent) {
+    throws::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    escape::install(agent);
 }

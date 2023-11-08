@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_R_ARM, false, false, true, 20, 0, 15, 0, false);
@@ -46,8 +45,7 @@ unsafe fn bayonetta_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, true, 10, 3, 10, 0, true);
@@ -83,8 +81,7 @@ unsafe fn bayonetta_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf2", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, true, false, true, 10, 3, 10, 0, true);
@@ -120,8 +117,7 @@ unsafe fn bayonetta_attackairf2(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairf3", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, false, false, true, 10, 3, 10, 5, true);
@@ -155,8 +151,7 @@ unsafe fn bayonetta_attackairf3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         notify_event_msc_cmd!(agent, Hash40::new_raw(0x2d51fcdb09), FIGHTER_BAYONETTA_SHOOTING_SLOT_L_ARM, false, false, true, 20, 3, 15, 0, false);
@@ -200,8 +195,7 @@ unsafe fn bayonetta_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "bayonetta", script = "game_landingairlw", category = ACMD_GAME, low_priority )]
-unsafe fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::SET_SPEED_EX(agent, 0, 0, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
@@ -227,18 +221,16 @@ unsafe fn bayonetta_landingairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        bayonetta_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", bayonetta_attackairn);
 
-        bayonetta_attackairf,
+    agent.game_acmd("game_attackairf", bayonetta_attackairf);
 
-        bayonetta_attackairf2,
+    agent.game_acmd("game_attackairf2", bayonetta_attackairf2);
 
-        bayonetta_attackairf3,
+    agent.game_acmd("game_attackairf3", bayonetta_attackairf3);
 
-        bayonetta_attackairhi,
+    agent.game_acmd("game_attackairhi", bayonetta_attackairhi);
 
-        bayonetta_landingairlw
-    );
+    agent.game_acmd("game_landingairlw", bayonetta_landingairlw);
 }

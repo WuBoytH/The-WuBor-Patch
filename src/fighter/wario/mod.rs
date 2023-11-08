@@ -5,8 +5,10 @@ mod vtable_hook;
 pub mod vl;
 
 pub fn install() {
-    acmd::install();
-    status::install();
-    frame::install();
+    let agent = &mut smashline::Agent::new("wario");
+    acmd::install(agent);
+    status::install(agent);
+    frame::install(agent);
     vtable_hook::install();
+    agent.install();
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "packun", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn packun_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn packun_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         MotionModule::set_rate(agent.module_accessor, 1.2);
@@ -54,8 +53,8 @@ unsafe fn packun_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        packun_specialhi
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", packun_specialhi);
+
+    agent.game_acmd("game_specialairhi", packun_specialhi);
 }

@@ -5,11 +5,11 @@ mod aerials;
 mod specials;
 mod escape;
 
-pub fn install() {
-    movement::install();
-    normals::install();
-    smash_attacks::install();
-    aerials::install();
-    specials::install();
-    escape::install();
+pub fn install(agent: &mut smashline::Agent) {
+    movement::install(agent);
+    normals::install(agent);
+    smash_attacks::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    escape::install(agent);
 }

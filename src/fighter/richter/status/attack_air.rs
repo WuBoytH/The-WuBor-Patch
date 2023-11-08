@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "richter", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn richter_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn richter_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_attack_air_uniq_process_exec();
     if MotionModule::motion_kind(fighter.module_accessor) == hash40("attack_air_lw")
     && !VarModule::is_flag(fighter.module_accessor, richter::status::flag::ATTACK_AIR_LW_IGNORE_BOUNCE)
@@ -28,8 +27,6 @@ unsafe fn richter_attack_air_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        richter_attack_air_exec
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_ATTACK_AIR, richter_attack_air_exec);
 }

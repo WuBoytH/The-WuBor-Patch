@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "brave", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn brave_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -35,8 +34,7 @@ unsafe fn brave_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn brave_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -70,8 +68,7 @@ unsafe fn brave_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn brave_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -105,8 +102,7 @@ unsafe fn brave_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn brave_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attackairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 2.0, 3.0, 3.0, 5.0);
     }
@@ -129,16 +125,14 @@ unsafe fn brave_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "brave", script = "effect_attackairhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn brave_attackairhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attackairhi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc_b"), Hash40::new("top"), -1, 11, 1, 0, 25, 90, 1.0, true);
     }
 }
 
-#[acmd_script( agent = "brave", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn brave_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn brave_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area_xy(agent.module_accessor, 3.0, 3.0, 7.0, 3.0);
     }
@@ -188,17 +182,15 @@ unsafe fn brave_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        brave_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", brave_attackairn);
 
-        brave_attackairf,
+    agent.game_acmd("game_attackairf", brave_attackairf);
 
-        brave_attackairb,
+    agent.game_acmd("game_attackairb", brave_attackairb);
 
-        brave_attackairhi,
-        brave_attackairhi_eff,
+    agent.game_acmd("game_attackairhi", brave_attackairhi);
+    agent.effect_acmd("effect_attackairhi", brave_attackairhi_eff);
 
-        brave_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", brave_attackairlw);
 }

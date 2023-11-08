@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-pub unsafe fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_n_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot_g;
     let mot_a;
     let mut log =
@@ -102,7 +102,7 @@ unsafe extern "C" fn belmont_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub unsafe fn belmont_special_n_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_n_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_N_FLAG_HAVE_AXE) {
         ArticleModule::remove(fighter.module_accessor, *FIGHTER_SIMON_GENERATE_ARTICLE_AXE, ArticleOperationTarget(*ARTICLE_OPE_TARGET_LAST));
     }

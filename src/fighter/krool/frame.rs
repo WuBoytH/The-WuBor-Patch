@@ -1,6 +1,9 @@
-use crate::imports::status_imports::*;
+use {
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
+};
 
-unsafe fn krool_propeller_early_cancel(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn krool_propeller_early_cancel(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_KROOL_STATUS_KIND_SPECIAL_HI
     && ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_GUARD) {
@@ -8,15 +11,11 @@ unsafe fn krool_propeller_early_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KROOL, main )]
-fn krool_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        krool_propeller_early_cancel(fighter);
-    }
+unsafe extern "C" fn krool_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    krool_propeller_early_cancel(fighter);
 }
 
-pub fn install() {
-    install_agent_frames!(
-        krool_frame
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_line(smashline::Main, krool_frame);
 }

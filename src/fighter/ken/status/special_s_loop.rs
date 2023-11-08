@@ -1,13 +1,11 @@
 use crate::imports::status_imports::*;
 use crate::fighter::ryu::helper::*;
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn ken_specials_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_specials_loop_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ryu_specials_loop_init_main(fighter)
 }
 
-#[status_script(agent = "ken", status = FIGHTER_RYU_STATUS_KIND_SPECIAL_S_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ken_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ken_specials_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let start_sit = WorkModule::get_int(fighter.module_accessor, *FIGHTER_RYU_STATUS_WORK_ID_SPECIAL_S_INT_START_SITUATION);
     if start_sit != *SITUATION_KIND_GROUND {
         MotionModule::change_motion(

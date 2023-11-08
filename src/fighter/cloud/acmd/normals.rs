@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "cloud", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.5, 60, 24, 0, 42, 3.9, 0.0, 8.5, 9.0, Some(0.0), Some(8.5), Some(9.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -22,8 +21,7 @@ unsafe fn cloud_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack12(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 2.0, 68, 25, 0, 33, 3.3, 0.0, 9.1, 5.5, Some(0.0), Some(9.0), Some(4.5), 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, true, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -44,8 +42,7 @@ unsafe fn cloud_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 3.5, 30, 50, 0, 75, 4.5, 0.0, 9.0, 16.0, Some(0.0), Some(9.0), Some(8.0), 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CLOUD_HIT, *ATTACK_REGION_SWORD);
@@ -56,8 +53,7 @@ unsafe fn cloud_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("haver"), 8.0, 95, 80, 0, 66, 5.6, 0.0, 12.0, -2.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_CLOUD_HIT, *ATTACK_REGION_SWORD);
@@ -76,11 +72,12 @@ unsafe fn cloud_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_attack11,
-        cloud_attack12,
-        cloud_attack13,
-        cloud_attackhi3
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", cloud_attack11);
+
+    agent.game_acmd("game_attack12", cloud_attack12);
+
+    agent.game_acmd("game_attack13", cloud_attack13);
+
+    agent.game_acmd("game_attackhi3", cloud_attackhi3);
 }

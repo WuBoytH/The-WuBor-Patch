@@ -1,5 +1,5 @@
 use crate::imports::acmd_imports::*;
-\
+
 unsafe extern "C" fn buddy_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
@@ -102,8 +102,8 @@ unsafe extern "C" fn buddy_attack100_inner(agent: &mut L2CAgentBase) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_100_CONTINUE_CHECK);
     }
 }
-\
-unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {\
+
+unsafe extern "C" fn buddy_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_CONTINUE);

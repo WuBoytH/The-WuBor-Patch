@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "edge", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn edge_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_attack11(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 2.0, 3.0);
     }
@@ -25,8 +24,7 @@ unsafe fn edge_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn edge_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_attack12(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 4.0, 3.0);
     }
@@ -50,8 +48,7 @@ unsafe fn edge_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "edge", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn edge_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn edge_attack13(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("top"), 4.0, 361, 80, 0, 70, 3.8, 0.0, 9.5, 5.8, None, None, None, 1.2, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_SWORD);
@@ -63,10 +60,10 @@ unsafe fn edge_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        edge_attack11,
-        edge_attack12,
-        edge_attack13
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", edge_attack11);
+
+    agent.game_acmd("game_attack12", edge_attack12);
+
+    agent.game_acmd("game_attack13", edge_attack13);
 }

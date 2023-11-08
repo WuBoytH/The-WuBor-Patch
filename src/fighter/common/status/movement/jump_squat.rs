@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_JumpSquat_param)]
-unsafe fn status_pre_jumpsquat_param(
+unsafe extern "C" fn status_pre_jumpsquat_param(
     fighter: &mut L2CFighterCommon,
     keep_flag: L2CValue,
     keep_int: L2CValue,
@@ -40,7 +40,7 @@ unsafe fn status_pre_jumpsquat_param(
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_process_init_param)]
-unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     VarModule::on_flag(fighter.module_accessor, fighter::instance::flag::JUMP_FROM_SQUAT);
     jump_squat_check_special_jump(fighter);
     let /* mut */ jump_squat_frame = WorkModule::get_param_int(fighter.module_accessor, hash40("jump_squat_frame"), 0) as f32;
@@ -66,7 +66,7 @@ unsafe fn sub_jump_squat_uniq_process_init_param(fighter: &mut L2CFighterCommon,
     );
 }
 
-unsafe fn jump_squat_check_special_jump(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn jump_squat_check_special_jump(fighter: &mut L2CFighterCommon) {
     if VarModule::get_float(fighter.module_accessor, fighter::instance::float::FLICK_DOWN) > 0.0
     || (fighter.global_table[STICK_Y].get_f32() < -0.8
     && fighter.global_table[FLICK_Y].get_i32() < 4
@@ -79,7 +79,7 @@ unsafe fn jump_squat_check_special_jump(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_common)]
-unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let stick_jump_command_life = WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_STICK_JUMP_COMMAND_LIFE);
     if stick_jump_command_life == 0
     || fighter.global_table[FLICK_Y_DIR].get_i32() <= 0 {
@@ -119,7 +119,7 @@ unsafe fn status_jumpsquat_common(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_JumpSquat_Main)]
-unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_bool() && {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].get_ptr());
         callable(fighter).get_bool()
@@ -178,7 +178,7 @@ unsafe fn status_jumpsquat_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_check_sub)]
-unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP) {
         return;
     }
@@ -210,7 +210,7 @@ unsafe fn sub_jump_squat_uniq_check_sub(fighter: &mut L2CFighterCommon, param_1:
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_jump_squat_uniq_check_sub_mini_attack)]
-unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterCommon) {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_DISABLE_MINI_JUMP) {
         return;
     }
@@ -245,7 +245,7 @@ unsafe fn sub_jump_squat_uniq_check_sub_mini_attack(fighter: &mut L2CFighterComm
 }
 
 #[skyline::hook(replace = L2CFighterCommon_uniq_process_JumpSquat_exec_status_param)]
-unsafe fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if !param_1.get_bool() {
         fighter.sub_jump_squat_uniq_check_sub(FIGHTER_STATUS_JUMP_FLAG_BUTTON.into());
         fighter.sub_jump_squat_uniq_check_sub_mini_attack();
@@ -272,7 +272,7 @@ unsafe fn uniq_process_jumpsquat_exec_status_param(fighter: &mut L2CFighterCommo
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_JumpSquat)]
-unsafe fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_jumpsquat(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_JUMP_MINI_ATTACK);
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status != *FIGHTER_STATUS_KIND_JUMP {

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kamui", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack12(agent: &mut L2CAgentBase) {
     let mut rehit = 0;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         rehit = 1;
@@ -34,8 +33,7 @@ unsafe fn kamui_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attack13", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attack13(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attack13(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -71,8 +69,7 @@ unsafe fn kamui_attack13(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attacks3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -105,8 +102,7 @@ unsafe fn kamui_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.87);
 }
 
-#[acmd_script( agent = "kamui", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attackhi3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -151,8 +147,7 @@ unsafe fn kamui_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kamui", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn kamui_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kamui_attacklw3(agent: &mut L2CAgentBase) {
     let mut di = false;
     if VarModule::get_float(agent.module_accessor, kamui::instance::float::DRAGON_INSTALL) > 0.0 {
         di = true;
@@ -183,16 +178,14 @@ unsafe fn kamui_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kamui_attack12,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack12", kamui_attack12);
 
-        kamui_attack13,
+    agent.game_acmd("game_attack13", kamui_attack13);
 
-        kamui_attacks3,
+    agent.game_acmd("game_attacks3", kamui_attacks3);
 
-        kamui_attackhi3,
+    agent.game_acmd("game_attackhi3", kamui_attackhi3);
 
-        kamui_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", kamui_attacklw3);
 }

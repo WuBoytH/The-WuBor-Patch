@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "szerosuit", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_ATTACK_DISABLE_MINI_JUMP_ATTACK);
@@ -28,8 +27,7 @@ unsafe fn szerosuit_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.5);
     frame(agent.lua_state_agent, 4.0);
@@ -53,8 +51,7 @@ unsafe fn szerosuit_attacks3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks3hi", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_attacks3hi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attacks3hi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.5);
     frame(agent.lua_state_agent, 4.0);
@@ -79,8 +76,7 @@ unsafe fn szerosuit_attacks3hi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacks3lw", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_attacks3lw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attacks3lw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 2.5);
     frame(agent.lua_state_agent, 4.0);
@@ -105,8 +101,7 @@ unsafe fn szerosuit_attacks3lw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "szerosuit", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -122,16 +117,14 @@ unsafe fn szerosuit_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        szerosuit_attack11,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", szerosuit_attack11);
 
-        szerosuit_attacks3,
+    agent.game_acmd("game_attacks3", szerosuit_attacks3);
 
-        szerosuit_attacks3hi,
+    agent.game_acmd("game_attacks3hi", szerosuit_attacks3hi);
 
-        szerosuit_attacks3lw,
+    agent.game_acmd("game_attacks3lw", szerosuit_attacks3lw);
 
-        szerosuit_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", szerosuit_attacklw3);
 }

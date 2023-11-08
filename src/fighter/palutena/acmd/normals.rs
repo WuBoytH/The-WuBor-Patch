@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "palutena", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.6);
     frame(agent.lua_state_agent, 17.0);
@@ -27,8 +26,7 @@ unsafe fn palutena_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     macros::FT_MOTION_RATE(agent, 0.75);
     frame(agent.lua_state_agent, 10.0);
@@ -54,8 +52,7 @@ unsafe fn palutena_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "palutena", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn palutena_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn palutena_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 14.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("stick"), 8.5, 96, 100, 0, 40, 2.7, -0.5, 8.0, 0.0, Some(-0.5), Some(-7.0), Some(0.0), 1.0, 1.0, *ATTACK_SETOFF_KIND_THRU, *ATTACK_LR_CHECK_POS, false, 1, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_G, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_OBJECT);
@@ -74,12 +71,10 @@ unsafe fn palutena_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        palutena_attacks3,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacks3", palutena_attacks3);
 
-        palutena_attackhi3,
+    agent.game_acmd("game_attackhi3", palutena_attackhi3);
 
-        palutena_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", palutena_attacklw3);
 }

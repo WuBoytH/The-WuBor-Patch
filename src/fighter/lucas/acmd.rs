@@ -6,12 +6,12 @@ mod throws;
 mod lasso;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    smashes::install();
-    aerials::install();
-    specials::install();
-    throws::install();
-    lasso::install();
-    escape::install();
+pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
+    smashes::install(agent);
+    aerials::install(agent);
+    specials::install(agent);
+    throws::install(agent);
+    lasso::install(agent);
+    escape::install(agent);
 }

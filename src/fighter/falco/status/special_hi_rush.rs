@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "falco", status = FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn falco_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn falco_special_hi_rush_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_FALCO_FIRE_STATUS_WORK_ID_FLAG_CONTINUE);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_FALCO_FIRE_STATUS_WORK_ID_INT_RUSH_FRAME);
     GroundModule::set_passable_check(fighter.module_accessor, true);
@@ -124,8 +123,6 @@ unsafe extern "C" fn falco_special_hi_rush_handle_bound(fighter: &mut L2CFighter
     }
 }
 
-pub fn install() {
-    install_status_scripts!(
-        falco_special_hi_rush_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_FALCO_STATUS_KIND_SPECIAL_HI_RUSH, falco_special_hi_rush_main);
 }

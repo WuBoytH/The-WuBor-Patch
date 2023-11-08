@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn gekkouga_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 0.5);
     frame(agent.lua_state_agent, 8.0);
@@ -28,8 +27,7 @@ unsafe fn gekkouga_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn gekkouga_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     macros::FT_MOTION_RATE(agent, 0.8);
     frame(agent.lua_state_agent, 12.0);
@@ -55,8 +53,7 @@ unsafe fn gekkouga_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn gekkouga_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -93,8 +90,7 @@ unsafe fn gekkouga_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "gekkouga", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn gekkouga_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn gekkouga_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -134,14 +130,12 @@ unsafe fn gekkouga_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        gekkouga_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", gekkouga_attackairn);
 
-        gekkouga_attackairf,
+    agent.game_acmd("game_attackairf", gekkouga_attackairf);
 
-        gekkouga_attackairb,
+    agent.game_acmd("game_attackairb", gekkouga_attackairb);
 
-        gekkouga_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", gekkouga_attackairhi);
 }

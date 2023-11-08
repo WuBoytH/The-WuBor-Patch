@@ -12,7 +12,7 @@ use {
 };
 
 #[inline(always)]
-pub unsafe fn global_command_inputs(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn global_command_inputs(fighter: &mut L2CFighterCommon) {
     if WorkModule::get_int(fighter.module_accessor, FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP) <= 3 {
         FGCModule::check_command_inc(
             fighter,
@@ -53,7 +53,7 @@ pub unsafe fn global_command_inputs(fighter: &mut L2CFighterCommon) {
 }
 
 #[inline(always)]
-pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn dqcf(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_STEP;
     let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236236_TIMER;
@@ -167,7 +167,7 @@ pub unsafe fn dqcf(fighter: &mut L2CFighterCommon) {
 }
 
 #[inline(always)]
-pub unsafe fn qcf(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn qcf(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_STEP;
     let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_236_TIMER;
@@ -242,7 +242,7 @@ pub unsafe fn qcf(fighter: &mut L2CFighterCommon) {
 }
 
 #[inline(always)]
-pub unsafe fn qcb(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn qcb(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_STEP;
     let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_214_TIMER;
@@ -317,7 +317,7 @@ pub unsafe fn qcb(fighter: &mut L2CFighterCommon) {
 }
 
 #[inline(always)]
-pub unsafe fn srk(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn srk(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, true);
     let flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_STEP;
     let timer_flag = FIGHTER_INSTANCE_WORK_ID_INT_CUSTOM_COMMAND_623_TIMER;

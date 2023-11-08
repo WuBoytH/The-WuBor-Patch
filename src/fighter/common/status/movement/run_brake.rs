@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_status_RunBrake)]
-unsafe fn sub_status_runbrake(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_status_runbrake(fighter: &mut L2CFighterCommon) {
     let mut mot = hash40("run_brake");
     if MotionModule::is_anim_resource(fighter.module_accessor, Hash40::new("run_brake_l")) {
         mot = hash40("run_brake_r");
@@ -83,7 +83,7 @@ unsafe fn sub_status_runbrake(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_RunBrake_Main)]
-unsafe fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_runbrake_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         fighter.change_status(FIGHTER_STATUS_KIND_FALL.into(), false.into());
         return 0.into();

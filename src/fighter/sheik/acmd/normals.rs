@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "sheik", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         FighterAreaModuleImpl::enable_fix_jostle_area(agent.module_accessor, 3.5, 5.0);
@@ -19,8 +18,7 @@ unsafe fn sheik_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-// #[acmd_script( agent = "sheik", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-// unsafe fn sheik_attackhi3(agent: &mut L2CAgentBase) {
+// unsafe extern "C" fn sheik_attackhi3(agent: &mut L2CAgentBase) {
 //     frame(agent.lua_state_agent, 5.0);
 //     if macros::is_excute(agent) {
 //         macros::ATTACK(agent, 0, 0, Hash40::new("legr"), 3.0, 0, 80, 30, 0, 3.5, 4.0, -0.3, 0.0, None, None, None, 1.0, 0.5, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -48,8 +46,7 @@ unsafe fn sheik_attacks3(agent: &mut L2CAgentBase) {
 //     macros::FT_MOTION_RATE(agent, 0.7);
 // }
 
-#[acmd_script( agent = "sheik", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn sheik_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sheik_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("legr"), 4.5, 45, 100, 0, 37, 3.2, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.4, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -63,12 +60,10 @@ unsafe fn sheik_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        sheik_attacks3,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacks3", sheik_attacks3);
 
-        // sheik_attackhi3,
+    // agent.game_acmd("game_attackhi3", sheik_attackhi3);
 
-        sheik_attacklw3
-    );
+    agent.game_acmd("game_attacklw3", sheik_attacklw3);
 }

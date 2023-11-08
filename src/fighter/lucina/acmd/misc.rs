@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucina", script = "effect_run", category = ACMD_EFFECT, low_priority )]
-unsafe fn lucina_run_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_run_eff(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 4.0);
         if macros::is_excute(agent) {
@@ -25,8 +24,7 @@ unsafe fn lucina_run_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "sound_run", category = ACMD_SOUND, low_priority )]
-unsafe fn lucina_run_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_run_snd(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         frame(agent.lua_state_agent, 5.0);
         if macros::is_excute(agent) {
@@ -50,8 +48,7 @@ unsafe fn lucina_run_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucina", script = "expression_run", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn lucina_run_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucina_run_exp(agent: &mut L2CAgentBase) {
     for _ in 0..i32::MAX {
         if macros::is_excute(agent) {
             slope!(agent, MA_MSC_CMD_SLOPE_SLOPE_INTP, SLOPE_STATUS_LR, 6);
@@ -78,10 +75,8 @@ unsafe fn lucina_run_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucina_run_eff,
-        lucina_run_snd,
-        lucina_run_exp
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.effect_acmd("effect_run", lucina_run_eff);
+    agent.sound_acmd("sound_run", lucina_run_snd);
+    agent.expression_acmd("expression_run", lucina_run_exp);
 }

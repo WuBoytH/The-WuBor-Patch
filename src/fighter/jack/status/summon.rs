@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_SUMMON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-pub unsafe fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -29,8 +28,7 @@ pub unsafe fn jack_summon_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "jack", status = FIGHTER_JACK_STATUS_KIND_SUMMON, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-pub unsafe fn jack_summon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn jack_summon_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     // if FighterSpecializer_Jack::is_cut_in_effect(fighter.module_accessor) {
     //     WorkModule::on_flag(fighter.module_accessor, *FIGHTER_JACK_STATUS_SUMMON_FLAG_CUT_IN_EFFECT);
     // }
@@ -93,9 +91,7 @@ unsafe extern "C" fn jack_summon_main_loop(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        jack_summon_pre,
-        jack_summon_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_JACK_STATUS_KIND_SUMMON, jack_summon_pre);
+    agent.status(smashline::Main, *FIGHTER_JACK_STATUS_KIND_SUMMON, jack_summon_main);
 }

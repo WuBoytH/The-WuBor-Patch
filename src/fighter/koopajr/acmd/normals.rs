@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "koopajr", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -17,8 +16,6 @@ unsafe fn koopajr_attackhi3(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        koopajr_attackhi3
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackhi3", koopajr_attackhi3);
 }

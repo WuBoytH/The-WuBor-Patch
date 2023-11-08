@@ -606,27 +606,27 @@ pub mod marth {
             pub const SPECIAL_S_ANGLE : i32 = 0x1150;
         }
 
-        pub const STANCE_ENTER : i32 = 0;
-        pub const STANCE_WAIT : i32 = 1;
-        pub const STANCE_SQUAT : i32 = 2;
-        pub const STANCE_SQUAT_WAIT : i32 = 3;
-        pub const STANCE_SQUAT_RV : i32 = 4;
-        pub const STANCE_EXIT : i32 = 5;
-        pub const STANCE_DASH_F : i32 = 6;
-        pub const STANCE_DASH_B : i32 = 7;
-        pub const STANCE_ATTACK : i32 = 8;
-        pub const STANCE_ATTACK_LW3 : i32 = 9;
-        pub const STANCE_ATTACK_LW4 : i32 = 10;
-        pub const STANCE_ATTACK_HI3 : i32 = 11;
-        pub const STANCE_ATTACK_B3 : i32 = 12;
-        pub const STANCE_ATTACK_F3 : i32 = 13;
-        pub const STANCE_SPECIAL_S : i32 = 14;
-        pub const STANCE_SPECIAL_S_DASH : i32 = 15;
-        pub const STANCE_SPECIAL_S_END : i32 = 16;
-        pub const STANCE_SPECIAL_S2_START : i32 = 17;
-        pub const STANCE_SPECIAL_S2_LOOP : i32 = 18;
-        pub const STANCE_SPECIAL_S2_END : i32 = 19;
-        pub const STANCE_SPECIAL_S2_END2 : i32 = 20;
+        pub const STANCE_ENTER            : i32 = 0x1EB + 0;
+        pub const STANCE_WAIT             : i32 = 0x1EB + 1;
+        pub const STANCE_SQUAT            : i32 = 0x1EB + 2;
+        pub const STANCE_SQUAT_WAIT       : i32 = 0x1EB + 3;
+        pub const STANCE_SQUAT_RV         : i32 = 0x1EB + 4;
+        pub const STANCE_EXIT             : i32 = 0x1EB + 5;
+        pub const STANCE_DASH_F           : i32 = 0x1EB + 6;
+        pub const STANCE_DASH_B           : i32 = 0x1EB + 7;
+        pub const STANCE_ATTACK           : i32 = 0x1EB + 8;
+        pub const STANCE_ATTACK_LW3       : i32 = 0x1EB + 9;
+        pub const STANCE_ATTACK_LW4       : i32 = 0x1EB + 10;
+        pub const STANCE_ATTACK_HI3       : i32 = 0x1EB + 11;
+        pub const STANCE_ATTACK_B3        : i32 = 0x1EB + 12;
+        pub const STANCE_ATTACK_F3        : i32 = 0x1EB + 13;
+        pub const STANCE_SPECIAL_S        : i32 = 0x1EB + 14;
+        pub const STANCE_SPECIAL_S_DASH   : i32 = 0x1EB + 15;
+        pub const STANCE_SPECIAL_S_END    : i32 = 0x1EB + 16;
+        pub const STANCE_SPECIAL_S2_START : i32 = 0x1EB + 17;
+        pub const STANCE_SPECIAL_S2_LOOP  : i32 = 0x1EB + 18;
+        pub const STANCE_SPECIAL_S2_END   : i32 = 0x1EB + 19;
+        pub const STANCE_SPECIAL_S2_END2  : i32 = 0x1EB + 20;
         // pub const STANCE_SPECIAL_S2_LANDING : i32 = 21;
     }
 }

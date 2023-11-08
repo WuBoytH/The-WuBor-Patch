@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "luigi", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_throwf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 9.0, 45, 65, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -21,8 +20,7 @@ unsafe fn luigi_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_throwf", category = ACMD_EFFECT, low_priority )]
-unsafe fn luigi_throwf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwf_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
@@ -39,8 +37,7 @@ unsafe fn luigi_throwf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_throwf", category = ACMD_SOUND, low_priority )]
-unsafe fn luigi_throwf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwf_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -52,8 +49,7 @@ unsafe fn luigi_throwf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_throwf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwf_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -67,8 +63,7 @@ unsafe fn luigi_throwf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_throwb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 10.0, 45, 65, 0, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -97,8 +92,7 @@ unsafe fn luigi_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_throwb", category = ACMD_EFFECT, low_priority )]
-unsafe fn luigi_throwb_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwb_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_crown"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.9, 0, 0, 0, 0, 0, 0, false);
@@ -133,8 +127,7 @@ unsafe fn luigi_throwb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_throwb", category = ACMD_SOUND, low_priority )]
-unsafe fn luigi_throwb_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwb_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -158,8 +151,7 @@ unsafe fn luigi_throwb_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_throwb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_throwb_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwb_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE_INTP, *SLOPE_STATUS_TOP, 4);
     }
@@ -186,8 +178,7 @@ unsafe fn luigi_throwb_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_throwhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 8.0, 90, 72, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -207,16 +198,14 @@ unsafe fn luigi_throwhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_throwhi", category = ACMD_EFFECT, low_priority )]
-unsafe fn luigi_throwhi_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwhi_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash_s"), Hash40::new("throw"), 0, 0, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_throwhi", category = ACMD_SOUND, low_priority )]
-unsafe fn luigi_throwhi_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwhi_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -228,8 +217,7 @@ unsafe fn luigi_throwhi_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_throwhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_throwhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwhi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -240,8 +228,7 @@ unsafe fn luigi_throwhi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn luigi_throwlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 3.0, 80, 135, 0, 45, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -265,8 +252,7 @@ unsafe fn luigi_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "effect_throwlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn luigi_throwlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 17.0);
     if macros::is_excute(agent) {
         macros::EFFECT_ALPHA(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 22, 0, 90, 0, 0, 1, 0, 0, 0, 0, 0, 0, false, 0.7);
@@ -285,8 +271,7 @@ unsafe fn luigi_throwlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "sound_throwlw", category = ACMD_SOUND, low_priority )]
-unsafe fn luigi_throwlw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwlw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -306,8 +291,7 @@ unsafe fn luigi_throwlw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "luigi", script = "expression_throwlw", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -326,26 +310,24 @@ unsafe fn luigi_throwlw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        luigi_throwf,
-        luigi_throwf_eff,
-        luigi_throwf_snd,
-        luigi_throwf_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", luigi_throwf);
+    agent.effect_acmd("effect_throwf", luigi_throwf_eff);
+    agent.sound_acmd("sound_throwf", luigi_throwf_snd);
+    agent.expression_acmd("expression_throwf", luigi_throwf_exp);
 
-        luigi_throwb,
-        luigi_throwb_eff,
-        luigi_throwb_snd,
-        luigi_throwb_exp,
+    agent.game_acmd("game_throwb", luigi_throwb);
+    agent.effect_acmd("effect_throwb", luigi_throwb_eff);
+    agent.sound_acmd("sound_throwb", luigi_throwb_snd);
+    agent.expression_acmd("expression_throwb", luigi_throwb_exp);
 
-        luigi_throwhi,
-        luigi_throwhi_eff,
-        luigi_throwhi_snd,
-        luigi_throwhi_exp,
+    agent.game_acmd("game_throwhi", luigi_throwhi);
+    agent.effect_acmd("effect_throwhi", luigi_throwhi_eff);
+    agent.sound_acmd("sound_throwhi", luigi_throwhi_snd);
+    agent.expression_acmd("expression_throwhi", luigi_throwhi_exp);
 
-        luigi_throwlw,
-        luigi_throwlw_eff,
-        luigi_throwlw_snd,
-        luigi_throwlw_exp
-    );
+    agent.game_acmd("game_throwlw", luigi_throwlw);
+    agent.effect_acmd("effect_throwlw", luigi_throwlw_eff);
+    agent.sound_acmd("sound_throwlw", luigi_throwlw_snd);
+    agent.expression_acmd("expression_throwlw", luigi_throwlw_exp);
 }

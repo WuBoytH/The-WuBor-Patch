@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::change_helper::*;
 
-pub unsafe fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_AIR {
         if WorkModule::get_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT) <= 0 {
             WorkModule::set_int(fighter.module_accessor, 1, *FIGHTER_INSTANCE_WORK_ID_INT_JUMP_COUNT);
@@ -16,7 +16,7 @@ pub unsafe fn element_special_lw_out_main(fighter: &mut L2CFighterCommon) -> L2C
     fighter.sub_shift_status_main(L2CValue::Ptr(element_special_lw_out_main_loop as *const () as _))
 }
 
-unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, first: bool) {
+unsafe extern "C" fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, first: bool) {
     let is_attack = VarModule::is_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
         let mot = if is_attack {
@@ -192,7 +192,7 @@ unsafe fn element_special_lw_out_mot_helper(fighter: &mut L2CFighterCommon, firs
     }
 }
 
-unsafe fn element_special_lw_out_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn element_special_lw_out_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     let cancel = CancelModule::is_enable_cancel(fighter.module_accessor);
     let is_attack = VarModule::is_flag(fighter.module_accessor, element::status::flag::SPECIAL_LW_OUT_ATTACK);
     if cancel {

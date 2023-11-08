@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "falco", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn falco_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn falco_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -51,8 +50,7 @@ unsafe fn falco_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "falco", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn falco_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn falco_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -93,10 +91,8 @@ unsafe fn falco_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        falco_attackhi4,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackhi4", falco_attackhi4);
 
-        falco_attacklw4
-    );
+    agent.game_acmd("game_attacklw4", falco_attacklw4);
 }

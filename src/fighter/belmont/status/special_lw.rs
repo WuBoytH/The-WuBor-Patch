@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-pub unsafe fn belmont_special_lw_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_lw_pre_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -34,7 +34,7 @@ pub unsafe fn belmont_special_lw_pre_inner(fighter: &mut L2CFighterCommon) -> L2
     0.into()
 }
 
-pub unsafe fn belmont_special_lw_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_lw_main_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mot_g;
     let mot_a;
     if ItemModule::is_have_item(fighter.module_accessor, 0) // Usually this only checks for if you hold Simon or Richter's Holy Water
@@ -175,7 +175,7 @@ unsafe extern "C" fn belmont_special_lw_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub unsafe fn belmont_special_lw_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn belmont_special_lw_end_inner(fighter: &mut L2CFighterCommon) -> L2CValue {
     if [
         *ITEM_KIND_SIMONHOLYWATER,
         *ITEM_KIND_RICHTERHOLYWATER

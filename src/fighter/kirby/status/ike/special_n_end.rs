@@ -1,13 +1,11 @@
 use crate::imports::status_imports::*;
 use crate::fighter::ike::status::special_n_end::*;
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn kirby_ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_ike_special_n_end_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     ike_special_n_end_init_inner(fighter)
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_ike_special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_ike_special_n_end_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     kirby_ike_special_n_end_mot_helper(fighter);
     fighter.sub_shift_status_main(L2CValue::Ptr(kirby_ike_special_n_end_main_loop as *const () as _))
@@ -78,9 +76,7 @@ unsafe extern "C" fn kirby_ike_special_n_end_main_loop(fighter: &mut L2CFighterC
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_ike_special_n_end_init,
-        kirby_ike_special_n_end_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Init, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_init);
+    agent.status(smashline::Main, *FIGHTER_KIRBY_STATUS_KIND_IKE_SPECIAL_N_END, kirby_ike_special_n_end_main);
 }

@@ -290,7 +290,7 @@ impl DerefMut for FighterKineticEnergyControl {
 }
 
 #[skyline::hook(offset = 0x6d3610)]
-unsafe fn update(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
+unsafe extern "C" fn update(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     let reset_type = std::mem::transmute(energy.energy_reset_type);
 
     let mut stick = if Buttons::from_bits_unchecked(ControlModule::get_button(module_accessor)).intersects(Buttons::CStickOverride) {
@@ -550,7 +550,7 @@ unsafe fn update(energy: &mut FighterKineticEnergyControl, module_accessor: &mut
 }
 
 #[skyline::hook(offset = 0x6d4040)]
-unsafe fn initialize(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
+unsafe extern "C" fn initialize(energy: &mut FighterKineticEnergyControl, module_accessor: &mut BattleObjectModuleAccessor) {
     use EnergyControllerResetType::*;
     let reset_type = std::mem::transmute(energy.energy_reset_type);
     match reset_type {
@@ -753,7 +753,7 @@ unsafe fn initialize(energy: &mut FighterKineticEnergyControl, module_accessor: 
 }
 
 #[skyline::hook(offset = 0x6d4ba0)]
-unsafe fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyControllerResetType, initial_speed: &Vector3f, _unk: u64, module_accessor: &mut BattleObjectModuleAccessor) {
+unsafe extern "C" fn setup(energy: &mut FighterKineticEnergyControl, reset_type: EnergyControllerResetType, initial_speed: &Vector3f, _unk: u64, module_accessor: &mut BattleObjectModuleAccessor) {
     energy.clear_energy();
 
     energy.accel = PaddedVec2::zeros();

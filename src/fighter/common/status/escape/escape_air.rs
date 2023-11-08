@@ -4,7 +4,7 @@ use crate::imports::status_imports::*;
 use super::escape_air_slide::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_EscapeAir)]
-unsafe fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_escape_air_common();
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -30,7 +30,7 @@ unsafe fn status_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_main)]
-unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return true.into();
     }
@@ -90,7 +90,7 @@ unsafe fn sub_escape_air_common_main(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_common_strans_main)]
-pub unsafe fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
     if WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW)
     && fighter.global_table[PAD_FLAG].get_i32() & *FIGHTER_PAD_FLAG_ATTACK_TRIGGER != 0
@@ -195,7 +195,7 @@ pub unsafe fn sub_escape_air_common_strans_main(fighter: &mut L2CFighterCommon) 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_air_uniq)]
-pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+pub unsafe extern "C" fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if !param_1.get_bool() {
         let slide = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE_AIR_SLIDE;
         let escape_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_WORK_INT_FRAME);
@@ -296,7 +296,7 @@ pub unsafe fn sub_escape_air_uniq(fighter: &mut L2CFighterCommon, param_1: L2CVa
 }
 
 #[skyline::hook(replace = L2CFighterCommon_exec_escape_air_slide)]
-pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
     let mut slide_step = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_STEP);
     let back_end_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_ESCAPE_AIR_SLIDE_WORK_INT_SLIDE_BACK_END_FRAME);
     if slide_step == 0 {
@@ -529,12 +529,12 @@ pub unsafe fn exec_escape_air_slide(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_FighterStatusUniqProcessEscapeAir_calc_param)]
-pub unsafe fn fighterstatusuniqprocessescapeair_calc_param(_fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn fighterstatusuniqprocessescapeair_calc_param(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_EscapeAir)]
-unsafe fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_escapeair(fighter: &mut L2CFighterCommon) -> L2CValue {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_FALL
     || status == *FIGHTER_STATUS_KIND_LANDING {

@@ -13,7 +13,7 @@ use {
 };
 
 #[inline(always)]
-pub unsafe fn deception_init(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn deception_init(fighter: &mut L2CFighterCommon) {
     let dir = FGCModule::get_command_stick_direction(fighter, false);
     let tele_x = match dir {
         5 => 40.0 * PostureModule::lr(fighter.module_accessor),
@@ -55,14 +55,14 @@ pub unsafe fn deception_init(fighter: &mut L2CFighterCommon) {
 }
 
 #[inline(always)]
-pub unsafe fn deception_movement(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn deception_movement(fighter: &mut L2CFighterCommon) {
     let end_pos = VarModule::get_vec2(fighter.module_accessor, ganon::status::float::TELEPORT_END_POS);
     PostureModule::add_pos_2d(fighter.module_accessor, &Vector2f{x: end_pos.x, y: end_pos.y});
     VarModule::set_int(fighter.module_accessor, ganon::status::int::TELEPORT_STEP, ganon::TELEPORT_STEP_MOVE_DONE);
 }
 
 #[inline(always)]
-pub unsafe fn deception_feint_handler(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn deception_feint_handler(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, ganon::status::flag::TELEPORT_FEINT) {
         ControlModule::clear_command_one(fighter.module_accessor, *FIGHTER_PAD_COMMAND_CATEGORY1, *FIGHTER_PAD_CMD_CAT1_AIR_ESCAPE);
         let og = VarModule::get_vec2(fighter.module_accessor, ganon::status::float::TELEPORT_START_POS);

@@ -1,8 +1,9 @@
 mod acmd;
-// mod status;
-// pub mod vl;
+mod frame;
 
 pub fn install() {
-    acmd::install();
-    // status::install();
+    let agent = &mut smashline::Agent::new("samus");
+    acmd::install(agent);
+    frame::install(agent);
+    agent.install();
 }

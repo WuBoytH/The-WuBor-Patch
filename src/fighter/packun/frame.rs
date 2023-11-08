@@ -1,6 +1,9 @@
-use crate::imports::status_imports::*;
+use {
+    crate::imports::status_imports::*,
+    crate::fighter::common::frame::common_fighter_frame
+};
 
-unsafe fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
     if status == *FIGHTER_STATUS_KIND_SPECIAL_HI
     && VarModule::is_flag(fighter.module_accessor, packun::status::flag::SPECIAL_HI_ENABLE_CANCEL)
@@ -9,15 +12,11 @@ unsafe fn piranhacopter_early_cancel(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_PACKUN, main )]
-fn packun_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        piranhacopter_early_cancel(fighter);
-    }
+unsafe extern "C" fn packun_frame(fighter: &mut L2CFighterCommon) {
+    common_fighter_frame(fighter);
+    piranhacopter_early_cancel(fighter);
 }
 
-pub fn install() {
-    install_agent_frames!(
-        packun_frame
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_line(smashline::Main, packun_frame);
 }

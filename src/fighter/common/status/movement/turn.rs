@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_TurnCommon)]
-unsafe fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_pre_turncommon(fighter: &mut L2CFighterCommon) {
     let groups = [
         *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_SPECIAL,
         *FIGHTER_STATUS_TRANSITION_GROUP_CHK_GROUND_ITEM,

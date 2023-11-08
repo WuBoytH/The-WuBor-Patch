@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "inkling", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn inkling_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -33,8 +32,7 @@ unsafe fn inkling_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn inkling_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -59,8 +57,7 @@ unsafe fn inkling_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "inkling", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn inkling_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn inkling_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -80,12 +77,10 @@ unsafe fn inkling_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        inkling_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", inkling_attackairn);
 
-        inkling_attackairf,
+    agent.game_acmd("game_attackairf", inkling_attackairf);
 
-        inkling_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", inkling_attackairlw);
 }

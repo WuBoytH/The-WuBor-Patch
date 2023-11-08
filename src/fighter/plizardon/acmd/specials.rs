@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "plizardon", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn plizardon_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn plizardon_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_ALWAYS, 0);
@@ -48,8 +47,8 @@ unsafe fn plizardon_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        plizardon_specialhi
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", plizardon_specialhi);
+
+    agent.game_acmd("game_specialairhi", plizardon_specialhi);
 }

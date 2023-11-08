@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "kirby", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn kirby_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.375);
     frame(agent.lua_state_agent, 9.0);
@@ -22,8 +21,6 @@ unsafe fn kirby_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_attackairhi
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairhi", kirby_attackairhi);
 }

@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_TurnRun_Sub)]
-unsafe fn status_turnrun_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, _param_2: L2CValue) {
+unsafe extern "C" fn status_turnrun_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue, _param_2: L2CValue) {
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new_raw(param_1.get_u64()),

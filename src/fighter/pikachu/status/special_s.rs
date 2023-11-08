@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pikachu_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -33,8 +32,7 @@ unsafe fn pikachu_special_s_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn pikachu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_MOTION);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
     KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -46,8 +44,7 @@ unsafe fn pikachu_special_s_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn pikachu_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_QUICK_ATTACK_GUIDE_EFFECT_LAST_VISIBLE);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     let mot = if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -87,8 +84,7 @@ unsafe extern "C" fn pikachu_special_s_main_loop(fighter: &mut L2CFighterCommon)
     is_end.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn pikachu_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::dec_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_FALL_STOP_COUNTER);
     let fall_stop_counter = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_FALL_STOP_COUNTER);
     if fighter.global_table[SITUATION_KIND].get_i32() != *SITUATION_KIND_GROUND {
@@ -115,20 +111,17 @@ unsafe fn pikachu_special_s_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_STATUS_KIND_SPECIAL_S, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn pikachu_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     EffectModule::kill_kind(fighter.module_accessor, Hash40::new("sys_direction2"), true, true);
     WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_GUIDE_EFFECT_HANDLE);
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLAG_QUICK_ATTACK_GUIDE_EFFECT_LAST_VISIBLE);
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikachu_special_s_pre,
-        pikachu_special_s_init,
-        pikachu_special_s_main,
-        pikachu_special_s_exec,
-        pikachu_special_s_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_pre);
+    agent.status(smashline::Init, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_init);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_exec);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_S, pikachu_special_s_end);
 }

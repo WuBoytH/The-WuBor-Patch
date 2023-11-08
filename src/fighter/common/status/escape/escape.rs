@@ -2,13 +2,13 @@ use crate::imports::status_imports::*;
 // use smash_rs::app::work_ids;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_initStatus)]
-unsafe fn sub_escape_uniq_process_initstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_escape_uniq_process_initstatus(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_escape_uniq_process_common_initStatus();
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_escape_uniq_process_common_initStatus_common)]
-unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFighterCommon, _param_1: L2CValue, _param_2: L2CValue) {
+unsafe extern "C" fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFighterCommon, _param_1: L2CValue, _param_2: L2CValue) {
     if fighter.global_table[STATUS_KIND_INTERRUPT].get_i32() != *FIGHTER_STATUS_KIND_ESCAPE_AIR {
         sv_kinetic_energy!(
             clear_speed_ex,
@@ -151,7 +151,7 @@ unsafe fn sub_escape_uniq_process_common_initstatus_common(fighter: &mut L2CFigh
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Escape_Main)]
-unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return 0.into();
@@ -204,7 +204,7 @@ unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // #[skyline::hook(replace = L2CFighterCommon_sub_escape_fb_main)]
-// unsafe fn sub_escape_fb_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+// unsafe extern "C" fn sub_escape_fb_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     if CancelModule::is_enable_cancel(fighter.module_accessor) {
 //         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
 //             return 0.into();
@@ -277,7 +277,7 @@ unsafe fn status_escape_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 // }
 
 #[skyline::hook(offset = 0x645bc0)]
-unsafe fn handle_escape_staling(_work: &mut smash_rs::app::WorkModule, _status: i32) {
+unsafe extern "C" fn handle_escape_staling(_work: &mut smash_rs::app::WorkModule, _status: i32) {
     // Vanilla code but unused lol
     // if work.is_flag(work_ids::fighter::instance::DISABLE_ESCAPE_PENALTY) {
     //     return;

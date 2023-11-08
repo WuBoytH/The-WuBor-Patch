@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "cloud", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -24,8 +23,7 @@ unsafe fn cloud_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn cloud_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 2.0);
@@ -55,8 +53,7 @@ unsafe fn cloud_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "cloud", script = "expression_attackairhi", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
     }
@@ -70,11 +67,9 @@ unsafe fn cloud_attackairhi_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        cloud_attackairb,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairb", cloud_attackairb);
 
-        cloud_attackairhi,
-        cloud_attackairhi_exp
-    );
+    agent.game_acmd("game_attackairhi", cloud_attackairhi);
+    agent.expression_acmd("expression_attackairhi", cloud_attackairhi_exp);
 }

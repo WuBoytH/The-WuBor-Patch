@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Landing_param)]
-unsafe fn status_pre_landing_param(fighter: &mut L2CFighterCommon, param_1: L2CValue,  param_2: L2CValue,  param_3: L2CValue,  param_4: L2CValue,  param_5: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_pre_landing_param(fighter: &mut L2CFighterCommon, param_1: L2CValue,  param_2: L2CValue,  param_3: L2CValue,  param_4: L2CValue,  param_5: L2CValue) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,7 +30,7 @@ unsafe fn status_pre_landing_param(fighter: &mut L2CFighterCommon, param_1: L2CV
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_LandingLight_param)]
-unsafe fn status_pre_landinglight_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue, param_4: L2CValue, param_5: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_pre_landinglight_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue, param_4: L2CValue, param_5: L2CValue) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -59,7 +59,7 @@ unsafe fn status_pre_landinglight_param(fighter: &mut L2CFighterCommon, param_1:
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_landing_fall_special_common)]
-unsafe fn status_pre_landing_fall_special_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_pre_landing_fall_special_common(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -88,7 +88,7 @@ unsafe fn status_pre_landing_fall_special_common(fighter: &mut L2CFighterCommon,
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_landing_uniq_process_init_main_param)]
-unsafe fn sub_landing_uniq_process_init_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue, param_4: L2CValue) {
+unsafe extern "C" fn sub_landing_uniq_process_init_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue, param_4: L2CValue) {
     let landing_mot = param_3.get_u64();
     let status_interrupt = fighter.global_table[STATUS_KIND_INTERRUPT].get_i32();
     if status_interrupt != param_2.get_i32()
@@ -187,7 +187,7 @@ unsafe fn sub_landing_uniq_process_init_main_param(fighter: &mut L2CFighterCommo
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_LandingSub)]
-unsafe fn status_landingsub(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_landingsub(fighter: &mut L2CFighterCommon) {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_HAMMER)
     && !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_GENESISSET)
     && ItemModule::get_have_item_kind(fighter.module_accessor, 0) != *ITEM_KIND_ASSIST {

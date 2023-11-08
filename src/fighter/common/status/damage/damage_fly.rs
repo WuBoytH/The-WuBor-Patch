@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use super::super::passive::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_DamageFly)]
-unsafe fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
     ControlModule::reset_flick_x(fighter.module_accessor);
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_trigger(fighter.module_accessor);
@@ -70,7 +70,7 @@ unsafe fn status_pre_damagefly(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_update_damage_fly_effect)]
-unsafe fn sub_update_damage_fly_effect(
+unsafe extern "C" fn sub_update_damage_fly_effect(
     fighter: &mut L2CFighterCommon,
     some_bool: L2CValue,
     effect_const: L2CValue,
@@ -174,7 +174,7 @@ unsafe fn sub_update_damage_fly_effect(
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_DamageFlyChkUniq)]
-unsafe fn sub_damageflychkuniq(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_damageflychkuniq(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !FighterStopModuleImpl::is_damage_stop(fighter.module_accessor) {
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_ENABLE_DOWN) {
             if fighter.sub_AirChkDown().get_bool() {

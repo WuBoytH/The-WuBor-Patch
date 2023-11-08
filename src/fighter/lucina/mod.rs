@@ -7,8 +7,10 @@ pub mod vl;
 pub mod cancel;
 
 pub fn install() {
-    acmd::install();
-    frame::install();
-    status::install();
-    agent_init::install();
+    let agent = &mut smashline::Agent::new("lucina");
+    acmd::install(agent);
+    frame::install(agent);
+    status::install(agent);
+    agent_init::install(agent);
+    agent.install();
 }

@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use super::{helper::*, super::vl};
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !VarModule::is_flag(fighter.module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX) {
         if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
             let prev_escape = fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_ESCAPE;
@@ -47,8 +46,7 @@ unsafe fn rockman_special_n_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_special_n_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::on_flag(fighter.module_accessor, rockman::status::flag::CHARGE_SHOT_KEEP_CHARGE);
     let charge_frame = VarModule::get_int(fighter.module_accessor, rockman::instance::int::CHARGE_SHOT_FRAME);
     let top = charge_frame as f32 - vl::private::CHARGE_SHOT_DELAY_CHARGE_FRAME as f32;
@@ -93,15 +91,12 @@ unsafe extern "C" fn rockman_special_n_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_SPECIAL_N, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_special_n_end(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_special_n_pre,
-        rockman_special_n_main,
-        rockman_special_n_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_pre);
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_SPECIAL_N, rockman_special_n_end);
 }

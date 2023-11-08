@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_Pass_common)]
-unsafe fn status_pass_common(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn status_pass_common(fighter: &mut L2CFighterCommon) {
     fighter.sub_air_check_fall_common_pre();
     let transitions = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ATTACK_LW4_START,
@@ -32,7 +32,7 @@ unsafe fn status_pass_common(fighter: &mut L2CFighterCommon) {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Pass_Main_sub)]
-unsafe fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_pass_main_sub(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     let pass_frame = WorkModule::get_int(fighter.module_accessor, *FIGHTER_STATUS_PASS_WORK_INT_FRAME);
     if pass_frame == 0 {
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_PASS_FLAG_IS_SET_PASS) {

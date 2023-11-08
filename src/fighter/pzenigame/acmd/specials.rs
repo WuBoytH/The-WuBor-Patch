@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pzenigame", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn pzenigame_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pzenigame_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::SA_SET(agent, *SITUATION_KIND_AIR);
@@ -37,8 +36,8 @@ unsafe fn pzenigame_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pzenigame_specialhi
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", pzenigame_specialhi);
+
+    agent.game_acmd("game_specialairhi", pzenigame_specialhi);
 }

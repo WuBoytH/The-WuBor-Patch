@@ -1,14 +1,13 @@
 use crate::imports::status_imports::*;
 use super::super::helper::*;
 
-#[status_script(agent = "demon", status = FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn demon_attackstand2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_stand_2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !demon_attack_common(fighter).get_bool() {
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_FLAG_CHECK_STEP);
         WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_FLAG_INC_STEP);
         WorkModule::set_int(fighter.module_accessor, 0, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_WORK_INT_COMBO);
-        let mot = demon_attackstand2_get_mot(fighter).get_u64();
+        let mot = demon_attack_stand_2_get_mot(fighter).get_u64();
         MotionModule::change_motion(
             fighter.module_accessor,
             Hash40::new_raw(mot),
@@ -26,14 +25,14 @@ unsafe fn demon_attackstand2_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             FIGHTER_LOG_ATTACK_KIND_ADDITIONS_ATTACK_02
         );
         MotionModule::set_trans_move_speed_no_scale(fighter.module_accessor, false);
-        fighter.sub_shift_status_main(L2CValue::Ptr(demon_attackstand2_main_loop as *const () as _))
+        fighter.sub_shift_status_main(L2CValue::Ptr(demon_attack_stand_2_main_loop as *const () as _))
     }
     else {
         0.into()
     }
 }
 
-unsafe extern "C" fn demon_attackstand2_get_mot(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_stand_2_get_mot(fighter: &mut L2CFighterCommon) -> L2CValue {
     let combo = WorkModule::get_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_WORK_INT_COMBO);
     match combo {
         0 => hash40("attack_stand_21"),
@@ -57,7 +56,7 @@ unsafe extern "C" fn demon_attackstand2_get_mot(fighter: &mut L2CFighterCommon) 
     }.into()
 }
 
-unsafe extern "C" fn demon_attackstand2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn demon_attack_stand_2_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if demon_attack_loop_common(fighter, FIGHTER_STATUS_KIND_WAIT.into()).get_bool() {
         return 0.into();
     }
@@ -78,7 +77,7 @@ unsafe extern "C" fn demon_attackstand2_main_loop(fighter: &mut L2CFighterCommon
         if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_FLAG_INC_STEP) {
             WorkModule::off_flag(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_FLAG_INC_STEP);
             WorkModule::inc_int(fighter.module_accessor, *FIGHTER_DEMON_STATUS_ATTACK_STAND_2_WORK_INT_COMBO);
-            let mot = demon_attackstand2_get_mot(fighter).get_u64();
+            let mot = demon_attack_stand_2_get_mot(fighter).get_u64();
             let rate = MotionModule::rate(fighter.module_accessor);
             MotionModule::change_motion(
                 fighter.module_accessor,
@@ -95,8 +94,6 @@ unsafe extern "C" fn demon_attackstand2_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        demon_attackstand2_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_DEMON_STATUS_KIND_ATTACK_STAND_2, demon_attack_stand_2_main);
 }

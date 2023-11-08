@@ -1,7 +1,5 @@
 mod special_n;
-mod breath;
 
-pub fn install() {
-    special_n::install();
-    breath::install();
+pub fn install(agent: &mut smashline::Agent) {
+    special_n::install(agent);
 }

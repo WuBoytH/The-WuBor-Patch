@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "mariod", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn mariod_throwb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn mariod_throwb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 11.0, 45, 68, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 40, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -31,8 +30,6 @@ unsafe fn mariod_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        mariod_throwb
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_throwb", mariod_throwb);
 }

@@ -2,8 +2,8 @@ mod normals;
 mod specials;
 mod escape;
 
-pub fn install() {
-    normals::install();
-    specials::install();
-    escape::install();
+pub fn install(agent: &mut smashline::Agent) {
+    normals::install(agent);
+    specials::install(agent);
+    escape::install(agent);
 }

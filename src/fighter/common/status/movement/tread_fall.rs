@@ -3,7 +3,7 @@ use crate::imports::status_imports::*;
 // We want to disable teching while getting footstooled.
 
 // #[skyline::hook(replace = L2CFighterCommon_status_TreadFall)]
-// unsafe fn status_treadfall(fighter: &mut L2CFighterCommon) -> L2CValue {
+// unsafe extern "C" fn status_treadfall(fighter: &mut L2CFighterCommon) -> L2CValue {
 //     if !MotionModule::motion_kind(fighter.module_accessor) == 0xd88a289d5
 //     || MotionModule::is_end(fighter.module_accessor) {
 //         MotionModule::change_motion(
@@ -27,7 +27,7 @@ use crate::imports::status_imports::*;
 // }
 
 #[skyline::hook(replace = L2CFighterCommon_status_TreadFall_Main)]
-unsafe fn status_treadfall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_treadfall_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_TREAD_FLAG_RECOVERY) {
         // if fighter.sub_AirChkPassive().get_bool() {
         //     return 0.into();

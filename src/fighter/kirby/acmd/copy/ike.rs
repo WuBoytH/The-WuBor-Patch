@@ -1,8 +1,7 @@
 use crate::imports::acmd_imports::*;
 use crate::fighter::ike::vl;
 
-#[acmd_script( agent = "kirby", script = "effect_ikespecialnend", category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
@@ -40,8 +39,7 @@ unsafe fn kirby_ikespecialnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_ikespecialnend", category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_ikespecialnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ikespecialnend_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -87,8 +85,7 @@ unsafe fn kirby_ikespecialnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_ikespecialnend", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -141,8 +138,7 @@ unsafe fn kirby_ikespecialnend_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "effect_ikespecialairnend", category = ACMD_EFFECT, low_priority )]
-unsafe fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::EFFECT(agent, Hash40::new("sys_smash_flash"), Hash40::new("sword"), 0, 14.5, 0, 0, 0, 0, 1.3, 0, 0, 0, 0, 0, 0, true);
@@ -154,8 +150,7 @@ unsafe fn kirby_ikespecialairnend_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "sound_ikespecialairnend", category = ACMD_SOUND, low_priority )]
-unsafe fn kirby_ikespecialairnend_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ikespecialairnend_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::STOP_SE(agent, Hash40::new("se_ike_special_n01"));
@@ -174,8 +169,7 @@ unsafe fn kirby_ikespecialairnend_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "kirby", script = "expression_ikespecialairnend", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ItemModule::set_have_item_visibility(agent.module_accessor, false, 0);
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
@@ -197,14 +191,12 @@ unsafe fn kirby_ikespecialairnend_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        kirby_ikespecialnend_eff,
-        kirby_ikespecialnend_snd,
-        kirby_ikespecialnend_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.effect_acmd("effect_ikespecialnend", kirby_ikespecialnend_eff);
+    agent.sound_acmd("sound_ikespecialnend", kirby_ikespecialnend_snd);
+    agent.expression_acmd("expression_ikespecialnend", kirby_ikespecialnend_exp);
 
-        kirby_ikespecialairnend_eff,
-        kirby_ikespecialairnend_snd,
-        kirby_ikespecialairnend_exp
-    );
+    agent.effect_acmd("effect_ikespecialairnend", kirby_ikespecialairnend_eff);
+    agent.sound_acmd("sound_ikespecialairnend", kirby_ikespecialairnend_snd);
+    agent.expression_acmd("expression_ikespecialairnend", kirby_ikespecialairnend_exp);
 }

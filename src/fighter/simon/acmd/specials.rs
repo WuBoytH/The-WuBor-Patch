@@ -1,15 +1,13 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "simon", scripts = ["game_specialn", "game_specialairn"], category = ACMD_GAME, low_priority )]
-unsafe fn simon_specialn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 30.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, simon::status::flag::SPECIAL_N_SHOOT);
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["expression_specialn", "expression_specialairn"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_specialn_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialn_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -25,21 +23,7 @@ unsafe fn simon_specialn_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon_axe", script = "game_fly", category = ACMD_GAME, low_priority )]
-unsafe fn simon_axe_fly(agent: &mut L2CAgentBase) {
-    let owner_id = WorkModule::get_int(agent.module_accessor, *WEAPON_INSTANCE_WORK_ID_INT_ACTIVATE_FOUNDER_ID) as u32;
-    if sv_battle_object::is_active(owner_id) {
-        let owner_module_accessor = sv_battle_object::module_accessor(owner_id);
-        VarModule::set_int(owner_module_accessor, simon::instance::int::AXE_ID, agent.battle_object_id as i32);
-    }
-    if macros::is_excute(agent) {
-        macros::ATTACK(agent, 0, 0, Hash40::new("axe"), 13.0, 69, 70, 0, 50, 3.5, 0.0, 0.0, 0.0, None, None, None, 1.5, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_SPEED, false, 8, 0.0, 0, true, false, false, false, false, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_L, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_OBJECT);
-        macros::ATK_SET_SHIELD_SETOFF_MUL(agent, 0, 1.1);
-    }
-}
-
-#[acmd_script( agent = "simon", script = "game_specialhi", category = ACMD_GAME, low_priority )]
-unsafe fn simon_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -74,8 +58,7 @@ unsafe fn simon_specialhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "game_specialairhi", category = ACMD_GAME, low_priority )]
-unsafe fn simon_specialairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialairhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         GroundModule::select_cliff_hangdata(agent.module_accessor, 9);
     }
@@ -111,8 +94,7 @@ unsafe fn simon_specialairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["game_speciallw", "game_specialairlw"], category = ACMD_GAME, low_priority )]
-unsafe fn simon_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_SPECIAL_LW_FLAG_GENERATE_HOLYWATER);
     }
@@ -122,8 +104,7 @@ unsafe fn simon_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_speciallw", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
@@ -138,8 +119,7 @@ unsafe fn simon_speciallw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", script = "effect_specialairlw", category = ACMD_EFFECT, low_priority )]
-unsafe fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("simon_bottle_appear"), Hash40::new("haver"), 0, 0, 0, 0, 0, 0, 0.4, true);
@@ -150,8 +130,7 @@ unsafe fn simon_specialairlw_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["sound_speciallw", "sound_specialairlw"], category = ACMD_SOUND, low_priority )]
-unsafe fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 19.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("vc_simon_special_l01"));
@@ -159,8 +138,7 @@ unsafe fn simon_speciallw_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "simon", scripts = ["expression_speciallw", "expression_specialairlw"], category = ACMD_EXPRESSION, low_priority )]
-unsafe fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, MA_MSC_CMD_SLOPE_SLOPE, SLOPE_STATUS_LR);
     }
@@ -176,21 +154,24 @@ unsafe fn simon_speciallw_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        simon_specialn,
-        simon_specialn_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialn", simon_specialn);
+    agent.expression_acmd("expression_specialn", simon_specialn_exp);
 
-        simon_specialhi,
+    agent.game_acmd("game_specialairn", simon_specialn);
+    agent.expression_acmd("expression_specialairn", simon_specialn_exp);
 
-        simon_specialairhi,
+    agent.game_acmd("game_specialhi", simon_specialhi);
 
-        simon_axe_fly,
+    agent.game_acmd("game_specialairhi", simon_specialairhi);
 
-        simon_speciallw,
-        simon_speciallw_eff,
-        simon_specialairlw_eff,
-        simon_speciallw_snd,
-        simon_speciallw_exp
-    );
+    agent.game_acmd("game_speciallw", simon_speciallw);
+    agent.effect_acmd("effect_speciallw", simon_speciallw_eff);
+    agent.sound_acmd("sound_speciallw", simon_speciallw_snd);
+    agent.expression_acmd("expression_speciallw", simon_speciallw_exp);
+
+    agent.game_acmd("game_specialairlw", simon_speciallw);
+    agent.effect_acmd("effect_specialairlw", simon_specialairlw_eff);
+    agent.sound_acmd("sound_specialairlw", simon_speciallw_snd);
+    agent.expression_acmd("expression_specialairlw", simon_speciallw_exp);
 }

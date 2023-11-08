@@ -2,8 +2,7 @@ use crate::imports::status_imports::*;
 
 // Quick Attack is now on side b lol
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -34,8 +33,7 @@ unsafe fn pikachu_special_s_warp_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_INIT_STATUS)]
-unsafe fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     if count == 0 {
         let speed_x = WorkModule::get_float(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_FLOAT_QUICK_ATTACK_WARP_SPEED_X);
@@ -73,18 +71,19 @@ unsafe fn pikachu_special_s_warp_init(fighter: &mut L2CFighterCommon) -> L2CValu
         0.into()
     }
     else {
-        original!(fighter)
+        let original = smashline::original_status(smashline::Init, fighter, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP);
+        original(fighter)
     }
 }
 
-#[status_script(agent = "pikachu", status = FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn pikachu_special_s_warp_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn pikachu_special_s_warp_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 1.into();
     }
     let count = WorkModule::get_int(fighter.module_accessor, *FIGHTER_PIKACHU_STATUS_WORK_ID_INT_QUICK_ATTACK_COUNT);
     if count != 0 {
-        return original!(fighter);
+        let original = smashline::original_status(smashline::Main, fighter, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP);
+        return original(fighter);
     }
     ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_PIKACHU_GENERATE_ARTICLE_SPECIALUPDUMMY, false, -1);
     ArticleModule::change_motion(
@@ -134,10 +133,8 @@ unsafe extern "C" fn pikachu_special_s_warp_1_main_loop(fighter: &mut L2CFighter
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        pikachu_special_s_warp_pre,
-        pikachu_special_s_warp_init,
-        pikachu_special_s_warp_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_pre);
+    agent.status(smashline::Init, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_init);
+    agent.status(smashline::Main, *FIGHTER_PIKACHU_STATUS_KIND_SPECIAL_HI_WARP, pikachu_special_s_warp_main);
 }

@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "dolly", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacks4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 6.0);
     macros::FT_MOTION_RATE(agent, 1.0);
@@ -29,8 +28,7 @@ unsafe fn dolly_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "dolly", script = "game_attacklw4", category = ACMD_GAME, low_priority )]
-unsafe fn dolly_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dolly_attacklw4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -58,10 +56,8 @@ unsafe fn dolly_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dolly_attacks4,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4", dolly_attacks4);
 
-        dolly_attacklw4
-    );
+    agent.game_acmd("game_attacklw4", dolly_attacklw4);
 }

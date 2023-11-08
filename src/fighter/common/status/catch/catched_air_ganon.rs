@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchedAirGanon)]
-pub unsafe fn status_catchedairganon(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn status_catchedairganon(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25eu64, 0x7d88ea0u64);
     if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
         FighterMotionModuleImpl::add_body_type_hash(
@@ -31,12 +31,12 @@ pub unsafe fn status_catchedairganon(fighter: &mut L2CFighterCommon) -> L2CValue
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchedAirGanon_Main)]
-pub unsafe fn status_catchedairganon_main(_fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn status_catchedairganon_main(_fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_CatchedAirEndGanon)]
-pub unsafe fn status_catchedairendganon(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn status_catchedairendganon(fighter: &mut L2CFighterCommon) -> L2CValue {
     let motion_share = WorkModule::get_param_int(fighter.module_accessor, 0xad2ee25eu64, 0x7d88ea0u64);
     let throw_motion = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_THROWN_WORK_INT_MOTION_KIND);
     if motion_share == *FIGHTER_MOTION_SHARE_TYPE_TARO {
@@ -67,12 +67,12 @@ pub unsafe fn status_catchedairendganon(fighter: &mut L2CFighterCommon) -> L2CVa
 }
 
 // #[skyline::hook(replace = L2CFighterCommon_status_CatchedAirEndGanon_Main)]
-// pub unsafe fn status_catchedairendganon_main(_fighter: &mut L2CFighterCommon) -> L2CValue {
+// pub unsafe extern "C" fn status_catchedairendganon_main(_fighter: &mut L2CFighterCommon) -> L2CValue {
 //     0.into()
 // }
 
 // #[skyline::hook(replace = L2CFighterCommon_sub_uniq_process_CatchedAirEndGanon_exit)]
-// pub unsafe fn sub_uniq_process_catchedairendganon_exit(_fighter: &mut L2CFighterCommon) -> L2CValue {
+// pub unsafe extern "C" fn sub_uniq_process_catchedairendganon_exit(_fighter: &mut L2CFighterCommon) -> L2CValue {
 //     0.into()
 // }
 

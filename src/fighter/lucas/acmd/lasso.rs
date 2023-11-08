@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucas", script = "game_aircatch", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_aircatch(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_aircatch(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         ArticleModule::generate_article(agent.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, false, -1);
         ArticleModule::change_motion(agent.module_accessor, *FIGHTER_LUCAS_GENERATE_ARTICLE_HIMOHEBI, Hash40::new("shoot"), false, -1.0);
@@ -41,8 +40,6 @@ unsafe fn lucas_aircatch(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucas_aircatch
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_aircatch", lucas_aircatch);
 }

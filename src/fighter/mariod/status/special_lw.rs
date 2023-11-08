@@ -1,12 +1,11 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn mariod_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
-    mariod_speciallw_mot_helper(fighter);
-    fighter.sub_shift_status_main(L2CValue::Ptr(mariod_speciallw_main_loop as *const () as _))
+unsafe extern "C" fn mariod_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+    mariod_special_lw_mot_helper(fighter);
+    fighter.sub_shift_status_main(L2CValue::Ptr(mariod_special_lw_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn mariod_speciallw_mot_helper(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn mariod_special_lw_mot_helper(fighter: &mut L2CFighterCommon) {
     let mot;
     let kinetic;
     let correct;
@@ -54,7 +53,7 @@ unsafe extern "C" fn mariod_speciallw_mot_helper(fighter: &mut L2CFighterCommon)
     }
 }
 
-unsafe extern "C" fn mariod_speciallw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mariod_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -82,14 +81,13 @@ unsafe extern "C" fn mariod_speciallw_main_loop(fighter: &mut L2CFighterCommon) 
         let mtrans = WorkModule::get_int(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_INT_MTRANS);
         if fighter.global_table[PREV_SITUATION_KIND].get_i32() != mtrans
         && fighter.global_table[SITUATION_KIND].get_i32() == mtrans {
-            mariod_speciallw_mot_helper(fighter);
+            mariod_special_lw_mot_helper(fighter);
         }
     }
     0.into()
 }
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STATUS)]
-unsafe fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mariod_special_lw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_LIMIT_X_DEC) {
         let limit_x_dec_curr = WorkModule::get_float(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLOAT_LIMIT_X_DEC);
         let limit_x_dec = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_lw"), hash40("limit_x_dec"));
@@ -142,8 +140,7 @@ unsafe fn mariod_speciallw_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "mariod", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_EXEC_STOP)]
-unsafe fn mariod_speciallw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn mariod_special_lw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_MARIOD_STATUS_SPECIAL_LW_FLAG_RISE_PRECEDE) {
         if ControlModule::check_button_trigger(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
         || ControlModule::check_button_release(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL) {
@@ -153,10 +150,8 @@ unsafe fn mariod_speciallw_exec_stop(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        mariod_speciallw_main,
-        mariod_speciallw_exec,
-        mariod_speciallw_exec_stop
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, mariod_special_lw_main);
+    agent.status(smashline::Exec, *FIGHTER_STATUS_KIND_SPECIAL_LW, mariod_special_lw_exec);
+    agent.status(smashline::ExecStop, *FIGHTER_STATUS_KIND_SPECIAL_LW, mariod_special_lw_exec_stop);
 }

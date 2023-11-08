@@ -1,6 +1,6 @@
 use crate::imports::status_imports::*;
 
-pub unsafe fn yoshi_guard_exec_helper(fighter: &mut L2CFighterCommon) {
+pub unsafe extern "C" fn yoshi_guard_exec_helper(fighter: &mut L2CFighterCommon) {
     let shield_scale = WorkModule::get_param_float(fighter.module_accessor, hash40("shield_radius"), 0);
     ModelModule::set_joint_scale(fighter.module_accessor, Hash40::new("throw"), &Vector3f{x: shield_scale, y: shield_scale, z: shield_scale});
     // notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2dc1210b69));

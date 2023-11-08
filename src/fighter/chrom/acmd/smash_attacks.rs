@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "chrom", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn chrom_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -17,8 +16,7 @@ unsafe fn chrom_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attacks4", category = ACMD_EFFECT, low_priority )]
-unsafe fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::AFTER_IMAGE4_ON_arg29(agent, Hash40::new("tex_chrom_sword1"), Hash40::new("tex_chrom_sword2"), 5, Hash40::new("sword1"), 0.0, 0.0, 1.65, Hash40::new("sword1"), -0.0, -0.0, 12.4, true, Hash40::new("chrom_sword"), Hash40::new("sword1"), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0, *EFFECT_AXIS_X, 0, *TRAIL_BLEND_ALPHA, 101, *TRAIL_CULL_NONE, 1.2, 0.2);
@@ -33,8 +31,7 @@ unsafe fn chrom_attacks4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attacks4", category = ACMD_SOUND, low_priority )]
-unsafe fn chrom_attacks4_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attacks4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 9.0);
     if macros::is_excute(agent) {
         macros::PLAY_SEQUENCE(agent, Hash40::new("seq_chrom_rnd_attack"));
@@ -45,8 +42,7 @@ unsafe fn chrom_attacks4_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attacks4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn chrom_attacks4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attacks4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -61,8 +57,7 @@ unsafe fn chrom_attacks4_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn chrom_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 3.0);
     frame(agent.lua_state_agent, 3.0);
@@ -86,8 +81,7 @@ unsafe fn chrom_attackhi4(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "effect_attackhi4", category = ACMD_EFFECT, low_priority )]
-unsafe fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("chrom_sword_blue"), Hash40::new("sword1"), -0.0, 0, 0, 0, 0, 0, 1, true);
@@ -104,8 +98,7 @@ unsafe fn chrom_attackhi4_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "sound_attackhi4", category = ACMD_SOUND, low_priority )]
-unsafe fn chrom_attackhi4_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attackhi4_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_chrom_special_s04h"));
@@ -116,8 +109,7 @@ unsafe fn chrom_attackhi4_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "chrom", script = "expression_attackhi4", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         AttackModule::set_attack_reference_joint_id(agent.module_accessor, Hash40::new("sword1"), AttackDirectionAxis(*ATTACK_DIRECTION_X_MINUS), AttackDirectionAxis(*ATTACK_DIRECTION_Z), AttackDirectionAxis(*ATTACK_DIRECTION_Y_MINUS));
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
@@ -141,16 +133,14 @@ unsafe fn chrom_attackhi4_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        chrom_attacks4,
-        chrom_attacks4_eff,
-        chrom_attacks4_snd,
-        chrom_attacks4_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4", chrom_attacks4);
+    agent.effect_acmd("effect_attacks4", chrom_attacks4_eff);
+    agent.sound_acmd("sound_attacks4", chrom_attacks4_snd);
+    agent.expression_acmd("expression_attacks4", chrom_attacks4_exp);
 
-        chrom_attackhi4,
-        chrom_attackhi4_eff,
-        chrom_attackhi4_snd,
-        chrom_attackhi4_exp
-    );
+    agent.game_acmd("game_attackhi4", chrom_attackhi4);
+    agent.effect_acmd("effect_attackhi4", chrom_attackhi4_eff);
+    agent.sound_acmd("sound_attackhi4", chrom_attackhi4_snd);
+    agent.expression_acmd("expression_attackhi4", chrom_attackhi4_exp);
 }

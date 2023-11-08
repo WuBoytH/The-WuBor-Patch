@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attacklw3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_ENABLE_COMBO);
     }
@@ -27,8 +26,7 @@ unsafe fn demon_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "demon", script = "game_attacklw3cancel", category = ACMD_GAME, low_priority )]
-unsafe fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_XLU);
     }
@@ -38,10 +36,8 @@ unsafe fn demon_attacklw3cancel(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attacklw3,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacklw3", demon_attacklw3);
 
-        demon_attacklw3cancel
-    );
+    agent.game_acmd("game_attacklw3cancel", demon_attacklw3cancel);
 }

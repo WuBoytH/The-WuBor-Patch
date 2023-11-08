@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "demon", scripts = [ "game_attacks4", "game_attacks4transform" ], category = ACMD_GAME, low_priority )]
-unsafe fn demon_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attacks4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
@@ -56,8 +55,7 @@ unsafe fn demon_attacks4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", scripts = [ "game_attackhi4", "game_attackhi4transform" ], category = ACMD_GAME, low_priority )]
-unsafe fn demon_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attackhi4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
@@ -107,8 +105,7 @@ unsafe fn demon_attackhi4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-#[acmd_script( agent = "demon", scripts = [ "game_attacklw4", "game_attacklw4transform" ], category = ACMD_GAME, low_priority )]
-unsafe fn demon_attacklw4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn demon_attacklw4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, true, 10.0);
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
@@ -202,12 +199,13 @@ unsafe fn demon_attacklw4(agent: &mut L2CAgentBase) {
     FighterSpecializer_Demon::set_devil(agent.module_accessor, false, 0.0);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        demon_attacks4,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacks4", demon_attacks4);
+    agent.game_acmd("game_attacks4transform", demon_attacks4);
 
-        demon_attackhi4,
+    agent.game_acmd("game_attackhi4", demon_attackhi4);
+    agent.game_acmd("game_attackhi4transform", demon_attackhi4);
 
-        demon_attacklw4
-    );
+    agent.game_acmd("game_attacklw4", demon_attacklw4);
+    agent.game_acmd("game_attacklw4transform", demon_attacklw4);
 }

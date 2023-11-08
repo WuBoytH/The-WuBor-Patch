@@ -10,7 +10,7 @@ use crate::imports::status_imports::*;
 // }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_DamageFlyReflect_effect)]
-unsafe fn sub_damageflyreflect_effect(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn sub_damageflyreflect_effect(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     let disable_passive = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE);
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE);
@@ -20,7 +20,7 @@ unsafe fn sub_damageflyreflect_effect(fighter: &mut L2CFighterCommon, param_1: L
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_damage_fly_reflect_d_uniq_process_init)]
-unsafe fn sub_damage_fly_reflect_d_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_damage_fly_reflect_d_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let disable_passive = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE);
     if fighter.global_table[PREV_STATUS_KIND].get_i32() == *FIGHTER_STATUS_KIND_DAMAGE_FLY_ROLL {
         WorkModule::on_flag(fighter.module_accessor, *FIGHTER_STATUS_DAMAGE_FLAG_FLY_DISABLE_PASSIVE);
@@ -31,7 +31,7 @@ unsafe fn sub_damage_fly_reflect_d_uniq_process_init(fighter: &mut L2CFighterCom
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageFlyReflectD)]
-unsafe fn status_damageflyreflectd(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_damageflyreflectd(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FLY_REFLECT_COUNT);
     let enables = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN,
@@ -90,7 +90,7 @@ unsafe fn status_damageflyreflectd(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageFlyReflectLR)]
-unsafe fn status_damageflyreflectlr(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_damageflyreflectlr(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FLY_REFLECT_COUNT);
     let enables = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN,
@@ -138,7 +138,7 @@ unsafe fn status_damageflyreflectlr(fighter: &mut L2CFighterCommon) -> L2CValue 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_DamageFlyReflectU)]
-unsafe fn status_damageflyreflectu(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_damageflyreflectu(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::inc_int(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_INT_FLY_REFLECT_COUNT);
     let enables = [
         *FIGHTER_STATUS_TRANSITION_TERM_ID_DOWN,

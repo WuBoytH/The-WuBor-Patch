@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucas", script = "game_attackhi4", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_attackhi4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attackhi4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         macros::WHOLE_HIT(agent, *HIT_STATUS_INVINCIBLE);
@@ -73,8 +72,6 @@ unsafe fn lucas_attackhi4(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.8);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucas_attackhi4
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackhi4", lucas_attackhi4);
 }

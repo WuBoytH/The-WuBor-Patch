@@ -3,9 +3,9 @@ mod specials;
 mod escape;
 mod appeal;
 
-pub fn install() {
-    smashes::install();
-    specials::install();
-    escape::install();
-    appeal::install();
+pub fn install(agent: &mut smashline::Agent) {
+    smashes::install(agent);
+    specials::install(agent);
+    escape::install(agent);
+    appeal::install(agent);
 }

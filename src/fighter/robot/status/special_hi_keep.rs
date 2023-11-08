@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "robot", status = FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn robot_special_hi_keep_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn robot_special_hi_keep_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_AIR),
@@ -29,8 +28,6 @@ unsafe fn robot_special_hi_keep_pre(fighter: &mut L2CFighterCommon) -> L2CValue 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        robot_special_hi_keep_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_ROBOT_STATUS_KIND_SPECIAL_HI_KEEP, robot_special_hi_keep_pre);
 }

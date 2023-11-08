@@ -1,10 +1,8 @@
 use {
     smash::{
         lua2cpp::L2CFighterCommon,
-        app::*,
         lib::{lua_const::*, L2CValue}
     },
-    smashline::*,
     custom_var::*,
     wubor_utils::{vars::*, table_const::*}
 };
@@ -25,19 +23,10 @@ pub unsafe extern "C" fn edge_status_end_control(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_EDGE {
-            return;
-        }
-        fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(edge_status_end_control as *const () as _));
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[STATUS_END_CONTROL].assign(&L2CValue::Ptr(edge_status_end_control as *const () as _));
 }
 
-pub fn install() {
-    install_agent_resets!(
-        agent_reset
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_start(on_start);
 }

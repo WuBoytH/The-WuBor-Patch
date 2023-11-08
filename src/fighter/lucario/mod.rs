@@ -7,11 +7,19 @@ mod vtable_hook;
 mod fgc;
 pub mod vl;
 
+mod auraball;
+mod qigong;
+
 pub fn install() {
-    acmd::install();
-    status::install();
-    frame::install();
-    agent_init::install();
+    let agent = &mut smashline::Agent::new("lucario");
+    acmd::install(agent);
+    status::install(agent);
+    frame::install(agent);
+    agent_init::install(agent);
     vtable_hook::install();
     fgc::install();
+    agent.install();
+
+    auraball::install();
+    qigong::install();
 }

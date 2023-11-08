@@ -2,8 +2,7 @@ use smash::app::lua_bind;
 
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "sonic", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn sonic_throwf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 10, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
     }
@@ -25,8 +24,7 @@ unsafe fn sonic_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "effect_throwf", category = ACMD_EFFECT, low_priority )]
-unsafe fn sonic_throwf_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_throwf_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW_FLIP(agent, Hash40::new("sys_attack_line"), Hash40::new("sys_attack_line"), Hash40::new("top"), 1, 7.8, -2, 0, 0, 0, 0.9, true, *EF_FLIP_YZ);
@@ -37,8 +35,7 @@ unsafe fn sonic_throwf_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "sound_throwf", category = ACMD_SOUND, low_priority )]
-unsafe fn sonic_throwf_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_throwf_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_throw_01"));
@@ -50,8 +47,7 @@ unsafe fn sonic_throwf_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "expression_throwf", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn sonic_throwf_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_throwf_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         agent.clear_lua_stack();
         lua_args!(agent, FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, CAMERA_QUAKE_KIND_NONE);
@@ -65,8 +61,7 @@ unsafe fn sonic_throwf_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "sonic", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn sonic_throwlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn sonic_throwlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 45, 35, 10, 75, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.5, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 10, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -96,13 +91,11 @@ unsafe fn sonic_throwlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        sonic_throwf,
-        sonic_throwf_eff,
-        sonic_throwf_snd,
-        sonic_throwf_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", sonic_throwf);
+    agent.effect_acmd("effect_throwf", sonic_throwf_eff);
+    agent.game_acmd("sound_throwf", sonic_throwf_snd);
+    agent.game_acmd("expression_throwf", sonic_throwf_exp);
 
-        sonic_throwlw
-    );
+    agent.game_acmd("game_throwlw", sonic_throwlw);
 }

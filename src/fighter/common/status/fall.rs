@@ -1,12 +1,12 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_pre_Fall)]
-unsafe fn bind_address_call_status_pre_fall(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+unsafe extern "C" fn bind_address_call_status_pre_fall(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     fighter.status_pre_Fall()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Fall)]
-unsafe fn status_pre_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_fall(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_pre_fall().get_bool() {
         return 1.into();
     }

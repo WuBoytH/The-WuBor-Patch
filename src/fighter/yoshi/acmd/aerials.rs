@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "yoshi", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 3.0);
@@ -32,8 +31,7 @@ unsafe fn yoshi_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "yoshi", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn yoshi_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn yoshi_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 1.5);
     frame(agent.lua_state_agent, 5.0);
@@ -55,10 +53,8 @@ unsafe fn yoshi_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        yoshi_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", yoshi_attackairn);
 
-        yoshi_attackairhi
-    );
+    agent.game_acmd("game_attackairhi", yoshi_attackairhi);
 }

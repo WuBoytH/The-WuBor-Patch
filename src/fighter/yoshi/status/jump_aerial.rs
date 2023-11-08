@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "yoshi", status = FIGHTER_STATUS_KIND_JUMP_AERIAL, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn yoshi_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn yoshi_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_JumpAerialSub(false.into(), false.into());
     // Removes Double Jump Armor
     // let reaction = WorkModule::get_float(fighter.module_accessor, *FIGHTER_YOSHI_INSTANCE_WORK_ID_FLOAT_AERIAL_DAMAGE_REACTION);
@@ -26,8 +25,6 @@ unsafe fn yoshi_jump_aerial_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_bind_address_call_status_JumpAerial_Main as *const () as _))
 }
 
-pub fn install() {
-    install_status_scripts!(
-        yoshi_jump_aerial_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_JUMP_AERIAL, yoshi_jump_aerial_main);
 }

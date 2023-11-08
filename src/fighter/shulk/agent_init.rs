@@ -1,4 +1,7 @@
-use crate::imports::status_imports::*;
+use {
+    crate::imports::status_imports::*,
+    crate::fighter::common::agent_inits::*
+};
 
 unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
     WorkModule::set_int(fighter.module_accessor, *FIGHTER_SHULK_MONAD_TYPE_NONE, *FIGHTER_SHULK_INSTANCE_WORK_ID_INT_SPECIAL_N_TYPE);

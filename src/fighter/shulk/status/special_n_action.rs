@@ -1,14 +1,6 @@
-use {
-    smash::{
-        lua2cpp::L2CFighterCommon,
-        app::{lua_bind::*, *},
-        lib::{lua_const::*, L2CValue}
-    },
-    smashline::*
-};
+use crate::imports::status_imports::*;
 
-#[status_script(agent = "shulk", status = FIGHTER_SHULK_STATUS_KIND_SPECIAL_N_ACTION, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn shulk_special_n_action_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn shulk_special_n_action_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_NONE),
@@ -36,8 +28,6 @@ unsafe fn shulk_special_n_action_pre(fighter: &mut L2CFighterCommon) -> L2CValue
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        shulk_special_n_action_pre
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_SHULK_STATUS_KIND_SPECIAL_N_ACTION, shulk_special_n_action_pre);
 }

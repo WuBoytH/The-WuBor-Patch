@@ -79,8 +79,6 @@ unsafe extern "C" fn shulk_attacklw4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        shulk_attacklw4
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attacklw4", shulk_attacklw4);
 }

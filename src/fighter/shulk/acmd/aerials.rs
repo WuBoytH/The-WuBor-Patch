@@ -53,8 +53,7 @@ unsafe extern "C" fn shulk_attackairb_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "shulk", script = "expression_attackairb", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
+unsafe extern "C" fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
         ItemModule::set_have_item_visibility(fighter.module_accessor, false, 0);
     }
@@ -76,10 +75,8 @@ unsafe fn shulk_attackairb_exp(fighter: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        shulk_attackairb,
-        shulk_attackairb_eff,
-        shulk_attackairb_exp
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairb", shulk_attackairb);
+    agent.effect_acmd("effect_attackairb", shulk_attackairb_eff);
+    agent.expression_acmd("expression_attackairb", shulk_attackairb_exp);
 }

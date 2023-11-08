@@ -126,16 +126,20 @@ unsafe extern "C" fn shulk_speciallwf(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        shulk_specials,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specials", shulk_specials);
 
-        shulk_specialairsfall,
+    agent.game_acmd("game_specialairs", shulk_specials);
 
-        shulk_specialhi,
+    agent.game_acmd("game_specialairsfall", shulk_specialairsfall);
 
-        shulk_speciallwattack,
+    agent.game_acmd("game_specialhi", shulk_specialhi);
 
-        shulk_speciallwf
-    );
+    agent.game_acmd("game_specialairhi", shulk_specialhi);
+
+    agent.game_acmd("game_speciallwattack", shulk_speciallwattack);
+
+    agent.game_acmd("game_specialairlwattack", shulk_speciallwattack);
+
+    agent.game_acmd("game_speciallwf", shulk_speciallwf);
 }

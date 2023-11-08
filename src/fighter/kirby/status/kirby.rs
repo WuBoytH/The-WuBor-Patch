@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use super::super::vl;
 
-#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_DASH, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     sv_kinetic_energy!(
         set_speed_mul,
         fighter,
@@ -12,8 +11,7 @@ unsafe fn kirby_attackdash_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackDash()
 }
 
-#[status_script(agent = "kirby", status = FIGHTER_STATUS_KIND_ATTACK_LW3, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn kirby_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_AttackLw3_common();
     fighter.sub_shift_status_main(L2CValue::Ptr(kirby_attacklw3_main_loop as *const () as _))
 }
@@ -51,10 +49,8 @@ unsafe extern "C" fn kirby_attacklw3_main_loop(fighter: &mut L2CFighterCommon) -
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        kirby_attackdash_main,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_DASH, kirby_attackdash_main);
 
-        kirby_attacklw3_main
-    );
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_LW3, kirby_attacklw3_main);
 }

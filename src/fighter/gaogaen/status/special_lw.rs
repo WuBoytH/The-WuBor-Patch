@@ -1,8 +1,7 @@
 use crate::imports::status_imports::*;
 use super::helper::*;
 
-#[status_script(agent = "gaogaen", status = FIGHTER_STATUS_KIND_SPECIAL_LW, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn gaogaen_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn gaogaen_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     VarModule::off_flag(fighter.module_accessor, gaogaen::status::flag::REVENGE_AUTO);
     let mot;
     let correct;
@@ -29,7 +28,7 @@ unsafe fn gaogaen_special_lw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(gaogaen_special_lw_main_loop as *const () as _))
 }
 
-unsafe fn gaogaen_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn gaogaen_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -93,8 +92,6 @@ unsafe fn gaogaen_special_lw_main_loop(fighter: &mut L2CFighterCommon) -> L2CVal
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        gaogaen_special_lw_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_LW, gaogaen_special_lw_main);
 }

@@ -1,14 +1,14 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_uniq_process_init)]
-unsafe fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_attack_air_uniq_process_init(fighter: &mut L2CFighterCommon) -> L2CValue {
     let shield_stiff_mul_attack_air = WorkModule::get_param_float(fighter.module_accessor, hash40("common"), hash40("shield_stiff_mul_attack_air"));
     AttackModule::set_shield_stiff_mul(fighter.module_accessor, shield_stiff_mul_attack_air);
     0.into()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_attack_air_common)]
-unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     ControlModule::reset_trigger(fighter.module_accessor);
     ControlModule::reset_flick_y(fighter.module_accessor);
     ControlModule::reset_flick_sub_y(fighter.module_accessor);
@@ -25,7 +25,7 @@ unsafe fn sub_attack_air_common(fighter: &mut L2CFighterCommon, param_1: L2CValu
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackAir_Main_common)]
-unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CValue {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT)
     || AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_SHIELD) {
         VarModule::off_flag(fighter.module_accessor, attack_air::flag::WHIFF);
@@ -65,12 +65,12 @@ unsafe fn status_attackair_main_common(fighter: &mut L2CFighterCommon) -> L2CVal
 }
 
 #[skyline::hook(replace = L2CFighterCommon_bind_address_call_status_end_AttackAir)]
-unsafe fn bind_address_call_status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+unsafe extern "C" fn bind_address_call_status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     fighter.status_end_AttackAir()
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackAir)]
-unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
+unsafe extern "C" fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CAgent) -> L2CValue {
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_STATUS_KIND_ATTACK_AIR {
         FGCModule::reset_used_aerials(fighter);
     }
@@ -79,7 +79,7 @@ unsafe fn status_end_attackair(fighter: &mut L2CFighterCommon, _agent: &mut L2CA
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_LandingAttackAir)]
-unsafe fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -108,7 +108,7 @@ unsafe fn status_pre_landingattackair(fighter: &mut L2CFighterCommon) -> L2CValu
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_landing_attack_air_init)]
-unsafe fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
+unsafe extern "C" fn sub_landing_attack_air_init(fighter: &mut L2CFighterCommon, param_1: L2CValue, param_2: L2CValue, param_3: L2CValue) {
     let mot = param_1.get_int();
     let mut landing_lag = WorkModule::get_param_float(fighter.module_accessor, param_2.get_int(), 0) + param_3.get_f32();
     if VarModule::is_flag(fighter.module_accessor, attack_air::flag::WHIFF) {

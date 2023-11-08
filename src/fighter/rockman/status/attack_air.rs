@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn rockman_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_ROCKMAN_INSTANCE_WORK_ID_FLAG_SPECIAL_LW_LEAFSHIELD) {
         ControlModule::set_attack_air_kind(fighter.module_accessor, *FIGHTER_COMMAND_ATTACK_AIR_KIND_N);
     }
@@ -15,14 +14,11 @@ unsafe fn rockman_attack_air_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.sub_shift_status_main(L2CValue::Ptr(L2CFighterCommon_status_AttackAir_Main as *const () as _))
 }
 
-#[status_script(agent = "rockman", status = FIGHTER_STATUS_KIND_ATTACK_AIR, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_END)]
-unsafe fn rockman_attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn rockman_attack_air_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     fighter.status_end_AttackAir()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        rockman_attack_air_main,
-        rockman_attack_air_end
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_ATTACK_AIR, rockman_attack_air_main);
+    agent.status(smashline::End, *FIGHTER_STATUS_KIND_ATTACK_AIR, rockman_attack_air_end);
 }

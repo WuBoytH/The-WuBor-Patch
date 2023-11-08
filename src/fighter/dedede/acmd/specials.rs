@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "dedede", script = "game_speciallwmax", category = ACMD_GAME, low_priority )]
-unsafe fn dedede_speciallwmax(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn dedede_speciallwmax(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         damage!(agent, *MA_MSC_DAMAGE_DAMAGE_NO_REACTION, *DAMAGE_NO_REACTION_MODE_DAMAGE_POWER, 14);
     }
@@ -20,8 +19,6 @@ unsafe fn dedede_speciallwmax(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        dedede_speciallwmax
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_speciallwmax", dedede_speciallwmax);
 }

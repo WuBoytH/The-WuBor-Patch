@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pikachu", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 2.0);
@@ -21,8 +20,7 @@ unsafe fn pikachu_attack11(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 7.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("tail1"), 5.0, 107, 120, 0, 45, 2.0, 0.0, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_B, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_SLAP, *ATTACK_REGION_TAIL);
@@ -35,8 +33,7 @@ unsafe fn pikachu_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pikachu", script = "game_attacks4", category = ACMD_GAME, low_priority )]
-unsafe fn pikachu_attacks4(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pikachu_attacks4(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_FLAG_START_SMASH_HOLD);
@@ -71,12 +68,10 @@ unsafe fn pikachu_attacks4(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pikachu_attack11,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", pikachu_attack11);
 
-        pikachu_attackhi3,
+    agent.game_acmd("game_attackhi3", pikachu_attackhi3);
 
-        pikachu_attacks4
-    );
+    agent.game_acmd("game_attacks4", pikachu_attacks4);
 }

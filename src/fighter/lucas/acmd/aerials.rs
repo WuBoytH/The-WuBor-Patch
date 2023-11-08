@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "lucas", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attackairn(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -31,8 +30,7 @@ unsafe fn lucas_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -56,8 +54,7 @@ unsafe fn lucas_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -94,8 +91,7 @@ unsafe fn lucas_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -120,8 +116,7 @@ unsafe fn lucas_attackairhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "lucas", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn lucas_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn lucas_attackairlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
     }
@@ -153,16 +148,14 @@ unsafe fn lucas_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        lucas_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", lucas_attackairn);
 
-        lucas_attackairf,
+    agent.game_acmd("game_attackairf", lucas_attackairf);
 
-        lucas_attackairb,
+    agent.game_acmd("game_attackairb", lucas_attackairb);
 
-        lucas_attackairhi,
+    agent.game_acmd("game_attackairhi", lucas_attackairhi);
 
-        lucas_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", lucas_attackairlw);
 }

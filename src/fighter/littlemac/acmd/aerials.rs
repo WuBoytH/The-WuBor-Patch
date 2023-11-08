@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "littlemac", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -26,8 +25,7 @@ unsafe fn littlemac_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -48,8 +46,7 @@ unsafe fn littlemac_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -70,8 +67,7 @@ unsafe fn littlemac_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairhi", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_attackairhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attackairhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -96,8 +92,7 @@ unsafe fn littlemac_attackairhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "littlemac", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn littlemac_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn littlemac_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -118,16 +113,14 @@ unsafe fn littlemac_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        littlemac_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", littlemac_attackairn);
 
-        littlemac_attackairf,
+    agent.game_acmd("game_attackairf", littlemac_attackairf);
 
-        littlemac_attackairb,
+    agent.game_acmd("game_attackairb", littlemac_attackairb);
 
-        littlemac_attackairhi,
+    agent.game_acmd("game_attackairhi", littlemac_attackairhi);
 
-        littlemac_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", littlemac_attackairlw);
 }

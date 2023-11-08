@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_AttackS3_common)]
-unsafe fn status_pre_attacks3_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_pre_attacks3_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -29,7 +29,7 @@ unsafe fn status_pre_attacks3_common(fighter: &mut L2CFighterCommon, param_1: L2
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackS3_Main_param)]
-unsafe fn status_attacks3_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn status_attacks3_main_param(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 0.into();
@@ -86,7 +86,7 @@ unsafe fn status_attacks3_main_param(fighter: &mut L2CFighterCommon, param_1: L2
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackS3)]
-unsafe fn status_end_attacks3(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_attacks3(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if 0 < attack_kind {
@@ -97,7 +97,7 @@ unsafe fn status_end_attacks3(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_AttackHi3)]
-unsafe fn status_pre_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -126,7 +126,7 @@ unsafe fn status_pre_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackHi3_Main)]
-unsafe fn status_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 0.into();
@@ -162,7 +162,7 @@ unsafe fn status_attackhi3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackHi3)]
-unsafe fn status_end_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if 0 < attack_kind {
@@ -173,7 +173,7 @@ unsafe fn status_end_attackhi3(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_AttackLw3_common)]
-unsafe fn status_pre_attacklw3_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_pre_attacklw3_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -201,7 +201,7 @@ unsafe fn status_pre_attacklw3_common(fighter: &mut L2CFighterCommon, param_1: L
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_AttackLw3_Main)]
-unsafe fn status_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor)
     && fighter.sub_wait_ground_check_common(false.into()).get_bool() {
         return 0.into();
@@ -260,7 +260,7 @@ unsafe fn status_attacklw3_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_end_AttackLw3)]
-unsafe fn status_end_attacklw3(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_end_attacklw3(fighter: &mut L2CFighterCommon) -> L2CValue {
     FGCModule::reset_used_ground_normals(fighter, false);
     let attack_kind = WorkModule::get_int64(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_INT_RESERVE_LOG_ATTACK_KIND);
     if 0 < attack_kind {

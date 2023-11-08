@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "luigi", status = FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn luigi_special_hi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     let fall_max_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("fall_max_x"));
     fighter.clear_lua_stack();
     lua_args!(fighter, FIGHTER_KINETIC_ENERGY_ID_CONTROL);
@@ -27,7 +26,7 @@ unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if !StopModule::is_stop(fighter.module_accessor) {
         fighter.sub_fall_common_uniq(false.into());
     }
-    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(luigi_specialhi_drop_substatus as *const () as _));
+    fighter.global_table[SUB_STATUS].assign(&L2CValue::Ptr(luigi_special_hi_drop_substatus as *const () as _));
     MotionModule::change_motion(
         fighter.module_accessor,
         Hash40::new("special_hi_drop"),
@@ -41,14 +40,14 @@ unsafe fn luigi_specialhi_drop_main(fighter: &mut L2CFighterCommon) -> L2CValue 
     if VarModule::is_flag(fighter.module_accessor, luigi::instance::flag::SPECIAL_HI_CANCEL) {
         CancelModule::enable_cancel(fighter.module_accessor);
     }
-    fighter.sub_shift_status_main(L2CValue::Ptr(luigi_specialhi_drop_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(luigi_special_hi_drop_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn luigi_specialhi_drop_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
+unsafe extern "C" fn luigi_special_hi_drop_substatus(fighter: &mut L2CFighterCommon, param_1: L2CValue) -> L2CValue {
     fighter.sub_fall_common_uniq(param_1)
 }
 
-unsafe extern "C" fn luigi_specialhi_drop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn luigi_special_hi_drop_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
@@ -71,8 +70,6 @@ unsafe extern "C" fn luigi_specialhi_drop_main_loop(fighter: &mut L2CFighterComm
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        luigi_specialhi_drop_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_LUIGI_STATUS_KIND_SPECIAL_HI_DROP, luigi_special_hi_drop_main);
 }

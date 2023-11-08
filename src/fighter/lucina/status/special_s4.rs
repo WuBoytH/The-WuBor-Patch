@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_PRE)]
-unsafe fn lucina_specials4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_s4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,8 +29,7 @@ unsafe fn lucina_specials4_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     0.into()
 }
 
-#[status_script(agent = "lucina", status = FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn lucina_specials4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn lucina_special_s4_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_MOTION);
     MotionModule::change_motion(
         fighter.module_accessor,
@@ -65,9 +63,7 @@ unsafe extern "C" fn lucina_lightningflash_loop(fighter: &mut L2CFighterCommon) 
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        lucina_specials4_pre,
-        lucina_specials4_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Pre, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, lucina_special_s4_pre);
+    agent.status(smashline::Main, *FIGHTER_MARTH_STATUS_KIND_SPECIAL_S4, lucina_special_s4_main);
 }

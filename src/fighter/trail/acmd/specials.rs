@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "trail", scripts = [ "game_specialhi", "game_specialairhi" ], category = ACMD_GAME, low_priority )]
-unsafe fn trail_specialhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_specialhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 6.0);
@@ -159,8 +158,7 @@ unsafe fn trail_specialhi(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
 }
 
-#[acmd_script( agent = "trail", scripts = [ "game_speciallw", "game_specialairlw" ], category = ACMD_GAME, low_priority )]
-unsafe fn trail_speciallw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn trail_speciallw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         WorkModule::set_float(agent.module_accessor, 0.0, *FIGHTER_TRAIL_STATUS_SPECIAL_LW_FLOAT_ATTACK_POWER);
@@ -195,10 +193,12 @@ unsafe fn trail_speciallw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        trail_specialhi,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_specialhi", trail_specialhi);
 
-        trail_speciallw
-    );
+    agent.game_acmd("game_specialairhi", trail_specialhi);
+
+    agent.game_acmd("game_speciallw", trail_speciallw);
+
+    agent.game_acmd("game_specialairlw", trail_speciallw);
 }

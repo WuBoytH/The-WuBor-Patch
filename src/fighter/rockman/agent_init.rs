@@ -20,28 +20,19 @@ unsafe extern "C" fn rockman_check_air_escape_uniq(fighter: &mut L2CFighterCommo
     false.into()
 }
 
-#[fighter_reset]
-fn agent_reset(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        let fighter_kind = utility::get_kind(&mut *fighter.module_accessor);
-        if fighter_kind != *FIGHTER_KIND_ROCKMAN {
-            return;
-        }
-        fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].assign(&L2CValue::Ptr(rockman_check_special_uniq as *const () as _));
-        fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(rockman_check_special_uniq as *const () as _));
-        fighter.global_table[DASH_COMMON_UNIQ].assign(&false.into());
-        fighter.global_table[RUN_MAIN_UNIQ].assign(&false.into());
-        fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].assign(&false.into());
-        fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].assign(&L2CValue::Ptr(rockman_check_air_escape_uniq as *const () as _));
-        fighter.global_table[GUARD_CONT_UNIQ].assign(&false.into());
-        fighter.global_table[TURN_UNIQ].assign(&false.into());
-        fighter.global_table[FALL_BRAKE_UNIQ].assign(&false.into());
-        fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(rockman_special_lw_uniq as *const () as _));
-    }
+unsafe extern "C" fn on_start(fighter: &mut L2CFighterCommon) {
+    fighter.global_table[CHECK_GROUND_SPECIAL_UNIQ].assign(&L2CValue::Ptr(rockman_check_special_uniq as *const () as _));
+    fighter.global_table[CHECK_AIR_SPECIAL_UNIQ].assign(&L2CValue::Ptr(rockman_check_special_uniq as *const () as _));
+    fighter.global_table[DASH_COMMON_UNIQ].assign(&false.into());
+    fighter.global_table[RUN_MAIN_UNIQ].assign(&false.into());
+    fighter.global_table[JUMP_SQUAT_MAIN_UNIQ].assign(&false.into());
+    fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].assign(&L2CValue::Ptr(rockman_check_air_escape_uniq as *const () as _));
+    fighter.global_table[GUARD_CONT_UNIQ].assign(&false.into());
+    fighter.global_table[TURN_UNIQ].assign(&false.into());
+    fighter.global_table[FALL_BRAKE_UNIQ].assign(&false.into());
+    fighter.global_table[CHECK_SPECIAL_LW_UNIQ].assign(&L2CValue::Ptr(rockman_special_lw_uniq as *const () as _));
 }
 
-pub fn install() {
-    install_agent_resets!(
-        agent_reset
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.on_start(on_start);
 }

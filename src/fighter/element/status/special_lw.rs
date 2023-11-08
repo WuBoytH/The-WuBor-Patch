@@ -6,7 +6,7 @@ extern "C" {
     pub fn FighterElementLinkEventChange__new_l2c_table() -> smash::lib::L2CValue;
 }
 
-pub unsafe fn element_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
+pub unsafe extern "C" fn element_special_lw_end(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_attack = ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL);
     element_set_change_attack(fighter.module_accessor, is_attack);
     if fighter.global_table[STATUS_KIND].get_i32() != *FIGHTER_ELEMENT_STATUS_KIND_SPECIAL_LW_STANDBY {

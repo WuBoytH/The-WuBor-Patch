@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "wario", script = "game_throwf", category = ACMD_GAME, low_priority )]
-unsafe fn wario_throwf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_throwf(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 5.0, 65, 60, 10, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -23,8 +22,7 @@ unsafe fn wario_throwf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_throwb", category = ACMD_GAME, low_priority )]
-unsafe fn wario_throwb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_throwb(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 7.0, 60, 60, 10, 80, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -68,8 +66,7 @@ unsafe fn wario_throwb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_throwhi", category = ACMD_GAME, low_priority )]
-unsafe fn wario_throwhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_throwhi(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 4.0, 80, 100, 0, 35, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -91,8 +88,7 @@ unsafe fn wario_throwhi(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "wario", script = "game_throwlw", category = ACMD_GAME, low_priority )]
-unsafe fn wario_throwlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn wario_throwlw(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_THROW, 0, 2.0, 140, 95, 0, 70, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
         macros::ATTACK_ABS(agent, *FIGHTER_ATTACK_ABSOLUTE_KIND_CATCH, 0, 3.0, 361, 100, 0, 60, 0.0, 1.0, *ATTACK_LR_CHECK_F, 0.0, true, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_NONE, *ATTACK_REGION_THROW);
@@ -114,14 +110,12 @@ unsafe fn wario_throwlw(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 0.5);
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        wario_throwf,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_throwf", wario_throwf);
 
-        wario_throwb,
+    agent.game_acmd("game_throwb", wario_throwb);
 
-        wario_throwhi,
+    agent.game_acmd("game_throwhi", wario_throwhi);
 
-        wario_throwlw
-    );
+    agent.game_acmd("game_throwlw", wario_throwlw);
 }

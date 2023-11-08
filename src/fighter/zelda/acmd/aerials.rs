@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "zelda", script = "game_attackairn", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_attackairn(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn zelda_attackairn(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -38,8 +37,7 @@ unsafe fn zelda_attackairn(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairf", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_attackairf(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn zelda_attackairf(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 0.625);
     frame(agent.lua_state_agent, 4.0);
@@ -69,8 +67,7 @@ unsafe fn zelda_attackairf(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairb", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_attackairb(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn zelda_attackairb(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -98,8 +95,7 @@ unsafe fn zelda_attackairb(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "zelda", script = "game_attackairlw", category = ACMD_GAME, low_priority )]
-unsafe fn zelda_attackairlw(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn zelda_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -124,14 +120,12 @@ unsafe fn zelda_attackairlw(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        zelda_attackairn,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackairn", zelda_attackairn);
 
-        zelda_attackairf,
+    agent.game_acmd("game_attackairf", zelda_attackairf);
 
-        zelda_attackairb,
+    agent.game_acmd("game_attackairb", zelda_attackairb);
 
-        zelda_attackairlw
-    );
+    agent.game_acmd("game_attackairlw", zelda_attackairlw);
 }

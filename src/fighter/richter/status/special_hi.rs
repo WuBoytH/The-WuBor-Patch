@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "richter", status = FIGHTER_STATUS_KIND_SPECIAL_HI, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn richter_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn richter_special_hi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::set_int64(fighter.module_accessor, hash40("special_hi") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND);
     WorkModule::set_int64(fighter.module_accessor, hash40("special_air_hi") as i64, *FIGHTER_STATUS_SUPER_JUMP_PUNCH_WORK_INT_MOTION_KIND_AIR);
     let lr_stick_x = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"), hash40("lr_stick_x"));
@@ -47,10 +46,10 @@ unsafe fn richter_specialhi_main(fighter: &mut L2CFighterCommon) -> L2CValue {
         start_y_mul = 1.0;
     }
     KineticModule::mul_speed(fighter.module_accessor, &Vector3f{x: start_x_mul, y: start_y_mul, z: 0.0}, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
-    fighter.sub_shift_status_main(L2CValue::Ptr(richter_specialhi_main_loop as *const () as _))
+    fighter.sub_shift_status_main(L2CValue::Ptr(richter_special_hi_main_loop as *const () as _))
 }
 
-unsafe extern "C" fn richter_specialhi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn richter_special_hi_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.sub_transition_group_check_air_cliff().get_bool() {
         return 0.into();
     }
@@ -79,8 +78,6 @@ unsafe extern "C" fn richter_specialhi_main_loop(fighter: &mut L2CFighterCommon)
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        richter_specialhi_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_STATUS_KIND_SPECIAL_HI, richter_special_hi_main);
 }

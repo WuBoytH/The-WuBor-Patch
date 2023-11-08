@@ -1,7 +1,6 @@
 use crate::imports::status_imports::*;
 
-#[status_script(agent = "ike", status = FIGHTER_IKE_STATUS_KIND_SPECIAL_N_LOOP, condition = LUA_SCRIPT_STATUS_FUNC_STATUS_MAIN)]
-unsafe fn ike_special_n_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn ike_special_n_loop_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     WorkModule::off_flag(fighter.module_accessor, *FIGHTER_IKE_STATUS_SPECIAL_N_FLAG_CONTINUE_MOT);
     if !StopModule::is_stop(fighter.module_accessor) {
         ike_special_n_loop_substatus(fighter, false.into());
@@ -125,8 +124,6 @@ unsafe extern "C" fn ike_special_n_loop_main_loop(fighter: &mut L2CFighterCommon
     0.into()
 }
 
-pub fn install() {
-    install_status_scripts!(
-        ike_special_n_loop_main
-    );
+pub fn install(agent: &mut smashline::Agent) {
+    agent.status(smashline::Main, *FIGHTER_IKE_STATUS_KIND_SPECIAL_N_LOOP, ike_special_n_loop_main);
 }

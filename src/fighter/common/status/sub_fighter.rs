@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_fighter_pre_end_status)]
-unsafe fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn sub_fighter_pre_end_status(fighter: &mut L2CFighterCommon) {
     let status = fighter.global_table[STATUS_KIND].get_i32();
 
     if WorkModule::is_flag(fighter.module_accessor, *FIGHTER_STATUS_WORK_ID_FLAG_RESERVE_DIVE) {

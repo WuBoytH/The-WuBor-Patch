@@ -16,7 +16,7 @@ use {
 // vc_ken_special_l01 is "I hit my boiling point!"
 // vc_ken_special_l02 is "Shoryureppa"
 
-unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_REBIRTH {
         VarModule::set_int(fighter.module_accessor, ken::instance::int::QUICK_STEP_STATE, ken::QUICK_STEP_STATE_ENABLE);
         VarModule::off_flag(fighter.module_accessor, ken::instance::flag::V_TRIGGER);
@@ -24,7 +24,7 @@ unsafe fn ken_reset_vars(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn ken_vgauge_flash(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ken_vgauge_flash(fighter: &mut L2CFighterCommon) {
     let v_gauge = VarModule::get_float(fighter.module_accessor, ken::instance::float::V_GAUGE);
     let mut flash_max = VarModule::get_int(fighter.module_accessor, ken::instance::int::FLASH_MAX);
     if v_gauge < 300.0
@@ -66,7 +66,7 @@ unsafe fn ken_vgauge_flash(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn ken_vskill(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ken_vskill(fighter: &mut L2CFighterCommon) {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD) {
         if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_ATTACK
         || StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_RYU_STATUS_KIND_ATTACK_COMMAND1
@@ -95,7 +95,7 @@ unsafe fn ken_vskill(fighter: &mut L2CFighterCommon) {
     }
 }
 
-unsafe fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
     if AttackModule::is_infliction_status(fighter.module_accessor, *COLLISION_KIND_MASK_HIT | *COLLISION_KIND_MASK_SHIELD)
     || (StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_SPECIAL_N | *FIGHTER_RYU_STATUS_KIND_SPECIAL_N_COMMAND
     && MotionModule::frame(fighter.module_accessor) >= 13.0) {
@@ -127,7 +127,7 @@ unsafe fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
     }
 }
 
-// unsafe fn ken_vshift(fighter: &mut L2CFighterCommon) {
+// unsafe extern "C" fn ken_vshift(fighter: &mut L2CFighterCommon) {
 //     if StatusModule::status_kind(fighter.module_accessor) == *FIGHTER_STATUS_KIND_GUARD
 //     && ControlModule::check_button_on(fighter.module_accessor, *CONTROL_PAD_BUTTON_SPECIAL)
 //     && WorkModule::get_float(fighter.module_accessor, FIGHTER_KEN_INSTANCE_WORK_ID_FLOAT_V_GAUGE) >= 300.0 {
@@ -172,7 +172,7 @@ unsafe fn ken_vtrigger(fighter: &mut L2CFighterCommon) {
 //     }
 // }
 
-unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn ken_training_tools(fighter: &mut L2CFighterCommon) {
     if smashball::is_training_mode()
     && [
         *FIGHTER_STATUS_KIND_GUARD_ON,
@@ -187,16 +187,13 @@ unsafe fn ken_training_tools(fighter: &mut L2CFighterCommon) {
     }
 }
 
-#[fighter_frame( agent = FIGHTER_KIND_KEN, main )]
-fn ken_frame(fighter: &mut L2CFighterCommon) {
-    unsafe {
-        ken_reset_vars(fighter);
-        ken_vgauge_flash(fighter);
-        ken_vskill(fighter);
-        ken_vtrigger(fighter);
-        // ken_vshift(fighter);
-        ken_training_tools(fighter);
-    }
+unsafe extern "C" fn ken_frame(fighter: &mut L2CFighterCommon) {
+    ken_reset_vars(fighter);
+    ken_vgauge_flash(fighter);
+    ken_vskill(fighter);
+    ken_vtrigger(fighter);
+    // ken_vshift(fighter);
+    ken_training_tools(fighter);
 }
 
 pub fn install() {

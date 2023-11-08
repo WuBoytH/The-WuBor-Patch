@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "ryu", scripts = [ "game_appealhil", "game_appealhir" ], category = ACMD_GAME, low_priority )]
-unsafe fn ryu_appealhi(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn ryu_appealhi(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if DamageModule::damage(agent.module_accessor, 0) >= 180.0 {
         if macros::is_excute(agent) {

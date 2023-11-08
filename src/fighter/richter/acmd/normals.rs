@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "richter", script = "game_attack11", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attack11(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack11(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::ATTACK(agent, 0, 0, Hash40::new("kneel"), 4.0, 361, 20, 0, 40, 4.0, 4.5, 0.0, 0.0, None, None, None, 1.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_F, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_S, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_KICK);
@@ -30,8 +29,7 @@ unsafe fn richter_attack11(agent: &mut L2CAgentBase) {
     MiscModule::calc_motion_rate_from_cancel_frame(agent, 24.0, -4.0);
 }
 
-#[acmd_script( agent = "richter", script = "effect_attack11", category = ACMD_EFFECT, low_priority )]
-unsafe fn richter_attack11_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack11_eff(agent: &mut L2CAgentBase) {
     // frame(agent.lua_state_agent, 4.0);
     // if macros::is_excute(agent) {
     //     macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_speedline"), Hash40::new("top"), 0, 12, 4, 0, 0, 0, 0.6, true);
@@ -44,8 +42,7 @@ unsafe fn richter_attack11_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attack11", category = ACMD_SOUND, low_priority )]
-unsafe fn richter_attack11_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack11_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 4.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_s"));
@@ -57,8 +54,7 @@ unsafe fn richter_attack11_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_attack11", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn richter_attack11_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack11_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -78,8 +74,7 @@ unsafe fn richter_attack11_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attack12", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attack12(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 8.0);
     if macros::is_excute(agent) {
@@ -93,8 +88,7 @@ unsafe fn richter_attack12(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attack12", category = ACMD_EFFECT, low_priority )]
-unsafe fn richter_attack12_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 2.0);
     if macros::is_excute(agent) {
         macros::EFFECT_FOLLOW(agent, Hash40::new("sys_attack_arc"), Hash40::new("top"), 0, 12, 4, 20, -90, 0, 1.1, true);
@@ -103,8 +97,7 @@ unsafe fn richter_attack12_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attack12", category = ACMD_SOUND, low_priority )]
-unsafe fn richter_attack12_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_m"));
@@ -115,8 +108,7 @@ unsafe fn richter_attack12_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_attack12", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn richter_attack12_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -136,8 +128,7 @@ unsafe fn richter_attack12_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attack12f", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attack12f(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12f(agent: &mut L2CAgentBase) {
     macros::FT_MOTION_RATE(agent, 1.0);
     frame(agent.lua_state_agent, 11.0);
     if macros::is_excute(agent) {
@@ -150,8 +141,7 @@ unsafe fn richter_attack12f(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attack12f", category = ACMD_EFFECT, low_priority )]
-unsafe fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::LANDING_EFFECT(agent, Hash40::new("sys_atk_smoke"), Hash40::new("top"), 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, false);
@@ -163,8 +153,7 @@ unsafe fn richter_attack12f_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "sound_attack12f", category = ACMD_SOUND, low_priority )]
-unsafe fn richter_attack12f_snd(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12f_snd(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
         macros::PLAY_SE(agent, Hash40::new("se_common_punch_kick_swing_l"));
@@ -175,8 +164,7 @@ unsafe fn richter_attack12f_snd(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "expression_attack12f", category = ACMD_EXPRESSION, low_priority )]
-unsafe fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         slope!(agent, *MA_MSC_CMD_SLOPE_SLOPE, *SLOPE_STATUS_LR);
     }
@@ -201,8 +189,7 @@ unsafe fn richter_attack12f_exp(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackdash(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         VarModule::on_flag(agent.module_accessor, attack_dash::flag::ENABLE_AIR_FALL);
@@ -235,8 +222,7 @@ unsafe fn richter_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attacks3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
     frame(agent.lua_state_agent, 4.0);
@@ -279,8 +265,7 @@ unsafe fn richter_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "effect_attacks3", category = ACMD_EFFECT, low_priority )]
-unsafe fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 10.0);
     if macros::is_excute(agent) {
         macros::FOOT_EFFECT(agent, Hash40::new("sys_run_smoke"), Hash40::new("top"), -4, 0, 0, 0, 0, 0, 1.2, 0, 0, 0, 0, 0, 0, false);
@@ -291,34 +276,7 @@ unsafe fn richter_attacks3_eff(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attacks3(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-                object as *mut smash::app::Weapon
-            );
-        }
-    }
-    macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
-    frame(agent.lua_state_agent, 4.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
-    frame(agent.lua_state_agent, 11.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(agent.lua_state_agent, 23.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
-    }
-}
-
-#[acmd_script( agent = "richter", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attackhi3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     macros::FT_MOTION_RATE(agent, 2.0);
     frame(agent.lua_state_agent, 6.0);
@@ -344,67 +302,7 @@ unsafe fn richter_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter_whip", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_whip_attackhi3(agent: &mut L2CAgentBase) {
-    frame(agent.lua_state_agent, 1.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_NONE);
-    }
-    macros::FT_MOTION_RATE(agent, 2.0);
-    frame(agent.lua_state_agent, 6.0);
-    macros::FT_MOTION_RATE(agent, 1.0);
-    frame(agent.lua_state_agent, 31.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_COLLIDE);
-    }
-    frame(agent.lua_state_agent, 32.0);
-    if macros::is_excute(agent) {
-        PhysicsModule::set_2nd_status(agent.module_accessor, *PH2NDARY_CRAW_MOVE);
-        agent.clear_lua_stack();
-        let object = sv_system::battle_object(agent.lua_state_agent) as *mut BattleObject;
-        if !object.is_null() {
-            WeaponSpecializer_SimonWhip::reset_node_fix_flag_list(
-                object as *mut smash::app::Weapon
-            );
-            WeaponSpecializer_SimonWhip::set_node_fix_flag_list(
-                object as *mut smash::app::Weapon,
-                4,
-                5,
-                9,
-                10,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1,
-                -1
-            );
-        }
-    }
-}
-
-#[acmd_script( agent = "richter", script = "game_attacklw3", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attacklw3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attacklw3(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_SIMON_STATUS_ATTACK_FLAG_ENABLE_COMBO);
@@ -425,8 +323,7 @@ unsafe fn richter_attacklw3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "richter", script = "game_attacklw32", category = ACMD_GAME, low_priority )]
-unsafe fn richter_attacklw32(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn richter_attacklw32(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 6.0);
     if macros::is_excute(agent) {
         JostleModule::set_status(agent.module_accessor, false);
@@ -452,36 +349,30 @@ unsafe fn richter_attacklw32(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        richter_attack11,
-        richter_attack11_eff,
-        richter_attack11_snd,
-        richter_attack11_exp,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attack11", richter_attack11);
+    agent.effect_acmd("effect_attack11", richter_attack11_eff);
+    agent.sound_acmd("sound_attack11", richter_attack11_snd);
+    agent.expression_acmd("expressoin_attack11", richter_attack11_exp);
 
-        richter_attack12,
-        richter_attack12_eff,
-        richter_attack12_snd,
-        richter_attack12_exp,
+    agent.game_acmd("game_attack12", richter_attack12);
+    agent.effect_acmd("effect_attack12", richter_attack12_eff);
+    agent.sound_acmd("sound_attack12", richter_attack12_snd);
+    agent.expression_acmd("expressoin_attack12", richter_attack12_exp);
 
-        richter_attack12f,
-        richter_attack12f_eff,
-        richter_attack12f_snd,
-        richter_attack12f_exp,
+    agent.game_acmd("game_attack12f", richter_attack12f);
+    agent.effect_acmd("effect_attack12f", richter_attack12f_eff);
+    agent.sound_acmd("sound_attack12f", richter_attack12f_snd);
+    agent.expression_acmd("expressoin_attack12f", richter_attack12f_exp);
 
-        richter_attackdash,
+    agent.game_acmd("game_attackdash", richter_attackdash);
 
-        richter_attacks3,
-        richter_attacks3_eff,
+    agent.game_acmd("game_attacks3", richter_attacks3);
+    agent.effect_acmd("effect_attacks3", richter_attacks3_eff);
 
-        richter_whip_attacks3,
+    agent.game_acmd("game_attackhi3", richter_attackhi3);
 
-        richter_attackhi3,
+    agent.game_acmd("game_attacklw3", richter_attacklw3);
 
-        richter_whip_attackhi3,
-
-        richter_attacklw3,
-
-        richter_attacklw32
-    );
+    agent.game_acmd("game_attacklw32", richter_attacklw32);
 }

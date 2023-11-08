@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Appeal_common)]
-unsafe fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -29,7 +29,7 @@ unsafe fn status_pre_appeal_common(fighter: &mut L2CFighterCommon, param_1: L2CV
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Appeal_common_uniq)]
-unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     notify_event_msc_cmd!(fighter, Hash40::new_raw(0x1a0473b26e));
     let mut appeal_kind = *FIGHTER_APPEAL_KIND_U;
     if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_INSTANCE_WORK_ID_FLAG_APPEAL_RANDOM) {
@@ -143,7 +143,7 @@ unsafe fn status_appeal_common_uniq(fighter: &mut L2CFighterCommon, param_1: L2C
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Appeal_Main)]
-unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool()
         || fighter.sub_air_check_fall_common().get_bool() {
@@ -196,7 +196,7 @@ unsafe fn status_appeal_main(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 // New Taunt Animation Logic
-unsafe fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
+unsafe extern "C" fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
     if VarModule::is_flag(fighter.module_accessor, appeal::flag::ACTION_BUTTON_CHECK) {
         let action_button = VarModule::get_int(fighter.module_accessor, appeal::int::ACTION_BUTTON);
         if ControlModule::check_button_on_trriger(fighter.module_accessor, action_button) {
@@ -262,7 +262,7 @@ unsafe fn taunt_uniq_handler(fighter: &mut L2CFighterCommon) {
 
 /// Used specifically for taunts that we've made loop,
 /// but we want to break the loop early.
-unsafe fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
+unsafe extern "C" fn taunt_holds(fighter: &mut L2CFighterCommon, is_loop: bool) {
     let button = VarModule::get_int(fighter.module_accessor, appeal::int::HOLD_BUTTON);
     if ControlModule::check_button_off(fighter.module_accessor, button)
     && (

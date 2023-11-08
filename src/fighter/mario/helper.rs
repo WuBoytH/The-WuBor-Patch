@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use {
     smash::{
         lua2cpp::*,
@@ -9,7 +11,7 @@ use {
 };
 
 #[inline(always)]
-pub unsafe fn bonker_vis(module_accessor: *mut BattleObjectModuleAccessor) {
+pub unsafe extern "C" fn bonker_vis(module_accessor: *mut BattleObjectModuleAccessor) {
     // if IS_BONKER[entry_id(module_accessor)] == 4 {
     //     ModelModule::set_mesh_visibility(module_accessor, Hash40::new("hammer"), false);
     //     ModelModule::set_mesh_visibility(module_accessor, Hash40::new("bonker"), true);

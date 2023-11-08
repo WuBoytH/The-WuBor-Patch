@@ -1,7 +1,7 @@
 use crate::imports::status_imports::*;
 
 #[skyline::hook(replace = L2CFighterCommon_status_pre_Attack100)]
-unsafe fn status_pre_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn status_pre_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
     StatusModule::init_settings(
         fighter.module_accessor,
         SituationKind(*SITUATION_KIND_GROUND),
@@ -30,7 +30,7 @@ unsafe fn status_pre_attack100(fighter: &mut L2CFighterCommon) -> L2CValue {
 }
 
 #[skyline::hook(replace = L2CFighterCommon_status_Attack100_Main_uniq_func)]
-unsafe fn status_attack100_main_uniq_func(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
+unsafe extern "C" fn status_attack100_main_uniq_func(fighter: &mut L2CFighterCommon, param_1: L2CValue) {
     if CancelModule::is_enable_cancel(fighter.module_accessor) {
         if fighter.sub_wait_ground_check_common(false.into()).get_bool() {
             return;

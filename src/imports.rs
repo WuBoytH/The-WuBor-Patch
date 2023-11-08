@@ -26,7 +26,6 @@ pub mod status_imports {
         smash_script::*,
         smashline::*,
         custom_var::*,
-        custom_status::*,
         custom_cancel::*,
         wubor_utils::{cancels::*, wua_bind::*, vars::*, table_const::*}
     };

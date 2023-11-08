@@ -2,7 +2,7 @@ use crate::imports::status_imports::*;
 use crate::fighter::common::status::attack::attack::*;
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_jump_mini_attack)]
-unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if fighter.global_table[CHECK_GROUND_JUMP_MINI_ATTACK].get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_JUMP_MINI_ATTACK].get_ptr());
@@ -31,7 +31,7 @@ unsafe fn sub_transition_group_check_ground_jump_mini_attack(fighter: &mut L2CFi
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_guard)]
-unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if fighter.global_table[CHECK_GROUND_GUARD_UNIQ].get_bool() {
             let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_GUARD_UNIQ].get_ptr());
@@ -52,7 +52,7 @@ unsafe fn sub_transition_group_check_ground_guard(fighter: &mut L2CFighterCommon
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_catch)]
-unsafe fn sub_transition_group_check_ground_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_ground_catch(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_GROUND_CATCH_UNIQ].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_CATCH_UNIQ].get_ptr());
         if callable(fighter).get_bool() {
@@ -83,7 +83,7 @@ unsafe fn sub_transition_group_check_ground_catch(fighter: &mut L2CFighterCommon
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_item)]
-unsafe fn sub_transition_group_check_ground_item(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_ground_item(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         if fighter.global_table[CMD_CAT1].get_i32() & *FIGHTER_PAD_CMD_CAT1_FLAG_CATCH != 0
         && WorkModule::is_enable_transition_term(fighter.module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_ITEM_THROW_FORCE)
@@ -124,7 +124,7 @@ unsafe fn sub_transition_group_check_ground_item(fighter: &mut L2CFighterCommon)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground_attack)]
-unsafe fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_ground_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_GROUND_ATTACK_UNIQ].get_ptr());
         if callable(fighter).get_bool() {
@@ -393,7 +393,7 @@ unsafe fn sub_transition_group_check_ground_special(fighter: &mut L2CFighterComm
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_ground)]
-unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_squat_wait: L2CValue) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_squat_wait: L2CValue) -> L2CValue {
     if fighter.global_table[SITUATION_KIND].get_i32() == *SITUATION_KIND_GROUND {
         let cat2 = fighter.global_table[CMD_CAT2].get_i32();
         if cat2 & *FIGHTER_PAD_CMD_CAT2_FLAG_APPEAL_HI != 0
@@ -466,7 +466,7 @@ unsafe fn sub_transition_group_check_ground(fighter: &mut L2CFighterCommon, to_s
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_attack)]
-unsafe fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_air_attack(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_AIR_ATTACK_UNIQ].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_ATTACK_UNIQ].get_ptr());
         if callable(fighter).get_bool() {
@@ -579,7 +579,7 @@ unsafe fn sub_transition_group_check_air_special(fighter: &mut L2CFighterCommon)
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_escape)]
-unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_ESCAPE_UNIQ].get_ptr());
         if callable(fighter).get_bool() {
@@ -609,7 +609,7 @@ unsafe fn sub_transition_group_check_air_escape(fighter: &mut L2CFighterCommon) 
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_tread_jump)]
-unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterCommon) -> L2CValue {
     if fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_TREAD_JUMP_UNIQ].get_ptr());
         if callable(fighter).get_bool() {
@@ -686,7 +686,7 @@ unsafe fn sub_transition_group_check_air_tread_jump(fighter: &mut L2CFighterComm
 }
 
 #[skyline::hook(replace = L2CFighterCommon_sub_transition_group_check_air_cliff)]
-unsafe fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -> L2CValue {
+unsafe extern "C" fn sub_transition_group_check_air_cliff(fighter: &mut L2CFighterCommon) -> L2CValue {
     let mut early_end = false;
     if fighter.global_table[CHECK_AIR_CLIFF_LASSO_UNIQ].get_bool() {
         let callable: extern "C" fn(&mut L2CFighterCommon) -> L2CValue = std::mem::transmute(fighter.global_table[CHECK_AIR_CLIFF_LASSO_UNIQ].get_ptr());

@@ -1,6 +1,7 @@
 use crate::imports::status_imports::*;
 use smash_rs::app::{WorkId, work_ids, transition_groups, transition_terms};
 use super::vl;
+use std::arch::asm;
 
 #[skyline::hook(offset = 0x107e950)]
 pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::app::Fighter) {
@@ -124,7 +125,7 @@ pub unsafe extern "C" fn rockman_vtable_func(vtable: u64, fighter: &mut smash::a
     original!()(vtable, fighter);
 }
 
-unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
+unsafe extern "C" fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleAccessor) -> bool {
     if WorkModule::is_enable_transition_term(module_accessor, *FIGHTER_STATUS_TRANSITION_TERM_ID_CONT_SPECIAL_N) {
         return true;
     }
@@ -147,7 +148,7 @@ unsafe fn rockman_valid_charging_state(module_accessor: *mut BattleObjectModuleA
     ].contains(&status)
 }
 
-unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor) {
+unsafe extern "C" fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor) {
     VarModule::off_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_CHARGING);
     VarModule::off_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_PLAYED_FX);
     VarModule::off_flag(module_accessor, rockman::instance::flag::CHARGE_SHOT_RELEASE);
@@ -161,13 +162,13 @@ unsafe fn rockman_kill_charge(module_accessor: *mut BattleObjectModuleAccessor) 
 }
 
 #[skyline::hook(offset = 0x1083bcc, inline)]
-unsafe fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn rockman_do_leafshield_things_disable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, false);
 }
 
 #[skyline::hook(offset = 0x10838c0, inline)]
-unsafe fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
+unsafe extern "C" fn rockman_do_leafshield_things_enable(ctx: &mut skyline::hooks::InlineCtx) {
     let module_accessor = *ctx.registers[19].x.as_ref() as *mut BattleObjectModuleAccessor;
     FighterSpecializer_Rockman::set_leafshield(module_accessor, true);
 }
@@ -245,6 +246,18 @@ unsafe extern "C" fn set_leafshield(module_accessor: *mut smash_rs::app::BattleO
 //     ret
 // }
 
+#[skyline::hook(offset = 0x1080264, inline)]
+unsafe extern "C" fn rockman_check_remove_metal_blade(ctx: &mut skyline::hooks::InlineCtx) {
+    let fighter = *ctx.registers[20].x.as_ref() as *mut Fighter;
+    let status = if (*fighter).battle_object.kind == 0x31 {
+        0x1dd
+    }
+    else {
+        0x1dc
+    };
+    asm!("cmp w0, w8", in("w8") status);
+}
+
 pub fn install() {
     // Forces the original Leaf Shield handler to not run so we can run the custom one.
     skyline::patching::Patch::in_text(0x107ea84).data(0x1400001Eu32);
@@ -280,13 +293,14 @@ pub fn install() {
     skyline::patching::Patch::in_text(0x10839cc).nop();
 
     // Patches which status to compare to for Metal Blade.
-    skyline::patching::Patch::in_text(0x1080264).data(0x7107741Fu32);
+    skyline::patching::Patch::in_text(0x1080264).nop();
 
     skyline::install_hooks!(
         rockman_vtable_func,
         rockman_do_leafshield_things_disable,
         rockman_do_leafshield_things_enable,
         set_leafshield,
-        // rockman_airshooter_init
+        // rockman_airshooter_init,
+        rockman_check_remove_metal_blade
     );
 }

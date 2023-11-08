@@ -5,10 +5,10 @@ mod special_hi_drop;
 mod catch;
 pub mod helper;
 
-pub fn install() {
-    special_s::install();
-    special_s_charge::install();
-    special_s_end::install();
-    special_hi_drop::install();
-    catch::install();
+pub fn install(agent: &mut smashline::Agent) {
+    special_s::install(agent);
+    special_s_charge::install(agent);
+    special_s_end::install(agent);
+    special_hi_drop::install(agent);
+    catch::install(agent);
 }

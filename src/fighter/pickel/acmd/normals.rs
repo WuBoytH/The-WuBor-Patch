@@ -1,7 +1,6 @@
 use crate::imports::acmd_imports::*;
 
-#[acmd_script( agent = "pickel", script = "game_attackdash", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_attackdash(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_attackdash(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -64,8 +63,7 @@ unsafe fn pickel_attackdash(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attacks3", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_attacks3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_attacks3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -155,8 +153,7 @@ unsafe fn pickel_attacks3(agent: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "pickel", script = "game_attackhi3", category = ACMD_GAME, low_priority )]
-unsafe fn pickel_attackhi3(agent: &mut L2CAgentBase) {
+unsafe extern "C" fn pickel_attackhi3(agent: &mut L2CAgentBase) {
     if macros::is_excute(agent) {
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_PICKEL_INSTANCE_WORK_ID_FLAG_REQUEST_REMOVE_HAVE_CRAFT_WEAPON);
     }
@@ -231,12 +228,10 @@ unsafe fn pickel_attackhi3(agent: &mut L2CAgentBase) {
     }
 }
 
-pub fn install() {
-    install_acmd_scripts!(
-        pickel_attackdash,
+pub fn install(agent: &mut smashline::Agent) {
+    agent.game_acmd("game_attackdash", pickel_attackdash);
 
-        pickel_attacks3,
+    agent.game_acmd("game_attacks3", pickel_attacks3);
 
-        pickel_attackhi3
-    );
+    agent.game_acmd("game_attackhi3", pickel_attackhi3);
 }

@@ -114,8 +114,12 @@ unsafe extern "C" fn ken_attackairlw(agent: &mut L2CAgentBase) {
     frame(agent.lua_state_agent, 1.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
-        WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        // WorkModule::on_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
     }
+    macros::FT_MOTION_RATE(agent, 5.0 / 3.0);
+    frame(agent.lua_state_agent, 6.0);
+    macros::FT_MOTION_RATE(agent, 1.0);
+    frame(agent.lua_state_agent, 8.0);
     frame(agent.lua_state_agent, 3.0);
     if macros::is_excute(agent) {
         WorkModule::on_flag(agent.module_accessor, *FIGHTER_STATUS_ATTACK_AIR_FLAG_ENABLE_LANDING);
@@ -132,7 +136,7 @@ unsafe extern "C" fn ken_attackairlw(agent: &mut L2CAgentBase) {
     }
     wait(agent.lua_state_agent, 5.0);
     if macros::is_excute(agent) {
-        WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
+        // WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_STATUS_ATTACK_FLAG_HIT_CANCEL);
         WorkModule::off_flag(agent.module_accessor, *FIGHTER_RYU_INSTANCE_WORK_ID_FLAG_FINAL_HIT_CANCEL);
     }
     frame(agent.lua_state_agent, 33.0);

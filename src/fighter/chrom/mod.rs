@@ -2,7 +2,6 @@ mod acmd;
 mod status;
 mod frame;
 mod fgc;
-pub mod vl;
 
 pub fn install() {
     let agent = &mut smashline::Agent::new("chrom");
@@ -10,5 +9,6 @@ pub fn install() {
     status::install(agent);
     frame::install(agent);
     fgc::install();
+    smashline::add_param_object("chrom", "param_quake_slash");
     agent.install();
 }

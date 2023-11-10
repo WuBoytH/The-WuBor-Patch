@@ -4,7 +4,6 @@ mod frame;
 mod agent_init;
 mod fgc;
 mod vtable_hook;
-pub mod vl;
 
 mod chargeshot;
 mod airshooter;
@@ -18,6 +17,7 @@ pub fn install() {
     agent_init::install(agent);
     fgc::install();
     vtable_hook::install();
+    smashline::add_param_object("rockman", "param_buster_charge");
     agent.install();
 
     chargeshot::install();

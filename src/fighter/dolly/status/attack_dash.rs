@@ -1,5 +1,5 @@
 use crate::imports::status_imports::*;
-use super::super::{vl, helper::*};
+use super::super::helper::*;
 
 unsafe extern "C" fn dolly_attack_dash_pre(fighter: &mut L2CFighterCommon) -> L2CValue {
     let is_command = VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND);
@@ -40,11 +40,12 @@ unsafe extern "C" fn dolly_attack_dash_main(fighter: &mut L2CFighterCommon) -> L
         false
     );
     if VarModule::is_flag(fighter.module_accessor, dolly::status::flag::ATTACK_DASH_COMMAND) {
+        let attack_dash_h_distance_mul = WorkModule::get_param_float(fighter.module_accessor, hash40("param_misc"), hash40("attack_dash_h_distance_mul"));
         sv_kinetic_energy!(
             set_speed_mul,
             fighter,
             FIGHTER_KINETIC_ENERGY_ID_MOTION,
-            vl::param_attack_dash::distance_mul_l
+            attack_dash_h_distance_mul
         );
     }
     else {

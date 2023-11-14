@@ -762,6 +762,8 @@ pub mod ryu {
             pub const USED_DENJIN_CHARGE : i32 = 0x1100;
             pub const SET_DENJIN_AURA : i32 = 0x1101;
 
+            pub const SPECIAL_HI_SPECIAL_EFFECT : i32 = 0x1102;
+
             pub const SPECIAL_LW_RUSH_RESUME_ENERGY : i32 = 0x1102;
             pub const SPECIAL_LW_RUSH_ENABLE_ATTACK : i32 = 0x1103;
 
@@ -791,6 +793,8 @@ pub mod ken {
     }
     pub mod status {
         pub mod flag {
+            pub use super::super::super::ryu::status::flag::SPECIAL_HI_SPECIAL_EFFECT;
+
             pub const SPECIAL_LW_ENABLE_ACTION : i32 = 0x1100;
             pub const SPECIAL_LW_UNABLE_ACTION : i32 = 0x1101;
             pub const SPECIAL_LW_ENABLED_ACTION : i32 = 0x1102;

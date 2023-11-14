@@ -62,7 +62,7 @@ unsafe extern "C" fn shulk_frame(fighter: &mut L2CFighterCommon) {
             EffectModule::set_rgb(fighter.module_accessor, countereff, 0.0, 5.0, 5.0);
         }
     }
-    else{
+    else {
         VarModule::off_flag(fighter.module_accessor, fighter::instance::flag::DISABLE_SPECIAL_LW);
     }
 }
